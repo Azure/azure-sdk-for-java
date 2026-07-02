@@ -537,40 +537,6 @@ public final class McpTool extends Tool {
     }
 
     /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the McpTool object itself.
-     */
-    @Generated
-    public McpTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
-        return this;
-    }
-
-    /*
      * Whether this MCP tool is deferred and discovered via tool search.
      */
     @Generated
@@ -595,6 +561,34 @@ public final class McpTool extends Tool {
     @Generated
     public McpTool setDeferLoading(Boolean deferLoading) {
         this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the McpTool object itself.
+     */
+    @Generated
+    public McpTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

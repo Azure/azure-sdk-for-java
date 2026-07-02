@@ -61,13 +61,13 @@ import java.util.stream.Stream;
 @ServiceClientBuilder(
     serviceClients = {
         BetaMemoryStoresClient.class,
-        BetaToolboxesClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
+        ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
-        BetaToolboxesAsyncClient.class,
         BetaAgentsAsyncClient.class,
-        AgentsAsyncClient.class })
+        AgentsAsyncClient.class,
+        ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -86,13 +86,11 @@ public final class AgentsClientBuilder
 
     private static final String AGENT_PREVIEW_FEATURES = Stream
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
-
-    private static final String TOOLBOXES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString();
 
     private boolean allowPreview;
 
@@ -526,9 +524,18 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * A builder for creating a new instance of the beta AgentsClient type.
+     * Returns the sub-builder used to create beta clients for preview-only service areas.
+     * <p>
+     * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
+     * policies, retry settings, logging options, client options, and service version. Use this method
+     * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
+     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, or {@link BetaMemoryStoresAsyncClient}.
+     * <p>
+     * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
+     * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
+     * clients; that setting only controls supported preview behavior on non-beta clients.
      *
-     * @return a builder for creating a new instance of the beta AgentsClient type.
+     * @return a builder for creating beta Agents service clients.
      */
     @Beta
     public BetaAgentsClientBuilder beta() {
@@ -536,27 +543,34 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * A builder for creating a new instance of the beta AgentsClient type.
+     * A sub-builder for creating beta Agents service clients.
+     * <p>
+     * Instances are created by calling {@link AgentsClientBuilder#beta()}. Build methods on this class use the
+     * enclosing {@link AgentsClientBuilder}'s configuration and automatically add the {@code Foundry-Features} header
+     * required by the beta service area they target.
      */
     @Beta
     @ServiceClientBuilder(
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaToolboxesClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class,
-            BetaToolboxesAsyncClient.class })
+            BetaMemoryStoresAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
-         * Creates a new instance of BetaAgentsClientBuilder.
+         * Creates a new instance of BetaAgentsClientBuilder. Use {@link AgentsClientBuilder#beta()} to get an instance.
          */
         private BetaAgentsClientBuilder() {
         }
 
         /**
-         * Builds an instance of BetaAgentsAsyncClient class.
+         * Builds an asynchronous beta Agents client for preview agent optimization operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for beta agent operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaAgentsAsyncClient.
          */
@@ -566,7 +580,12 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaMemoryStoresAsyncClient class.
+         * Builds an asynchronous beta Memory Stores client for preview memory store operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for memory store preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaMemoryStoresAsyncClient.
          */
@@ -577,17 +596,12 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaToolboxesAsyncClient class.
-         *
-         * @return an instance of BetaToolboxesAsyncClient.
-         */
-        @Beta
-        public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-            return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
-        }
-
-        /**
-         * Builds an instance of BetaAgentsClient class.
+         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for beta agent operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaAgentsClient.
          */
@@ -597,23 +611,18 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaMemoryStoresClient class.
+         * Builds a synchronous beta Memory Stores client for preview memory store operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for memory store preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaMemoryStoresClient.
          */
         @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
-        }
-
-        /**
-         * Builds an instance of BetaToolboxesClient class.
-         *
-         * @return an instance of BetaToolboxesClient.
-         */
-        @Beta
-        public BetaToolboxesClient buildBetaToolboxesClient() {
-            return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
     }
 
@@ -636,15 +645,6 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaToolboxesAsyncClient class.
-     *
-     * @return an instance of BetaToolboxesAsyncClient.
-     */
-    private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
-    }
-
-    /**
      * Builds an instance of BetaAgentsClient class.
      *
      * @return an instance of BetaAgentsClient.
@@ -663,11 +663,22 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaToolboxesClient class.
+     * Builds an instance of ToolboxesAsyncClient class.
      *
-     * @return an instance of BetaToolboxesClient.
+     * @return an instance of ToolboxesAsyncClient.
      */
-    private BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+    @Generated
+    public ToolboxesAsyncClient buildToolboxesAsyncClient() {
+        return new ToolboxesAsyncClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of ToolboxesClient class.
+     *
+     * @return an instance of ToolboxesClient.
+     */
+    @Generated
+    public ToolboxesClient buildToolboxesClient() {
+        return new ToolboxesClient(buildInnerClient().getToolboxes());
     }
 }

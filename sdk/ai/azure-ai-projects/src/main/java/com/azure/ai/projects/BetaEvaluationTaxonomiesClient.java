@@ -22,8 +22,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaEvaluationTaxonomiesClient {
 
     @Generated
@@ -44,7 +44,7 @@ public final class BetaEvaluationTaxonomiesClient {
      *
      * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -116,7 +116,7 @@ public final class BetaEvaluationTaxonomiesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -196,7 +196,7 @@ public final class BetaEvaluationTaxonomiesClient {
      *
      * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -238,9 +238,9 @@ public final class BetaEvaluationTaxonomiesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -304,7 +304,7 @@ public final class BetaEvaluationTaxonomiesClient {
      *
      * Update an evaluation taxonomy.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -346,9 +346,9 @@ public final class BetaEvaluationTaxonomiesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

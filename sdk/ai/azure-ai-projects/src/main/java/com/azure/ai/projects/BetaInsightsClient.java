@@ -23,8 +23,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaInsightsClient {
 
     @Generated
@@ -54,7 +54,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -74,9 +74,9 @@ public final class BetaInsightsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -124,7 +124,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -179,7 +179,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

@@ -17,38 +17,26 @@ import java.util.List;
  * Terminal-state result body. Populated when status is succeeded or failed.
  */
 @Immutable
-@Beta(warningText = "Preview API. AgentsOptimization=V1Preview")
+@Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class OptimizationJobResult implements JsonSerializable<OptimizationJobResult> {
 
     /*
-     * Evaluation scores for the original (un-optimized) agent configuration.
+     * Candidate ID of the original (un-optimized) baseline evaluation.
      */
     @Generated
-    private OptimizationCandidate baseline;
+    private String baseline;
 
     /*
-     * The highest-scoring candidate found during optimization.
+     * Candidate ID of the highest-scoring candidate found during optimization.
      */
     @Generated
-    private OptimizationCandidate best;
+    private String best;
 
     /*
      * All evaluated candidates including baseline.
      */
     @Generated
     private List<OptimizationCandidate> candidates;
-
-    /*
-     * The options used for this optimization run.
-     */
-    @Generated
-    private OptimizationOptions options;
-
-    /*
-     * Non-fatal warnings from the optimization run (e.g., target attribute failures that were skipped).
-     */
-    @Generated
-    private List<String> warnings;
 
     /**
      * Creates an instance of OptimizationJobResult class.
@@ -58,22 +46,22 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the baseline property: Evaluation scores for the original (un-optimized) agent configuration.
+     * Get the baseline property: Candidate ID of the original (un-optimized) baseline evaluation.
      *
      * @return the baseline value.
      */
     @Generated
-    public OptimizationCandidate getBaseline() {
+    public String getBaseline() {
         return this.baseline;
     }
 
     /**
-     * Get the best property: The highest-scoring candidate found during optimization.
+     * Get the best property: Candidate ID of the highest-scoring candidate found during optimization.
      *
      * @return the best value.
      */
     @Generated
-    public OptimizationCandidate getBest() {
+    public String getBest() {
         return this.best;
     }
 
@@ -88,39 +76,15 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the options property: The options used for this optimization run.
-     *
-     * @return the options value.
-     */
-    @Generated
-    public OptimizationOptions getOptions() {
-        return this.options;
-    }
-
-    /**
-     * Get the warnings property: Non-fatal warnings from the optimization run (e.g., target attribute failures that
-     * were skipped).
-     *
-     * @return the warnings value.
-     */
-    @Generated
-    public List<String> getWarnings() {
-        return this.warnings;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("baseline", this.baseline);
-        jsonWriter.writeJsonField("best", this.best);
+        jsonWriter.writeStringField("baseline", this.baseline);
+        jsonWriter.writeStringField("best", this.best);
         jsonWriter.writeArrayField("candidates", this.candidates, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("options", this.options);
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("all_target_attributes_failed", this.allTargetAttributesFailed);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,43 +104,18 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("baseline".equals(fieldName)) {
-                    deserializedOptimizationJobResult.baseline = OptimizationCandidate.fromJson(reader);
+                    deserializedOptimizationJobResult.baseline = reader.getString();
                 } else if ("best".equals(fieldName)) {
-                    deserializedOptimizationJobResult.best = OptimizationCandidate.fromJson(reader);
+                    deserializedOptimizationJobResult.best = reader.getString();
                 } else if ("candidates".equals(fieldName)) {
                     List<OptimizationCandidate> candidates
                         = reader.readArray(reader1 -> OptimizationCandidate.fromJson(reader1));
                     deserializedOptimizationJobResult.candidates = candidates;
-                } else if ("options".equals(fieldName)) {
-                    deserializedOptimizationJobResult.options = OptimizationOptions.fromJson(reader);
-                } else if ("warnings".equals(fieldName)) {
-                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
-                    deserializedOptimizationJobResult.warnings = warnings;
-                } else if ("all_target_attributes_failed".equals(fieldName)) {
-                    deserializedOptimizationJobResult.allTargetAttributesFailed
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedOptimizationJobResult;
         });
-    }
-
-    /*
-     * True when all target attributes failed — only the baseline was evaluated.
-     */
-    @Generated
-    private Boolean allTargetAttributesFailed;
-
-    /**
-     * Get the allTargetAttributesFailed property: True when all target attributes failed — only the baseline was
-     * evaluated.
-     *
-     * @return the allTargetAttributesFailed value.
-     */
-    @Generated
-    public Boolean isAllTargetAttributesFailed() {
-        return this.allTargetAttributesFailed;
     }
 }
