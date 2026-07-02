@@ -11,7 +11,7 @@ import java.util.Collection;
  * Type of the file.
  * <p>
  * This enumeration represents the type of file item in Azure Files shares. The file type is populated for all item
- * types in NFS-enabled shares, but only File and Directory in SMB.
+ * types in both SMB and NFS-enabled shares.
  *
  * @see ShareFileItem#getFileType()
  */
