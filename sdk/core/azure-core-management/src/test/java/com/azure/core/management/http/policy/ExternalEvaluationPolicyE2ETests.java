@@ -141,7 +141,7 @@ public class ExternalEvaluationPolicyE2ETests {
 
             // The small opt-in wrapper the user writes to bridge the SDK context to the acquirePolicyToken API.
             AtomicInteger acquireCount = new AtomicInteger();
-            PolicyTokenCredential wrapper = context -> {
+            PolicyTokenCredential policyTokenCredential = context -> {
                 acquireCount.incrementAndGet();
                 Object content = context.getContent() == null ? null : context.getContent().toObject(Object.class);
                 PolicyTokenOperation operation = new PolicyTokenOperation().withUri(context.getUri())
@@ -167,7 +167,7 @@ public class ExternalEvaluationPolicyE2ETests {
                 = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
             StorageManager storageManager = StorageManager.configure()
                 .withHttpClient(httpClient)
-                .withPolicy(new ExternalEvaluationPolicy(wrapper))
+                .withPolicy(new ExternalEvaluationPolicy(policyTokenCredential))
                 .authenticate(credential, profile);
 
             StorageAccountInner result = storageManager.serviceClient()
