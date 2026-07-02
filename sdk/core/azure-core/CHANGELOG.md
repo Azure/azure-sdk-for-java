@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where retrying requests with bodies created from a mark/reset-capable `InputStream` could fail because the stream was closed between retry attempts. ([#49650](https://github.com/Azure/azure-sdk-for-java/pull/49650))
+
 ### Other Changes
 
 ## 1.58.1 (2026-06-08)
