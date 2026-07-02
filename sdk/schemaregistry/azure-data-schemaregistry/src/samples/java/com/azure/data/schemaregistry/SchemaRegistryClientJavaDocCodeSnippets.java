@@ -59,8 +59,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
             .build();
 
         HttpLogOptions httpLogOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogDetailLevel.BODY)
-            .setPrettyPrintBody(true);
+            .setLogLevel(HttpLogDetailLevel.BODY);
 
         RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(5, Duration.ofSeconds(30)));
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()

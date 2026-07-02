@@ -8,6 +8,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -60,7 +64,14 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
+        HttpLogOptions logOptions = new HttpLogOptions()
+            .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .addAllowedHttpHeaderName(HttpHeaderName.ACCEPT);
+
+        builder = new SchemaRegistryClientBuilder()
+            .serviceVersion(SchemaRegistryVersion.V2022_10)
+            .credential(tokenCredential)
+            .fullyQualifiedNamespace(endpoint).addPolicy(new HttpLoggingPolicy(logOptions));
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -218,7 +229,9 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     @Test
     public void getSchemaIdDoesNotExist() {
         // Arrange
-        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+        final SchemaRegistryAsyncClient client1 = builder
+            .serviceVersion(SchemaRegistryVersion.V2022_10)
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(client1.getSchemaProperties(schemaGroup, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))

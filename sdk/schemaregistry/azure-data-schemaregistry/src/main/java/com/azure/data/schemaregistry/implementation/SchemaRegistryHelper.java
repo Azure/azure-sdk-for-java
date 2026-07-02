@@ -5,9 +5,6 @@ package com.azure.data.schemaregistry.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 
@@ -52,40 +49,14 @@ public final class SchemaRegistryHelper {
         accessor = Objects.requireNonNull(modelsAccessor, "'modelsAccessor' cannot be null.");
     }
 
-    public static SchemaProperties getSchemaProperties(SchemasRegisterHeaders deserializedHeaders,
-        HttpHeaders httpHeaders, SchemaFormat fallbackFormat) {
+    public static SchemaProperties getSchemaProperties(HttpHeaders httpHeaders, SchemaFormat fallbackFormat) {
+        final SchemasGetByIdHeaders schemasRegisterHeaders = new SchemasGetByIdHeaders(httpHeaders);
         final SchemaFormat responseFormat = getSchemaFormat(httpHeaders);
         final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : fallbackFormat;
 
-        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
-            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
-            deserializedHeaders.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaProperties(SchemasQueryIdByContentHeaders deserializedHeaders,
-        HttpHeaders httpHeaders, SchemaFormat format) {
-        final SchemaFormat responseFormat = getSchemaFormat(httpHeaders);
-        final SchemaFormat schemaFormat = responseFormat != null ? responseFormat : format;
-        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
-            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
-            deserializedHeaders.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaProperties(SchemasGetByIdHeaders deserializedHeaders,
-        HttpHeaders httpHeaders) {
-        final SchemaFormat schemaFormat = getSchemaFormat(httpHeaders);
-        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
-            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
-            deserializedHeaders.getSchemaVersion());
-    }
-
-    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionHeaders deserializedHeaders,
-        HttpHeaders httpHeaders) {
-        final SchemaFormat schemaFormat = getSchemaFormat(httpHeaders);
-
-        return accessor.getSchemaProperties(deserializedHeaders.getSchemaId(), schemaFormat,
-            deserializedHeaders.getSchemaGroupName(), deserializedHeaders.getSchemaName(),
-            deserializedHeaders.getSchemaVersion());
+        return accessor.getSchemaProperties(schemasRegisterHeaders.getSchemaId(), schemaFormat,
+            schemasRegisterHeaders.getSchemaGroupName(), schemasRegisterHeaders.getSchemaName(),
+            schemasRegisterHeaders.getSchemaVersion());
     }
 
     public static com.azure.data.schemaregistry.implementation.models.SchemaFormat
