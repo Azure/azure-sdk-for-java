@@ -12,7 +12,9 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -38,6 +40,7 @@ public class BlobParallelUploadOptions {
     private Duration timeout;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
+    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
@@ -364,6 +367,29 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    /**
+     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
+     *
+     * @return The transfer validation checksum algorithm.
+     */
+    public ContentValidationAlgorithm getContentValidationAlgorithm() {
+        return contentValidationAlgorithm;
+    }
+
+    /**
+     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
+     * for more details.
+     *
+     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions
+        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
+        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

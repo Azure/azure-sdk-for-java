@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,77 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2026-06-17)
+
+### Features Added
+
+* `models.InterconnectBlockProperties` was added
+
+* `models.InterconnectInstanceView` was added
+
+* `models.AutomaticSkuMigrationPolicy` was added
+
+* `models.InterconnectBlockProfile` was added
+
+* `models.InterconnectBlockUpdate` was added
+
+* `models.InterconnectBlockExpandTypes` was added
+
+* `models.InterconnectGroupProfile` was added
+
+* `models.InterconnectBlockInstanceView` was added
+
+#### `models.VirtualMachineScaleSetVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetVMNetworkProfileConfiguration` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.NetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetNetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateNetworkProfile` was modified
+
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+* `interconnectGroupProfile()` was added
+
+#### `models.SkuProfile` was modified
+
+* `automaticSkuMigrationPolicy()` was added
+* `withAutomaticSkuMigrationPolicy(models.AutomaticSkuMigrationPolicy)` was added
+
+### Other Changes
+
+- Updated `ComputeRP api-version` to `2026-03-01`.
+
+## 2.57.1 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.1` to version `2.58.2`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.4` to version `2.55.5`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.8` to version `2.53.9`.
 
 ## 2.57.0 (2026-04-21)
 

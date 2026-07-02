@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 public final class StorageAccountsListAccountSasSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountListAccountSAS.json
+     * x-ms-original-file: 2026-04-01/StorageAccountListAccountSAS.json
      */
     /**
      * Sample code: StorageAccountListAccountSAS.

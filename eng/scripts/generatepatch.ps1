@@ -49,7 +49,13 @@ param(
   [switch]$UseCurrentBranch,
   # Optional map of artifactId → version for sibling artifacts being patched in the same run.
   # Passed to GeneratePatch so changelogs show the correct version for sibling dependencies.
-  [hashtable]$PatchVersionOverrides = @{}
+  [hashtable]$PatchVersionOverrides = @{},
+  # Optional captured current pom.xml version for the (single) artifact being patched. The orchestrator
+  # (Generate-Patches-For-Automatic-Releases.ps1) reads each pom version up-front BEFORE any sibling
+  # iteration mutates pom.xml files via update_versions.py, then passes that original value here so
+  # GeneratePatch's reset gate ($currentPomFileVersion -ne $releaseVersion) sees the true pre-patch
+  # version and the source-reset block executes as expected.
+  [string]$CurrentPomFileVersion
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -105,6 +111,9 @@ foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
+    if (-not [string]::IsNullOrWhiteSpace($CurrentPomFileVersion)) {
+        $patchInfo.CurrentPomFileVersion = $CurrentPomFileVersion
+    }
     GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }

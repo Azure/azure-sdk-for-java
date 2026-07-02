@@ -3,24 +3,23 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.json.JsonReadFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
-final class JsonConfigurationParser {
+public final class JsonConfigurationParser {
 
     private static final ObjectMapper MAPPER = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
-    static boolean isJsonContentType(String contentType) {
+    public static boolean isJsonContentType(String contentType) {
         if (!StringUtils.hasText(contentType)) {
             return false;
         }
@@ -55,7 +54,7 @@ final class JsonConfigurationParser {
         try {
             JsonNode json = MAPPER.readTree(setting.getValue());
             parseSetting(setting.getKey(), json, settings);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InvalidConfigurationPropertyValueException(
                 setting.getKey(),
                 "<Redacted>",
@@ -73,15 +72,13 @@ final class JsonConfigurationParser {
                 }
                 break;
             case OBJECT:
-                Iterator<String> fieldNames = currentValue.fieldNames();
-                while (fieldNames.hasNext()) {
-                    String fieldName = fieldNames.next();
-                    String newKey = currentKey + "." + fieldName;
-                    parseSetting(newKey, currentValue.get(fieldName), settings);
+                for (Map.Entry<String, JsonNode> property : currentValue.properties()) {
+                    String newKey = currentKey + "." + property.getKey();
+                    parseSetting(newKey, property.getValue(), settings);
                 }
                 break;
             default:
-                settings.put(currentKey, currentValue.asText());
+                settings.put(currentKey, currentValue.asString());
                 break;
 
         }

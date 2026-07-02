@@ -83,8 +83,10 @@ public abstract class CosmosWriterBase implements IWriter {
     }
 
     protected void sendToDlqIfConfigured(SinkOperation sinkOperationContext) {
-        if (this.errantRecordReporter != null) {
-            errantRecordReporter.report(sinkOperationContext.getSinkRecord(), sinkOperationContext.getException());
-        }
+        DlqReportHelper.reportToDlqIfConfigured(
+            this.errantRecordReporter,
+            sinkOperationContext.getSinkRecord(),
+            sinkOperationContext.getException(),
+            LOGGER);
     }
 }

@@ -49,4 +49,16 @@ public final class KnowledgeRetrievalReasoningEffortKind
     public static Collection<KnowledgeRetrievalReasoningEffortKind> values() {
         return values(KnowledgeRetrievalReasoningEffortKind.class);
     }
+
+    /**
+     * Use low reasoning during retrieval.
+     */
+    @Generated
+    public static final KnowledgeRetrievalReasoningEffortKind LOW = fromString("low");
+
+    /**
+     * Use a moderate amount of reasoning during retrieval.
+     */
+    @Generated
+    public static final KnowledgeRetrievalReasoningEffortKind MEDIUM = fromString("medium");
 }

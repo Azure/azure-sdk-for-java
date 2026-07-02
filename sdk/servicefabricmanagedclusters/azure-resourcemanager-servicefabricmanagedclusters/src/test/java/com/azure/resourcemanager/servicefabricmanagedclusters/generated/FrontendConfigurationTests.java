@@ -13,24 +13,24 @@ public final class FrontendConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendConfiguration model = BinaryData.fromString(
-            "{\"ipAddressType\":\"IPv4\",\"loadBalancerBackendAddressPoolId\":\"frl\",\"loadBalancerInboundNatPoolId\":\"szrnwo\",\"applicationGatewayBackendAddressPoolId\":\"ndfpwpj\"}")
+            "{\"ipAddressType\":\"IPv4\",\"loadBalancerBackendAddressPoolId\":\"edltmmjihyeozp\",\"loadBalancerInboundNatPoolId\":\"wau\",\"applicationGatewayBackendAddressPoolId\":\"ncyg\"}")
             .toObject(FrontendConfiguration.class);
         Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
-        Assertions.assertEquals("frl", model.loadBalancerBackendAddressPoolId());
-        Assertions.assertEquals("szrnwo", model.loadBalancerInboundNatPoolId());
-        Assertions.assertEquals("ndfpwpj", model.applicationGatewayBackendAddressPoolId());
+        Assertions.assertEquals("edltmmjihyeozp", model.loadBalancerBackendAddressPoolId());
+        Assertions.assertEquals("wau", model.loadBalancerInboundNatPoolId());
+        Assertions.assertEquals("ncyg", model.applicationGatewayBackendAddressPoolId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FrontendConfiguration model = new FrontendConfiguration().withIpAddressType(IpAddressType.IPV4)
-            .withLoadBalancerBackendAddressPoolId("frl")
-            .withLoadBalancerInboundNatPoolId("szrnwo")
-            .withApplicationGatewayBackendAddressPoolId("ndfpwpj");
+            .withLoadBalancerBackendAddressPoolId("edltmmjihyeozp")
+            .withLoadBalancerInboundNatPoolId("wau")
+            .withApplicationGatewayBackendAddressPoolId("ncyg");
         model = BinaryData.fromObject(model).toObject(FrontendConfiguration.class);
         Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
-        Assertions.assertEquals("frl", model.loadBalancerBackendAddressPoolId());
-        Assertions.assertEquals("szrnwo", model.loadBalancerInboundNatPoolId());
-        Assertions.assertEquals("ndfpwpj", model.applicationGatewayBackendAddressPoolId());
+        Assertions.assertEquals("edltmmjihyeozp", model.loadBalancerBackendAddressPoolId());
+        Assertions.assertEquals("wau", model.loadBalancerInboundNatPoolId());
+        Assertions.assertEquals("ncyg", model.applicationGatewayBackendAddressPoolId());
     }
 }

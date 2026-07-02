@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Image generation tool
@@ -38,8 +39,13 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolQuality quality;
 
     /*
-     * The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`, arbitrary resolutions are
+     * supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be divisible by 16 and
+     * the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and the
+     * maximum supported resolution is `3840x2160`. The requested size must also satisfy the model's current pixel and
+     * edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+     * `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+     * `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      */
     @Generated
     private ImageGenToolSize size;
@@ -148,8 +154,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Get the size property: The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`,
+     * arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both
+     * be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
+     * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
+     * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
+     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @return the size value.
      */
@@ -159,8 +170,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Set the size property: The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`,
+     * arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both
+     * be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
+     * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
+     * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
+     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @param size the size value to set.
      * @return the ImageGenTool object itself.
@@ -306,6 +322,9 @@ public final class ImageGenTool extends Tool {
         jsonWriter.writeJsonField("input_image_mask", this.inputImageMask);
         jsonWriter.writeNumberField("partial_images", this.partialImages);
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -348,6 +367,13 @@ public final class ImageGenTool extends Tool {
                     deserializedImageGenTool.partialImages = reader.getNullable(JsonReader::getLong);
                 } else if ("action".equals(fieldName)) {
                     deserializedImageGenTool.action = ImageGenActionEnum.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedImageGenTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedImageGenTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedImageGenTool.toolConfigs = toolConfigs;
                 } else {
                     reader.skipChildren();
                 }
@@ -434,6 +460,96 @@ public final class ImageGenTool extends Tool {
     @Generated
     public ImageGenTool setAction(ImageGenActionEnum action) {
         this.action = action;
+        return this;
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /*
+     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

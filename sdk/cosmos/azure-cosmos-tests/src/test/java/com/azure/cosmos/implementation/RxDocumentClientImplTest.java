@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -123,6 +124,7 @@ public class RxDocumentClientImplTest {
 
         // setup mocks
         DocumentClientRetryPolicy documentClientRetryPolicyMock = Mockito.mock(DocumentClientRetryPolicy.class);
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReaderMock = Mockito.mock(GatewayServiceConfigurationReader.class);
         RxGatewayStoreModel gatewayStoreModelMock = Mockito.mock(RxGatewayStoreModel.class);
         RxStoreModel serverStoreModelMock = Mockito.mock(RxStoreModel.class);
 
@@ -223,6 +225,10 @@ public class RxDocumentClientImplTest {
         Mockito.when(this.cosmosAuthorizationTokenResolverMock.getAuthorizationToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn("abcdefgh");
         Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(Mockito.any())).thenReturn(documentClientRetryPolicyMock);
         Mockito.when(documentClientRetryPolicyMock.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(documentClientRetryPolicyMock.shouldRetry(Mockito.any(Exception.class)))
+            .thenReturn(Mono.just(ShouldRetryResult.noRetry()));
+        Mockito.when(gatewayServiceConfigurationReaderMock.getDefaultConsistencyLevel())
+            .thenReturn(ConsistencyLevel.SESSION);
         Mockito
             .when(serverStoreModelMock.processMessage(Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(mockRxDocumentServiceResponse(pointReadResult, headersForPointReads)));
@@ -256,6 +262,7 @@ public class RxDocumentClientImplTest {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
             ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
             ReflectionUtils.setResetSessionTokenRetryPolicy(rxDocumentClient, this.resetSessionTokenRetryPolicyMock);
+            ReflectionUtils.setGatewayServiceConfigurationReader(rxDocumentClient, gatewayServiceConfigurationReaderMock);
             ReflectionUtils.setGatewayProxy(rxDocumentClient, gatewayStoreModelMock);
             ReflectionUtils.setServerStoreModel(rxDocumentClient, serverStoreModelMock);
 
@@ -431,7 +438,7 @@ public class RxDocumentClientImplTest {
 
             @Override
             public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-                return null;
+                return Mono.just(ShouldRetryResult.noRetry());
             }
 
             @Override

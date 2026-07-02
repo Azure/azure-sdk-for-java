@@ -43,11 +43,11 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.ent
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
@@ -64,7 +64,7 @@ class FeatureFlagClient {
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
     
-    private FeatureFlagTracing tracing = new FeatureFlagTracing();
+    private final FeatureFlagTracing tracing = new FeatureFlagTracing();
 
     /**
      * <p>
@@ -88,8 +88,10 @@ class FeatureFlagClient {
             keyFilter = FEATURE_FLAG_PREFIX + customKeyFilter;
         }
 
-        List<String> labels = Arrays.asList(labelFilter);
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilter));
         Collections.reverse(labels);
+
+        Context featureFlagContext = context.addData("FeatureFlagTracing", tracing);
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
@@ -98,22 +100,25 @@ class FeatureFlagClient {
                 settingSelector.setTagsFilter(tagsFilter);
             }
 
-            context.addData("FeatureFlagTracing", tracing);
-
-            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
-            loadedFeatureFlags.add(proccessFeatureFlags(features, replicaClient.getOriginClient()));
+            WatchedConfigurationSettings features = replicaClient.listSettingsByPage(settingSelector, featureFlagContext);
+            loadedFeatureFlags.add(processFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    WatchedConfigurationSettings proccessFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
+    WatchedConfigurationSettings processFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
         // Reading In Features
         for (ConfigurationSetting setting : features.getConfigurationSettings()) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
                 updateTelemetry(featureFlag);
-                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
+                Feature feature = createFeature(featureFlag, endpoint);
+                if (feature != null) {
+                    properties.put(featureFlag.getKey(), feature);
+                } else {
+                    LOGGER.warn("Skipping invalid feature flag: {}", featureFlag.getKey());
+                }
             }
         }
         return features;
@@ -133,13 +138,11 @@ class FeatureFlagClient {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
             JsonNode conditions = node.get(CONDITIONS);
             if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
-                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asString();
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
             if (telemetryNode != null && !telemetryNode.isEmpty()) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-                featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
+                featureTelemetry = CASE_INSENSITIVE_MAPPER.convertValue(telemetryNode, FeatureTelemetry.class);
             }
 
             feature = new Feature(item, requirementType, featureTelemetry);
@@ -168,7 +171,7 @@ class FeatureFlagClient {
                     final Map<String, String> originMetadata = telemetry.getMetadata();
                     originMetadata.put(E_TAG, item.getETag());
                     if (originEndpoint != null && !originEndpoint.isEmpty()) {
-                        final String labelPart = item.getLabel().isEmpty() ? ""
+                        final String labelPart = !StringUtils.hasText(item.getLabel()) ? ""
                             : String.format("?label=%s", item.getLabel());
                         originMetadata.put(FEATURE_FLAG_REFERENCE,
                             String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
@@ -176,7 +179,7 @@ class FeatureFlagClient {
                     originMetadata.put("AllocationId", generateAllocationId(node));
                 }
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Error parsing feature flag value for key: {}", item.getKey(), e);
         }
         return feature;
@@ -203,6 +206,34 @@ class FeatureFlagClient {
         for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
             tracing.updateFeatureFilterTelemetry(filter.getName());
         }
+
+        // Track telemetry and seed usage from the feature flag value
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(featureFlag.getValue());
+
+            // Check for telemetry enabled
+            JsonNode telemetryNode = node.get(TELEMETRY);
+            if (telemetryNode != null && !telemetryNode.isEmpty()) {
+                JsonNode enabledNode = telemetryNode.get("enabled");
+                if (enabledNode != null && enabledNode.asBoolean()) {
+                    tracing.setUsesTelemetry();
+                }
+            }
+
+            // Check for allocation seed
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && allocationNode.has("seed")) {
+                tracing.setUsesSeed();
+            }
+
+            // Track max variants
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                tracing.updateMaxVariants(variantsNode.size());
+            }
+        } catch (JacksonException e) {
+            LOGGER.warn("Error parsing feature flag telemetry for key: {}", featureFlag.getKey(), e);
+        }
     }
 
     /**
@@ -222,13 +253,13 @@ class FeatureFlagClient {
         }
 
         // Seed
-        allocationId.append("seed=").append(allocation.has("seed") ? allocation.get("seed").asText() : "");
+        allocationId.append("seed=").append(allocation.has("seed") ? allocation.get("seed").asString() : "");
 
         // DefaultWhenEnabled
         if (allocation.has("default_when_enabled")) {
-            allocatedVariants.add(allocation.get("default_when_enabled").asText());
+            allocatedVariants.add(allocation.get("default_when_enabled").asString());
         }
-        allocationId.append("\ndefault_when_enabled=").append(allocation.has("default_when_enabled") ? allocation.get("default_when_enabled").asText() : "");
+        allocationId.append("\ndefault_when_enabled=").append(allocation.has("default_when_enabled") ? allocation.get("default_when_enabled").asString() : "");
 
         // Percentile
         allocationId.append("\npercentiles=");
@@ -236,7 +267,7 @@ class FeatureFlagClient {
         List<JsonNode> percentileAllocations = new ArrayList<>();
         if (percentile != null && percentile.isArray()) {
             percentile.forEach(p -> {
-                if (!Objects.equals(p.get("from").asText(), p.get("to").asText())) {
+                if (!Objects.equals(p.get("from").asString(), p.get("to").asString())) {
                     percentileAllocations.add(p);
                 }
             });
@@ -245,13 +276,13 @@ class FeatureFlagClient {
 
         for (JsonNode percentileAllocation : percentileAllocations) {
             if (percentileAllocation.has("variant")) {
-                allocatedVariants.add(percentileAllocation.get("variant").asText());
+                allocatedVariants.add(percentileAllocation.get("variant").asString());
             }
         }
 
         allocationId.append(percentileAllocations.stream()
             .map(pa -> pa.get("from") + ","
-                + Base64.getEncoder().encodeToString(pa.get("variant").asText().getBytes(StandardCharsets.UTF_8)) + ","
+                + Base64.getEncoder().encodeToString(pa.get("variant").asString().getBytes(StandardCharsets.UTF_8)) + ","
                 + pa.get("to"))
             .collect(Collectors.joining(";")));
 
@@ -272,9 +303,9 @@ class FeatureFlagClient {
                 }
             });
         }
-        if (variantsValue != null && !variantsValue.isEmpty()) {
+        if (!variantsValue.isEmpty()) {
             List<Map<String, Object>> sortedVariants = variantsValue.stream()
-                .filter(v -> allocatedVariants.contains(v.get("name")))
+                .filter(v -> allocatedVariants.contains((String) v.get("name")))
                 .sorted(Comparator.comparing(v -> (String) v.get("name")))
                 .collect(Collectors.toList());
 

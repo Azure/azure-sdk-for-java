@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class AuthenticationSettingsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_ListByHealthModel.json
      */
     /**
      * Sample code: AuthenticationSettings_ListByHealthModel.

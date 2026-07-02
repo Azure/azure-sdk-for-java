@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/15d7f54a5389d5906ffb4e56bb2f38fe5525c0d3/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json
+input-file: https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/f53f87c5060eb66b7c76b7c1123f961c725e5de4/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-10-06/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -397,6 +397,15 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{shareName}/{directory}?restype=directory&comp=list"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete File_GetRangeList x-ms-pageable as autorest does not currently support multiple return types for pageable
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{fileName}?comp=rangelist"].get
   transform: >
     delete $["x-ms-pageable"];
 ```

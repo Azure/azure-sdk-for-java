@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class StartDataMigration extends ExpandableStringEnum<StartDataMigration> {
     /**
-     * Static value True for StartDataMigration.
+     * Data migration must start right away.
      */
     public static final StartDataMigration TRUE = fromString("True");
 
     /**
-     * Static value False for StartDataMigration.
+     * Data migration must not start right away.
      */
     public static final StartDataMigration FALSE = fromString("False");
 

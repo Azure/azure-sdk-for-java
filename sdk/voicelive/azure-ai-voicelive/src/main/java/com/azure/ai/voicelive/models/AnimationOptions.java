@@ -24,12 +24,6 @@ public final class AnimationOptions implements JsonSerializable<AnimationOptions
     @Generated
     private String modelName;
 
-    /*
-     * Set of output data types requested from the animation system.
-     */
-    @Generated
-    private List<AnimationOutputType> outputs;
-
     /**
      * Creates an instance of AnimationOptions class.
      */
@@ -60,28 +54,6 @@ public final class AnimationOptions implements JsonSerializable<AnimationOptions
     }
 
     /**
-     * Get the outputs property: Set of output data types requested from the animation system.
-     *
-     * @return the outputs value.
-     */
-    @Generated
-    public List<AnimationOutputType> getOutputs() {
-        return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: Set of output data types requested from the animation system.
-     *
-     * @param outputs the outputs value to set.
-     * @return the AnimationOptions object itself.
-     */
-    @Generated
-    public AnimationOptions setOutputs(List<AnimationOutputType> outputs) {
-        this.outputs = outputs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -89,7 +61,7 @@ public final class AnimationOptions implements JsonSerializable<AnimationOptions
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model_name", this.modelName);
-        jsonWriter.writeArrayField("outputs", this.outputs,
+        jsonWriter.writeArrayField("outputs", this.outputTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
@@ -112,14 +84,42 @@ public final class AnimationOptions implements JsonSerializable<AnimationOptions
                 if ("model_name".equals(fieldName)) {
                     deserializedAnimationOptions.modelName = reader.getString();
                 } else if ("outputs".equals(fieldName)) {
-                    List<AnimationOutputType> outputs
+                    List<AnimationOutputType> outputTypes
                         = reader.readArray(reader1 -> AnimationOutputType.fromString(reader1.getString()));
-                    deserializedAnimationOptions.outputs = outputs;
+                    deserializedAnimationOptions.outputTypes = outputTypes;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedAnimationOptions;
         });
+    }
+
+    /*
+     * Set of output data types requested from the animation system.
+     */
+    @Generated
+    private List<AnimationOutputType> outputTypes;
+
+    /**
+     * Get the outputTypes property: Set of output data types requested from the animation system.
+     *
+     * @return the outputTypes value.
+     */
+    @Generated
+    public List<AnimationOutputType> getOutputTypes() {
+        return this.outputTypes;
+    }
+
+    /**
+     * Set the outputTypes property: Set of output data types requested from the animation system.
+     *
+     * @param outputTypes the outputTypes value to set.
+     * @return the AnimationOptions object itself.
+     */
+    @Generated
+    public AnimationOptions setOutputTypes(List<AnimationOutputType> outputTypes) {
+        this.outputTypes = outputTypes;
+        return this;
     }
 }
