@@ -284,6 +284,11 @@ steps:
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
+  - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
+    parameters:
+      TestResultsGlob: 'TEST-*.xml'
+      SearchFolder: '$(System.DefaultWorkingDirectory)/sdk'
+
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@2
