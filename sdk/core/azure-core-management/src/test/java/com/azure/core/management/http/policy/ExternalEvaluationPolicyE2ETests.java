@@ -31,7 +31,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.absent;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.matching;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
@@ -74,6 +77,12 @@ public class ExternalEvaluationPolicyE2ETests {
     private static final String ACQUIRE_BODY = "{\"result\":\"Succeeded\",\"token\":\"" + POLICY_TOKEN_VALUE + "\","
         + "\"tokenId\":\"11111111-1111-1111-1111-111111111111\"}";
 
+    // The exact JSON body the Storage create operation serializes for the parameters built below. The External
+    // Evaluation flow requires the retried request body to be byte-for-byte identical to the original, so the mock
+    // service asserts on this exact string for both the denied and the retried PUT.
+    private static final String EXPECTED_REQUEST_BODY
+        = "{\"sku\":{\"name\":\"Standard_LRS\"},\"kind\":\"StorageV2\",\"location\":\"eastus\"}";
+
     @Test
     public void endToEndAcquireAndRetry() {
         WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
@@ -81,19 +90,29 @@ public class ExternalEvaluationPolicyE2ETests {
         try {
             String endpoint = "http://localhost:" + server.port();
 
-            // Guarded operation is denied when the external evaluation header is absent.
+            // Guarded operation is denied when the external evaluation header is absent. The mock service asserts the
+            // method (PUT), the exact URL path, and the exact request body.
             server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
+                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY))
                 .willReturn(
                     aResponse().withStatus(403).withHeader("Content-Type", "application/json").withBody(DENY_BODY)));
 
-            // Guarded operation succeeds once the acquired policy token is applied.
+            // Guarded operation succeeds once the acquired policy token is applied. The retried request must carry the
+            // token header and a byte-for-byte identical body, so the mock service asserts on the exact body again.
             server.stubFor(put(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, matching(".+"))
+                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY))
                 .willReturn(
                     aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(STORAGE_BODY)));
 
-            // The acquirePolicyToken API issues the token.
-            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH)).willReturn(
-                aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(ACQUIRE_BODY)));
+            // The acquirePolicyToken API issues the token. The mock service asserts the operation echoed to it matches
+            // the guarded request: same method, same URI, and byte-for-byte the same content.
+            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH))
+                .withRequestBody(matchingJsonPath("$.operation.httpMethod", equalTo("PUT")))
+                .withRequestBody(
+                    matchingJsonPath("$.operation.uri", equalTo(endpoint + STORAGE_PATH + "?api-version=2026-04-01")))
+                .withRequestBody(matchingJsonPath("$.operation.content", equalToJson(EXPECTED_REQUEST_BODY)))
+                .willReturn(
+                    aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(ACQUIRE_BODY)));
 
             Map<String, String> endpoints = new HashMap<>();
             endpoints.put(AzureEnvironment.Endpoint.MANAGEMENT.identifier(), endpoint);
@@ -143,9 +162,20 @@ public class ExternalEvaluationPolicyE2ETests {
             assertNotNull(result);
             assertEquals(ACCOUNT_NAME, result.name());
             assertEquals(1, acquireCount.get());
-            // The guarded operation is sent twice (denied, then retried with the token); the token is acquired once.
-            server.verify(2, putRequestedFor(urlPathEqualTo(STORAGE_PATH)));
-            server.verify(1, postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)));
+            // The guarded operation is sent twice against the exact URL and method, each carrying the exact same body:
+            // once denied (no token header) and once retried with the acquired token.
+            server.verify(2,
+                putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
+            server.verify(1, putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, absent())
+                .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
+            server.verify(1,
+                putRequestedFor(urlPathEqualTo(STORAGE_PATH)).withHeader(EE_HEADER, equalTo(POLICY_TOKEN_VALUE))
+                    .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
+            // The token is acquired exactly once, with the operation echoing the guarded request verbatim.
+            server.verify(1,
+                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH))
+                    .withRequestBody(matchingJsonPath("$.operation.httpMethod", equalTo("PUT")))
+                    .withRequestBody(matchingJsonPath("$.operation.content", equalToJson(EXPECTED_REQUEST_BODY))));
         } finally {
             server.stop();
         }
