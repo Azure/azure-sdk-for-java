@@ -8,7 +8,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -26,7 +25,6 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -165,29 +163,6 @@ public class BlobDownloadToFileOptions {
      */
     public BlobDownloadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    public BlobDownloadToFileOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }
