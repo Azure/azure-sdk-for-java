@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchNodeSchedulingDisableOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * The options to use for disabling scheduling on the Compute Node.
      */
     @Generated
@@ -34,20 +27,6 @@ public final class BatchNodeSchedulingDisableOptions {
     }
 
     /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
-    }
-
-    /**
      * Get the parameters property: The options to use for disabling scheduling on the Compute Node.
      *
      * @return the parameters value.
@@ -55,23 +34,6 @@ public final class BatchNodeSchedulingDisableOptions {
     @Generated
     public BatchNodeDisableSchedulingParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchNodeSchedulingDisableOptions object itself.
-     */
-    @Generated
-    public BatchNodeSchedulingDisableOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
-        } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
-        }
-        return this;
     }
 
     /**
@@ -83,6 +45,44 @@ public final class BatchNodeSchedulingDisableOptions {
     @Generated
     public BatchNodeSchedulingDisableOptions setParameters(BatchNodeDisableSchedulingParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeOut;
+
+    /**
+     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeOut value.
+     */
+    @Generated
+    public Duration getTimeOut() {
+        if (this.timeOut == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOut);
+    }
+
+    /**
+     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOut the timeOut value to set.
+     * @return the BatchNodeSchedulingDisableOptions object itself.
+     */
+    @Generated
+    public BatchNodeSchedulingDisableOptions setTimeOut(Duration timeOut) {
+        if (timeOut == null) {
+            this.timeOut = null;
+        } else {
+            this.timeOut = timeOut.getSeconds();
+        }
         return this;
     }
 }

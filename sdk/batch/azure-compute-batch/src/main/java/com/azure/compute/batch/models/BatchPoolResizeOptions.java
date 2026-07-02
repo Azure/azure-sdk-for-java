@@ -13,13 +13,6 @@ import java.time.Duration;
 @Fluent
 public final class BatchPoolResizeOptions {
 
-    /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
     /**
      * Creates an instance of BatchPoolResizeOptions class.
      */
@@ -27,33 +20,40 @@ public final class BatchPoolResizeOptions {
     public BatchPoolResizeOptions() {
     }
 
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
+    private Long timeOut;
+
+    /**
+     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeOut value.
+     */
+    @Generated
+    public Duration getTimeOut() {
+        if (this.timeOut == null) {
             return null;
         }
-        return Duration.ofSeconds(this.timeOutInSeconds);
+        return Duration.ofSeconds(this.timeOut);
     }
 
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @param timeOut the timeOut value to set.
      * @return the BatchPoolResizeOptions object itself.
      */
     @Generated
-    public BatchPoolResizeOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
+    public BatchPoolResizeOptions setTimeOut(Duration timeOut) {
+        if (timeOut == null) {
+            this.timeOut = null;
         } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+            this.timeOut = timeOut.getSeconds();
         }
         return this;
     }
