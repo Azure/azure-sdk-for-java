@@ -1,0 +1,43 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.ai.projects.models.SystemDataV3 com.azure.ai.projects.models.ModelVersion::getSystemData()",
+          "justification": "SystemDataV3 was removed from ModelVersion because the current service contract no longer exposes system data on model versions."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.SystemDataV3",
+          "justification": "SystemDataV3 was removed because the current service contract no longer exposes this model."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.String com.azure.ai.projects.models.RoutineRun::getStatus()",
+          "new": "method com.azure.core.util.BinaryData com.azure.ai.projects.models.RoutineRun::getStatus()",
+          "justification": "Breaking change in beta operation: RoutineRun status changed from String to BinaryData to align with the current Routines preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.field\\.removed",
+          "old": "field com\\.azure\\.ai\\.projects\\.models\\.AttackStrategy\\.(BASE64|ROT13)",
+          "justification": "Breaking change in beta operation: AttackStrategy enum values were removed to align with the current RedTeams preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.models\\.(CodeBasedEvaluatorDefinition|EvaluatorDefinition|PromptBasedEvaluatorDefinition|RubricBasedEvaluatorDefinition)::(getInitParameters|setInitParameters)\\(.*\\)",
+          "justification": "Breaking change in beta operation: evaluator initialization parameter accessors were renamed to initializationParameters to align with the current Evaluations preview contract."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.ai.projects.models.ContinuousEvaluationRuleAction::getEvalId()",
+          "justification": "Breaking change in beta operation: ContinuousEvaluationRuleAction no longer exposes evalId in the current Evaluations preview contract."
+        }
+      ]
+    }
+  }
+]

@@ -17,6 +17,7 @@ import java.util.Map;
  * Code-based evaluator definition using python code.
  */
 @Fluent
+@Beta(warningText = "Preview API. Evaluations=V1Preview")
 public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
 
     /*
@@ -69,7 +70,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("init_parameters", getInitParameters(), (writer, element) -> {
+        jsonWriter.writeMapField("init_parameters", getInitializationParameters(), (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -108,9 +109,9 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("init_parameters".equals(fieldName)) {
-                    Map<String, BinaryData> initParameters = reader.readMap(reader1 -> reader1
+                    Map<String, BinaryData> initializationParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedCodeBasedEvaluatorDefinition.setInitParameters(initParameters);
+                    deserializedCodeBasedEvaluatorDefinition.setInitializationParameters(initializationParameters);
                 } else if ("data_schema".equals(fieldName)) {
                     Map<String, BinaryData> dataSchema = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
@@ -142,16 +143,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      */
     @Generated
     @Override
-    public CodeBasedEvaluatorDefinition setInitParameters(Map<String, BinaryData> initParameters) {
-        super.setInitParameters(initParameters);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public CodeBasedEvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
         super.setDataSchema(dataSchema);
         return this;
@@ -161,14 +152,12 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * The entry point Python file name for the uploaded evaluator code (e.g. 'answer_length_evaluator.py')
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String entryPoint;
 
     /*
      * The container image tag to use for evaluator code execution
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String imageTag;
 
     /**
@@ -206,7 +195,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the entryPoint value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getEntryPoint() {
         return this.entryPoint;
     }
@@ -219,7 +207,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setEntryPoint(String entryPoint) {
         this.entryPoint = entryPoint;
         return this;
@@ -231,7 +218,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the imageTag value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getImageTag() {
         return this.imageTag;
     }
@@ -243,7 +229,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setImageTag(String imageTag) {
         this.imageTag = imageTag;
         return this;
@@ -253,7 +238,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * The blob URI for the evaluator storage
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String blobUrl;
 
     /**
@@ -262,7 +246,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the blobUrl value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getBlobUrl() {
         return this.blobUrl;
     }
@@ -274,9 +257,18 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setBlobUrl(String blobUrl) {
         this.blobUrl = blobUrl;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public CodeBasedEvaluatorDefinition setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        super.setInitializationParameters(initializationParameters);
         return this;
     }
 }

@@ -16,8 +16,7 @@ import java.io.IOException;
  * The AgentDefinition model.
  */
 @Fluent
-@Beta(
-    warningText = "Preview API. CodeAgents=V1Preview, ExternalAgents=V1Preview, HostedAgents=V1Preview, WorkflowAgents=V1Preview")
+@Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
 public class AgentDefinition implements JsonSerializable<AgentDefinition> {
 
     /*
@@ -109,14 +108,14 @@ public class AgentDefinition implements JsonSerializable<AgentDefinition> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("prompt".equals(discriminatorValue)) {
+                if ("hosted".equals(discriminatorValue)) {
+                    return HostedAgentDefinition.fromJson(readerToUse.reset());
+                } else if ("prompt".equals(discriminatorValue)) {
                     return PromptAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("workflow".equals(discriminatorValue)) {
                     return WorkflowAgentDefinition.fromJson(readerToUse.reset());
                 } else if ("external".equals(discriminatorValue)) {
                     return ExternalAgentDefinition.fromJson(readerToUse.reset());
-                } else if ("hosted".equals(discriminatorValue)) {
-                    return HostedAgentDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

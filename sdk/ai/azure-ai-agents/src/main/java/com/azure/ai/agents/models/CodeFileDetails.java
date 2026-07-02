@@ -6,6 +6,8 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * The file details for the "code" field.
@@ -39,6 +41,17 @@ public final class CodeFileDetails {
     @Generated
     public CodeFileDetails(BinaryData content) {
         this.content = content;
+    }
+
+    /**
+     * Creates an instance of CodeFileDetails class.
+     *
+     * @param filePath path to the file on disk to upload.
+     */
+    public CodeFileDetails(String filePath) {
+        Path path = Paths.get(filePath);
+        this.content = BinaryData.fromFile(path);
+        this.filename = path.getFileName().toString();
     }
 
     /**

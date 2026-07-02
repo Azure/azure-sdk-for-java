@@ -16,14 +16,8 @@ import java.io.IOException;
  * In-flight progress; only populated while status is queued or in_progress.
  */
 @Immutable
-@Beta(warningText = "Preview API. AgentsOptimization=V1Preview")
+@Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class OptimizationJobProgress implements JsonSerializable<OptimizationJobProgress> {
-
-    /*
-     * 1-based current iteration index.
-     */
-    @Generated
-    private final int currentIteration;
 
     /*
      * Best score observed so far across all candidates.
@@ -36,16 +30,6 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
      */
     @Generated
     private final double elapsedSeconds;
-
-    /**
-     * Get the currentIteration property: 1-based current iteration index.
-     *
-     * @return the currentIteration value.
-     */
-    @Generated
-    public int getCurrentIteration() {
-        return this.currentIteration;
-    }
 
     /**
      * Get the bestScore property: Best score observed so far across all candidates.
@@ -74,7 +58,7 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("current_iteration", this.currentIteration);
+        jsonWriter.writeIntField("candidates_completed", this.candidatesCompleted);
         jsonWriter.writeDoubleField("best_score", this.bestScore);
         jsonWriter.writeDoubleField("elapsed_seconds", this.elapsedSeconds);
         return jsonWriter.writeEndObject();
@@ -92,14 +76,14 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     @Generated
     public static OptimizationJobProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int currentIteration = 0;
+            int candidatesCompleted = 0;
             double bestScore = 0.0;
             double elapsedSeconds = 0.0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("current_iteration".equals(fieldName)) {
-                    currentIteration = reader.getInt();
+                if ("candidates_completed".equals(fieldName)) {
+                    candidatesCompleted = reader.getInt();
                 } else if ("best_score".equals(fieldName)) {
                     bestScore = reader.getDouble();
                 } else if ("elapsed_seconds".equals(fieldName)) {
@@ -108,21 +92,37 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
                     reader.skipChildren();
                 }
             }
-            return new OptimizationJobProgress(currentIteration, bestScore, elapsedSeconds);
+            return new OptimizationJobProgress(candidatesCompleted, bestScore, elapsedSeconds);
         });
     }
 
     /**
      * Creates an instance of OptimizationJobProgress class.
      *
-     * @param currentIteration the currentIteration value to set.
+     * @param candidatesCompleted the candidatesCompleted value to set.
      * @param bestScore the bestScore value to set.
      * @param elapsedSeconds the elapsedSeconds value to set.
      */
     @Generated
-    private OptimizationJobProgress(int currentIteration, double bestScore, double elapsedSeconds) {
-        this.currentIteration = currentIteration;
+    private OptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
+        this.candidatesCompleted = candidatesCompleted;
         this.bestScore = bestScore;
         this.elapsedSeconds = elapsedSeconds;
+    }
+
+    /*
+     * Number of candidates whose evaluation has completed so far.
+     */
+    @Generated
+    private final int candidatesCompleted;
+
+    /**
+     * Get the candidatesCompleted property: Number of candidates whose evaluation has completed so far.
+     *
+     * @return the candidatesCompleted value.
+     */
+    @Generated
+    public int getCandidatesCompleted() {
+        return this.candidatesCompleted;
     }
 }

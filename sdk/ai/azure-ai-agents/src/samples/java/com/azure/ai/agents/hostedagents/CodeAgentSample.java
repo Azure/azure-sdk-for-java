@@ -5,11 +5,10 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.BinaryData;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -32,7 +31,6 @@ public class CodeAgentSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         try {
             agentsClient.deleteAgent(agentName);
@@ -43,34 +41,35 @@ public class CodeAgentSample {
         try {
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode_initial
 
-            BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
-            String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
+            Path codeZipPath = CodeAgentSampleUtils.createCodeZip();
 
-            AgentVersionDetails version = betaAgentsClient.createAgentVersionFromCode(
+            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(
                 agentName,
-                codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
+                CodeAgentSampleUtils.createHostedAgentDefinition(),
+                CodeAgentSampleUtils.createCodeFileDetails(codeZipPath),
+                CodeAgentSampleUtils.SAMPLE_DESCRIPTION,
+                CodeAgentSampleUtils.sampleMetadata());
 
             System.out.printf("Created code-based agent: %s%n", version.getName());
             CodeAgentSampleUtils.printLatestVersion(version);
 
             // END: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode_initial
-
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
-            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName, null);
-            Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
-            Files.write(downloadPath, downloadedCode.toBytes());
+            Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
+            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath.toString(), new RequestOptions());
             System.out.println("Downloaded code package path: " + downloadPath);
 
             // END: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode
 
-            AgentVersionDetails newVersion = betaAgentsClient.createAgentVersionFromCode(
+            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(
                 agentName,
-                codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
+                CodeAgentSampleUtils.createHostedAgentDefinition(),
+                CodeAgentSampleUtils.createCodeFileDetails(codeZipPath),
+                CodeAgentSampleUtils.SAMPLE_DESCRIPTION,
+                CodeAgentSampleUtils.sampleMetadata());
 
             System.out.printf("Created code-based agent version: %s%n", newVersion.getVersion());
             CodeAgentSampleUtils.printLatestVersion(newVersion);

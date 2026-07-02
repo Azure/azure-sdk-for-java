@@ -30,8 +30,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaEvaluatorsClient {
 
     @Generated
@@ -62,7 +62,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -78,7 +78,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -148,7 +148,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -164,7 +164,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -223,7 +223,7 @@ public final class BetaEvaluatorsClient {
      *
      * Retrieves the specified evaluator version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -239,7 +239,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -324,7 +324,7 @@ public final class BetaEvaluatorsClient {
      *
      * Creates a new evaluator version with an auto-incremented version identifier.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -340,7 +340,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -380,9 +380,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -398,7 +398,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -460,7 +460,7 @@ public final class BetaEvaluatorsClient {
      *
      * Updates the specified evaluator version in place.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -476,7 +476,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -516,9 +516,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -534,7 +534,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -597,7 +597,7 @@ public final class BetaEvaluatorsClient {
      *
      * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -607,9 +607,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -650,7 +650,7 @@ public final class BetaEvaluatorsClient {
      *
      * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -658,9 +658,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -710,7 +710,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -739,7 +739,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -803,9 +803,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -834,7 +834,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -920,7 +920,7 @@ public final class BetaEvaluatorsClient {
      *
      * Gets the details of an evaluator generation job by its ID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -949,7 +949,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -1058,7 +1058,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1087,7 +1087,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -1170,7 +1170,7 @@ public final class BetaEvaluatorsClient {
      *
      * Cancels an evaluator generation job by its ID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1199,7 +1199,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }

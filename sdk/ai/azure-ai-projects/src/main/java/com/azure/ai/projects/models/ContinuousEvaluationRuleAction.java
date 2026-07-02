@@ -23,12 +23,6 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     private EvaluationRuleActionType type = EvaluationRuleActionType.CONTINUOUS_EVALUATION;
 
     /*
-     * Eval Id to add continuous evaluation runs to.
-     */
-    @Generated
-    private final String evalId;
-
-    /*
      * Maximum number of evaluation runs allowed per hour.
      */
     @Generated
@@ -37,11 +31,11 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     /**
      * Creates an instance of ContinuousEvaluationRuleAction class.
      *
-     * @param evalId the evalId value to set.
+     * @param evaluationId the evaluationId value to set.
      */
     @Generated
-    public ContinuousEvaluationRuleAction(String evalId) {
-        this.evalId = evalId;
+    public ContinuousEvaluationRuleAction(String evaluationId) {
+        this.evaluationId = evaluationId;
     }
 
     /**
@@ -53,16 +47,6 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public EvaluationRuleActionType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the evalId property: Eval Id to add continuous evaluation runs to.
-     *
-     * @return the evalId value.
-     */
-    @Generated
-    public String getEvalId() {
-        return this.evalId;
     }
 
     /**
@@ -94,7 +78,7 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("evalId", this.evalId);
+        jsonWriter.writeStringField("evalId", this.evaluationId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("maxHourlyRuns", this.maxHourlyRuns);
         jsonWriter.writeNumberField("samplingRate", this.samplingRate);
@@ -113,7 +97,7 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Generated
     public static ContinuousEvaluationRuleAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String evalId = null;
+            String evaluationId = null;
             EvaluationRuleActionType type = EvaluationRuleActionType.CONTINUOUS_EVALUATION;
             Integer maxHourlyRuns = null;
             Double samplingRate = null;
@@ -121,7 +105,7 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("evalId".equals(fieldName)) {
-                    evalId = reader.getString();
+                    evaluationId = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = EvaluationRuleActionType.fromString(reader.getString());
                 } else if ("maxHourlyRuns".equals(fieldName)) {
@@ -133,7 +117,7 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
                 }
             }
             ContinuousEvaluationRuleAction deserializedContinuousEvaluationRuleAction
-                = new ContinuousEvaluationRuleAction(evalId);
+                = new ContinuousEvaluationRuleAction(evaluationId);
             deserializedContinuousEvaluationRuleAction.type = type;
             deserializedContinuousEvaluationRuleAction.maxHourlyRuns = maxHourlyRuns;
             deserializedContinuousEvaluationRuleAction.samplingRate = samplingRate;
@@ -170,5 +154,21 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     public ContinuousEvaluationRuleAction setSamplingRate(Double samplingRate) {
         this.samplingRate = samplingRate;
         return this;
+    }
+
+    /*
+     * Eval Id to add continuous evaluation runs to.
+     */
+    @Generated
+    private final String evaluationId;
+
+    /**
+     * Get the evaluationId property: Eval Id to add continuous evaluation runs to.
+     *
+     * @return the evaluationId value.
+     */
+    @Generated
+    public String getEvaluationId() {
+        return this.evaluationId;
     }
 }
