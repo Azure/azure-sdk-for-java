@@ -1,5 +1,15 @@
 # Release History
 
+## 2.59.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.58.1 (2026-07-01)
 
 ### Other Changes
