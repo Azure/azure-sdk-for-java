@@ -1,0 +1,335 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.microsoft.agentserver</groupId>
+  <artifactId>azure-agentserver-parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>azure-agentserver-parent</name>
+  <description>Parent POM for the Azure AI Foundry Agent Server Server SDK</description>
+
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>azure-agentserver-api</module>
+
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-webframeworks/azure-agentserver-spring</module>
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-webframeworks/azure-agentserver-jaxrs/azure-agentserver-api-jaxrs</module>
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-webframeworks/azure-agentserver-jaxrs/azure-agentserver-jersey</module>
+
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-agentframeworks/azure-agentserver-langchain4j-bom</module>
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-agentframeworks/azure-agentserver-langchain4j</module>
+    <module>azure-agentserver-samples/azure-agentserver-example-framework-integrations/azure-agentserver-agentframeworks/azure-agentserver-integration-tests</module>
+
+    <module>azure-agentserver-samples/azure-agentserver-echo-sample</module>
+
+    <module>azure-agentserver-samples/azure-agentserver-langchain4j-sample</module>
+    <module>azure-agentserver-samples/azure-agentserver-langchain4j-spring-sample</module>
+
+    <module>azure-agentserver-samples/financial-agent/azure-agentserver-langchain4j-financial-sample</module>
+    <module>azure-agentserver-samples/financial-agent/azure-agentserver-langchain4j-financial-jersey-sample</module>
+
+    <module>azure-agentserver-samples/azure-agentserver-doc-samples</module>
+  </modules>
+
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <jersey.version>4.0.1</jersey.version>
+    <jackson.version>2.21.0</jackson.version>
+    <slf4j.version>2.0.16</slf4j.version>
+    <openai.version>4.32.0</openai.version>
+    <langchain4j.version>1.10.0</langchain4j.version>
+    <langchain4j.agentic.version>1.10.0-beta18</langchain4j.agentic.version>
+    <netty.version>4.2.15.Final</netty.version>
+    <azure.core.version>1.58.0</azure.core.version>
+    <azure.core.http.netty.version>1.16.2</azure.core.http.netty.version>
+    <azure.identity.version>1.18.3</azure.identity.version>
+    <junit.jupiter.version>5.10.2</junit.jupiter.version>
+    <opentelemetry.version>1.40.0</opentelemetry.version>
+    <spring-boot.version>3.4.5</spring-boot.version>
+    <quarkus.version>3.31.1</quarkus.version>
+    <log4j.version>2.25.4</log4j.version>
+    <mockito.version>5.18.0</mockito.version>
+    <wiremock.version>3.13.0</wiremock.version>
+    <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
+    <langgraph4j.version>1.6.2</langgraph4j.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-bom</artifactId>
+        <version>${slf4j.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>${netty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>${opentelemetry.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Internal modules -->
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-api-jaxrs</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-jersey</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-spring</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-langchain4j-bom</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-langchain4j-bom</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-langchain4j</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.agentserver</groupId>
+        <artifactId>azure-agentserver-langchain4j-financial-sample</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <!-- OpenAI -->
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java-core</artifactId>
+        <version>${openai.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java</artifactId>
+        <version>${openai.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java-client-okhttp</artifactId>
+        <version>${openai.version}</version>
+      </dependency>
+
+      <!-- LangChain4j -->
+      <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j</artifactId>
+        <version>${langchain4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-open-ai</artifactId>
+        <version>${langchain4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-azure-open-ai</artifactId>
+        <version>${langchain4j.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-http-netty</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-agentic</artifactId>
+        <version>${langchain4j.agentic.version}</version>
+      </dependency>
+
+      <!-- Azure -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>${azure.core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+        <version>${azure.core.http.netty.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.netty</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure.identity.version}</version>
+      </dependency>
+
+      <!-- Jackson -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.21</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jdk8</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-kotlin</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- Jersey -->
+      <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-grizzly2-http</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.inject</groupId>
+        <artifactId>jersey-hk2</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-json-jackson</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-sse</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-common</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+        <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+
+      <!-- Jakarta -->
+      <dependency>
+        <groupId>jakarta.enterprise</groupId>
+        <artifactId>jakarta.enterprise.cdi-api</artifactId>
+        <version>4.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>4.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>io.smallrye.reactive</groupId>
+        <artifactId>mutiny</artifactId>
+        <version>3.1.0</version>
+      </dependency>
+
+      <!-- Logging -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>2.0.17</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j2-impl</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jul</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+
+      <!-- Test -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${junit.jupiter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock-standalone</artifactId>
+        <version>${wiremock.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+</project>

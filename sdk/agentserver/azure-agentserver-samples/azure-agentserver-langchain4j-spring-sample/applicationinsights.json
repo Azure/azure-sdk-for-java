@@ -1,0 +1,15 @@
+{
+  "sampling": {
+    "percentage": 100
+  },
+  "instrumentation": {
+    "logging": {
+      "level": "DEBUG"
+    }
+  },
+  "selfDiagnostics": {
+    "level": "DEBUG"
+  }
+}
+
+

@@ -1,0 +1,12 @@
+services:
+  echo-sample:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-}lc4jsample:latest
+
+    ports:
+      - "8088:8088"
+
+    env_file:
+      - ../../.env

@@ -1,0 +1,42 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.microsoft.agentserver</groupId>
+    <artifactId>azure-agentserver-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../../../../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>azure-agentserver-api-jaxrs</artifactId>
+  <packaging>jar</packaging>
+  <name>azure-agentserver-api-jaxrs</name>
+
+  <description>JAX-RS adapter for the Azure AI Foundry Agent Server API</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.agentserver</groupId>
+      <artifactId>azure-agentserver-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-context</artifactId>
+    </dependency>
+  </dependencies>
+</project>
+

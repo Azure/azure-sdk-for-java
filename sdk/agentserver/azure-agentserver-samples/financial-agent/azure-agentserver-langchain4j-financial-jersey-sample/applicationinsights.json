@@ -1,0 +1,14 @@
+{
+  "role": {
+    "name": "financial-jersey-agent"
+  },
+  "sampling": {
+    "percentage": 100
+  },
+  "instrumentation": {
+    "logging": {
+      "level": "DEBUG"
+    }
+  }
+}
+
