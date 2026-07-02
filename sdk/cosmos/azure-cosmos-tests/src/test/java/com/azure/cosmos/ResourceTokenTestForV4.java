@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ContainerChildResourceType;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -75,8 +76,10 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         // CREATE collection
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(UUID.randomUUID().toString(), PARTITION_KEY_PATH_2);
-        createdDatabase.createContainerIfNotExists(containerProperties).block();
-        createdContainer = createdDatabase.getContainer(containerProperties.getId());
+        createdContainer = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         // CREATE document
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
@@ -87,8 +90,10 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
         // CREATE collection with partition getKey
         CosmosContainerProperties container2Properties =
             new CosmosContainerProperties(UUID.randomUUID().toString(), PARTITION_KEY_PATH_1);
-        createdDatabase.createContainerIfNotExists(container2Properties).block();
-        createdContainerWithPartitionKey = createdDatabase.getContainer(container2Properties.getId());
+        createdContainerWithPartitionKey = createCollection(
+            createdDatabase,
+            container2Properties,
+            new CosmosContainerRequestOptions());
 
         // CREATE first document with partition key
         createdItemWithPartitionKey =

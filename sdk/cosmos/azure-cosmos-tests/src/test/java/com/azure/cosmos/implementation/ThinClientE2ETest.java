@@ -23,7 +23,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -41,6 +41,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.Fail.fail;
+import static com.azure.cosmos.rx.TestSuiteBase.createCollection;
 
 // End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest {
@@ -287,11 +288,11 @@ public class ThinClientE2ETest {
 
             CosmosContainerProperties containerDef =
                 new CosmosContainerProperties("c2", "/" + partitionKeyName);
-            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
-
-            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+            CosmosAsyncContainer container = createCollection(
+                client.getDatabase("db1"),
+                containerDef,
+                new CosmosContainerRequestOptions(),
+                35_000);
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();

@@ -22,7 +22,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -63,9 +64,23 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .directMode()
                 .buildAsyncClient();
         directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
-        directCosmosAsyncDatabase.createContainerIfNotExists(CONTAINER_ID, "/mypk",
-                ThroughputProperties.createManualThroughput(20000)).block();
-        directCosmosAsyncContainer = directCosmosAsyncDatabase.getContainer(CONTAINER_ID);
+            // Keep the clients under test cold before assertions that inspect their caches and RNTBD endpoints.
+        CosmosAsyncClient setupProbeClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .gatewayMode()
+                .buildAsyncClient();
+        try {
+            directCosmosAsyncContainer = createCollection(
+                directCosmosAsyncDatabase,
+                new CosmosContainerProperties(CONTAINER_ID, "/mypk"),
+                new CosmosContainerRequestOptions(),
+                20000,
+                setupProbeClient);
+        } finally {
+            safeClose(setupProbeClient);
+        }
 
         gatewayCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)

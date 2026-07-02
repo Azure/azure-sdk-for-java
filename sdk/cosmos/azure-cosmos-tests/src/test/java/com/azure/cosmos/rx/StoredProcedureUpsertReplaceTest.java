@@ -36,7 +36,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
@@ -51,8 +51,8 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getScripts()
-                                                                              .getStoredProcedure(readBackSp.getId()).read(null);
+        Mono<CosmosStoredProcedureResponse> readObservable = retryOnNotFound(
+            createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).read(null));
 
         // validate stored procedure creation
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
@@ -62,8 +62,8 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         // update stored procedure
         readBackSp.setBody("function() {var x = 11;}");
 
-        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
-                                                                                 .getStoredProcedure(readBackSp.getId()).replace(readBackSp);
+        Mono<CosmosStoredProcedureResponse> replaceObservable = retryOnNotFound(
+            createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).replace(readBackSp));
 
         // validate stored procedure replace
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()

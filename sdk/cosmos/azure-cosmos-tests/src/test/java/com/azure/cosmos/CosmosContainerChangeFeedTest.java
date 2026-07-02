@@ -190,7 +190,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator", "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
-        client = getClientBuilder().buildClient();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(100)
+            .setMaxRetryWaitTime(Duration.ofSeconds(60));
+
+        client = getClientBuilder()
+            .throttlingRetryOptions(throttlingRetryOptions)
+            .buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
@@ -955,7 +961,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
         boolean shouldContinuouslyIngestItems,

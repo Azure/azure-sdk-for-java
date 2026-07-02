@@ -4,6 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -18,6 +20,8 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -93,19 +97,27 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
             batch.upsertItemOperation(testDocToUpsert);
             batch.deleteItemOperation(this.TestDocPk1ExistingC.getId());
 
-            CosmosBatchResponse batchResponse = container.executeCosmosBatch(
-                batch, new CosmosBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
+            try {
+                CosmosBatchResponse batchResponse = container.executeCosmosBatch(
+                    batch, new CosmosBatchRequestOptions().setSessionToken(invalidSessionToken)).block();
 
-            this.verifyBatchProcessed(batchResponse, 4);
+                this.verifyBatchProcessed(batchResponse, 4);
 
-            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-            assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-            assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+                assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+                assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
 
-            List<CosmosItemOperation> batchOperations = batch.getOperations();
-            for (int index = 0; index < batchOperations.size(); index++) {
-                assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
+                List<CosmosItemOperation> batchOperations = batch.getOperations();
+                for (int index = 0; index < batchOperations.size(); index++) {
+                    assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
+                }
+            } catch (CosmosException ex) {
+                // Service session token behavior differs by routing path for write-only batches: hub-region writes
+                // can skip request-session-token enforcement, while satellite/vector-token paths can return 404/1002.
+                assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
+                assertThat(ex.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+                assertWriteOnlyInvalidSessionTokenFailureCameFromSatelliteRegion(ex);
             }
         }
 
@@ -133,5 +145,30 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
                 assertThat(ex.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
             }
         }
+    }
+
+    private void assertWriteOnlyInvalidSessionTokenFailureCameFromSatelliteRegion(CosmosException ex) {
+        String hubWriteRegion = getHubWriteRegionName();
+        Set<String> contactedRegionNames = ex.getDiagnostics().getContactedRegionNames();
+
+        assertThat(contactedRegionNames)
+            .as("Write-only batch 404/1002 is only tolerated when the request is routed to a satellite region. Hub write region: %s", hubWriteRegion)
+            .isNotNull()
+            .isNotEmpty()
+            .doesNotContain(hubWriteRegion.toLowerCase(Locale.ROOT));
+    }
+
+    private String getHubWriteRegionName() {
+        DatabaseAccount databaseAccount = batchClient.getContextClient()
+            .getGlobalEndpointManager()
+            .getLatestDatabaseAccount();
+
+        assertThat(databaseAccount).isNotNull();
+        for (DatabaseAccountLocation location : databaseAccount.getWritableLocations()) {
+            return location.getName();
+        }
+
+        Assertions.fail("Database account did not expose any writable regions.");
+        return null;
     }
 }

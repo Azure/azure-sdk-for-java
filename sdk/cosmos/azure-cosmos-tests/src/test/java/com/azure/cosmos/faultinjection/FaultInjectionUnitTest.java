@@ -67,7 +67,16 @@ public class FaultInjectionUnitTest {
         for (FaultInjectionOperationType faultInjectionOperationTpe : FaultInjectionOperationType.values()) {
             for (FaultInjectionServerErrorType faultInjectionServerErrorType : FaultInjectionServerErrorType.values()) {
 
-                if (metadataOperationTypes.contains(faultInjectionOperationTpe) && !validMetadataServerErrorTypes.contains(faultInjectionServerErrorType)) {
+                boolean isPartitionKeyRangeMetadataRequest =
+                    faultInjectionOperationTpe == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES;
+                boolean isPartitionKeyRangeMetadataNotFound =
+                    faultInjectionServerErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+                        || faultInjectionServerErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ;
+                boolean isSupportedMetadataErrorType =
+                    validMetadataServerErrorTypes.contains(faultInjectionServerErrorType)
+                        || (isPartitionKeyRangeMetadataRequest && isPartitionKeyRangeMetadataNotFound);
+
+                if (metadataOperationTypes.contains(faultInjectionOperationTpe) && !isSupportedMetadataErrorType) {
                     try {
                         new FaultInjectionRuleBuilder("metadataRule")
                             .condition(new FaultInjectionConditionBuilder().operationType(faultInjectionOperationTpe).build())
