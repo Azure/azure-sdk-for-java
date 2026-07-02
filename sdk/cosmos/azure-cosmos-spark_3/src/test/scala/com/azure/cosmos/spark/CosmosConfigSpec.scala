@@ -1349,6 +1349,34 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
   }
 
+  "Config Parser" should "parse patch filterPredicateIgnorePreconditionFailures config" in {
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+
+    // defaults to false when not specified
+    val defaultConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemPatch",
+      "spark.cosmos.write.patch.filter" -> "where c.booleanTypeColumn = true"
+    )
+    val defaultWriteConfig = CosmosWriteConfig.parseWriteConfig(defaultConfig, schema)
+    defaultWriteConfig.patchConfigs.isDefined shouldEqual true
+    defaultWriteConfig.patchConfigs.get.filterPredicateIgnorePreconditionFailures shouldEqual false
+
+    // parses true
+    val enabledConfig = defaultConfig +
+      ("spark.cosmos.write.patch.filterPredicateIgnorePreconditionFailures" -> "true")
+    val enabledWriteConfig = CosmosWriteConfig.parseWriteConfig(enabledConfig, schema)
+    enabledWriteConfig.patchConfigs.get.filterPredicateIgnorePreconditionFailures shouldEqual true
+
+    // parses false explicitly, also for ItemPatchIfExists
+    val disabledConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemPatchIfExists",
+      "spark.cosmos.write.patch.filter" -> "where c.booleanTypeColumn = true",
+      "spark.cosmos.write.patch.filterPredicateIgnorePreconditionFailures" -> "false"
+    )
+    val disabledWriteConfig = CosmosWriteConfig.parseWriteConfig(disabledConfig, schema)
+    disabledWriteConfig.patchConfigs.get.filterPredicateIgnorePreconditionFailures shouldEqual false
+  }
+
   "Config Parser" should "validate column configs for column does not exists in schema for patch configs" in {
     val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 

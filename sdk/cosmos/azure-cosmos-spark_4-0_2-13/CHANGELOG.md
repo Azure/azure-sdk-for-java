@@ -3,6 +3,7 @@
 ### 4.50.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added a new config option `spark.cosmos.write.patch.filterPredicateIgnorePreconditionFailures` to allow ignoring `412 Precondition Failed` errors when using the `ItemPatch`/`ItemPatchIfExists` write strategy together with a conditional `spark.cosmos.write.patch.filter`, so documents excluded by the filter are skipped instead of failing the write. - See [PR 49700](https://github.com/Azure/azure-sdk-for-java/pull/49700)
 
 #### Breaking Changes
 
