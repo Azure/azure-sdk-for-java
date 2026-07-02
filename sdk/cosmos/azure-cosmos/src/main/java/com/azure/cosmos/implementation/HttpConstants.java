@@ -508,6 +508,7 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_408 = 21010;
         public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 21011;
         public static final int GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET = 21012;
+        public static final int SERVER_WRITE_BARRIER_THROTTLED = 21013;
     }
 
     public static class HeaderValues {

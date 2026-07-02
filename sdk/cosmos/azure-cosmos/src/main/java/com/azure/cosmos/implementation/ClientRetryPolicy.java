@@ -488,6 +488,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         int subStatusCode) {
 
+        if (subStatusCode == HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED) {
+            // A 408 synthesized from write-barrier throttling (all contacted replicas returned 429) is an
+            // RU hot-spot signal, not an endpoint failure. Do not mark the endpoint unavailable or trigger
+            // per-partition automatic failover (PPAF) - failing over to another region would not relieve the
+            // RU exhaustion at the source and would pollute endpoint health. Surface it as terminal (no retry).
+            logger.info("shouldRetryOnRequestTimeout() Not retrying and not marking endpoint unavailable for "
+                + "SERVER_WRITE_BARRIER_THROTTLED (substatus {}).", subStatusCode);
+            return Mono.just(ShouldRetryResult.NO_RETRY);
+        }
+
         if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
             if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
                 if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {

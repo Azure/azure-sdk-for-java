@@ -209,6 +209,47 @@ public class ClientRetryPolicyTest {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void shouldNotMarkEndpointUnavailableOnWriteBarrierThrottled408() throws Exception {
+        // A 408 synthesized from write-barrier throttling (substatus SERVER_WRITE_BARRIER_THROTTLED)
+        // must be terminal (no retry) and must NOT mark the endpoint unavailable / trigger PPAF failover.
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        ClientRetryPolicy clientRetryPolicy =
+            new ClientRetryPolicy(
+                mockDiagnosticsClientContext(),
+                endpointManager,
+                true,
+                throttlingRetryOptions,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                false);
+
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, null);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), OperationType.Create, TEST_DOCUMENT_PATH, ResourceType.Document);
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+
+        Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
+
+        // The throttle-derived 408 must not have triggered any endpoint-unavailable marking / PPAF failover.
+        Mockito.verify(globalPartitionEndpointManagerForPerPartitionAutomaticFailover, Mockito.never())
+            .tryMarkEndpointAsUnavailableForPartitionKeyRange(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
+    }
+
     @Test(groups = { "unit" }, dataProvider = "operationProvider")
     public void shouldRetryOnGatewayTimeout(
         OperationType operationType,
