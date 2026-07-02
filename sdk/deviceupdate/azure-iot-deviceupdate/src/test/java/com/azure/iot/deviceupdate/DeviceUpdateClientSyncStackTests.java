@@ -35,7 +35,7 @@ public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        deviceUpdateClient = clientBuilder.credential(getCredential(getTestMode())).buildClient();
+        deviceUpdateClient = clientBuilder.credential(getCredential(getTestMode())).buildDeviceUpdateClient();
         requestOptions = new RequestOptions();
     }
 

@@ -1,14 +1,23 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 2.0.0-beta.1 (2026-06-15)
+
+This release is the first preview of the rewritten Device Update for IoT Hub client library generated from
+TypeSpec. It targets API version `2026-06-01`.
 
 ### Features Added
 
+- Added `DeviceManagementClient` (and `DeviceManagementAsyncClient`) for device, group, deployment and
+  diagnostics operations, plus `DeviceManagementClientBuilder`.
+- `DeviceUpdateClient` (and `DeviceUpdateAsyncClient`) now expose strongly-typed models in addition to the
+  existing low-level `BinaryData` / `RequestOptions` overloads.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- `DeviceUpdateClientBuilder.buildClient()` and `buildAsyncClient()` were removed. Use
+  `buildDeviceUpdateClient()` / `buildDeviceUpdateAsyncClient()` for the update catalog, and the new
+  `DeviceManagementClientBuilder` (or `DeviceUpdateClientBuilder.buildDeviceManagementClient()` /
+  `buildDeviceManagementAsyncClient()`) for device management.
 
 ## 1.0.33 (2026-05-05)
 

@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
@@ -32,7 +33,7 @@ public class DeviceUpdateClientTests extends TestProxyTestBase {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        return clientBuilder.credential(getCredential(getTestMode())).buildAsyncClient();
+        return clientBuilder.credential(getCredential(getTestMode())).buildDeviceUpdateAsyncClient();
     }
 
     @Test
@@ -69,7 +70,7 @@ public class DeviceUpdateClientTests extends TestProxyTestBase {
     @Test
     public void testGetVersions() {
         DeviceUpdateAsyncClient client = createClient();
-        PagedFlux<BinaryData> response = client.listVersions(TestData.PROVIDER, TestData.NAME, null);
+        PagedFlux<BinaryData> response = client.listVersions(TestData.PROVIDER, TestData.NAME, (RequestOptions) null);
 
         assertNotNull(response);
         assertTrue(response.toStream().count() > 0);
@@ -80,7 +81,7 @@ public class DeviceUpdateClientTests extends TestProxyTestBase {
         DeviceUpdateAsyncClient client = createClient();
 
         try {
-            PagedFlux<BinaryData> response = client.listVersions("foo", "bar", null);
+            PagedFlux<BinaryData> response = client.listVersions("foo", "bar", (RequestOptions) null);
             long count = response.toStream().count();
             fail("NotFound response expected");
         } catch (HttpResponseException e) {
