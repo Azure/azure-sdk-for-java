@@ -1,0 +1,48 @@
+{{- if .Values.ingestor.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ingestor
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "cosmos-soak.labels" . | nindent 4 }}
+    app.kubernetes.io/component: ingestor
+spec:
+  replicas: {{ .Values.ingestor.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cosmos-soak.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: ingestor
+  template:
+    metadata:
+      labels:
+        {{- include "cosmos-soak.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: ingestor
+    spec:
+      imagePullSecrets:
+        - name: acr-secret
+      containers:
+        - name: ingestor
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["--mode", "{{ .Values.ingestor.mode }}"]
+          ports:
+            - containerPort: 8080
+              name: health
+          env:
+            {{- include "cosmos-soak.cosmosEnv" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.ingestor.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.probes.liveness.path }}
+              port: {{ .Values.probes.liveness.port }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probes.readiness.path }}
+              port: {{ .Values.probes.readiness.port }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+{{- end }}

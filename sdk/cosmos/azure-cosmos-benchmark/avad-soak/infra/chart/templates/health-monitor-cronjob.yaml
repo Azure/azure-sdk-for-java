@@ -1,0 +1,47 @@
+{{- if .Values.healthMonitor.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-health-monitor
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "cosmos-soak.labels" . | nindent 4 }}
+    app.kubernetes.io/component: health-monitor
+spec:
+  schedule: {{ .Values.healthMonitor.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            {{- include "cosmos-soak.selectorLabels" . | nindent 12 }}
+            app.kubernetes.io/component: health-monitor
+        spec:
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: acr-secret
+          containers:
+            - name: health-monitor
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              args:
+                - "--mode"
+                - "health-monitor"
+                - "--run-id"
+                - "{{ .Release.Name }}"
+                - "--gap-sla-minutes"
+                - "{{ .Values.healthMonitor.gapSlaMinutes }}"
+              env:
+                {{- include "cosmos-soak.cosmosEnv" . | nindent 16 }}
+              resources:
+                requests:
+                  cpu: "250m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"
+{{- end }}

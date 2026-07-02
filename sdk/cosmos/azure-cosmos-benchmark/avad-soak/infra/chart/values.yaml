@@ -1,0 +1,90 @@
+# Default values for cosmos-soak Helm chart.
+# Override with values-avad.yaml or your own values file.
+
+namespace: cosmos-soak
+
+image:
+  repository: abhmavadsoakacr.azurecr.io/cosmos-avad-test
+  tag: latest
+  pullPolicy: Always
+
+# Ingestor deployment
+ingestor:
+  enabled: true
+  replicas: 3
+  mode: ingestor
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+# AVAD CFP consumer (StatefulSet for stable hostnames)
+avadConsumer:
+  enabled: true
+  replicas: 20
+  mode: avad-reader
+  leasePrefix: "avad-"
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+# LV CFP consumer (StatefulSet, parity baseline)
+lvConsumer:
+  enabled: true
+  replicas: 20
+  mode: lv-reader
+  leasePrefix: "lv-"
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+# Health monitor CronJob
+healthMonitor:
+  enabled: true
+  schedule: "*/5 * * * *"
+  gapSlaMinutes: 10
+
+# Cosmos DB configuration
+cosmos:
+  endpoint: ""
+  database: "graph_db"
+  feedContainer: "avad-test"
+  leaseContainer: "avad-test-leases"
+  preferredRegion: "West Central US"
+  opsPerSec: 5000
+  docSizeBytes: 1024
+  logicalPartitionCount: 100000
+  durationSeconds: 0  # 0 = run forever
+  workerCount: 2
+
+# Key Vault CSI
+keyVault:
+  enabled: true
+  vaultName: "abhm-avad-soak-kv"
+  tenantId: ""
+  clientId: ""
+  secretName: "cosmos-key"
+
+# Probes
+probes:
+  liveness:
+    path: /health
+    port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /ready
+    port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 5

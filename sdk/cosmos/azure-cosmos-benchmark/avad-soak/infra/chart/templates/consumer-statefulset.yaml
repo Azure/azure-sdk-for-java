@@ -1,0 +1,70 @@
+{{- range $consumerName, $consumer := dict "avad" .Values.avadConsumer "lv" .Values.lvConsumer }}
+{{- if $consumer.enabled }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $.Release.Name }}-{{ $consumerName }}-cfp
+  namespace: {{ $.Values.namespace }}
+  labels:
+    {{- include "cosmos-soak.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $consumerName }}-cfp
+spec:
+  serviceName: {{ $.Release.Name }}-{{ $consumerName }}-cfp
+  replicas: {{ $consumer.replicas }}
+  selector:
+    matchLabels:
+      {{- include "cosmos-soak.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: {{ $consumerName }}-cfp
+  template:
+    metadata:
+      labels:
+        {{- include "cosmos-soak.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: {{ $consumerName }}-cfp
+    spec:
+      imagePullSecrets:
+        - name: acr-secret
+      containers:
+        - name: {{ $consumerName }}-cfp
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          args: ["--mode", "{{ $consumer.mode }}"]
+          ports:
+            - containerPort: 8080
+              name: health
+          env:
+            {{- include "cosmos-soak.cosmosEnv" $ | nindent 12 }}
+          resources:
+            {{- toYaml $consumer.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: {{ $.Values.probes.liveness.path }}
+              port: {{ $.Values.probes.liveness.port }}
+            initialDelaySeconds: {{ $.Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.probes.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ $.Values.probes.readiness.path }}
+              port: {{ $.Values.probes.readiness.port }}
+            initialDelaySeconds: {{ $.Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.probes.readiness.periodSeconds }}
+---
+# Headless Service for StatefulSet DNS
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Release.Name }}-{{ $consumerName }}-cfp
+  namespace: {{ $.Values.namespace }}
+  labels:
+    {{- include "cosmos-soak.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $consumerName }}-cfp
+spec:
+  clusterIP: None
+  selector:
+    {{- include "cosmos-soak.selectorLabels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $consumerName }}-cfp
+  ports:
+    - port: 8080
+      name: health
+{{- end }}
+{{- end }}
