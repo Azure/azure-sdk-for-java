@@ -18,7 +18,7 @@ import com.azure.ai.agents.implementation.models.GetMicrosoft365AppPackageReques
 import com.azure.ai.agents.implementation.models.PublishAgentToMicrosoft365Request;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
-import com.azure.ai.agents.implementation.telemetry.AgentsClientTracer;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
@@ -84,7 +84,7 @@ public final class AgentsAsyncClient {
     @Generated
     private final AgentsImpl serviceClient;
 
-    private final AgentsClientTracer tracer;
+    private final GenAiAgentTracing tracer;
 
     /**
      * Get an agent
@@ -1020,7 +1020,7 @@ public final class AgentsAsyncClient {
      * @param serviceClient the service client implementation.
      * @param tracer the tracer used to emit GenAI spans for agent operations.
      */
-    AgentsAsyncClient(AgentsImpl serviceClient, AgentsClientTracer tracer) {
+    AgentsAsyncClient(AgentsImpl serviceClient, GenAiAgentTracing tracer) {
         this.serviceClient = serviceClient;
         this.tracer = tracer;
     }
