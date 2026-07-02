@@ -38,13 +38,13 @@ import java.nio.ByteBuffer;
  * segment's CRC has been verified, the {@link DecodedResponse}'s body Flux is guaranteed to contain only validated
  * bytes – callers never see a byte that could later fail validation, even when retries are involved.</p>
  */
-public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
+public class StorageContentValidationDecodingPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecodingPolicy.class);
 
     /**
-     * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
+     * Creates a new instance of {@link StorageContentValidationDecodingPolicy}.
      */
-    public StorageContentValidationDecoderPolicy() {
+    public StorageContentValidationDecodingPolicy() {
     }
 
     @Override
@@ -83,7 +83,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
-     * @return true when the request carries the boolean opt-in flag set 
+     * @return true when the request carries the boolean opt-in flag set
      * by {@code ContentValidationModeResolver.addStructuredMessageDecodingToContext}.
      */
     private boolean shouldApplyDecoding(HttpPipelineCallContext context) {
@@ -155,7 +155,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * appended so a truncated body raises an error instead of completing silently.
      */
     private Flux<ByteBuffer> decodeStream(Flux<ByteBuffer> encodedFlux, StructuredMessageDecoder decoder) {
-        // limitRate(1) mirrors StorageContentValidationPolicy's upload path: process one wire buffer at a time so
+        // limitRate(1) mirrors StorageContentValidationEncodingPolicy's upload path: process one wire buffer at a time so
         // the decoder can copy only the current chunk into owned storage and release the inbound buffer before the
         // next segment payload bytes arrive.
         return encodedFlux.limitRate(1)

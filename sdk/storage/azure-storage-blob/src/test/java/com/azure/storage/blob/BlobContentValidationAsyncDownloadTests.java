@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Async tests for structured message decoding during blob downloads using StorageContentValidationDecoderPolicy.
+ * Async tests for structured message decoding during blob downloads using StorageContentValidationDecodingPolicy.
  * These tests verify that the pipeline policy correctly decodes structured messages when content validation is enabled.
  */
 public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
