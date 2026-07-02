@@ -6,6 +6,7 @@ package com.azure.ai.agents.implementation.telemetry;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.openai.core.JsonValue;
+import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
@@ -20,11 +21,14 @@ import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.responses.ResponseOutputText;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.ResponseUsage;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
@@ -75,38 +79,18 @@ public final class GenAiResponseTracing {
     @SuppressWarnings("try")
     public Response traceResponse(AzureCreateResponseOptions createResponse, ResponseCreateParams builtParams,
         Supplier<Response> operation) {
-        String model = builtParams.model().isPresent() ? extractModelString(builtParams.model().get()) : null;
-        AgentReference agentRef = createResponse.getAgentReference();
-        String agentName = agentRef != null ? agentRef.getName() : null;
-        boolean isInvokeAgent = agentName != null;
-        String nameForSpan = isInvokeAgent ? agentName : model;
-        String inputMessages = extractInputMessages(builtParams);
-        String instructions = builtParams.instructions().orElse("");
-        String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
-
-        GenAiTracingScope scope
-            = isInvokeAgent ? instrumentation.startInvokeAgent(nameForSpan) : instrumentation.startChat(nameForSpan);
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        GenAiTracingScope scope = startResponseScope(params);
         if (scope == null) {
             return operation.get();
         }
 
         try {
-            if (agentName != null) {
-                scope.setAgentAttributes(null, agentName, null, null);
-            }
-            scope.setInputMessages(inputMessages);
-            if (!isInvokeAgent && instructions != null && captureContent()) {
-                scope.setSystemInstructions(instructions);
-            }
-            if (conversationId != null) {
-                scope.setConversationId(conversationId);
-            }
-
             Response response;
             try (AutoCloseable ignored = scope.makeSpanCurrent()) {
                 response = operation.get();
             }
-            recordResponseAttributes(scope, response, isInvokeAgent);
+            recordResponseAttributes(scope, response, params.isInvokeAgent);
             return response;
         } catch (Exception e) {
             scope.recordError(e);
@@ -128,30 +112,10 @@ public final class GenAiResponseTracing {
     @SuppressWarnings("try")
     public TracedStreamIterable traceStreamingResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams builtParams, Supplier<Iterable<ResponseStreamEvent>> operation) {
-        String model = builtParams.model().isPresent() ? extractModelString(builtParams.model().get()) : null;
-        AgentReference agentRef = createResponse.getAgentReference();
-        String agentName = agentRef != null ? agentRef.getName() : null;
-        boolean isInvokeAgent = agentName != null;
-        String nameForSpan = isInvokeAgent ? agentName : model;
-        String inputMessages = extractInputMessages(builtParams);
-        String instructions = builtParams.instructions().orElse("");
-        String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
-
-        GenAiTracingScope scope
-            = isInvokeAgent ? instrumentation.startInvokeAgent(nameForSpan) : instrumentation.startChat(nameForSpan);
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        GenAiTracingScope scope = startResponseScope(params);
         if (scope == null) {
             return new TracedStreamIterable(operation.get(), null, this, false);
-        }
-
-        if (agentName != null) {
-            scope.setAgentAttributes(null, agentName, null, null);
-        }
-        scope.setInputMessages(inputMessages);
-        if (!isInvokeAgent && instructions != null && captureContent()) {
-            scope.setSystemInstructions(instructions);
-        }
-        if (conversationId != null) {
-            scope.setConversationId(conversationId);
         }
 
         try {
@@ -159,13 +123,78 @@ public final class GenAiResponseTracing {
             try (AutoCloseable ignored = scope.makeSpanCurrent()) {
                 stream = operation.get();
             }
-            return new TracedStreamIterable(stream, scope, this, isInvokeAgent);
+            return new TracedStreamIterable(stream, scope, this, params.isInvokeAgent);
         } catch (Exception e) {
             scope.recordError(e);
             scope.close();
             sneakyThrows(e);
             return null;
         }
+    }
+
+    /**
+     * Traces an asynchronous non-streaming response operation.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the built request parameters.
+     * @param operation the supplier that starts the asynchronous API call.
+     * @return a {@link Mono} emitting the response from the operation.
+     */
+    public Mono<Response> traceResponseAsync(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, Supplier<Mono<Response>> operation) {
+        if (!instrumentation.isEnabled()) {
+            return operation.get();
+        }
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+
+        Mono<GenAiTracingScope> resourceSupplier = Mono.fromSupplier(() -> startResponseScope(params));
+        Function<GenAiTracingScope, Mono<Response>> resourceClosure = scope -> operation.get().map(response -> {
+            recordResponseAttributes(scope, response, params.isInvokeAgent);
+            return response;
+        });
+        return Mono.usingWhen(resourceSupplier, resourceClosure, scope -> {
+            scope.close();
+            return Mono.empty();
+        }, (scope, throwable) -> {
+            scope.recordError(throwable);
+            scope.close();
+            return Mono.empty();
+        }, scope -> {
+            scope.close();
+            return Mono.empty();
+        });
+    }
+
+    /**
+     * Traces an asynchronous streaming response operation. The span remains open until the returned {@link Flux} is
+     * fully consumed, cancelled, or errors.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the built request parameters.
+     * @param operation the supplier that starts the streaming operation.
+     * @return a {@link Flux} that wraps the stream and records attributes on completion.
+     */
+    public Flux<ResponseStreamEvent> traceStreamingResponseAsync(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, Supplier<Flux<ResponseStreamEvent>> operation) {
+        if (!instrumentation.isEnabled()) {
+            return operation.get();
+        }
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+
+        Mono<StreamingState> resourceSupplier
+            = Mono.fromSupplier(() -> new StreamingState(startResponseScope(params), params.isInvokeAgent));
+        Function<StreamingState, Flux<ResponseStreamEvent>> resourceClosure
+            = state -> operation.get().doOnNext(state::accumulate);
+        return Flux.usingWhen(resourceSupplier, resourceClosure, state -> {
+            state.finalizeStream(this);
+            return Mono.empty();
+        }, (state, throwable) -> {
+            state.recordError(throwable);
+            return Mono.empty();
+        }, state -> {
+            state.close();
+            return Mono.empty();
+        });
     }
 
     /**
@@ -221,7 +250,7 @@ public final class GenAiResponseTracing {
         return null;
     }
 
-    private void recordResponseAttributes(GenAiTracingScope scope, Response response, boolean isInvokeAgent) {
+    void recordResponseAttributes(GenAiTracingScope scope, Response response, boolean isInvokeAgent) {
         if (response == null) {
             return;
         }
@@ -553,6 +582,105 @@ public final class GenAiResponseTracing {
             }
         }
         return hasField;
+    }
+
+    private ResponseSpanParams extractParams(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams) {
+        String model = builtParams.model().isPresent() ? extractModelString(builtParams.model().get()) : null;
+        AgentReference agentRef = createResponse.getAgentReference();
+        String agentName = agentRef != null ? agentRef.getName() : null;
+        boolean isInvokeAgent = agentName != null;
+        String nameForSpan = isInvokeAgent ? agentName : model;
+        String inputMessages = extractInputMessages(builtParams);
+        String instructions = builtParams.instructions().orElse("");
+        String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
+        return new ResponseSpanParams(isInvokeAgent, nameForSpan, agentName, inputMessages, instructions,
+            conversationId);
+    }
+
+    private GenAiTracingScope startResponseScope(ResponseSpanParams params) {
+        GenAiTracingScope scope = params.isInvokeAgent
+            ? instrumentation.startInvokeAgent(params.nameForSpan)
+            : instrumentation.startChat(params.nameForSpan);
+        if (scope == null) {
+            return null;
+        }
+        if (params.agentName != null) {
+            scope.setAgentAttributes(null, params.agentName, null, null);
+        }
+        scope.setInputMessages(params.inputMessages);
+        if (!params.isInvokeAgent && params.instructions != null && captureContent()) {
+            scope.setSystemInstructions(params.instructions);
+        }
+        if (params.conversationId != null) {
+            scope.setConversationId(params.conversationId);
+        }
+        return scope;
+    }
+
+    private static final class ResponseSpanParams {
+        private final boolean isInvokeAgent;
+        private final String nameForSpan;
+        private final String agentName;
+        private final String inputMessages;
+        private final String instructions;
+        private final String conversationId;
+
+        ResponseSpanParams(boolean isInvokeAgent, String nameForSpan, String agentName, String inputMessages,
+            String instructions, String conversationId) {
+            this.isInvokeAgent = isInvokeAgent;
+            this.nameForSpan = nameForSpan;
+            this.agentName = agentName;
+            this.inputMessages = inputMessages;
+            this.instructions = instructions;
+            this.conversationId = conversationId;
+        }
+    }
+
+    private static final class StreamingState {
+        private final GenAiTracingScope scope;
+        private final boolean isInvokeAgent;
+        private final ResponseAccumulator accumulator;
+        private volatile boolean finalized;
+
+        StreamingState(GenAiTracingScope scope, boolean isInvokeAgent) {
+            this.scope = scope;
+            this.isInvokeAgent = isInvokeAgent;
+            this.accumulator = ResponseAccumulator.create();
+        }
+
+        void accumulate(ResponseStreamEvent event) {
+            accumulator.accumulate(event);
+        }
+
+        void finalizeStream(GenAiResponseTracing responseTracing) {
+            if (finalized) {
+                return;
+            }
+            finalized = true;
+            Response response = accumulator.response();
+            if (response != null) {
+                responseTracing.recordResponseAttributes(scope, response, isInvokeAgent);
+            }
+            scope.close();
+        }
+
+        void recordError(Throwable throwable) {
+            if (finalized) {
+                return;
+            }
+            finalized = true;
+            scope.recordError(throwable);
+            scope.close();
+        }
+
+        void close() {
+            if (finalized) {
+                return;
+            }
+            finalized = true;
+            scope.close();
+        }
     }
 
     @SuppressWarnings("unchecked")
