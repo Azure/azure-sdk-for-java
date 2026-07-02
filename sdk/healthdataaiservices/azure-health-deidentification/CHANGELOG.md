@@ -1,14 +1,37 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-04-20)
 
 ### Features Added
 
-### Breaking Changes
+* `models.TaggedPhiEntities` was added
 
-### Bugs Fixed
+* `models.TextEncodingType` was added
 
-### Other Changes
+* `models.SimplePhiEntity` was added
+
+#### `models.DeidentificationOperationType` was modified
+
+* `SURROGATE_ONLY` was added
+
+#### `DeidentificationServiceVersion` was modified
+
+* `V2025_07_15_PREVIEW` was added
+
+#### `models.DeidentificationJobCustomizationOptions` was modified
+
+* `setInputLocale(java.lang.String)` was added
+* `getInputLocale()` was added
+
+#### `models.DeidentificationContent` was modified
+
+* `getTaggedEntities()` was added
+* `setTaggedEntities(models.TaggedPhiEntities)` was added
+
+#### `models.DeidentificationCustomizationOptions` was modified
+
+* `getInputLocale()` was added
+* `setInputLocale(java.lang.String)` was added
 
 ## 1.1.0-beta.1 (2025-10-03)
 
