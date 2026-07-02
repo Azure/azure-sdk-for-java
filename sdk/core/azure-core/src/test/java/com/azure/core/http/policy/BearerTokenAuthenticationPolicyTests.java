@@ -16,6 +16,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,6 +32,45 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BearerTokenAuthenticationPolicyTests {
+
+    @Test
+    public void usesAccessTokenTypeInAuthorizationHeader() {
+        TokenCredential credential
+            = request -> Mono.just(new AccessToken("token", OffsetDateTime.now().plusHours(2), null, "Pop"));
+        BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy(credential, "scope");
+        AtomicReference<String> authorizationHeader = new AtomicReference<>();
+        HttpClient client = request -> {
+            authorizationHeader.set(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).httpClient(client).build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+        assertEquals("Pop token", authorizationHeader.get());
+    }
+
+    @Test
+    public void usesAccessTokenTypeInAuthorizationHeaderSync() {
+        TokenCredential credential
+            = request -> Mono.just(new AccessToken("token", OffsetDateTime.now().plusHours(2), null, "Pop"));
+        BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy(credential, "scope");
+        AtomicReference<String> authorizationHeader = new AtomicReference<>();
+        HttpClient client = request -> {
+            authorizationHeader.set(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).httpClient(client).build();
+
+        try (HttpResponse response
+            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://localhost"), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+        assertEquals("Pop token", authorizationHeader.get());
+    }
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")

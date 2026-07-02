@@ -210,7 +210,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return cache.getToken(tokenRequestContext, checkToForceFetchToken).flatMap(token -> {
-            setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+            setAuthorizationHeader(context.getHttpRequest().getHeaders(), token);
             return Mono.empty();
         });
     }
@@ -218,11 +218,12 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
-        setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+        setAuthorizationHeader(context.getHttpRequest().getHeaders(), token);
     }
 
-    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+    private static void setAuthorizationHeader(HttpHeaders headers, AccessToken token) {
+        String tokenType = CoreUtils.isNullOrEmpty(token.getTokenType()) ? BEARER : token.getTokenType();
+        headers.set(HttpHeaderName.AUTHORIZATION, tokenType + " " + token.getToken());
     }
 
     private TokenRequestContext getTokenRequestContextForCaeChallenge(HttpResponse response) {
