@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.evaluation.PolicyToken;
 import com.azure.core.management.evaluation.PolicyTokenCredential;
 import com.azure.core.management.evaluation.PolicyTokenRequestContext;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
@@ -117,18 +118,47 @@ public class ExternalEvaluationPolicyTests {
     }
 
     @Test
-    public void acquirerErrorIsSurfaced() {
+    public void acquirerErrorReSurfacesOriginalDenyAsync() {
         RecordingPolicyTokenCredential credential
             = new RecordingPolicyTokenCredential(request -> Mono.error(new IllegalStateException("policy denied")));
         MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
 
         HttpPipeline pipeline = pipeline(credential, client);
 
-        StepVerifier.create(pipeline.send(newRequest()))
-            .verifyErrorMatches(t -> t instanceof IllegalStateException && "policy denied".equals(t.getMessage()));
+        StepVerifier.create(pipeline.send(newRequest())).verifyErrorMatches(this::isReSurfacedDeny);
 
         Assertions.assertEquals(1, credential.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
+    }
+
+    @Test
+    public void acquirerErrorReSurfacesOriginalDenySync() {
+        RecordingPolicyTokenCredential credential
+            = new RecordingPolicyTokenCredential(request -> Mono.error(new IllegalStateException("policy denied")));
+        MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
+
+        HttpPipeline pipeline = pipeline(credential, client);
+
+        RuntimeException error
+            = Assertions.assertThrows(RuntimeException.class, () -> pipeline.sendSync(newRequest(), Context.NONE));
+        Assertions.assertTrue(isReSurfacedDeny(error));
+
+        Assertions.assertEquals(1, credential.invocations.get());
+        Assertions.assertEquals(1, client.requests.size());
+    }
+
+    // When a token cannot be acquired, the original 403 policy denial is re-surfaced as a ManagementException whose
+    // cause is the acquisition failure reported by the credential.
+    private boolean isReSurfacedDeny(Throwable t) {
+        if (!(t instanceof ManagementException)) {
+            return false;
+        }
+        ManagementException exception = (ManagementException) t;
+        return exception.getResponse().getStatusCode() == 403
+            && exception.getValue() != null
+            && "RequestDisallowedByPolicy".equals(exception.getValue().getCode())
+            && t.getCause() instanceof IllegalStateException
+            && "policy denied".equals(t.getCause().getMessage());
     }
 
     @Test

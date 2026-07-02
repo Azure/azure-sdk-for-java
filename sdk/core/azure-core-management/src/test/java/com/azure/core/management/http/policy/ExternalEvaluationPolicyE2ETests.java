@@ -10,9 +10,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.evaluation.PolicyToken;
 import com.azure.core.management.evaluation.PolicyTokenCredential;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.PolicyTokenOperation;
 import com.azure.resourcemanager.resources.models.PolicyTokenRequest;
+import com.azure.resourcemanager.resources.models.PolicyTokenResult;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.models.Kind;
@@ -21,6 +23,7 @@ import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,7 +118,14 @@ public class ExternalEvaluationPolicyE2ETests {
                 return resourceManager.policyClient()
                     .getPolicyTokens()
                     .acquireAsync(new PolicyTokenRequest().withOperation(operation))
-                    .map(response -> new PolicyToken(response.token(), response.expiration()));
+                    .flatMap(response -> {
+                        if (response.result() != PolicyTokenResult.SUCCEEDED
+                            || CoreUtils.isNullOrEmpty(response.token())) {
+                            return Mono.error(new IllegalStateException(
+                                "Failed to acquire a policy token (result: " + response.result() + ")."));
+                        }
+                        return Mono.just(new PolicyToken(response.token(), response.expiration()));
+                    });
             };
 
             // The guarded client, with the External Evaluation policy added to its pipeline.

@@ -14,11 +14,16 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.evaluation.PolicyToken;
 import com.azure.core.management.evaluation.PolicyTokenCredential;
 import com.azure.core.management.evaluation.PolicyTokenRequestContext;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.implementation.evaluation.MissingPolicyTokenDetails;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -92,14 +97,20 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
                     // Unable to determine the subscription; surface the original response.
                     return Mono.just(bufferedResponse);
                 }
-                return credential.getPolicyToken(acquireContext).flatMap(policyToken -> {
-                    // Apply the token to the request currently held by the context. The retry policy below this
-                    // policy replaces the context's request with a fresh copy on each attempt, so mutating the
-                    // early-captured request instance would be lost on the replay.
-                    context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
-                    bufferedResponse.close();
-                    return replay.process();
-                });
+                return credential.getPolicyToken(acquireContext)
+                    // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original
+                    // 403 as the ManagementException the caller would otherwise see, chaining the acquisition failure
+                    // as its cause for diagnosability.
+                    .onErrorResume(
+                        acquisitionError -> Mono.error(policyDeniedException(bufferedResponse, body, acquisitionError)))
+                    .flatMap(policyToken -> {
+                        // Apply the token to the request currently held by the context. The retry policy below this
+                        // policy replaces the context's request with a fresh copy on each attempt, so mutating the
+                        // early-captured request instance would be lost on the replay.
+                        context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
+                        bufferedResponse.close();
+                        return replay.process();
+                    });
             });
         });
     }
@@ -128,7 +139,14 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         if (acquireContext == null) {
             return bufferedResponse;
         }
-        PolicyToken policyToken = credential.getPolicyTokenSync(acquireContext);
+        PolicyToken policyToken;
+        try {
+            policyToken = credential.getPolicyTokenSync(acquireContext);
+        } catch (RuntimeException acquisitionError) {
+            // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original 403 as
+            // the ManagementException the caller would otherwise see, chaining the acquisition failure as its cause.
+            throw LOGGER.logExceptionAsError(policyDeniedException(bufferedResponse, body, acquisitionError));
+        }
         // Apply the token to the request currently held by the context. The retry policy below this policy replaces
         // the context's request with a fresh copy on each attempt, so mutating the early-captured request instance
         // would be lost on the replay.
@@ -161,6 +179,28 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
                 + "is not supported by this version of the SDK. Please upgrade to a newer version of the Azure SDK.");
         }
         return null;
+    }
+
+    private static ManagementException policyDeniedException(HttpResponse deniedResponse, byte[] deniedBody,
+        Throwable cause) {
+        ManagementError error = parseManagementError(deniedBody);
+        String message = (error != null && error.getMessage() != null)
+            ? error.getMessage()
+            : "The resource operation was disallowed by policy and a policy token could not be acquired.";
+        ManagementException exception = new ManagementException(message, deniedResponse, error);
+        exception.initCause(cause);
+        return exception;
+    }
+
+    private static ManagementError parseManagementError(byte[] body) {
+        if (body == null || body.length == 0) {
+            return null;
+        }
+        try (JsonReader reader = JsonProviders.createReader(body)) {
+            return ManagementError.fromJson(reader);
+        } catch (IOException | RuntimeException e) {
+            return null;
+        }
     }
 
     private PolicyTokenRequestContext buildAcquireContext(HttpRequest request) {
