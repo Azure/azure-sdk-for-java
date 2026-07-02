@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-06-06");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-12-06");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
@@ -220,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2026-06-06";
+        public static final String TARGET_STORAGE_VERSION = "2026-12-06";
 
         /**
          * Error code returned from the service.
@@ -249,6 +249,20 @@ public final class Constants {
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
 
         public static final String ETAG_WILDCARD = "*";
+
+        public static final String CONTENT_CRC64 = "x-ms-content-crc64";
+
+        public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);
+
+        public static final String STRUCTURED_BODY_TYPE = "x-ms-structured-body";
+
+        public static final HttpHeaderName STRUCTURED_BODY_TYPE_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_BODY_TYPE);
+
+        public static final String STRUCTURED_CONTENT_LENGTH = "x-ms-structured-content-length";
+
+        public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
 
         /**
          * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
