@@ -42,6 +42,7 @@
     <module>sdk/batch</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
+    <module>sdk/billingtrust</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
