@@ -9,7 +9,9 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
-import com.azure.ai.agents.implementation.telemetry.AgentsClientTracer;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.implementation.telemetry.GenAiInstrumentation;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -388,8 +390,10 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        return new ResponsesClient(getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        return new ResponsesClient(
+            getOpenAIClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))),
+            new GenAiResponseTracing(createInstrumentation()));
     }
 
     /**
@@ -513,7 +517,7 @@ public final class AgentsClientBuilder
      */
     public AgentsAsyncClient buildAgentsAsyncClient() {
         return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
-            createAgentsTracer());
+            new GenAiAgentTracing(createInstrumentation()));
     }
 
     /**
@@ -523,7 +527,7 @@ public final class AgentsClientBuilder
      */
     public AgentsClient buildAgentsClient() {
         return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
-            createAgentsTracer());
+            new GenAiAgentTracing(createInstrumentation()));
     }
 
     /**
@@ -539,15 +543,21 @@ public final class AgentsClientBuilder
         final com.azure.core.util.LibraryTelemetryOptions telemetryOptions
             = new com.azure.core.util.LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
                 .setResourceProviderNamespace("Microsoft.CognitiveServices")
-                .setSchemaUrl(AgentsClientTracer.OTEL_SCHEMA_URL);
+                .setSchemaUrl(GenAiInstrumentation.OTEL_SCHEMA_URL);
         final com.azure.core.util.TracingOptions tracingOptions
             = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
         return com.azure.core.util.tracing.TracerProvider.getDefaultProvider()
             .createTracer(telemetryOptions, tracingOptions);
     }
 
-    private AgentsClientTracer createAgentsTracer() {
-        return new AgentsClientTracer(this.endpoint, this.configuration, createTracer());
+    private GenAiInstrumentation createInstrumentation() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.MetricsOptions metricsOptions
+            = this.clientOptions == null ? null : this.clientOptions.getMetricsOptions();
+        final com.azure.core.util.metrics.Meter meter = com.azure.core.util.metrics.MeterProvider.getDefaultProvider()
+            .createMeter(clientName, clientVersion, metricsOptions);
+        return new GenAiInstrumentation(this.endpoint, this.configuration, createTracer(), meter);
     }
 
     /**

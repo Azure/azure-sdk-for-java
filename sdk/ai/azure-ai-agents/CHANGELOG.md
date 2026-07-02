@@ -4,7 +4,11 @@
 
 ### Features Added
 
-- Added experimental OpenTelemetry GenAI tracing for the `createAgentVersion` convenience method on `AgentsClient` and `AgentsAsyncClient`. Spans follow the GenAI semantic conventions (`gen_ai.operation.name`, `gen_ai.system`, `gen_ai.agent.name`, `gen_ai.agent.id`, `server.address`) and are emitted automatically when an OpenTelemetry `Tracer` is configured for the process — there is no global switch or opt-in call. Tracing is configured per client through `AgentsClientBuilder.clientOptions(...)` / `TracingOptions`, and agent content (such as the agent description) is only captured when the `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable is set.
+- Added experimental OpenTelemetry GenAI tracing for agent and response operations, following the OpenTelemetry GenAI semantic conventions. Spans and metrics are emitted automatically when an OpenTelemetry implementation is configured for the process — there is no global switch or opt-in call. Tracing/metrics are configured per client through `AgentsClientBuilder.clientOptions(...)` (`TracingOptions` / `MetricsOptions`), and message/agent content is only captured when the `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable is set (off by default). Coverage:
+  - `AgentsClient.createAgentVersion` / `AgentsAsyncClient.createAgentVersion` — `create_agent` spans with prompt/hosted/workflow agent attributes, a `gen_ai.agent.workflow` event for workflow agents, and the created agent id/version.
+  - `ResponsesClient.createAzureResponse` and `createStreamingAzureResponse` — `chat` / `invoke_agent` spans with request/response model, token usage, input/output messages, finish reasons, conversation id, and `gen_ai.workflow.action` events (streaming spans stay open until the stream is consumed).
+  - `ResponsesClient.createConversation` — `create_conversation` spans.
+  - Metrics: `gen_ai.client.operation.duration` and `gen_ai.client.token.usage`.
 
 ### Breaking Changes
 

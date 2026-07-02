@@ -823,6 +823,32 @@ If there are significant differences, API calls may fail due to incompatibility.
 
 Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
 
+## Tracing
+
+`azure-ai-agents` emits experimental [OpenTelemetry GenAI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) spans
+and metrics for agent creation, response (`chat` / `invoke_agent`) and conversation operations. Tracing activates
+automatically when an OpenTelemetry implementation is configured for the client (through `ClientOptions`) or globally;
+there is no opt-in call. Message and agent content is redacted unless you set the
+`AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable to `true`.
+
+```java com.azure.ai.agents.tracing
+// Configure any OpenTelemetry SDK (exporters, sampling, etc.) and pass it through ClientOptions. The client
+// then emits GenAI spans (create_agent, chat / invoke_agent, create_conversation) and metrics automatically.
+OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
+AgentsClient agentsClient = new AgentsClientBuilder().endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .clientOptions(new ClientOptions()
+        .setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry)))
+    .buildAgentsClient();
+
+AgentDefinition definition
+    = new PromptAgentDefinition("gpt-4o").setInstructions("You are a helpful assistant.");
+AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", definition);
+System.out.printf("Created agent %s (traced).%n", agent.getName());
+```
+
+See [`TracingSample.java`](src/samples/java/com/azure/ai/agents/TracingSample.java) for a runnable example.
+
 ## Troubleshooting
 
 ### Enable client logging
