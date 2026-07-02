@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.RequestedRegion;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -193,6 +194,113 @@ public final class CosmosDiagnostics {
             return aggregatedRegionsContacted;
         }
         return this.clientSideRequestStatistics.getContactedRegionNames();
+    }
+
+    /**
+     * Returns {@code true} if the SDK actually dispatched this operation to a hedge region as
+     * part of a cross-region availability strategy fan-out. {@code false} for non-hedged
+     * operations, including the case where hedging was configured but the primary responded
+     * under the hedge threshold (hedge arms registered but never subscribed; no fan-out
+     * occurred).
+     * <p>
+     * <strong>{@code false} does NOT mean hedging was disabled or misconfigured.</strong>
+     * To check whether hedging is configured on the client, inspect
+     * {@code CosmosClientBuilder#endToEndOperationLatencyPolicyConfig} (or the equivalent
+     * availability-strategy configuration on the client builder).
+     *
+     * @return {@code true} if at least one hedge arm was dispatched.
+     */
+    public boolean isHedgingStarted() {
+        if (this.feedResponseDiagnostics != null) {
+            if (this.clientSideRequestStatistics != null && this.clientSideRequestStatistics.isHedgingStartedInternal()) {
+                return true;
+            }
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics stats : clientStatisticCollection) {
+                    if (stats.isHedgingStartedInternal()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return this.clientSideRequestStatistics != null && this.clientSideRequestStatistics.isHedgingStartedInternal();
+    }
+
+    /**
+     * Returns the regions the SDK actually dispatched this operation to, in observed dispatch
+     * order, each tagged with the reason. Includes the initial attempt. The returned list is
+     * unmodifiable and is a defensive snapshot.
+     * <p>
+     * The append site is the actual dispatch point (post-{@code delaySubscription} for hedge
+     * arms); registered-but-never-subscribed hedge arms do NOT appear here.
+     * <p>
+     * <strong>Contract is "dispatched, not necessarily wire-issued".</strong> An entry reflects
+     * the SDK's decision to commit to dispatching — for hedge arms, this means the per-arm
+     * threshold delay elapsed without cancellation, so the inner-{@code Mono} subscription
+     * fired. A cancellation in the small window between that dispatch decision and the
+     * underlying Netty channel write still leaves the entry in this list. Callers should
+     * treat the list as a record of intent-to-dispatch, not a record of wire-issued requests.
+     * <p>
+     * {@link com.azure.cosmos.models.RequestedRegionReason} is <strong>non-exhaustive</strong> —
+     * callers MUST include a {@code default:} arm when switching on it.
+     *
+     * @return an unmodifiable list of dispatched regions in observed dispatch order. Never {@code null}.
+     */
+    public List<RequestedRegion> getRequestedRegions() {
+        if (this.feedResponseDiagnostics != null) {
+            List<RequestedRegion> aggregated = new ArrayList<>();
+            if (this.clientSideRequestStatistics != null) {
+                aggregated.addAll(this.clientSideRequestStatistics.getRequestedRegionsSnapshot());
+            }
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics stats : clientStatisticCollection) {
+                    aggregated.addAll(stats.getRequestedRegionsSnapshot());
+                }
+            }
+            return Collections.unmodifiableList(aggregated);
+        }
+        if (this.clientSideRequestStatistics == null) {
+            return Collections.emptyList();
+        }
+        return this.clientSideRequestStatistics.getRequestedRegionsSnapshot();
+    }
+
+    /**
+     * Returns the regions that returned a response (success or failure) for this operation, in
+     * arrival order. The returned list is unmodifiable and is a defensive snapshot.
+     * <p>
+     * <strong>Duplicates are allowed and expected.</strong> The same region may appear more
+     * than once if it produced multiple responses (for example, a late response after a hedge
+     * winner, or several retries on a single region). {@code count > 1} does NOT imply that
+     * more than one distinct region responded. For unique regions, call
+     * {@code .stream().distinct().collect(java.util.stream.Collectors.toList())}.
+     *
+     * @return an unmodifiable list of regions that responded, in arrival order. Never {@code null}.
+     */
+    public List<String> getRespondedRegions() {
+        if (this.feedResponseDiagnostics != null) {
+            List<String> aggregated = new ArrayList<>();
+            if (this.clientSideRequestStatistics != null) {
+                aggregated.addAll(this.clientSideRequestStatistics.getRespondedRegionsSnapshot());
+            }
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics stats : clientStatisticCollection) {
+                    aggregated.addAll(stats.getRespondedRegionsSnapshot());
+                }
+            }
+            return Collections.unmodifiableList(aggregated);
+        }
+        if (this.clientSideRequestStatistics == null) {
+            return Collections.emptyList();
+        }
+        return this.clientSideRequestStatistics.getRespondedRegionsSnapshot();
     }
 
     /**
@@ -514,6 +622,72 @@ public final class CosmosDiagnostics {
                     if (clientSideRequestStatistics != null) {
                         clientSideRequestStatistics.mergeSerializationDiagnosticsContext(otherSerializationDiagnosticsContext);
                     }
+                }
+
+                @Override
+                public void appendRequestedRegion(CosmosDiagnostics cosmosDiagnostics, RequestedRegion entry) {
+                    if (cosmosDiagnostics == null || entry == null) {
+                        return;
+                    }
+                    ClientSideRequestStatistics stats = cosmosDiagnostics.clientSideRequestStatistics;
+                    if (stats == null) {
+                        return;
+                    }
+                    // The compound write (list-append + maybe-flip-hedgingStarted) happens atomically
+                    // under stats.regionLock inside `appendRequestedRegionInternal`. See M5/M6/M8.
+                    stats.appendRequestedRegionInternal(entry);
+                }
+
+                @Override
+                public void appendRespondedRegion(CosmosDiagnostics cosmosDiagnostics, String regionName) {
+                    if (cosmosDiagnostics == null || regionName == null) {
+                        return;
+                    }
+                    ClientSideRequestStatistics stats = cosmosDiagnostics.clientSideRequestStatistics;
+                    if (stats == null) {
+                        return;
+                    }
+                    stats.appendRespondedRegionInternal(regionName);
+                }
+
+                @Override
+                public List<RequestedRegion> getRequestedRegionsInternal(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return Collections.emptyList();
+                    }
+                    return cosmosDiagnostics.getRequestedRegions();
+                }
+
+                @Override
+                public List<String> getRespondedRegionsInternal(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return Collections.emptyList();
+                    }
+                    return cosmosDiagnostics.getRespondedRegions();
+                }
+
+                @Override
+                public boolean isHedgingStartedInternal(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return false;
+                    }
+                    return cosmosDiagnostics.isHedgingStarted();
+                }
+
+                @Override
+                public String getMostRecentlyContactedRegion(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+                    ClientSideRequestStatistics stats = cosmosDiagnostics.clientSideRequestStatistics;
+                    if (stats == null) {
+                        return null;
+                    }
+                    String region = stats.getMostRecentlyContactedRegion();
+                    if (region == null || region.isEmpty()) {
+                        return null;
+                    }
+                    return region;
                 }
             });
     }

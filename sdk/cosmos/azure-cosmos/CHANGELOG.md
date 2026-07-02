@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added Hedging Detection API on `CosmosDiagnostics` and `CosmosDiagnosticsContext`: new `isHedgingStarted()`, `getRequestedRegions()` (returning `List<RequestedRegion>` from `com.azure.cosmos.models`), and `getRespondedRegions()`. New public types `RequestedRegion` and `RequestedRegionReason` (enum: `UNKNOWN`, `INITIAL`, `OPERATION_RETRY`, `TRANSPORT_RETRY`, `HEDGING`, `REGION_FAILOVER`, `CIRCUIT_BREAKER_PROBE`) in `com.azure.cosmos.models`. See [Issue 49182](https://github.com/Azure/azure-sdk-for-java/issues/49182).
 
 #### Breaking Changes
 

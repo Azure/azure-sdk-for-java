@@ -78,6 +78,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.RequestedRegion;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -898,6 +899,40 @@ public class ImplementationBridgeHelpers {
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
 
             void mergeSerializationDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, SerializationDiagnosticsContext otherSerializationDiagnosticsContext);
+
+            // ===== Hedging Detection API bridge surface =====
+            //
+            // Single append method — implementation acquires the per-stats `regionLock` and
+            // performs BOTH writes (append to `requestedRegions` AND, if the entry's reason is
+            // HEDGING, flip `hedgingStarted = true`) inside the synchronized block. Reads on
+            // isHedgingStarted() / getRequestedRegions() / getRespondedRegions() also take the
+            // same lock, so any reader observes both writes or neither. See public-spec-java
+            // §M5 / §M6 / §M8 and internal-spec §SE-017.
+            //
+            // Note: there is intentionally NO separate `setHedgingStarted` bridge surface —
+            // compound atomicity is enforced from the bridge.
+            void appendRequestedRegion(CosmosDiagnostics cosmosDiagnostics, RequestedRegion entry);
+
+            void appendRespondedRegion(CosmosDiagnostics cosmosDiagnostics, String regionName);
+
+            List<RequestedRegion> getRequestedRegionsInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            List<String> getRespondedRegionsInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            boolean isHedgingStartedInternal(CosmosDiagnostics cosmosDiagnostics);
+
+            /**
+             * Returns the most-recently-recorded contacted region on the underlying
+             * {@link ClientSideRequestStatistics}, or {@code null} when no region has been
+             * recorded. Backed by a synchronized navigable set keyed on insertion timestamp —
+             * deterministic, no manual iteration, safe to call concurrently with writers.
+             * <p>
+             * Never returns the empty string — the underlying
+             * {@code ClientSideRequestStatistics.getMostRecentlyContactedRegion()} sentinel
+             * ({@link org.apache.commons.lang3.StringUtils#EMPTY}) is normalized to {@code null}
+             * here so callers have a single null-check at the call site.
+             */
+            String getMostRecentlyContactedRegion(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
