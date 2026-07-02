@@ -138,6 +138,20 @@
       <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <!-- Arrow dependency -->
+    <!-- The internal ListBlobs Arrow reader decodes the IPC stream using vendored FlatBuffer metadata accessors
+         (com.azure.storage.blob.implementation.util.arrow) backed by flatbuffers-java, so flatbuffers-java is the sole
+         dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a dependency: it
+         ships Java 11 bytecode and would break the Java 8 baseline build. The reader's behavior is validated against
+         committed golden base64 fixtures (src/test/resources/arrow) rather than the official arrow-vector writer, so no
+         Apache Arrow test dependency is required. -->
+    <dependency>
+      <groupId>com.google.flatbuffers</groupId>
+      <artifactId>flatbuffers-java</artifactId>
+      <version>24.3.25</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+    </dependency>
+
   </dependencies>
 
   <profiles>
