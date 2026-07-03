@@ -142,7 +142,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        // TODO : Un pin the 2025_07_01 version once we find a work around for allowSharedKeyAccess in storage account
+        // TODO (hari9-9): Un-pin the 2025-07-01 version once we find a workaround for allowSharedKeyAccess in storage account
         KeyClient keyClient = new KeyClientBuilder().vaultUrl(getEndpoint())
             .serviceVersion(KeyServiceVersion.V2025_07_01)
             .pipeline(getPipeline(httpClient, false))
