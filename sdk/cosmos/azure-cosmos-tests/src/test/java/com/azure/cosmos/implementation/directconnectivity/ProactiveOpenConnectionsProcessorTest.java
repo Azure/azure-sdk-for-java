@@ -30,6 +30,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -107,9 +108,10 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
                 .buildAsyncClient();
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        cosmosAsyncDatabase.createContainer(containerProperties).block();
-
-        CosmosAsyncContainer containerUnderOpenConnectionsAndInitCaches = cosmosAsyncDatabase.getContainer(containerId);
+                CosmosAsyncContainer containerUnderOpenConnectionsAndInitCaches = createCollection(
+                        cosmosAsyncDatabase,
+                        containerProperties,
+                        new CosmosContainerRequestOptions());
 
         CosmosAsyncClient connectionWarmupClient = null;
 

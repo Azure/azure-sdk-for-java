@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Operations_List.json
+     * x-ms-original-file: 2026-07-01/Operations_List.json
      */
     /**
      * Sample code: List operations.

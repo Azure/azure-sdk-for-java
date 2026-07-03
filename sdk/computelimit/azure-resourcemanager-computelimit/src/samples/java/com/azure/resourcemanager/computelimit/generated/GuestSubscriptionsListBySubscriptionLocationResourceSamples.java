@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class GuestSubscriptionsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-06-01/GuestSubscriptions_List.json
+     * x-ms-original-file: 2026-07-01/GuestSubscriptions_List.json
      */
     /**
      * Sample code: List guest subscriptions for a scope.

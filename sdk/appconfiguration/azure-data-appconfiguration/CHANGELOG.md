@@ -1,17 +1,21 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added `checkConfigurationSettings` method to `ConfigurationClient` and `ConfigurationAsyncClient` that performs HEAD requests to efficiently check if configuration settings have changed by comparing page-level ETags without retrieving the full response body.
-- Added `description` property to `ConfigurationSetting` and `ConfigurationSnapshot`, along with corresponding `DESCRIPTION` values on `SettingFields` and `SnapshotFields`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.0 (2026-06-15)
+
+### Features Added
+
+- Added `checkConfigurationSettings` method to `ConfigurationClient` and `ConfigurationAsyncClient` that performs HEAD requests to efficiently check if configuration settings have changed by comparing page-level ETags without retrieving the full response body.
+- Added `description` property to `ConfigurationSetting` and `ConfigurationSnapshot`, along with corresponding `DESCRIPTION` values on `SettingFields` and `SnapshotFields`.
 
 ## 1.9.2 (2026-05-05)
 

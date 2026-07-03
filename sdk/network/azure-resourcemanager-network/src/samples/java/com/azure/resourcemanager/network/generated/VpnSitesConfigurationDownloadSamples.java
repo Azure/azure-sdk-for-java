@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VpnSitesConfigurationDownloadSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnSitesConfigurationDownload.json
+     * x-ms-original-file: 2025-07-01/VpnSitesConfigurationDownload.json
      */
     /**
      * Sample code: VpnSitesConfigurationDownload.

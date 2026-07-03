@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0;
+import static com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,6 +66,26 @@ class AzureSpringBootVersionVerifierTest {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0)).thenReturn(true);
+
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
+            mockResolver) {
+            String getVersionFromManifest() {
+                return "";
+            }
+        };
+
+        VerificationResult verificationResult = versionVerifier.verify();
+
+        assertEquals(verificationResult.getDescription(), "");
+        assertEquals(verificationResult.getAction(), "");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "4.1", "4.1.x" })
+    void shouldMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase2(String acceptedVersion) {
+        List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
+        ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
+        when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_1)).thenReturn(true);
 
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
             mockResolver) {

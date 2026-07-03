@@ -1,0 +1,71 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(createAgentVersionFromCode|createSession|deleteSession|downloadAgentCode|getSession|listAgentVersions|listSessions)\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: session and hosted-agent code methods no longer expose AgentDefinitionOptInKeys. The opt-in key is now sent implicitly and userIsolationKey/agentVersion are the public parameters."
+        },
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.agents\\.models\\.(AgentIdentifier|AgentProtocol|CandidateDeployConfig|CandidateFileInfo|CandidateMetadata|CandidateResults|DatasetInfo|DatasetRef|EntraIsolationKeySource|HeaderIsolationKeySource|IsolationKeySource|IsolationKeySourceKind|OptimizationAgentDefinition|OptimizationTaskResult|PromoteCandidateInput|PromoteCandidateResult)"
+          },
+          "justification": "Breaking change in beta operation: optimization and agent protocol models were renamed, restructured, or removed to align with the current service contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(numberOfParametersChanged|removed|returnTypeChanged|returnTypeTypeParametersChanged|visibilityIncreased)",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.models\\.Optimization(Candidate|Job|JobInputs|JobProgress|JobResult|Options)::.*",
+          "justification": "Breaking change in beta operation: optimization models were restructured to align with the current AgentsOptimization preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeChanged)",
+          "old": "(method|parameter) .* com\\.azure\\.ai\\.agents\\.models\\.ProtocolVersionRecord::.*",
+          "justification": "AgentProtocol was renamed to AgentEndpointProtocol to align protocol-version records with the current service contract."
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.ai\\.agents\\.Toolboxes(Async)?Client::createToolboxVersion\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: toolbox version creation now accepts ToolboxTool models instead of agent Tool models to align toolbox tools with the current service contract."
+        },
+        {
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method java\\.util\\.List<com\\.azure\\.ai\\.agents\\.models\\.(Tool|ToolboxTool)> com\\.azure\\.ai\\.agents\\.models\\.ToolboxVersionDetails::getTools\\(\\)"
+          },
+          "justification": "Breaking change in beta operation: toolbox versions now expose ToolboxTool models instead of agent Tool models to align with the current service contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\..*",
+          "old": ".*com\\.azure\\.ai\\.agents\\.models\\.[A-Za-z0-9_]*Preview[A-Za-z0-9_]*(::|\\.|$).*",
+          "justification": "Breaking change in preview model: models with Preview in their names are preview surface and may change between beta releases."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.models\\.(AgentEndpointConfig|EntraAuthorizationScheme|HostedAgentDefinition)::(getProtocols|setProtocols|getIsolationKeySource|setIsolationKeySource|getTools|setTools)\\(.*\\)",
+          "justification": "Breaking change in beta operation: hosted-agent endpoint, authorization, and tool configuration models were restructured to align with the current service contract."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.ai.agents.models.ToolType.FABRIC_DATAAGENT_PREVIEW",
+          "justification": "Breaking change in beta operation: ToolType.FABRIC_DATAAGENT_PREVIEW was renamed to FABRIC_DATA_AGENT_PREVIEW for consistent naming."
+        }
+      ]
+    }
+  }
+]

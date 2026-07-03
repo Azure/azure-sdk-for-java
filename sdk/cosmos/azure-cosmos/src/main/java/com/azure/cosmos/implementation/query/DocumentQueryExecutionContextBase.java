@@ -325,8 +325,11 @@ implements IDocumentQueryExecutionContext<T> {
                 this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
         }
 
-        if (consistencyLevelOverrideApplicable && this.client.getConsistencyLevel() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
+        ConsistencyLevel clientConsistencyLevel = this.client.getConsistencyLevel();
+        if (consistencyLevelOverrideApplicable
+            && clientConsistencyLevel != null
+            && !Utils.isConsistencyLevelUpgrade(this.client.getDefaultConsistencyLevelAsync(), clientConsistencyLevel)) {
+            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, clientConsistencyLevel.toString());
         }
 
         return requestHeaders;

@@ -14,15 +14,15 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Sample demonstrating model version operations using the asynchronous ModelsAsyncClient.
+ * Sample demonstrating model version operations using the asynchronous BetaModelsAsyncClient.
  *
  * <p>Before running, set {@code FOUNDRY_PROJECT_ENDPOINT} to your Azure AI Foundry project endpoint.</p>
  */
 public class ModelsAsyncSample {
-    private static final ModelsAsyncClient MODELS_ASYNC_CLIENT = new AIProjectClientBuilder()
+    private static final BetaModelsAsyncClient MODELS_ASYNC_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildModelsAsyncClient();
+        .beta().buildBetaModelsAsyncClient();
 
     public static void main(String[] args) {
         listLatestModelVersions()

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillInlineContent;
 import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.http.rest.PagedIterable;
@@ -10,7 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample demonstrating CRUD operations on Skills using the synchronous SkillsClient.
+ * Sample demonstrating CRUD operations on Skills using the synchronous BetaSkillsClient.
  *
  * <p>Skills are a preview feature. Before running, set the following environment variable:
  * <ul>
@@ -19,11 +19,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  */
 public class SkillsSample {
 
-    private static SkillsClient skillsClient
+    private static BetaSkillsClient skillsClient
         = new AIProjectClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildSkillsClient();
+            .beta().buildBetaSkillsClient();
 
     public static void main(String[] args) {
         // Uncomment the sample you want to run
@@ -54,7 +54,7 @@ public class SkillsSample {
         // BEGIN:com.azure.ai.projects.SkillsSample.getSkill
 
         String skillName = "product-support-skill";
-        Skill skill = skillsClient.getSkill(skillName);
+        SkillDetails skill = skillsClient.getSkill(skillName);
 
         System.out.println("Skill name: " + skill.getName());
         System.out.println("Description: " + skill.getDescription());
@@ -68,7 +68,7 @@ public class SkillsSample {
 
         String skillName = "product-support-skill";
 
-        Skill updated = skillsClient.updateSkill(skillName, "2");
+        SkillDetails updated = skillsClient.updateSkill(skillName, "2");
 
         System.out.println("Updated skill: " + updated.getName());
         System.out.println("Default version: " + updated.getDefaultVersion());
@@ -79,8 +79,8 @@ public class SkillsSample {
     public static void listSkills() {
         // BEGIN:com.azure.ai.projects.SkillsSample.listSkills
 
-        PagedIterable<Skill> skills = skillsClient.listSkills();
-        for (Skill skill : skills) {
+        PagedIterable<SkillDetails> skills = skillsClient.listSkills();
+        for (SkillDetails skill : skills) {
             System.out.println("Skill name: " + skill.getName());
             System.out.println("Description: " + skill.getDescription());
             System.out.println("-------------------------------------------------");

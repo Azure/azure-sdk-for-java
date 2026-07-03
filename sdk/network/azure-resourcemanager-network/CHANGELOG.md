@@ -1,16 +1,10 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-- Return type of `EffectiveNetworkSecurityGroup.tagMap()` changed from `Map<String, String>` to `Map<String, List<String>>`.
-
-### Bugs Fixed
+## 2.59.0 (2026-06-29)
 
 ### Other Changes
+
+- Updated `api-version` to `2025-07-01`.
 
 ## 2.58.2 (2026-05-05)
 

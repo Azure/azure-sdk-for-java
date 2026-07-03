@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesInstanceViewSamples {
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
      */
     /**
      * Sample code: Get Virtual Machine Instance View.
@@ -24,7 +24,7 @@ public final class VirtualMachinesInstanceViewSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get instance view of a virtual machine placed on a dedicated host group through automatic placement.
@@ -32,6 +32,21 @@ public final class VirtualMachinesInstanceViewSamples {
      * @param manager Entry point to ComputeManager.
      */
     public static void getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement(
+        com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachines()
+            .instanceViewWithResponse("myResourceGroup", "myVM", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView_WithInterconnectBlock.json
+     */
+    /**
+     * Sample code: Get instance view of a virtual machine associated with an Interconnect Block.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getInstanceViewOfAVirtualMachineAssociatedWithAnInterconnectBlock(
         com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachines()

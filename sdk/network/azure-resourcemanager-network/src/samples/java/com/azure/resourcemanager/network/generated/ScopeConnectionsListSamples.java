@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ScopeConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerScopeConnectionList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerScopeConnectionList.json
      */
     /**
      * Sample code: List Network Manager Scope Connection.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class BastionHostsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostPatch.json
+     * x-ms-original-file: 2025-07-01/BastionHostPatch.json
      */
     /**
      * Sample code: Patch Bastion Host.

@@ -106,9 +106,7 @@ public class SessionClientEvent implements JsonSerializable<SessionClientEvent> 
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("session.update".equals(discriminatorValue)) {
-                    return ClientEventSessionUpdate.fromJson(readerToUse.reset());
-                } else if ("session.avatar.connect".equals(discriminatorValue)) {
+                if ("session.avatar.connect".equals(discriminatorValue)) {
                     return ClientEventSessionAvatarConnect.fromJson(readerToUse.reset());
                 } else if ("input_audio.turn.start".equals(discriminatorValue)) {
                     return ClientEventInputAudioTurnStart.fromJson(readerToUse.reset());
@@ -146,6 +144,8 @@ public class SessionClientEvent implements JsonSerializable<SessionClientEvent> 
                     return ClientEventOutputAudioBufferClear.fromJson(readerToUse.reset());
                 } else if ("rtc.call.sdp.create".equals(discriminatorValue)) {
                     return ClientEventRtcCallSdpCreate.fromJson(readerToUse.reset());
+                } else if ("session.update".equals(discriminatorValue)) {
+                    return ClientEventSessionUpdate.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

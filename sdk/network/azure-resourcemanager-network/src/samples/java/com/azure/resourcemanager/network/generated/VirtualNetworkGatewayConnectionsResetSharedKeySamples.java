@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ConnectionResetSharedKeyI
  */
 public final class VirtualNetworkGatewayConnectionsResetSharedKeySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayConnectionResetSharedKey.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayConnectionResetSharedKey.json
      */
     /**
      * Sample code: ResetVirtualNetworkGatewayConnectionSharedKey.

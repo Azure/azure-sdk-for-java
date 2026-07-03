@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VpnGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnGatewayUpdateTags.json
+     * x-ms-original-file: 2025-07-01/VpnGatewayUpdateTags.json
      */
     /**
      * Sample code: VpnGatewayUpdate.

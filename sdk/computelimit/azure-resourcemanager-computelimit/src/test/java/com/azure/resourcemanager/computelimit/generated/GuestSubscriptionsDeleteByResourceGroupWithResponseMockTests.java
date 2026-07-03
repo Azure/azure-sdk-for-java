@@ -28,7 +28,7 @@ public final class GuestSubscriptionsDeleteByResourceGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.guestSubscriptions()
-            .deleteByResourceGroupWithResponse("sgfyccsnew", "dwzjeiach", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("rvqdra", "hjybigehoqfbo", com.azure.core.util.Context.NONE);
 
     }
 }

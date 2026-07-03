@@ -269,6 +269,29 @@ public final class CertificateProfileInner extends ProxyResource {
     }
 
     /**
+     * Get the programType property: Indicates whether the resource is intended for a specific usage scenario.
+     * 
+     * @return the programType value.
+     */
+    public String programType() {
+        return this.innerProperties() == null ? null : this.innerProperties().programType();
+    }
+
+    /**
+     * Set the programType property: Indicates whether the resource is intended for a specific usage scenario.
+     * 
+     * @param programType the programType value to set.
+     * @return the CertificateProfileInner object itself.
+     */
+    public CertificateProfileInner withProgramType(String programType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateProfileProperties();
+        }
+        this.innerProperties().withProgramType(programType);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Status of the current operation on certificate profile.
      * 
      * @return the provisioningState value.

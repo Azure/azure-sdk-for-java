@@ -238,9 +238,7 @@ public class FabricIqPreviewToolSerializationTests {
     public void testSerializationWithAllProperties() throws IOException {
         FabricIqPreviewTool tool = new FabricIqPreviewTool(TEST_CONNECTION_ID).setServerLabel("my-server")
             .setServerUrl("https://fabriciq.example.com")
-            .setRequireApproval("always")
-            .setName("my-fabric-tool")
-            .setDescription("A test FabricIQ tool");
+            .setRequireApproval("always");
 
         String json = serializeToJson(tool);
 
@@ -249,8 +247,6 @@ public class FabricIqPreviewToolSerializationTests {
         assertTrue(json.contains("\"server_label\":\"my-server\""));
         assertTrue(json.contains("\"server_url\":\"https://fabriciq.example.com\""));
         assertTrue(json.contains("\"require_approval\":\"always\""));
-        assertTrue(json.contains("\"name\":\"my-fabric-tool\""));
-        assertTrue(json.contains("\"description\":\"A test FabricIQ tool\""));
         assertTrue(json.contains("\"type\":\"fabric_iq_preview\""));
     }
 

@@ -25,7 +25,7 @@ public final class CodeSigningAccountsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountUri\":\"qsycbkbfkgu\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Succeeded\"},\"location\":\"ppofmxaxcfjpgdd\",\"tags\":{\"exhd\":\"jjxhvpmo\"},\"id\":\"xibqeojnx\",\"name\":\"bzv\",\"type\":\"dntwndeicbtw\"}";
+            = "{\"properties\":{\"accountUri\":\"aoqvuh\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Succeeded\"},\"location\":\"yd\",\"tags\":{\"eicxmqciwqvhkhi\":\"mjthjqkwp\",\"m\":\"uigdtopbobjog\"},\"id\":\"w\",\"name\":\"a\",\"type\":\"a\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,16 @@ public final class CodeSigningAccountsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeSigningAccount response = manager.codeSigningAccounts()
-            .define("shurzafbljjgpbto")
-            .withRegion("jzyulpk")
-            .withExistingResourceGroup("mocpc")
-            .withTags(mapOf("gqexzlocxs", "krlkhbzhfepg", "bcsglumma", "paierh", "xkqpxo", "tjaodxobnb", "po",
-                "ajionpimexgstxg"))
-            .withSku(new AccountSku().withName(SkuName.PREMIUM))
+            .define("jionpimexgstxgc")
+            .withRegion("lovmclwhijcoe")
+            .withExistingResourceGroup("xobnbdxkqpxok")
+            .withTags(mapOf("ukdkexxppofmxa", "bzaqsqsycbkbfk", "jpgd", "c", "j", "toc", "hd", "hvpmoue"))
+            .withSku(new AccountSku().withName(SkuName.BASIC))
             .create();
 
-        Assertions.assertEquals("ppofmxaxcfjpgdd", response.location());
-        Assertions.assertEquals("jjxhvpmo", response.tags().get("exhd"));
-        Assertions.assertEquals(SkuName.BASIC, response.sku().name());
+        Assertions.assertEquals("yd", response.location());
+        Assertions.assertEquals("mjthjqkwp", response.tags().get("eicxmqciwqvhkhi"));
+        Assertions.assertEquals(SkuName.PREMIUM, response.sku().name());
     }
 
     // Use "Map.of" if available

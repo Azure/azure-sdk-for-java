@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class IdentityBindingsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-04-01/IdentityBindings_List.json
+     * x-ms-original-file: 2026-04-02-preview/IdentityBindings_List.json
      */
     /**
      * Sample code: List Identity Bindings by Managed Cluster.

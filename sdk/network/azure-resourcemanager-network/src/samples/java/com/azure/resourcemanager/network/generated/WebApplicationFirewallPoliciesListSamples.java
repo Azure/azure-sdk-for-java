@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class WebApplicationFirewallPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/WafListAllPolicies.json
+     * x-ms-original-file: 2025-07-01/WafListAllPolicies.json
      */
     /**
      * Sample code: Lists all WAF policies in a subscription.

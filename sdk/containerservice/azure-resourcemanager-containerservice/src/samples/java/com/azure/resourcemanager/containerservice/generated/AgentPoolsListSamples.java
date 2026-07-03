@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/AgentPoolsList.json
+     * x-ms-original-file: 2026-04-02-preview/AgentPoolsList.json
      */
     /**
      * Sample code: List Agent Pools by Managed Cluster.
