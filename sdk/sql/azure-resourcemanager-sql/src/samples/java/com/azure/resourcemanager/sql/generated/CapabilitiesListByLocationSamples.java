@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class CapabilitiesListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/LocationCapabilityListByLocation.json
+     * x-ms-original-file: 2025-01-01/LocationCapabilityListByLocation.json
      */
     /**
      * Sample code: List subscription capabilities in the given location.

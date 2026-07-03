@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class OutboundFirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/OutboundFirewallRuleGet.json
+     * x-ms-original-file: 2025-01-01/OutboundFirewallRuleGet.json
      */
     /**
      * Sample code: Gets outbound firewall rule.
