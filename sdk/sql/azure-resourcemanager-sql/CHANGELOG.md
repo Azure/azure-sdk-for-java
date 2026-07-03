@@ -2,6 +2,11 @@
 
 ## 2.54.0 (2026-07-03)
 
+### Features Added
+
+- Supported `withAzureActiveDirectoryOnlyAuthentication` and `withExternalActiveDirectoryAdministrator` for `SqlServer`.
+- Supported `withManagedIdentity` for `SqlDatabase` import and export.
+
 ### Other Changes
 
 - Updated `api-version` to `2025-01-01`.
