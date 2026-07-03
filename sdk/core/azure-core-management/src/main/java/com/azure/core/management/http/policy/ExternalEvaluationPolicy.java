@@ -4,6 +4,7 @@
 package com.azure.core.management.http.policy;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -36,6 +37,11 @@ import java.util.regex.Pattern;
  * in the response body. This policy detects that response, acquires a policy token via the supplied
  * {@link PolicyTokenProvider}, applies the token to the {@code x-ms-policy-external-evaluations} header and retries
  * the original operation once.
+ * <p>
+ * The flow applies to all resource operations except {@code GET}. Requests that already carry the
+ * {@code x-ms-policy-external-evaluations} header (a replay, or a caller-supplied token) are left untouched, which
+ * guards against re-entering the flow. Operations without a request body (for example {@code DELETE}) acquire a token
+ * with a {@code null} {@code operation.content}.
  * <p>
  * The policy is positioned {@link HttpPipelinePosition#PER_CALL} so it observes the response after the retry policy
  * has exhausted its own retries. The original operation is retried by replaying the downstream pipeline (reusing the
@@ -74,8 +80,11 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        HttpPipelineNextPolicy replay = next.clone();
         HttpRequest request = context.getHttpRequest();
+        if (shouldSkip(request)) {
+            return next.process();
+        }
+        HttpPipelineNextPolicy replay = next.clone();
         return makeBodyReplayable(request).then(Mono.defer(next::process)).flatMap(response -> {
             if (response.getStatusCode() != FORBIDDEN) {
                 return Mono.just(response);
@@ -117,8 +126,11 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        HttpPipelineNextSyncPolicy replay = next.clone();
         HttpRequest request = context.getHttpRequest();
+        if (shouldSkip(request)) {
+            return next.processSync();
+        }
+        HttpPipelineNextSyncPolicy replay = next.clone();
         makeBodyReplayableSync(request);
         HttpResponse response = next.processSync();
         if (response.getStatusCode() != FORBIDDEN) {
@@ -211,10 +223,33 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
                 + "skipping the policy external evaluation flow.");
             return null;
         }
+        // When the operation has no request body (for example a DELETE), the content is left null so that
+        // operation.content is null/omitted rather than being sent as an empty value.
+        BinaryData content = request.getBodyAsBinaryData();
         return new PolicyTokenRequestContext().setUri(uri)
             .setHttpMethod(request.getHttpMethod())
-            .setContent(request.getBodyAsBinaryData())
+            .setContent(content)
             .setSubscriptionId(subscriptionId);
+    }
+
+    /**
+     * Determines whether the external evaluation flow should be bypassed for the given request.
+     * <p>
+     * The flow applies to all resource operations except {@code GET}, so a {@code GET} is always skipped.
+     * <p>
+     * The presence of the {@code x-ms-policy-external-evaluations} header is used as a loop guard. Per the service
+     * contract, a request that already carries this header will not produce a {@code 403} with a
+     * {@code missingPolicyTokenDetails} hint, so there is nothing for this policy to act on. Skipping such requests
+     * guarantees we never re-enter the acquire-and-retry flow, which matters now that non-idempotent methods such as
+     * {@code POST} are in scope: it prevents a token that is still rejected from driving an infinite retry loop, and it
+     * also leaves a caller-supplied token untouched.
+     *
+     * @param request the outgoing request.
+     * @return {@code true} if the external evaluation flow should be skipped.
+     */
+    private static boolean shouldSkip(HttpRequest request) {
+        return request.getHttpMethod() == HttpMethod.GET
+            || request.getHeaders().getValue(POLICY_EXTERNAL_EVALUATIONS) != null;
     }
 
     private static String extractSubscriptionId(String uri) {

@@ -175,6 +175,72 @@ public class ExternalEvaluationPolicyTests {
         Assertions.assertEquals(1, client.requests.size());
     }
 
+    @Test
+    public void getRequestIsNotIntercepted() {
+        // The external evaluation flow applies to every method except GET, so a GET is passed straight through even
+        // if the service were to return the missing-token hint.
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
+
+        HttpPipeline pipeline = pipeline(provider, client);
+
+        HttpRequest getRequest = new HttpRequest(HttpMethod.GET, OPERATION_URL);
+        StepVerifier.create(pipeline.send(getRequest))
+            .assertNext(response -> Assertions.assertEquals(403, response.getStatusCode()))
+            .verifyComplete();
+
+        Assertions.assertEquals(0, provider.invocations.get());
+        Assertions.assertEquals(1, client.requests.size());
+    }
+
+    @Test
+    public void requestAlreadyCarryingTokenHeaderIsNotIntercepted() {
+        // Loop guard (see service contract): a request that already carries the x-ms-policy-external-evaluations header
+        // will not produce a 403 with missingPolicyTokenDetails, so if the header is already present we must not run the
+        // acquire-and-retry flow again. This prevents an infinite loop, which matters now that non-idempotent methods
+        // such as POST are in scope. No token is acquired and the response is passed through unchanged.
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
+
+        HttpPipeline pipeline = pipeline(provider, client);
+
+        HttpRequest request = newRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, "PoP already-present-token");
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> Assertions.assertEquals(403, response.getStatusCode()))
+            .verifyComplete();
+
+        Assertions.assertEquals(0, provider.invocations.get());
+        Assertions.assertEquals(1, client.requests.size());
+    }
+
+    @Test
+    public void acquiresTokenForDeleteWithoutBody() {
+        // A bodyless operation (DELETE) still triggers the flow; the acquire context carries a null content so that
+        // operation.content is null/omitted rather than an empty value.
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        MockHttpClient client = new MockHttpClient(new int[] { 403, 200 }, new String[] { MISSING_DETAILS_BODY, "{}" });
+
+        HttpPipeline pipeline = pipeline(provider, client);
+
+        HttpRequest deleteRequest = new HttpRequest(HttpMethod.DELETE, OPERATION_URL);
+        StepVerifier.create(pipeline.send(deleteRequest))
+            .assertNext(response -> Assertions.assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        Assertions.assertEquals(1, provider.invocations.get());
+        PolicyTokenRequestContext acquireContext = provider.lastContext;
+        Assertions.assertNotNull(acquireContext);
+        Assertions.assertEquals(HttpMethod.DELETE, acquireContext.getHttpMethod());
+        Assertions.assertNull(acquireContext.getContent());
+
+        Assertions.assertEquals(2, client.requests.size());
+        Assertions.assertNull(client.requests.get(0).header);
+        Assertions.assertEquals(TOKEN_VALUE, client.requests.get(1).header);
+    }
+
     private void assertHappyPath(RecordingPolicyTokenProvider provider, MockHttpClient client) {
         // The acquirer is invoked exactly once with the operation details.
         Assertions.assertEquals(1, provider.invocations.get());
