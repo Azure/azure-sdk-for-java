@@ -240,8 +240,8 @@ final class BlobListArrowStreamReader {
                     cursor.bodyStart);
 
             case Type.INT:
-                return new IntColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), field.bitWidth,
-                    field.signed, cursor.body, cursor.bodyStart);
+                return new IntColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), field.bitWidth, field.signed,
+                    cursor.body, cursor.bodyStart);
 
             case Type.TIMESTAMP:
                 return new TimestampColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), cursor.body,
