@@ -707,6 +707,14 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // Due to the replica validation, there could be an extra open connection call flow, while the rule will also be applied on.
             assertThat(serverConnectionDelayRule.getHitCount()).isBetween(1l, 2l);
             assertThat(itemResponse.getDiagnostics()).isNotNull();
+            this.validateFaultInjectionRuleApplied(
+                itemResponse.getDiagnostics(),
+                OperationType.Create,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410,
+                ruleId,
+                true
+            );
 
         } finally {
             serverConnectionDelayRule.disable();
