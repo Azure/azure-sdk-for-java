@@ -67,6 +67,24 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
     @Generated
     private String etag;
 
+    /*
+     * The Uid property.
+     */
+    @Generated
+    private String uid;
+
+    /*
+     * The Gid property.
+     */
+    @Generated
+    private String gid;
+
+    /*
+     * The Mode property.
+     */
+    @Generated
+    private String mode;
+
     /**
      * Creates an instance of FileProperty class.
      */
@@ -239,6 +257,72 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
         return this;
     }
 
+    /**
+     * Get the uid property: The Uid property.
+     * 
+     * @return the uid value.
+     */
+    @Generated
+    public String getUid() {
+        return this.uid;
+    }
+
+    /**
+     * Set the uid property: The Uid property.
+     * 
+     * @param uid the uid value to set.
+     * @return the FileProperty object itself.
+     */
+    @Generated
+    public FileProperty setUid(String uid) {
+        this.uid = uid;
+        return this;
+    }
+
+    /**
+     * Get the gid property: The Gid property.
+     * 
+     * @return the gid value.
+     */
+    @Generated
+    public String getGid() {
+        return this.gid;
+    }
+
+    /**
+     * Set the gid property: The Gid property.
+     * 
+     * @param gid the gid value to set.
+     * @return the FileProperty object itself.
+     */
+    @Generated
+    public FileProperty setGid(String gid) {
+        this.gid = gid;
+        return this;
+    }
+
+    /**
+     * Get the mode property: The Mode property.
+     * 
+     * @return the mode value.
+     */
+    @Generated
+    public String getMode() {
+        return this.mode;
+    }
+
+    /**
+     * Set the mode property: The Mode property.
+     * 
+     * @param mode the mode value to set.
+     * @return the FileProperty object itself.
+     */
+    @Generated
+    public FileProperty setMode(String mode) {
+        this.mode = mode;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -261,6 +345,9 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
             this.changeTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.changeTime));
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
         xmlWriter.writeStringElement("Etag", this.etag);
+        xmlWriter.writeStringElement("Uid", this.uid);
+        xmlWriter.writeStringElement("Gid", this.gid);
+        xmlWriter.writeStringElement("Mode", this.mode);
         return xmlWriter.writeEndElement();
     }
 
@@ -314,6 +401,12 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
                     deserializedFileProperty.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Etag".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.etag = reader.getStringElement();
+                } else if ("Uid".equals(elementName.getLocalPart())) {
+                    deserializedFileProperty.uid = reader.getStringElement();
+                } else if ("Gid".equals(elementName.getLocalPart())) {
+                    deserializedFileProperty.gid = reader.getStringElement();
+                } else if ("Mode".equals(elementName.getLocalPart())) {
+                    deserializedFileProperty.mode = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
