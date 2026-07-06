@@ -1458,7 +1458,7 @@ public class CosmosItemTest extends TestSuiteBase {
     public void readAllItemsOfLogicalPartition() throws Exception{
         String pkValue = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
-        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 

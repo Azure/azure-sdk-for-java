@@ -46,7 +46,6 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
@@ -814,13 +813,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             }))
             .blockLast();
 
-        // wait for the replication to catch up
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Wait for the replication to catch up but got interruption");
-        }
-
         expectCount(cosmosContainer, 0);
 
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
@@ -860,20 +852,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings({"fallthrough"})
-    protected static void waitIfNeededForReplicasToCatchUp(ConsistencyLevel clientConsistencyLevel, ResourceType resourceType) {
-        if (clientConsistencyLevel == null) {
-            // if there is no consistency defined on client builder, default to account consistency
-            clientConsistencyLevel = accountConsistency;
-        }
-
-        // SDK does not allow invalid consistency upgrades, so choosing the lowest consistency level between the two
-        ConsistencyLevel effectiveConsistencyLevel =
-            clientConsistencyLevel.ordinal() < accountConsistency.ordinal() ? accountConsistency : clientConsistencyLevel;
-
-        switch (effectiveConsistencyLevel) {
+    protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
+        switch (CosmosBridgeInternal.getConsistencyLevel(clientBuilder)) {
             case EVENTUAL:
             case CONSISTENT_PREFIX:
-                logger.info(" additional wait in {} mode so the replica catch up", effectiveConsistencyLevel);
+                logger.info(" additional wait in EVENTUAL mode so the replica catch up");
                 // give times to replicas to catch up after a write
                 try {
                     TimeUnit.MILLISECONDS.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
@@ -881,30 +864,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                     logger.error("unexpected failure", e);
                 }
 
-                break;
             case SESSION:
-                if (resourceType != ResourceType.Document) {
-                    logger.info(" additional wait in {} mode for non-doc resource", effectiveConsistencyLevel);
-                    // give times to replicas to catch up after a write
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
-                    } catch (Exception e) {
-                        logger.error("unexpected failure", e);
-                    }
-
-                    break;
-                }
             case BOUNDED_STALENESS:
             case STRONG:
             default:
                 break;
         }
-    }
-
-    @SuppressWarnings({"fallthrough"})
-    protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
-        ConsistencyLevel clientConsistencylevel = CosmosBridgeInternal.getConsistencyLevel(clientBuilder);
-        waitIfNeededForReplicasToCatchUp(clientConsistencylevel, ResourceType.Document);
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
@@ -2820,14 +2785,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
 
-        ThrottlingRetryOptions throttlingRetryOptionsForTruncating = new ThrottlingRetryOptions()
-            .setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE)
-            .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1));
-
         try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
-            .throttlingRetryOptions(throttlingRetryOptionsForTruncating)
             .buildAsyncClient()) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -3075,6 +3035,23 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @SuppressWarnings("fallthrough")
     protected static void waitIfNeededForReplicasToCatchUp(AsyncDocumentClient.Builder clientBuilder) {
-        waitIfNeededForReplicasToCatchUp(clientBuilder.getDesiredConsistencyLevel(), ResourceType.Document);
+        switch (clientBuilder.getDesiredConsistencyLevel()) {
+            case EVENTUAL:
+            case CONSISTENT_PREFIX:
+                logger.info(" additional wait in EVENTUAL mode so the replica catch up");
+                // give times to replicas to catch up after a write
+                try {
+                    TimeUnit.MILLISECONDS.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
+                } catch (Exception e) {
+                    logger.error("unexpected failure", e);
+                }
+
+            case SESSION:
+            case BOUNDED_STALENESS:
+            case STRONG:
+            default:
+                break;
+        }
     }
+
 }
