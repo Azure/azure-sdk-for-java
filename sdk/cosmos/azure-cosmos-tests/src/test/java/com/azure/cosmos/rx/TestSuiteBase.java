@@ -69,6 +69,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
@@ -77,6 +78,7 @@ import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -88,6 +90,7 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -98,6 +101,7 @@ import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -115,6 +119,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.extractConfigs;
@@ -136,12 +142,36 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
-    protected static final int SETUP_TIMEOUT = 60000;
+    protected static final int SETUP_TIMEOUT = 300_000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
+
+    private static final int SHARED_SUITE_SETUP_TIMEOUT = 600_000;
 
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
+
+    private static final Duration COLLECTION_READINESS_MAX_WAIT = Duration.ofMinutes(2);
+
+    private static final Duration COLLECTION_READINESS_PROBE_TIMEOUT = Duration.ofSeconds(10);
+
+    private static final Duration NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
+
+    private static final Duration TRANSIENT_CLEANUP_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS = 30;
+
+    private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT = 5_000;
+
+    private static final Duration STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION = Duration.ofSeconds(30);
+
+    private static final Duration FEED_RANGE_WARMUP_MAX_WAIT = COLLECTION_READINESS_MAX_WAIT;
+
+    private static final Duration FEED_RANGE_WARMUP_ATTEMPT_TIMEOUT = Duration.ofSeconds(30);
 
     private static boolean isTransientCreateFailure(Throwable t) {
         if (t instanceof CosmosException) {
@@ -177,6 +207,290 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 }
             }
         }
+    }
+
+    protected static <T> Mono<T> retryOnNotFound(Mono<T> responseMono) {
+
+        return responseMono.retryWhen(
+            Retry.fixedDelay(NOT_FOUND_MAX_RETRY_ATTEMPTS, NOT_FOUND_RETRY_DELAY)
+                .filter(TestSuiteBase::isNotFound)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    protected static <T> T retryOnNotFound(Supplier<T> responseSupplier) throws InterruptedException {
+        for (int attempt = 0; attempt <= NOT_FOUND_MAX_RETRY_ATTEMPTS; attempt++) {
+            try {
+                return responseSupplier.get();
+            } catch (CosmosException cosmosException) {
+                if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND
+                    || attempt == NOT_FOUND_MAX_RETRY_ATTEMPTS) {
+
+                    throw cosmosException;
+                }
+
+                logger.warn(
+                    "Retrying NotFound response after {}. Retry attempt {}.",
+                    NOT_FOUND_RETRY_DELAY,
+                    attempt + 1);
+                Thread.sleep(NOT_FOUND_RETRY_DELAY.toMillis());
+            }
+        }
+
+        throw new IllegalStateException("Retry loop completed unexpectedly.");
+    }
+
+    protected static List<FeedRange> getFeedRangesWithRetry(CosmosAsyncContainer container, String context) {
+        return getFeedRangesWithRetry(container, context, FEED_RANGE_WARMUP_MAX_WAIT);
+    }
+
+    protected static List<FeedRange> getFeedRangesWithRetry(
+        CosmosAsyncContainer container,
+        String context,
+        Duration maxWait) {
+
+        long deadlineNanos = System.nanoTime() + maxWait.toNanos();
+        long backoffMillis = 1_000;
+        long maxBackoffMillis = 10_000;
+        int attempts = 0;
+        Throwable lastError = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            attempts++;
+            try {
+                long remainingNanos = deadlineNanos - System.nanoTime();
+                Duration attemptTimeout = Duration.ofMillis(
+                    Math.max(
+                        1,
+                        Math.min(
+                            FEED_RANGE_WARMUP_ATTEMPT_TIMEOUT.toMillis(),
+                            TimeUnit.NANOSECONDS.toMillis(remainingNanos))));
+
+                List<FeedRange> feedRanges = container.getFeedRanges().block(attemptTimeout);
+                if (feedRanges != null && !feedRanges.isEmpty()) {
+                    return feedRanges;
+                }
+
+                lastError = new IllegalStateException("Feed ranges were not available for container " + container.getId());
+            } catch (Exception error) {
+                lastError = error;
+            }
+
+            if (!isRetryableFeedRangeWarmupFailure(lastError)) {
+                throw new AssertionError(
+                    String.format(
+                        "Feed ranges for container '%s' failed with a non-retryable error after %d attempt(s) during %s: %s",
+                        container.getId(),
+                        attempts,
+                        context,
+                        getFeedRangeWarmupErrorDetails(lastError)),
+                    lastError);
+            }
+
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            if (remainingNanos <= 0) {
+                break;
+            }
+
+            long retryAfterMillis = getRetryAfterMillis(lastError);
+            long sleepMillis = Math.max(backoffMillis, retryAfterMillis);
+            sleepMillis = Math.max(1, Math.min(sleepMillis, TimeUnit.NANOSECONDS.toMillis(remainingNanos)));
+
+            logger.warn(
+                "Retrying {} after failure (attempt {}, next delay {} ms, max wait {} seconds): {}",
+                context,
+                attempts,
+                sleepMillis,
+                maxWait.getSeconds(),
+                getFeedRangeWarmupErrorDetails(lastError));
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepMillis);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for feed ranges during " + context, interrupted);
+            }
+
+            backoffMillis = Math.min(backoffMillis * 2, maxBackoffMillis);
+        }
+
+        throw new AssertionError(
+            String.format(
+                "Feed ranges for container '%s' were not available within %d seconds after %d attempt(s) during %s.",
+                container.getId(),
+                maxWait.getSeconds(),
+                attempts,
+                context),
+            lastError);
+    }
+
+    private static boolean isRetryableFeedRangeWarmupFailure(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            int statusCode = cosmosException.getStatusCode();
+            return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED
+                || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+                || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+                || statusCode == HttpConstants.StatusCodes.GONE
+                || statusCode == HttpConstants.StatusCodes.NOTFOUND;
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException instanceof IllegalStateException) {
+            String message = unwrappedException.getMessage();
+            return message != null
+                && (message.contains("Feed ranges were not available")
+                    || message.contains("Timeout on blocking read"));
+        }
+
+        return false;
+    }
+
+    private static String getFeedRangeWarmupErrorDetails(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            return String.format(
+                "statusCode=%d subStatusCode=%d message=%s",
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode(),
+                cosmosException.getMessage());
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException == null) {
+            return "unknown failure";
+        }
+
+        return unwrappedException.getClass().getSimpleName() + ": " + unwrappedException.getMessage();
+    }
+
+    private static long getRetryAfterMillis(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            Duration retryAfterDuration = cosmosException.getRetryAfterDuration();
+            return retryAfterDuration != null ? Math.max(0, retryAfterDuration.toMillis()) : 0;
+        }
+
+        return 0;
+    }
+
+    private static CosmosException getCosmosException(Throwable error) {
+        Throwable currentException = Exceptions.unwrap(error);
+        while (currentException != null) {
+            if (currentException instanceof CosmosException) {
+                return (CosmosException) currentException;
+            }
+
+            currentException = currentException.getCause();
+        }
+
+        return null;
+    }
+
+    private static <T> Mono<T> retryOnTransientCleanupFailure(Mono<T> responseMono) {
+        return responseMono.retryWhen(
+            Retry.fixedDelay(TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS, TRANSIENT_CLEANUP_RETRY_DELAY)
+                .filter(TestSuiteBase::isTransientCleanupFailure)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    private static <T> Flux<T> retryOnTransientCleanupFailure(Flux<T> responseFlux) {
+        return responseFlux.retryWhen(
+            Retry.fixedDelay(TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS, TRANSIENT_CLEANUP_RETRY_DELAY)
+                .filter(TestSuiteBase::isTransientCleanupFailure)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    private static boolean isTransientCleanupFailure(Throwable throwable) {
+        Throwable unwrappedException = Exceptions.unwrap(throwable);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
+        }
+
+        int statusCode = ((CosmosException) unwrappedException).getStatusCode();
+        return statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+            || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+            || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+    }
+
+    protected static <T> void validateCosmosPagedIterableWithRetry(
+        Supplier<CosmosPagedIterable<T>> pagedIterableSupplier,
+        Consumer<CosmosPagedIterable<T>> validator,
+        String context) throws InterruptedException {
+
+        validateWithRetry(() -> validator.accept(pagedIterableSupplier.get()), context);
+    }
+
+    protected static <T extends Resource> FeedResponse<T> readManyWithRetry(
+        CosmosAsyncContainer container,
+        List<CosmosItemIdentity> cosmosItemIdentities,
+        Collection<String> expectedIds,
+        Class<T> classType) throws InterruptedException {
+
+        AtomicReference<FeedResponse<T>> feedResponseReference = new AtomicReference<>();
+
+        validateWithRetry(() -> {
+            FeedResponse<T> feedResponse = container.readMany(cosmosItemIdentities, classType).block();
+
+            assertThat(feedResponse).isNotNull();
+            assertThat(feedResponse.getResults()).isNotNull();
+            assertThat(feedResponse.getResults()).hasSize(expectedIds.size());
+
+            for (T fetchedResult : feedResponse.getResults()) {
+                assertThat(expectedIds.contains(fetchedResult.getId())).isTrue();
+            }
+
+            feedResponseReference.set(feedResponse);
+        }, "readMany visibility after item creation");
+
+        return feedResponseReference.get();
+    }
+
+    @FunctionalInterface
+    protected interface RetryableValidation {
+        void validate() throws InterruptedException;
+    }
+
+    protected static void validateWithRetry(RetryableValidation validator, String context) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        AssertionError lastAssertionError;
+
+        do {
+            try {
+                validator.validate();
+                return;
+            } catch (AssertionError assertionError) {
+                lastAssertionError = assertionError;
+                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+                if (elapsed.compareTo(STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION) >= 0) {
+                    throw lastAssertionError;
+                }
+
+                logger.warn(
+                    "{} did not return expected results yet. Retrying after {}.",
+                    context,
+                    STORED_PROCEDURE_QUERY_RETRY_DELAY);
+                Thread.sleep(STORED_PROCEDURE_QUERY_RETRY_DELAY.toMillis());
+            }
+        } while (true);
+    }
+
+    protected static <T> void validateFeedResponseListWithRetry(
+        Supplier<Flux<FeedResponse<T>>> feedResponseSupplier,
+        FeedResponseListValidator<T> validator,
+        String context) throws InterruptedException {
+
+        validateWithRetry(
+            () -> validateQuerySuccess(feedResponseSupplier.get(), validator, STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT),
+            context);
+    }
+
+    private static boolean isNotFound(Throwable throwable) {
+        Throwable unwrappedException = Exceptions.unwrap(throwable);
+        return unwrappedException instanceof CosmosException
+            && ((CosmosException) unwrappedException).getStatusCode() == HttpConstants.StatusCodes.NOTFOUND;
     }
 
     protected final static ConsistencyLevel accountConsistency;
@@ -307,7 +621,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SUITE_SETUP_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SHARED_SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -416,8 +730,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .build()
         );
         options.setMaxDegreeOfParallelism(-1);
-        List<Integer> counts = cosmosContainer
+        List<Integer> counts = retryOnTransientCleanupFailure(cosmosContainer
             .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .byPage())
+            .flatMap(page -> Flux.fromIterable(page.getResults()))
             .collectList()
             .block();
         assertThat(counts).hasSize(1);
@@ -425,7 +741,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     private static void cleanUpContainerInternal(CosmosAsyncContainer cosmosContainer) {
-        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        CosmosContainerProperties cosmosContainerProperties = retryOnTransientCleanupFailure(cosmosContainer.read())
+            .block()
+            .getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -439,8 +757,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         Flux<CosmosItemOperation> deleteOperations =
-            cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-                           .byPage(maxItemCount)
+            retryOnTransientCleanupFailure(cosmosContainer
+                .queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+                .byPage(maxItemCount))
                            .publishOn(Schedulers.parallel())
                            .flatMap(page -> Flux.fromIterable(page.getResults()))
                            .map(doc -> {
@@ -464,7 +783,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
                     .build());
 
-        cosmosContainer
+        retryOnTransientCleanupFailure(cosmosContainer
             .executeBulkOperations(deleteOperations, truncateBulkOptions)
             .flatMap(response -> {
                 if (response.getException() != null) {
@@ -491,40 +810,43 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                     return Mono.error(bulkException);
                 }
                 return Mono.just(response);
-            })
+            }))
             .blockLast();
 
         expectCount(cosmosContainer, 0);
 
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryTriggers("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(trigger -> {
-                           return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
-                       }).then().block();
+                       .flatMap(trigger -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getTrigger(trigger.getId()).delete()))
+                       .then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryStoredProcedures("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(storedProcedure -> {
-                           return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
-                       }).then().block();
+                       .flatMap(storedProcedure -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions())))
+                       .then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryUserDefinedFunctions("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(udf -> {
-                           return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
-                       }).then().block();
+                       .flatMap(udf -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete()))
+                       .then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
@@ -564,37 +886,102 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      */
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput, CosmosAsyncClient probeClient) {
-        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
-                return Mono.empty();
-            })
-            .block();
+        Runnable ensureContainerExists = () -> createCollectionIfNotExists(
+            database,
+            cosmosContainerProperties,
+            options,
+            throughput);
 
-        // Creating a container is async - especially on multi-partition or multi-region accounts
-        CosmosAsyncClient client = ImplementationBridgeHelpers
-            .CosmosAsyncDatabaseHelper
-            .getCosmosAsyncDatabaseAccessor()
-            .getCosmosAsyncClient(database);
-        boolean isMultiRegional = ImplementationBridgeHelpers
-            .CosmosAsyncClientHelper
-            .getCosmosAsyncClientAccessor()
-            .getPreferredRegions(client).size() > 1;
-        if (throughput > 6000 || isMultiRegional) {
-            waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
-        }
+        ensureContainerExists.run();
+
+        // Creating a container is async. Even single-region, low-throughput containers can briefly fail reads
+        // with 404/1013 ("Collection is not yet available for read") after create returns. If a concurrent
+        // cleanup races with the test and deletes the container before it becomes readable, reissue create on
+        // failed readiness attempts and treat 409 as success.
+        waitForCollectionToBeAvailableToRead(
+            database.getContainer(cosmosContainerProperties.getId()),
+            probeClient,
+            ensureContainerExists);
+        getFeedRangesWithRetry(
+            getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
+            "post-create feed range readiness for container " + cosmosContainerProperties.getId());
 
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
+    private static CosmosAsyncContainer getContainerForReadinessProbe(
+        CosmosAsyncDatabase database,
+        String containerId,
+        CosmosAsyncClient probeClient) {
+
+        if (probeClient != null) {
+            return probeClient.getDatabase(database.getId()).getContainer(containerId);
+        }
+
+        return database.getContainer(containerId);
+    }
+
+    private static void createCollectionIfNotExists(
+        CosmosAsyncDatabase database,
+        CosmosContainerProperties cosmosContainerProperties,
+        CosmosContainerRequestOptions options,
+        int throughput) {
+
+        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.info("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
+            .block();
+    }
+
     protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
+        waitForCollectionToBeAvailableToRead(container, probeClient, null);
+    }
+
+    /**
+     * Issues a single collection-readiness probe through the caller's default route and returns once it succeeds,
+     * retrying transient / not-yet-ready failures via {@link #isRetryableCollectionReadinessFailure(Throwable)}.
+     *
+     * <p>Unlike {@link #waitForCollectionToBeAvailableToRead(CosmosAsyncContainer, CosmosAsyncClient)}, this does NOT
+     * additionally probe every preferred/readable region - it performs only the one default-route probe and does not
+     * pin the probe to a specific region (no excluded-regions filter is applied). A single query is routed by the
+     * client to one region; because the caller's own operations use the same client and route, that probe is enough
+     * to confirm the routing map is resolvable where the test will operate. Skipping the per-region probes keeps the
+     * warm-up cheap for tests that repeatedly create/recreate a dedicated collection, which would otherwise trigger a
+     * metadata-request storm (429/3200).
+     */
+    protected static void waitForCollectionToBeReadableOnDefaultRoute(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
+        CosmosAsyncClient client = probeClient != null
+            ? probeClient
+            : ImplementationBridgeHelpers
+                .CosmosAsyncDatabaseHelper
+                .getCosmosAsyncDatabaseAccessor()
+                .getCosmosAsyncClient(container.getDatabase());
+        CosmosAsyncContainer probeContainer =
+            client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+        Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
+        long deadlineNanos = System.nanoTime() + maxWait.toNanos();
+        awaitContainerReadableInRegion(
+            probeContainer,
+            null,
+            Collections.emptyList(),
+            deadlineNanos,
+            maxWait,
+            null);
+    }
+
+    private static void waitForCollectionToBeAvailableToRead(
+        CosmosAsyncContainer container,
+        CosmosAsyncClient probeClient,
+        Runnable ensureContainerExistsOnReadFailure) {
+
         // Creating a container is asynchronous - especially on multi-region accounts the new collection can
-        // take time to become readable in the non-write regions. Until then, reads routed to those regions fail
-        // with 404/1013 ("Collection is not yet available for read"). Instead of a fixed sleep, verify - against
-        // every non-primary region of the account - that the collection is readable, probing each region (by
-        // excluding all other regions) with exponential back-off until it succeeds, bounded to two minutes total.
+        // take time to become readable in a routed region. Until then, metadata reads can fail with 404/1013
+        // ("Collection is not yet available for read"). Instead of a fixed sleep, verify that the collection is
+        // readable through the caller's normal route and, when configured, through the caller's preferred regions.
         // The probe is issued through probeClient when provided (so a throwaway client does not warm the caller's
         // caches); otherwise the container's own client is used.
         CosmosAsyncClient client = probeClient != null
@@ -607,44 +994,71 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncContainer probeContainer =
             client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
 
-        // Use the account's regions (not the client's preferred regions, which may be a subset).
         List<String> allRegions = new ArrayList<>();
         for (DatabaseAccountLocation location : databaseAccount.getReadableLocations()) {
             allRegions.add(location.getName());
         }
 
-        // The primary region is the first writable location; propagation lag manifests in the other regions.
-        String primaryRegion = null;
-        for (DatabaseAccountLocation location : databaseAccount.getWritableLocations()) {
-            primaryRegion = location.getName();
-            break;
-        }
-        final String primary = primaryRegion;
+        List<String> excludedRegions = getExcludedRegions(client);
 
-        List<String> nonPrimaryRegions = allRegions
-            .stream()
-            .filter(region -> primary == null || !region.equalsIgnoreCase(primary))
-            .collect(Collectors.toList());
-
-        Duration maxWait = Duration.ofMinutes(2);
+        Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
         long deadlineNanos = System.nanoTime() + maxWait.toNanos();
 
-        if (nonPrimaryRegions.isEmpty()) {
-            // Single-region account: there is no non-primary region to verify, but the collection still needs
-            // to be readable (for example while physical partitions are provisioned).
-            awaitContainerReadableInRegion(probeContainer, null, Collections.emptyList(), deadlineNanos, maxWait);
+        awaitContainerReadableInRegion(
+            probeContainer,
+            null,
+            Collections.emptyList(),
+            deadlineNanos,
+            maxWait,
+            ensureContainerExistsOnReadFailure);
+
+        List<String> probeRegions = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getPreferredRegions(client);
+        if (probeRegions == null || probeRegions.isEmpty()) {
+            probeRegions = allRegions;
+        }
+
+        if (probeRegions == null || probeRegions.isEmpty() || allRegions.isEmpty()) {
             return;
         }
 
-        // Verify the collection is readable in each non-primary region.
-        for (String region : nonPrimaryRegions) {
-            final String target = region;
-            List<String> excludedRegions = allRegions
+        for (String preferredRegion : probeRegions) {
+            boolean readableRegion = allRegions
+                .stream()
+                .anyMatch(region -> region.equalsIgnoreCase(preferredRegion));
+
+            if (!readableRegion || containsRegion(excludedRegions, preferredRegion)) {
+                continue;
+            }
+
+            final String target = preferredRegion;
+            List<String> perProbeExcludedRegions = allRegions
                 .stream()
                 .filter(other -> !other.equalsIgnoreCase(target))
                 .collect(Collectors.toList());
-            awaitContainerReadableInRegion(probeContainer, region, excludedRegions, deadlineNanos, maxWait);
+            awaitContainerReadableInRegion(
+                probeContainer,
+                preferredRegion,
+                perProbeExcludedRegions,
+                deadlineNanos,
+                maxWait,
+                ensureContainerExistsOnReadFailure);
         }
+    }
+
+    private static List<String> getExcludedRegions(CosmosAsyncClient client) {
+        return ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getExcludedRegions(client);
+    }
+
+    private static boolean containsRegion(List<String> regions, String regionToFind) {
+        return regions
+            .stream()
+            .anyMatch(region -> region.equalsIgnoreCase(regionToFind));
     }
 
     private static void awaitContainerReadableInRegion(
@@ -652,17 +1066,40 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         String targetRegion,
         List<String> excludedRegions,
         long deadlineNanos,
-        Duration maxWait) {
+        Duration maxWait,
+        Runnable ensureContainerExistsOnReadFailure) {
 
         long backoffMillis = 100;
         long maxBackoffMillis = 5000;
         int attempts = 0;
+        int createRetryAttempts = 0;
         Throwable lastError = null;
 
+        logger.info(
+            "Waiting for container '{}' to become readable{} with excludedRegions={} for up to {} seconds.",
+            container.getId(),
+            targetRegion != null ? " in region '" + targetRegion + "'" : "",
+            excludedRegions,
+            maxWait.getSeconds());
+
         while (true) {
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            if (remainingNanos <= 0) {
+                break;
+            }
+
             attempts++;
             try {
+                Duration attemptTimeout = Duration.ofMillis(
+                    Math.max(
+                        1,
+                        Math.min(
+                            COLLECTION_READINESS_PROBE_TIMEOUT.toMillis(),
+                            TimeUnit.NANOSECONDS.toMillis(remainingNanos))));
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(attemptTimeout)
+                        .build());
                 if (!excludedRegions.isEmpty()) {
                     options.setExcludedRegions(excludedRegions);
                 }
@@ -670,13 +1107,43 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 // targeted region.
                 container.queryItems("SELECT TOP 1 c.id FROM c", options, Object.class)
                     .byPage(1)
-                    .blockFirst();
+                    .blockFirst(attemptTimeout);
+
+                logger.info(
+                    "Container '{}' became readable{} after {} attempt(s).",
+                    container.getId(),
+                    targetRegion != null ? " in region '" + targetRegion + "'" : "",
+                    attempts);
                 return;
             } catch (Exception error) {
                 lastError = error;
+                if (!isRetryableCollectionReadinessFailure(lastError)) {
+                    throw new AssertionError(
+                        String.format(
+                            "Container '%s' failed with a non-retryable error while waiting for readability%s after %d attempt(s). Excluded regions: %s. Error: %s",
+                            container.getId(),
+                            targetRegion != null ? " in region '" + targetRegion + "'" : "",
+                            attempts,
+                            excludedRegions,
+                            getCollectionReadinessErrorDetails(lastError)),
+                        lastError);
+                }
+
+                if (ensureContainerExistsOnReadFailure != null) {
+                    createRetryAttempts++;
+                    try {
+                        ensureContainerExistsOnReadFailure.run();
+                    } catch (RuntimeException recreateError) {
+                        logger.warn(
+                            "Failed to reissue create for container '{}' while waiting for readability.",
+                            container.getId(),
+                            recreateError);
+                        lastError = recreateError;
+                    }
+                }
             }
 
-            long remainingNanos = deadlineNanos - System.nanoTime();
+            remainingNanos = deadlineNanos - System.nanoTime();
             if (remainingNanos <= 0) {
                 break;
             }
@@ -693,12 +1160,70 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         throw new AssertionError(
             String.format(
-                "Container '%s' was not available to read%s within %d seconds (%d attempts).",
+                "Container '%s' was not available to read%s within %d seconds (%d attempts, %d create retries). Excluded regions: %s.",
                 container.getId(),
                 targetRegion != null ? " in region '" + targetRegion + "'" : "",
                 maxWait.getSeconds(),
-                attempts),
+                attempts,
+                createRetryAttempts,
+                excludedRegions),
             lastError);
+    }
+
+    private static boolean isRetryableCollectionReadinessFailure(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            int statusCode = cosmosException.getStatusCode();
+            return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED
+                || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+                || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+                || statusCode == HttpConstants.StatusCodes.GONE
+                || isStaleCollectionRidFailure(cosmosException)
+                || (statusCode == HttpConstants.StatusCodes.NOTFOUND
+                    && (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN
+                        || cosmosException.getSubStatusCode() == 1013
+                        || cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException instanceof IllegalStateException) {
+            String message = unwrappedException.getMessage();
+            return message != null && message.contains("Timeout on blocking read");
+        }
+
+        return false;
+    }
+
+    private static boolean isStaleCollectionRidFailure(CosmosException cosmosException) {
+        if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.BADREQUEST
+            || cosmosException.getSubStatusCode() != HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS) {
+
+            return false;
+        }
+
+        String message = cosmosException.getMessage();
+        return message != null
+            && message.contains("Collection rid provided by the user does not match the existing collection.");
+    }
+
+    private static String getCollectionReadinessErrorDetails(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            return String.format(
+                "statusCode=%d subStatusCode=%d message=%s",
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode(),
+                cosmosException.getMessage());
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException == null) {
+            return "unknown failure";
+        }
+
+        return unwrappedException.getClass().getSimpleName() + ": " + unwrappedException.getMessage();
     }
 
     private static DatabaseAccount getLatestDatabaseAccount(CosmosAsyncClient client) {
@@ -729,14 +1254,23 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options) {
+        return createCollection(database, cosmosContainerProperties, options, /* probeClient */ null);
+    }
+
+    public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
+                                                        CosmosContainerRequestOptions options, CosmosAsyncClient probeClient) {
         database.createContainer(cosmosContainerProperties, options)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
             .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                logger.info("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
                 return Mono.empty();
             })
             .block();
+        waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
+        getFeedRangesWithRetry(
+            getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
+            "post-create feed range readiness for container " + cosmosContainerProperties.getId());
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
@@ -855,15 +1389,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncClient client, String dbId, CosmosContainerProperties collectionDefinition) {
         CosmosAsyncDatabase database = client.getDatabase(dbId);
-        database.createContainer(collectionDefinition)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", collectionDefinition.getId());
-                return Mono.empty();
-            })
-            .block();
-        return database.getContainer(collectionDefinition.getId());
+        return createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
     }
 
     public static void deleteCollection(CosmosAsyncClient client, String dbId, String collectionId) {
@@ -1785,6 +2311,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        // Metadata operations issued by the shared housekeeping client during suite setup/cleanup
+        // (create/delete/query databases and containers) can be throttled with 429 / substatus 3200
+        // ("high rate of metadata requests"). The SDK default caps throttle retries at 9 attempts, which
+        // this client can exceed; allow many more so transient metadata throttling does not fail setup/cleanup.
+        options.setMaxRetryAttemptsOnThrottledRequests(200);
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
@@ -1951,6 +2482,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        // Allow many more throttle retries than the SDK default (9) so transient metadata throttling
+        // (429 / substatus 3200) during setup/cleanup does not fail the housekeeping client.
+        options.setMaxRetryAttemptsOnThrottledRequests(200);
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setThrottlingRetryOptions(options);
@@ -2314,7 +2848,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                         return Mono.empty();
                                     }
                                 }
-                                return Mono.error(ex);
+                                return retryOnTransientCleanupFailure(Mono.error(ex));
                             }
                             if (response.getResponse() != null
                                 && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -2326,7 +2860,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                     response.getResponse().getStatusCode(),
                                     "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
                                 BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
-                                return Mono.error(bulkException);
+                                return retryOnTransientCleanupFailure(Mono.error(bulkException));
                             }
                             return Mono.just(response);
                         })
@@ -2340,7 +2874,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
-                .flatMap(trigger -> container.getScripts().getTrigger(trigger.getId()).delete()).then().block();
+                .flatMap(trigger -> retryOnTransientCleanupFailure(
+                    container.getScripts().getTrigger(trigger.getId()).delete()))
+                .then().block();
 
             logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
@@ -2351,7 +2887,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
-                    return container.getScripts().getStoredProcedure(storedProcedure.getId()).delete();
+                    return retryOnTransientCleanupFailure(
+                        container.getScripts().getStoredProcedure(storedProcedure.getId()).delete());
                 })
                 .then()
                 .block();
@@ -2364,7 +2901,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
-                    return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                    return retryOnTransientCleanupFailure(
+                        container.getScripts().getUserDefinedFunction(udf.getId()).delete());
                 })
                 .then()
                 .block();

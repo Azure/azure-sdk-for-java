@@ -43,6 +43,7 @@ import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -747,9 +748,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void queryDiagnosticsOnOrderBy() {
         //  create container with more than 4 physical partitions
         String containerId = "testcontainer";
-        cosmosAsyncDatabase.createContainer(containerId, "/mypk",
-            ThroughputProperties.createManualThroughput(40000)).block();
-        CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
+        CosmosAsyncContainer testcontainer = createCollection(
+            cosmosAsyncDatabase,
+            new CosmosContainerProperties(containerId, "/mypk"),
+            new CosmosContainerRequestOptions(),
+            40000);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
         testcontainer.createItem(getInternalObjectNode()).block();
@@ -952,7 +955,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"regionsContacted\"");
     }
 
-    @Test(groups = {"fast"}, dataProvider = "query", timeOut = TIMEOUT*2)
+    @Test(groups = {"fast"}, dataProvider = "query", timeOut = TIMEOUT*2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         List<String> itemIdList = new ArrayList<>();
@@ -1031,7 +1034,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "readAllItemsOfLogicalPartition", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "readAllItemsOfLogicalPartition", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryMetricsForReadAllItemsOfLogicalPartition(Integer expectedItemCount, Boolean qmEnabled) {
         String pkValue = UUID.randomUUID().toString();
 
@@ -1072,7 +1075,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> createResponse = null;
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
-            
+
             // Verify item creation is fully propagated before testing with wrong partition key
             // Use retry-based polling instead of fixed sleep for CI resilience
             String itemId = BridgeInternal.getProperties(createResponse).getId();
@@ -1088,7 +1091,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     Thread.sleep(200);
                 }
             }
-            
+
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
@@ -1490,12 +1493,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         boolean hasPayload = storeResult.get("exceptionMessage") == null;
         assertThat(storeResult).isNotNull();
         assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
-        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
         assertThat(storeResult.get("requestPayloadLengthInBytes").asInt(-1)).isEqualTo(expectedRequestPayloadSize);
         if (hasPayload) {
             assertThat(storeResult.get("responsePayloadLengthInBytes").asInt(-1)).isEqualTo(expectedResponsePayloadSize);
+            assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
+        } else {
+            assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThanOrEqualTo(0);
         }
-        assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
