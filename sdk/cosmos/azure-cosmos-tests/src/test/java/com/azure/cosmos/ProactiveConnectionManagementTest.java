@@ -31,7 +31,10 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -58,8 +61,8 @@ import static org.assertj.core.api.Assertions.fail;
 public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     private CosmosClientBuilder clientBuilder;
+    private CosmosAsyncClient setupClient;
     private DatabaseAccount databaseAccount;
-    private CosmosAsyncDatabase cosmosAsyncDatabase;
 
     @BeforeClass(groups = {"multi-master", "flaky-multi-master"})
     public void beforeClass() {
@@ -69,21 +72,26 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .directMode();
 
-        CosmosAsyncClient dummyClient = new CosmosClientBuilder()
+        setupClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .directMode().buildAsyncClient();
 
-        this.cosmosAsyncDatabase = getSharedCosmosDatabase(dummyClient);
-
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(dummyClient);
+        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(setupClient);
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
         GlobalEndpointManager globalEndpointManager =
                 ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
         this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+    }
 
-        safeClose(dummyClient);
+    @AfterClass(groups = {"multi-master", "flaky-multi-master"}, alwaysRun = true)
+    public void afterClass() {
+        safeClose(setupClient);
+    }
+
+    private CosmosAsyncDatabase getSetupDatabase() {
+        return getSharedCosmosDatabase(setupClient);
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "invalidProactiveContainerInitConfigs")
@@ -91,12 +99,15 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+        CosmosAsyncDatabase setupDatabase = getSetupDatabase();
 
         for (int i = 1; i <= numContainers; i++) {
             String containerId = String.format("id%d", i);
-            cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-            asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
-            cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+            asyncContainers.add(createCollection(
+                setupDatabase,
+                new CosmosContainerProperties(containerId, "/mypk"),
+                new CosmosContainerRequestOptions()));
+            cosmosContainerIdentities.add(new CosmosContainerIdentity(setupDatabase.getId(), containerId));
         }
 
         if (aggressiveWarmupDuration.compareTo(Duration.ZERO) <= 0) {
@@ -153,16 +164,17 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            cosmosAsyncDatabase = getSharedCosmosDatabase(asyncClient);
+            CosmosAsyncDatabase asyncDatabase = getSharedCosmosDatabase(asyncClient);
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
             String containerId = "id1" + UUID.randomUUID();
-            cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
+            cosmosAsyncContainer = createCollection(
+                asyncDatabase,
+                new CosmosContainerProperties(containerId, "/mypk"),
+                new CosmosContainerRequestOptions());
 
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
-
-            cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+            cosmosContainerIdentities.add(new CosmosContainerIdentity(asyncDatabase.getId(), containerId));
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                 .setProactiveConnectionRegionsCount(proactiveConnectionRegionCount)
@@ -260,12 +272,15 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         try {
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+            CosmosAsyncDatabase setupDatabase = getSetupDatabase();
 
             for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
-                cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+                asyncContainers.add(createCollection(
+                    setupDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
+                cosmosContainerIdentities.add(new CosmosContainerIdentity(setupDatabase.getId(), containerId));
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new
@@ -414,7 +429,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) throws InterruptedException {
 
@@ -433,12 +448,15 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         try {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+            CosmosAsyncDatabase setupDatabase = getSetupDatabase();
 
             for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
-                cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+                asyncContainers.add(createCollection(
+                    setupDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
+                cosmosContainerIdentities.add(new CosmosContainerIdentity(setupDatabase.getId(), containerId));
             }
 
             CosmosContainerProactiveInitConfigBuilder proactiveContainerInitConfigBuilder = new
@@ -586,12 +604,15 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         try {
 
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+            CosmosAsyncDatabase setupDatabase = getSetupDatabase();
 
             for (int i = 0; i < containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
-                cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+                asyncContainers.add(createCollection(
+                    setupDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
+                cosmosContainerIdentities.add(new CosmosContainerIdentity(setupDatabase.getId(), containerId));
             }
 
             CosmosContainerProactiveInitConfigBuilder proactiveContainerInitConfigBuilder = new

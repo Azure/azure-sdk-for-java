@@ -1559,9 +1559,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     private static void assertEqual(AddressInformation actual, Address expected) {
-        assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
+        assertThat(stripTrailingSlash(actual.getPhysicalUri().getURIAsString()))
+            .isEqualTo(stripTrailingSlash(expected.getPhyicalUri()));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
         assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
+    }
+
+    private static String stripTrailingSlash(String uri) {
+        return uri == null ? null : uri.replaceAll("/+$", "");
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {

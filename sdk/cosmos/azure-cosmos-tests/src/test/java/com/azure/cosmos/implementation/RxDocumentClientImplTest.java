@@ -324,6 +324,186 @@ public class RxDocumentClientImplTest {
         }
     }
 
+    @Test(groups = {"unit"})
+    public void lookupCollectionRoutingMapWithRetryRetriesNullRoutingMap() {
+        RxClientCollectionCache collectionCache = Mockito.mock(RxClientCollectionCache.class);
+        RxPartitionKeyRangeCache partitionKeyRangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
+
+        Map<String, PartitionKeyRange> epksPartitionKeyRangeMap = new HashMap<>();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId("0")
+            .setMinInclusive("AA")
+            .setMaxExclusive("FF");
+        epksPartitionKeyRangeMap.put("AAA", partitionKeyRange);
+
+        Mockito
+            .when(partitionKeyRangeCache.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(Mono.just(dummyNullCollectionRoutingMap()))
+            .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
+
+        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
+        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(null);
+        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getHttp2ConnectionConfig()).thenReturn(new Http2ConnectionConfig());
+
+        MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
+        httpClientMock
+            .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+            .thenReturn(dummyHttpClient());
+
+        RxDocumentClientImpl rxDocumentClient = null;
+
+        try {
+            rxDocumentClient = new RxDocumentClientImpl(
+                this.serviceEndpointMock,
+                this.masterKeyOrResourceTokenMock,
+                this.permissionFeedMock,
+                this.connectionPolicyMock,
+                this.consistencyLevelMock,
+                null,
+                this.configsMock,
+                this.cosmosAuthorizationTokenResolverMock,
+                this.azureKeyCredentialMock,
+                false,
+                false,
+                false,
+                this.metadataCachesSnapshotMock,
+                this.apiTypeMock,
+                this.cosmosClientTelemetryConfigMock,
+                this.clientCorrelationIdMock,
+                this.endToEndOperationLatencyPolicyConfig,
+                this.sessionRetryOptionsMock,
+                this.containerProactiveInitConfigMock,
+                this.defaultItemSerializer,
+                false
+            );
+
+            ReflectionUtils.setCollectionCache(rxDocumentClient, collectionCache);
+            ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, partitionKeyRangeCache);
+
+            DocumentCollection documentCollection = dummyCollectionObs().v;
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                rxDocumentClient,
+                OperationType.Query,
+                ResourceType.Document,
+                "dbs/db1/colls/coll1",
+                (byte[]) null,
+                new HashMap<>());
+            MetadataDiagnosticsContext metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+
+            StepVerifier.create(rxDocumentClient.lookupCollectionRoutingMapWithRetry(
+                    metadataDiagnosticsContext,
+                    request,
+                    documentCollection))
+                .expectNextMatches(routingMapHolder -> routingMapHolder != null && routingMapHolder.v != null)
+                .verifyComplete();
+
+            Mockito.verify(partitionKeyRangeCache, Mockito.times(2))
+                .tryLookupAsync(Mockito.same(metadataDiagnosticsContext), Mockito.eq(documentCollection.getResourceId()), Mockito.isNull(), Mockito.isNull());
+            Mockito.verify(collectionCache, Mockito.atLeastOnce())
+                .refresh(Mockito.same(metadataDiagnosticsContext), Mockito.eq(request.getResourceAddress()), Mockito.any());
+        } finally {
+            if (rxDocumentClient != null) {
+                rxDocumentClient.close();
+            }
+            httpClientMock.close();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void lookupCollectionRoutingMapWithRetryStopsAfterBoundedAttempts() {
+        RxClientCollectionCache collectionCache = Mockito.mock(RxClientCollectionCache.class);
+        RxPartitionKeyRangeCache partitionKeyRangeCache = Mockito.mock(RxPartitionKeyRangeCache.class);
+
+        // Always return an empty (null) routing map so the lookup can never succeed. The underlying partition key
+        // range read is already retried with backoff by InCompleteRoutingMapRetryPolicy; this test guards that the
+        // outer lookup retry stays bounded (does not multiply into a large/compounding number of attempts) and that
+        // exhaustion surfaces a CollectionRoutingMapNotFoundException (404 / INCORRECT_CONTAINER_RID).
+        Mockito
+            .when(partitionKeyRangeCache.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(Mono.just(dummyNullCollectionRoutingMap()));
+
+        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
+        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(null);
+        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getHttp2ConnectionConfig()).thenReturn(new Http2ConnectionConfig());
+
+        MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
+        httpClientMock
+            .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+            .thenReturn(dummyHttpClient());
+
+        RxDocumentClientImpl rxDocumentClient = null;
+
+        try {
+            rxDocumentClient = new RxDocumentClientImpl(
+                this.serviceEndpointMock,
+                this.masterKeyOrResourceTokenMock,
+                this.permissionFeedMock,
+                this.connectionPolicyMock,
+                this.consistencyLevelMock,
+                null,
+                this.configsMock,
+                this.cosmosAuthorizationTokenResolverMock,
+                this.azureKeyCredentialMock,
+                false,
+                false,
+                false,
+                this.metadataCachesSnapshotMock,
+                this.apiTypeMock,
+                this.cosmosClientTelemetryConfigMock,
+                this.clientCorrelationIdMock,
+                this.endToEndOperationLatencyPolicyConfig,
+                this.sessionRetryOptionsMock,
+                this.containerProactiveInitConfigMock,
+                this.defaultItemSerializer,
+                false
+            );
+
+            ReflectionUtils.setCollectionCache(rxDocumentClient, collectionCache);
+            ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, partitionKeyRangeCache);
+
+            DocumentCollection documentCollection = dummyCollectionObs().v;
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                rxDocumentClient,
+                OperationType.Query,
+                ResourceType.Document,
+                "dbs/db1/colls/coll1",
+                (byte[]) null,
+                new HashMap<>());
+            MetadataDiagnosticsContext metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+
+            StepVerifier.create(rxDocumentClient.lookupCollectionRoutingMapWithRetry(
+                    metadataDiagnosticsContext,
+                    request,
+                    documentCollection))
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(CollectionRoutingMapNotFoundException.class);
+                    CollectionRoutingMapNotFoundException notFound = (CollectionRoutingMapNotFoundException) error;
+                    assertThat(notFound.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                    assertThat(notFound.getSubStatusCode())
+                        .isEqualTo(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
+                })
+                .verify();
+
+            // One initial attempt plus exactly one bounded retry. If the outer retry budget ever regresses to a
+            // large value (compounding with the inner InCompleteRoutingMapRetryPolicy backoff), this fails fast.
+            Mockito.verify(partitionKeyRangeCache, Mockito.times(2))
+                .tryLookupAsync(
+                    Mockito.same(metadataDiagnosticsContext),
+                    Mockito.eq(documentCollection.getResourceId()),
+                    Mockito.isNull(),
+                    Mockito.isNull());
+        } finally {
+            if (rxDocumentClient != null) {
+                rxDocumentClient.close();
+            }
+            httpClientMock.close();
+        }
+    }
+
     private static HttpClient dummyHttpClient() {
         return new HttpClient() {
             @Override
@@ -347,6 +527,7 @@ public class RxDocumentClientImplTest {
         partitionKeyDefinition.setPaths(Arrays.asList("/id"));
         Utils.ValueHolder<DocumentCollection> collectionObs = new Utils.ValueHolder<>();
         collectionObs.v = new DocumentCollection();
+        collectionObs.v.setResourceId("collectionRid");
         collectionObs.v.setPartitionKey(partitionKeyDefinition);
 
         return collectionObs;
@@ -414,6 +595,10 @@ public class RxDocumentClientImplTest {
             }
         };
         return routingMap;
+    }
+
+    private static Utils.ValueHolder<CollectionRoutingMap> dummyNullCollectionRoutingMap() {
+        return new Utils.ValueHolder<>();
     }
 
     @SuppressWarnings("unchecked")
