@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.RouteInner;
 import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
+import com.azure.resourcemanager.network.models.DisablePeeringRoute;
+import com.azure.resourcemanager.network.models.RouteNextHopEcmp;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import java.util.Arrays;
 
@@ -14,7 +16,7 @@ import java.util.Arrays;
  */
 public final class RouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteTableCreate.json
+     * x-ms-original-file: 2025-07-01/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
@@ -29,7 +31,7 @@ public final class RouteTablesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/RouteTableCreateWithRoute.json
+     * x-ms-original-file: 2025-07-01/RouteTableCreateWithRoute.json
      */
     /**
      * Sample code: Create route table with route.
@@ -45,6 +47,47 @@ public final class RouteTablesCreateOrUpdateSamples {
                         .withAddressPrefix("10.0.3.0/24")
                         .withNextHopType(RouteNextHopType.VIRTUAL_NETWORK_GATEWAY)))
                     .withDisableBgpRoutePropagation(true),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-01/RouteTableCreateWithDisablePeeringRoute.json
+     */
+    /**
+     * Sample code: Create route table with disable peering route.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        createRouteTableWithDisablePeeringRoute(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getRouteTables()
+            .createOrUpdate("rg1", "testrt",
+                new RouteTableInner().withLocation("westus")
+                    .withDisableBgpRoutePropagation(true)
+                    .withDisablePeeringRoute(DisablePeeringRoute.ALL),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-01/RouteTableCreateWithEcmpRoute.json
+     */
+    /**
+     * Sample code: Create route table with ECMP route.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createRouteTableWithECMPRoute(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getRouteTables()
+            .createOrUpdate("rg1", "testrt-ecmp",
+                new RouteTableInner().withLocation("westus")
+                    .withRoutes(Arrays.asList(new RouteInner().withName("ecmp-route")
+                        .withAddressPrefix("10.1.0.0/16")
+                        .withNextHopType(RouteNextHopType.VIRTUAL_APPLIANCE_ECMP)
+                        .withNextHop(new RouteNextHopEcmp()
+                            .withNextHopIpAddresses(Arrays.asList("10.0.0.4", "10.0.0.5", "10.0.0.6")))))
+                    .withDisableBgpRoutePropagation(false),
                 com.azure.core.util.Context.NONE);
     }
 }

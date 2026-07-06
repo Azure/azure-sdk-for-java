@@ -45,8 +45,6 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 5;
-        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                            .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
                 .filter(sp -> filterId.equals(sp.getId())).collect(Collectors.toList());
@@ -62,7 +60,10 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
+        validateFeedResponseListWithRetry(
+            () -> createdCollection.getScripts().queryStoredProcedures(query, options).byPage(maxItemCount),
+            validator,
+            "Stored procedure query: " + query);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
@@ -89,9 +90,6 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 3;
 
-        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                            .queryStoredProcedures(query, options);
-
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs;
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
@@ -103,7 +101,10 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
+        validateFeedResponseListWithRetry(
+            () -> createdCollection.getScripts().queryStoredProcedures(query, options).byPage(maxItemCount),
+            validator,
+            "Stored procedure query: " + query);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)

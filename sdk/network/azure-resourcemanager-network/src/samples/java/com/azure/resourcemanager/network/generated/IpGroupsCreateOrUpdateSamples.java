@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class IpGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpGroupsCreate.json
+     * x-ms-original-file: 2025-07-01/IpGroupsCreate.json
      */
     /**
      * Sample code: CreateOrUpdate_IpGroups.

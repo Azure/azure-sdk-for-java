@@ -5,13 +5,15 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
-import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.CosmosStoredProcedure;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -51,7 +53,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readStoredProcedure() throws Exception {
 
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
@@ -62,8 +64,8 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         CosmosStoredProcedureResponse storedProcedureResponse = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
 
-        waitIfNeededForReplicasToCatchUp(null, ResourceType.StoredProcedure);
-        Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+        Mono<CosmosStoredProcedureResponse> readObservable = retryOnNotFound(storedProcedure.read(null));
 
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
             .withId(storedProcedureDef.getId())
@@ -93,11 +95,12 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(null, ResourceType.StoredProcedure);
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
-        Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
-        validateFailure(readObservable, notFoundValidator);
+        validateWithRetry(
+            () -> validateFailure(storedProcedure.read(null), notFoundValidator),
+            "Stored procedure delete visibility");
     }
 
     @BeforeClass(groups = { "fast" }, timeOut = 10_000 * SETUP_TIMEOUT)

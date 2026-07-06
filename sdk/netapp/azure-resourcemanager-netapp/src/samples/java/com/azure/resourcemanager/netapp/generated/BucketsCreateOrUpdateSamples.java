@@ -18,7 +18,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Buckets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_CreateOrUpdate.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdate.
@@ -39,7 +39,7 @@ public final class BucketsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/Buckets_CreateOrUpdateWithAkv.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_CreateOrUpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdateWithAkv.
@@ -55,13 +55,16 @@ public final class BucketsCreateOrUpdateSamples {
             .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
                 .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
             .withPermissions(BucketPermissions.READ_ONLY)
-            .withAkvDetails(new AzureKeyVaultDetails()
-                .withCertificateAkvDetails(
-                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
-                        .withCertificateName("my-certificate"))
-                .withCredentialsAkvDetails(
-                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
-                        .withSecretName("fakeTokenPlaceholder")))
+            .withAkvDetails(new AzureKeyVaultDetails().withCertificateAkvDetails(new CertificateAkvDetails()
+                .withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                .withCertificateName("my-certificate")
+                .withUserAssignedIdentity(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
+                .withCredentialsAkvDetails(new CredentialsAkvDetails()
+                    .withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                    .withSecretName("fakeTokenPlaceholder")
+                    .withUserAssignedIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
             .create();
     }
 }

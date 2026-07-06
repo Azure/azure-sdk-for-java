@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceTapConfigurationGet.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceTapConfigurationGet.json
      */
     /**
      * Sample code: Get Network Interface Tap Configurations.

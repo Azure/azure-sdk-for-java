@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ComputesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutContainerInstanceCompute.json
+     * x-ms-original-file: 2026-05-15-preview/PutContainerInstanceCompute.json
      */
     /**
      * Sample code: PutContainerInstanceCompute.
@@ -47,7 +47,7 @@ public final class ComputesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutCompute.json
+     * x-ms-original-file: 2026-05-15-preview/PutCompute.json
      */
     /**
      * Sample code: PutCompute.

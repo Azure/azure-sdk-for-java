@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpGroupsGet.json
+     * x-ms-original-file: 2025-07-01/IpGroupsGet.json
      */
     /**
      * Sample code: Get_IpGroups.

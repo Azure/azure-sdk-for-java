@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ExpressRouteCrossConnectionsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCrossConnectionUpdateTags.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCrossConnectionUpdateTags.json
      */
     /**
      * Sample code: UpdateExpressRouteCrossConnectionTags.
