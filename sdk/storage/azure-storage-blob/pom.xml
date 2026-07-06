@@ -200,5 +200,84 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- This profile is used to generate a sources JAR with arrow-format shaded into com.azure.storage.blob.implementation.util.apachearrow. -->
+    <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded Apache Arrow code needs to be updated. -->
+    <!-- -->
+    <!-- To update the shaded Apache Arrow code, run Maven build with '-Dshade-apache-arrow-format' included in the command. -->
+    <!-- In the target folder, extract the sources JAR. The path com/azure/storage/blob/implementation/util/apachearrow will contain the relocated Apache Arrow source code. -->
+    <!-- Copy this code into the com.azure.storage.blob.implementation.util.apachearrow package in azure-storage-blob and overwrite the existing files. -->
+    <profile>
+      <id>shade-apache-arrow-format</id>
+      <activation>
+        <property>
+          <name>shade-apache-arrow-format</name>
+        </property>
+      </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.arrow</groupId>
+          <artifactId>arrow-format</artifactId>
+          <version>19.0.0</version>
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shade-apache-arrow-format</shadedClassifierName>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+
+              <artifactSet>
+                <includes>
+                  <include>org.apache.arrow:arrow-format</include>
+                </includes>
+              </artifactSet>
+
+              <relocations>
+                <relocation>
+                  <pattern>org.apache.arrow.flatbuf</pattern>
+                  <shadedPattern>com.azure.storage.blob.implementation.util.apachearrow</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <includes>
+                    <include>org.apache.arrow:arrow-format:[19.0.0]</include>
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
