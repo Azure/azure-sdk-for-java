@@ -339,7 +339,7 @@ public class RxDocumentClientImplTest {
             "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
                 + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
                 + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\": 5,}");
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5}");
 
         Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
         Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
