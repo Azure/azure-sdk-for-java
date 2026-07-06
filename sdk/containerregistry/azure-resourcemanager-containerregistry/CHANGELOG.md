@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 2.55.3 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
+
+
 ## 2.55.2 (2026-05-05)
 
 ### Other Changes
