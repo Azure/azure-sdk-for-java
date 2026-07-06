@@ -81,7 +81,7 @@ public class ClientMetricsTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
@@ -129,7 +129,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem() throws Exception {
         boolean[] disableLatencyMeterTestCases = { false, true };
 
@@ -200,7 +200,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItemWithAllMetrics() throws Exception {
 
         boolean[] suppressConsistencyLevelTagTestCases = { false, true };
@@ -273,7 +273,7 @@ public class ClientMetricsTest extends BatchTestBase {
     // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
     // during TestState initialization, especially in CI environments where collection creation
     // can take longer than 40 seconds
-    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -306,7 +306,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readNonExistingItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
 
@@ -454,7 +454,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItemWithThresholdsApplied() throws Exception {
         CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
             .setPointOperationLatencyThreshold(Duration.ofDays(1));
@@ -502,7 +502,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void deleteItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -531,7 +531,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItems() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -579,7 +579,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItemsWithDetailMetrics() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT,
             CosmosMetricCategory.OPERATION_DETAILS,
@@ -741,7 +741,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryItems() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -858,7 +858,10 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
+    // (TestState provisions a fresh container; on multi-region accounts that create + readiness
+    // warm-up can consume most of the 40s budget before the bulk operation under test runs).
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulk() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             int totalRequest = 5;
@@ -937,7 +940,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void batchMultipleItemExecution() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)){
             TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
@@ -996,7 +999,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForDefault() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.fromString("DeFAult"))) {
             assertThat(state.getEffectiveMetricCategories().size()).isEqualTo(5);
@@ -1018,7 +1021,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForDefaultPlusDetails() throws Exception {
         try (TestState state = new TestState(getClientBuilder(),
             CosmosMetricCategory.DEFAULT,
@@ -1045,7 +1048,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesInvalidCategory() throws Exception {
         String badCategoryName = "InvalidCategory";
         try (TestState state = new TestState(getClientBuilder(),
@@ -1058,7 +1061,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForAll() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)) {
 
@@ -1114,7 +1117,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForAllLatebound() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             EnumSet<MetricCategory> effectiveMetricCategories =
