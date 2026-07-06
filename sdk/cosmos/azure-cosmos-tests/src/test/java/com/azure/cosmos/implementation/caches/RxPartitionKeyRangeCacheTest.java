@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.caches;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -23,9 +24,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -588,6 +595,350 @@ public class RxPartitionKeyRangeCacheTest {
         } finally {
             cacheA.close();
             cacheB.close();
+        }
+    }
+
+    @Test(groups = "unit")
+    public void concurrentLookupsOnSharedCacheIssueSingleFetch() throws Exception {
+        // Single-flight across clients: two clients sharing the same cache look up the same,
+        // previously-unseen collectionRid concurrently. AsyncCacheNonBlocking must collapse the
+        // fan-out so that exactly ONE /pkranges fetch happens across both clients - this is the
+        // core value of the PR (collapsing N concurrent fetches into 1), not just sequential reuse.
+        URI endpoint = URI.create("https://test-shared-pkr-singleflight.documents.azure.com:443/");
+
+        RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+        RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+        RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+
+        String collectionRid = "shared-coll-singleflight";
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Arrays.asList(range));
+        when(response.getContinuationToken()).thenReturn("etag-sf");
+
+        AtomicInteger clientACalls = new AtomicInteger();
+        AtomicInteger clientBCalls = new AtomicInteger();
+
+        when(collA.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(collB.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+
+        // A small delay on the fetch widens the window in which both lookups are in-flight, so the
+        // concurrent (rather than sequential) single-flight path is genuinely exercised. Whichever
+        // client wins putIfAbsent runs the only fetch; the other attaches to the shared in-flight
+        // result, so the total fetch count is exactly one regardless of interleaving.
+        when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientACalls.incrementAndGet();
+                return Flux.just(response).delayElements(Duration.ofMillis(150));
+            });
+        when(clientB.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientBCalls.incrementAndGet();
+                return Flux.just(response).delayElements(Duration.ofMillis(150));
+            });
+
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        CountDownLatch startLatch = new CountDownLatch(1);
+        try {
+            Future<CollectionRoutingMap> futureA = pool.submit(() -> {
+                startLatch.await();
+                return cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()).block().v;
+            });
+            Future<CollectionRoutingMap> futureB = pool.submit(() -> {
+                startLatch.await();
+                return cacheB.tryLookupAsync(null, collectionRid, null, new HashMap<>()).block().v;
+            });
+
+            startLatch.countDown();
+
+            CollectionRoutingMap mapA = futureA.get(30, TimeUnit.SECONDS);
+            CollectionRoutingMap mapB = futureB.get(30, TimeUnit.SECONDS);
+
+            assertThat(mapA).isNotNull();
+            assertThat(mapB).isNotNull();
+            assertThat(mapA)
+                .as("both clients resolve to the same shared routing map instance")
+                .isSameAs(mapB);
+            assertThat(clientACalls.get() + clientBCalls.get())
+                .as("single-flight across clients: exactly one /pkranges fetch total")
+                .isEqualTo(1);
+        } finally {
+            pool.shutdownNow();
+            cacheA.close();
+            cacheB.close();
+        }
+
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+            .as("close() releases the shared cache reference")
+            .isZero();
+    }
+
+    @Test(groups = "unit")
+    public void failedFetchDoesNotPoisonSharedCacheForSiblings() throws Exception {
+        // Failure isolation during shared population: if client A's /pkranges fetch fails, the
+        // shared entry must NOT be cached as a failure. A sibling client B must still be able to
+        // populate it, and A's own subsequent lookup must succeed. A cached failure would take
+        // down every sibling on the endpoint.
+        URI endpoint = URI.create("https://test-shared-pkr-failiso.documents.azure.com:443/");
+
+        RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+        RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+        RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+
+        String collectionRid = "shared-coll-failiso";
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Arrays.asList(range));
+        when(response.getContinuationToken()).thenReturn("etag-failiso");
+
+        when(collA.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(collB.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+
+        AtomicInteger clientACalls = new AtomicInteger();
+        AtomicInteger clientBCalls = new AtomicInteger();
+
+        // A's fetch always fails with a non-retryable, non-404 error (so it is neither retried by
+        // InCompleteRoutingMapRetryPolicy nor swallowed by tryLookupAsync's 404 handling).
+        when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientACalls.incrementAndGet();
+                return Flux.error(new RuntimeException("transient pkranges failure"));
+            });
+        when(clientB.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientBCalls.incrementAndGet();
+                return Flux.just(response);
+            });
+
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+        try {
+            // A's fetch fails and the failure must propagate (not be cached as the shared value).
+            StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                        .verifyError();
+            assertThat(clientACalls.get()).isEqualTo(1);
+
+            // The shared entry was not poisoned: sibling B can still populate it via a fresh fetch.
+            StepVerifier.create(cacheB.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                        .expectNextMatches(v -> v != null && v.v != null)
+                        .verifyComplete();
+            assertThat(clientBCalls.get())
+                .as("B populates the shared cache despite A's earlier failure")
+                .isEqualTo(1);
+
+            // A's subsequent lookup now succeeds - served from the entry B populated - even though
+            // A's own fetch is still broken. This proves the failure was not shared/cached.
+            StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                        .expectNextMatches(v -> v != null && v.v != null)
+                        .verifyComplete();
+            assertThat(clientACalls.get())
+                .as("A recovers via the healed shared cache without another failing fetch")
+                .isEqualTo(1);
+        } finally {
+            cacheA.close();
+            cacheB.close();
+        }
+
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+            .isZero();
+    }
+
+    @Test(groups = "unit")
+    public void diagnosticsRecordedOnlyByFetchingClientNotSibling() {
+        // Positive assertion of the new diagnostics semantics: the client that actually issues the
+        // /pkranges fetch records a PARTITION_KEY_RANGE_LOOK_UP metadata diagnostic; a sibling that
+        // is served from the already-warm shared cache records none. (Previously this behavior was
+        // only "covered" by an assertion removal in CosmosDiagnosticsTest.)
+        URI endpoint = URI.create("https://test-shared-pkr-diag.documents.azure.com:443/");
+
+        RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+        RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+        RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+
+        String collectionRid = "shared-coll-diag";
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Arrays.asList(range));
+        when(response.getContinuationToken()).thenReturn("etag-diag");
+
+        AtomicInteger clientACalls = new AtomicInteger();
+        AtomicInteger clientBCalls = new AtomicInteger();
+
+        when(collA.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientACalls.incrementAndGet();
+                return Flux.just(response);
+            });
+        when(collB.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(clientB.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientBCalls.incrementAndGet();
+                return Flux.just(response);
+            });
+
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+        try {
+            // A performs the real fetch -> records the diagnostic in its own context.
+            MetadataDiagnosticsContext metaA = new MetadataDiagnosticsContext();
+            StepVerifier.create(cacheA.tryLookupAsync(metaA, collectionRid, null, new HashMap<>()))
+                        .expectNextMatches(v -> v != null && v.v != null)
+                        .verifyComplete();
+
+            // B is served from the shared cache -> no fetch, no diagnostic in its context.
+            MetadataDiagnosticsContext metaB = new MetadataDiagnosticsContext();
+            StepVerifier.create(cacheB.tryLookupAsync(metaB, collectionRid, null, new HashMap<>()))
+                        .expectNextMatches(v -> v != null && v.v != null)
+                        .verifyComplete();
+
+            assertThat(clientACalls.get()).isEqualTo(1);
+            assertThat(clientBCalls.get()).isZero();
+
+            int fetchingClientLookups = 0;
+            if (metaA.metadataDiagnosticList != null) {
+                for (MetadataDiagnostics d : metaA.metadataDiagnosticList) {
+                    if (d.metaDataName == MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP) {
+                        fetchingClientLookups++;
+                    }
+                }
+            }
+            assertThat(fetchingClientLookups)
+                .as("the fetching client records exactly one PARTITION_KEY_RANGE_LOOK_UP diagnostic")
+                .isEqualTo(1);
+
+            assertThat(metaB.isEmpty())
+                .as("a sibling served from the shared cache records no metadata diagnostic")
+                .isTrue();
+        } finally {
+            cacheA.close();
+            cacheB.close();
+        }
+
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+            .isZero();
+    }
+
+    @Test(groups = "unit")
+    public void sharingDisabledYieldsIsolatedCachesPerClient() throws Exception {
+        // Opt-out exercised end-to-end through RxPartitionKeyRangeCache (not just the registry):
+        // with COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false, two clients on the SAME
+        // endpoint get isolated caches and each issues its own /pkranges fetch, restoring the
+        // pre-sharing behavior. Mirrors twoCachesForSameEndpointShareRoutingMapStorage with the
+        // kill-switch on.
+        String flag = "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
+        String savedFlag = System.getProperty(flag);
+        System.setProperty(flag, "false");
+        URI endpoint = URI.create("https://test-shared-pkr-optout.documents.azure.com:443/");
+        try {
+            RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+            RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+            RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+            RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+
+            String collectionRid = "isolated-coll-optout";
+            DocumentCollection collection = new DocumentCollection();
+            collection.setResourceId(collectionRid);
+            collection.setSelfLink("dbs/db1/colls/coll1");
+
+            PartitionKeyRange range = new PartitionKeyRange();
+            range.setId("0");
+            range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+            range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+            FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+            when(response.getResults()).thenReturn(Arrays.asList(range));
+            when(response.getContinuationToken()).thenReturn("etag-optout");
+
+            AtomicInteger clientACalls = new AtomicInteger();
+            AtomicInteger clientBCalls = new AtomicInteger();
+
+            when(collA.resolveCollectionAsync(any(), any()))
+                .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+            when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+                .thenAnswer(invocation -> {
+                    clientACalls.incrementAndGet();
+                    return Flux.just(response);
+                });
+            when(collB.resolveCollectionAsync(any(), any()))
+                .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+            when(clientB.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+                .thenAnswer(invocation -> {
+                    clientBCalls.incrementAndGet();
+                    return Flux.just(response);
+                });
+
+            RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+            RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+            try {
+                // With sharing disabled the process-wide registry must not be touched at all.
+                assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+                    .as("disabled flag must keep the shared registry untouched")
+                    .isZero();
+
+                StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                            .expectNextMatches(v -> v != null && v.v != null)
+                            .verifyComplete();
+                StepVerifier.create(cacheB.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                            .expectNextMatches(v -> v != null && v.v != null)
+                            .verifyComplete();
+
+                assertThat(clientACalls.get()).isEqualTo(1);
+                assertThat(clientBCalls.get())
+                    .as("with sharing disabled each client issues its own /pkranges fetch")
+                    .isEqualTo(1);
+                assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+                    .as("disabled flag never registers the endpoint")
+                    .isZero();
+            } finally {
+                cacheA.close();
+                cacheB.close();
+            }
+        } finally {
+            if (savedFlag == null) {
+                System.clearProperty(flag);
+            } else {
+                System.setProperty(flag, savedFlag);
+            }
         }
     }
 }
