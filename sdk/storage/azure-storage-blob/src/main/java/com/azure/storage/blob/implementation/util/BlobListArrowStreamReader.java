@@ -231,56 +231,44 @@ final class BlobListArrowStreamReader {
 
         switch (field.typeType) {
             case Type.UTF8:
-            case Type.BINARY: {
-                BufferRegion validity = cursor.nextBuffer();
-                BufferRegion offsets = cursor.nextBuffer();
-                BufferRegion data = cursor.nextBuffer();
-                return new StringColumn(valueCount, validity, offsets, data, cursor.body, cursor.bodyStart);
-            }
+            case Type.BINARY:
+                return new StringColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), cursor.nextBuffer(),
+                    cursor.body, cursor.bodyStart);
 
-            case Type.BOOL: {
-                BufferRegion validity = cursor.nextBuffer();
-                BufferRegion data = cursor.nextBuffer();
-                return new BoolColumn(valueCount, validity, data, cursor.body, cursor.bodyStart);
-            }
-
-            case Type.INT: {
-                BufferRegion validity = cursor.nextBuffer();
-                BufferRegion data = cursor.nextBuffer();
-                return new IntColumn(valueCount, validity, data, field.bitWidth, field.signed, cursor.body,
+            case Type.BOOL:
+                return new BoolColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), cursor.body,
                     cursor.bodyStart);
-            }
 
-            case Type.TIMESTAMP: {
-                BufferRegion validity = cursor.nextBuffer();
-                BufferRegion data = cursor.nextBuffer();
-                return new TimestampColumn(valueCount, validity, data, cursor.body, cursor.bodyStart);
-            }
+            case Type.INT:
+                return new IntColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), field.bitWidth,
+                    field.signed, cursor.body, cursor.bodyStart);
 
-            case Type.MAP: {
-                BufferRegion validity = cursor.nextBuffer();
-                BufferRegion offsets = cursor.nextBuffer();
+            case Type.TIMESTAMP:
+                return new TimestampColumn(valueCount, cursor.nextBuffer(), cursor.nextBuffer(), cursor.body,
+                    cursor.bodyStart);
+
+            case Type.MAP:
+                BufferRegion mapValidity = cursor.nextBuffer();
+                BufferRegion mapOffsets = cursor.nextBuffer();
                 // Map has a single Struct child ("entries") with key and value children.
-                ArrowField entries = field.children.get(0);
-                StructColumn struct = (StructColumn) buildColumn(entries, cursor);
-                Column keyColumn = struct.children.get(0);
-                Column valueColumn = struct.children.get(1);
-                if (!(keyColumn instanceof StringColumn) || !(valueColumn instanceof StringColumn)) {
+                ArrowField mapEntries = field.children.get(0);
+                StructColumn mapStruct = (StructColumn) buildColumn(mapEntries, cursor);
+                Column mapKeyColumn = mapStruct.children.get(0);
+                Column mapValueColumn = mapStruct.children.get(1);
+                if (!(mapKeyColumn instanceof StringColumn) || !(mapValueColumn instanceof StringColumn)) {
                     throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + field.name
                         + "' map entries must be string keys and values.");
                 }
-                return new MapColumn(valueCount, validity, offsets, (StringColumn) keyColumn,
-                    (StringColumn) valueColumn, cursor.body, cursor.bodyStart);
-            }
+                return new MapColumn(valueCount, mapValidity, mapOffsets, (StringColumn) mapKeyColumn,
+                    (StringColumn) mapValueColumn, cursor.body, cursor.bodyStart);
 
-            case Type.STRUCT: {
+            case Type.STRUCT:
                 cursor.nextBuffer(); // struct validity buffer
-                List<Column> children = new ArrayList<>(field.children.size());
+                List<Column> structChildren = new ArrayList<>(field.children.size());
                 for (ArrowField child : field.children) {
-                    children.add(buildColumn(child, cursor));
+                    structChildren.add(buildColumn(child, cursor));
                 }
-                return new StructColumn(children);
-            }
+                return new StructColumn(structChildren);
 
             default:
                 throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + field.name
@@ -298,30 +286,31 @@ final class BlobListArrowStreamReader {
     }
 
     private static ArrowField readField(Field field) {
-        ArrowField arrowField = new ArrowField();
-        arrowField.name = field.name();
-        arrowField.typeType = field.typeType();
+        String name = field.name();
+        byte typeType = field.typeType();
+        int bitWidth = 0;
+        boolean signed = false;
 
-        if (arrowField.typeType == Type.INT) {
+        if (typeType == Type.INT) {
             Int intType = (Int) field.type(new Int());
             if (intType != null) {
-                arrowField.bitWidth = intType.bitWidth();
-                arrowField.signed = intType.isSigned();
+                bitWidth = intType.bitWidth();
+                signed = intType.isSigned();
             }
-        } else if (arrowField.typeType == Type.TIMESTAMP) {
+        } else if (typeType == Type.TIMESTAMP) {
             Timestamp timestamp = (Timestamp) field.type(new Timestamp());
             if (timestamp != null && timestamp.unit() != TimeUnit.SECOND) {
-                throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + arrowField.name
+                throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
                     + "' uses an unsupported timestamp unit '" + TimeUnit.name(timestamp.unit()) + "'.");
             }
         }
 
         int childCount = field.childrenLength();
-        arrowField.children = new ArrayList<>(childCount);
+        List<ArrowField> children = new ArrayList<>(childCount);
         for (int i = 0; i < childCount; i++) {
-            arrowField.children.add(readField(field.children(i)));
+            children.add(readField(field.children(i)));
         }
-        return arrowField;
+        return new ArrowField(name, typeType, bitWidth, signed, children);
     }
 
     private static Map<String, String> readKeyValueMetadata(Schema schema) {
@@ -351,11 +340,19 @@ final class BlobListArrowStreamReader {
      * A parsed schema field with the minimal type information required for decoding.
      */
     private static final class ArrowField {
-        private String name;
-        private byte typeType;
-        private int bitWidth;
-        private boolean signed;
-        private List<ArrowField> children = new ArrayList<>();
+        private final String name;
+        private final byte typeType;
+        private final int bitWidth;
+        private final boolean signed;
+        private final List<ArrowField> children;
+
+        ArrowField(String name, byte typeType, int bitWidth, boolean signed, List<ArrowField> children) {
+            this.name = name;
+            this.typeType = typeType;
+            this.bitWidth = bitWidth;
+            this.signed = signed;
+            this.children = children;
+        }
     }
 
     /**
@@ -497,20 +494,17 @@ final class BlobListArrowStreamReader {
                 case 64:
                     return body.getLong(base + index * 8);
 
-                case 32: {
-                    int value = body.getInt(base + index * 4);
-                    return signed ? value : (value & 0xFFFFFFFFL);
-                }
+                case 32:
+                    int value32 = body.getInt(base + index * 4);
+                    return signed ? value32 : (value32 & 0xFFFFFFFFL);
 
-                case 16: {
-                    short value = body.getShort(base + index * 2);
-                    return signed ? value : (value & 0xFFFF);
-                }
+                case 16:
+                    short value16 = body.getShort(base + index * 2);
+                    return signed ? value16 : (value16 & 0xFFFF);
 
-                case 8: {
-                    byte value = body.get(base + index);
-                    return signed ? value : (value & 0xFF);
-                }
+                case 8:
+                    byte value8 = body.get(base + index);
+                    return signed ? value8 : (value8 & 0xFF);
 
                 default:
                     throw new BlobListArrowParseException(
