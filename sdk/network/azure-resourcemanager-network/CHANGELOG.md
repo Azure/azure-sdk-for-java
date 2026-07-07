@@ -1,5 +1,14 @@
 # Release History
 
+## 2.59.1 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 2.59.0 (2026-06-29)
 
 ### Other Changes
