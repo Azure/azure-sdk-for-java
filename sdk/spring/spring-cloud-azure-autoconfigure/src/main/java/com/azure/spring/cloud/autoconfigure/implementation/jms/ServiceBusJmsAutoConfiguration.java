@@ -3,11 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
-import com.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
@@ -35,12 +31,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.function.BiFunction;
-
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Service Bus JMS support.
@@ -72,28 +66,9 @@ public class ServiceBusJmsAutoConfiguration {
     @ConditionalOnMissingBean
     AzureServiceBusJmsConnectionFactoryFactory azureServiceBusJmsConnectionFactoryFactory(
         final AzureServiceBusJmsProperties properties) {
-        if (!properties.isPasswordlessEnabled()) {
-            return () -> new ServiceBusJmsConnectionFactory(
-                properties.getConnectionString(),
-                new ServiceBusJmsConnectionFactorySettings());
-        }
-
-        String hostName =
-            properties.getNamespace()
-                + "."
-                + properties.getProfile().getEnvironment().getServiceBusDomainName();
-        Properties passwordlessProperties = properties.toPasswordlessProperties();
-        enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
-        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
-            new TokenCredentialProviderOptions(passwordlessProperties));
-
-        return () -> {
-            TokenCredential tokenCredential = tokenCredentialProvider.get();
-            return new ServiceBusJmsConnectionFactory(
-                tokenCredential,
-                hostName,
-                new ServiceBusJmsConnectionFactorySettings());
-        };
+        ServiceBusJmsConnectionFactoryProvider provider =
+            new ServiceBusJmsConnectionFactoryProvider(properties, Collections.emptyList());
+        return provider::createDefaultServiceBusJmsConnectionFactory;
     }
 
     /**

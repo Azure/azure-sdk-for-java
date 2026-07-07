@@ -3,7 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
@@ -12,16 +16,48 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
-class ServiceBusJmsConnectionFactoryFactory {
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
+
+class ServiceBusJmsConnectionFactoryProvider {
     private final AzureServiceBusJmsProperties properties;
     private final List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
 
-    ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
-                                          List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+    ServiceBusJmsConnectionFactoryProvider(
+        AzureServiceBusJmsProperties properties,
+        List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
+    }
+
+    ServiceBusJmsConnectionFactory createDefaultServiceBusJmsConnectionFactory() {
+        if (!properties.isPasswordlessEnabled()) {
+            return new ServiceBusJmsConnectionFactory(
+                properties.getConnectionString(),
+                new ServiceBusJmsConnectionFactorySettings());
+        }
+
+        String hostName =
+            properties.getNamespace()
+                + "."
+                + properties.getProfile().getEnvironment().getServiceBusDomainName();
+
+        Properties passwordlessProperties = properties.toPasswordlessProperties();
+        enhancePasswordlessProperties(
+            AzureServiceBusJmsProperties.PREFIX,
+            properties,
+            passwordlessProperties);
+
+        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
+            new TokenCredentialProviderOptions(passwordlessProperties));
+
+        TokenCredential tokenCredential = tokenCredentialProvider.get();
+        return new ServiceBusJmsConnectionFactory(
+            tokenCredential,
+            hostName,
+            new ServiceBusJmsConnectionFactorySettings());
     }
 
     ServiceBusJmsConnectionFactory createConnectionFactory(

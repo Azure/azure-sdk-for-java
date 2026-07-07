@@ -58,7 +58,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
         AzureServiceBusJmsProperties properties,
         java.util.List<AzureServiceBusJmsConnectionFactoryCustomizer> customizers,
         AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
-        return new ServiceBusJmsConnectionFactoryFactory(properties, customizers)
+        return new ServiceBusJmsConnectionFactoryProvider(properties, customizers)
             .createConnectionFactory(instanceFactory);
     }
 
