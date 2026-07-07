@@ -21,11 +21,16 @@ import java.util.function.Function;
 
 /**
  * Bounded, primary-authoritative cross-region hedging for the two hot-path metadata cache reads
- * (Collection Read and PartitionKeyRange ReadFeed first page). This is the Java port of the .NET
- * metadata hedging strategy (Azure/azure-cosmos-dotnet-v3 PR #5999).
+ * (Collection Read and PartitionKeyRange ReadFeed). This is the Java port of the .NET metadata hedging
+ * strategy (Azure/azure-cosmos-dotnet-v3 PR #5999).
  * <p>
  * While this class is public it is NOT part of the published public API; it is used internally by
  * the SDK caches only.
+ * <p>
+ * The PartitionKeyRange ReadFeed read is realized as region-pinned <i>full</i> routing-map racing: each
+ * branch reads all of its pages from a single pinned region (see {@code RxPartitionKeyRangeCache}), rather
+ * than a literal first-page-only race as in the .NET reference. This preserves continuation integrity
+ * (each branch's page chain stays within one region) while achieving the same latency win.
  * <p>
  * Design invariant -- <b>the primary is authoritative</b>: a hedge can only win by being faster on a
  * <i>regional</i> failure or latency; it can never override a <i>definitive</i> answer the primary has
@@ -334,12 +339,10 @@ public class MetadataHedgingStrategy {
 
     /**
      * Classify a completed branch throwable. Only a genuine <i>regional</i> failure of the region is
-     * worth hedging; everything else (including auth failures and definitive errors) is authoritative.
-     * <p>
-     * NOTE: this is an explicit classifier aligned with the SDK's cross-region retry semantics, not a
-     * borrow from the narrow {@code MetadataRequestRetryPolicy} region-unavailable check. The
-     * PartitionKeyRange path may extend the regional set with its regional-lag 404 sub-statuses
-     * (handled by {@link #isPartitionKeyRangeRegionalFailure}).
+     * worth hedging; everything else (including auth failures and definitive errors such as 404 / 409 /
+     * 412) is authoritative. This single classifier is shared by both the Collection Read and the
+     * PartitionKeyRange ReadFeed paths, matching the .NET reference (a 404 is always a definitive answer,
+     * never regional, so a lagging secondary can never override a primary that returned 404).
      */
     public static BranchOutcome classifyThrowable(Throwable throwable) {
         CosmosException cosmosException = asCosmosException(throwable);
@@ -351,23 +354,6 @@ public class MetadataHedgingStrategy {
         return isRegionalFailure(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
             ? BranchOutcome.REGIONAL_FAILURE
             : BranchOutcome.DEFINITIVE;
-    }
-
-    /**
-     * Classifier variant for the PartitionKeyRange ReadFeed path, which additionally treats the
-     * regional-lag 404 sub-statuses as regional (consistent with {@code ClientRetryPolicy}).
-     */
-    public static BranchOutcome classifyPartitionKeyRangeThrowable(Throwable throwable) {
-        CosmosException cosmosException = asCosmosException(throwable);
-        if (cosmosException == null) {
-            return BranchOutcome.REGIONAL_FAILURE;
-        }
-        int status = cosmosException.getStatusCode();
-        int subStatus = cosmosException.getSubStatusCode();
-        if (isRegionalFailure(status, subStatus) || isPartitionKeyRangeRegionalFailure(status, subStatus)) {
-            return BranchOutcome.REGIONAL_FAILURE;
-        }
-        return BranchOutcome.DEFINITIVE;
     }
 
     /**
@@ -391,16 +377,10 @@ public class MetadataHedgingStrategy {
             case HttpConstants.StatusCodes.FORBIDDEN:             // 403 -- only database-account-not-found is regional
                 return subStatusCode == HttpConstants.SubStatusCodes.DATABASE_ACCOUNT_NOTFOUND;
             default:
-                // 401, plain 403, 404, 409, 412, 429, etc. are NOT regional -- authoritative/definitive.
+                // 401, plain 403, 404 (any sub-status), 409, 412, 429, etc. are NOT regional --
+                // authoritative/definitive, so a definitive primary answer is never overridden by a hedge.
                 return false;
         }
-    }
-
-    // The PartitionKeyRange ReadFeed treats certain 404 sub-statuses as regional lag (routing map not
-    // yet available in this region), consistent with ClientRetryPolicy's PK-range handling.
-    private static boolean isPartitionKeyRangeRegionalFailure(int statusCode, int subStatusCode) {
-        return statusCode == HttpConstants.StatusCodes.NOTFOUND
-            && (subStatusCode == 0 || subStatusCode == HttpConstants.SubStatusCodes.DATABASE_ACCOUNT_NOTFOUND);
     }
 
     private static CosmosException asCosmosException(Throwable throwable) {

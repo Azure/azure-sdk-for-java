@@ -312,23 +312,32 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 List<String> hedgeExcluded =
                     MetadataHedgingStrategy.excludedRegionsForTarget(null, allRegions, hedgeRegion);
 
+                // Capture the real wire activityId of each branch's routing-map read (from the winning
+                // page's FeedResponse). The per-branch requests are cloned deep inside the paginator and
+                // get their own activityId, so we report the winning branch's actual sent activityId
+                // rather than a throwaway probe id that never reaches the wire.
+                AtomicReference<String> primaryActivityId = new AtomicReference<>();
+                AtomicReference<String> hedgeActivityId = new AtomicReference<>();
+
                 Mono<CollectionRoutingMap> primaryMono = readRoutingMapOnce(
                     metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
-                    previousChangeFeedIfNoneMatch, primaryExcluded);
+                    previousChangeFeedIfNoneMatch, primaryExcluded, primaryActivityId);
                 Mono<CollectionRoutingMap> hedgeMono = readRoutingMapOnce(
                     metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
-                    previousChangeFeedIfNoneMatch, hedgeExcluded);
+                    previousChangeFeedIfNoneMatch, hedgeExcluded, hedgeActivityId);
 
                 Instant hedgeStart = Instant.now();
                 return this.metadataHedgingStrategy.executeHedged(
                         primaryMono, primaryRegion, hedgeMono, hedgeRegion,
                         this.metadataHedgingStrategy.getThreshold(),
-                        MetadataHedgingStrategy::classifyPartitionKeyRangeThrowable)
+                        MetadataHedgingStrategy::classifyThrowable)
                     .flatMap(hedgeResult -> {
                         if (metaDataDiagnosticsContext != null && hedgeResult.isHedgeFired()) {
+                            String winningActivityId =
+                                hedgeResult.isHedgeWon() ? hedgeActivityId.get() : primaryActivityId.get();
                             metaDataDiagnosticsContext.addMetaDataDiagnostic(
                                 new MetadataDiagnosticsContext.MetadataHedgeDiagnostics(
-                                    hedgeStart, Instant.now(), probe.getActivityId().toString(),
+                                    hedgeStart, Instant.now(), winningActivityId,
                                     hedgeResult.isHedgeFired(), hedgeResult.isHedgeWon(),
                                     hedgeResult.getWinningRegion()));
                         }
@@ -339,7 +348,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return readRoutingMapOnce(
             metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
-            previousChangeFeedIfNoneMatch, null);
+            previousChangeFeedIfNoneMatch, null, null);
     }
 
     private Mono<CollectionRoutingMap> readRoutingMapOnce(
@@ -348,7 +357,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         CollectionRoutingMap previousRoutingMap,
         Map<String, Object> properties,
         String previousChangeFeedIfNoneMatch,
-        List<String> excludedRegions) {
+        List<String> excludedRegions,
+        AtomicReference<String> activityIdSink) {
 
         return Mono.defer(() -> {
             AtomicReference<String> continuationToken = new AtomicReference<>(previousChangeFeedIfNoneMatch);
@@ -359,6 +369,11 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 .doOnNext(response -> {
                     ranges.addAll(response.getResults());
                     continuationToken.set(response.getContinuationToken());
+                    if (activityIdSink != null && response.getActivityId() != null) {
+                        // Record this branch's wire activityId (first page that reports one is sufficient
+                        // to correlate the branch with server-side traces).
+                        activityIdSink.compareAndSet(null, response.getActivityId());
+                    }
                 })
                 .collectList()
                 .flatMap(allResults -> {

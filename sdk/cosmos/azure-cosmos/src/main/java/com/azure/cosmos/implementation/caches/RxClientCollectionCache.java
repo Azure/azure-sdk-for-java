@@ -164,11 +164,24 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 MetadataHedgingStrategy::classifyThrowable,
                 hedgeResult -> {
                     if (metaDataDiagnosticsContext != null) {
+                        // Report the activityId that was actually sent on the wire by the winning branch:
+                        // the hedging strategy clones the request per branch and each clone gets its own
+                        // activityId, so the original request's activityId is never sent. The winning
+                        // branch's response echoes its request activityId; fall back to the original
+                        // request id only when the primary lost with no response (definitive error path).
+                        String winningActivityId = request.getActivityId().toString();
+                        if (hedgeResult.getValue() != null && hedgeResult.getValue().getResponseHeaders() != null) {
+                            String responseActivityId =
+                                hedgeResult.getValue().getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+                            if (responseActivityId != null) {
+                                winningActivityId = responseActivityId;
+                            }
+                        }
                         metaDataDiagnosticsContext.addMetaDataDiagnostic(
                             new MetadataDiagnosticsContext.MetadataHedgeDiagnostics(
                                 addressCallStartTime,
                                 Instant.now(),
-                                request.getActivityId().toString(),
+                                winningActivityId,
                                 hedgeResult.isHedgeFired(),
                                 hedgeResult.isHedgeWon(),
                                 hedgeResult.getWinningRegion()));
