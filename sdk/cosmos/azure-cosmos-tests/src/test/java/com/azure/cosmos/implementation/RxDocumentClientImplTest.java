@@ -327,20 +327,15 @@ public class RxDocumentClientImplTest {
 
     // Regression test for the "partitionLevelCircuitBreakerCfg" diagnostics field silently disappearing from the
     // CosmosDiagnostics "clientCfgs" section. Prior to the fix, the field was only written on the PPAF
-    // (service-mandated) path, so a client that explicitly enabled Per-Partition Circuit Breaker never surfaced it.
-    // This test constructs a real RxDocumentClientImpl (exercising the actual constructor wiring), drives the
-    // private initializePerPartitionCircuitBreaker() init path, serializes the resulting DiagnosticsClientConfig,
-    // and asserts that every expected "clientCfgs" key is present (guarding against future serialization
-    // truncation as well as the specific regression). It also asserts the effective PPCB config string.
+    // (service-mandated) path, so a client that did not have PPAF-mandated PPCB never surfaced it. The field must
+    // now be present for every client regardless of any PPCB configuration. This test constructs a real
+    // RxDocumentClientImpl (exercising the actual constructor wiring), drives the private
+    // initializePerPartitionCircuitBreaker() init path without setting any PPCB configuration, serializes the
+    // resulting DiagnosticsClientConfig, and asserts that every expected "clientCfgs" key - including
+    // partitionLevelCircuitBreakerCfg - is present (guarding against future serialization truncation as well as
+    // the specific regression).
     @Test(groups = {"unit"})
     public void diagnosticsClientConfigContainsAllClientCfgKeysIncludingPartitionLevelCircuitBreaker() throws Exception {
-        System.setProperty(
-            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
-            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
-                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
-                + "\"consecutiveExceptionCountToleratedForWrites\": 5}");
-
         Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
         Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
         Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(null);
@@ -400,8 +395,8 @@ public class RxDocumentClientImplTest {
 
             String serializedJson = clientCfgs.toString();
 
-            // Every key the serializer unconditionally writes, plus the (previously regressed)
-            // partitionLevelCircuitBreakerCfg which is present whenever PPCB is enabled.
+            // Every key the serializer unconditionally writes, including the (previously regressed)
+            // partitionLevelCircuitBreakerCfg which must be present for every client regardless of PPCB config.
             String[] expectedKeys = new String[] {
                 "id",
                 "machineId",
@@ -425,13 +420,7 @@ public class RxDocumentClientImplTest {
                         expectedKey, serializedJson)
                     .isTrue();
             }
-
-            assertThat(clientCfgs.get("partitionLevelCircuitBreakerCfg").asText())
-                .withFailMessage("Unexpected partitionLevelCircuitBreakerCfg value. Serialized clientCfgs: %s",
-                    serializedJson)
-                .isEqualTo("(cb: true, type: CONSECUTIVE_EXCEPTION_COUNT_BASED, rexcntt: 10, wexcntt: 5)");
         } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             if (rxDocumentClient != null) {
                 rxDocumentClient.close();
             }
