@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-translation-document</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -189,6 +189,75 @@ String translatedResponse = response.toString();
 System.out.println("Translated Response: " + translatedResponse);
 ```
 Please refer to the service documentation for a conceptual discussion of [singleDocumentTranslation][singleDocumentTranslation_doc].
+
+### Custom Model Translation
+Translate documents with a custom translation model by providing its deployment name. Set the `deploymentName` on the `TranslationTarget` for batch translation; for single document translation pass the `deploymentName` parameter. The deployment name that was used is reported back on each document's status.
+
+```java startDocumentTranslationWithCustomModel
+String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
+TranslationSource translationSource = new TranslationSource(sourceUrl);
+translationSource.setLanguage("en");
+translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
+
+String targetUrl = "https://myblob.blob.core.windows.net/destinationContainer";
+TranslationTarget translationTarget = new TranslationTarget(targetUrl, "es");
+// Set the deployment name of your custom translation model on the target.
+translationTarget.setDeploymentName("<custom translation model deployment name>");
+translationTarget.setStorageSource(TranslationStorageSource.AZURE_BLOB);
+
+List<TranslationTarget> translationTargets = new ArrayList<>();
+translationTargets.add(translationTarget);
+
+DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
+
+SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = documentTranslationClient
+    .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
+
+for (DocumentStatusResult document : documentTranslationClient.listDocumentStatuses(translationStatus.getId())) {
+    System.out.println("Document Id: " + document.getId());
+    System.out.println("Document Status: " + document.getStatus());
+    // The status reports the deployment name of the custom model that was used.
+    System.out.println("Deployment name used: " + document.getDeploymentName());
+}
+```
+
+### Image Translation
+Translate text that is embedded within images in your documents by enabling `translateTextWithinImage` through `BatchOptions` when starting a batch translation. When enabled, each document's status also reports image scan usage.
+
+```java startDocumentTranslationWithImageTranslation
+String sourceUrl = "https://myblob.blob.core.windows.net/sourceContainer";
+TranslationSource translationSource = new TranslationSource(sourceUrl);
+translationSource.setLanguage("en");
+translationSource.setStorageSource(TranslationStorageSource.AZURE_BLOB);
+
+String targetUrl = "https://myblob.blob.core.windows.net/destinationContainer";
+TranslationTarget translationTarget = new TranslationTarget(targetUrl, "es");
+translationTarget.setStorageSource(TranslationStorageSource.AZURE_BLOB);
+
+List<TranslationTarget> translationTargets = new ArrayList<>();
+translationTargets.add(translationTarget);
+
+DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
+
+// Enable translation of text embedded within images for the batch.
+TranslationBatch translationBatch = new TranslationBatch(new ArrayList<>(Arrays.asList(batchRequest)))
+    .setOptions(new BatchOptions().setTranslateTextWithinImage(true));
+
+SyncPoller<TranslationStatusResult, TranslationStatusResult> poller
+    = documentTranslationClient.beginTranslation(translationBatch);
+TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
+
+for (DocumentStatusResult document : documentTranslationClient.listDocumentStatuses(translationStatus.getId())) {
+    System.out.println("Document Id: " + document.getId());
+    System.out.println("Document Status: " + document.getStatus());
+    // Image scan usage is reported when image translation is enabled.
+    System.out.println("Total image scans succeeded: " + document.getTotalImageScansSucceeded());
+    System.out.println("Total image scans failed: " + document.getTotalImageScansFailed());
+    System.out.println("Images charged: " + document.getImageCharged());
+    System.out.println("Characters detected within images: " + document.getImageCharacterDetected());
+}
+```
 
 ### Cancel Translation
 Cancels a translation job that is currently processing or queued (pending) as indicated in the request by the id query parameter.
@@ -466,6 +535,8 @@ Samples are provided for each main functional area.
 
 * [BatchDocumentTranslation][sample_batchDocumentTranslation]
 * [SingleDocumentTranslation][sample_singleDocumentTranslation]
+* [CustomModelTranslation][sample_customModelTranslation]
+* [ImageTranslation][sample_imageTranslation]
 * [CancelTranslation][sample_cancelTranslation]
 * [GetTranslationsStatus][sample_getTranslationsStatus]
 * [GetTranslationStatus][sample_getTranslationStatus]
@@ -504,6 +575,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [single_document_translator_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/src/main/java/com/azure/ai/translation/document/SingleDocumentTranslationClient.java
 [sample_batchDocumentTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/StartDocumentTranslation.java
 [sample_singleDocumentTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/StartSingleDocumentTranslation.java
+[sample_customModelTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/TranslateWithCustomModel.java
+[sample_imageTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/TranslateWithImageTranslation.java
 [sample_cancelTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/CancelDocumentTranslation.java
 [sample_getTranslationsStatus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetTranslationsStatus.java
 [sample_getTranslationStatus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetTranslationStatus.java

@@ -95,6 +95,7 @@ public final class DocumentTranslationAsyncClient {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -110,6 +111,9 @@ public final class DocumentTranslationAsyncClient {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -260,6 +264,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -308,6 +315,11 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -363,6 +375,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -422,6 +437,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -565,6 +583,11 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>

@@ -166,6 +166,9 @@ public final class TranslationStatusSummary implements JsonSerializable<Translat
         jsonWriter.writeIntField("notYetStarted", this.notYetStartedCount);
         jsonWriter.writeIntField("cancelled", this.cancelledCount);
         jsonWriter.writeLongField("totalCharacterCharged", this.totalCharactersChargedCount);
+        jsonWriter.writeNumberField("totalImageScansSucceeded", this.totalImageScansSucceeded);
+        jsonWriter.writeNumberField("totalImageScansFailed", this.totalImageScansFailed);
+        jsonWriter.writeNumberField("totalImageCharged", this.totalImagesChargedCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,6 +191,9 @@ public final class TranslationStatusSummary implements JsonSerializable<Translat
             int notYetStartedCount = 0;
             int cancelledCount = 0;
             long totalCharactersChargedCount = 0L;
+            Integer totalImageScansSucceeded = null;
+            Integer totalImageScansFailed = null;
+            Long totalImagesChargedCount = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -205,12 +211,71 @@ public final class TranslationStatusSummary implements JsonSerializable<Translat
                     cancelledCount = reader.getInt();
                 } else if ("totalCharacterCharged".equals(fieldName)) {
                     totalCharactersChargedCount = reader.getLong();
+                } else if ("totalImageScansSucceeded".equals(fieldName)) {
+                    totalImageScansSucceeded = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansFailed".equals(fieldName)) {
+                    totalImageScansFailed = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageCharged".equals(fieldName)) {
+                    totalImagesChargedCount = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TranslationStatusSummary(totalCount, failedCount, successCount, inProgressCount,
-                notYetStartedCount, cancelledCount, totalCharactersChargedCount);
+            TranslationStatusSummary deserializedTranslationStatusSummary
+                = new TranslationStatusSummary(totalCount, failedCount, successCount, inProgressCount,
+                    notYetStartedCount, cancelledCount, totalCharactersChargedCount);
+            deserializedTranslationStatusSummary.totalImageScansSucceeded = totalImageScansSucceeded;
+            deserializedTranslationStatusSummary.totalImageScansFailed = totalImageScansFailed;
+            deserializedTranslationStatusSummary.totalImagesChargedCount = totalImagesChargedCount;
+            return deserializedTranslationStatusSummary;
         });
+    }
+
+    /*
+     * Total image scans charged by the API
+     */
+    @Generated
+    private Integer totalImageScansSucceeded;
+
+    /*
+     * Total image scans failed
+     */
+    @Generated
+    private Integer totalImageScansFailed;
+
+    /*
+     * Total images charged by the API
+     */
+    @Generated
+    private Long totalImagesChargedCount;
+
+    /**
+     * Get the totalImageScansSucceeded property: Total image scans charged by the API.
+     *
+     * @return the totalImageScansSucceeded value.
+     */
+    @Generated
+    public Integer getTotalImageScansSucceeded() {
+        return this.totalImageScansSucceeded;
+    }
+
+    /**
+     * Get the totalImageScansFailed property: Total image scans failed.
+     *
+     * @return the totalImageScansFailed value.
+     */
+    @Generated
+    public Integer getTotalImageScansFailed() {
+        return this.totalImageScansFailed;
+    }
+
+    /**
+     * Get the totalImagesChargedCount property: Total images charged by the API.
+     *
+     * @return the totalImagesChargedCount value.
+     */
+    @Generated
+    public Long getTotalImagesChargedCount() {
+        return this.totalImagesChargedCount;
     }
 }

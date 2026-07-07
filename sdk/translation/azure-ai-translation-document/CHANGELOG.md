@@ -1,14 +1,23 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 2.0.0 (2026-07-06)
 
 ### Features Added
 
+- Added support for the `2026-03-01` service API version, which is now the default.
+- Added image translation support:
+  - Added the `BatchOptions` model with the `translateTextWithinImage` property, and the `options` property on `TranslationBatch`, to enable translation of text embedded within images for batch requests.
+  - Added the `translateTextWithinImage` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document requests.
+  - Added image scan reporting to `DocumentStatusResult`: `imageCharacterDetected`, `imageCharged`, `totalImageScansSucceeded`, and `totalImageScansFailed`.
+  - Added image scan totals to `TranslationStatusSummary`: `totalImageScansSucceeded`, `totalImageScansFailed`, and `totalImagesChargedCount`.
+- Added custom translation model support:
+  - Added the `deploymentName` property to `TranslationTarget` to specify the deployment name of the custom translation model for a batch translation request.
+  - Added the `deploymentName` property to `DocumentStatusResult`, exposing the deployment name of the custom translation model used for the translation.
+  - Added the `deploymentName` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document translation requests.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Added the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively) to the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience methods.
 
 ## 1.0.8 (2026-05-05)
 

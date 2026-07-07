@@ -54,9 +54,13 @@ public final class SingleDocumentTranslationClient {
      * This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
+     * <tr><td>deploymentName</td><td>String</td><td>No</td><td>Deployment name of the custom translation model for the
+     * translation request.</td></tr>
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -96,16 +100,6 @@ public final class SingleDocumentTranslationClient {
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
      * @param documentTranslateContent Document Translate Request Content.
-     * @param sourceLanguage Specifies source language of the input document.
-     * If this parameter isn't specified, automatic language detection is applied to determine the source language.
-     * For example if the source document is written in English, then use sourceLanguage=en.
-     * @param category A string specifying the category (domain) of the translation. This parameter is used to get
-     * translations
-     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
-     * project details to this parameter to use your deployed customized system. Default value is: general.
-     * @param allowFallback Specifies that the service is allowed to fall back to a general system when a custom system
-     * doesn't exist.
-     * Possible values are: true (default) or false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -116,19 +110,9 @@ public final class SingleDocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
-        String sourceLanguage, String category, Boolean allowFallback) {
+    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (sourceLanguage != null) {
-            requestOptions.addQueryParam("sourceLanguage", sourceLanguage, false);
-        }
-        if (category != null) {
-            requestOptions.addQueryParam("category", category, false);
-        }
-        if (allowFallback != null) {
-            requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
-        }
         return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
@@ -167,6 +151,18 @@ public final class SingleDocumentTranslationClient {
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
      * @param documentTranslateContent Document Translate Request Content.
+     * @param sourceLanguage Specifies source language of the input document.
+     * If this parameter isn't specified, automatic language detection is applied to determine the source language.
+     * For example if the source document is written in English, then use sourceLanguage=en.
+     * @param category A string specifying the category (domain) of the translation. This parameter is used to get
+     * translations
+     * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
+     * project details to this parameter to use your deployed customized system. Default value is: general.
+     * @param deploymentName Deployment name of the custom translation model for the translation request.
+     * @param allowFallback Specifies that the service is allowed to fall back to a general system when a custom system
+     * doesn't exist.
+     * Possible values are: true (default) or false.
+     * @param translateTextWithinImage Optional boolean parameter to translate text within an image in the document.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -177,9 +173,26 @@ public final class SingleDocumentTranslationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent) {
+    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
+        String sourceLanguage, String category, String deploymentName, Boolean allowFallback,
+        Boolean translateTextWithinImage) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (sourceLanguage != null) {
+            requestOptions.addQueryParam("sourceLanguage", sourceLanguage, false);
+        }
+        if (category != null) {
+            requestOptions.addQueryParam("category", category, false);
+        }
+        if (deploymentName != null) {
+            requestOptions.addQueryParam("deploymentName", deploymentName, false);
+        }
+        if (allowFallback != null) {
+            requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
+        }
+        if (translateTextWithinImage != null) {
+            requestOptions.addQueryParam("translateTextWithinImage", String.valueOf(translateTextWithinImage), false);
+        }
         return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),

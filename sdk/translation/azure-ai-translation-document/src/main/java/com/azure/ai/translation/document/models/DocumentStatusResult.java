@@ -240,6 +240,11 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeNumberField("characterCharged", this.characterCharged);
+        jsonWriter.writeNumberField("totalImageScansSucceeded", this.totalImageScansSucceeded);
+        jsonWriter.writeNumberField("totalImageScansFailed", this.totalImageScansFailed);
+        jsonWriter.writeNumberField("imageCharged", this.imageCharged);
+        jsonWriter.writeNumberField("imageCharacterDetected", this.imageCharacterDetected);
+        jsonWriter.writeStringField("deploymentName", this.deploymentName);
         return jsonWriter.writeEndObject();
     }
 
@@ -265,6 +270,11 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
             String path = null;
             TranslationError error = null;
             Integer characterCharged = null;
+            Integer totalImageScansSucceeded = null;
+            Integer totalImageScansFailed = null;
+            Integer imageCharged = null;
+            Integer imageCharacterDetected = null;
+            String deploymentName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -290,6 +300,16 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
                     error = TranslationError.fromJson(reader);
                 } else if ("characterCharged".equals(fieldName)) {
                     characterCharged = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansSucceeded".equals(fieldName)) {
+                    totalImageScansSucceeded = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansFailed".equals(fieldName)) {
+                    totalImageScansFailed = reader.getNullable(JsonReader::getInt);
+                } else if ("imageCharged".equals(fieldName)) {
+                    imageCharged = reader.getNullable(JsonReader::getInt);
+                } else if ("imageCharacterDetected".equals(fieldName)) {
+                    imageCharacterDetected = reader.getNullable(JsonReader::getInt);
+                } else if ("deploymentName".equals(fieldName)) {
+                    deploymentName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -299,7 +319,92 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
             deserializedDocumentStatusResult.path = path;
             deserializedDocumentStatusResult.error = error;
             deserializedDocumentStatusResult.characterCharged = characterCharged;
+            deserializedDocumentStatusResult.totalImageScansSucceeded = totalImageScansSucceeded;
+            deserializedDocumentStatusResult.totalImageScansFailed = totalImageScansFailed;
+            deserializedDocumentStatusResult.imageCharged = imageCharged;
+            deserializedDocumentStatusResult.imageCharacterDetected = imageCharacterDetected;
+            deserializedDocumentStatusResult.deploymentName = deploymentName;
             return deserializedDocumentStatusResult;
         });
+    }
+
+    /*
+     * Total image scans charged by the API
+     */
+    @Generated
+    private Integer totalImageScansSucceeded;
+
+    /*
+     * Total image scans failed
+     */
+    @Generated
+    private Integer totalImageScansFailed;
+
+    /*
+     * Images charged by the API
+     */
+    @Generated
+    private Integer imageCharged;
+
+    /*
+     * Characters detected within images
+     */
+    @Generated
+    private Integer imageCharacterDetected;
+
+    /*
+     * Deployment name of the custom translation model used for the translation
+     */
+    @Generated
+    private String deploymentName;
+
+    /**
+     * Get the totalImageScansSucceeded property: Total image scans charged by the API.
+     *
+     * @return the totalImageScansSucceeded value.
+     */
+    @Generated
+    public Integer getTotalImageScansSucceeded() {
+        return this.totalImageScansSucceeded;
+    }
+
+    /**
+     * Get the totalImageScansFailed property: Total image scans failed.
+     *
+     * @return the totalImageScansFailed value.
+     */
+    @Generated
+    public Integer getTotalImageScansFailed() {
+        return this.totalImageScansFailed;
+    }
+
+    /**
+     * Get the imageCharged property: Images charged by the API.
+     *
+     * @return the imageCharged value.
+     */
+    @Generated
+    public Integer getImageCharged() {
+        return this.imageCharged;
+    }
+
+    /**
+     * Get the imageCharacterDetected property: Characters detected within images.
+     *
+     * @return the imageCharacterDetected value.
+     */
+    @Generated
+    public Integer getImageCharacterDetected() {
+        return this.imageCharacterDetected;
+    }
+
+    /**
+     * Get the deploymentName property: Deployment name of the custom translation model used for the translation.
+     *
+     * @return the deploymentName value.
+     */
+    @Generated
+    public String getDeploymentName() {
+        return this.deploymentName;
     }
 }
