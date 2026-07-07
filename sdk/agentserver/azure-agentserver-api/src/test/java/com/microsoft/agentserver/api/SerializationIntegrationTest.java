@@ -120,6 +120,7 @@ class SerializationIntegrationTest {
             AgentServerCreateResponse request = mapper.readValue(json, AgentServerCreateResponse.class);
             assertNotNull(request.responseCreateParams());
             assertTrue(request.responseCreateParams().input().isPresent());
+            assertEquals("What is the weather?", request.inputText());
         }
 
         @Test
@@ -143,6 +144,54 @@ class SerializationIntegrationTest {
             AgentServerCreateResponse request = mapper.readValue(json, AgentServerCreateResponse.class);
             assertNotNull(request.responseCreateParams());
             assertTrue(request.responseCreateParams().input().isPresent());
+            assertEquals("No type field here", request.inputText());
+        }
+
+        @Test
+        @DisplayName("inputText extracts string content from a message item (Foundry chat shape)")
+        void inputTextFromEasyMessageStringContent() throws Exception {
+            String json = """
+                {
+                    "input": [
+                        { "role": "user", "content": "hello" }
+                    ],
+                    "model": "gpt-4o"
+                }
+                """;
+
+            AgentServerCreateResponse request = mapper.readValue(json, AgentServerCreateResponse.class);
+            assertEquals("hello", request.inputText());
+        }
+
+        @Test
+        @DisplayName("inputText returns the most recent user message in a multi-turn conversation")
+        void inputTextFromLastUserMessage() throws Exception {
+            String json = """
+                {
+                    "input": [
+                        { "role": "user", "content": [ {"type": "input_text", "text": "first question"} ] },
+                        { "role": "assistant", "content": [ {"type": "input_text", "text": "an answer"} ] },
+                        { "role": "user", "content": [ {"type": "input_text", "text": "second question"} ] }
+                    ],
+                    "model": "gpt-4o"
+                }
+                """;
+
+            AgentServerCreateResponse request = mapper.readValue(json, AgentServerCreateResponse.class);
+            assertEquals("second question", request.inputText());
+        }
+
+        @Test
+        @DisplayName("inputText returns empty string when input is absent")
+        void inputTextEmptyWhenNoInput() throws Exception {
+            String json = """
+                {
+                    "model": "gpt-4o"
+                }
+                """;
+
+            AgentServerCreateResponse request = mapper.readValue(json, AgentServerCreateResponse.class);
+            assertEquals("", request.inputText());
         }
 
         @Test

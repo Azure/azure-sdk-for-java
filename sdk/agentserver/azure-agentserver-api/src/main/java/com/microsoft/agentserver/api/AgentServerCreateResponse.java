@@ -11,13 +11,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseInputContent;
 import com.openai.models.responses.ResponseInputItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents an incoming create-response request in the agent server protocol.
@@ -33,7 +36,15 @@ public record AgentServerCreateResponse(AgentReference agent, ResponseCreatePara
 
     /**
      * Extracts the input text from the request.
-     * If the input is a simple text string, returns it directly.
+     * <p>
+     * Handles both request shapes accepted by the Responses API:
+     * <ul>
+     *   <li>A simple text input ({@code "input": "hello"}) — returned directly.</li>
+     *   <li>A structured input array of message items (the shape sent by the Foundry
+     *       chat playground and multi-turn clients) — the text of the most recent
+     *       {@code user} message is returned. If no {@code user} message is found,
+     *       the text of the last message containing any text is used.</li>
+     * </ul>
      * Returns an empty string if no text input is present.
      *
      * @return the input text, or empty string
@@ -42,10 +53,80 @@ public record AgentServerCreateResponse(AgentReference agent, ResponseCreatePara
         if (responseCreateParams == null) {
             return "";
         }
-        return responseCreateParams.input()
-            .filter(ResponseCreateParams.Input::isText)
-            .map(ResponseCreateParams.Input::asText)
-            .orElse("");
+
+        Optional<ResponseCreateParams.Input> inputOpt = responseCreateParams.input();
+        if (inputOpt.isEmpty()) {
+            return "";
+        }
+
+        ResponseCreateParams.Input input = inputOpt.get();
+        if (input.isText()) {
+            return input.asText();
+        }
+
+        if (input.isResponse()) {
+            return extractTextFromItems(input.asResponse());
+        }
+
+        return "";
+    }
+
+    /**
+     * Walks the input items and returns the text of the most recent {@code user}
+     * message, falling back to the last message that contains any text.
+     */
+    private static String extractTextFromItems(List<ResponseInputItem> items) {
+        String lastUserText = "";
+        String lastAnyText = "";
+
+        for (ResponseInputItem item : items) {
+            String text;
+            boolean isUser;
+
+            if (item.isEasyInputMessage()) {
+                EasyInputMessage message = item.asEasyInputMessage();
+                text = textFromEasyContent(message.content());
+                isUser = message.role().equals(EasyInputMessage.Role.USER);
+            } else if (item.isMessage()) {
+                ResponseInputItem.Message message = item.asMessage();
+                text = textFromContentList(message.content());
+                isUser = message.role().equals(ResponseInputItem.Message.Role.USER);
+            } else {
+                continue;
+            }
+
+            if (!text.isEmpty()) {
+                lastAnyText = text;
+                if (isUser) {
+                    lastUserText = text;
+                }
+            }
+        }
+
+        return !lastUserText.isEmpty() ? lastUserText : lastAnyText;
+    }
+
+    private static String textFromEasyContent(EasyInputMessage.Content content) {
+        if (content.isTextInput()) {
+            return content.asTextInput();
+        }
+        if (content.isResponseInputMessageContentList()) {
+            return textFromContentList(content.asResponseInputMessageContentList());
+        }
+        return "";
+    }
+
+    private static String textFromContentList(List<ResponseInputContent> contents) {
+        StringBuilder sb = new StringBuilder();
+        for (ResponseInputContent content : contents) {
+            if (content.isInputText()) {
+                if (!sb.isEmpty()) {
+                    sb.append('\n');
+                }
+                sb.append(content.asInputText().text());
+            }
+        }
+        return sb.toString();
     }
 
     public static class AgentServerResponseCreateDeserializer extends JsonDeserializer<AgentServerCreateResponse> {

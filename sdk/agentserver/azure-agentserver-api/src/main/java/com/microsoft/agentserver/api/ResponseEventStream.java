@@ -3,6 +3,8 @@
 
 package com.microsoft.agentserver.api;
 
+import com.openai.core.http.StreamResponse;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
 import com.openai.models.responses.ResponseCustomToolCall;
@@ -244,6 +246,24 @@ public interface ResponseEventStream {
         OutputMessageBuilder emitDone();
 
         /**
+         * Convenience method that streams a chat completion response as a single text
+         * message. Equivalent to:
+         * <pre>{@code
+         * emitAdded()
+         *     .addTextPart(text -> text.emitAdded().streamDeltas(streamResponse))
+         *     .emitDone();
+         * }</pre>
+         *
+         * <p>Each token from the LLM is forwarded as a {@code response.output_text.delta}
+         * event in real time, giving callers a true streaming experience.
+         *
+         * @param streamResponse the streaming response from
+         *     {@code client.chat().completions().createStreaming(params)}.
+         * @return this builder for chaining.
+         */
+        OutputMessageBuilder streamChatCompletion(StreamResponse<ChatCompletionChunk> streamResponse);
+
+        /**
          * Returns the auto-generated item ID for this message.
          */
         String getItemId();
@@ -277,6 +297,29 @@ public interface ResponseEventStream {
          * @return this builder.
          */
         TextPartBuilder emitDone(String text);
+
+        /**
+         * Consumes a streaming chat completion response and pipes each token into
+         * {@link #emitDelta(String)}. The stream is fully consumed (and closed) before
+         * this method returns, so callers should not close the {@link StreamResponse}
+         * themselves. {@link #emitDone} is <em>not</em> called by this method; the
+         * auto-done logic in {@code addTextPart} handles it, or the caller may chain
+         * {@code .emitDone(...)} explicitly.
+         *
+         * <pre>{@code
+         * stream.addOutputMessage(msg -> msg
+         *     .emitAdded()
+         *     .addTextPart(text -> text
+         *         .emitAdded()
+         *         .streamDeltas(chatCompletionStreamResponse))
+         *     .emitDone());
+         * }</pre>
+         *
+         * @param streamResponse the streaming response from
+         *     {@code client.chat().completions().createStreaming(params)}.
+         * @return this builder for chaining.
+         */
+        TextPartBuilder streamDeltas(StreamResponse<ChatCompletionChunk> streamResponse);
     }
 
     // ── ResponseEventStream.Builder ─────────────────────────────

@@ -5,6 +5,8 @@ package com.microsoft.agentserver.api;
 
 import com.microsoft.agentserver.api.implementation.IdGenerator;
 import com.openai.core.JsonNull;
+import com.openai.core.http.StreamResponse;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
 import com.openai.models.responses.ResponseCompletedEvent;
@@ -1093,6 +1095,13 @@ final class AgentServerResponseEventStream implements ResponseEventStream {
             return itemId;
         }
 
+        @Override
+        public OutputMessageBuilder streamChatCompletion(StreamResponse<ChatCompletionChunk> streamResponse) {
+            return emitAdded()
+                .addTextPart(text -> text.emitAdded().streamDeltas(streamResponse))
+                .emitDone();
+        }
+
         private ResponseOutputMessage buildMessage(ResponseOutputMessage.Status status) {
             // Build the created_by object matching Foundry platform expectations:
             // {"agent": {"type": "agent_id", "name": "", "version": ""}, "response_id": "..."}
@@ -1186,6 +1195,22 @@ final class AgentServerResponseEventStream implements ResponseEventStream {
                     .text(text)
                     .logprobs(List.of())
                     .build())));
+            return this;
+        }
+
+        @Override
+        public TextPartBuilder streamDeltas(StreamResponse<ChatCompletionChunk> streamResponse) {
+            try (streamResponse) {
+                streamResponse.stream().forEach(chunk ->
+                    chunk.choices().forEach(choice ->
+                        choice.delta().content().ifPresent(delta -> {
+                            if (!delta.isEmpty()) {
+                                emitDelta(delta);
+                            }
+                        })
+                    )
+                );
+            }
             return this;
         }
     }

@@ -58,7 +58,6 @@ public class Main {
         Thread.currentThread().join();
     }
 
-
     private static AzureOpenAiChatModel getAzureOpenAiChatModel(String openAiEndpoint) {
         AzureOpenAiChatModel.Builder modelBuilder = AzureOpenAiChatModel.builder()
             .deploymentName(FoundryEnvironment.MODEL_DEPLOYMENT_NAME);
