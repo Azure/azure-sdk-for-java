@@ -736,28 +736,32 @@ public class ImplementationBridgeHelpersTest {
     public void accessorSettersKeepExistingAccessor() throws ReflectiveOperationException {
         int accessorSetterCount = 0;
 
-        for (Class<?> declaredClass : DECLARED_CLASSES) {
-            if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
-                boolean helperAccessorSetterInvoked = false;
+        try {
+            for (Class<?> declaredClass : DECLARED_CLASSES) {
+                if (declaredClass.getSimpleName().endsWith(HELPER_CLASS_SUFFIX)) {
+                    boolean helperAccessorSetterInvoked = false;
 
-                for (Method method : declaredClass.getDeclaredMethods()) {
-                    if (isAccessorSetter(method)) {
-                        Method getter = findAccessorGetter(declaredClass, method.getParameterTypes()[0]);
-                        Object firstAccessor = proxyAccessor(method.getParameterTypes()[0]);
-                        Object secondAccessor = proxyAccessor(method.getParameterTypes()[0]);
+                    for (Method method : declaredClass.getDeclaredMethods()) {
+                        if (isAccessorSetter(method)) {
+                            Method getter = findAccessorGetter(declaredClass, method.getParameterTypes()[0]);
+                            Object firstAccessor = proxyAccessor(method.getParameterTypes()[0]);
+                            Object secondAccessor = proxyAccessor(method.getParameterTypes()[0]);
 
-                        resetAccessorReferences();
-                        method.invoke(null, firstAccessor);
-                        method.invoke(null, secondAccessor);
+                            resetAccessorReferences();
+                            method.invoke(null, firstAccessor);
+                            method.invoke(null, secondAccessor);
 
-                        assertThat(getter.invoke(null)).isSameAs(firstAccessor);
-                        helperAccessorSetterInvoked = true;
-                        accessorSetterCount++;
+                            assertThat(getter.invoke(null)).isSameAs(firstAccessor);
+                            helperAccessorSetterInvoked = true;
+                            accessorSetterCount++;
+                        }
                     }
-                }
 
-                assertThat(helperAccessorSetterInvoked).isTrue();
+                    assertThat(helperAccessorSetterInvoked).isTrue();
+                }
             }
+        } finally {
+            restoreAccessorReferences();
         }
 
         assertThat(accessorSetterCount).isGreaterThan(0);
@@ -792,6 +796,11 @@ public class ImplementationBridgeHelpersTest {
             accessorType.getClassLoader(),
             new Class<?>[] { accessorType },
             (proxy, method, args) -> null);
+    }
+
+    private static void restoreAccessorReferences() throws IllegalAccessException {
+        resetAccessorReferences();
+        ImplementationBridgeHelpers.initializeAllAccessors();
     }
 
     private static void resetAccessorReferences() throws IllegalAccessException {
