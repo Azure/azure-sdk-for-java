@@ -23,6 +23,9 @@ import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPas
 class ServiceBusJmsConnectionFactoryProvider {
     private final AzureServiceBusJmsProperties properties;
     private final List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
+    private final boolean passwordlessEnabled;
+    private final String hostName;
+    private final TokenCredentialProvider tokenCredentialProvider;
 
     ServiceBusJmsConnectionFactoryProvider(
         AzureServiceBusJmsProperties properties,
@@ -30,29 +33,35 @@ class ServiceBusJmsConnectionFactoryProvider {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
+        this.passwordlessEnabled = properties.isPasswordlessEnabled();
+        if (passwordlessEnabled) {
+            this.hostName = properties.getNamespace()
+                + "."
+                + properties.getProfile().getEnvironment().getServiceBusDomainName();
+
+            Properties passwordlessProperties = properties.toPasswordlessProperties();
+            enhancePasswordlessProperties(
+                AzureServiceBusJmsProperties.PREFIX,
+                properties,
+                passwordlessProperties);
+
+            this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
+                new TokenCredentialProviderOptions(passwordlessProperties));
+        } else {
+            this.hostName = null;
+            this.tokenCredentialProvider = null;
+        }
     }
 
     ServiceBusJmsConnectionFactory createDefaultServiceBusJmsConnectionFactory() {
-        if (!properties.isPasswordlessEnabled()) {
+        if (!passwordlessEnabled) {
             return new ServiceBusJmsConnectionFactory(
                 properties.getConnectionString(),
                 new ServiceBusJmsConnectionFactorySettings());
         }
 
-        String hostName =
-            properties.getNamespace()
-                + "."
-                + properties.getProfile().getEnvironment().getServiceBusDomainName();
-
-        Properties passwordlessProperties = properties.toPasswordlessProperties();
-        enhancePasswordlessProperties(
-            AzureServiceBusJmsProperties.PREFIX,
-            properties,
-            passwordlessProperties);
-
-        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
-            new TokenCredentialProviderOptions(passwordlessProperties));
-
+        Assert.state(tokenCredentialProvider != null, "TokenCredentialProvider must not be null when passwordless is enabled");
+        Assert.state(hostName != null, "Host name must not be null when passwordless is enabled");
         TokenCredential tokenCredential = tokenCredentialProvider.get();
         return new ServiceBusJmsConnectionFactory(
             tokenCredential,
