@@ -535,6 +535,23 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
 
   $pomFilePath = Join-Path $artifactDirPath "pom.xml"
   $oldDependencyNameToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
+  # Align both the dependency version (col2) and the current version (col3) of this artifact in
+  # version_client.txt with the patch version.
+  #
+  # Why col2 matters: sibling libraries patched in the same run reference this artifact via a
+  # {x-version-update;...;dependency} marker, which resolves to col2. If col2 stays at the previously
+  # released GA version, those siblings keep depending on the old version while this artifact ships as
+  # the patch version, producing a BOM version discrepancy.
+  #
+  # How the two calls achieve it: SetDependencyVersion sets col2 = patch version. As a side effect its
+  # --increment-version step advances col3 to the next dev (beta) version, so the following
+  # SetCurrentVersion resets col3 back to the patch version. The net result is col2 = col3 = patch version.
+  $cmdOutput = SetDependencyVersion -GroupId $GroupId -ArtifactId $artifactId -Version $patchVersion
+  if ($LASTEXITCODE -ne 0) {
+    LogError "Could not set the dependency version for $artifactId"
+    exit $LASTEXITCODE
+  }
+
   $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $patchVersion
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not set the dependencies for $artifactId"
