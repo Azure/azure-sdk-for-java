@@ -7,6 +7,7 @@
 - Added support for the `2026-03-01` service API version, which is now the default.
 - Added image translation support:
   - Added the `BatchOptions` model with the `translateTextWithinImage` property, and the `options` property on `TranslationBatch`, to enable translation of text embedded within images for batch requests.
+  - Added `beginTranslation(List<DocumentTranslationInput>, Boolean)` convenience overloads to `DocumentTranslationClient` and `DocumentTranslationAsyncClient` to enable batch image translation without constructing a `TranslationBatch`/`BatchOptions`.
   - Added the `translateTextWithinImage` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document requests.
   - Added image scan reporting to `DocumentStatusResult`: `imageCharacterDetected`, `imageCharged`, `totalImageScansSucceeded`, and `totalImageScansFailed`.
   - Added image scan totals to `TranslationStatusSummary`: `totalImageScansSucceeded`, `totalImageScansFailed`, and `totalImagesChargedCount`.

@@ -15,6 +15,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
@@ -62,6 +63,31 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
         SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
             documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+
+        // Wait until the operation completes
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
+
+        // Validate the response
+        validateTranslationStatus(translationStatus, 1);
+    }
+
+    @LiveOnly
+    @Test
+    public void testSingleSourceSingleTargetWithImageTranslation() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
+        String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
+        String targetUrl = createTargetContainer(null);
+        String targetLanguageCode = "fr";
+
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
+        targetInputs.add(targetInput);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
+
+        // Enable image translation via the convenience overload.
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(Arrays.asList(batchRequest), true));
 
         // Wait until the operation completes
         TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();

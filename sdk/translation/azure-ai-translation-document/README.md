@@ -240,12 +240,9 @@ translationTargets.add(translationTarget);
 
 DocumentTranslationInput batchRequest = new DocumentTranslationInput(translationSource, translationTargets);
 
-// Enable translation of text embedded within images for the batch.
-TranslationBatch translationBatch = new TranslationBatch(new ArrayList<>(Arrays.asList(batchRequest)))
-    .setOptions(new BatchOptions().setTranslateTextWithinImage(true));
-
+// Enable translation of text embedded within images for the batch using the convenience overload.
 SyncPoller<TranslationStatusResult, TranslationStatusResult> poller
-    = documentTranslationClient.beginTranslation(translationBatch);
+    = documentTranslationClient.beginTranslation(Arrays.asList(batchRequest), true);
 TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
 for (DocumentStatusResult document : documentTranslationClient.listDocumentStatuses(translationStatus.getId())) {

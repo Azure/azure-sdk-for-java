@@ -5,7 +5,9 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.DocumentTranslationClientImpl;
 import com.azure.ai.translation.document.implementation.models.SupportedFileFormats;
+import com.azure.ai.translation.document.models.BatchOptions;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
+import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
 import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
@@ -690,6 +692,35 @@ public final class DocumentTranslationClient {
         // Generated convenience method for beginTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginTranslationWithModel(BinaryData.fromObject(body), requestOptions);
+    }
+
+    /**
+     * Submit a document translation request to the Document Translation service, optionally translating text
+     * embedded within images in the documents.
+     *
+     * This is a convenience overload that enables image translation without constructing a {@link BatchOptions}.
+     * It builds a {@link TranslationBatch} from the provided inputs and, when {@code translateTextWithinImage} is
+     * non-null, sets it via {@link BatchOptions#setTranslateTextWithinImage(Boolean)}.
+     *
+     * @param inputs the input list of documents or folders containing documents to be translated.
+     * @param translateTextWithinImage whether to translate text embedded within images in the documents; may be
+     * {@code null} to use the service default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TranslationStatusResult, TranslationStatusResult>
+        beginTranslation(List<DocumentTranslationInput> inputs, Boolean translateTextWithinImage) {
+        TranslationBatch body = new TranslationBatch(inputs);
+        if (translateTextWithinImage != null) {
+            body.setOptions(new BatchOptions().setTranslateTextWithinImage(translateTextWithinImage));
+        }
+        return beginTranslation(body);
     }
 
     /**
