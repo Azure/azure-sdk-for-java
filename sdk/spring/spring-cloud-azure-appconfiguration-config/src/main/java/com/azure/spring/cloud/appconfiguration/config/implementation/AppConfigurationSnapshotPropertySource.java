@@ -49,8 +49,8 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         List<ConfigurationSetting> settings = replicaClient.listSettingSnapshot(snapshotName, context);
         
         for (ConfigurationSetting setting : settings) {
+            replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
             String key = trimKey(setting.getKey(), trim);
-
             if (setting instanceof SecretReferenceConfigurationSetting) {
                 handleKeyVaultReference(key, (SecretReferenceConfigurationSetting) setting);
             } else if (setting instanceof FeatureFlagConfigurationSetting
