@@ -97,7 +97,7 @@ final class CreateAndTestCommand {
                 System.err.println(
                     "[WARN]   schema has fieldSchema but no models.completion; "
                         + "this will fail unless resource defaults are configured "
-                        + "(see samples/sample_update_defaults.py).");
+                        + "(run the Sample00_UpdateDefaultsAsync sample).");
             }
         }
 
