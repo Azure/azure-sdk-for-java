@@ -51,4 +51,5 @@ public final class VirtualMachinesDeallocateSamples {
             .getVirtualMachines()
             .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", true, null, com.azure.core.util.Context.NONE);
     }
+
 }
