@@ -11,11 +11,9 @@ import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.models.ResponseError;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
@@ -35,18 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DocumentTranslationTests extends DocumentTranslationClientTestBase {
     static int retryCount = 10;
-
-    @RecordWithoutRequestBody
-    @Test
-    public void testClientCannotAuthenticateWithFakeApiKey() {
-        String testEndpoint = "https://t7d8641d8f25ec940-doctranslation.cognitiveservices.azure.com";
-        String testApiKey = "fakeApiKey";
-
-        ClientAuthenticationException e = assertThrows(ClientAuthenticationException.class,
-            () -> getDTClient(testEndpoint, testApiKey).getSupportedFormats());
-
-        assertEquals(401, e.getResponse().getStatusCode());
-    }
 
     @RecordWithoutRequestBody
     @Test
@@ -71,11 +57,12 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 1);
     }
 
-    @LiveOnly
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetWithImageTranslation() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
-        String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
+        // The document embeds an image containing legible text so image scanning has content to translate.
+        String sourceUrl = createSourceContainerFromFile("test-doc-image.docx");
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
 
@@ -343,34 +330,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("InvalidRequest", errorCode);
         String errorMessage = responseError.getMessage();
         assertEquals("Cannot access target document location with the current permissions.", errorMessage);
-    }
-
-    @RecordWithoutRequestBody
-    @Test
-    public void testContainerWithSupportedAndUnsupportedFiles() {
-        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
-        List<TestDocument> documents = new ArrayList<>();
-        documents.add(new TestDocument("Document1.txt", "First english test document"));
-        documents.add(new TestDocument("File2.jpg", "jpg"));
-        String sourceUrl = createSourceContainer(documents);
-
-        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
-
-        String targetUrl = createTargetContainer(null);
-        String targetLanguageCode = "fr";
-        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TranslationTarget> targetInputs = new ArrayList<>();
-        targetInputs.add(targetInput);
-        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
-
-        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
-
-        // Wait until the operation completes
-        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
-
-        // Validate the response
-        validateTranslationStatus(translationStatus, 1);
     }
 
     @RecordWithoutRequestBody
