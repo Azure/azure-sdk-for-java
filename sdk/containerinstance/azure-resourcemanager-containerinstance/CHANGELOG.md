@@ -1,15 +1,5 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.53.11 (2026-07-01)
 
 ### Other Changes
@@ -36,6 +26,7 @@
 - Upgraded `azure-storage-file-share` from `12.29.2` to version `12.29.3`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.8`.
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
 
 ## 2.53.9 (2026-03-30)
 
