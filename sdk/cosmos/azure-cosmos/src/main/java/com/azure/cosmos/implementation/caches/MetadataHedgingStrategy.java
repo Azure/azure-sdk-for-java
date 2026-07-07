@@ -263,8 +263,9 @@ public class MetadataHedgingStrategy {
      * Semantics (mirrors the .NET flow):
      * <ul>
      *   <li>The primary is subscribed immediately (single, shared subscription).</li>
-     *   <li>The hedge subscription is delayed by {@code threshold}; if the primary settles with a
-     *       non-regional outcome before then, the hedge is cancelled before it starts (no phantom hedge).</li>
+     *   <li>The hedge is fired as soon as either {@code threshold} elapses (the primary is slow) or the
+     *       primary settles with a <i>regional</i> failure before then; a non-regional primary outcome
+     *       cancels the gate before the hedge subscribes (no phantom hedge).</li>
      *   <li>The first branch to produce a <i>winning</i> outcome wins -- primary on any non-regional
      *       outcome, hedge only on success -- so a hedge can never override a definitive primary answer.</li>
      *   <li>If neither branch wins (primary regional failure AND hedge non-success), the primary's own
@@ -288,19 +289,32 @@ public class MetadataHedgingStrategy {
 
         AtomicBoolean hedgeStarted = new AtomicBoolean(false);
 
-        // Materialize the primary once so both the race and the fallback share a single subscription.
+        // Materialize the primary once so the race, the early-hedge gate and the fallback all share a
+        // single subscription.
         Mono<Attempt<T>> primaryAttempt = primary
             .map(v -> new Attempt<>(Origin.PRIMARY, primaryRegion, v, null, BranchOutcome.SUCCESS))
             .onErrorResume(e -> Mono.just(
                 new Attempt<T>(Origin.PRIMARY, primaryRegion, null, e, classifier.apply(e))))
             .cache();
 
-        Mono<Attempt<T>> hedgeAttempt = hedge
-            .doOnSubscribe(s -> hedgeStarted.set(true))
-            .map(v -> new Attempt<>(Origin.HEDGE, hedgeRegion, v, null, BranchOutcome.SUCCESS))
-            .onErrorResume(e -> Mono.just(
-                new Attempt<T>(Origin.HEDGE, hedgeRegion, null, e, classifier.apply(e))))
-            .delaySubscription(threshold);
+        // Fire the single hedge as soon as EITHER the threshold elapses (the primary is slow) OR the
+        // primary settles with a regional failure before the threshold -- mirroring the .NET flow
+        // ("primary is slow, or hit a regional failure -> fire one hedge"). A non-regional primary
+        // outcome (success or definitive error) never triggers an early hedge; in that case the primary
+        // has already won the race below and this gate is cancelled before the hedge subscribes.
+        Mono<Boolean> hedgeGate = Flux.merge(
+                Mono.delay(threshold).thenReturn(Boolean.TRUE),
+                primaryAttempt.flatMap(attempt -> attempt.outcome == BranchOutcome.REGIONAL_FAILURE
+                    ? Mono.just(Boolean.TRUE)
+                    : Mono.never()))
+            .next();
+
+        Mono<Attempt<T>> hedgeAttempt = hedgeGate.then(
+            hedge
+                .doOnSubscribe(s -> hedgeStarted.set(true))
+                .map(v -> new Attempt<>(Origin.HEDGE, hedgeRegion, v, null, BranchOutcome.SUCCESS))
+                .onErrorResume(e -> Mono.just(
+                    new Attempt<T>(Origin.HEDGE, hedgeRegion, null, e, classifier.apply(e)))));
 
         return Flux.merge(primaryAttempt.flux(), hedgeAttempt.flux())
             .filter(Attempt::isWinner)

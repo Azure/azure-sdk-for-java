@@ -123,6 +123,27 @@ public class MetadataHedgingStrategyTest {
     }
 
     @Test(groups = "unit")
+    public void primaryFastRegionalFailure_hedgeFiresBeforeThreshold() {
+        // Large threshold: if the hedge only fired on the threshold timer this would take ~5s. Because
+        // the primary fails regionally immediately, the hedge must fire right away (mirroring .NET
+        // "primary hit a regional failure -> fire one hedge") and win well under the threshold.
+        Duration largeThreshold = Duration.ofSeconds(5);
+        long startNanos = System.nanoTime();
+        MetadataHedgingStrategy.HedgeResult<String> r = run(
+            Mono.error(new RegionalError("503-fast")),
+            Mono.just("H").delayElement(Duration.ofMillis(50)),
+            largeThreshold);
+        Duration elapsed = Duration.ofNanos(System.nanoTime() - startNanos);
+        assertFalse(r.isError());
+        assertEquals(r.getValue(), "H");
+        assertTrue(r.isHedgeFired());
+        assertTrue(r.isHedgeWon());
+        assertTrue(elapsed.compareTo(Duration.ofSeconds(2)) < 0,
+            "hedge should fire immediately on a fast primary regional failure, not wait the full "
+                + "threshold; elapsed=" + elapsed);
+    }
+
+    @Test(groups = "unit")
     public void primaryRegional_hedgeAlsoFails_primaryReturned() {
         MetadataHedgingStrategy.HedgeResult<String> r = run(
             Mono.error(new RegionalError("primary-503")),

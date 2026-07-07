@@ -7296,6 +7296,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
+
+            // Honor per-request excluded regions on non-document ReadFeed reads so a region-pinned read
+            // (e.g. a PartitionKeyRange metadata-hedging branch) is actually routed to its intended
+            // region. Only applied when excluded regions are explicitly set, so all other callers are
+            // unaffected.
+            List<String> readFeedExcludedRegions = nonNullOptions.getExcludedRegions();
+            if (readFeedExcludedRegions != null && !readFeedExcludedRegions.isEmpty()) {
+                request.requestContext.setExcludeRegions(readFeedExcludedRegions);
+            }
             return request;
         };
 

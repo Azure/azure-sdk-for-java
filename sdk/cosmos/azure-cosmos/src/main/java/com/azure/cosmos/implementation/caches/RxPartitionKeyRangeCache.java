@@ -328,7 +328,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                         if (metaDataDiagnosticsContext != null && hedgeResult.isHedgeFired()) {
                             metaDataDiagnosticsContext.addMetaDataDiagnostic(
                                 new MetadataDiagnosticsContext.MetadataHedgeDiagnostics(
-                                    hedgeStart, Instant.now(), null,
+                                    hedgeStart, Instant.now(), probe.getActivityId().toString(),
                                     hedgeResult.isHedgeFired(), hedgeResult.isHedgeWon(),
                                     hedgeResult.getWinningRegion()));
                         }
