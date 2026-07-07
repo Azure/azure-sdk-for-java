@@ -93,12 +93,12 @@ table.
 | Video (mp4, mov) | `prebuilt-video` |
 | Image-only analyzer | `prebuilt-image` |
 
-> ⚠️ **Only modality-level prebuilts are valid as `baseAnalyzerId` for
+> ⚠️ **Only modality-level prebuilt analyzers are valid as `baseAnalyzerId` for
 > custom analyzers.** `*Search` variants (`prebuilt-documentSearch`,
-> `prebuilt-audioSearch`, `prebuilt-videoSearch`), task-specific prebuilts
+> `prebuilt-audioSearch`, `prebuilt-videoSearch`), task-specific prebuilt analyzers
 > (`prebuilt-invoice`, `prebuilt-receipt`, `prebuilt-idDocument`), and
 > `prebuilt-layout` are **not** accepted here — the service returns
-> `InvalidBaseAnalyzerId`. Those prebuilts can still be called directly as
+> `InvalidBaseAnalyzerId`. Those prebuilt analyzers can still be called directly as
 > standalone analyzers via
 > `client.beginAnalyze("prebuilt-invoice", ...)`. See the
 > [analyzer-reference docs](https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/analyzer-reference#baseanalyzerid).

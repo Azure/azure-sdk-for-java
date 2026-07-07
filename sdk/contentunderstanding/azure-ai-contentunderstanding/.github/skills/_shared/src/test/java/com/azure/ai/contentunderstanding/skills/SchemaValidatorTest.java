@@ -312,7 +312,7 @@ class SchemaValidatorTest {
         // Sanity check: the allow-list must NOT include `*Search` variants,
         // `prebuilt-invoice`, or `prebuilt-receipt` — these return
         // `InvalidBaseAnalyzerId` if used as `baseAnalyzerId` for a custom
-        // analyzer. Only modality-level prebuilts are valid.
+        // analyzer. Only modality-level prebuilt analyzers are valid.
         Set<String> expected = new LinkedHashSet<>();
         expected.add("prebuilt-document");
         expected.add("prebuilt-audio");
