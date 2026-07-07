@@ -25,7 +25,10 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerEndpoint;
 import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -246,6 +249,24 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
                 assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
                 JmsPoolConnectionFactory poolConnectionFactory = context.getBean(JmsPoolConnectionFactory.class);
                 assertThat(poolConnectionFactory.getConnectionFactory())
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void listenerContainerUsesCustomServiceBusJmsConnectionFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium"
+            )
+            .run(context -> {
+                DefaultJmsListenerContainerFactory listenerContainerFactory =
+                    (DefaultJmsListenerContainerFactory) context.getBean("jmsListenerContainerFactory");
+                DefaultMessageListenerContainer container =
+                    listenerContainerFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+
+                assertThat(container.getConnectionFactory())
                     .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
             });
     }
