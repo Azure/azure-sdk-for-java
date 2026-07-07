@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
+import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -940,5 +941,89 @@ public class RxPartitionKeyRangeCacheTest {
                 System.setProperty(flag, savedFlag);
             }
         }
+    }
+
+    @Test(groups = "unit")
+    public void initiatingClientReleasedAfterCloseWhileSiblingKeepsSharedEntryAlive() throws Exception {
+        // Regression guard for the shared-cache owner-retention leak: the client that first populates
+        // a collectionRid must become GC-eligible after close(), even while a sibling client keeps the
+        // shared registry entry (and its AsyncCacheNonBlocking) alive. The initial routing-map load
+        // must not pin the initiating client's object graph (RxDocumentClientImpl, collection cache,
+        // diagnostics) via the cached Mono's upstream source chain.
+        URI endpoint = URI.create("https://test-shared-pkr-owner-release.documents.azure.com:443/");
+
+        // Sibling client keeps the shared entry alive for the whole test, so the only thing that could
+        // retain client A is the shared cache itself.
+        RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+        try {
+            assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+                .isEqualTo(1);
+
+            WeakReference<RxPartitionKeyRangeCache> weakA = populateThenCloseInitiatingClient(endpoint);
+
+            // A released its refcount on close(); the entry is still alive via cacheB.
+            assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+                .isEqualTo(1);
+
+            boolean collected = false;
+            long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(15);
+            while (System.nanoTime() < deadlineNanos) {
+                System.gc();
+                System.runFinalization();
+                Thread.sleep(100);
+                if (weakA.get() == null) {
+                    collected = true;
+                    break;
+                }
+            }
+
+            assertThat(collected)
+                .as("client A must be GC-eligible after close() even though a sibling keeps the shared "
+                    + "cache entry alive; the shared routing map must not retain A's object graph")
+                .isTrue();
+        } finally {
+            cacheB.close();
+        }
+
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+            .isZero();
+    }
+
+    // Populates the shared routing map with an isolated client A, closes it, and returns a weak
+    // reference to it. A is created in this separate frame (and only referenced by the local vars
+    // here) so it can't be kept alive by the caller's stack once this method returns.
+    private static WeakReference<RxPartitionKeyRangeCache> populateThenCloseInitiatingClient(URI endpoint) {
+        RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+
+        String collectionRid = "owner-release-coll";
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Arrays.asList(range));
+        when(response.getContinuationToken()).thenReturn("etag-owner-release");
+
+        when(collA.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenReturn(Flux.just(response));
+
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        // The init Mono captures cacheA (its client, collection cache, diagnostics); populate the
+        // shared routing map so that captured Mono would be stored in the shared cache.
+        cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()).block();
+        cacheA.close();
+
+        return new WeakReference<>(cacheA);
     }
 }
