@@ -476,6 +476,17 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/agentserver/**",
+      "words": [
+        "changeit",
+        "dotenv",
+        "jaxrs",
+        "noprompt",
+        "PKIX",
+        "trustcacerts"
+      ]
+    },
+    {
       "filename": "sdk/planetarycomputer/**",
       "words": [
         "afmhot",
