@@ -1,15 +1,5 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.55.3 (2026-07-01)
 
 ### Other Changes
@@ -34,6 +24,7 @@
 - Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.5`.
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
 - Upgraded `azure-resourcemanager-dns` from `2.53.6` to version `2.53.8`.
+
 
 ## 2.55.1 (2026-03-30)
 
