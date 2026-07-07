@@ -24,8 +24,8 @@ class ServiceBusJmsConnectionFactoryProvider {
     private final AzureServiceBusJmsProperties properties;
     private final List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
     private final boolean passwordlessEnabled;
-    private final String hostName;
-    private final TokenCredentialProvider tokenCredentialProvider;
+    private String hostName;
+    private TokenCredentialProvider tokenCredentialProvider;
 
     ServiceBusJmsConnectionFactoryProvider(
         AzureServiceBusJmsProperties properties,
@@ -34,23 +34,6 @@ class ServiceBusJmsConnectionFactoryProvider {
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
         this.passwordlessEnabled = properties.isPasswordlessEnabled();
-        if (passwordlessEnabled) {
-            this.hostName = properties.getNamespace()
-                + "."
-                + properties.getProfile().getEnvironment().getServiceBusDomainName();
-
-            Properties passwordlessProperties = properties.toPasswordlessProperties();
-            enhancePasswordlessProperties(
-                AzureServiceBusJmsProperties.PREFIX,
-                properties,
-                passwordlessProperties);
-
-            this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
-                new TokenCredentialProviderOptions(passwordlessProperties));
-        } else {
-            this.hostName = null;
-            this.tokenCredentialProvider = null;
-        }
     }
 
     ServiceBusJmsConnectionFactory createDefaultServiceBusJmsConnectionFactory() {
@@ -60,13 +43,34 @@ class ServiceBusJmsConnectionFactoryProvider {
                 new ServiceBusJmsConnectionFactorySettings());
         }
 
+        initializePasswordlessStateIfNeeded();
         Assert.state(tokenCredentialProvider != null, "TokenCredentialProvider must not be null when passwordless is enabled");
         Assert.state(hostName != null, "Host name must not be null when passwordless is enabled");
         TokenCredential tokenCredential = tokenCredentialProvider.get();
+        Assert.notNull(tokenCredential, "TokenCredentialProvider must provide a non-null TokenCredential");
         return new ServiceBusJmsConnectionFactory(
             tokenCredential,
             hostName,
             new ServiceBusJmsConnectionFactorySettings());
+    }
+
+    private synchronized void initializePasswordlessStateIfNeeded() {
+        if (tokenCredentialProvider != null && hostName != null) {
+            return;
+        }
+
+        hostName = properties.getNamespace()
+            + "."
+            + properties.getProfile().getEnvironment().getServiceBusDomainName();
+
+        Properties passwordlessProperties = properties.toPasswordlessProperties();
+        enhancePasswordlessProperties(
+            AzureServiceBusJmsProperties.PREFIX,
+            properties,
+            passwordlessProperties);
+
+        tokenCredentialProvider = TokenCredentialProvider.createDefault(
+            new TokenCredentialProviderOptions(passwordlessProperties));
     }
 
     ServiceBusJmsConnectionFactory createConnectionFactory(
