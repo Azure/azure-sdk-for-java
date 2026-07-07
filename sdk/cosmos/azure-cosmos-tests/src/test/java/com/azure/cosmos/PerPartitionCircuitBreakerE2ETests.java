@@ -4301,6 +4301,77 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
+    /**
+     * Regression validation for the Per-Partition Circuit Breaker (PPCB) diagnostics fix (see PR 49734).
+     *
+     * When PPCB is explicitly enabled via the {@code COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG}
+     * system property, the {@code clientCfgs} section of the emitted {@link CosmosDiagnostics} must
+     * include the {@code partitionLevelCircuitBreakerCfg} field. A prior regression silently dropped
+     * this field. This test asserts that all the expected {@code clientCfgs} keys - including
+     * {@code partitionLevelCircuitBreakerCfg} - are present in the diagnostics of a real operation.
+     */
+    @Test(groups = { "circuit-breaker-misc-direct" }, timeOut = TIMEOUT)
+    public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        try (CosmosAsyncClient client = getClientBuilder().buildAsyncClient()) {
+
+            CosmosAsyncContainer container = client
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            TestObject item = TestObject.create();
+
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(item, new PartitionKey(item.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+
+            String diagnosticsString = createResponse.getDiagnostics().toString();
+
+            assertThat(diagnosticsString)
+                .as("clientCfgs section should be present in the CosmosDiagnostics")
+                .contains("\"clientCfgs\"");
+
+            // All the clientCfgs keys unconditionally emitted by DiagnosticsClientConfigSerializer.
+            List<String> expectedClientCfgsKeys = Arrays.asList(
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg");
+
+            for (String expectedKey : expectedClientCfgsKeys) {
+                assertThat(diagnosticsString)
+                    .as("clientCfgs key '%s' should be present in the CosmosDiagnostics", expectedKey)
+                    .contains("\"" + expectedKey + "\"");
+            }
+
+            // The regression fix: PPCB config must be present in clientCfgs when explicitly enabled.
+            assertThat(diagnosticsString)
+                .as("partitionLevelCircuitBreakerCfg should be present in clientCfgs when PPCB is enabled")
+                .contains("\"partitionLevelCircuitBreakerCfg\"");
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+        }
+    }
+
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
         switch (faultInjectionOperationType) {
