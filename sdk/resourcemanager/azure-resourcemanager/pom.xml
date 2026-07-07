@@ -182,7 +182,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-eventhubs</artifactId>
-      <version>2.53.9</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;dependency} -->
+      <version>2.53.10</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
