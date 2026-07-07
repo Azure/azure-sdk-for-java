@@ -17,7 +17,7 @@
 
 ### Breaking Changes
 
-- Added the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively) to the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience methods.
+- Replaced the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience overload `translate(String, DocumentTranslateContent, String, String, Boolean)` with `translate(String, DocumentTranslateContent, String, String, String, Boolean, Boolean)`, adding the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively). Existing callers of the previous overload must update their call sites to the new signature.
 
 ## 1.0.8 (2026-05-05)
 
