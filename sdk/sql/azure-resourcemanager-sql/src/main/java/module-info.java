@@ -14,5 +14,4 @@ module com.azure.resourcemanager.sql {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.sql.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.sql.models to com.azure.core;
-    opens com.azure.resourcemanager.sql.implementation.models to com.azure.core;
 }
