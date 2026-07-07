@@ -4310,7 +4310,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
      * this field. This test asserts that all the expected {@code clientCfgs} keys - including
      * {@code partitionLevelCircuitBreakerCfg} - are present in the diagnostics of a real operation.
      */
-    @Test(groups = { "circuit-breaker-misc-direct" }, timeOut = TIMEOUT)
+    @Test(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = TIMEOUT)
     public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
 
         System.setProperty(
