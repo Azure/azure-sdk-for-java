@@ -163,7 +163,6 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
                                             if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayRegionalEndpoint())) {
-                                                logger.info("OpenConnectionAndInitCaches: addressCacheByEndpoints contains {}", readEndpoint.getGatewayRegionalEndpoint());
                                                 EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayRegionalEndpoint());
                                                 return this.resolveAddressesPerCollection(
                                                         endpointCache,
