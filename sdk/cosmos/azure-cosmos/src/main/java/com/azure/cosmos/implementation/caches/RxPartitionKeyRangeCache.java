@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -51,12 +52,20 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
+    private final MetadataHedgingStrategy metadataHedgingStrategy;
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
+        this(client, collectionCache, null);
+    }
+
+    public RxPartitionKeyRangeCache(RxDocumentClientImpl client,
+                                    RxCollectionCache collectionCache,
+                                    MetadataHedgingStrategy metadataHedgingStrategy) {
         this.routingMapCache = new AsyncCacheNonBlocking<>();
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
+        this.metadataHedgingStrategy = metadataHedgingStrategy;
     }
 
     /* (non-Javadoc)
@@ -254,39 +263,111 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             collectionRid,
             previousChangeFeedIfNoneMatch);
 
-        Flux<FeedResponse<PartitionKeyRange>> rangesObs =
-            getPartitionKeyRange(
-                metaDataDiagnosticsContext,
-                collectionRid,
-                previousChangeFeedIfNoneMatch,
-                properties);
+        Mono<CollectionRoutingMap> result =
+            readRoutingMapWithOptionalHedging(
+                metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties, previousChangeFeedIfNoneMatch);
 
-        AtomicReference<String> continuationToken = new AtomicReference<>(previousChangeFeedIfNoneMatch);
-        List<PartitionKeyRange> ranges = new ArrayList<>();
+        return result.doFinally(signal -> {
+            if (metaDataDiagnosticsContext != null) {
+                Instant pkRangesCallEndTime = Instant.now();
+                MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
+                    new MetadataDiagnosticsContext.MetadataDiagnostics(
+                        pkRangesCallStartTime,
+                        pkRangesCallEndTime,
+                        MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
+                metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+            }
+        });
+    }
 
-        return rangesObs
-            .doOnNext(response -> {
-                ranges.addAll(response.getResults());
-                continuationToken.set(response.getContinuationToken());
-            })
-            .collectList()
-            .flatMap(allResults -> {
-                CollectionRoutingMap updatedMap =
-                    updateRoutingMap(collectionRid, previousRoutingMap, ranges, continuationToken.get());
+    // When metadata hedging is eligible (opt-in/PPAF + >= 2 regions), race two region-pinned full routing-map reads.
+    // Each branch reads all its pages from a single region (via excluded-regions pinning), so continuation integrity
+    // is preserved and the winning region serves a consistent routing map. Otherwise the original single read is used.
+    private Mono<CollectionRoutingMap> readRoutingMapWithOptionalHedging(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        CollectionRoutingMap previousRoutingMap,
+        Map<String, Object> properties,
+        String previousChangeFeedIfNoneMatch) {
 
-                return Mono.just(updatedMap);
-            })
-            .doFinally(signal -> {
-                if (metaDataDiagnosticsContext != null) {
-                    Instant pkRangesCallEndTime = Instant.now();
-                    MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
-                        new MetadataDiagnosticsContext.MetadataDiagnostics(
-                            pkRangesCallStartTime,
-                            pkRangesCallEndTime,
-                            MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
-                    metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+        if (this.metadataHedgingStrategy != null && this.metadataHedgingStrategy.isEffectivelyEnabled()) {
+            RxDocumentServiceRequest probe = RxDocumentServiceRequest.create(this.clientContext,
+                OperationType.ReadFeed, collectionRid, ResourceType.PartitionKeyRange, null);
+            probe.requestContext.resolvedCollectionRid = collectionRid;
+            probe.setResourceId(collectionRid);
+
+            List<RegionalRoutingContext> ctxs = this.metadataHedgingStrategy.getApplicableReadRegions(probe);
+            if (ctxs.size() >= 2) {
+                String primaryRegion = this.metadataHedgingStrategy.getRegionName(ctxs.get(0), probe);
+                String hedgeRegion = this.metadataHedgingStrategy.getRegionName(ctxs.get(1), probe);
+                List<String> allRegions = new ArrayList<>();
+                for (RegionalRoutingContext ctx : ctxs) {
+                    String name = this.metadataHedgingStrategy.getRegionName(ctx, probe);
+                    if (name != null && !allRegions.contains(name)) {
+                        allRegions.add(name);
+                    }
                 }
-            });
+                List<String> primaryExcluded =
+                    MetadataHedgingStrategy.excludedRegionsForTarget(null, allRegions, primaryRegion);
+                List<String> hedgeExcluded =
+                    MetadataHedgingStrategy.excludedRegionsForTarget(null, allRegions, hedgeRegion);
+
+                Mono<CollectionRoutingMap> primaryMono = readRoutingMapOnce(
+                    metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
+                    previousChangeFeedIfNoneMatch, primaryExcluded);
+                Mono<CollectionRoutingMap> hedgeMono = readRoutingMapOnce(
+                    metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
+                    previousChangeFeedIfNoneMatch, hedgeExcluded);
+
+                Instant hedgeStart = Instant.now();
+                return this.metadataHedgingStrategy.executeHedged(
+                        primaryMono, primaryRegion, hedgeMono, hedgeRegion,
+                        this.metadataHedgingStrategy.getThreshold(),
+                        MetadataHedgingStrategy::classifyPartitionKeyRangeThrowable)
+                    .flatMap(hedgeResult -> {
+                        if (metaDataDiagnosticsContext != null && hedgeResult.isHedgeFired()) {
+                            metaDataDiagnosticsContext.addMetaDataDiagnostic(
+                                new MetadataDiagnosticsContext.MetadataHedgeDiagnostics(
+                                    hedgeStart, Instant.now(), null,
+                                    hedgeResult.isHedgeFired(), hedgeResult.isHedgeWon(),
+                                    hedgeResult.getWinningRegion()));
+                        }
+                        return hedgeResult.unwrap();
+                    });
+            }
+        }
+
+        return readRoutingMapOnce(
+            metaDataDiagnosticsContext, collectionRid, previousRoutingMap, properties,
+            previousChangeFeedIfNoneMatch, null);
+    }
+
+    private Mono<CollectionRoutingMap> readRoutingMapOnce(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        CollectionRoutingMap previousRoutingMap,
+        Map<String, Object> properties,
+        String previousChangeFeedIfNoneMatch,
+        List<String> excludedRegions) {
+
+        return Mono.defer(() -> {
+            AtomicReference<String> continuationToken = new AtomicReference<>(previousChangeFeedIfNoneMatch);
+            List<PartitionKeyRange> ranges = new ArrayList<>();
+
+            return getPartitionKeyRange(
+                    metaDataDiagnosticsContext, collectionRid, previousChangeFeedIfNoneMatch, properties, excludedRegions)
+                .doOnNext(response -> {
+                    ranges.addAll(response.getResults());
+                    continuationToken.set(response.getContinuationToken());
+                })
+                .collectList()
+                .flatMap(allResults -> {
+                    CollectionRoutingMap updatedMap =
+                        updateRoutingMap(collectionRid, previousRoutingMap, ranges, continuationToken.get());
+
+                    return Mono.just(updatedMap);
+                });
+        });
     }
 
     private CollectionRoutingMap updateRoutingMap(
@@ -327,7 +408,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         MetadataDiagnosticsContext metaDataDiagnosticsContext,
         String collectionRid,
         String previousRoutingMapContinuationToken,
-        Map<String, Object> properties) {
+        Map<String, Object> properties,
+        List<String> excludedRegions) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
             OperationType.ReadFeed,
             collectionRid,
@@ -349,6 +431,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
             if (properties != null) {
                 ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
+            }
+
+            // Pin this branch to a single region (exclude the others) so the whole routing-map read -- all pages --
+            // is served from one region, keeping the continuation chain consistent.
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                cosmosQueryRequestOptions.setExcludedRegions(excludedRegions);
             }
 
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions);

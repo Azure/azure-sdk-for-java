@@ -3,12 +3,20 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -31,10 +39,141 @@ import java.util.function.Function;
  */
 public class MetadataHedgingStrategy {
 
+    private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(1500);
+
+    // Per-client collaborators (null in the unit-test / no-arg construction path).
+    private final GlobalEndpointManager globalEndpointManager;
+    private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover perPartitionAutomaticFailoverManager;
+    // Tri-state opt-in: TRUE/FALSE force on/off; null -> follow the account PPAF state.
+    private final Boolean enabledOverride;
+    private final Duration threshold;
+
+    /** Test / core-only constructor: the generic race ({@link #executeHedged}) can be used without a client. */
+    public MetadataHedgingStrategy() {
+        this(null, null, null, DEFAULT_THRESHOLD);
+    }
+
+    public MetadataHedgingStrategy(
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover perPartitionAutomaticFailoverManager,
+        Boolean enabledOverride,
+        Duration threshold) {
+        this.globalEndpointManager = globalEndpointManager;
+        this.perPartitionAutomaticFailoverManager = perPartitionAutomaticFailoverManager;
+        this.enabledOverride = enabledOverride;
+        this.threshold = threshold == null ? DEFAULT_THRESHOLD : threshold;
+    }
+
     /**
-     * Classification of a single branch's completed outcome. Aligned with the SDK's cross-region
-     * retry semantics: only a {@link #REGIONAL_FAILURE} is worth hedging; a {@link #DEFINITIVE} error
-     * is authoritative and returned verbatim.
+     * The effective per-request opt-in: an explicit override wins; otherwise follow the account's live PPAF state
+     * (there is no preview/GA package split in Java, so the .NET "preview=on" arm collapses to this).
+     */
+    public boolean isEffectivelyEnabled() {
+        if (this.enabledOverride != null) {
+            return this.enabledOverride;
+        }
+        return this.perPartitionAutomaticFailoverManager != null
+            && this.perPartitionAutomaticFailoverManager.isPerPartitionAutomaticFailoverEnabled();
+    }
+
+    public Duration getThreshold() {
+        return this.threshold;
+    }
+
+    /**
+     * The ordered applicable read regions for a request (honoring excluded + per-partition-unavailable regions).
+     * Returns an empty list when there is no endpoint manager (test path) or fewer than two regions.
+     */
+    public List<RegionalRoutingContext> getApplicableReadRegions(RxDocumentServiceRequest request) {
+        if (this.globalEndpointManager == null) {
+            return new ArrayList<>();
+        }
+        List<RegionalRoutingContext> ctxs =
+            new ArrayList<>(this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request));
+        return ctxs;
+    }
+
+    public String getRegionName(RegionalRoutingContext ctx, RxDocumentServiceRequest request) {
+        if (this.globalEndpointManager == null || ctx == null || ctx.getGatewayRegionalEndpoint() == null) {
+            return null;
+        }
+        return this.globalEndpointManager.getRegionName(ctx.getGatewayRegionalEndpoint(), request.getOperationType());
+    }
+
+    /**
+     * Exclude every applicable region except {@code target}, so a branch is pinned to a single region with inner
+     * cross-region retry suppressed. Mirrors {@code RxDocumentClientImpl.getEffectiveExcludedRegionsForHedging}.
+     */
+    public static List<String> excludedRegionsForTarget(List<String> baseExcluded, List<String> applicable, String target) {
+        List<String> excluded = new ArrayList<>();
+        if (baseExcluded != null) {
+            excluded.addAll(baseExcluded);
+        }
+        for (String r : applicable) {
+            if (r != null && !r.equals(target) && !excluded.contains(r)) {
+                excluded.add(r);
+            }
+        }
+        return excluded;
+    }
+
+    /**
+     * Run a single-request metadata read (Collection Read) with hedging when eligible. Each branch is a
+     * region-pinned clone (via {@code routeToLocation} + excluded-regions); otherwise the original send is returned
+     * unchanged.
+     */
+    public Mono<RxDocumentServiceResponse> executeMetadataRead(
+        RxDocumentServiceRequest request,
+        Function<RxDocumentServiceRequest, Mono<RxDocumentServiceResponse>> sendFunc,
+        Function<Throwable, BranchOutcome> classifier,
+        Consumer<HedgeResult<RxDocumentServiceResponse>> telemetrySink) {
+
+        if (!isEffectivelyEnabled() || this.globalEndpointManager == null) {
+            return sendFunc.apply(request);
+        }
+
+        List<RegionalRoutingContext> ctxs = getApplicableReadRegions(request);
+        if (ctxs.size() < 2) {
+            return sendFunc.apply(request);
+        }
+
+        RegionalRoutingContext primaryCtx = ctxs.get(0);
+        RegionalRoutingContext hedgeCtx = ctxs.get(1);
+        String primaryRegion = getRegionName(primaryCtx, request);
+        String hedgeRegion = getRegionName(hedgeCtx, request);
+
+        List<String> allRegions = new ArrayList<>();
+        for (RegionalRoutingContext ctx : ctxs) {
+            String name = getRegionName(ctx, request);
+            if (name != null && !allRegions.contains(name)) {
+                allRegions.add(name);
+            }
+        }
+        List<String> baseExcluded = request.requestContext == null ? null : request.requestContext.getExcludeRegions();
+
+        RxDocumentServiceRequest primaryReq = request.clone();
+        primaryReq.requestContext.routeToLocation(primaryCtx);
+        primaryReq.requestContext.setExcludeRegions(excludedRegionsForTarget(baseExcluded, allRegions, primaryRegion));
+
+        RxDocumentServiceRequest hedgeReq = request.clone();
+        hedgeReq.requestContext.routeToLocation(hedgeCtx);
+        hedgeReq.requestContext.setExcludeRegions(excludedRegionsForTarget(baseExcluded, allRegions, hedgeRegion));
+
+        Mono<RxDocumentServiceResponse> primaryMono = Mono.defer(() -> sendFunc.apply(primaryReq));
+        Mono<RxDocumentServiceResponse> hedgeMono = Mono.defer(() -> sendFunc.apply(hedgeReq));
+
+        return executeHedged(primaryMono, primaryRegion, hedgeMono, hedgeRegion, this.threshold, classifier)
+            .flatMap(result -> {
+                if (telemetrySink != null && result.isHedgeFired()) {
+                    telemetrySink.accept(result);
+                }
+                return result.unwrap();
+            });
+    }
+
+    /**
+     * Classification of a single branch's completed outcome. Only a {@link #REGIONAL_FAILURE} is worth hedging;
+     * a {@link #DEFINITIVE} error is authoritative and returned verbatim.
      */
     public enum BranchOutcome {
         SUCCESS,

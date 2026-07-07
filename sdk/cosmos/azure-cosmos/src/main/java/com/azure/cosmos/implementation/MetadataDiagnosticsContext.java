@@ -69,6 +69,28 @@ public class MetadataDiagnosticsContext {
         }
     }
 
+    @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
+    public static class MetadataHedgeDiagnostics extends MetadataDiagnostics {
+        public volatile String activityId;
+        public volatile boolean hedgeFired;
+        public volatile boolean hedgeWon;
+        public volatile String winningRegion;
+
+        public MetadataHedgeDiagnostics(
+            Instant startTimeUTC,
+            Instant endTimeUTC,
+            String activityId,
+            boolean hedgeFired,
+            boolean hedgeWon,
+            String winningRegion) {
+            super(startTimeUTC, endTimeUTC, MetadataType.METADATA_HEDGE);
+            this.activityId = activityId;
+            this.hedgeFired = hedgeFired;
+            this.hedgeWon = hedgeWon;
+            this.winningRegion = winningRegion;
+        }
+    }
+
     static class MetaDataDiagnosticSerializer extends StdSerializer<MetadataDiagnostics> {
 
         private static final long serialVersionUID = -6585518025594634820L;
@@ -95,6 +117,14 @@ public class MetadataDiagnosticsContext {
                 jsonGenerator.writeStringField("collectionRid", ((ContainerLookupMetadataDiagnostics)metaDataDiagnostic).collectionRid);
             }
 
+            if (metaDataDiagnostic instanceof MetadataHedgeDiagnostics) {
+                MetadataHedgeDiagnostics hedge = (MetadataHedgeDiagnostics) metaDataDiagnostic;
+                jsonGenerator.writeStringField("activityId", hedge.activityId);
+                jsonGenerator.writeBooleanField("hedgeFired", hedge.hedgeFired);
+                jsonGenerator.writeBooleanField("hedgeWon", hedge.hedgeWon);
+                jsonGenerator.writeStringField("winningRegion", hedge.winningRegion);
+            }
+
             jsonGenerator.writeEndObject();
         }
     }
@@ -103,7 +133,8 @@ public class MetadataDiagnosticsContext {
         CONTAINER_LOOK_UP,
         PARTITION_KEY_RANGE_LOOK_UP,
         SERVER_ADDRESS_LOOKUP,
-        MASTER_ADDRESS_LOOK_UP
+        MASTER_ADDRESS_LOOK_UP,
+        METADATA_HEDGE
     }
 
 }

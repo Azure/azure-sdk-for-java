@@ -29,6 +29,7 @@ import java.net.URLEncoder;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Caches collection information.
@@ -42,6 +43,24 @@ public class RxClientCollectionCache extends RxCollectionCache {
     private final IAuthorizationTokenProvider tokenProvider;
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
+    private final MetadataHedgingStrategy metadataHedgingStrategy;
+
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy,
+                                   AsyncCache<String, DocumentCollection> collectionInfoByNameCache,
+                                   AsyncCache<String, DocumentCollection> collectionInfoByIdCache,
+                                   MetadataHedgingStrategy metadataHedgingStrategy) {
+        super(collectionInfoByNameCache, collectionInfoByIdCache);
+        this.diagnosticsClientContext = diagnosticsClientContext;
+        this.storeModel = storeModel;
+        this.tokenProvider = tokenProvider;
+        this.retryPolicy = retryPolicy;
+        this.sessionContainer = sessionContainer;
+        this.metadataHedgingStrategy = metadataHedgingStrategy;
+    }
 
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
                                    ISessionContainer sessionContainer,
@@ -49,12 +68,22 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                    IAuthorizationTokenProvider tokenProvider,
                                    IRetryPolicyFactory retryPolicy,
                                    AsyncCache<String, DocumentCollection> collectionInfoByNameCache, AsyncCache<String, DocumentCollection> collectionInfoByIdCache) {
-        super(collectionInfoByNameCache, collectionInfoByIdCache);
+        this(diagnosticsClientContext, sessionContainer, storeModel, tokenProvider, retryPolicy,
+            collectionInfoByNameCache, collectionInfoByIdCache, null);
+    }
+
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy,
+                                   MetadataHedgingStrategy metadataHedgingStrategy) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.storeModel = storeModel;
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
         this.sessionContainer = sessionContainer;
+        this.metadataHedgingStrategy = metadataHedgingStrategy;
     }
 
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
@@ -62,11 +91,8 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                    RxStoreModel storeModel,
                                    IAuthorizationTokenProvider tokenProvider,
                                    IRetryPolicyFactory retryPolicy) {
-        this.diagnosticsClientContext = diagnosticsClientContext;
-        this.storeModel = storeModel;
-        this.tokenProvider = tokenProvider;
-        this.retryPolicy = retryPolicy;
-        this.sessionContainer = sessionContainer;
+        this(diagnosticsClientContext, sessionContainer, storeModel, tokenProvider, retryPolicy,
+            (MetadataHedgingStrategy) null);
     }
 
     protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
@@ -120,13 +146,36 @@ public class RxClientCollectionCache extends RxCollectionCache {
         }
 
         Instant addressCallStartTime = Instant.now();
+        boolean isAadToken = tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken;
+        Function<RxDocumentServiceRequest, Mono<RxDocumentServiceResponse>> sendFunc = req -> {
+            if (isAadToken) {
+                return tokenProvider
+                    .populateAuthorizationHeader(req)
+                    .flatMap(serviceRequest -> this.storeModel.processMessage(serviceRequest));
+            }
+            return this.storeModel.processMessage(req);
+        };
+
         Mono<RxDocumentServiceResponse> responseObs;
-        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            responseObs = this.storeModel.processMessage(request);
+        if (this.metadataHedgingStrategy != null) {
+            responseObs = this.metadataHedgingStrategy.executeMetadataRead(
+                request,
+                sendFunc,
+                MetadataHedgingStrategy::classifyThrowable,
+                hedgeResult -> {
+                    if (metaDataDiagnosticsContext != null) {
+                        metaDataDiagnosticsContext.addMetaDataDiagnostic(
+                            new MetadataDiagnosticsContext.MetadataHedgeDiagnostics(
+                                addressCallStartTime,
+                                Instant.now(),
+                                request.getActivityId().toString(),
+                                hedgeResult.isHedgeFired(),
+                                hedgeResult.isHedgeWon(),
+                                hedgeResult.getWinningRegion()));
+                    }
+                });
         } else {
-            responseObs = tokenProvider
-                .populateAuthorizationHeader(request)
-                .flatMap(serviceRequest -> this.storeModel.processMessage(serviceRequest));
+            responseObs = sendFunc.apply(request);
         }
 
         return responseObs.map(response -> {
