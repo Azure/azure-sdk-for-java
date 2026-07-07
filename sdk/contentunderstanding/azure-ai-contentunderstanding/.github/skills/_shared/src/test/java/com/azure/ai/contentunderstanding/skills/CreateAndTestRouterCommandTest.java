@@ -5,11 +5,6 @@
  * Unit tests for pure helpers in CreateAndTestRouterCommand. Mirrors the
  * portion of Python's tests/test_skills_classify_route_router.py that does
  * not require mocking the Azure client.
- *
- * Note: Java wireInnerIds returns only the patched schema (errors are
- * surfaced earlier in run() during the alias cross-check), so the
- * "errors on missing alias" / "errors on extra inner" tests from Python
- * are covered at the integration level, not here.
  */
 
 package com.azure.ai.contentunderstanding.skills;
@@ -21,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,6 +111,75 @@ class CreateAndTestRouterCommandTest {
 
     @Test
     void wireInnerIdsSubstitutesMatchingAliases() {
+        // Category name is deliberately different from the analyzerId value
+        // to catch the "keyed off cat name instead of alias" regression.
+        ObjectNode outer = MAPPER.createObjectNode();
+        outer.put("baseAnalyzerId", "prebuilt-document");
+        ObjectNode config = outer.putObject("config");
+        config.put("enableSegment", true);
+        ObjectNode cats = config.putObject("contentCategories");
+        ObjectNode invCat = cats.putObject("invoice_bucket");
+        invCat.put("description", "d");
+        invCat.put("analyzerId", "invoice");
+        ObjectNode loanCat = cats.putObject("loan_bucket");
+        loanCat.put("description", "d");
+        loanCat.put("analyzerId", "loan_application");
+
+        Map<String, String> aliasToId = new LinkedHashMap<>();
+        aliasToId.put("invoice", "real-invoice-id");
+        aliasToId.put("loan_application", "real-loan-id");
+
+        CreateAndTestRouterCommand.WireResult wired =
+            CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
+
+        assertTrue(wired.errors.isEmpty(), "expected no errors, got: " + wired.errors);
+        ObjectNode patchedCats = (ObjectNode) wired.patched.get("config").get("contentCategories");
+        assertEquals("real-invoice-id",
+            patchedCats.get("invoice_bucket").get("analyzerId").asText(),
+            "invoice_bucket should be patched to the aliasToId value for 'invoice'");
+        assertEquals("real-loan-id",
+            patchedCats.get("loan_bucket").get("analyzerId").asText(),
+            "loan_bucket should be patched to the aliasToId value for 'loan_application'");
+        // Input must not be mutated.
+        assertEquals("invoice",
+            outer.get("config").get("contentCategories").get("invoice_bucket").get("analyzerId").asText(),
+            "wireInnerIds mutated its input");
+    }
+
+    @Test
+    void wireInnerIdsKeepsPrebuiltAnalyzerIdsAsIs() {
+        // analyzerId values starting with "prebuilt-" resolve to Azure
+        // service prebuilts and must NOT require a matching --inner-schema.
+        ObjectNode outer = MAPPER.createObjectNode();
+        outer.put("baseAnalyzerId", "prebuilt-document");
+        ObjectNode config = outer.putObject("config");
+        config.put("enableSegment", true);
+        ObjectNode cats = config.putObject("contentCategories");
+        ObjectNode invCat = cats.putObject("invoice");
+        invCat.put("description", "d");
+        invCat.put("analyzerId", "prebuilt-invoice");
+        ObjectNode receiptCat = cats.putObject("receipt");
+        receiptCat.put("description", "d");
+        receiptCat.put("analyzerId", "prebuilt-receipt");
+
+        // No --inner-schema needed; both categories use service prebuilts.
+        Map<String, String> aliasToId = new LinkedHashMap<>();
+
+        CreateAndTestRouterCommand.WireResult wired =
+            CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
+
+        assertTrue(wired.errors.isEmpty(), "prebuilt-* values must not need aliases; got: " + wired.errors);
+        ObjectNode patchedCats = (ObjectNode) wired.patched.get("config").get("contentCategories");
+        assertEquals("prebuilt-invoice",
+            patchedCats.get("invoice").get("analyzerId").asText(),
+            "prebuilt-invoice must be preserved as-is");
+        assertEquals("prebuilt-receipt",
+            patchedCats.get("receipt").get("analyzerId").asText(),
+            "prebuilt-receipt must be preserved as-is");
+    }
+
+    @Test
+    void wireInnerIdsReportsMissingAliasAsError() {
         ObjectNode outer = MAPPER.createObjectNode();
         outer.put("baseAnalyzerId", "prebuilt-document");
         ObjectNode config = outer.putObject("config");
@@ -127,20 +192,69 @@ class CreateAndTestRouterCommandTest {
         loanCat.put("description", "d");
         loanCat.put("analyzerId", "loan_application");
 
-        Map<String, String> aliasToId = new HashMap<>();
+        Map<String, String> aliasToId = new LinkedHashMap<>();
+        aliasToId.put("invoice", "real-invoice-id");
+        // "loan_application" alias intentionally missing.
+
+        CreateAndTestRouterCommand.WireResult wired =
+            CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
+
+        assertFalse(wired.errors.isEmpty(), "expected an error for missing alias");
+        assertTrue(
+            wired.errors.stream().anyMatch(e -> e.contains("loan_application") && e.contains("loan")),
+            "expected error to name the missing alias and category, got: " + wired.errors);
+    }
+
+    @Test
+    void wireInnerIdsReportsUnusedAliasAsError() {
+        ObjectNode outer = MAPPER.createObjectNode();
+        outer.put("baseAnalyzerId", "prebuilt-document");
+        ObjectNode config = outer.putObject("config");
+        config.put("enableSegment", true);
+        ObjectNode cats = config.putObject("contentCategories");
+        ObjectNode invCat = cats.putObject("invoice");
+        invCat.put("description", "d");
+        invCat.put("analyzerId", "invoice");
+
+        Map<String, String> aliasToId = new LinkedHashMap<>();
+        aliasToId.put("invoice", "real-invoice-id");
+        // "extra" is supplied but not referenced by any category — likely a typo.
+        aliasToId.put("extra", "real-extra-id");
+
+        CreateAndTestRouterCommand.WireResult wired =
+            CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
+
+        assertFalse(wired.errors.isEmpty(), "expected an error for unused alias");
+        assertTrue(
+            wired.errors.stream().anyMatch(e -> e.contains("extra") && e.contains("no category")),
+            "expected error to name the unused alias, got: " + wired.errors);
+    }
+
+    @Test
+    void wireInnerIdsAllowsCategoriesWithoutAnalyzerId() {
+        // Classification-only "other" bucket must not cause a wire error.
+        ObjectNode outer = MAPPER.createObjectNode();
+        outer.put("baseAnalyzerId", "prebuilt-document");
+        ObjectNode config = outer.putObject("config");
+        config.put("enableSegment", true);
+        ObjectNode cats = config.putObject("contentCategories");
+        ObjectNode invCat = cats.putObject("invoice");
+        invCat.put("description", "d");
+        invCat.put("analyzerId", "invoice");
+        ObjectNode otherCat = cats.putObject("other");
+        otherCat.put("description", "catch-all classification bucket");
+        // no analyzerId
+
+        Map<String, String> aliasToId = new LinkedHashMap<>();
         aliasToId.put("invoice", "real-invoice-id");
 
-        ObjectNode patched = CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
-        ObjectNode patchedCats = (ObjectNode) patched.get("config").get("contentCategories");
+        CreateAndTestRouterCommand.WireResult wired =
+            CreateAndTestRouterCommand.wireInnerIds(outer, aliasToId);
 
-        assertEquals("real-invoice-id",
-            patchedCats.get("invoice").get("analyzerId").asText());
-        // Unmatched alias retained — caller surfaces the error.
-        assertEquals("loan_application",
-            patchedCats.get("loan").get("analyzerId").asText());
-        // Input must not be mutated.
-        assertEquals("invoice",
-            outer.get("config").get("contentCategories").get("invoice").get("analyzerId").asText(),
-            "wireInnerIds mutated its input");
+        assertTrue(wired.errors.isEmpty(),
+            "categories without analyzerId must be allowed; got: " + wired.errors);
+        ObjectNode patchedCats = (ObjectNode) wired.patched.get("config").get("contentCategories");
+        assertFalse(patchedCats.get("other").has("analyzerId"),
+            "'other' bucket must remain analyzerId-less");
     }
 }

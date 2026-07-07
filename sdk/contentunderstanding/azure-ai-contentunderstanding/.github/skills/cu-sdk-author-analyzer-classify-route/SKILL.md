@@ -37,9 +37,9 @@ you're happy with both classification accuracy and extraction quality.
 
 ## Prerequisites
 
-Required: the `Azure.AI.ContentUnderstanding` SDK built locally (the skill
-tool references the built DLL by path), `.env` or environment variables
-with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
+Required: Maven + JDK 17+ (the skill tool is a standalone Maven module
+under `.github/skills/_shared/`), `.env` or environment variables with
+`CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 `az login`), and the model defaults configured for this resource (see
 [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java)).
 
@@ -196,7 +196,7 @@ Start from the template:
 
 ```bash
 mkdir -p .local_only/schemas
-cp sdk/contentunderstanding/Azure.AI.ContentUnderstanding/.github/skills/cu-sdk-author-analyzer-classify-route/templates/classifier_template.json \
+cp sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer-classify-route/templates/classifier_template.json \
    .local_only/schemas/<name>_classifier_v1.json
 ```
 
@@ -339,7 +339,7 @@ For each input document the tool writes two files into `--output`:
 
 - `<doc>.json` — full `AnalysisResult` with all per-segment fields and grounding.
 - `<doc>.llm.md` — the same result rendered via the SDK's
-  [`AnalysisResultExtensions.ToLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper.
+  [`LlmInputHelper.toLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper.
   For classify-and-route, the helper expands each classified segment into
   its own block with the **category in the YAML front matter**, separated by
   `*****` dividers — drop it into an LLM prompt or skim it in VS Code.

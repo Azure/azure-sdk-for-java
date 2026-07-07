@@ -12,8 +12,6 @@
 
 package com.azure.ai.contentunderstanding.skills;
 
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.BinaryData;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -129,22 +127,11 @@ final class CreateAndTestRouterCommand {
                     (ObjectNode) MAPPER.readTree(Files.readString(e.getValue()))));
         }
 
-        // Cross-check: every contentCategories[alias].analyzerId placeholder
-        // in the outer schema should have a matching inner alias.
-        JsonNode cats = outerSchema.path("config").path("contentCategories");
-        if (cats.isObject()) {
-            Iterator<String> it = cats.fieldNames();
-            while (it.hasNext()) {
-                String cat = it.next();
-                JsonNode catEntry = cats.get(cat);
-                if (catEntry.has("analyzerId") && !aliasToSchema.containsKey(cat)) {
-                    System.err.println(
-                        "[VALIDATE] outer category '" + cat
-                            + "' references an inner analyzer but no --inner-schema with that alias was provided");
-                    return 2;
-                }
-            }
-        }
+        // Cross-check is deferred until aliasToId is built (below): every
+        // outer contentCategories[].analyzerId must either start with
+        // "prebuilt-" (a service prebuilt) or resolve to an --inner-schema
+        // alias. wireInnerIds() returns any mismatches / unused inner
+        // schemas as validation errors.
 
         List<Path> inputs = enumerateInputs(inputPath);
         if (inputs.isEmpty()) {
@@ -179,8 +166,19 @@ final class CreateAndTestRouterCommand {
             aliasToId.put(e.getKey(), outerId + "_inner_" + e.getKey() + "_" + suffix);
         }
 
-        // 4. Patch outer schema to point at the real inner IDs.
-        ObjectNode wiredOuter = wireInnerIds(outerSchema, aliasToId);
+        // 4. Patch outer schema to point at the real inner IDs. This also
+        //    validates that every outer contentCategories[].analyzerId
+        //    resolves to an --inner-schema alias (or starts with "prebuilt-")
+        //    and that no --inner-schema is unused. Mirrors Python's
+        //    _patch_outer_analyzer_ids and .NET's WireInnerIds.
+        WireResult wired = wireInnerIds(outerSchema, aliasToId);
+        if (!wired.errors.isEmpty()) {
+            for (String e : wired.errors) {
+                System.err.println("[VALIDATE] " + e);
+            }
+            return 2;
+        }
+        ObjectNode wiredOuter = wired.patched;
 
         ContentUnderstandingClient client = ExtractLayoutCommand.buildClient();
         boolean reused = false;
@@ -254,29 +252,91 @@ final class CreateAndTestRouterCommand {
     }
 
     /**
-     * Replace each {@code contentCategories[alias].analyzerId} placeholder
-     * in the outer schema with the real inner analyzer ID.
+     * Result of {@link #wireInnerIds}: the (possibly patched) outer schema
+     * plus any validation errors. If {@code errors} is empty the wiring
+     * succeeded; otherwise the caller should surface each error and abort.
      */
-    static ObjectNode wireInnerIds(ObjectNode outerSchema, Map<String, String> aliasToId) {
-        ObjectNode out = outerSchema.deepCopy();
-        JsonNode config = out.get("config");
+    static final class WireResult {
+        final ObjectNode patched;
+        final List<String> errors;
+
+        WireResult(ObjectNode patched, List<String> errors) {
+            this.patched = patched;
+            this.errors = errors;
+        }
+    }
+
+    /**
+     * Replace each {@code contentCategories[].analyzerId} placeholder in the
+     * outer schema with the real inner analyzer ID from {@code aliasToId}.
+     *
+     * <p>Rules (parity with Python's {@code _patch_outer_analyzer_ids} and
+     * .NET's {@code WireInnerIds}):
+     * <ul>
+     *   <li>Categories that omit {@code analyzerId} are left as-is (a
+     *       classification-only "other" bucket).</li>
+     *   <li>{@code analyzerId} values that start with {@code "prebuilt-"} are
+     *       kept as-is — those are Azure-side prebuilt analyzers and don't
+     *       need an {@code --inner-schema}.</li>
+     *   <li>Any other value must match an alias in {@code aliasToId};
+     *       otherwise a validation error is returned.</li>
+     *   <li>Every alias in {@code aliasToId} must be referenced by some
+     *       category (typo check); otherwise an "unused" error is returned.</li>
+     * </ul>
+     */
+    static WireResult wireInnerIds(ObjectNode outerSchema, Map<String, String> aliasToId) {
+        List<String> errors = new ArrayList<>();
+        ObjectNode patched = outerSchema.deepCopy();
+        JsonNode config = patched.get("config");
         if (!(config instanceof ObjectNode configObj)) {
-            return out;
+            return new WireResult(patched, errors);
         }
         JsonNode cats = configObj.get("contentCategories");
         if (!(cats instanceof ObjectNode catsObj)) {
-            return out;
+            return new WireResult(patched, errors);
         }
-        Iterator<String> it = catsObj.fieldNames();
-        List<String> aliases = new ArrayList<>();
-        it.forEachRemaining(aliases::add);
-        for (String alias : aliases) {
-            JsonNode entry = catsObj.get(alias);
-            if (entry instanceof ObjectNode entryObj && aliasToId.containsKey(alias)) {
-                entryObj.put("analyzerId", aliasToId.get(alias));
+
+        Set<String> usedRealIds = new LinkedHashSet<>();
+        List<String> catNames = new ArrayList<>();
+        catsObj.fieldNames().forEachRemaining(catNames::add);
+        for (String catName : catNames) {
+            JsonNode entry = catsObj.get(catName);
+            if (!(entry instanceof ObjectNode entryObj)) {
+                continue;
+            }
+            JsonNode aliasNode = entryObj.get("analyzerId");
+            if (aliasNode == null || aliasNode.isNull()) {
+                continue;
+            }
+            String alias = aliasNode.asText();
+            if (alias.startsWith("prebuilt-")) {
+                usedRealIds.add(alias);
+                continue;
+            }
+            String real = aliasToId.get(alias);
+            if (real == null) {
+                List<String> known = new ArrayList<>(aliasToId.keySet());
+                java.util.Collections.sort(known);
+                errors.add(
+                    "category '" + catName + "' references analyzerId='" + alias
+                        + "', but no --inner-schema entry matches alias '" + alias
+                        + "'. Known aliases: " + known);
+                continue;
+            }
+            entryObj.put("analyzerId", real);
+            usedRealIds.add(real);
+        }
+
+        // Catch unused inner schemas (cheap typo check).
+        for (Map.Entry<String, String> e : aliasToId.entrySet()) {
+            if (!usedRealIds.contains(e.getValue())) {
+                errors.add(
+                    "--inner-schema '" + e.getKey() + "' was supplied but no "
+                        + "category in the outer schema routes to it");
             }
         }
-        return out;
+
+        return new WireResult(patched, errors);
     }
 
     /**

@@ -43,9 +43,9 @@ package — the same client `Sample04_CreateAnalyzerAsync.java` and
 
 ## Prerequisites
 
-Required: the `Azure.AI.ContentUnderstanding` SDK built locally (the skill
-tool references the built DLL by path), `.env` or environment variables
-with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
+Required: Maven + JDK 17+ (the skill tool is a standalone Maven module
+under `.github/skills/_shared/`), `.env` or environment variables with
+`CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 `az login`), and the model defaults configured for this resource (see
 [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java)).
 
@@ -137,7 +137,7 @@ Start from the template instead of writing from scratch:
 
 ```bash
 mkdir -p .local_only/schemas
-cp sdk/contentunderstanding/Azure.AI.ContentUnderstanding/.github/skills/cu-sdk-author-analyzer/templates/schema_template.json \
+cp sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer/templates/schema_template.json \
    .local_only/schemas/<name>_v1.json
 ```
 
@@ -277,7 +277,7 @@ For each input document the script writes two files into `--output`:
 
 - `<doc>.json` — full per-document `AnalysisResult` (fields, grounding, confidences).
 - `<doc>.llm.md` — same result rendered via the SDK's
-  [`AnalysisResultExtensions.ToLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper:
+  [`LlmInputHelper.toLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper:
   YAML front matter (category, page range, fields) plus the document text.
   Drop this straight into an LLM prompt, or skim it in VS Code for a fast
   human review.
