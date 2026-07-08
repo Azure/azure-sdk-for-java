@@ -276,6 +276,47 @@ public class AiaCertificateChainTest {
             "Path should contain leaf + intermediate (root is the trust anchor, not in path)");
     }
 
+    /**
+     * Verifies that AIA chain completion can be disabled via system property.
+     *
+     * <p>When the system property {@code azure.keyvault.jca.disable-aia-download} is set to {@code true},
+     * the AIA chain completion is skipped and the original chain is returned unchanged.
+     */
+    @Test
+    void aiaDownloadDisabledBySystemProperty() throws Exception {
+        // Set the disable system property
+        String propertyName = "azure.keyvault.jca.disable-aia-download";
+        String originalValue = System.getProperty(propertyName);
+        System.setProperty(propertyName, "true");
+
+        try {
+            // Simulate AKV returning only the leaf cert
+            Certificate[] leafOnly = new Certificate[] { leafCert };
+
+            // Call completeChainViaAia with the property set to true
+            // It should return the same array without downloading anything
+            Certificate[] result = CertificateUtil.completeChainViaAia(leafOnly);
+
+            // Verify the chain was NOT extended (still only 1 certificate)
+            assertEquals(1, result.length, "Chain should remain unchanged when AIA download is disabled");
+            assertEquals(leafCert, result[0], "The returned certificate should be the leaf certificate");
+
+            // Verify that no HTTP calls were made (HttpUtil.getBytes should not be called)
+            try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+                result = CertificateUtil.completeChainViaAia(leafOnly);
+                httpMock.verify(() -> HttpUtil.getBytes(Mockito.anyString()), Mockito.never());
+                assertEquals(1, result.length, "Chain should remain unchanged and no HTTP calls should be made");
+            }
+        } finally {
+            // Clean up: restore the original property value
+            if (originalValue != null) {
+                System.setProperty(propertyName, originalValue);
+            } else {
+                System.clearProperty(propertyName);
+            }
+        }
+    }
+
     // -----------------------------------------------------------------------
     // Helper
     // -----------------------------------------------------------------------
