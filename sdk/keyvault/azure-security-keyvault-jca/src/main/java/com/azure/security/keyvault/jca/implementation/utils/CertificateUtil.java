@@ -30,6 +30,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import javax.security.auth.x500.X500Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -291,12 +292,14 @@ public final class CertificateUtil {
             }
 
             // Validate: the downloaded cert's subject must match the expected issuer DN
-            String expectedIssuerDN = x509Top.getIssuerX500Principal().getName();
-            if (!issuer.getSubjectX500Principal().getName().equals(expectedIssuerDN)) {
+            // Compare X500Principal objects directly for correct DN equality regardless of formatting
+            X500Principal expectedIssuerPrincipal = x509Top.getIssuerX500Principal();
+            X500Principal issuerPrincipal = issuer.getSubjectX500Principal();
+            if (!issuerPrincipal.equals(expectedIssuerPrincipal)) {
                 LOGGER.log(WARNING,
                     "Downloaded certificate subject [{0}] does not match expected issuer DN [{1}]. "
                         + "Ignoring and stopping AIA chain completion.",
-                    new Object[] { issuer.getSubjectX500Principal().getName(), expectedIssuerDN });
+                    new Object[] { issuerPrincipal.getName(), expectedIssuerPrincipal.getName() });
                 break;
             }
 

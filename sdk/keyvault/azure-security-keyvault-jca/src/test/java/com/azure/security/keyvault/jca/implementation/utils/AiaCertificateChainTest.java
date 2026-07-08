@@ -229,8 +229,10 @@ public class AiaCertificateChainTest {
         //   "PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException:
         //    unable to find valid certification path to requested target"
         // Verify the root message matches what the issue reporter sees.
-        assertTrue(exception.getMessage().contains("unable to find valid certification path to requested target"),
-            "Exception message should match the reported error. Actual: " + exception.getMessage());
+        // Use String.valueOf() to guard against null message across different JDKs/providers
+        String message = String.valueOf(exception.getMessage());
+        assertTrue(message.contains("unable to find valid certification path to requested target"),
+            "Exception message should match the reported error. Actual: " + message);
     }
 
     /**

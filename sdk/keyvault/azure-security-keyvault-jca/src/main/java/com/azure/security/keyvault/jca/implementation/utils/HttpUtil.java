@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
@@ -19,6 +20,7 @@ import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.Timeout;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -90,6 +92,12 @@ public final class HttpUtil {
         try (CloseableHttpClient client = buildClient()) {
             HttpGet httpGet = new HttpGet(url);
             httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            // Set reasonable timeouts to prevent indefinite hangs when fetching AIA certificate chain
+            RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(Timeout.ofSeconds(10))
+                .setResponseTimeout(Timeout.ofSeconds(10))
+                .build();
+            httpGet.setConfig(config);
             return client.execute(httpGet, (ClassicHttpResponse response) -> {
                 int status = response.getCode();
                 if (status >= 200 && status < 300) {
