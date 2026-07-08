@@ -14,6 +14,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -83,6 +84,12 @@ public class AiaCertificateChainTest {
         KeyPair leafKeyPair = keyGen.generateKeyPair();
         leafCert = buildCertificate(leafKeyPair.getPublic(), "CN=Test Leaf", "CN=Test Intermediate CA",
             intermediateKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+    }
+
+    @AfterEach
+    void cleanup() {
+        // Ensure the system property is cleared after each test to prevent interference
+        System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
     }
 
     // -----------------------------------------------------------------------
