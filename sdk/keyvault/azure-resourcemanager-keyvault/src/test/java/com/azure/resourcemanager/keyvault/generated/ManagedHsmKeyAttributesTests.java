@@ -12,24 +12,24 @@ public final class ManagedHsmKeyAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmKeyAttributes model = BinaryData.fromString(
-            "{\"enabled\":false,\"nbf\":8228255121306521169,\"exp\":5420361157118117528,\"created\":3608208364160571756,\"updated\":5300923430857566550,\"recoveryLevel\":\"Recoverable\",\"exportable\":false}")
+            "{\"enabled\":false,\"nbf\":2658877380979338801,\"exp\":6920595304078349873,\"created\":3866272580656295370,\"updated\":6123215158263005628,\"recoveryLevel\":\"Purgeable\",\"exportable\":false}")
             .toObject(ManagedHsmKeyAttributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(8228255121306521169L, model.notBefore());
-        Assertions.assertEquals(5420361157118117528L, model.expires());
+        Assertions.assertEquals(2658877380979338801L, model.notBefore());
+        Assertions.assertEquals(6920595304078349873L, model.expires());
         Assertions.assertFalse(model.exportable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedHsmKeyAttributes model = new ManagedHsmKeyAttributes().withEnabled(false)
-            .withNotBefore(8228255121306521169L)
-            .withExpires(5420361157118117528L)
+            .withNotBefore(2658877380979338801L)
+            .withExpires(6920595304078349873L)
             .withExportable(false);
         model = BinaryData.fromObject(model).toObject(ManagedHsmKeyAttributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(8228255121306521169L, model.notBefore());
-        Assertions.assertEquals(5420361157118117528L, model.expires());
+        Assertions.assertEquals(2658877380979338801L, model.notBefore());
+        Assertions.assertEquals(6920595304078349873L, model.expires());
         Assertions.assertFalse(model.exportable());
     }
 }

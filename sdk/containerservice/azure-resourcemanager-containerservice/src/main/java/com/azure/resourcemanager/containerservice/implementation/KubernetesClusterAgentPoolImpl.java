@@ -294,7 +294,6 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withTypePropertiesType(innerModel().type());
         agentPoolInner.withMode(innerModel().mode());
         agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
-        //        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());     // nodeImageVersion is readOnly now
         agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
         agentPoolInner.withPowerState(innerModel().powerState());
         agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
@@ -323,6 +322,9 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withGatewayProfile(innerModel().gatewayProfile());
         agentPoolInner.withVirtualMachinesProfile(innerModel().virtualMachinesProfile());
         agentPoolInner.withVirtualMachineNodesStatus(innerModel().virtualMachineNodesStatus());
+        agentPoolInner.withArtifactStreamingProfile(innerModel().artifactStreamingProfile());
+        agentPoolInner.withGpuProfile(innerModel().gpuProfile());
+        agentPoolInner.withLocalDnsProfile(innerModel().localDnsProfile());
         agentPoolInner.withStatus(innerModel().status());
 
         return agentPoolInner;

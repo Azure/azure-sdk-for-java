@@ -9,7 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class WafPolicyCreateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafPolicy_Create.json
+     * x-ms-original-file: 2025-11-01/WafPolicy_Create.json
      */
     /**
      * Sample code: WafPolicy_Create.

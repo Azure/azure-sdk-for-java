@@ -97,7 +97,7 @@ public interface WafPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted NGINX deployment.
      * @param wafPolicyName The name of Waf Policy.
-     * @param body The Nginx Deployment Waf Policy.
+     * @param body Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,7 +129,7 @@ public interface WafPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted NGINX deployment.
      * @param wafPolicyName The name of Waf Policy.
-     * @param body The Nginx Deployment Waf Policy.
+     * @param body Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

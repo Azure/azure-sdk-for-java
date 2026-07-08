@@ -30,9 +30,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 class OrderByDocumentProducer extends DocumentProducer<Document> {
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private final OrderbyRowComparer<Document> consumeComparer;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -74,7 +75,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<Document> row) {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
-        FeedResponse<Document> fr = feedResponseAccessor.createFeedResponse(
+        FeedResponse<Document> fr = feedResponseAccessor().createFeedResponse(
             Collections.singletonList(row), headers, null);
         return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }

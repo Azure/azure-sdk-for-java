@@ -25,21 +25,37 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.chaos.fluent.ChaosManagementClient;
+import com.azure.resourcemanager.chaos.implementation.ActionVersionsImpl;
+import com.azure.resourcemanager.chaos.implementation.ActionsImpl;
 import com.azure.resourcemanager.chaos.implementation.CapabilitiesImpl;
 import com.azure.resourcemanager.chaos.implementation.CapabilityTypesImpl;
 import com.azure.resourcemanager.chaos.implementation.ChaosManagementClientBuilder;
+import com.azure.resourcemanager.chaos.implementation.DiscoveredResourcesImpl;
 import com.azure.resourcemanager.chaos.implementation.ExperimentsImpl;
 import com.azure.resourcemanager.chaos.implementation.OperationStatusesImpl;
 import com.azure.resourcemanager.chaos.implementation.OperationsImpl;
+import com.azure.resourcemanager.chaos.implementation.PrivateAccessesImpl;
+import com.azure.resourcemanager.chaos.implementation.ScenarioConfigurationsImpl;
+import com.azure.resourcemanager.chaos.implementation.ScenarioRunsImpl;
+import com.azure.resourcemanager.chaos.implementation.ScenariosImpl;
 import com.azure.resourcemanager.chaos.implementation.TargetTypesImpl;
 import com.azure.resourcemanager.chaos.implementation.TargetsImpl;
+import com.azure.resourcemanager.chaos.implementation.WorkspacesImpl;
+import com.azure.resourcemanager.chaos.models.ActionVersions;
+import com.azure.resourcemanager.chaos.models.Actions;
 import com.azure.resourcemanager.chaos.models.Capabilities;
 import com.azure.resourcemanager.chaos.models.CapabilityTypes;
+import com.azure.resourcemanager.chaos.models.DiscoveredResources;
 import com.azure.resourcemanager.chaos.models.Experiments;
 import com.azure.resourcemanager.chaos.models.OperationStatuses;
 import com.azure.resourcemanager.chaos.models.Operations;
+import com.azure.resourcemanager.chaos.models.PrivateAccesses;
+import com.azure.resourcemanager.chaos.models.ScenarioConfigurations;
+import com.azure.resourcemanager.chaos.models.ScenarioRuns;
+import com.azure.resourcemanager.chaos.models.Scenarios;
 import com.azure.resourcemanager.chaos.models.TargetTypes;
 import com.azure.resourcemanager.chaos.models.Targets;
+import com.azure.resourcemanager.chaos.models.Workspaces;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,9 +79,25 @@ public final class ChaosManager {
 
     private Experiments experiments;
 
+    private PrivateAccesses privateAccesses;
+
+    private Actions actions;
+
+    private ActionVersions actionVersions;
+
     private TargetTypes targetTypes;
 
     private OperationStatuses operationStatuses;
+
+    private Workspaces workspaces;
+
+    private DiscoveredResources discoveredResources;
+
+    private Scenarios scenarios;
+
+    private ScenarioConfigurations scenarioConfigurations;
+
+    private ScenarioRuns scenarioRuns;
 
     private final ChaosManagementClient clientObject;
 
@@ -343,6 +375,42 @@ public final class ChaosManager {
     }
 
     /**
+     * Gets the resource collection API of PrivateAccesses. It manages PrivateAccess.
+     * 
+     * @return Resource collection API of PrivateAccesses.
+     */
+    public PrivateAccesses privateAccesses() {
+        if (this.privateAccesses == null) {
+            this.privateAccesses = new PrivateAccessesImpl(clientObject.getPrivateAccesses(), this);
+        }
+        return privateAccesses;
+    }
+
+    /**
+     * Gets the resource collection API of Actions.
+     * 
+     * @return Resource collection API of Actions.
+     */
+    public Actions actions() {
+        if (this.actions == null) {
+            this.actions = new ActionsImpl(clientObject.getActions(), this);
+        }
+        return actions;
+    }
+
+    /**
+     * Gets the resource collection API of ActionVersions.
+     * 
+     * @return Resource collection API of ActionVersions.
+     */
+    public ActionVersions actionVersions() {
+        if (this.actionVersions == null) {
+            this.actionVersions = new ActionVersionsImpl(clientObject.getActionVersions(), this);
+        }
+        return actionVersions;
+    }
+
+    /**
      * Gets the resource collection API of TargetTypes.
      * 
      * @return Resource collection API of TargetTypes.
@@ -364,6 +432,67 @@ public final class ChaosManager {
             this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
         }
         return operationStatuses;
+    }
+
+    /**
+     * Gets the resource collection API of Workspaces. It manages Workspace.
+     * 
+     * @return Resource collection API of Workspaces.
+     */
+    public Workspaces workspaces() {
+        if (this.workspaces == null) {
+            this.workspaces = new WorkspacesImpl(clientObject.getWorkspaces(), this);
+        }
+        return workspaces;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoveredResources.
+     * 
+     * @return Resource collection API of DiscoveredResources.
+     */
+    public DiscoveredResources discoveredResources() {
+        if (this.discoveredResources == null) {
+            this.discoveredResources = new DiscoveredResourcesImpl(clientObject.getDiscoveredResources(), this);
+        }
+        return discoveredResources;
+    }
+
+    /**
+     * Gets the resource collection API of Scenarios. It manages Scenario.
+     * 
+     * @return Resource collection API of Scenarios.
+     */
+    public Scenarios scenarios() {
+        if (this.scenarios == null) {
+            this.scenarios = new ScenariosImpl(clientObject.getScenarios(), this);
+        }
+        return scenarios;
+    }
+
+    /**
+     * Gets the resource collection API of ScenarioConfigurations. It manages ScenarioConfiguration.
+     * 
+     * @return Resource collection API of ScenarioConfigurations.
+     */
+    public ScenarioConfigurations scenarioConfigurations() {
+        if (this.scenarioConfigurations == null) {
+            this.scenarioConfigurations
+                = new ScenarioConfigurationsImpl(clientObject.getScenarioConfigurations(), this);
+        }
+        return scenarioConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of ScenarioRuns.
+     * 
+     * @return Resource collection API of ScenarioRuns.
+     */
+    public ScenarioRuns scenarioRuns() {
+        if (this.scenarioRuns == null) {
+            this.scenarioRuns = new ScenarioRunsImpl(clientObject.getScenarioRuns(), this);
+        }
+        return scenarioRuns;
     }
 
     /**

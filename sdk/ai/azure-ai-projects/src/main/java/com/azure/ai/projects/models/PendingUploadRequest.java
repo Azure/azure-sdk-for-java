@@ -30,7 +30,7 @@ public final class PendingUploadRequest implements JsonSerializable<PendingUploa
     private String connectionName;
 
     /*
-     * BlobReference is the only supported type.
+     * The type of pending upload.
      */
     @Generated
     private final PendingUploadType pendingUploadType = PendingUploadType.BLOB_REFERENCE;
@@ -87,7 +87,7 @@ public final class PendingUploadRequest implements JsonSerializable<PendingUploa
     }
 
     /**
-     * Get the pendingUploadType property: BlobReference is the only supported type.
+     * Get the pendingUploadType property: The type of pending upload.
      *
      * @return the pendingUploadType value.
      */

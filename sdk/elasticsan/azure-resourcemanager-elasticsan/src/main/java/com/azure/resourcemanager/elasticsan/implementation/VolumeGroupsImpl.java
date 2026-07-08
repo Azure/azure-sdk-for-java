@@ -31,12 +31,8 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         String volumeGroupName, Context context) {
         Response<VolumeGroupInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VolumeGroupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VolumeGroupImpl(inner.getValue(), this.manager()));
     }
 
     public VolumeGroup get(String resourceGroupName, String elasticSanName, String volumeGroupName) {

@@ -64,56 +64,6 @@
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs.java" checks="FinalClassCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.UrlParser.java" checks="FinalClassCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMonitoringDataPoints.java" checks="HeaderCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AppConfigurationAzureMonitorExporterSample.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AppConfigurationExporterIntegrationTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExportersEndToEndTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorLogRecordExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporterSample.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporterTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorStatsbeatTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.EventHubsAzureMonitorExporterSample.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.EventHubsExporterIntegrationTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.ReadmeSamples.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.AttributeKeyTemplate.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.LiveMetricsSpanProcessor.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.Mappings.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.OperationNames.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.RequestChecker.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalFileLoaderTests.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalFileSender.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalFileSenderTelemetryPipelineListener.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporterTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.FeatureStatsbeat.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.NetworkStatsbeat.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatTelemetryPipelineListener.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributesTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.MockLogData.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParserTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.IntervalMetricsKey.java" checks="LocalVariableNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListenerTest.java" checks="MethodNameCheck" />
   <suppress files="com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulseDataCollectorTests.java" checks="MethodNameCheck" />

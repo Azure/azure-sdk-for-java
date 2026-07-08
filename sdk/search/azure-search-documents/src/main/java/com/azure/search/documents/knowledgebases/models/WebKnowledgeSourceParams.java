@@ -181,16 +181,6 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
      */
     @Generated
     @Override
-    public WebKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public WebKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -207,7 +197,10 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
+        jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeStringField("market", this.market);
@@ -232,7 +225,10 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean failOnError = null;
             Float rerankerThreshold = null;
+            Integer maxOutputDocuments = null;
+            Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.WEB;
             String language = null;
             String market = null;
@@ -249,8 +245,14 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failOnError".equals(fieldName)) {
+                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("enableImageServing".equals(fieldName)) {
+                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("language".equals(fieldName)) {
@@ -270,7 +272,10 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             deserializedWebKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedWebKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedWebKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedWebKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedWebKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedWebKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
+            deserializedWebKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedWebKnowledgeSourceParams.kind = kind;
             deserializedWebKnowledgeSourceParams.language = language;
             deserializedWebKnowledgeSourceParams.market = market;
@@ -278,5 +283,45 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             deserializedWebKnowledgeSourceParams.freshness = freshness;
             return deserializedWebKnowledgeSourceParams;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
+        super.setAlwaysQuerySource(alwaysQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setFailOnError(Boolean failOnError) {
+        super.setFailOnError(failOnError);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
+        super.setMaxOutputDocuments(maxOutputDocuments);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
+        super.setEnableImageServing(enableImageServing);
+        return this;
     }
 }

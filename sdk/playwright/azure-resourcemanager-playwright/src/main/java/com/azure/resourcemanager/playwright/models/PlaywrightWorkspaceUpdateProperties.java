@@ -29,6 +29,17 @@ public final class PlaywrightWorkspaceUpdateProperties
      */
     private EnablementStatus localAuth;
 
+    /*
+     * Indicates whether reporting is enabled for the workspace. When set to true, reports will be generated and
+     * available for the workspace.
+     */
+    private EnablementStatus reporting;
+
+    /*
+     * The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
+     */
+    private String storageUri;
+
     /**
      * Creates an instance of PlaywrightWorkspaceUpdateProperties class.
      */
@@ -82,6 +93,50 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
+     * Get the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
+     * 
+     * @return the reporting value.
+     */
+    public EnablementStatus reporting() {
+        return this.reporting;
+    }
+
+    /**
+     * Set the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
+     * 
+     * @param reporting the reporting value to set.
+     * @return the PlaywrightWorkspaceUpdateProperties object itself.
+     */
+    public PlaywrightWorkspaceUpdateProperties withReporting(EnablementStatus reporting) {
+        this.reporting = reporting;
+        return this;
+    }
+
+    /**
+     * Get the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @return the storageUri value.
+     */
+    public String storageUri() {
+        return this.storageUri;
+    }
+
+    /**
+     * Set the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @param storageUri the storageUri value to set.
+     * @return the PlaywrightWorkspaceUpdateProperties object itself.
+     */
+    public PlaywrightWorkspaceUpdateProperties withStorageUri(String storageUri) {
+        this.storageUri = storageUri;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -90,6 +145,8 @@ public final class PlaywrightWorkspaceUpdateProperties
         jsonWriter.writeStringField("regionalAffinity",
             this.regionalAffinity == null ? null : this.regionalAffinity.toString());
         jsonWriter.writeStringField("localAuth", this.localAuth == null ? null : this.localAuth.toString());
+        jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
+        jsonWriter.writeStringField("storageUri", this.storageUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,6 +172,11 @@ public final class PlaywrightWorkspaceUpdateProperties
                 } else if ("localAuth".equals(fieldName)) {
                     deserializedPlaywrightWorkspaceUpdateProperties.localAuth
                         = EnablementStatus.fromString(reader.getString());
+                } else if ("reporting".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceUpdateProperties.reporting
+                        = EnablementStatus.fromString(reader.getString());
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceUpdateProperties.storageUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

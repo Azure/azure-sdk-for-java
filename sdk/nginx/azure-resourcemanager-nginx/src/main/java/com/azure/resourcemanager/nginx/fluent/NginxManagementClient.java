@@ -54,6 +54,13 @@ public interface NginxManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the NginxDeploymentWafPoliciesClient object to access its operations.
+     * 
+     * @return the NginxDeploymentWafPoliciesClient object.
+     */
+    NginxDeploymentWafPoliciesClient getNginxDeploymentWafPolicies();
+
+    /**
      * Gets the ApiKeysClient object to access its operations.
      * 
      * @return the ApiKeysClient object.

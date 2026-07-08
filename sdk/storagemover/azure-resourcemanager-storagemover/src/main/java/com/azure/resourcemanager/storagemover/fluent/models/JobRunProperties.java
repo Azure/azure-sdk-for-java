@@ -13,9 +13,12 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
 import com.azure.resourcemanager.storagemover.models.JobRunScanStatus;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
+import com.azure.resourcemanager.storagemover.models.JobRunWarning;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.TriggerType;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Job run properties.
@@ -51,6 +54,16 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
      * End time of the run. Null if Agent has not reported that the job has ended.
      */
     private OffsetDateTime executionEndTime;
+
+    /*
+     * Trigger type for the job run. Default is manual.
+     */
+    private TriggerType triggerType;
+
+    /*
+     * Scheduled execution time. Null if Trigger type is manual.
+     */
+    private OffsetDateTime scheduledExecutionTime;
 
     /*
      * The last updated time of the Job Run.
@@ -158,6 +171,11 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
     private JobRunError error;
 
     /*
+     * Warning details.
+     */
+    private List<JobRunWarning> warnings;
+
+    /*
      * The provisioning state of this resource.
      */
     private ProvisioningState provisioningState;
@@ -220,6 +238,24 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
      */
     public OffsetDateTime executionEndTime() {
         return this.executionEndTime;
+    }
+
+    /**
+     * Get the triggerType property: Trigger type for the job run. Default is manual.
+     * 
+     * @return the triggerType value.
+     */
+    public TriggerType triggerType() {
+        return this.triggerType;
+    }
+
+    /**
+     * Get the scheduledExecutionTime property: Scheduled execution time. Null if Trigger type is manual.
+     * 
+     * @return the scheduledExecutionTime value.
+     */
+    public OffsetDateTime scheduledExecutionTime() {
+        return this.scheduledExecutionTime;
     }
 
     /**
@@ -417,6 +453,15 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
     }
 
     /**
+     * Get the warnings property: Warning details.
+     * 
+     * @return the warnings value.
+     */
+    public List<JobRunWarning> warnings() {
+        return this.warnings;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of this resource.
      * 
      * @return the provisioningState value.
@@ -463,6 +508,11 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
                 } else if ("executionEndTime".equals(fieldName)) {
                     deserializedJobRunProperties.executionEndTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedJobRunProperties.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("scheduledExecutionTime".equals(fieldName)) {
+                    deserializedJobRunProperties.scheduledExecutionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastStatusUpdate".equals(fieldName)) {
                     deserializedJobRunProperties.lastStatusUpdate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -506,6 +556,9 @@ public final class JobRunProperties implements JsonSerializable<JobRunProperties
                     deserializedJobRunProperties.jobDefinitionProperties = reader.readUntyped();
                 } else if ("error".equals(fieldName)) {
                     deserializedJobRunProperties.error = JobRunError.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    List<JobRunWarning> warnings = reader.readArray(reader1 -> JobRunWarning.fromJson(reader1));
+                    deserializedJobRunProperties.warnings = warnings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedJobRunProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {

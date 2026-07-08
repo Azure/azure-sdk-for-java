@@ -35,12 +35,8 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         String databaseInstanceName, Context context) {
         Response<SapDatabaseInstanceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SapDatabaseInstanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SapDatabaseInstanceImpl(inner.getValue(), this.manager()));
     }
 
     public SapDatabaseInstance get(String resourceGroupName, String sapVirtualInstanceName,

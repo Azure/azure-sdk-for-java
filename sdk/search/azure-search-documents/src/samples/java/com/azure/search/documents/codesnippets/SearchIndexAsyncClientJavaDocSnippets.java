@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -149,8 +148,8 @@ public class SearchIndexAsyncClientJavaDocSnippets {
     public static void listSynonymMaps() {
         searchIndexAsyncClient = createSearchIndexAsyncClient();
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps
-        searchIndexAsyncClient.listSynonymMaps().map(ListSynonymMapsResult::getSynonymMaps).subscribe(synonymMaps ->
-            synonymMaps.forEach(synonymMap -> System.out.println("The synonymMap name is " + synonymMap.getName())));
+        searchIndexAsyncClient.listSynonymMaps().subscribe(synonymMap ->
+            System.out.println("The synonymMap name is " + synonymMap.getName()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps
     }
 

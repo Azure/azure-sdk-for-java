@@ -63,6 +63,13 @@ public interface ImageDownloadResult {
     List<String> compatibleVersions();
 
     /**
+     * Gets the updateProperties property: Image update properties for update release type image.
+     * 
+     * @return the updateProperties value.
+     */
+    ImageUpdateProperties updateProperties();
+
+    /**
      * Gets the transactionId property: The unique identifier of the download.
      * 
      * @return the transactionId value.

@@ -12,11 +12,11 @@ public final class TargetEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetEndpoint model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"dckzywbiexz\",\"targetEndpointResourceId\":\"yueaxibxujwb\",\"azureStorageAccountResourceId\":\"walm\",\"azureStorageBlobContainerName\":\"yoxa\"}}")
+            "{\"properties\":{\"name\":\"uhxwtctyqiklbbov\",\"targetEndpointResourceId\":\"wzbhvgyugu\",\"azureStorageAccountResourceId\":\"vmkfssxqu\",\"azureStorageBlobContainerName\":\"fpl\"}}")
             .toObject(TargetEndpoint.class);
-        Assertions.assertEquals("dckzywbiexz", model.properties().name());
-        Assertions.assertEquals("yueaxibxujwb", model.properties().targetEndpointResourceId());
-        Assertions.assertEquals("walm", model.properties().azureStorageAccountResourceId());
-        Assertions.assertEquals("yoxa", model.properties().azureStorageBlobContainerName());
+        Assertions.assertEquals("uhxwtctyqiklbbov", model.properties().name());
+        Assertions.assertEquals("wzbhvgyugu", model.properties().targetEndpointResourceId());
+        Assertions.assertEquals("vmkfssxqu", model.properties().azureStorageAccountResourceId());
+        Assertions.assertEquals("fpl", model.properties().azureStorageBlobContainerName());
     }
 }

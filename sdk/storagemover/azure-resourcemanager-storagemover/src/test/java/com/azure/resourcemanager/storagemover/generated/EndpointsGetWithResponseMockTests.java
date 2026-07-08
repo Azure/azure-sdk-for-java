@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.Endpoint;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import com.azure.resourcemanager.storagemover.models.ManagedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +23,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"ksmond\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"vypomgkopkwho\",\"tenantId\":\"pajqgxysm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"helxprglya\":{\"principalId\":\"fqvm\",\"clientId\":\"xozap\"}}},\"id\":\"dckcbc\",\"name\":\"ejrjxgciqibrho\",\"type\":\"xsdqrhzoymibmrqy\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"uzsoi\",\"endpointKind\":\"Source\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"xtrthz\",\"tenantId\":\"ytdw\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ivpdtiir\":{\"principalId\":\"ubpaxhe\",\"clientId\":\"i\"},\"xrxxlep\":{\"principalId\":\"d\",\"clientId\":\"axoruzfgsquy\"},\"ooaojkniodkooebw\":{\"principalId\":\"amxjezwlw\",\"clientId\":\"xuqlcvydypat\"},\"infwjlfltkacjve\":{\"principalId\":\"jhemms\",\"clientId\":\"dkcrodt\"}}},\"id\":\"dlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +33,11 @@ public final class EndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .getWithResponse("yhrfouyftaakcpw", "yzvqt", "nubexk", com.azure.core.util.Context.NONE)
+            .getWithResponse("gsexne", "fdnw", "wmewzsyy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ksmond", response.properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("uzsoi", response.properties().description());
+        Assertions.assertEquals(EndpointKind.SOURCE, response.properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

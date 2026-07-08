@@ -6,6 +6,7 @@ package com.azure.resourcemanager.disconnectedoperations.implementation;
 
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.ImageDownloadResultInner;
 import com.azure.resourcemanager.disconnectedoperations.models.ImageDownloadResult;
+import com.azure.resourcemanager.disconnectedoperations.models.ImageUpdateProperties;
 import com.azure.resourcemanager.disconnectedoperations.models.ReleaseType;
 import com.azure.resourcemanager.disconnectedoperations.models.ResourceProvisioningState;
 import java.time.LocalDate;
@@ -55,6 +56,10 @@ public final class ImageDownloadResultImpl implements ImageDownloadResult {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ImageUpdateProperties updateProperties() {
+        return this.innerModel().updateProperties();
     }
 
     public String transactionId() {

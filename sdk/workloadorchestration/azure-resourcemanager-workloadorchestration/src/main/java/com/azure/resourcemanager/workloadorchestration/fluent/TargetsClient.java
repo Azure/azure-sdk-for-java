@@ -459,7 +459,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner>
@@ -475,7 +475,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner> beginResolveConfiguration(
@@ -490,7 +490,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
@@ -506,7 +506,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
@@ -521,7 +521,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -537,7 +537,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginReviewSolutionVersion(
@@ -552,7 +552,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
@@ -568,7 +568,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
@@ -583,7 +583,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -599,7 +599,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginPublishSolutionVersion(
@@ -614,7 +614,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
@@ -630,7 +630,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
@@ -645,7 +645,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
@@ -661,7 +661,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
@@ -676,7 +676,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,
@@ -692,7 +692,7 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,

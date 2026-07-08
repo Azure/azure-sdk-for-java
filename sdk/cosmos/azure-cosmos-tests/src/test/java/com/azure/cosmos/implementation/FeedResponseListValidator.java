@@ -359,6 +359,51 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> hasQueryAdviceOnAtLeastOnePage() {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    boolean foundAdvice = feedList.stream()
+                        .anyMatch(page -> page.getQueryAdvice() != null);
+                    assertThat(foundAdvice)
+                        .describedAs("at least one page should have query advice")
+                        .isTrue();
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> hasQueryAdviceContainingOnAtLeastOnePage(final String expectedSubstring) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    boolean foundAdvice = feedList.stream()
+                        .anyMatch(page -> {
+                            String advice = page.getQueryAdvice();
+                            return advice != null && advice.contains(expectedSubstring);
+                        });
+                    assertThat(foundAdvice)
+                        .describedAs("at least one page should have query advice containing: " + expectedSubstring)
+                        .isTrue();
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> hasNoQueryAdviceOnAnyPage() {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    for (FeedResponse<T> page : feedList) {
+                        assertThat(page.getQueryAdvice())
+                            .describedAs("no page should have query advice")
+                            .isNull();
+                    }
+                }
+            });
+            return this;
+        }
+
         public Builder<T> withValidator(FeedResponseListValidator<T> validator) {
             validators.add(validator);
             return this;

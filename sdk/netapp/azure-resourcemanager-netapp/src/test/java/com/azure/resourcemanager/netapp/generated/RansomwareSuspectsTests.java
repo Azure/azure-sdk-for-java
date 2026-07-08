@@ -11,7 +11,7 @@ public final class RansomwareSuspectsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RansomwareSuspects model = BinaryData.fromString(
-            "{\"extension\":\"k\",\"resolution\":\"FalsePositive\",\"fileCount\":1852467405,\"suspectFiles\":[{\"suspectFileName\":\"vjayvblmhvkzu\",\"fileTimestamp\":\"2021-11-23T11:34:55Z\"},{\"suspectFileName\":\"vyhgs\",\"fileTimestamp\":\"2021-06-13T17:46:53Z\"},{\"suspectFileName\":\"rqufegxuvwz\",\"fileTimestamp\":\"2021-04-02T15:27:05Z\"}]}")
+            "{\"extension\":\"pwijnhy\",\"resolution\":\"PotentialThreat\",\"fileCount\":175357143,\"suspectFiles\":[{\"suspectFileName\":\"bfvoowvrv\",\"fileTimestamp\":\"2021-05-22T15:30:25Z\"}]}")
             .toObject(RansomwareSuspects.class);
     }
 }

@@ -31,12 +31,8 @@ public final class ElasticAccountsImpl implements ElasticAccounts {
         Context context) {
         Response<ElasticAccountInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticAccountImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticAccountImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticAccount getByResourceGroup(String resourceGroupName, String accountName) {

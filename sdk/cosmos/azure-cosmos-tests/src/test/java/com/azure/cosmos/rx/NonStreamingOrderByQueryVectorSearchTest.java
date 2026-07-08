@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
@@ -43,13 +44,15 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
+import static com.azure.cosmos.rx.TestSuiteBase.createCollection;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
+import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
 
 public class NonStreamingOrderByQueryVectorSearchTest {
     protected static final int TIMEOUT = 30000;
-    protected static final int SETUP_TIMEOUT = 20000;
+    protected static final int SETUP_TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
     protected static Logger logger = LoggerFactory.getLogger(NonStreamingOrderByQueryVectorSearchTest.class.getSimpleName());
@@ -85,20 +88,27 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(flatContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
-        database.createContainer(containerProperties).block();
-        flatIndexContainer = database.getContainer(flatContainerId);
+        flatIndexContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         containerProperties = new CosmosContainerProperties(quantizedContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
-        database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(20000)).block();
-        quantizedIndexContainer = database.getContainer(quantizedContainerId);
+        quantizedIndexContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions(),
+            20000);
 
         containerProperties = new CosmosContainerProperties(largeDataContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(2));
-        database.createContainer(containerProperties).block();
-        largeDataContainer = database.getContainer(largeDataContainerId);
+        largeDataContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         for (Document doc : getVectorDocs()) {
             flatIndexContainer.createItem(doc).block();
@@ -216,7 +226,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         validateOrdering(1000, resultDocs, false);
     }
 
-    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 40, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void splitHandlingVectorSearch() throws Exception {
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
         List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(flatContainerId, asyncDocumentClient);

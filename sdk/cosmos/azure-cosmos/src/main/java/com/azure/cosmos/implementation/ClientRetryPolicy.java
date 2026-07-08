@@ -39,6 +39,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final DocumentClientRetryPolicy metadataThrottlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
+    private final int endpointFailoverMaxRetryCount;
+    private final int endpointFailoverRetryIntervalInMs;
     private int failoverRetryCount;
 
     private int sessionTokenRetryCount;
@@ -65,6 +67,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
+        this.endpointFailoverMaxRetryCount = Configs.getEndpointFailoverMaxRetryCount();
+        this.endpointFailoverRetryIntervalInMs = Configs.getEndpointFailoverRetryIntervalInMs();
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
@@ -136,6 +140,22 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false, false);
                 }
             } else if (clientException != null &&
+                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED)) {
+                // HTTP/2 PING keepalive closed the channel after consecutive ACK timeouts.
+                // The remote gateway is NOT known to be unhealthy -- this is typically a local
+                // transport failure (NAT / LB idle reap of an otherwise-healthy connection).
+                // Reuse the gateway-timeout path: bounded read retry that may cycle through
+                // preferred locations (shouldRetryOnGatewayTimeout bumps failoverRetryCount and
+                // routes via routeToLocation(retryCount, true) -- consistent with the
+                // GATEWAY_ENDPOINT_READ_TIMEOUT branch below), or noRetry for writes. With a
+                // single preferred region the retry stays on the same endpoint; with multiple
+                // preferred regions the next attempt may land on a different one. Critically,
+                // no markEndpointUnavailableFor* call is made inside shouldRetryOnGatewayTimeout,
+                // so this avoids the cross-region failover cascade that GATEWAY_ENDPOINT_UNAVAILABLE
+                // would trigger via refreshLocation + markEndpointUnavailableForRead/Write.
+                logger.info("HTTP/2 PING-driven connection close. Retrying without endpoint mark-down. ", e);
+                return shouldRetryOnGatewayTimeout(clientException);
+            } else if (clientException != null &&
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
@@ -147,6 +167,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
             return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
+        }
+
+        if (isPartitionKeyRangeMetadataNotAvailable(clientException)) {
+            // Right after a container is (re)created the partition key range metadata can be materialized in one
+            // region before another, so the current regional endpoint may still return NotFound while a peer region
+            // already serves it. Unlike a data-plane 404 (which is authoritative), this metadata 404 is treated as a
+            // transient "backend service unavailable" for this region and a bounded cross-region failover is attempted
+            // so the operation can recover from the other region instead of failing fast on a lagging endpoint.
+            logger.info(
+                "Partition key range metadata is not available on the current regional endpoint. Will retry metadata request. ",
+                clientException);
+
+            return this.shouldRetryOnBackendServiceUnavailableAsync(
+                true,
+                true,
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException);
         }
 
         if (clientException != null &&
@@ -229,6 +266,27 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return request.isReadOnly();
       }
 
+    private boolean isPartitionKeyRangeMetadataNotAvailable(CosmosException cosmosException) {
+        if (cosmosException == null
+            || this.request == null
+            || this.request.getOperationType() != OperationType.ReadFeed
+            || this.request.getResourceType() != ResourceType.PartitionKeyRange) {
+
+            return false;
+        }
+
+        // 404/0 is only retryable here because this branch is scoped to partition key range metadata reads.
+        // Other 404/0 cases, such as item or container reads, must keep their normal semantics.
+        if (!Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND)) {
+            return false;
+        }
+
+        int subStatusCode = cosmosException.getSubStatusCode();
+        return subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
+            || subStatusCode == HttpConstants.SubStatusCodes.COLLECTION_NOT_AVAILABLE_FOR_READ;
+    }
+
     private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;
 
@@ -287,7 +345,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
-        if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+        if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -308,10 +366,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             logger.debug("Failover happening. retryCount {}",  this.failoverRetryCount);
             if (this.failoverRetryCount > 1) {
                 //if retried both endpoints, follow regular retry interval.
-                retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+                retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
             }
         } else {
-            retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+            retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
         }
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
@@ -332,14 +390,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
         if (canPerformCrossRegionRetryOnGatewayReadTimeout) {
-            if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+            if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
                 logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
             this.failoverRetryCount++;
             this.retryContext = new RetryContext(this.failoverRetryCount, true);
-            Duration retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+            Duration retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         }
 
@@ -352,7 +410,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
-        if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+        if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }

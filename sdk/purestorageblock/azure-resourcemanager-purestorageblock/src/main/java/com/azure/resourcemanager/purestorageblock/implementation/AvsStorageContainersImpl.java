@@ -31,12 +31,8 @@ public final class AvsStorageContainersImpl implements AvsStorageContainers {
         String storageContainerName, Context context) {
         Response<AvsStorageContainerInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storagePoolName, storageContainerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AvsStorageContainerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AvsStorageContainerImpl(inner.getValue(), this.manager()));
     }
 
     public AvsStorageContainer get(String resourceGroupName, String storagePoolName, String storageContainerName) {

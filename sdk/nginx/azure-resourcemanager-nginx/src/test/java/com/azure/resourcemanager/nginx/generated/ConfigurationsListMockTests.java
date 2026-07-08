@@ -22,7 +22,7 @@ public final class ConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"files\":[{\"content\":\"tczheydbsdshmkx\",\"virtualPath\":\"ehvbbxurip\"}],\"protectedFiles\":[{\"virtualPath\":\"htba\",\"contentHash\":\"gx\"},{\"virtualPath\":\"rc\",\"contentHash\":\"yklyhpluodpvruud\"},{\"virtualPath\":\"zibt\",\"contentHash\":\"stgktst\"}],\"package\":{\"data\":\"eclze\",\"protectedFiles\":[\"cvhzlhp\",\"odqkdlwwqfb\",\"mlkxtrqjfs\"]},\"rootFile\":\"mbtxhwgf\"},\"id\":\"rtawcoezb\",\"name\":\"hubskhudygooo\",\"type\":\"kqfqjbvl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"files\":[{\"content\":\"ebjvewzcjzn\",\"virtualPath\":\"cpmguaadraufact\"},{\"content\":\"hzovaj\",\"virtualPath\":\"iuxxpshneekulfg\"},{\"content\":\"qubkw\",\"virtualPath\":\"enr\"}],\"protectedFiles\":[{\"virtualPath\":\"ujbazpjuohminyfl\",\"contentHash\":\"rwm\"},{\"virtualPath\":\"vwpklvxwmygdxp\",\"contentHash\":\"qchiszep\"}],\"package\":{\"data\":\"jcrxgibbdaxcon\",\"protectedFiles\":[\"auorsukokw\",\"qplhlvnu\"]},\"rootFile\":\"pzlrphw\"},\"id\":\"oldweyuqdu\",\"name\":\"vmnnrw\",\"type\":\"biorktal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,17 @@ public final class ConfigurationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NginxConfigurationResponse> response
-            = manager.configurations().list("jpr", "kwcf", com.azure.core.util.Context.NONE);
+            = manager.configurations().list("uffkmrqemvvh", "xtdr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tczheydbsdshmkx", response.iterator().next().properties().files().get(0).content());
-        Assertions.assertEquals("ehvbbxurip", response.iterator().next().properties().files().get(0).virtualPath());
-        Assertions.assertEquals("htba", response.iterator().next().properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("gx", response.iterator().next().properties().protectedFiles().get(0).contentHash());
-        Assertions.assertEquals("eclze", response.iterator().next().properties().packageProperty().data());
-        Assertions.assertEquals("cvhzlhp",
+        Assertions.assertEquals("ebjvewzcjzn", response.iterator().next().properties().files().get(0).content());
+        Assertions.assertEquals("cpmguaadraufact",
+            response.iterator().next().properties().files().get(0).virtualPath());
+        Assertions.assertEquals("ujbazpjuohminyfl",
+            response.iterator().next().properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("rwm", response.iterator().next().properties().protectedFiles().get(0).contentHash());
+        Assertions.assertEquals("jcrxgibbdaxcon", response.iterator().next().properties().packageProperty().data());
+        Assertions.assertEquals("auorsukokw",
             response.iterator().next().properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("mbtxhwgf", response.iterator().next().properties().rootFile());
+        Assertions.assertEquals("pzlrphw", response.iterator().next().properties().rootFile());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.AssignmentType;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
 import com.azure.resourcemanager.resources.models.OverrideModel;
@@ -77,7 +78,7 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     private Object metadata;
 
     /*
-     * The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
+     * The policy assignment enforcement mode. Possible values are Default, DoNotEnforce, and Enroll
      */
     private EnforcementMode enforcementMode;
 
@@ -95,6 +96,17 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
      * The policy property value override.
      */
     private List<OverrideModel> overrides;
+
+    /*
+     * The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
+     */
+    private AssignmentType assignmentType;
+
+    /*
+     * The instance ID of the policy assignment. This ID only and always changes when the assignment is deleted and
+     * recreated.
+     */
+    private String instanceId;
 
     /**
      * Creates an instance of PolicyAssignmentProperties class.
@@ -274,8 +286,8 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     }
 
     /**
-     * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
+     * Get the enforcementMode property: The policy assignment enforcement mode. Possible values are Default,
+     * DoNotEnforce, and Enroll.
      * 
      * @return the enforcementMode value.
      */
@@ -284,8 +296,8 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     }
 
     /**
-     * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
+     * Set the enforcementMode property: The policy assignment enforcement mode. Possible values are Default,
+     * DoNotEnforce, and Enroll.
      * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the PolicyAssignmentProperties object itself.
@@ -358,6 +370,38 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
     }
 
     /**
+     * Get the assignmentType property: The type of policy assignment. Possible values are NotSpecified, System,
+     * SystemHidden, and Custom. Immutable.
+     * 
+     * @return the assignmentType value.
+     */
+    public AssignmentType assignmentType() {
+        return this.assignmentType;
+    }
+
+    /**
+     * Set the assignmentType property: The type of policy assignment. Possible values are NotSpecified, System,
+     * SystemHidden, and Custom. Immutable.
+     * 
+     * @param assignmentType the assignmentType value to set.
+     * @return the PolicyAssignmentProperties object itself.
+     */
+    public PolicyAssignmentProperties withAssignmentType(AssignmentType assignmentType) {
+        this.assignmentType = assignmentType;
+        return this;
+    }
+
+    /**
+     * Get the instanceId property: The instance ID of the policy assignment. This ID only and always changes when the
+     * assignment is deleted and recreated.
+     * 
+     * @return the instanceId value.
+     */
+    public String instanceId() {
+        return this.instanceId;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -403,6 +447,8 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
         jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("overrides", this.overrides, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("assignmentType",
+            this.assignmentType == null ? null : this.assignmentType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -458,6 +504,11 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
                 } else if ("overrides".equals(fieldName)) {
                     List<OverrideModel> overrides = reader.readArray(reader1 -> OverrideModel.fromJson(reader1));
                     deserializedPolicyAssignmentProperties.overrides = overrides;
+                } else if ("assignmentType".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.assignmentType
+                        = AssignmentType.fromString(reader.getString());
+                } else if ("instanceId".equals(fieldName)) {
+                    deserializedPolicyAssignmentProperties.instanceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

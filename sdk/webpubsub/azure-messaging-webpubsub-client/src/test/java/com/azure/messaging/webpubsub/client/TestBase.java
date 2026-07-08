@@ -21,16 +21,31 @@ import java.time.Duration;
  */
 public class TestBase extends TestProxyTestBase {
 
+    private static volatile WebPubSubServiceClient serviceClient;
+
+    private static WebPubSubServiceClient getServiceClient() {
+        if (serviceClient == null) {
+            synchronized (TestBase.class) {
+                if (serviceClient == null) {
+                    Configuration configuration = Configuration.getGlobalConfiguration();
+
+                    serviceClient
+                        = new WebPubSubServiceClientBuilder().endpoint(configuration.get("WEB_PUB_SUB_ENDPOINT"))
+                            .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
+                            .hub("hub1")
+                            .buildClient();
+                }
+            }
+        }
+        return serviceClient;
+    }
+
     protected static WebPubSubClientBuilder getClientBuilder() {
         return getClientBuilder("user1");
     }
 
     protected static WebPubSubClientBuilder getClientBuilder(String userId) {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_ENDPOINT"))
-            .credential(TestUtils.getIdentityTestCredential(TestMode.LIVE))
-            .hub("hub1")
-            .buildClient();
+        WebPubSubServiceClient client = getServiceClient();
 
         // client builder
         return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(

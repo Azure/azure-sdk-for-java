@@ -24,7 +24,7 @@ public final class DeploymentsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"nginxVersion\":\"zxkhnzbonlwnto\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"kszzcmrvexztv\"}},\"ipAddress\":\"qgsfraoyzkoow\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"xawqaldsyuuxim\",\"containerName\":\"qfobwyz\"}},\"scalingProperties\":{\"capacity\":1711302582,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"t\",\"capacity\":{\"min\":2069495604,\"max\":1465227251}},{\"name\":\"hpagm\",\"capacity\":{\"min\":155762894,\"max\":1165571898}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"dsnfdsdoakgtdl\"},\"userProfile\":{\"preferredEmail\":\"zev\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"usdsttwv\",\"attackSignaturesPackage\":{\"version\":\"vbbejdcng\",\"revisionDatetime\":\"2021-08-13T08:26Z\"},\"botSignaturesPackage\":{\"version\":\"oakufgm\",\"revisionDatetime\":\"2021-04-18T15:55:11Z\"},\"threatCampaignsPackage\":{\"version\":\"wr\",\"revisionDatetime\":\"2021-12-02T23:57:11Z\"},\"componentVersions\":{\"wafEngineVersion\":\"twaenuuzko\",\"wafNginxVersion\":\"bminrfdwoyuhhzi\"}}},\"dataplaneApiEndpoint\":\"efozbhdms\"},\"identity\":{\"principalId\":\"zqhof\",\"tenantId\":\"maequiahxicslfa\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vwitqscyw\":{\"principalId\":\"ylhalnswhcc\",\"clientId\":\"hka\"},\"z\":{\"principalId\":\"gwol\",\"clientId\":\"czbwemhairsbr\"},\"ttlstvlzywemhz\":{\"principalId\":\"msweypqwdxggicc\",\"clientId\":\"xqhuexm\"},\"adcy\":{\"principalId\":\"csdtclusiypbs\",\"clientId\":\"ytguslf\"}}},\"sku\":{\"name\":\"ukyhejhzis\"},\"location\":\"fpel\",\"tags\":{\"srp\":\"pv\"},\"id\":\"vu\",\"name\":\"zraehtwd\",\"type\":\"r\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"nginxVersion\":\"nuuzkopbm\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"hhziuief\"}},\"ipAddress\":\"bhdmsmlmzqhof\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"u\",\"containerName\":\"hxicslfaoqz\"}},\"scalingProperties\":{\"capacity\":580732645,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"alnswhccsphk\",\"capacity\":{\"min\":1331736876,\"max\":185919180}},{\"name\":\"witqscywuggwoluh\",\"capacity\":{\"min\":1547983325,\"max\":219242582}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"emh\"},\"userProfile\":{\"preferredEmail\":\"sbrgz\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Enabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"ypqwdxggiccc\",\"attackSignaturesPackage\":{\"version\":\"qhuexm\",\"revisionDatetime\":\"2021-01-10T11:07:16Z\"},\"botSignaturesPackage\":{\"version\":\"lstvlzywe\",\"revisionDatetime\":\"2021-08-13T19:06:52Z\"},\"threatCampaignsPackage\":{\"version\":\"rncsdtclu\",\"revisionDatetime\":\"2021-06-22T22:11:38Z\"},\"componentVersions\":{\"wafEngineVersion\":\"pbsfgytgu\",\"wafNginxVersion\":\"lfeadcygq\"}}},\"dataplaneApiEndpoint\":\"yhejhzisxgfp\"},\"identity\":{\"principalId\":\"lppvksrpq\",\"tenantId\":\"jzraehtwdwrf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"khevxccedc\":{\"principalId\":\"rcdlbhshfwpr\",\"clientId\":\"stwit\"},\"cxnavv\":{\"principalId\":\"md\",\"clientId\":\"dnwzxltjcvnhltiu\"},\"vfvpdbodaciz\":{\"principalId\":\"qiby\",\"clientId\":\"nyowxwlmdjrkvfg\"},\"qkgh\":{\"principalId\":\"q\",\"clientId\":\"krribdeibqi\"}}},\"sku\":{\"name\":\"ndzwmkrefa\"},\"location\":\"jorwkqnyhgbij\",\"tags\":{\"bsystawfsdjpvk\":\"vfxzsjab\",\"jxbkzbzkdvn\":\"p\",\"zhjjklffhmouwq\":\"jabudurgkakmo\",\"eeyebi\":\"gzrf\"},\"id\":\"ikayuhqlbjbsybb\",\"name\":\"wrv\",\"type\":\"ldgmfpgvmpip\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,28 +34,26 @@ public final class DeploymentsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NginxDeployment> response
-            = manager.deployments().listByResourceGroup("oxciqopidoamcio", com.azure.core.util.Context.NONE);
+            = manager.deployments().listByResourceGroup("ufgmjzrwrdg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fpel", response.iterator().next().location());
-        Assertions.assertEquals("pv", response.iterator().next().tags().get("srp"));
-        Assertions.assertEquals("kszzcmrvexztv",
+        Assertions.assertEquals("jorwkqnyhgbij", response.iterator().next().location());
+        Assertions.assertEquals("vfxzsjab", response.iterator().next().tags().get("bsystawfsdjpvk"));
+        Assertions.assertEquals("hhziuief",
             response.iterator().next().properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertTrue(response.iterator().next().properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("xawqaldsyuuxim",
-            response.iterator().next().properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("qfobwyz",
+        Assertions.assertEquals("u", response.iterator().next().properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("hxicslfaoqz",
             response.iterator().next().properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(1711302582, response.iterator().next().properties().scalingProperties().capacity());
-        Assertions.assertEquals("t",
+        Assertions.assertEquals(580732645, response.iterator().next().properties().scalingProperties().capacity());
+        Assertions.assertEquals("alnswhccsphk",
             response.iterator().next().properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(2069495604,
+        Assertions.assertEquals(1331736876,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(1465227251,
+        Assertions.assertEquals(185919180,
             response.iterator().next().properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("dsnfdsdoakgtdl",
-            response.iterator().next().properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("zev", response.iterator().next().properties().userProfile().preferredEmail());
-        Assertions.assertEquals(ActivationState.DISABLED,
+        Assertions.assertEquals("emh", response.iterator().next().properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("sbrgz", response.iterator().next().properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.ENABLED,
             response.iterator()
                 .next()
                 .properties()
@@ -63,6 +61,6 @@ public final class DeploymentsListByResourceGroupMockTests {
                 .webApplicationFirewallSettings()
                 .activationState());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("ukyhejhzis", response.iterator().next().sku().name());
+        Assertions.assertEquals("ndzwmkrefa", response.iterator().next().sku().name());
     }
 }

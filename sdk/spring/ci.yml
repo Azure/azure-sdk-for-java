@@ -610,5 +610,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangeLog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
+    TestParallelization: '1'
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*

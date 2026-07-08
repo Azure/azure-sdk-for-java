@@ -3,7 +3,14 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDetails;
+import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
+import com.azure.core.util.BinaryData;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
@@ -11,16 +18,19 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseStatus;
+import com.openai.services.blocking.ConversationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class AgentsTests extends ClientTestBase {
 
     private static final String AGENT_NAME = "test-agent-java";
@@ -55,9 +65,7 @@ public class AgentsTests extends ClientTestBase {
             }
         }
 
-        DeleteAgentResponse deletedAgent = client.deleteAgent(AGENT_NAME);
-        assertEquals(AGENT_NAME, deletedAgent.getName());
-        assertTrue(deletedAgent.isDeleted());
+        assertDoesNotThrow(() -> client.deleteAgent(AGENT_NAME));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -95,19 +103,15 @@ public class AgentsTests extends ClientTestBase {
         }
 
         // Deletion
-        DeleteAgentVersionResponse deletedAgent
-            = client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
-        assertNotNull(deletedAgent);
-        assertEquals(createdAgent.getName(), deletedAgent.getName());
-        assertEquals(createdAgent.getVersion(), deletedAgent.getVersion());
-        assertTrue(deletedAgent.isDeleted());
+        client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
     }
 
+    @Disabled("Disabled due to service errors (api-version + responses endpoint).")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
@@ -118,7 +122,7 @@ public class AgentsTests extends ClientTestBase {
         AgentReference agentReference = new AgentReference(createdAgent.getName());
         agentReference.setVersion(createdAgent.getVersion());
 
-        Conversation conversation = conversationsClient.getConversationService().create();
+        Conversation conversation = conversationService.create();
 
         List<ResponseInputItem> inputItems = new ArrayList<>();
         inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
@@ -130,8 +134,9 @@ public class AgentsTests extends ClientTestBase {
             .content("Could you help me decide what clothes to wear today?")
             .build()));
 
-        Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-            ResponseCreateParams.builder().inputOfResponse(inputItems));
+        Response response
+            = responsesClient.createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder().conversation(conversation.id()).inputOfResponse(inputItems));
 
         assertNotNull(createdAgent);
         assertNotNull(createdAgent.getId());
@@ -149,7 +154,7 @@ public class AgentsTests extends ClientTestBase {
 
         // Clean up
         agentsClient.deleteAgent(createdAgent.getId());
-        conversationsClient.getConversationService().delete(conversation.id());
+        conversationService.delete(conversation.id());
         // Deleting response causes a 500
         responsesClient.getResponseService().delete(response.id());
     }
@@ -199,4 +204,54 @@ public class AgentsTests extends ClientTestBase {
     //        // Deleting response causes a 500
     //        //        responsesClient.getOpenAIClient().delete(response.id());
     //    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
+        ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
+        String agentModel = "gpt-4o";
+
+        // Create an agent with structured input definitions
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME,
+            new PromptAgentDefinition(agentModel).setInstructions(
+                "You are a helpful assistant. " + "The user's name is {{userName}} and their role is {{userRole}}. "
+                    + "Greet them and confirm their details.")
+                .setStructuredInputs(structuredInputDefinitions));
+
+        assertNotNull(createdAgent);
+        assertNotNull(createdAgent.getId());
+        assertEquals(AGENT_NAME, createdAgent.getName());
+
+        // Create a response, passing structured input values that match the agent's definitions
+        Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+        structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+        structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
+
+        Response response
+            = responsesClient
+                .createAzureResponse(
+                    new AzureCreateResponseOptions()
+                        .setAgentReference(
+                            new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()))
+                        .setStructuredInputs(structuredInputValues),
+                    ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
+
+        assertNotNull(response);
+        assertTrue(response.id().startsWith("resp"));
+        assertTrue(response.status().isPresent());
+        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+        assertFalse(response.output().isEmpty());
+        assertTrue(response.output().get(0).isMessage());
+        assertFalse(response.output().get(0).asMessage().content().isEmpty());
+
+        // Clean up
+        agentsClient.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
+    }
 }

@@ -151,7 +151,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void stageBlockMin() {
         assertResponseStatusCode(blockBlobClient.stageBlockWithResponse(getBlockID(), DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null), 201);
-        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
+        assertEquals(1, blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size());
     }
 
     @ParameterizedTest
@@ -159,7 +159,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void stageBlockMinWithBinaryData(BinaryData binaryData) {
         assertResponseStatusCode(blockBlobClient
             .stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData), null, null), 201);
-        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
+        assertEquals(1, blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size());
     }
 
     private static Stream<Arguments> stageBlockMinwithBinaryDataSupplier() {
@@ -175,7 +175,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             = BinaryData.fromFlux(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong(), false).block();
         assertResponseStatusCode(blockBlobClient
             .stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData), null, null), 201);
-        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
+        assertEquals(1, blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size());
     }
 
     @ParameterizedTest
@@ -190,7 +190,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(
             wireTapClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData), null, null),
             201);
-        assertEquals(blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size(), 1);
+        assertEquals(1, blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size());
         assertEquals(binaryData, wireTap.getLastRequest().getBodyAsBinaryData());
     }
 
@@ -253,7 +253,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                 DATA.getDefaultDataSize(), MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null,
                 null));
 
-        assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+        assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
     }
 
     @Test
@@ -263,7 +263,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                 new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(DATA.getDefaultBytes()))
                     .setContentMd5(MessageDigest.getInstance("MD5").digest("garbage".getBytes())),
                 null, null));
-        assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+        assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
     }
 
     @Test
@@ -297,7 +297,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             = assertThrows(BlobStorageException.class, () -> blockBlobClient.stageBlockWithResponse(getBlockID(),
                 DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, GARBAGE_LEASE_ID, null, null));
 
-        assertEquals(e.getErrorCode(), BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+        assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
     }
 
     @Test
@@ -362,8 +362,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
 
         BlockList response = bu2.listBlocks(BlockListType.ALL);
-        assertEquals(response.getUncommittedBlocks().size(), 1);
-        assertEquals(response.getCommittedBlocks().size(), 0);
+        assertEquals(1, response.getUncommittedBlocks().size());
+        assertEquals(0, response.getCommittedBlocks().size());
         assertEquals(response.getUncommittedBlocks().get(0).getName(), blockID);
 
         bu2.commitBlockList(Collections.singletonList(blockID));
@@ -383,7 +383,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID,
             blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
 
-        assertTrue(e.getStatusCode() == 401);
+        assertEquals(401, e.getStatusCode());
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage()
             .contains(
@@ -425,8 +425,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         destURL.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl() + "?" + sas, new BlobRange(2L, 3L));
         BlockList blockList = destURL.listBlocks(BlockListType.UNCOMMITTED);
 
-        assertEquals(blockList.getCommittedBlocks().size(), 0);
-        assertEquals(blockList.getUncommittedBlocks().size(), 1);
+        assertEquals(0, blockList.getCommittedBlocks().size());
+        assertEquals(1, blockList.getUncommittedBlocks().size());
     }
 
     @Test
@@ -715,7 +715,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         blockBlobClient.commitBlockListWithResponse(commitOptions, null, null);
         BlobProperties properties = blockBlobClient.getProperties();
 
-        assertEquals(properties.getAccessTier(), AccessTier.COLD);
+        assertEquals(AccessTier.COLD, properties.getAccessTier());
     }
 
     @SuppressWarnings("deprecation")
@@ -797,7 +797,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> blockBlobClient.listBlocksWithResponse(BlockListType.ALL, GARBAGE_LEASE_ID, null, Context.NONE));
 
-        assertEquals(e.getErrorCode(), BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+        assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -819,7 +819,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                 new BlockBlobListBlocksOptions(BlockListType.ALL).setIfTagsMatch("\"notfoo\" = 'notbar'"), null,
                 Context.NONE));
 
-        assertEquals(e.getErrorCode(), BlobErrorCode.CONDITION_NOT_MET);
+        assertEquals(BlobErrorCode.CONDITION_NOT_MET, e.getErrorCode());
     }
 
     @Test
@@ -907,7 +907,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         File outFile = new File(file.getPath() + "result");
         createdFiles.add(outFile);
-        outFile.createNewFile();
+        assertTrue(outFile.createNewFile());
         outFile.deleteOnExit();
         Files.deleteIfExists(outFile.toPath());
 
@@ -980,7 +980,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> blobClient.uploadFromFile(file.toPath().toString()));
-        assertEquals(e.getErrorCode(), BlobErrorCode.BLOB_ALREADY_EXISTS);
+        assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, e.getErrorCode());
     }
 
     @LiveOnly
@@ -1245,7 +1245,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         bc.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, AccessTier.COOL,
             null, null, null, null);
 
-        assertEquals(bc.getProperties().getAccessTier(), AccessTier.COOL);
+        assertEquals(AccessTier.COOL, bc.getProperties().getAccessTier());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
@@ -1254,7 +1254,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlockBlobClient bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         bc.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, AccessTier.COLD,
             null, null, null, null);
-        assertEquals(bc.getProperties().getAccessTier(), AccessTier.COLD);
+        assertEquals(AccessTier.COLD, bc.getProperties().getAccessTier());
     }
 
     @Test
@@ -1425,7 +1425,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
 
-        assertTrue(e.getStatusCode() == 401);
+        assertEquals(401, e.getStatusCode());
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage()
             .contains(
@@ -1527,7 +1527,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> blockBlobClient.uploadFromUrlWithResponse(options, null, null));
 
-        assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+        assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
@@ -1642,7 +1642,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         blockBlobClient.uploadFromUrlWithResponse(uploadOptions, null, null);
         BlobProperties properties = blockBlobClient.getProperties();
 
-        assertEquals(properties.getAccessTier(), AccessTier.COLD);
+        assertEquals(AccessTier.COLD, properties.getAccessTier());
     }
 
     @Test
@@ -1776,5 +1776,125 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void stageBlockFromUriSourceCPK() {
+        // Create source block blob
+        BlockBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        String blockID = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions options
+            = new BlockBlobStageBlockFromUrlOptions(blockID, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        destBlob.stageBlockFromUrlWithResponse(options, null, null);
+        Response<BlockBlobItem> response = destBlob.commitBlockListWithResponse(
+            new BlockBlobCommitBlockListOptions(Collections.singletonList(blockID)), null, null);
+
+        assertEquals(destCustomerProvidedKey.getKeySha256(), response.getValue().getEncryptionKeySha256());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void stageBlockFromUriSourceCPKFail() {
+        // Create source block blob
+        BlockBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        String blockID = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions options
+            = new BlockBlobStageBlockFromUrlOptions(blockID, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        BlockBlobClient finalDestBlob = destBlob;
+        BlobStorageException ex = assertThrows(BlobStorageException.class,
+            () -> finalDestBlob.stageBlockFromUrlWithResponse(options, null, null));
+        assertEquals(409, ex.getStatusCode());
+        assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadFromUriSourceCPK() {
+        // Create source block blob
+        BlockBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        Response<BlockBlobItem> response = destBlob.uploadFromUrlWithResponse(options, null, null);
+
+        assertEquals(destCustomerProvidedKey.getKeySha256(), response.getValue().getEncryptionKeySha256());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadFromUriSourceCPKFail() {
+        // Create source block blob
+        BlockBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        BlockBlobClient finalDestBlob = destBlob;
+        BlobStorageException ex = assertThrows(BlobStorageException.class,
+            () -> finalDestBlob.uploadFromUrlWithResponse(options, null, null));
+        assertEquals(409, ex.getStatusCode());
+        assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
     }
 }

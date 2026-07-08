@@ -10,6 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationProperties;
+import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -23,6 +25,11 @@ public final class CacheRuleInner extends ProxyResource {
      * The properties of the cache rule.
      */
     private CacheRuleProperties innerProperties;
+
+    /*
+     * The identity of the cache rule.
+     */
+    private IdentityProperties identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -57,6 +64,26 @@ public final class CacheRuleInner extends ProxyResource {
      */
     private CacheRuleProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity of the cache rule.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the cache rule.
+     * 
+     * @param identity the identity value to set.
+     * @return the CacheRuleInner object itself.
+     */
+    public CacheRuleInner withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -120,6 +147,32 @@ public final class CacheRuleInner extends ProxyResource {
             this.innerProperties = new CacheRuleProperties();
         }
         this.innerProperties().withCredentialSetResourceId(credentialSetResourceId);
+        return this;
+    }
+
+    /**
+     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @return the additionalAuthenticationProperties value.
+     */
+    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalAuthenticationProperties();
+    }
+
+    /**
+     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
+     * @return the CacheRuleInner object itself.
+     */
+    public CacheRuleInner
+        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheRuleProperties();
+        }
+        this.innerProperties().withAdditionalAuthenticationProperties(additionalAuthenticationProperties);
         return this;
     }
 
@@ -198,6 +251,9 @@ public final class CacheRuleInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -207,6 +263,7 @@ public final class CacheRuleInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -234,6 +291,8 @@ public final class CacheRuleInner extends ProxyResource {
                     deserializedCacheRuleInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCacheRuleInner.innerProperties = CacheRuleProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCacheRuleInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedCacheRuleInner.systemData = SystemData.fromJson(reader);
                 } else {

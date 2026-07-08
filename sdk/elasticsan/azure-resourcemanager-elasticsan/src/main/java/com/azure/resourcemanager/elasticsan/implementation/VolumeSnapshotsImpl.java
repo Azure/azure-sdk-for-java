@@ -31,12 +31,8 @@ public final class VolumeSnapshotsImpl implements VolumeSnapshots {
         String snapshotName, Context context) {
         Response<SnapshotInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SnapshotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SnapshotImpl(inner.getValue(), this.manager()));
     }
 
     public Snapshot get(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName) {

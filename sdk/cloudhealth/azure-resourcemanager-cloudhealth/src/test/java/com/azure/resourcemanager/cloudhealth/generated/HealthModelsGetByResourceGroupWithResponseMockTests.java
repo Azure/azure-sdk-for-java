@@ -10,7 +10,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataplaneEndpoint\":\"x\",\"provisioningState\":\"Creating\",\"discovery\":{\"scope\":\"zikywgg\",\"addRecommendedSignals\":\"Disabled\",\"identity\":\"lla\"}},\"identity\":{\"principalId\":\"lwuip\",\"tenantId\":\"cjzkzivgvvcna\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"tdaaygdvwvg\":{\"principalId\":\"nxxmueedndrdv\",\"clientId\":\"kwqqtchealmf\"},\"himdbl\":{\"principalId\":\"ohgwxrtfudxepxg\",\"clientId\":\"agvrvmnpkuk\"},\"xw\":{\"principalId\":\"wi\",\"clientId\":\"njhf\"}}},\"location\":\"zk\",\"tags\":{\"fjawneaivxwczel\":\"qreyfkzi\",\"r\":\"c\",\"xbjhwuaanozjosph\":\"lsfeaenwabfatkld\",\"ag\":\"oulpjrv\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"onmacjekniz\",\"tenantId\":\"qvci\",\"type\":\"None\",\"userAssignedIdentities\":{\"wrwfscjfnyns\":{\"principalId\":\"gmblrri\",\"clientId\":\"ywdxsmic\"},\"vutpthjoxo\":{\"principalId\":\"ujiz\",\"clientId\":\"oqytibyowbblgy\"},\"xkcgxxlxsffgcvi\":{\"principalId\":\"msksbp\",\"clientId\":\"lqol\"}}},\"location\":\"zdwlvwlyoupfgfb\",\"tags\":{\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\"},\"id\":\"pjui\",\"name\":\"av\",\"type\":\"k\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +32,11 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .getByResourceGroupWithResponse("ocrkvcikh", "vpa", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("yyysfgdotcubi", "p", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zk", response.location());
-        Assertions.assertEquals("qreyfkzi", response.tags().get("fjawneaivxwczel"));
-        Assertions.assertEquals("zikywgg", response.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
-            response.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("lla", response.properties().discovery().identity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("zdwlvwlyoupfgfb", response.location());
+        Assertions.assertEquals("bdyhgkfminsgowz", response.tags().get("ttsttktlahbqact"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

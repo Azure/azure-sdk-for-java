@@ -13,22 +13,21 @@ public final class ElasticVolumeBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeBackupProperties model = BinaryData.fromString(
-            "{\"elasticBackupPolicyResourceId\":\"cxy\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"jhlimmbcxfhbcpo\"}")
+            "{\"elasticBackupPolicyResourceId\":\"r\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"vmmghfcfiwrxgk\"}")
             .toObject(ElasticVolumeBackupProperties.class);
-        Assertions.assertEquals("cxy", model.elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.policyEnforcement());
-        Assertions.assertEquals("jhlimmbcxfhbcpo", model.elasticBackupVaultResourceId());
+        Assertions.assertEquals("r", model.elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED, model.policyEnforcement());
+        Assertions.assertEquals("vmmghfcfiwrxgk", model.elasticBackupVaultResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVolumeBackupProperties model
-            = new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("cxy")
-                .withPolicyEnforcement(ElasticVolumePolicyEnforcement.NOT_ENFORCED)
-                .withElasticBackupVaultResourceId("jhlimmbcxfhbcpo");
+        ElasticVolumeBackupProperties model = new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("r")
+            .withPolicyEnforcement(ElasticVolumePolicyEnforcement.ENFORCED)
+            .withElasticBackupVaultResourceId("vmmghfcfiwrxgk");
         model = BinaryData.fromObject(model).toObject(ElasticVolumeBackupProperties.class);
-        Assertions.assertEquals("cxy", model.elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.policyEnforcement());
-        Assertions.assertEquals("jhlimmbcxfhbcpo", model.elasticBackupVaultResourceId());
+        Assertions.assertEquals("r", model.elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED, model.policyEnforcement());
+        Assertions.assertEquals("vmmghfcfiwrxgk", model.elasticBackupVaultResourceId());
     }
 }

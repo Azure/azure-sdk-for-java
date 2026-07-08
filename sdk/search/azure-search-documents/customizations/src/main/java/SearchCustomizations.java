@@ -37,13 +37,18 @@ public class SearchCustomizations extends Customization {
         addSearchAudienceScopeHandling(indexes.getClass("SearchIndexerClientBuilder"), logger);
         addSearchAudienceScopeHandling(knowledge.getClass("KnowledgeBaseRetrievalClientBuilder"), logger);
 
-        includeOldApiVersions(documents.getClass("SearchServiceVersion"));
+        ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
+        includeOldApiVersions(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
 
         removeGetApis(searchClient);
         removeGetApis(searchAsyncClient);
+
+        hideSearchDocumentsResultInternalProperties(
+            libraryCustomization.getPackage("com.azure.search.documents.models")
+                .getClass("SearchDocumentsResult"));
 
         hideWithResponseBinaryDataApis(searchClient);
         hideWithResponseBinaryDataApis(searchAsyncClient);
@@ -53,6 +58,16 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+
+        // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
+        // that mirror what the sync client already has as hand-written methods.
+        addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
+
+        // SearchResourceEncryptionKey workaround: the spec marks keyVaultUri and keyVaultKeyName as required,
+        // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
+        addNoArgConstructorToEncryptionKey(
+            libraryCustomization.getPackage("com.azure.search.documents.indexes.models")
+                .getClass("SearchResourceEncryptionKey"));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -112,7 +127,7 @@ public class SearchCustomizations extends Customization {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
             for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
-                String enumName = "V" + version.replace("-", "_");
+                String enumName = ("V" + version.replace("-", "_"));
                 entries.add(0, new EnumConstantDeclaration(enumName)
                     .addArgument(new StringLiteralExpr(version))
                     .setJavadocComment("Enum value " + version + "."));
@@ -132,8 +147,14 @@ public class SearchCustomizations extends Customization {
                     return;
                 }
 
-                if (hasBinaryDataInType(method.getType())
-                    || method.getParameters().stream().anyMatch(param -> hasBinaryDataInType(param.getType()))) {
+                boolean returnsBinaryData = hasBinaryDataInType(method.getType());
+                boolean acceptsBinaryData
+                    = method.getParameters().stream().anyMatch(param -> hasBinaryDataInType(param.getType()));
+
+                // Only hide methods that return BinaryData or accept BinaryData in WithResponse methods.
+                // Convenience methods that accept BinaryData as input (e.g., file upload) should remain public.
+                boolean isWithResponse = method.getNameAsString().contains("WithResponse");
+                if (returnsBinaryData || (acceptsBinaryData && isWithResponse)) {
                     String methodName = method.getNameAsString();
                     String newMethodName = "hiddenGenerated" + Character.toUpperCase(methodName.charAt(0))
                         + methodName.substring(1);
@@ -168,5 +189,93 @@ public class SearchCustomizations extends Customization {
                     method.remove();
                 }
             })));
+    }
+
+    // @@access on model properties is not supported by the Java TypeSpec emitter — it only works on whole models and
+    // operations. This customization makes getNextLink() and getNextPageParameters() package-private since they are
+    // internal continuation details not meant for public consumption.
+    private static void hideSearchDocumentsResultInternalProperties(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            for (String methodName : Arrays.asList("getNextLink", "getNextPageParameters")) {
+                clazz.getMethodsByName(methodName).forEach(MethodDeclaration::setModifiers);
+            }
+        }));
+    }
+
+    // SearchResourceEncryptionKey has keyName and vaultUrl as required (final) fields, but when
+    // isServiceLevelKey is true, they are not needed. This adds a no-arg constructor and makes those fields non-final.
+    private static void addNoArgConstructorToEncryptionKey(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Make keyName and vaultUrl non-final
+            clazz.getFieldByName("keyName").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+            clazz.getFieldByName("vaultUrl").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+
+            // Add no-arg constructor
+            clazz.addMember(StaticJavaParser.parseBodyDeclaration(
+                "/**\n"
+                    + " * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is\n"
+                    + " * set to true, in which case keyName and vaultUrl are not required.\n"
+                    + " */\n"
+                    + "public SearchResourceEncryptionKey() {\n"
+                    + "    this.keyName = null;\n"
+                    + "    this.vaultUrl = null;\n"
+                    + "}\n"));
+        }));
+    }
+
+    // Adds public convenience methods to SearchIndexAsyncClient for knowledge base and knowledge source
+    // createOrUpdate operations. The sync client has equivalent hand-written wrappers, but the async client
+    // only has package-private generated convenience methods after hideWithResponseBinaryDataApis runs.
+    private static void addAsyncKnowledgeBaseConvenienceMethods(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            // Add: public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase)
+            MethodDeclaration createOrUpdateKB = StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {\n"
+                    + "    return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);\n"
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKB.setJavadocComment(
+                "Creates a new knowledge base or updates a knowledge base if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeBase The definition of the knowledge base to create or update.\n"
+                    + "@return the knowledge base that was created or updated.");
+            clazz.addMember(createOrUpdateKB);
+
+            // Add: public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(
+            //          KnowledgeBase knowledgeBase, RequestOptions requestOptions)
+            MethodDeclaration createOrUpdateKBWithResponse = StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse("
+                    + "KnowledgeBase knowledgeBase, RequestOptions requestOptions) {\n"
+                    + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync("
+                    + "knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions), "
+                    + "KnowledgeBase.class);\n"
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKBWithResponse.setJavadocComment(
+                "Creates a new knowledge base or updates a knowledge base if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeBase The definition of the knowledge base to create or update.\n"
+                    + "@param requestOptions The options to configure the HTTP request before HTTP client sends it.\n"
+                    + "@return the knowledge base that was created or updated along with {@link Response}.");
+            clazz.addMember(createOrUpdateKBWithResponse);
+
+            // Add: public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(
+            //          KnowledgeSource knowledgeSource, RequestOptions requestOptions)
+            MethodDeclaration createOrUpdateKSWithResponse = StaticJavaParser.parseBodyDeclaration(
+                "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                    + "public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse("
+                    + "KnowledgeSource knowledgeSource, RequestOptions requestOptions) {\n"
+                    + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync("
+                    + "knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions), "
+                    + "KnowledgeSource.class);\n"
+                    + "}\n").asMethodDeclaration();
+            createOrUpdateKSWithResponse.setJavadocComment(
+                "Creates a new knowledge source or updates a knowledge source if it already exists.\n"
+                    + "\n"
+                    + "@param knowledgeSource The definition of the knowledge source to create or update.\n"
+                    + "@param requestOptions The options to configure the HTTP request before HTTP client sends it.\n"
+                    + "@return the knowledge source that was created or updated along with {@link Response}.");
+            clazz.addMember(createOrUpdateKSWithResponse);
+        }));
     }
 }

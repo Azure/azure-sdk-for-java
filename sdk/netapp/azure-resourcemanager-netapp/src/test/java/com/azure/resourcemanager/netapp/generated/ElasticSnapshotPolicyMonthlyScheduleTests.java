@@ -12,27 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticSnapshotPolicyMonthlyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticSnapshotPolicyMonthlySchedule model = BinaryData
-            .fromString(
-                "{\"snapshotsToKeep\":149120205,\"daysOfMonth\":[921297518],\"hour\":1940706470,\"minute\":432756215}")
+        ElasticSnapshotPolicyMonthlySchedule model = BinaryData.fromString(
+            "{\"snapshotsToKeep\":1023774420,\"daysOfMonth\":[1410759489,975407039,952311189],\"hour\":2048724944,\"minute\":1770973346}")
             .toObject(ElasticSnapshotPolicyMonthlySchedule.class);
-        Assertions.assertEquals(149120205, model.snapshotsToKeep());
-        Assertions.assertEquals(921297518, model.daysOfMonth().get(0));
-        Assertions.assertEquals(1940706470, model.hour());
-        Assertions.assertEquals(432756215, model.minute());
+        Assertions.assertEquals(1023774420, model.snapshotsToKeep());
+        Assertions.assertEquals(1410759489, model.daysOfMonth().get(0));
+        Assertions.assertEquals(2048724944, model.hour());
+        Assertions.assertEquals(1770973346, model.minute());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSnapshotPolicyMonthlySchedule model
-            = new ElasticSnapshotPolicyMonthlySchedule().withSnapshotsToKeep(149120205)
-                .withDaysOfMonth(Arrays.asList(921297518))
-                .withHour(1940706470)
-                .withMinute(432756215);
+            = new ElasticSnapshotPolicyMonthlySchedule().withSnapshotsToKeep(1023774420)
+                .withDaysOfMonth(Arrays.asList(1410759489, 975407039, 952311189))
+                .withHour(2048724944)
+                .withMinute(1770973346);
         model = BinaryData.fromObject(model).toObject(ElasticSnapshotPolicyMonthlySchedule.class);
-        Assertions.assertEquals(149120205, model.snapshotsToKeep());
-        Assertions.assertEquals(921297518, model.daysOfMonth().get(0));
-        Assertions.assertEquals(1940706470, model.hour());
-        Assertions.assertEquals(432756215, model.minute());
+        Assertions.assertEquals(1023774420, model.snapshotsToKeep());
+        Assertions.assertEquals(1410759489, model.daysOfMonth().get(0));
+        Assertions.assertEquals(2048724944, model.hour());
+        Assertions.assertEquals(1770973346, model.minute());
     }
 }

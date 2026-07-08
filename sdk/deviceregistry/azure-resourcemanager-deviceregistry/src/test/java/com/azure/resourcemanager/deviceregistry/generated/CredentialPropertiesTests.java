@@ -11,7 +11,7 @@ public final class CredentialPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Failed\"}").toObject(CredentialProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\"}").toObject(CredentialProperties.class);
     }
 
     @org.junit.jupiter.api.Test

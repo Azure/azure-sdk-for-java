@@ -18,7 +18,7 @@ import java.util.Set;
  * CosmosDB Vector Store Index Definition.
  */
 @Fluent
-public final class CosmosDBIndex extends Index {
+public final class CosmosDBIndex extends AIProjectIndex {
 
     /*
      * Type of index
@@ -228,7 +228,7 @@ public final class CosmosDBIndex extends Index {
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        if (JsonMergePatchHelper.getIndexAccessor().isJsonMergePatch(this)) {
+        if (JsonMergePatchHelper.getAIProjectIndexAccessor().isJsonMergePatch(this)) {
             return toJsonMergePatch(jsonWriter);
         } else {
             jsonWriter.writeStartObject();
@@ -329,17 +329,20 @@ public final class CosmosDBIndex extends Index {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor().setName(deserializedCosmosDBIndex, reader.getString());
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
+                        .setName(deserializedCosmosDBIndex, reader.getString());
                 } else if ("version".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor().setVersion(deserializedCosmosDBIndex, reader.getString());
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
+                        .setVersion(deserializedCosmosDBIndex, reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor().setId(deserializedCosmosDBIndex, reader.getString());
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
+                        .setId(deserializedCosmosDBIndex, reader.getString());
                 } else if ("description".equals(fieldName)) {
-                    JsonMergePatchHelper.getIndexAccessor()
+                    JsonMergePatchHelper.getAIProjectIndexAccessor()
                         .setDescription(deserializedCosmosDBIndex, reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    JsonMergePatchHelper.getIndexAccessor().setTags(deserializedCosmosDBIndex, tags);
+                    JsonMergePatchHelper.getAIProjectIndexAccessor().setTags(deserializedCosmosDBIndex, tags);
                 } else if ("type".equals(fieldName)) {
                     deserializedCosmosDBIndex.type = IndexType.fromString(reader.getString());
                 } else if ("connectionName".equals(fieldName)) {

@@ -79,7 +79,7 @@ public class TranscribeMultiLanguageSample {
 
                 for (int i = 0; i < result.getPhrases().size(); i++) {
                     TranscribedPhrase phrase = result.getPhrases().get(i);
-                    long offsetMs = phrase.getOffset();
+                    long offsetMs = phrase.getOffset().toMillis();
                     long durationMs = phrase.getDuration().toMillis();
 
                     System.out.println("\n[Phrase " + (i + 1) + "] " + offsetMs + "ms - " + (offsetMs + durationMs) + "ms");

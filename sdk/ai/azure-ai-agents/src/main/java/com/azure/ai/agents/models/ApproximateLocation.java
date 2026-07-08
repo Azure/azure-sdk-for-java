@@ -6,21 +6,23 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.TimeZone;
 
 /**
  * The ApproximateLocation model.
  */
 @Fluent
-public final class ApproximateLocation extends Location {
+public final class ApproximateLocation implements JsonSerializable<ApproximateLocation> {
 
     /*
-     * The type property.
+     * The type of location approximation. Always `approximate`.
      */
     @Generated
-    private LocationType type = LocationType.APPROXIMATE;
+    private final String type = "approximate";
 
     /*
      * The country property.
@@ -44,7 +46,7 @@ public final class ApproximateLocation extends Location {
      * The timezone property.
      */
     @Generated
-    private String timezone;
+    private TimeZone timezone;
 
     /**
      * Creates an instance of ApproximateLocation class.
@@ -54,13 +56,12 @@ public final class ApproximateLocation extends Location {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of location approximation. Always `approximate`.
      *
      * @return the type value.
      */
     @Generated
-    @Override
-    public LocationType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -136,34 +137,21 @@ public final class ApproximateLocation extends Location {
      * @return the timezone value.
      */
     @Generated
-    public String getTimezone() {
+    public TimeZone getTimezone() {
         return this.timezone;
-    }
-
-    /**
-     * Set the timezone property: The timezone property.
-     *
-     * @param timezone the timezone value to set.
-     * @return the ApproximateLocation object itself.
-     */
-    @Generated
-    public ApproximateLocation setTimezone(String timezone) {
-        this.timezone = timezone;
-        return this;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("country", this.country);
         jsonWriter.writeStringField("region", this.region);
         jsonWriter.writeStringField("city", this.city);
-        jsonWriter.writeStringField("timezone", this.timezone);
+        jsonWriter.writeStringField("timezone", this.timezone != null ? this.timezone.getID() : null);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,30 +161,63 @@ public final class ApproximateLocation extends Location {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApproximateLocation if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApproximateLocation.
      */
-    @Generated
     public static ApproximateLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApproximateLocation deserializedApproximateLocation = new ApproximateLocation();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedApproximateLocation.type = LocationType.fromString(reader.getString());
-                } else if ("country".equals(fieldName)) {
+                if ("country".equals(fieldName)) {
                     deserializedApproximateLocation.country = reader.getString();
                 } else if ("region".equals(fieldName)) {
                     deserializedApproximateLocation.region = reader.getString();
                 } else if ("city".equals(fieldName)) {
                     deserializedApproximateLocation.city = reader.getString();
                 } else if ("timezone".equals(fieldName)) {
-                    deserializedApproximateLocation.timezone = reader.getString();
+                    String timezoneId = reader.getString();
+                    deserializedApproximateLocation.timezone = parseTimeZone(timezoneId);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedApproximateLocation;
         });
+    }
+
+    /**
+     * Set the timezone property: The timezone property.
+     *
+     * @param timezone the timezone value to set.
+     * @return the ApproximateLocation object itself.
+     */
+    @Generated
+    public ApproximateLocation setTimezone(TimeZone timezone) {
+        this.timezone = timezone;
+        return this;
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     * <p>
+     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timezoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timezoneId) {
+        if (timezoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timezoneId);
+        // TimeZone.getTimeZone falls back to GMT for unknown IDs.
+        // Treat unknown IDs as null to avoid silent data corruption.
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timezoneId)) {
+            return null;
+        }
+        return tz;
     }
 }

@@ -36,7 +36,7 @@ class State {
     private final String originEndpoint;
 
     /** Number of refresh attempts for exponential backoff calculation. */
-    private int refreshAttempt;
+    private final int refreshAttempt;
 
     /** The refresh interval in seconds. */
     private final int refreshInterval;
@@ -152,8 +152,8 @@ class State {
      * @return the State instance with refreshAttempt incremented by 1
      */
     public State incrementRefreshAttempt() {
-        this.refreshAttempt += 1;
-        return this;
+        return new State(this.watchKeys, this.collectionWatchKeys, this.refreshInterval,
+            this.originEndpoint, this.nextRefreshCheck, this.refreshAttempt + 1);
     }
 
     /**

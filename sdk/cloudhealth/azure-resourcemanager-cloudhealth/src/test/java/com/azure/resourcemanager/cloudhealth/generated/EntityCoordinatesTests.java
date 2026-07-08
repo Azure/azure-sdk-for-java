@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityCoordinatesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityCoordinates model = BinaryData.fromString("{\"x\":98.37234780605657,\"y\":7.795145831536255}")
+        EntityCoordinates model = BinaryData.fromString("{\"x\":88.46195286470697,\"y\":91.61707368377957}")
             .toObject(EntityCoordinates.class);
-        Assertions.assertEquals(98.37234780605657, model.x());
-        Assertions.assertEquals(7.795145831536255, model.y());
+        Assertions.assertEquals(88.46195286470697, model.x());
+        Assertions.assertEquals(91.61707368377957, model.y());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityCoordinates model = new EntityCoordinates().withX(98.37234780605657).withY(7.795145831536255);
+        EntityCoordinates model = new EntityCoordinates().withX(88.46195286470697).withY(91.61707368377957);
         model = BinaryData.fromObject(model).toObject(EntityCoordinates.class);
-        Assertions.assertEquals(98.37234780605657, model.x());
-        Assertions.assertEquals(7.795145831536255, model.y());
+        Assertions.assertEquals(88.46195286470697, model.x());
+        Assertions.assertEquals(91.61707368377957, model.y());
     }
 }

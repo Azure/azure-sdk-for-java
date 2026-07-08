@@ -14,5 +14,10 @@ public abstract class CosmosItemSerializerNoExceptionWrapping extends CosmosItem
             .CosmosItemSerializerHelper
             .getCosmosItemSerializerAccessor()
             .setShouldWrapSerializationExceptions(this, false);
+
+        ImplementationBridgeHelpers
+            .CosmosItemSerializerHelper
+            .getCosmosItemSerializerAccessor()
+            .setCanSerialize(this, false);
     }
 }

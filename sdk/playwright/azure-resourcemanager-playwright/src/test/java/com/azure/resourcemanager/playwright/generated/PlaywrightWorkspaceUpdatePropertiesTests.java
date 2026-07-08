@@ -12,20 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class PlaywrightWorkspaceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlaywrightWorkspaceUpdateProperties model
-            = BinaryData.fromString("{\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\"}")
-                .toObject(PlaywrightWorkspaceUpdateProperties.class);
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
+        PlaywrightWorkspaceUpdateProperties model = BinaryData.fromString(
+            "{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"reporting\":\"Disabled\",\"storageUri\":\"ljofxqeofjaeqjh\"}")
+            .toObject(PlaywrightWorkspaceUpdateProperties.class);
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlaywrightWorkspaceUpdateProperties model
-            = new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                .withLocalAuth(EnablementStatus.DISABLED);
+            = new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+                .withLocalAuth(EnablementStatus.ENABLED)
+                .withReporting(EnablementStatus.DISABLED)
+                .withStorageUri("ljofxqeofjaeqjh");
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceUpdateProperties.class);
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals("ljofxqeofjaeqjh", model.storageUri());
     }
 }

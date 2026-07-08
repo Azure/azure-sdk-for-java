@@ -22,7 +22,7 @@ public final class ReplicasListByConfigurationStoreMockTests {
     @Test
     public void testListByConfigurationStore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endpoint\":\"kzzlvmbmpaxmodf\",\"provisioningState\":\"Canceled\"},\"location\":\"yw\",\"id\":\"pfvmwyhrfou\",\"name\":\"ft\",\"type\":\"akcp\"}]}";
+            = "{\"value\":[{\"properties\":{\"endpoint\":\"mlqoljx\",\"provisioningState\":\"Canceled\"},\"location\":\"xlx\",\"id\":\"fgcviz\",\"name\":\"zdwlvwlyoupfgfb\",\"type\":\"jub\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class ReplicasListByConfigurationStoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Replica> response = manager.replicas()
-            .listByConfigurationStore("mgxcxrslpm", "twuoegrpkhjwni", "qsluicp", com.azure.core.util.Context.NONE);
+            .listByConfigurationStore("gyavu", "pthjoxo", "smsks", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yw", response.iterator().next().location());
+        Assertions.assertEquals("xlx", response.iterator().next().location());
     }
 }

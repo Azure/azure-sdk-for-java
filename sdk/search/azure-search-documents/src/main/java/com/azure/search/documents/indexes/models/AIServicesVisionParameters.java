@@ -28,7 +28,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * The resource URI of the AI Services resource.
      */
     @Generated
-    private final String resourceUri;
+    private final String resourceUrl;
 
     /*
      * API key of the designated AI Services resource.
@@ -48,12 +48,12 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
      * Creates an instance of AIServicesVisionParameters class.
      *
      * @param modelVersion the modelVersion value to set.
-     * @param resourceUri the resourceUri value to set.
+     * @param resourceUrl the resourceUrl value to set.
      */
     @Generated
-    public AIServicesVisionParameters(String modelVersion, String resourceUri) {
+    public AIServicesVisionParameters(String modelVersion, String resourceUrl) {
         this.modelVersion = modelVersion;
-        this.resourceUri = resourceUri;
+        this.resourceUrl = resourceUrl;
     }
 
     /**
@@ -68,13 +68,13 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
     }
 
     /**
-     * Get the resourceUri property: The resource URI of the AI Services resource.
+     * Get the resourceUrl property: The resource URI of the AI Services resource.
      *
-     * @return the resourceUri value.
+     * @return the resourceUrl value.
      */
     @Generated
-    public String getResourceUri() {
-        return this.resourceUri;
+    public String getResourceUrl() {
+        return this.resourceUrl;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("resourceUri", this.resourceUrl);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         return jsonWriter.writeEndObject();
@@ -154,7 +154,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
     public static AIServicesVisionParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String modelVersion = null;
-            String resourceUri = null;
+            String resourceUrl = null;
             String apiKey = null;
             SearchIndexerDataIdentity authIdentity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -163,7 +163,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
                 if ("modelVersion".equals(fieldName)) {
                     modelVersion = reader.getString();
                 } else if ("resourceUri".equals(fieldName)) {
-                    resourceUri = reader.getString();
+                    resourceUrl = reader.getString();
                 } else if ("apiKey".equals(fieldName)) {
                     apiKey = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
@@ -173,7 +173,7 @@ public final class AIServicesVisionParameters implements JsonSerializable<AIServ
                 }
             }
             AIServicesVisionParameters deserializedAIServicesVisionParameters
-                = new AIServicesVisionParameters(modelVersion, resourceUri);
+                = new AIServicesVisionParameters(modelVersion, resourceUrl);
             deserializedAIServicesVisionParameters.apiKey = apiKey;
             deserializedAIServicesVisionParameters.authIdentity = authIdentity;
             return deserializedAIServicesVisionParameters;

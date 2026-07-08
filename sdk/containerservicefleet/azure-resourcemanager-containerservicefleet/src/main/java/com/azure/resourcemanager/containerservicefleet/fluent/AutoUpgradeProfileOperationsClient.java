@@ -24,7 +24,7 @@ public interface AutoUpgradeProfileOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner>
@@ -40,7 +40,7 @@ public interface AutoUpgradeProfileOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner> beginGenerateUpdateRun(
@@ -55,7 +55,7 @@ public interface AutoUpgradeProfileOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName);
@@ -70,7 +70,7 @@ public interface AutoUpgradeProfileOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName,

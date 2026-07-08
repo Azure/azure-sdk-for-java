@@ -22,7 +22,7 @@ public final class ElasticBackupVaultsListByElasticAccountMockTests {
     @Test
     public void testListByElasticAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"eTag\":\"xx\",\"location\":\"wzkyf\",\"tags\":{\"eiicrmpepkl\":\"piw\",\"acwras\":\"maxxijvskwsdgkjg\",\"o\":\"kwefc\",\"qicladv\":\"nwoqartwy\"},\"id\":\"tdavuqmcbymsfobj\",\"name\":\"quvjez\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"eTag\":\"scauwazcgwdfr\",\"location\":\"gyb\",\"tags\":{\"lix\":\"zokscvg\",\"qkjvxprwpxsoohu\":\"gbyfgwe\",\"ugggzlfbgrdcgu\":\"xlcskltez\"},\"id\":\"srtmdylperpiltt\",\"name\":\"zgczfcmfpfbode\",\"type\":\"resrgvtshuvft\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ElasticBackupVaultsListByElasticAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticBackupVault> response
-            = manager.elasticBackupVaults().listByElasticAccount("nfee", "gpkrie", com.azure.core.util.Context.NONE);
+            = manager.elasticBackupVaults().listByElasticAccount("titsf", "ofw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wzkyf", response.iterator().next().location());
-        Assertions.assertEquals("piw", response.iterator().next().tags().get("eiicrmpepkl"));
+        Assertions.assertEquals("gyb", response.iterator().next().location());
+        Assertions.assertEquals("zokscvg", response.iterator().next().tags().get("lix"));
     }
 }

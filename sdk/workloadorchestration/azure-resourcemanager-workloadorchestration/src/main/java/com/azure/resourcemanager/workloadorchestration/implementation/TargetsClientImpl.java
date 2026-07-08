@@ -1682,7 +1682,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return resolved Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resolveConfigurationWithResponseAsync(String resourceGroupName,
@@ -1704,7 +1704,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return resolved Configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resolveConfigurationWithResponse(String resourceGroupName, String targetName,
@@ -1725,7 +1725,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return resolved Configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resolveConfigurationWithResponse(String resourceGroupName, String targetName,
@@ -1745,7 +1745,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner>
@@ -1766,7 +1766,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner>
@@ -1786,7 +1786,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResolvedConfigurationInner>, ResolvedConfigurationInner> beginResolveConfiguration(
@@ -1805,7 +1805,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return resolved Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResolvedConfigurationInner> resolveConfigurationAsync(String resourceGroupName, String targetName,
@@ -1823,7 +1823,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
@@ -1841,7 +1841,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return resolved Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResolvedConfigurationInner resolveConfiguration(String resourceGroupName, String targetName,
@@ -1858,7 +1858,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return solution Version Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reviewSolutionVersionWithResponseAsync(String resourceGroupName,
@@ -1881,7 +1881,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reviewSolutionVersionWithResponse(String resourceGroupName, String targetName,
@@ -1902,7 +1902,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reviewSolutionVersionWithResponse(String resourceGroupName, String targetName,
@@ -1922,7 +1922,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -1942,7 +1942,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -1962,7 +1962,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginReviewSolutionVersion(
@@ -1981,7 +1981,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return solution Version Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionVersionInner> reviewSolutionVersionAsync(String resourceGroupName, String targetName,
@@ -1999,7 +1999,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
@@ -2017,7 +2017,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner reviewSolutionVersion(String resourceGroupName, String targetName,
@@ -2034,7 +2034,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return solution Version Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> publishSolutionVersionWithResponseAsync(String resourceGroupName,
@@ -2057,7 +2057,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> publishSolutionVersionWithResponse(String resourceGroupName, String targetName,
@@ -2078,7 +2078,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> publishSolutionVersionWithResponse(String resourceGroupName, String targetName,
@@ -2098,7 +2098,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -2118,7 +2118,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner>
@@ -2138,7 +2138,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginPublishSolutionVersion(
@@ -2158,7 +2158,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return solution Version Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionVersionInner> publishSolutionVersionAsync(String resourceGroupName, String targetName,
@@ -2176,7 +2176,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
@@ -2194,7 +2194,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner publishSolutionVersion(String resourceGroupName, String targetName,
@@ -2211,7 +2211,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return solution Version Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateExternalValidationStatusWithResponseAsync(String resourceGroupName,
@@ -2234,7 +2234,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateExternalValidationStatusWithResponse(String resourceGroupName, String targetName,
@@ -2255,7 +2255,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return solution Version Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateExternalValidationStatusWithResponse(String resourceGroupName, String targetName,
@@ -2275,7 +2275,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatusAsync(
@@ -2295,7 +2295,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
@@ -2315,7 +2315,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdateExternalValidationStatus(
@@ -2335,7 +2335,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return solution Version Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionVersionInner> updateExternalValidationStatusAsync(String resourceGroupName, String targetName,
@@ -2353,7 +2353,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,
@@ -2371,7 +2371,7 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return solution Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner updateExternalValidationStatus(String resourceGroupName, String targetName,

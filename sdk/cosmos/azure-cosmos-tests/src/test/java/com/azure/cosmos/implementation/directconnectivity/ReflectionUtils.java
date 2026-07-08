@@ -185,6 +185,10 @@ public class ReflectionUtils {
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
 
+    public static void setBackgroundRefreshJitterMaxInSeconds(GlobalEndpointManager globalEndPointManager, int seconds){
+        set(globalEndPointManager, seconds, "backgroundRefreshJitterMaxInSeconds");
+    }
+
     public static void setDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient, DiagnosticsProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
     }
@@ -263,6 +267,12 @@ public class ReflectionUtils {
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "gatewayProxy");
+    }
+
+    public static void setGatewayServiceConfigurationReader(
+        RxDocumentClientImpl client,
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
+        set(client, gatewayServiceConfigurationReader, "gatewayConfigurationReader");
     }
 
     public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {

@@ -13,23 +13,23 @@ public final class RegistryEndpointUserAssignedIdentityAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryEndpointUserAssignedIdentityAuthentication model = BinaryData.fromString(
-            "{\"method\":\"UserAssignedManagedIdentity\",\"userAssignedManagedIdentitySettings\":{\"clientId\":\"msweypqwdxggicc\",\"scope\":\"xqhuexm\",\"tenantId\":\"ttlstvlzywemhz\"}}")
+            "{\"method\":\"UserAssignedManagedIdentity\",\"userAssignedManagedIdentitySettings\":{\"clientId\":\"okdwb\",\"scope\":\"kszzcmrvexztv\",\"tenantId\":\"t\"}}")
             .toObject(RegistryEndpointUserAssignedIdentityAuthentication.class);
-        Assertions.assertEquals("msweypqwdxggicc", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("xqhuexm", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("ttlstvlzywemhz", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("okdwb", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("kszzcmrvexztv", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("t", model.userAssignedManagedIdentitySettings().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointUserAssignedIdentityAuthentication model
             = new RegistryEndpointUserAssignedIdentityAuthentication().withUserAssignedManagedIdentitySettings(
-                new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("msweypqwdxggicc")
-                    .withScope("xqhuexm")
-                    .withTenantId("ttlstvlzywemhz"));
+                new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("okdwb")
+                    .withScope("kszzcmrvexztv")
+                    .withTenantId("t"));
         model = BinaryData.fromObject(model).toObject(RegistryEndpointUserAssignedIdentityAuthentication.class);
-        Assertions.assertEquals("msweypqwdxggicc", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("xqhuexm", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("ttlstvlzywemhz", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("okdwb", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("kszzcmrvexztv", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("t", model.userAssignedManagedIdentitySettings().tenantId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ExportJobsOperationResultGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/JobCRUD/GetExportJobsOperationResult.json
+     * x-ms-original-file: 2026-03-01/JobCRUD/GetExportJobsOperationResult.json
      */
     /**
      * Sample code: Get Export Jobs Operation Result.

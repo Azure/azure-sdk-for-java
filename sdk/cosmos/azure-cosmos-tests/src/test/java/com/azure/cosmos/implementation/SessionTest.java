@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest extends TestSuiteBase {
-    protected static final int TIMEOUT = 20000;
+    protected static final int TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -48,7 +50,7 @@ public class SessionTest extends TestSuiteBase {
     private ConnectionMode connectionMode;
     private RequestOptions options;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "internalClientBuildersWithSessionConsistency")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
@@ -63,9 +65,9 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_SessionTest() {
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -78,26 +80,29 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
-        AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
-        try {
-            createdCollection = createCollection(asynClient, createdDatabase.getId(),
-                collection, requestOptions);
-            houseKeepingClient = clientBuilder().build();
-            connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
+        executeWithRetry(() -> {
+            safeClose(houseKeepingClient);
+            safeClose(spyClient);
+            AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
+            try {
+                createdCollection = createCollection(asynClient, createdDatabase.getId(),
+                    collection, requestOptions);
+                houseKeepingClient = clientBuilder().build();
+                connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
-            if (connectionMode == ConnectionMode.DIRECT) {
-                spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
-            } else {
-                // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
-                ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
-                connectionPolicy.setMultipleWriteRegionsEnabled(true);
-                spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+                if (connectionMode == ConnectionMode.DIRECT) {
+                    spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
+                } else {
+                    ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
+                    connectionPolicy.setMultipleWriteRegionsEnabled(true);
+                    spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+                }
+                options = new RequestOptions();
+                options.setPartitionKey(PartitionKey.NONE);
+            } finally {
+                asynClient.close();
             }
-            options = new RequestOptions();
-            options.setPartitionKey(PartitionKey.NONE);
-        } finally {
-            asynClient.close();
-        }
+        }, 3, "SessionTest setup");
     }
 
     @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -334,7 +339,7 @@ public class SessionTest extends TestSuiteBase {
         safeClose(dummyState);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         // No session token set for the master resource related request

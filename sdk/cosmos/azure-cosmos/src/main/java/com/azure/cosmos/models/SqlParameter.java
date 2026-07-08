@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -13,6 +16,7 @@ import java.util.Objects;
  */
 public final class SqlParameter {
     private JsonSerializable jsonSerializable;
+    private Object rawValue;
 
     /**
      * Initializes a new instance of the SqlParameter class.
@@ -29,6 +33,9 @@ public final class SqlParameter {
     SqlParameter(ObjectNode objectNode) {
 
         this.jsonSerializable = new JsonSerializable(objectNode);
+        // Note: rawValue here may not preserve the original Java type (e.g. Instant)
+        // since it is read back from the JSON property bag after deserialization.
+        this.rawValue = this.jsonSerializable.getObject("value", Object.class);
     }
 
     /**
@@ -84,6 +91,7 @@ public final class SqlParameter {
      * @return the SqlParameter.
      */
     public SqlParameter setValue(Object value) {
+        this.rawValue = value;
         this.jsonSerializable.set(
             "value",
             value
@@ -91,11 +99,62 @@ public final class SqlParameter {
         return this;
     }
 
+    /**
+     * Returns the raw value captured before serialization, when available.
+     * Package-private — used internally to clone parameters while preserving the
+     * original Java type (for example, {@code Instant}) when that value originated
+     * from direct Java assignment such as {@link #setValue(Object)}.
+     * <p>
+     * Values populated from the JSON property bag may already have lost their
+     * original Java type fidelity during JSON serialization/deserialization.
+     */
+    Object getRawValue() {
+        return this.rawValue;
+    }
+
+    /**
+     * Re-serializes the parameter value using the given custom item serializer.
+     * This is called internally during query execution to ensure parameter values
+     * are serialized consistently with document values when a custom serializer is configured.
+     *
+     * @param serializer the custom item serializer to apply.
+     */
+    void applySerializer(CosmosItemSerializer serializer) {
+        if (this.rawValue != null
+            && serializer != null
+            && cosmosItemSerializerAccessor().canSerialize(serializer)) {
+
+            this.jsonSerializable.set("value", this.rawValue, serializer, true);
+        }
+    }
+
+    /**
+     * Creates a copy of this SqlParameter, preserving the original raw value
+     * so that custom serializers can be applied to the clone independently.
+     *
+     * @return a new SqlParameter with the same name and raw value.
+     */
+    private SqlParameter createCopy() {
+        return new SqlParameter(this.getName(), this.rawValue);
+    }
+
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    private static CosmosItemSerializerAccessor cosmosItemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.SqlParameterHelper.setSqlParameterAccessor(
+            SqlParameter::createCopy
+        );
+    }
+
+    static { initialize(); }
 
     @Override
     public boolean equals(Object o) {

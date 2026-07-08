@@ -40,13 +40,6 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     @Generated
     private SearchIndexerDataIdentity identity;
 
-    /*
-     * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
-     * Each value must be of a primitive type.
-     */
-    @Generated
-    private SearchIndexerKnowledgeStoreParameters parameters;
-
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.
      *
@@ -122,30 +115,6 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     }
 
     /**
-     * Get the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
-     * name of a specific property. Each value must be of a primitive type.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public SearchIndexerKnowledgeStoreParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
-     * name of a specific property. Each value must be of a primitive type.
-     *
-     * @param parameters the parameters value to set.
-     * @return the SearchIndexerKnowledgeStore object itself.
-     */
-    @Generated
-    public SearchIndexerKnowledgeStore setParameters(SearchIndexerKnowledgeStoreParameters parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -196,5 +165,36 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
             deserializedSearchIndexerKnowledgeStore.parameters = parameters;
             return deserializedSearchIndexerKnowledgeStore;
         });
+    }
+
+    /*
+     * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
+     * Each value must be of a primitive type.
+     */
+    @Generated
+    private SearchIndexerKnowledgeStoreParameters parameters;
+
+    /**
+     * Get the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     *
+     * @return the parameters value.
+     */
+    @Generated
+    public SearchIndexerKnowledgeStoreParameters getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     *
+     * @param parameters the parameters value to set.
+     * @return the SearchIndexerKnowledgeStore object itself.
+     */
+    @Generated
+    public SearchIndexerKnowledgeStore setParameters(SearchIndexerKnowledgeStoreParameters parameters) {
+        this.parameters = parameters;
+        return this;
     }
 }

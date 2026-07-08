@@ -33,12 +33,8 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         String snapshotPolicyName, Context context) {
         Response<SnapshotPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, snapshotPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SnapshotPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SnapshotPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public SnapshotPolicy get(String resourceGroupName, String accountName, String snapshotPolicyName) {
@@ -72,12 +68,8 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         String snapshotPolicyName, Context context) {
         Response<SnapshotPolicyVolumeListInner> inner
             = this.serviceClient().listVolumesWithResponse(resourceGroupName, accountName, snapshotPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SnapshotPolicyVolumeListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SnapshotPolicyVolumeListImpl(inner.getValue(), this.manager()));
     }
 
     public SnapshotPolicyVolumeList listVolumes(String resourceGroupName, String accountName,

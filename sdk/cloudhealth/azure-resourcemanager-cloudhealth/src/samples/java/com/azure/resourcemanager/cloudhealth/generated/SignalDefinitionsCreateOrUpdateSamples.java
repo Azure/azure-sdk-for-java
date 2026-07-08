@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceMetricSignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.
@@ -32,11 +32,13 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
             .withExistingHealthmodel("rgopenapi", "myHealthModel")
             .withProperties(new ResourceMetricSignalDefinitionProperties().withDisplayName("cpu usage")
                 .withRefreshInterval(RefreshInterval.PT1M)
-                .withLabels(mapOf("key4788", "fakeTokenPlaceholder"))
+                .withTags(mapOf("key4788", "fakeTokenPlaceholder"))
                 .withDataUnit("byte")
                 .withEvaluationRules(new EvaluationRule()
-                    .withDegradedRule(new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("65"))
-                    .withUnhealthyRule(new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("60")))
+                    .withDegradedRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(65.0))
+                    .withUnhealthyRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(60.0)))
                 .withMetricNamespace("microsoft.compute/virtualMachines")
                 .withMetricName("cpuusage")
                 .withTimeGrain("PT1M")

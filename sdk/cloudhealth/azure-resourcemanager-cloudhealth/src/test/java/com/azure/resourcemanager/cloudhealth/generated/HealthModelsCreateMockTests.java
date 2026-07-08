@@ -10,12 +10,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
 import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -29,7 +27,7 @@ public final class HealthModelsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataplaneEndpoint\":\"t\",\"provisioningState\":\"Succeeded\",\"discovery\":{\"scope\":\"ra\",\"addRecommendedSignals\":\"Disabled\",\"identity\":\"koowtl\"}},\"identity\":{\"principalId\":\"ux\",\"tenantId\":\"q\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"znkbykutwpfhpagm\":{\"principalId\":\"uuximerq\",\"clientId\":\"bw\"},\"evdlh\":{\"principalId\":\"skdsnfdsdoakg\",\"clientId\":\"lmkk\"},\"m\":{\"principalId\":\"pusdstt\",\"clientId\":\"ogvbbejdcngq\"}}},\"location\":\"kufgmj\",\"tags\":{\"enuuzkopbm\":\"rdgrtw\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ev\",\"tenantId\":\"epr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vf\":{\"principalId\":\"ytp\",\"clientId\":\"mov\"}}},\"location\":\"awzqadfl\",\"tags\":{\"ndtic\":\"riglaec\"},\"id\":\"kpvzmlq\",\"name\":\"mldgxobfirc\",\"type\":\"npkc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,24 +37,19 @@ public final class HealthModelsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .define("gdknnqv")
-            .withRegion("ouicybxarzgszu")
-            .withExistingResourceGroup("u")
-            .withTags(mapOf("ciodhkhaz", "ciqopidoa"))
-            .withProperties(
-                new HealthModelProperties().withDiscovery(new ModelDiscoverySettings().withScope("rauwjuetaebu")
-                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-                    .withIdentity("dmovsm")))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("twwaezkojvdcpzf", new UserAssignedIdentity())))
+            .define("pgogtqxepny")
+            .withRegion("twkuziycs")
+            .withExistingResourceGroup("y")
+            .withTags(mapOf("dcgzul", "ufuztcktyhjtq"))
+            .withProperties(new HealthModelProperties())
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("pvdwxf", new UserAssignedIdentity(), "pa",
+                        new UserAssignedIdentity(), "zapeewchpx", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("kufgmj", response.location());
-        Assertions.assertEquals("rdgrtw", response.tags().get("enuuzkopbm"));
-        Assertions.assertEquals("ra", response.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
-            response.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("koowtl", response.properties().discovery().identity());
+        Assertions.assertEquals("awzqadfl", response.location());
+        Assertions.assertEquals("riglaec", response.tags().get("ndtic"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 

@@ -11,6 +11,9 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 
+import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class JsonNodeStorePayloadTests {
     @Test(groups = {"unit"})
     @Ignore("fallbackCharsetDecoder will only be initialized during the first time when JsonNodeStorePayload loaded," +
@@ -45,5 +48,48 @@ public class JsonNodeStorePayloadTests {
         }
 
         return data;
+    }
+
+    @Test(groups = {"unit"})
+    public void arrayHeaderConstructorParsesValidJson() {
+        String jsonContent = "{\"id\":\"test\",\"name\":\"value\"}";
+        String[] headerNames = {"content-type", "x-request-id"};
+        String[] headerValues = {"application/json", "req-123"};
+
+        ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
+        JsonNodeStorePayload payload = new JsonNodeStorePayload(
+            new ByteBufInputStream(buffer, true), buffer.readableBytes(), headerNames, headerValues);
+
+        assertThat(payload.getPayload()).isNotNull();
+        assertThat(payload.getPayload().get("id").asText()).isEqualTo("test");
+        assertThat(payload.getPayload().get("name").asText()).isEqualTo("value");
+        assertThat(payload.getResponsePayloadSize()).isEqualTo(jsonContent.getBytes().length);
+    }
+
+    @Test(groups = {"unit"})
+    public void arrayHeaderConstructorWithEmptyStreamReturnsNull() {
+        String[] headerNames = {"content-type"};
+        String[] headerValues = {"application/json"};
+
+        ByteBuf buffer = Unpooled.EMPTY_BUFFER;
+        JsonNodeStorePayload payload = new JsonNodeStorePayload(
+            new ByteBufInputStream(buffer), 0, headerNames, headerValues);
+
+        assertThat(payload.getPayload()).isNull();
+        assertThat(payload.getResponsePayloadSize()).isEqualTo(0);
+    }
+
+    @Test(groups = {"unit"})
+    public void mapConstructorParsesValidJson() {
+        String jsonContent = "{\"id\":\"test\"}";
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("content-type", "application/json");
+
+        ByteBuf buffer = getUTF8BytesOrNull(jsonContent);
+        JsonNodeStorePayload payload = new JsonNodeStorePayload(
+            new ByteBufInputStream(buffer, true), buffer.readableBytes(), headers);
+
+        assertThat(payload.getPayload()).isNotNull();
+        assertThat(payload.getPayload().get("id").asText()).isEqualTo("test");
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
@@ -27,6 +26,10 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public class ServerStoreModel implements RxStoreModel {
+    private static ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor() {
+        return ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+    }
+
     private final StoreClient storeClient;
 
     public ServerStoreModel(StoreClient storeClient) {
@@ -57,9 +60,7 @@ public class ServerStoreModel implements RxStoreModel {
 
         if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
             ReadConsistencyStrategy requestReadConsistencyStrategy;
-            if ((requestReadConsistencyStrategy = ImplementationBridgeHelpers
-                .ReadConsistencyStrategyHelper
-                .getReadConsistencyStrategyAccessor()
+            if ((requestReadConsistencyStrategy = readConsistencyStrategyAccessor()
                 .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue)) == null) {
 
                 return Mono.error(new BadRequestException(

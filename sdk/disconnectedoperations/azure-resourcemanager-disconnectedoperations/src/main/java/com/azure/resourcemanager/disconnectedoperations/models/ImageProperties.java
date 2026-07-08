@@ -53,6 +53,11 @@ public final class ImageProperties implements JsonSerializable<ImageProperties> 
      */
     private List<String> compatibleVersions;
 
+    /*
+     * Image update properties for update release type image.
+     */
+    private ImageUpdateProperties updateProperties;
+
     /**
      * Creates an instance of ImageProperties class.
      */
@@ -123,6 +128,15 @@ public final class ImageProperties implements JsonSerializable<ImageProperties> 
     }
 
     /**
+     * Get the updateProperties property: Image update properties for update release type image.
+     * 
+     * @return the updateProperties value.
+     */
+    public ImageUpdateProperties updateProperties() {
+        return this.updateProperties;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -164,6 +178,8 @@ public final class ImageProperties implements JsonSerializable<ImageProperties> 
                 } else if ("compatibleVersions".equals(fieldName)) {
                     List<String> compatibleVersions = reader.readArray(reader1 -> reader1.getString());
                     deserializedImageProperties.compatibleVersions = compatibleVersions;
+                } else if ("updateProperties".equals(fieldName)) {
+                    deserializedImageProperties.updateProperties = ImageUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

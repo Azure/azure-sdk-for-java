@@ -56,22 +56,6 @@ public final class SplitSkill extends SearchIndexerSkill {
     @Generated
     private Integer maximumPagesToTake;
 
-    /*
-     * Only applies if textSplitMode is set to pages. There are two possible values. The choice of the values will
-     * decide the length (maximumPageLength and pageOverlapLength) measurement. The default is 'characters', which means
-     * the length will be measured by character.
-     */
-    @Generated
-    private SplitSkillUnit unit;
-
-    /*
-     * Only applies if the unit is set to azureOpenAITokens. If specified, the splitSkill will use these parameters when
-     * performing the tokenization. The parameters are a valid 'encoderModelName' and an optional 'allowedSpecialTokens'
-     * property.
-     */
-    @Generated
-    private AzureOpenAITokenizerParameters azureOpenAITokenizerParameters;
-
     /**
      * Creates an instance of SplitSkill class.
      *
@@ -211,58 +195,6 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
-     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
-     * 'characters', which means the length will be measured by character.
-     *
-     * @return the unit value.
-     */
-    @Generated
-    public SplitSkillUnit getUnit() {
-        return this.unit;
-    }
-
-    /**
-     * Set the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
-     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
-     * 'characters', which means the length will be measured by character.
-     *
-     * @param unit the unit value to set.
-     * @return the SplitSkill object itself.
-     */
-    @Generated
-    public SplitSkill setUnit(SplitSkillUnit unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
-     * Get the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
-     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
-     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
-     *
-     * @return the azureOpenAITokenizerParameters value.
-     */
-    @Generated
-    public AzureOpenAITokenizerParameters getAzureOpenAITokenizerParameters() {
-        return this.azureOpenAITokenizerParameters;
-    }
-
-    /**
-     * Set the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
-     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
-     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
-     *
-     * @param azureOpenAITokenizerParameters the azureOpenAITokenizerParameters value to set.
-     * @return the SplitSkill object itself.
-     */
-    @Generated
-    public SplitSkill setAzureOpenAITokenizerParameters(AzureOpenAITokenizerParameters azureOpenAITokenizerParameters) {
-        this.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -388,5 +320,73 @@ public final class SplitSkill extends SearchIndexerSkill {
             deserializedSplitSkill.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
             return deserializedSplitSkill;
         });
+    }
+
+    /*
+     * Only applies if textSplitMode is set to pages. There are two possible values. The choice of the values will
+     * decide the length (maximumPageLength and pageOverlapLength) measurement. The default is 'characters', which means
+     * the length will be measured by character.
+     */
+    @Generated
+    private SplitSkillUnit unit;
+
+    /*
+     * Only applies if the unit is set to azureOpenAITokens. If specified, the splitSkill will use these parameters when
+     * performing the tokenization. The parameters are a valid 'encoderModelName' and an optional 'allowedSpecialTokens'
+     * property.
+     */
+    @Generated
+    private AzureOpenAITokenizerParameters azureOpenAITokenizerParameters;
+
+    /**
+     * Get the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
+     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
+     * 'characters', which means the length will be measured by character.
+     *
+     * @return the unit value.
+     */
+    @Generated
+    public SplitSkillUnit getUnit() {
+        return this.unit;
+    }
+
+    /**
+     * Set the unit property: Only applies if textSplitMode is set to pages. There are two possible values. The choice
+     * of the values will decide the length (maximumPageLength and pageOverlapLength) measurement. The default is
+     * 'characters', which means the length will be measured by character.
+     *
+     * @param unit the unit value to set.
+     * @return the SplitSkill object itself.
+     */
+    @Generated
+    public SplitSkill setUnit(SplitSkillUnit unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
+     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
+     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
+     *
+     * @return the azureOpenAITokenizerParameters value.
+     */
+    @Generated
+    public AzureOpenAITokenizerParameters getAzureOpenAITokenizerParameters() {
+        return this.azureOpenAITokenizerParameters;
+    }
+
+    /**
+     * Set the azureOpenAITokenizerParameters property: Only applies if the unit is set to azureOpenAITokens. If
+     * specified, the splitSkill will use these parameters when performing the tokenization. The parameters are a valid
+     * 'encoderModelName' and an optional 'allowedSpecialTokens' property.
+     *
+     * @param azureOpenAITokenizerParameters the azureOpenAITokenizerParameters value to set.
+     * @return the SplitSkill object itself.
+     */
+    @Generated
+    public SplitSkill setAzureOpenAITokenizerParameters(AzureOpenAITokenizerParameters azureOpenAITokenizerParameters) {
+        this.azureOpenAITokenizerParameters = azureOpenAITokenizerParameters;
+        return this;
     }
 }

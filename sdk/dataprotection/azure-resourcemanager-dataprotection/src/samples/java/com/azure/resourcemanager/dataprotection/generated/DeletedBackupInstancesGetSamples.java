@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class DeletedBackupInstancesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+     * x-ms-original-file: 2026-03-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
      */
     /**
      * Sample code: Get DeletedBackupInstance.

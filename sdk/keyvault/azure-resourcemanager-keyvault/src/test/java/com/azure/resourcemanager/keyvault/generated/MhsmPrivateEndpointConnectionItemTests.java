@@ -14,13 +14,13 @@ public final class MhsmPrivateEndpointConnectionItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmPrivateEndpointConnectionItem model = BinaryData.fromString(
-            "{\"id\":\"dzyexznelixh\",\"etag\":\"ztfolhbnxk\",\"properties\":{\"privateEndpoint\":{\"id\":\"ulppggdtpnapnyir\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"igvpgylg\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}}")
+            "{\"id\":\"zxctobgb\",\"etag\":\"moizpos\",\"properties\":{\"privateEndpoint\":{\"id\":\"cfbu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"jhhkxbp\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Succeeded\"}}")
             .toObject(MhsmPrivateEndpointConnectionItem.class);
-        Assertions.assertEquals("dzyexznelixh", model.id());
-        Assertions.assertEquals("ztfolhbnxk", model.etag());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("zxctobgb", model.id());
+        Assertions.assertEquals("moizpos", model.etag());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.DISCONNECTED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("igvpgylg", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jhhkxbp", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals(ActionsRequired.NONE, model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -81,15 +81,6 @@ public final class SearchPagedResponse
     }
 
     /**
-     * Get the debugInfo property: Debug information that applies to the search results as a whole.
-     *
-     * @return the debugInfo value.
-     */
-    public DebugInfo getDebugInfo() {
-        return page.getDebugInfo();
-    }
-
-    /**
      * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic
      * ranking request.
      *
@@ -107,15 +98,6 @@ public final class SearchPagedResponse
      */
     public SemanticSearchResultsType getSemanticPartialResponseType() {
         return page.getSemanticPartialResponseType();
-    }
-
-    /**
-     * Get the semanticQueryRewritesResultType property: Type of query rewrite that was used to retrieve documents.
-     *
-     * @return the semanticQueryRewritesResultType value.
-     */
-    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return page.getSemanticQueryRewritesResultType();
     }
 
     @Override

@@ -56,7 +56,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SubscriptionClientRe")
+    @ServiceInterface(name = "SubscriptionClientResourceNames")
     public interface ResourceNamesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/checkResourceName")

@@ -7,14 +7,13 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
-import reactor.core.scheduler.Schedulers
 
 import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
-import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal, Strings}
 
 
 // scalastyle:off underscore.import
@@ -51,7 +50,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     5 + CosmosConstants.readOperationEndToEndTimeoutInSeconds,
     scala.concurrent.duration.SECONDS)
 
-  private val rnd = Random
   // scalastyle:off null
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
@@ -67,7 +65,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[TSparkRow]]] = None
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
-  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[TSparkRow]]](None)
 
   private val totalChangesCnt = new AtomicLong(0)
 
@@ -112,17 +109,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
         case None =>
-          val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
-          lastPagedFlux.getAndSet(newPagedFlux) match {
-            case Some(oldPagedFlux) => {
-              logInfo(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
-              oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-            }
-            case None =>
-          }
+          val newPagedFlux = cosmosPagedFluxFactory.apply(lastContinuationToken.get)
           currentFeedResponseIterator = Some(
             new CosmosPagedIterable[TSparkRow](
-              newPagedFlux.get,
+              newPagedFlux,
               pageSize,
               pagePrefetchBufferSize
             )
@@ -187,8 +177,47 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           None
         }
       } else {
+        validateEndLsnReachedOrFail()
         Some(false)
       }
+    }
+  }
+
+  /**
+   * Defensive guard for bounded change feed reads (endLsn defined). When the underlying
+   * paginator signals no more pages, validate that the latest continuation token has actually
+   * advanced to endLsn for every sub-feed-range. If it has not, the SDK terminated the change
+   * feed read prematurely (see issue #49380) and silently completing would surface as missing
+   * rows downstream. Fail the task with IllegalStateException so Spark can retry/abort instead
+   * of returning a truncated result.
+   */
+  private[this] def validateEndLsnReachedOrFail(): Unit = {
+    this.endLsn match {
+      case None => // no bound configured (e.g. batch mode draining to 304s) - nothing to validate
+      case Some(boundLsn) =>
+        val continuation = lastContinuationToken.get()
+        if (Strings.isNullOrWhiteSpace(continuation)) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated before any page was returned. " +
+              s"Expected to reach endLsn=$boundLsn but no continuation was produced. " +
+              s"Context: $operationContextString")
+        }
+
+        val tokens = SparkBridgeImplementationInternal
+          .extractContinuationTokensFromChangeFeedStateJson(continuation)
+        if (tokens.isEmpty) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated with a continuation that has no sub-range tokens. " +
+              s"Expected to reach endLsn=$boundLsn. Continuation=$continuation. " +
+              s"Context: $operationContextString")
+        }
+        val minLsn = tokens.minBy(_._2)._2
+        if (minLsn < boundLsn) {
+          throw new IllegalStateException(
+            s"Bounded change feed read terminated before reaching endLsn=$boundLsn. " +
+              s"Lowest sub-range LSN in latest continuation=$minLsn. " +
+              s"Continuation=$continuation. Context: $operationContextString")
+        }
     }
   }
 
@@ -213,46 +242,17 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
-    val loop = new Breaks()
-    var returnValue: Option[T] = None
-
-    loop.breakable {
-      while (true) {
-        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
-
-        try {
-          returnValue = Some(func())
-          retryCount.set(0)
-          loop.break
-        }
-        catch {
-          case cosmosException: CosmosException =>
-            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
-              val retryCountSnapshot = retryCount.incrementAndGet()
-              if (retryCountSnapshot > maxRetryCount) {
-                logError(
-                  s"Too many transient failure retry attempts in TransientIOErrorsRetryingIterator.$methodName",
-                  cosmosException)
-                throw cosmosException
-              } else {
-                logWarning(
-                  s"Transient failure handled in TransientIOErrorsRetryingIterator.$methodName -" +
-                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
-                  cosmosException)
-              }
-            } else {
-              throw cosmosException
-            }
-          case other: Throwable => throw other
-        }
-
+    TransientIOErrorsRetryingIterator.executeWithRetry(
+      "TransientIOErrorsRetryingIterator",
+      methodName,
+      func,
+      maxRetryCount,
+      maxRetryIntervalInMs,
+      retryCount,
+      () => {
         currentItemIterator = None
         currentFeedResponseIterator = None
-        Thread.sleep(retryIntervalInMs)
-      }
-    }
-
-    returnValue.get
+      })
   }
 
   private[this] def validateNextLsn(itemIterator: BufferedIterator[TSparkRow]): Boolean = {
@@ -276,17 +276,15 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     }
   }
 
-  //  Correct way to cancel a flux and dispose it
-  //  https://github.com/reactor/reactor-core/blob/main/reactor-core/src/test/java/reactor/core/publisher/scenarios/FluxTests.java#L837
+  //  Clean up iterator references - the underlying Reactor subscription
+  //  from Flux.toIterable() will be cleaned up when the iterator is GC'd
   override def close(): Unit = {
-    lastPagedFlux.getAndSet(None) match {
-      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-      case None =>
-    }
+    currentItemIterator = None
+    currentFeedResponseIterator = None
   }
 }
 
-private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
+private[spark] object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
   private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
 
   val executorService: ExecutorService = new ThreadPoolExecutor(
@@ -304,4 +302,60 @@ private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
   )
 
   val executionContext = ExecutionContext.fromExecutorService(executorService)
+
+  /**
+   * Shared retry logic for transient I/O failures. Both TransientIOErrorsRetryingIterator
+   * and TransientIOErrorsRetryingReadManyByPartitionKeyIterator delegate to this method
+   * to avoid duplicating the retry loop, backoff, and transient-failure classification.
+   */
+  def executeWithRetry[T](
+    callerName: String,
+    methodName: String,
+    func: () => T,
+    maxRetryCount: Long,
+    maxRetryIntervalInMs: Int,
+    retryCount: AtomicLong,
+    onRetry: () => Unit): T = {
+
+    val rnd = Random
+    val loop = new Breaks()
+    var returnValue: Option[T] = None
+
+    loop.breakable {
+      while (true) {
+        val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
+
+        try {
+          returnValue = Some(func())
+          retryCount.set(0)
+          loop.break
+        }
+        catch {
+          case cosmosException: CosmosException =>
+            if (Exceptions.canBeTransientFailure(cosmosException.getStatusCode, cosmosException.getSubStatusCode)) {
+              val retryCountSnapshot = retryCount.incrementAndGet()
+              if (retryCountSnapshot > maxRetryCount) {
+                logError(
+                  s"Too many transient failure retry attempts in $callerName.$methodName",
+                  cosmosException)
+                throw cosmosException
+              } else {
+                logWarning(
+                  s"Transient failure handled in $callerName.$methodName -" +
+                    s" will be retried (attempt#$retryCountSnapshot) in ${retryIntervalInMs}ms",
+                  cosmosException)
+              }
+            } else {
+              throw cosmosException
+            }
+          case other: Throwable => throw other
+        }
+
+        onRetry()
+        Thread.sleep(retryIntervalInMs)
+      }
+    }
+
+    returnValue.get
+  }
 }

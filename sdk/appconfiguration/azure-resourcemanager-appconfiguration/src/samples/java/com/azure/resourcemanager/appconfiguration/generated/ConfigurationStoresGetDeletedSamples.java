@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class ConfigurationStoresGetDeletedSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeletedConfigurationStoresGet.json
+     * x-ms-original-file: 2025-08-01-preview/DeletedConfigurationStoresGet.json
      */
     /**
      * Sample code: DeletedConfigurationStores_Get.

@@ -23,7 +23,7 @@ public final class ElasticBackupPoliciesListByElasticAccountMockTests {
     @Test
     public void testListByElasticAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"dailyBackupsToKeep\":1827914680,\"weeklyBackupsToKeep\":1301081297,\"monthlyBackupsToKeep\":556522065,\"assignedVolumesCount\":1964735926,\"policyState\":\"Disabled\"},\"eTag\":\"oshohtotrye\",\"location\":\"khxrmexznlwkbf\",\"tags\":{\"erufgjblcdrmy\":\"khup\",\"ekdfqnhttwd\":\"cemftzgyykyalu\",\"mhmnulwemp\":\"wrczfjjnnuxxrk\"},\"id\":\"cifrhjulrsulwzpf\",\"name\":\"usnaw\",\"type\":\"hhgzotf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"dailyBackupsToKeep\":731964038,\"weeklyBackupsToKeep\":479855612,\"monthlyBackupsToKeep\":550414761,\"assignedVolumesCount\":1198199170,\"policyState\":\"Disabled\"},\"eTag\":\"ualapdl\",\"location\":\"bea\",\"tags\":{\"lwynpbbfqvzfj\":\"ixv\",\"ky\":\"spugzfeuzjljmph\"},\"id\":\"zolgjzmicuydocc\",\"name\":\"xshanzb\",\"type\":\"iadhbatec\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ElasticBackupPoliciesListByElasticAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticBackupPolicy> response = manager.elasticBackupPolicies()
-            .listByElasticAccount("lrlohewjjmajnkdf", "q", com.azure.core.util.Context.NONE);
+            .listByElasticAccount("nncfmaciqgjjrlhi", "lwixvtbou", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("khxrmexznlwkbf", response.iterator().next().location());
-        Assertions.assertEquals("khup", response.iterator().next().tags().get("erufgjblcdrmy"));
-        Assertions.assertEquals(1827914680, response.iterator().next().properties().dailyBackupsToKeep());
-        Assertions.assertEquals(1301081297, response.iterator().next().properties().weeklyBackupsToKeep());
-        Assertions.assertEquals(556522065, response.iterator().next().properties().monthlyBackupsToKeep());
+        Assertions.assertEquals("bea", response.iterator().next().location());
+        Assertions.assertEquals("ixv", response.iterator().next().tags().get("lwynpbbfqvzfj"));
+        Assertions.assertEquals(731964038, response.iterator().next().properties().dailyBackupsToKeep());
+        Assertions.assertEquals(479855612, response.iterator().next().properties().weeklyBackupsToKeep());
+        Assertions.assertEquals(550414761, response.iterator().next().properties().monthlyBackupsToKeep());
         Assertions.assertEquals(ElasticBackupPolicyState.DISABLED,
             response.iterator().next().properties().policyState());
     }

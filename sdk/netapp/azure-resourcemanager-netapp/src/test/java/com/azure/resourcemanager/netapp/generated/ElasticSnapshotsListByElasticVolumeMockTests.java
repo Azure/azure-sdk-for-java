@@ -21,7 +21,7 @@ public final class ElasticSnapshotsListByElasticVolumeMockTests {
     @Test
     public void testListByElasticVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"ruw\",\"name\":\"udrbcpftxudqyem\",\"type\":\"bunaucmcirtn\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"yqwdqi\",\"name\":\"mghg\",\"type\":\"nztxlujkh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class ElasticSnapshotsListByElasticVolumeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticSnapshot> response = manager.elasticSnapshots()
-            .listByElasticVolume("jbkn", "zcl", "tzeyowmndcovd", "zqauxzan", com.azure.core.util.Context.NONE);
+            .listByElasticVolume("qrvwerfwxbsm", "bljjehh", "ifkwdvbtbrekqhs", "htfpwpqb",
+                com.azure.core.util.Context.NONE);
 
     }
 }

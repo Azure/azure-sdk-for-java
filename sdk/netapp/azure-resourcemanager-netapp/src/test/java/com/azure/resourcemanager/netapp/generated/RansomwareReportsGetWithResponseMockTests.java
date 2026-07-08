@@ -20,7 +20,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"eventTime\":\"2021-09-27T06:46:36Z\",\"state\":\"Resolved\",\"severity\":\"Moderate\",\"clearedCount\":67838372,\"reportedCount\":928179611,\"suspects\":[{\"extension\":\"cdsiwdfmmpzhzzwv\",\"resolution\":\"FalsePositive\",\"fileCount\":1475743348,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"dgrpx\",\"resolution\":\"PotentialThreat\",\"fileCount\":938896992,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ndjrkclamggl\",\"resolution\":\"FalsePositive\",\"fileCount\":125559187,\"suspectFiles\":[{},{}]},{\"extension\":\"qey\",\"resolution\":\"FalsePositive\",\"fileCount\":528509838,\"suspectFiles\":[{}]}],\"provisioningState\":\"qfgqkayejsxtlg\"},\"id\":\"wf\",\"name\":\"ziiucij\",\"type\":\"ceatlijjjrtvamca\"}";
+            = "{\"properties\":{\"eventTime\":\"2021-06-15T09:32:44Z\",\"state\":\"Active\",\"severity\":\"Moderate\",\"clearedCount\":2119468951,\"reportedCount\":121614822,\"suspects\":[{\"extension\":\"uthhllnmwynefxe\",\"resolution\":\"FalsePositive\",\"fileCount\":110653977,\"suspectFiles\":[{},{},{}]}],\"provisioningState\":\"tjrrlkmds\"},\"id\":\"hh\",\"name\":\"dl\",\"type\":\"jfoxcxscvslxl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RansomwareReport response = manager.ransomwareReports()
-            .getWithResponse("cduwjoedx", "gucaif", "aurwwgilfjq", "a", "dmkxwxdcvjwcy",
+            .getWithResponse("hpycvjqdvdwkq", "ldrlefgnaavua", "n", "etaoutnpdc", "uhspfefyihduy",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

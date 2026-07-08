@@ -166,6 +166,7 @@ public final class SearchIndexKnowledgeSourceParameters
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("semanticConfigurationName", this.semanticConfigurationName);
+        jsonWriter.writeStringField("baseFilter", this.baseFilter);
         return jsonWriter.writeEndObject();
     }
 
@@ -185,6 +186,7 @@ public final class SearchIndexKnowledgeSourceParameters
             List<SearchIndexFieldReference> sourceDataFields = null;
             List<SearchIndexFieldReference> searchFields = null;
             String semanticConfigurationName = null;
+            String baseFilter = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -196,6 +198,8 @@ public final class SearchIndexKnowledgeSourceParameters
                     searchFields = reader.readArray(reader1 -> SearchIndexFieldReference.fromJson(reader1));
                 } else if ("semanticConfigurationName".equals(fieldName)) {
                     semanticConfigurationName = reader.getString();
+                } else if ("baseFilter".equals(fieldName)) {
+                    baseFilter = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -205,7 +209,39 @@ public final class SearchIndexKnowledgeSourceParameters
             deserializedSearchIndexKnowledgeSourceParameters.sourceDataFields = sourceDataFields;
             deserializedSearchIndexKnowledgeSourceParameters.searchFields = searchFields;
             deserializedSearchIndexKnowledgeSourceParameters.semanticConfigurationName = semanticConfigurationName;
+            deserializedSearchIndexKnowledgeSourceParameters.baseFilter = baseFilter;
             return deserializedSearchIndexKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * A default filter condition applied to the index at retrieval time (e.g., 'State eq VA'). Can be overridden at
+     * query time via knowledge source runtime parameters.
+     */
+    @Generated
+    private String baseFilter;
+
+    /**
+     * Get the baseFilter property: A default filter condition applied to the index at retrieval time (e.g., 'State eq
+     * VA'). Can be overridden at query time via knowledge source runtime parameters.
+     *
+     * @return the baseFilter value.
+     */
+    @Generated
+    public String getBaseFilter() {
+        return this.baseFilter;
+    }
+
+    /**
+     * Set the baseFilter property: A default filter condition applied to the index at retrieval time (e.g., 'State eq
+     * VA'). Can be overridden at query time via knowledge source runtime parameters.
+     *
+     * @param baseFilter the baseFilter value to set.
+     * @return the SearchIndexKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceParameters setBaseFilter(String baseFilter) {
+        this.baseFilter = baseFilter;
+        return this;
     }
 }

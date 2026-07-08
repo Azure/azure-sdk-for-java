@@ -357,4 +357,148 @@ public interface BucketsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     BucketGenerateCredentialsInner generateCredentials(String resourceGroupName, String accountName, String poolName,
         String volumeName, String bucketName, BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGenerateAkvCredentials(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGenerateAkvCredentials(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String bucketName, BucketCredentialsExpiry body, Context context);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body, Context context);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefreshCertificate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String bucketName);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefreshCertificate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String bucketName, Context context);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, Context context);
 }

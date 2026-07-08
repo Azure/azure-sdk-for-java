@@ -30,6 +30,7 @@ import com.azure.resourcemanager.nginx.implementation.CertificatesImpl;
 import com.azure.resourcemanager.nginx.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.nginx.implementation.DefaultWafPoliciesImpl;
 import com.azure.resourcemanager.nginx.implementation.DeploymentsImpl;
+import com.azure.resourcemanager.nginx.implementation.NginxDeploymentWafPoliciesImpl;
 import com.azure.resourcemanager.nginx.implementation.NginxManagementClientBuilder;
 import com.azure.resourcemanager.nginx.implementation.OperationsImpl;
 import com.azure.resourcemanager.nginx.implementation.WafPoliciesImpl;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.nginx.models.Certificates;
 import com.azure.resourcemanager.nginx.models.Configurations;
 import com.azure.resourcemanager.nginx.models.DefaultWafPolicies;
 import com.azure.resourcemanager.nginx.models.Deployments;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentWafPolicies;
 import com.azure.resourcemanager.nginx.models.Operations;
 import com.azure.resourcemanager.nginx.models.WafPolicies;
 import java.time.Duration;
@@ -53,6 +55,8 @@ import java.util.stream.Collectors;
  */
 public final class NginxManager {
     private Operations operations;
+
+    private NginxDeploymentWafPolicies nginxDeploymentWafPolicies;
 
     private ApiKeys apiKeys;
 
@@ -291,6 +295,19 @@ public final class NginxManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of NginxDeploymentWafPolicies.
+     * 
+     * @return Resource collection API of NginxDeploymentWafPolicies.
+     */
+    public NginxDeploymentWafPolicies nginxDeploymentWafPolicies() {
+        if (this.nginxDeploymentWafPolicies == null) {
+            this.nginxDeploymentWafPolicies
+                = new NginxDeploymentWafPoliciesImpl(clientObject.getNginxDeploymentWafPolicies(), this);
+        }
+        return nginxDeploymentWafPolicies;
     }
 
     /**

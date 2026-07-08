@@ -278,7 +278,7 @@ public interface ElasticCapacityPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticCapacityPoolInner>, ElasticCapacityPoolInner> beginChangeZone(String resourceGroupName,
@@ -295,7 +295,7 @@ public interface ElasticCapacityPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ElasticCapacityPoolInner>, ElasticCapacityPoolInner> beginChangeZone(String resourceGroupName,
@@ -311,7 +311,7 @@ public interface ElasticCapacityPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticCapacityPoolInner changeZone(String resourceGroupName, String accountName, String poolName,
@@ -328,7 +328,7 @@ public interface ElasticCapacityPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticCapacityPoolInner changeZone(String resourceGroupName, String accountName, String poolName,

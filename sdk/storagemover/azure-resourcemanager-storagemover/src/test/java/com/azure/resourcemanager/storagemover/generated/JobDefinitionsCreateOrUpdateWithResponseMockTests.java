@@ -11,11 +11,17 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import com.azure.resourcemanager.storagemover.models.Frequency;
 import com.azure.resourcemanager.storagemover.models.JobDefinition;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionPropertiesSourceTargetMap;
 import com.azure.resourcemanager.storagemover.models.JobType;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import com.azure.resourcemanager.storagemover.models.SchedulerTime;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -24,7 +30,7 @@ public final class JobDefinitionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"uuximerq\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"yznkby\",\"sourceResourceId\":\"t\",\"sourceSubpath\":\"fhpagmhrskdsnf\",\"targetName\":\"sd\",\"targetResourceId\":\"kgtdlmkkze\",\"targetSubpath\":\"l\",\"latestJobRunName\":\"wpusdsttwvogv\",\"latestJobRunResourceId\":\"ejdcngqqmoakuf\",\"latestJobRunStatus\":\"Succeeded\",\"agentName\":\"rwr\",\"agentResourceId\":\"rtwaenuuzko\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Canceled\"},\"id\":\"dwoyuhhziuiefoz\",\"name\":\"hdmsmlmzqhoftrm\",\"type\":\"equi\"}";
+            = "{\"properties\":{\"description\":\"joqkagfhsxt\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"zxnfaaz\",\"sourceResourceId\":\"dtnkdmkq\",\"sourceSubpath\":\"lwuenvrkp\",\"targetName\":\"ou\",\"targetResourceId\":\"bre\",\"targetSubpath\":\"aays\",\"latestJobRunName\":\"ixqtn\",\"latestJobRunResourceId\":\"tezlwff\",\"latestJobRunStatus\":\"Failed\",\"agentName\":\"pjpqqmtedltmmji\",\"agentResourceId\":\"eozphv\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Succeeded\",\"connections\":[\"gupkvipmdscwxq\",\"pevzhfst\"],\"schedule\":{\"frequency\":\"Monthly\",\"isActive\":true,\"executionTime\":{\"hour\":1229940730,\"minute\":30},\"startDate\":\"2021-06-17T22:54:10Z\",\"daysOfWeek\":[\"uvhixbjxyfwn\"],\"daysOfMonth\":[1461211866],\"cronExpression\":\"o\",\"endDate\":\"2021-03-11T06:14Z\"},\"dataIntegrityValidation\":\"SaveFileMD5\",\"preservePermissions\":false},\"id\":\"kkbnu\",\"name\":\"rywvtylbfpn\",\"type\":\"urdoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,26 +40,49 @@ public final class JobDefinitionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobDefinition response = manager.jobDefinitions()
-            .define("btndo")
-            .withExistingProject("xwabmqoe", "kif", "vtpuqujmqlgk")
+            .define("birryuzhl")
+            .withExistingProject("mdvy", "gikdgsz", "w")
             .withCopyMode(CopyMode.ADDITIVE)
-            .withSourceName("ntuji")
-            .withTargetName("zkoj")
-            .withDescription("n")
+            .withSourceName("goupmfiibfg")
+            .withTargetName("hvkzuh")
+            .withDescription("joqrvqqaatj")
             .withJobType(JobType.ON_PREM_TO_CLOUD)
-            .withSourceSubpath("wwa")
-            .withTargetSubpath("foqouicybx")
-            .withAgentName("idoamciodhkha")
+            .withSourceSubpath("jygvjayvbl")
+            .withTargetSubpath("pbyrqufegxu")
+            .withAgentName("rixkwmyijejve")
             .withSourceTargetMap(new JobDefinitionPropertiesSourceTargetMap())
+            .withConnections(Arrays.asList("drrvqahqkght", "wijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
+            .withSchedule(new ScheduleInfo().withFrequency(Frequency.NONE)
+                .withIsActive(false)
+                .withExecutionTime(new SchedulerTime().withHour(152966788).withMinute(Minute.ZERO))
+                .withStartDate(OffsetDateTime.parse("2021-09-22T16:58:17Z"))
+                .withDaysOfWeek(Arrays.asList("sxkm", "waekrrjreafxtsgu", "hjglikk", "wslolbqp"))
+                .withDaysOfMonth(Arrays.asList(613388775, 182360383, 1725196825))
+                .withCronExpression("elfk")
+                .withEndDate(OffsetDateTime.parse("2021-02-21T20:32:58Z")))
+            .withDataIntegrityValidation(DataIntegrityValidation.SAVE_FILE_MD5)
+            .withPreservePermissions(false)
             .create();
 
-        Assertions.assertEquals("uuximerq", response.description());
+        Assertions.assertEquals("joqkagfhsxt", response.description());
         Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, response.jobType());
         Assertions.assertEquals(CopyMode.MIRROR, response.copyMode());
-        Assertions.assertEquals("yznkby", response.sourceName());
-        Assertions.assertEquals("fhpagmhrskdsnf", response.sourceSubpath());
-        Assertions.assertEquals("sd", response.targetName());
-        Assertions.assertEquals("l", response.targetSubpath());
-        Assertions.assertEquals("rwr", response.agentName());
+        Assertions.assertEquals("zxnfaaz", response.sourceName());
+        Assertions.assertEquals("lwuenvrkp", response.sourceSubpath());
+        Assertions.assertEquals("ou", response.targetName());
+        Assertions.assertEquals("aays", response.targetSubpath());
+        Assertions.assertEquals("pjpqqmtedltmmji", response.agentName());
+        Assertions.assertEquals("gupkvipmdscwxq", response.connections().get(0));
+        Assertions.assertEquals(Frequency.MONTHLY, response.schedule().frequency());
+        Assertions.assertTrue(response.schedule().isActive());
+        Assertions.assertEquals(1229940730, response.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO, response.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T22:54:10Z"), response.schedule().startDate());
+        Assertions.assertEquals("uvhixbjxyfwn", response.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1461211866, response.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("o", response.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T06:14Z"), response.schedule().endDate());
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_FILE_MD5, response.dataIntegrityValidation());
+        Assertions.assertFalse(response.preservePermissions());
     }
 }

@@ -3,11 +3,16 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -22,7 +27,13 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +60,12 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.azure.storage.blob.models.ArchiveStatus.REHYDRATE_PENDING_TO_SMART;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -606,4 +619,110 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void startCopyFromURLSmartAccessTier() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        BlobBeginCopyOptions options = new BlobBeginCopyOptions(bc.getBlobUrl()).setTier(AccessTier.SMART);
+
+        AsyncPollResponse<BlobCopyInfo, Void> operation = destBlob.beginCopy(options).blockLast();
+        assertTrue(operation.getStatus().isComplete());
+
+        StepVerifier.create(destBlob.getPropertiesWithResponse(null)).assertNext(response -> {
+            assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+            assertNotNull(response.getValue().getSmartAccessTier());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void copyFromURLSmartAccessTier() {
+        String srcBlobSas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
+        bc = new BlobClientBuilder().endpoint(bc.getBlobUrl()).sasToken(srcBlobSas).buildAsyncClient();
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        BlobCopyFromUrlOptions options
+            = new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + srcBlobSas).setTier(AccessTier.SMART);
+
+        Response<BlobProperties> response
+            = destBlob.copyFromUrlWithResponse(options).then(destBlob.getPropertiesWithResponse(null)).block();
+
+        assertNotNull(response);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmart() {
+        Response<BlobProperties> response
+            = bc.setAccessTier(AccessTier.SMART).then(bc.getPropertiesWithResponse(null)).block();
+
+        assertNotNull(response);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartGetBlobs() {
+        String blobName1 = generateBlobName();
+        String blobName2 = generateBlobName();
+
+        BlobAsyncClient blob1 = ccAsync.getBlobAsyncClient(blobName1);
+        BlobAsyncClient blob2 = ccAsync.getBlobAsyncClient(blobName2);
+        blob1.upload(DATA.getDefaultBinaryData()).then(blob1.setAccessTier(AccessTier.SMART)).block();
+        blob2.upload(DATA.getDefaultBinaryData()).then(blob2.setAccessTier(AccessTier.SMART)).block();
+
+        StepVerifier.create(ccAsync.listBlobs().concatMap(blobItem -> {
+            if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
+                assertEquals(AccessTier.SMART, blobItem.getProperties().getAccessTier());
+                assertNotNull(blobItem.getProperties().getSmartAccessTier());
+            }
+            return Mono.empty();
+        })).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartRehydrate() {
+        BlobSetAccessTierOptions options
+            = new BlobSetAccessTierOptions(AccessTier.SMART).setPriority(RehydratePriority.HIGH);
+
+        Response<BlobProperties> response = bc.setAccessTier(AccessTier.ARCHIVE)
+            .then(bc.setAccessTierWithResponse(options))
+            .then(bc.getPropertiesWithResponse(null))
+            .block();
+        assertNotNull(response);
+        assertEquals(REHYDRATE_PENDING_TO_SMART, response.getValue().getArchiveStatus());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void setTierSmartRehydrateGetBlobs() {
+        String blobName1 = generateBlobName();
+        String blobName2 = generateBlobName();
+        BlobAsyncClient blob1 = ccAsync.getBlobAsyncClient(blobName1);
+        BlobAsyncClient blob2 = ccAsync.getBlobAsyncClient(blobName2);
+        BlobSetAccessTierOptions options
+            = new BlobSetAccessTierOptions(AccessTier.SMART).setPriority(RehydratePriority.HIGH);
+
+        blob1.upload(DATA.getDefaultBinaryData())
+            .then(blob1.setAccessTier(AccessTier.ARCHIVE))
+            .then(blob1.setAccessTierWithResponse(options))
+            .block();
+        blob2.upload(DATA.getDefaultBinaryData())
+            .then(blob2.setAccessTier(AccessTier.ARCHIVE))
+            .then(blob2.setAccessTierWithResponse(options))
+            .block();
+
+        StepVerifier.create(ccAsync.listBlobs().concatMap(blobItem -> {
+            if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
+                assertEquals(REHYDRATE_PENDING_TO_SMART, blobItem.getProperties().getArchiveStatus());
+            }
+            return Mono.empty();
+        })).verifyComplete();
+    }
 }

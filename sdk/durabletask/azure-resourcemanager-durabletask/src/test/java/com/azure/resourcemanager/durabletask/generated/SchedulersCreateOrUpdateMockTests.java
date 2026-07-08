@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
+import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
@@ -27,7 +28,7 @@ public final class SchedulersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"ivkwlzuvccfwnfnb\",\"ipAllowlist\":[\"fionl\",\"bxetqgtzxdpn\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":978126196,\"redundancyState\":\"Zone\"}},\"location\":\"jfeallnwsub\",\"tags\":{\"ochcbonqvpkvl\":\"jampmngnzscxaqw\",\"ase\":\"xnj\"},\"id\":\"pheoflokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"wgqwgxhn\",\"ipAllowlist\":[\"kxfbkpycgklwndn\",\"jdauwhvy\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":725778535,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"mpowuwpr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ualupjmkh\",\"name\":\"xobbcswsrt\",\"type\":\"riplrbpbewtg\"}]},\"location\":\"gblcgwxzvlvq\",\"tags\":{\"oayqc\":\"begibtnmxiebwwa\",\"uzgwyzmhtx\":\"wrtz\"},\"id\":\"ngmtsavjcb\",\"name\":\"wxqpsrknftguvri\",\"type\":\"hprwmdyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,19 +38,21 @@ public final class SchedulersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Scheduler response = manager.schedulers()
-            .define("ln")
-            .withRegion("qdrabhjybigehoqf")
-            .withExistingResourceGroup("gvdfgiotkftutq")
-            .withTags(mapOf("zlcuiywgqywgndrv", "skanyk"))
-            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("krxd", "mi"))
-                .withSku(new SchedulerSku().withName(SchedulerSkuName.DEDICATED).withCapacity(1583346323)))
+            .define("bkyvp")
+            .withRegion("liourqhak")
+            .withExistingResourceGroup("hckfrlhrx")
+            .withTags(mapOf("w", "ashsfwxos", "cjooxdjebwpucwwf", "xcug", "hzceuojgjrwjue", "ovbvmeueciv"))
+            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("zka"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1834539320))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .create();
 
-        Assertions.assertEquals("jfeallnwsub", response.location());
-        Assertions.assertEquals("jampmngnzscxaqw", response.tags().get("ochcbonqvpkvl"));
-        Assertions.assertEquals("fionl", response.properties().ipAllowlist().get(0));
+        Assertions.assertEquals("gblcgwxzvlvq", response.location());
+        Assertions.assertEquals("begibtnmxiebwwa", response.tags().get("oayqc"));
+        Assertions.assertEquals("kxfbkpycgklwndn", response.properties().ipAllowlist().get(0));
         Assertions.assertEquals(SchedulerSkuName.DEDICATED, response.properties().sku().name());
-        Assertions.assertEquals(978126196, response.properties().sku().capacity());
+        Assertions.assertEquals(725778535, response.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.properties().publicNetworkAccess());
     }
 
     // Use "Map.of" if available

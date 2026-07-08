@@ -92,6 +92,23 @@ public interface Bucket {
     BucketPermissions permissions();
 
     /**
+     * Gets the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @return the akvDetails value.
+     */
+    AzureKeyVaultDetails akvDetails();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -144,7 +161,7 @@ public interface Bucket {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithPath, DefinitionStages.WithFileSystemUser,
-            DefinitionStages.WithServer, DefinitionStages.WithPermissions {
+            DefinitionStages.WithServer, DefinitionStages.WithPermissions, DefinitionStages.WithAkvDetails {
             /**
              * Executes the create request.
              * 
@@ -220,6 +237,39 @@ public interface Bucket {
              */
             WithCreate withPermissions(BucketPermissions permissions);
         }
+
+        /**
+         * The stage of the Bucket definition allowing to specify akvDetails.
+         */
+        interface WithAkvDetails {
+            /**
+             * Specifies the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+             * a) retrieving the bucket server certificate, and
+             * b) storing the bucket credentials
+             * 
+             * Notes:
+             * 
+             * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is
+             * possible to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails'
+             * properties. However, once Azure Key Vault is configured, it is no longer possible to provide the
+             * certificate directly via the certificateObject property.
+             * 2. These properties are mutually exclusive with the server.certificateObject property..
+             * 
+             * @param akvDetails Specifies the Azure Key Vault settings. These are used when
+             * a) retrieving the bucket server certificate, and
+             * b) storing the bucket credentials
+             * 
+             * Notes:
+             * 
+             * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is
+             * possible to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails'
+             * properties. However, once Azure Key Vault is configured, it is no longer possible to provide the
+             * certificate directly via the certificateObject property.
+             * 2. These properties are mutually exclusive with the server.certificateObject property.
+             * @return the next definition stage.
+             */
+            WithCreate withAkvDetails(AzureKeyVaultDetails akvDetails);
+        }
     }
 
     /**
@@ -232,8 +282,8 @@ public interface Bucket {
     /**
      * The template for Bucket update.
      */
-    interface Update extends UpdateStages.WithPath, UpdateStages.WithFileSystemUser, UpdateStages.WithServer,
-        UpdateStages.WithPermissions {
+    interface Update extends UpdateStages.WithFileSystemUser, UpdateStages.WithServer, UpdateStages.WithPermissions,
+        UpdateStages.WithAkvDetails {
         /**
          * Executes the update request.
          * 
@@ -254,19 +304,6 @@ public interface Bucket {
      * The Bucket update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the Bucket update allowing to specify path.
-         */
-        interface WithPath {
-            /**
-             * Specifies the path property: The volume path mounted inside the bucket..
-             * 
-             * @param path The volume path mounted inside the bucket.
-             * @return the next definition stage.
-             */
-            Update withPath(String path);
-        }
-
         /**
          * The stage of the Bucket update allowing to specify fileSystemUser.
          */
@@ -309,6 +346,39 @@ public interface Bucket {
              */
             Update withPermissions(BucketPatchPermissions permissions);
         }
+
+        /**
+         * The stage of the Bucket update allowing to specify akvDetails.
+         */
+        interface WithAkvDetails {
+            /**
+             * Specifies the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+             * a) retrieving the bucket server certificate, and
+             * b) storing the bucket credentials
+             * 
+             * Notes:
+             * 
+             * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is
+             * possible to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails'
+             * properties. However, once Azure Key Vault is configured, it is no longer possible to provide the
+             * certificate directly via the certificateObject property.
+             * 2. These properties are mutually exclusive with the server.certificateObject property..
+             * 
+             * @param akvDetails Specifies the Azure Key Vault settings. These are used when
+             * a) retrieving the bucket server certificate, and
+             * b) storing the bucket credentials
+             * 
+             * Notes:
+             * 
+             * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is
+             * possible to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails'
+             * properties. However, once Azure Key Vault is configured, it is no longer possible to provide the
+             * certificate directly via the certificateObject property.
+             * 2. These properties are mutually exclusive with the server.certificateObject property.
+             * @return the next definition stage.
+             */
+            Update withAkvDetails(AzureKeyVaultDetails akvDetails);
+        }
     }
 
     /**
@@ -350,4 +420,45 @@ public interface Bucket {
      * @return bucket Access Key, Secret Key, and Expiry date and time of the key pair.
      */
     BucketGenerateCredentials generateCredentials(BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateAkvCredentials(BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateAkvCredentials(BucketCredentialsExpiry body, Context context);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshCertificate();
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshCertificate(Context context);
 }

@@ -18,10 +18,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ContainersGetAccessPolicyHeaders {
     /*
-     * The x-ms-version property.
+     * The x-ms-blob-public-access property.
      */
     @Generated
-    private String xMsVersion;
+    private PublicAccessType xMsBlobPublicAccess;
 
     /*
      * The ETag property.
@@ -36,10 +36,10 @@ public final class ContainersGetAccessPolicyHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-blob-public-access property.
+     * The x-ms-client-request-id property.
      */
     @Generated
-    private PublicAccessType xMsBlobPublicAccess;
+    private String xMsClientRequestId;
 
     /*
      * The x-ms-request-id property.
@@ -48,10 +48,10 @@ public final class ContainersGetAccessPolicyHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-version property.
      */
     @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
 
     /*
      * The Date property.
@@ -59,9 +59,9 @@ public final class ContainersGetAccessPolicyHeaders {
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_BLOB_PUBLIC_ACCESS = HttpHeaderName.fromString("x-ms-blob-public-access");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -70,7 +70,12 @@ public final class ContainersGetAccessPolicyHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetAccessPolicyHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
+        } else {
+            this.xMsBlobPublicAccess = null;
+        }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -78,14 +83,9 @@ public final class ContainersGetAccessPolicyHeaders {
         } else {
             this.lastModified = null;
         }
-        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
-        if (xMsBlobPublicAccess != null) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
-        } else {
-            this.xMsBlobPublicAccess = null;
-        }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -95,24 +95,24 @@ public final class ContainersGetAccessPolicyHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsBlobPublicAccess value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public PublicAccessType getXMsBlobPublicAccess() {
+        return this.xMsBlobPublicAccess;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsBlobPublicAccess the xMsBlobPublicAccess value to set.
      * @return the ContainersGetAccessPolicyHeaders object itself.
      */
     @Generated
-    public ContainersGetAccessPolicyHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public ContainersGetAccessPolicyHeaders setXMsBlobPublicAccess(PublicAccessType xMsBlobPublicAccess) {
+        this.xMsBlobPublicAccess = xMsBlobPublicAccess;
         return this;
     }
 
@@ -168,24 +168,24 @@ public final class ContainersGetAccessPolicyHeaders {
     }
 
     /**
-     * Get the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @return the xMsBlobPublicAccess value.
+     * @return the xMsClientRequestId value.
      */
     @Generated
-    public PublicAccessType getXMsBlobPublicAccess() {
-        return this.xMsBlobPublicAccess;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsBlobPublicAccess property: The x-ms-blob-public-access property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @param xMsBlobPublicAccess the xMsBlobPublicAccess value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ContainersGetAccessPolicyHeaders object itself.
      */
     @Generated
-    public ContainersGetAccessPolicyHeaders setXMsBlobPublicAccess(PublicAccessType xMsBlobPublicAccess) {
-        this.xMsBlobPublicAccess = xMsBlobPublicAccess;
+    public ContainersGetAccessPolicyHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -212,24 +212,24 @@ public final class ContainersGetAccessPolicyHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersGetAccessPolicyHeaders object itself.
      */
     @Generated
-    public ContainersGetAccessPolicyHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public ContainersGetAccessPolicyHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

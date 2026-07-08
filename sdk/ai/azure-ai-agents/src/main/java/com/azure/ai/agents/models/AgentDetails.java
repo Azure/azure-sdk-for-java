@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class AgentDetails implements JsonSerializable<AgentDetails> {
 
     /*
-     * The object type, which is always 'agent'.
-     */
-    @Generated
-    private final String object = "agent";
-
-    /*
      * The unique identifier of the agent.
      */
     @Generated
@@ -39,31 +33,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The latest version of the agent.
      */
     @Generated
-    private final AgentObjectVersions versions;
-
-    /**
-     * Creates an instance of AgentDetails class.
-     *
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param versions the versions value to set.
-     */
-    @Generated
-    private AgentDetails(String id, String name, AgentObjectVersions versions) {
-        this.id = id;
-        this.name = name;
-        this.versions = versions;
-    }
-
-    /**
-     * Get the object property: The object type, which is always 'agent'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public String getObject() {
-        return this.object;
-    }
+    private final AgentDetailsVersions versions;
 
     /**
      * Get the id property: The unique identifier of the agent.
@@ -91,7 +61,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the versions value.
      */
     @Generated
-    public AgentObjectVersions getVersions() {
+    public AgentDetailsVersions getVersions() {
         return this.versions;
     }
 
@@ -102,10 +72,12 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
+        jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
+        jsonWriter.writeJsonField("agent_card", this.agentCard);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,7 +95,13 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
-            AgentObjectVersions versions = null;
+            AgentState state = null;
+            AgentDetailsVersions versions = null;
+            AgentEndpointConfig agentEndpoint = null;
+            AgentIdentity instanceIdentity = null;
+            AgentIdentity blueprintIdentity = null;
+            AgentBlueprintReference blueprintReference = null;
+            AgentCard agentCard = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -131,13 +109,159 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    state = AgentState.fromString(reader.getString());
                 } else if ("versions".equals(fieldName)) {
-                    versions = AgentObjectVersions.fromJson(reader);
+                    versions = AgentDetailsVersions.fromJson(reader);
+                } else if ("agent_endpoint".equals(fieldName)) {
+                    agentEndpoint = AgentEndpointConfig.fromJson(reader);
+                } else if ("instance_identity".equals(fieldName)) {
+                    instanceIdentity = AgentIdentity.fromJson(reader);
+                } else if ("blueprint".equals(fieldName)) {
+                    blueprintIdentity = AgentIdentity.fromJson(reader);
+                } else if ("blueprint_reference".equals(fieldName)) {
+                    blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("agent_card".equals(fieldName)) {
+                    agentCard = AgentCard.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AgentDetails(id, name, versions);
+            AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
+            deserializedAgentDetails.state = state;
+            deserializedAgentDetails.agentEndpoint = agentEndpoint;
+            deserializedAgentDetails.instanceIdentity = instanceIdentity;
+            deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
+            deserializedAgentDetails.blueprintReference = blueprintReference;
+            deserializedAgentDetails.agentCard = agentCard;
+            return deserializedAgentDetails;
         });
+    }
+
+    /**
+     * Creates an instance of AgentDetails class.
+     *
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param versions the versions value to set.
+     */
+    @Generated
+    private AgentDetails(String id, String name, AgentDetailsVersions versions) {
+        this.id = id;
+        this.name = name;
+        this.versions = versions;
+    }
+
+    /*
+     * The object type, which is always 'agent'.
+     */
+    @Generated
+    private final AgentObjectType objectType = AgentObjectType.AGENT;
+
+    /**
+     * Get the objectType property: The object type, which is always 'agent'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public AgentObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /*
+     * The endpoint configuration for the agent
+     */
+    @Generated
+    private AgentEndpointConfig agentEndpoint;
+
+    /*
+     * The instance identity of the agent
+     */
+    @Generated
+    private AgentIdentity instanceIdentity;
+
+    /*
+     * The blueprint for the agent
+     */
+    @Generated
+    private AgentBlueprintReference blueprintReference;
+
+    /*
+     * The agent_card property.
+     */
+    @Generated
+    private AgentCard agentCard;
+
+    /**
+     * Get the agentEndpoint property: The endpoint configuration for the agent.
+     *
+     * @return the agentEndpoint value.
+     */
+    @Generated
+    public AgentEndpointConfig getAgentEndpoint() {
+        return this.agentEndpoint;
+    }
+
+    /**
+     * Get the instanceIdentity property: The instance identity of the agent.
+     *
+     * @return the instanceIdentity value.
+     */
+    @Generated
+    public AgentIdentity getInstanceIdentity() {
+        return this.instanceIdentity;
+    }
+
+    /**
+     * Get the blueprintReference property: The blueprint for the agent.
+     *
+     * @return the blueprintReference value.
+     */
+    @Generated
+    public AgentBlueprintReference getBlueprintReference() {
+        return this.blueprintReference;
+    }
+
+    /**
+     * Get the agentCard property: The agent_card property.
+     *
+     * @return the agentCard value.
+     */
+    @Generated
+    public AgentCard getAgentCard() {
+        return this.agentCard;
+    }
+
+    /*
+     * The blueprint for the agent
+     */
+    @Generated
+    private AgentIdentity blueprintIdentity;
+
+    /**
+     * Get the blueprintIdentity property: The blueprint for the agent.
+     *
+     * @return the blueprintIdentity value.
+     */
+    @Generated
+    public AgentIdentity getBlueprintIdentity() {
+        return this.blueprintIdentity;
+    }
+
+    /*
+     * The operational state of the agent. Controls whether the agent endpoint accepts or rejects requests.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The operational state of the agent. Controls whether the agent endpoint accepts or
+     * rejects requests.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
     }
 }

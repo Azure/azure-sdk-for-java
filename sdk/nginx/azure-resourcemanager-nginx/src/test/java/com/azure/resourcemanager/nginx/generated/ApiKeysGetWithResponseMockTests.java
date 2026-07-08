@@ -21,7 +21,7 @@ public final class ApiKeysGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hint\":\"xbaaabjyv\",\"endDateTime\":\"2021-10-17T00:26:42Z\"},\"id\":\"imrzrtuzqog\",\"name\":\"exn\",\"type\":\"vfdnwnwmewzsyyce\"}";
+            = "{\"properties\":{\"hint\":\"rqubpaxhexiil\",\"endDateTime\":\"2021-10-29T07:32:45Z\"},\"id\":\"tiirqtdqoa\",\"name\":\"oruzfgsquyfxrxx\",\"type\":\"eptra\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ApiKeysGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NginxDeploymentApiKeyResponse response = manager.apiKeys()
-            .getWithResponse("ofwq", "zqalkrmnjijpx", "cqqudf", com.azure.core.util.Context.NONE)
+            .getWithResponse("zsyyceuzso", "bjudpfrxtrthzv", "ytdw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T00:26:42Z"), response.properties().endDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T07:32:45Z"), response.properties().endDateTime());
     }
 }

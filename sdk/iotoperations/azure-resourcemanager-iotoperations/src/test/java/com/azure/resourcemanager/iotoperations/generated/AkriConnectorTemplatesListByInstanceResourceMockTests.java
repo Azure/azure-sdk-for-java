@@ -25,7 +25,7 @@ public final class AkriConnectorTemplatesListByInstanceResourceMockTests {
     @Test
     public void testListByInstanceResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"aioMetadata\":{\"aioMinVersion\":\"kdlpa\",\"aioMaxVersion\":\"rcxfailcfxwmdb\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"fgsftufqob\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"nac\",\"endpointType\":\"cc\",\"version\":\"nhxk\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"tnrzvuljra\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":538617301,\"maxInflightMessages\":644888013,\"sessionExpirySeconds\":968481133,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"qnvb\"}},\"connectorMetadataRef\":\"ylaxxulcdi\",\"healthState\":\"Degraded\"},\"extendedLocation\":{\"name\":\"fj\",\"type\":\"CustomLocation\"},\"id\":\"vgjrwhr\",\"name\":\"vyc\",\"type\":\"t\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"aioMetadata\":{\"aioMinVersion\":\"dvjdhttza\",\"aioMaxVersion\":\"edxihchrphkmcrj\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"sdf\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"gtgkylkdghr\",\"endpointType\":\"euutlwxezwzh\",\"version\":\"vbwnhhtq\"},{\"displayName\":\"ehgpp\",\"endpointType\":\"pifhpfeoajvgcxtx\",\"version\":\"sheafid\"},{\"displayName\":\"ugsresmkssjhoi\",\"endpointType\":\"txfkfweg\",\"version\":\"hpt\"},{\"displayName\":\"lucbiqtgdqohm\",\"endpointType\":\"wsldrizetpwbr\",\"version\":\"llibphbqzmizak\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"kjpdnjzhajo\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1918211666,\"maxInflightMessages\":378729961,\"sessionExpirySeconds\":250880372,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"mrsopte\"}},\"connectorMetadataRef\":\"jme\",\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"tvasy\",\"type\":\"CustomLocation\"},\"id\":\"dzaumweooh\",\"name\":\"uufuz\",\"type\":\"oyjathwtzol\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,39 +35,39 @@ public final class AkriConnectorTemplatesListByInstanceResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AkriConnectorTemplateResource> response = manager.akriConnectorTemplates()
-            .listByInstanceResource("vodhtn", "irudh", com.azure.core.util.Context.NONE);
+            .listByInstanceResource("c", "xgccknfnw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kdlpa", response.iterator().next().properties().aioMetadata().aioMinVersion());
-        Assertions.assertEquals("rcxfailcfxwmdb",
+        Assertions.assertEquals("dvjdhttza", response.iterator().next().properties().aioMetadata().aioMinVersion());
+        Assertions.assertEquals("edxihchrphkmcrj",
             response.iterator().next().properties().aioMetadata().aioMaxVersion());
-        Assertions.assertEquals("fgsftufqob", response.iterator().next().properties().diagnostics().logs().level());
-        Assertions.assertEquals("nac",
+        Assertions.assertEquals("sdf", response.iterator().next().properties().diagnostics().logs().level());
+        Assertions.assertEquals("gtgkylkdghr",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).displayName());
-        Assertions.assertEquals("cc",
+        Assertions.assertEquals("euutlwxezwzh",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).endpointType());
-        Assertions.assertEquals("nhxk",
+        Assertions.assertEquals("vbwnhhtq",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).version());
-        Assertions.assertEquals("tnrzvuljra",
+        Assertions.assertEquals("kjpdnjzhajo",
             response.iterator().next().properties().mqttConnectionConfiguration().host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT,
             response.iterator().next().properties().mqttConnectionConfiguration().protocol());
-        Assertions.assertEquals(538617301,
+        Assertions.assertEquals(1918211666,
             response.iterator().next().properties().mqttConnectionConfiguration().keepAliveSeconds());
-        Assertions.assertEquals(644888013,
+        Assertions.assertEquals(378729961,
             response.iterator().next().properties().mqttConnectionConfiguration().maxInflightMessages());
-        Assertions.assertEquals(968481133,
+        Assertions.assertEquals(250880372,
             response.iterator().next().properties().mqttConnectionConfiguration().sessionExpirySeconds());
         Assertions.assertEquals(OperationalMode.ENABLED,
             response.iterator().next().properties().mqttConnectionConfiguration().tls().mode());
-        Assertions.assertEquals("qnvb",
+        Assertions.assertEquals("mrsopte",
             response.iterator()
                 .next()
                 .properties()
                 .mqttConnectionConfiguration()
                 .tls()
                 .trustedCaCertificateConfigMapRef());
-        Assertions.assertEquals("ylaxxulcdi", response.iterator().next().properties().connectorMetadataRef());
-        Assertions.assertEquals("fj", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("jme", response.iterator().next().properties().connectorMetadataRef());
+        Assertions.assertEquals("tvasy", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

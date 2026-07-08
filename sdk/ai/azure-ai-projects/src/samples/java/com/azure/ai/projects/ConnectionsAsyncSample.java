@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class ConnectionsAsyncSample {
 
     private static ConnectionsAsyncClient connectionsAsyncClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildConnectionsAsyncClient();
 
@@ -48,7 +48,7 @@ public class ConnectionsAsyncSample {
         return connectionsAsyncClient.getConnectionWithCredentials(connectionName)
             .doOnNext(connection -> {
                 System.out.printf("Connection name: %s%n", connection.getName());
-                System.out.printf("Connection credentials: %s%n", connection.getCredentials().getType());
+                System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
             });
 
         // END:com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithCredentials

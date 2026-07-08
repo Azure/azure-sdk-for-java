@@ -43,12 +43,6 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType COSMOS_DB = fromString("CosmosDB");
 
     /**
-     * Generic connection that uses API Key authentication.
-     */
-    @Generated
-    public static final ConnectionType APIKEY = fromString("ApiKey");
-
-    /**
      * Application Configuration.
      */
     @Generated
@@ -65,12 +59,6 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      */
     @Generated
     public static final ConnectionType CUSTOM = fromString("CustomKeys");
-
-    /**
-     * Remote tool.
-     */
-    @Generated
-    public static final ConnectionType REMOTE_TOOL = fromString("RemoteTool");
 
     /**
      * Creates a new instance of ConnectionType value.
@@ -102,4 +90,16 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static Collection<ConnectionType> values() {
         return values(ConnectionType.class);
     }
+
+    /**
+     * Generic connection that uses API Key authentication.
+     */
+    @Generated
+    public static final ConnectionType API_KEY = fromString("ApiKey");
+
+    /**
+     * Remote tool.
+     */
+    @Generated
+    public static final ConnectionType REMOTE_TOOL_PREVIEW = fromString("RemoteTool_Preview");
 }

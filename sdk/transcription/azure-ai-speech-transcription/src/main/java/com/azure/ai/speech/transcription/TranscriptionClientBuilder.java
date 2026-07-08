@@ -43,7 +43,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the TranscriptionClient type.
+ * A builder for creating a new instance of the {@link TranscriptionClient}
+ * and {@link TranscriptionAsyncClient}.
+ *
+ * <p><strong>Sample: construct a TranscriptionClient with KeyCredential</strong></p>
+ * 
+ * <pre>
+ * TranscriptionClient client
+ *     = new TranscriptionClientBuilder().endpoint(&quot;https://&#123;resource&#125;.cognitiveservices.azure.com/&quot;)
+ *         .credential(new KeyCredential(&quot;&#123;api-key&#125;&quot;))
+ *         .buildClient();
+ * </pre>
  */
 @ServiceClientBuilder(serviceClients = { TranscriptionClient.class, TranscriptionAsyncClient.class })
 public final class TranscriptionClientBuilder implements HttpTrait<TranscriptionClientBuilder>,
@@ -55,6 +65,9 @@ public final class TranscriptionClientBuilder implements HttpTrait<Transcription
 
     @Generated
     private static final String SDK_VERSION = "version";
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 
     @Generated
     private static final Map<String, String> PROPERTIES
@@ -178,6 +191,22 @@ public final class TranscriptionClientBuilder implements HttpTrait<Transcription
     @Override
     public TranscriptionClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public TranscriptionClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -334,23 +363,4 @@ public final class TranscriptionClientBuilder implements HttpTrait<Transcription
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClientBuilder.class);
-
-    @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
-
-    /*
-     * The TokenCredential used for authentication.
-     */
-    @Generated
-    private TokenCredential tokenCredential;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public TranscriptionClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = tokenCredential;
-        return this;
-    }
 }

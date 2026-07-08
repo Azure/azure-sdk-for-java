@@ -25,7 +25,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 @JsonClassDescription("Gets the quality of the given SDK.")
 class GetSdkQuality {
     @JsonPropertyDescription("The name of the SDK.")
-    public String name;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public GetSdkQuality setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public String execute() {
         return name.contains("OpenAI") ? "Excellent quality and robust implementation!" : "Unknown quality";

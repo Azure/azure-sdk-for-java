@@ -69,10 +69,28 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 @JsonClassDescription("Get the current weather in a given location")
 class GetCurrentWeather {
     @JsonPropertyDescription("The city and state, e.g. San Francisco, CA")
-    public String location;
+    private String location;
 
     @JsonPropertyDescription("Temperature unit (celsius or fahrenheit)")
-    public String unit = "celsius";
+    private String unit = "celsius";
+
+    public String getLocation() {
+        return location;
+    }
+
+    public GetCurrentWeather setLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public GetCurrentWeather setUnit(String unit) {
+        this.unit = unit;
+        return this;
+    }
 
     public String execute() {
         return "The weather in " + location + " is 72 degrees " + unit;

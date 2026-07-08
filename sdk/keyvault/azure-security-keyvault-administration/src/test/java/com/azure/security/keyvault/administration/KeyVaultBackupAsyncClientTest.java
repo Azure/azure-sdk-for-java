@@ -8,6 +8,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -133,8 +134,11 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        KeyClient keyClient
-            = new KeyClientBuilder().vaultUrl(getEndpoint()).pipeline(getPipeline(httpClient, false)).buildClient();
+        // TODO (hari9-9): Un-pin the 2025-07-01 version once we find a workaround for allowSharedKeyAccess in storage account
+        KeyClient keyClient = new KeyClientBuilder().vaultUrl(getEndpoint())
+            .serviceVersion(KeyServiceVersion.V2025_07_01)
+            .pipeline(getPipeline(httpClient, false))
+            .buildClient();
 
         String keyName = testResourceNamer.randomName("backupKey", 20);
         CreateRsaKeyOptions rsaKeyOptions

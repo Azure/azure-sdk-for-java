@@ -20,7 +20,7 @@ public final class DisconnectedOperationsListDeploymentManifestWithResponseMockT
     @Test
     public void testListDeploymentManifestWithResponse() throws Exception {
         String responseStr
-            = "{\"resourceId\":\"sdkf\",\"resourceName\":\"hwxmnteiwa\",\"stampId\":\"pvkmijcmmxdcuf\",\"location\":\"fsrpymzidnse\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Disconnected\",\"cloud\":\"bzsgfyccsne\"}";
+            = "{\"resourceId\":\"ectehf\",\"resourceName\":\"qsc\",\"stampId\":\"eypvhezrkg\",\"location\":\"hcjrefovgmk\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"cloud\":\"yyvxyqjpkcattpn\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Disabled\",\"current\":{\"cores\":1123309807,\"pricingModel\":\"Annual\"},\"upcoming\":{\"cores\":822789925,\"pricingModel\":\"Trial\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":243553198}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DisconnectedOperationsListDeploymentManifestWithResponseMockT
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DisconnectedOperationDeploymentManifest response = manager.disconnectedOperations()
-            .listDeploymentManifestWithResponse("rfidfvzwdz", "htymw", com.azure.core.util.Context.NONE)
+            .listDeploymentManifestWithResponse("dcsi", "ynnaam", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

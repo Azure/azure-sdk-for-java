@@ -15,4 +15,4 @@ NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azu
   `azure-messaging-servicebus` before any other `azure-*` client libraries. A Fix for the January 2021 release is being 
   tracked at https://github.com/Azure/azure-sdk-for-java/issues/17942.
 - **Additional Information**: More information on diagnosing and resolving dependency conflicts can be found at
-  https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#im-getting-a-nosuchmethoderror-or-noclassdeffounderror.
+  https://github.com/Azure/azure-sdk-for-java/blob/main/docs/faq.md#im-getting-nosuchmethoderror-or-noclassdeffounderror.

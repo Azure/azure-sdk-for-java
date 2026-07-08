@@ -8,9 +8,11 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusMessagingAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -23,10 +25,10 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.azure.ServiceBusEmulatorContainer;
-import org.testcontainers.containers.MSSQLServerContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mssqlserver.MSSQLServerContainer;
 import org.testcontainers.utility.MountableFile;
 
 import java.time.Duration;
@@ -40,12 +42,13 @@ import static org.awaitility.Awaitility.waitAtMost;
 @TestPropertySource(properties = { "spring.cloud.azure.servicebus.entity-name=queue.1",
     "spring.cloud.azure.servicebus.entity-type=queue" })
 @Testcontainers
+@Tag("docker")
 @EnabledOnOs(OS.LINUX)
 class ServiceBusContainerConnectionDetailsFactoryTests {
 
     private static final Network NETWORK = Network.newNetwork();
 
-    private static final MSSQLServerContainer<?> SQLSERVER = new MSSQLServerContainer<>(
+    private static final MSSQLServerContainer SQLSERVER = new MSSQLServerContainer(
         "mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
         .acceptLicense()
         .withNetwork(NETWORK)
@@ -62,10 +65,21 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
         .withMsSqlServerContainer(SQLSERVER);
 
     @Autowired
+    private AzureServiceBusConnectionDetails connectionDetails;
+
+    @Autowired
     private ServiceBusSenderClient senderClient;
 
     @Autowired
     private ServiceBusTemplate serviceBusTemplate;
+
+    @Test
+    void connectionDetailsShouldBeProvidedByFactory() {
+        assertThat(connectionDetails).isNotNull();
+        assertThat(connectionDetails.getConnectionString())
+            .isNotBlank()
+            .startsWith("Endpoint=sb://");
+    }
 
     @Test
     void senderClientCanSendMessage() {

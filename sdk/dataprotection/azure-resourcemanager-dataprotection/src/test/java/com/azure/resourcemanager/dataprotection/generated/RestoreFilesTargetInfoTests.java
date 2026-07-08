@@ -15,32 +15,32 @@ public final class RestoreFilesTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreFilesTargetInfo model = BinaryData.fromString(
-            "{\"objectType\":\"RestoreFilesTargetInfo\",\"targetDetails\":{\"filePrefix\":\"svmkfssxquk\",\"restoreTargetLocationType\":\"AzureBlobs\",\"url\":\"plgmgsxnk\",\"targetResourceArmId\":\"kde\"},\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"vlopwiyighx\"}")
+            "{\"objectType\":\"RestoreFilesTargetInfo\",\"targetDetails\":{\"filePrefix\":\"kfplgmgsxnk\",\"restoreTargetLocationType\":\"AzureFiles\",\"url\":\"kde\",\"targetResourceArmId\":\"pvlopwiyighxpkd\"},\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"aiuebbaumnyqu\"}")
             .toObject(RestoreFilesTargetInfo.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("vlopwiyighx", model.restoreLocation());
-        Assertions.assertEquals("svmkfssxquk", model.targetDetails().filePrefix());
-        Assertions.assertEquals(RestoreTargetLocationType.AZURE_BLOBS,
+        Assertions.assertEquals("aiuebbaumnyqu", model.restoreLocation());
+        Assertions.assertEquals("kfplgmgsxnk", model.targetDetails().filePrefix());
+        Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES,
             model.targetDetails().restoreTargetLocationType());
-        Assertions.assertEquals("plgmgsxnk", model.targetDetails().url());
-        Assertions.assertEquals("kde", model.targetDetails().targetResourceArmId());
+        Assertions.assertEquals("kde", model.targetDetails().url());
+        Assertions.assertEquals("pvlopwiyighxpkd", model.targetDetails().targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestoreFilesTargetInfo model = new RestoreFilesTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-            .withRestoreLocation("vlopwiyighx")
-            .withTargetDetails(new TargetDetails().withFilePrefix("svmkfssxquk")
-                .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_BLOBS)
-                .withUrl("plgmgsxnk")
-                .withTargetResourceArmId("kde"));
+            .withRestoreLocation("aiuebbaumnyqu")
+            .withTargetDetails(new TargetDetails().withFilePrefix("kfplgmgsxnk")
+                .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_FILES)
+                .withUrl("kde")
+                .withTargetResourceArmId("pvlopwiyighxpkd"));
         model = BinaryData.fromObject(model).toObject(RestoreFilesTargetInfo.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("vlopwiyighx", model.restoreLocation());
-        Assertions.assertEquals("svmkfssxquk", model.targetDetails().filePrefix());
-        Assertions.assertEquals(RestoreTargetLocationType.AZURE_BLOBS,
+        Assertions.assertEquals("aiuebbaumnyqu", model.restoreLocation());
+        Assertions.assertEquals("kfplgmgsxnk", model.targetDetails().filePrefix());
+        Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES,
             model.targetDetails().restoreTargetLocationType());
-        Assertions.assertEquals("plgmgsxnk", model.targetDetails().url());
-        Assertions.assertEquals("kde", model.targetDetails().targetResourceArmId());
+        Assertions.assertEquals("kde", model.targetDetails().url());
+        Assertions.assertEquals("pvlopwiyighxpkd", model.targetDetails().targetResourceArmId());
     }
 }

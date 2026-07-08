@@ -25,12 +25,6 @@ public final class AgentKind extends ExpandableStringEnum<AgentKind> {
     public static final AgentKind HOSTED = fromString("hosted");
 
     /**
-     * Static value container_app for AgentKind.
-     */
-    @Generated
-    public static final AgentKind CONTAINER_APP = fromString("container_app");
-
-    /**
      * Static value workflow for AgentKind.
      */
     @Generated
@@ -66,4 +60,10 @@ public final class AgentKind extends ExpandableStringEnum<AgentKind> {
     public static Collection<AgentKind> values() {
         return values(AgentKind.class);
     }
+
+    /**
+     * Static value external for AgentKind.
+     */
+    @Generated
+    public static final AgentKind EXTERNAL = fromString("external");
 }

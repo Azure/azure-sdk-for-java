@@ -31,12 +31,8 @@ public final class UsersImpl implements Users {
         Context context) {
         Response<UserInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, mongoClusterName, userName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new UserImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new UserImpl(inner.getValue(), this.manager()));
     }
 
     public User get(String resourceGroupName, String mongoClusterName, String userName) {

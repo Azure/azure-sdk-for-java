@@ -267,6 +267,8 @@ public interface FleetsClient {
     /**
      * Lists fleets in the specified subscription.
      * 
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -274,7 +276,7 @@ public interface FleetsClient {
      * @return the response of a Fleet list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FleetInner> list(Context context);
+    PagedIterable<FleetInner> list(Integer top, String skipToken, Context context);
 
     /**
      * Lists the user credentials of a Fleet.

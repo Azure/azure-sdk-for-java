@@ -325,8 +325,9 @@ public interface Cache {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
-    void poolChange(PoolChangeRequest body);
+    Cache poolChange(PoolChangeRequest body);
 
     /**
      * Moves Cache to another Capacity Pool.
@@ -336,6 +337,27 @@ public interface Cache {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
-    void poolChange(PoolChangeRequest body, Context context);
+    Cache poolChange(PoolChangeRequest body, Context context);
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
+     */
+    Cache resetSmbPassword();
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
+     */
+    Cache resetSmbPassword(Context context);
 }

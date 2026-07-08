@@ -23,7 +23,7 @@ public final class DiscoveryRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"bfhjxakvvjgsl\",\"resourceGraphQuery\":\"r\",\"authenticationSetting\":\"il\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"deletionDate\":\"2021-09-07T03:23:04Z\",\"errorMessage\":\"gkxnyedabg\",\"numberOfDiscoveredEntities\":110774994,\"entityName\":\"dtj\"},\"id\":\"wbcihxuuwh\",\"name\":\"j\",\"type\":\"xccybvpa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"gorqjbttzh\",\"authenticationSetting\":\"aglkafhon\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"eickpz\",\"context\":[\"opmx\"]},\"entityName\":\"lnwcltyjed\"},\"id\":\"xm\",\"name\":\"f\",\"type\":\"kqscazuawxtzx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,11 @@ public final class DiscoveryRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoveryRule response = manager.discoveryRules()
-            .getWithResponse("dmligovibrxk", "mloazuru", "cbgoor", com.azure.core.util.Context.NONE)
+            .getWithResponse("lhslnelxieixyn", "lxecwcrojphslh", "awjutifd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bfhjxakvvjgsl", response.properties().displayName());
-        Assertions.assertEquals("r", response.properties().resourceGraphQuery());
-        Assertions.assertEquals("il", response.properties().authenticationSetting());
+        Assertions.assertEquals("gorqjbttzh", response.properties().displayName());
+        Assertions.assertEquals("aglkafhon", response.properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
             response.properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,

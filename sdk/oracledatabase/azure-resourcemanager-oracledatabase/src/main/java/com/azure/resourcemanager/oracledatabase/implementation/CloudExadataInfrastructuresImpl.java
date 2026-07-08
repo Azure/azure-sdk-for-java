@@ -44,12 +44,8 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
         String cloudexadatainfrastructurename, Context context) {
         Response<CloudExadataInfrastructureInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, cloudexadatainfrastructurename, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CloudExadataInfrastructureImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CloudExadataInfrastructureImpl(inner.getValue(), this.manager()));
     }
 
     public CloudExadataInfrastructure getByResourceGroup(String resourceGroupName,

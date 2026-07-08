@@ -38,7 +38,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
-import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResultInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -52,6 +52,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.QuotaReportFilterRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
@@ -631,7 +632,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") QuotaReportFilterRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/listQuotaReport")
@@ -641,7 +643,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") QuotaReportFilterRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1892,7 +1895,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZoneWithResponseAsync(String resourceGroupName,
@@ -1936,7 +1939,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
@@ -1984,7 +1987,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
@@ -2030,7 +2033,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZoneAsync(
@@ -2051,7 +2054,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -2073,7 +2076,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -2094,7 +2097,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return volume resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> populateAvailabilityZoneAsync(String resourceGroupName, String accountName,
@@ -2113,7 +2116,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -2132,7 +2135,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -2677,7 +2680,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
@@ -2720,7 +2723,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> splitCloneFromParentWithResponse(String resourceGroupName, String accountName,
@@ -2768,7 +2771,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> splitCloneFromParentWithResponse(String resourceGroupName, String accountName,
@@ -2814,7 +2817,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParentAsync(String resourceGroupName,
@@ -2835,7 +2838,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -2857,7 +2860,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -2878,7 +2881,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return volume resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
@@ -2897,7 +2900,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName,
@@ -2916,7 +2919,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName,
@@ -3265,7 +3268,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return group Id list for Ldap user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUserWithResponseAsync(String resourceGroupName,
@@ -3316,7 +3319,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return group Id list for Ldap user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
@@ -3371,7 +3374,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return group Id list for Ldap user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
@@ -3425,7 +3428,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3449,7 +3452,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3474,7 +3477,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3498,7 +3501,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return group Id list for Ldap user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(String resourceGroupName,
@@ -3519,7 +3522,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,
@@ -3540,7 +3543,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,
@@ -7749,20 +7752,22 @@ public final class VolumesClientImpl implements VolumesClient {
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return quota report for volume (with filter support) along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listQuotaReportWithResponseAsync(String resourceGroupName,
-        String accountName, String poolName, String volumeName) {
+        String accountName, String poolName, String volumeName, QuotaReportFilterRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -7784,28 +7789,33 @@ public final class VolumesClientImpl implements VolumesClient {
         if (volumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        if (body != null) {
+            body.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listQuotaReport(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, body,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return quota report for volume (with filter support) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listQuotaReportWithResponse(String resourceGroupName, String accountName,
-        String poolName, String volumeName) {
+        String poolName, String volumeName, QuotaReportFilterRequest body) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -7832,28 +7842,32 @@ public final class VolumesClientImpl implements VolumesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        if (body != null) {
+            body.validate();
+        }
         final String accept = "application/json";
         return service.listQuotaReportSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept,
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, body,
             Context.NONE);
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return quota report for volume (with filter support) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listQuotaReportWithResponse(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
+        String poolName, String volumeName, QuotaReportFilterRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -7880,35 +7894,41 @@ public final class VolumesClientImpl implements VolumesClient {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
         }
+        if (body != null) {
+            body.validate();
+        }
         final String accept = "application/json";
         return service.listQuotaReportSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName, accept, body,
+            context);
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private PollerFlux<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReportAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName,
+        QuotaReportFilterRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class,
+            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListQuotaReportResultInner.class, ListQuotaReportResultInner.class,
             this.client.getContext());
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -7917,60 +7937,110 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner>
-        beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName) {
-        Response<BinaryData> response
-            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
-            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, Context.NONE);
+    private PollerFlux<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner>
+        beginListQuotaReportAsync(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        final QuotaReportFilterRequest body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listQuotaReportWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ListQuotaReportResultInner.class, ListQuotaReportResultInner.class,
+            this.client.getContext());
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
+        String resourceGroupName, String accountName, String poolName, String volumeName,
+        QuotaReportFilterRequest body) {
+        Response<BinaryData> response
+            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Get quota report for volume (with filter support).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner>
+        beginListQuotaReport(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        final QuotaReportFilterRequest body = null;
+        Response<BinaryData> response
+            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Get quota report for volume (with filter support).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ListQuotaReportResponseInner>, ListQuotaReportResponseInner> beginListQuotaReport(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public SyncPoller<PollResult<ListQuotaReportResultInner>, ListQuotaReportResultInner> beginListQuotaReport(
+        String resourceGroupName, String accountName, String poolName, String volumeName, QuotaReportFilterRequest body,
+        Context context) {
         Response<BinaryData> response
-            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        return this.client.<ListQuotaReportResponseInner, ListQuotaReportResponseInner>getLroResult(response,
-            ListQuotaReportResponseInner.class, ListQuotaReportResponseInner.class, context);
+            = listQuotaReportWithResponse(resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this.client.<ListQuotaReportResultInner, ListQuotaReportResultInner>getLroResult(response,
+            ListQuotaReportResultInner.class, ListQuotaReportResultInner.class, context);
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return quota report for volume (with filter support) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListQuotaReportResponseInner> listQuotaReportAsync(String resourceGroupName, String accountName,
-        String poolName, String volumeName) {
-        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName).last()
+    private Mono<ListQuotaReportResultInner> listQuotaReportAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, QuotaReportFilterRequest body) {
+        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -7979,31 +8049,54 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return quota report for volume (with filter support) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName).getFinalResult();
+    private Mono<ListQuotaReportResultInner> listQuotaReportAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        final QuotaReportFilterRequest body = null;
+        return beginListQuotaReportAsync(resourceGroupName, accountName, poolName, volumeName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * A long-running resource action.
+     * Get quota report for volume (with filter support).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota report for volume (with filter support).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        final QuotaReportFilterRequest body = null;
+        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, body).getFinalResult();
+    }
+
+    /**
+     * Get quota report for volume (with filter support).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return quota report for volume (with filter support).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListQuotaReportResponseInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
-        String volumeName, Context context) {
-        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, context).getFinalResult();
+    public ListQuotaReportResultInner listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName, QuotaReportFilterRequest body, Context context) {
+        return beginListQuotaReport(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getFinalResult();
     }
 
     /**

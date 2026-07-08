@@ -11,7 +11,6 @@ import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -86,7 +85,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -95,17 +94,17 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(response, false);
 
         CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.getId());
-        CosmosStoredProcedureResponse readResponse = storedProcedure.read();
+        CosmosStoredProcedureResponse readResponse = retryOnNotFound(storedProcedure::read);
         validateResponse(storedProcedureDef, readResponse);
         validateDiagnostics(readResponse, false);
 
         CosmosStoredProcedureResponse readResponse2 =
-                storedProcedure.read(new CosmosStoredProcedureRequestOptions());
+            retryOnNotFound(() -> storedProcedure.read(new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, readResponse2);
         validateDiagnostics(readResponse2, false);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -113,25 +112,30 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
         validateDiagnostics(response, false);
 
-        CosmosStoredProcedureResponse readResponse = container.getScripts()
-                                                              .getStoredProcedure(storedProcedureDef.getId())
-                                                              .read();
+        final String storedProcedureId = storedProcedureDef.getId();
+        CosmosStoredProcedureResponse readResponse = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(storedProcedureId)
+                .read());
         validateResponse(storedProcedureDef, readResponse);
         validateDiagnostics(readResponse, false);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
-        CosmosStoredProcedureResponse replaceResponse = container.getScripts()
-                                                                 .getStoredProcedure(storedProcedureDef.getId())
-                                                                 .replace(storedProcedureDef);
+        final CosmosStoredProcedureProperties firstReplacement = storedProcedureDef;
+        CosmosStoredProcedureResponse replaceResponse = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(firstReplacement.getId())
+                .replace(firstReplacement));
         validateResponse(storedProcedureDef, replaceResponse);
         validateDiagnostics(replaceResponse, false);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
-        CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
-                                                                  .getStoredProcedure(storedProcedureDef.getId())
-                                                                  .replace(storedProcedureDef,
-                                                                             new CosmosStoredProcedureRequestOptions());
+        final CosmosStoredProcedureProperties secondReplacement = storedProcedureDef;
+        CosmosStoredProcedureResponse replaceResponse2 = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(secondReplacement.getId())
+                .replace(secondReplacement, new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, replaceResponse2);
         validateDiagnostics(replaceResponse2, false);
 
@@ -229,9 +233,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
-                container.getScripts().readAllStoredProcedures(cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().readAllStoredProcedures(cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure read feed");
 
     }
 
@@ -244,14 +249,16 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
-                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure string query");
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
-                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().queryStoredProcedures(querySpec, cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure SqlQuerySpec query");
     }
 
     private void validateResponse(CosmosStoredProcedureProperties properties,

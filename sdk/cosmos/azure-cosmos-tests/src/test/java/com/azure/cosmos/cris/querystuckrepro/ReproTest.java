@@ -76,15 +76,19 @@ public class ReproTest extends TestSuiteBase {
         safeClose(this.client);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void runICM497415681OriginalReproTest() throws Exception {
         numberOfRecordsRetrievedFromDatabase.set(0);
         numberOfPagesRetrievedFromDatabase.set(0);
 
-        logger.info("Creating test docs");
+        // Use a unique test run ID to isolate this test's data from other tests
+        // sharing the same container
+        String testRunId = UUID.randomUUID().toString();
+
+        logger.info("Creating test docs with testRunId: {}", testRunId);
         for (int i = 0; i < 1000; i++) {
             String id = UUID.randomUUID().toString();
-            ObjectNode newDoc = getDocumentDefinition(id, id);
+            ObjectNode newDoc = getDocumentDefinition(id, id, testRunId);
             this.container.createItem(newDoc, new PartitionKey(id), new CosmosItemRequestOptions()).block();
 
             if ((i % 100) == 0) {
@@ -99,7 +103,7 @@ public class ReproTest extends TestSuiteBase {
             partReadAttris,
             this.client,
             this.container,
-            "SELECT * FROM c",
+            "SELECT * FROM c WHERE c.testRunId = '" + testRunId + "'",
             "/mypk"
         );
 
@@ -118,14 +122,15 @@ public class ReproTest extends TestSuiteBase {
         assertThat(numberOfPagesRetrievedFromDatabase.get()).isEqualTo(1000);
     }
 
-    private ObjectNode getDocumentDefinition(String documentId, String pkId) throws JsonProcessingException {
+    private ObjectNode getDocumentDefinition(String documentId, String pkId, String testRunId) throws JsonProcessingException {
 
         String json = String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
+                + "\"testRunId\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                 + "}"
-            , documentId, pkId);
+            , documentId, pkId, testRunId);
         return
             OBJECT_MAPPER.readValue(json, ObjectNode.class);
     }

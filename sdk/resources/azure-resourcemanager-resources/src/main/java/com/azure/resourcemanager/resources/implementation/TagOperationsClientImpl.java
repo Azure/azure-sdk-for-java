@@ -72,7 +72,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "ResourceManagementClientTagOperations")
     public interface TagOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
@@ -1536,6 +1536,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
+     * Gets a summary of tag usage under the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1561,6 +1563,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
+     * Gets a summary of tag usage under the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The network configuration for the Job.
+ * (This property is not available by default. Please contact support for more information) The network configuration
+ * for the Job.
  */
 @Fluent
 public final class BatchJobNetworkConfiguration implements JsonSerializable<BatchJobNetworkConfiguration> {

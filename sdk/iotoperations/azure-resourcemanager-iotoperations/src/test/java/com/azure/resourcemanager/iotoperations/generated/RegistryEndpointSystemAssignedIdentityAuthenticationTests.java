@@ -13,17 +13,17 @@ public final class RegistryEndpointSystemAssignedIdentityAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryEndpointSystemAssignedIdentityAuthentication model = BinaryData.fromString(
-            "{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"bwemhairs\"}}")
+            "{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"iodhkhazxkhnz\"}}")
             .toObject(RegistryEndpointSystemAssignedIdentityAuthentication.class);
-        Assertions.assertEquals("bwemhairs", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("iodhkhazxkhnz", model.systemAssignedManagedIdentitySettings().audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointSystemAssignedIdentityAuthentication model
             = new RegistryEndpointSystemAssignedIdentityAuthentication().withSystemAssignedManagedIdentitySettings(
-                new RegistryEndpointSystemAssignedManagedIdentitySettings().withAudience("bwemhairs"));
+                new RegistryEndpointSystemAssignedManagedIdentitySettings().withAudience("iodhkhazxkhnz"));
         model = BinaryData.fromObject(model).toObject(RegistryEndpointSystemAssignedIdentityAuthentication.class);
-        Assertions.assertEquals("bwemhairs", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("iodhkhazxkhnz", model.systemAssignedManagedIdentitySettings().audience());
     }
 }

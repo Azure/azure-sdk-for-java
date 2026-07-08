@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BucketInner;
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.Bucket;
 import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
 import com.azure.resourcemanager.netapp.models.BucketGenerateCredentials;
@@ -63,6 +64,10 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
 
     public BucketPermissions permissions() {
         return this.innerModel().permissions();
+    }
+
+    public AzureKeyVaultDetails akvDetails() {
+        return this.innerModel().akvDetails();
     }
 
     public String resourceGroupName() {
@@ -177,14 +182,28 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
             .generateCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
     }
 
+    public void generateAkvCredentials(BucketCredentialsExpiry body) {
+        serviceManager.buckets()
+            .generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body);
+    }
+
+    public void generateAkvCredentials(BucketCredentialsExpiry body, Context context) {
+        serviceManager.buckets()
+            .generateAkvCredentials(resourceGroupName, accountName, poolName, volumeName, bucketName, body, context);
+    }
+
+    public void refreshCertificate() {
+        serviceManager.buckets().refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName);
+    }
+
+    public void refreshCertificate(Context context) {
+        serviceManager.buckets()
+            .refreshCertificate(resourceGroupName, accountName, poolName, volumeName, bucketName, context);
+    }
+
     public BucketImpl withPath(String path) {
-        if (isInCreateMode()) {
-            this.innerModel().withPath(path);
-            return this;
-        } else {
-            this.updateBody.withPath(path);
-            return this;
-        }
+        this.innerModel().withPath(path);
+        return this;
     }
 
     public BucketImpl withFileSystemUser(FileSystemUser fileSystemUser) {
@@ -205,6 +224,16 @@ public final class BucketImpl implements Bucket, Bucket.Definition, Bucket.Updat
     public BucketImpl withPermissions(BucketPermissions permissions) {
         this.innerModel().withPermissions(permissions);
         return this;
+    }
+
+    public BucketImpl withAkvDetails(AzureKeyVaultDetails akvDetails) {
+        if (isInCreateMode()) {
+            this.innerModel().withAkvDetails(akvDetails);
+            return this;
+        } else {
+            this.updateBody.withAkvDetails(akvDetails);
+            return this;
+        }
     }
 
     public BucketImpl withServer(BucketServerPatchProperties server) {

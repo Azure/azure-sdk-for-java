@@ -1,6 +1,35 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.3 (2026-06-05)
+
+### Bugs Fixed
+
+- Hardened `ConfidentialLedgerRedirectPolicy` to enforce a stricter redirect destination policy. The client now
+  only follows HTTP redirects whose target host is the original ledger host or one of its subdomains (using the
+  same scheme). Redirects to sibling ledgers, parent domains, unrelated hosts, or look-alike suffix domains are
+  refused, logged at the warning level, and never followed, preventing the sensitive `Authorization` header from
+  being forwarded to an unintended destination.
+
+## 1.0.35 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+
+## 1.1.0-beta.2 (2026-02-18)
 
 ### Features Added
 
@@ -9,12 +38,6 @@
   header when redirecting to the same scheme and to hosts that are the same as or subdomains of the original
   request (ports may differ). This fixes write operations (POST) being rejected when the Confidential Ledger
   service redirects from a secondary node to the primary node.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.34 (2026-01-29)
 

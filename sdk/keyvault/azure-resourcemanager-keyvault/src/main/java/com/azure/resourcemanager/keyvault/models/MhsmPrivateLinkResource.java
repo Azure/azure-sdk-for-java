@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,26 +19,11 @@ import java.util.Map;
  * A private link resource.
  */
 @Immutable
-public final class MhsmPrivateLinkResource extends ManagedHsmResource {
+public final class MhsmPrivateLinkResource extends Resource {
     /*
      * Resource properties.
      */
     private MhsmPrivateLinkResourceProperties innerProperties;
-
-    /*
-     * Managed service identity (system assigned and/or user assigned identities)
-     */
-    private ManagedServiceIdentity identity;
-
-    /*
-     * Metadata pertaining to creation and last modification of the key vault resource.
-     */
-    private SystemData systemData;
-
-    /*
-     * Resource tags
-     */
-    private Map<String, String> tags;
 
     /*
      * SKU details
@@ -45,22 +31,27 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     private ManagedHsmSku sku;
 
     /*
-     * The supported Azure location where the managed HSM Pool should be created.
+     * Managed service identity (system assigned and/or user assigned identities)
      */
-    private String location;
+    private ManagedServiceIdentity identity;
 
     /*
-     * The resource type of the managed HSM Pool.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the managed HSM Pool.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * The Azure Resource Manager resource ID for the managed HSM Pool.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -80,57 +71,34 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     }
 
     /**
-     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     * 
-     * @return the identity value.
-     */
-    @Override
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the key vault resource.
-     * 
-     * @return the systemData value.
-     */
-    @Override
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    @Override
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
      * Get the sku property: SKU details.
      * 
      * @return the sku value.
      */
-    @Override
     public ManagedHsmSku sku() {
         return this.sku;
     }
 
     /**
-     * Get the location property: The supported Azure location where the managed HSM Pool should be created.
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
      * 
-     * @return the location value.
+     * @return the identity value.
      */
-    @Override
-    public String location() {
-        return this.location;
+    public ManagedServiceIdentity identity() {
+        return this.identity;
     }
 
     /**
-     * Get the type property: The resource type of the managed HSM Pool.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -140,7 +108,7 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     }
 
     /**
-     * Get the name property: The name of the managed HSM Pool.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -150,7 +118,7 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     }
 
     /**
-     * Get the id property: The Azure Resource Manager resource ID for the managed HSM Pool.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -191,7 +159,6 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -211,10 +178,10 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
-        jsonWriter.writeJsonField("sku", sku());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -224,6 +191,7 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MhsmPrivateLinkResource if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MhsmPrivateLinkResource.
      */
     public static MhsmPrivateLinkResource fromJson(JsonReader jsonReader) throws IOException {
@@ -240,19 +208,19 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedMhsmPrivateLinkResource.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedMhsmPrivateLinkResource.location = reader.getString();
-                } else if ("sku".equals(fieldName)) {
-                    deserializedMhsmPrivateLinkResource.sku = ManagedHsmSku.fromJson(reader);
+                    deserializedMhsmPrivateLinkResource.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMhsmPrivateLinkResource.tags = tags;
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedMhsmPrivateLinkResource.systemData = SystemData.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedMhsmPrivateLinkResource.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedMhsmPrivateLinkResource.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedMhsmPrivateLinkResource.innerProperties
                         = MhsmPrivateLinkResourceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedMhsmPrivateLinkResource.sku = ManagedHsmSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMhsmPrivateLinkResource.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMhsmPrivateLinkResource.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

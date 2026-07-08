@@ -21,9 +21,10 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Function;
 
 public class NonStreamingOrderByUtils {
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     public static <T extends Resource> Flux<OrderByRowResult<Document>> nonStreamingOrderedMerge(OrderbyRowComparer<Document> consumeComparer,
                                                                                                  RequestChargeTracker tracker,
@@ -80,7 +81,7 @@ public class NonStreamingOrderByUtils {
             PriorityBlockingQueue<OrderByRowResult<Document>> priorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
             return source.flatMap(documentProducerFeedResponse -> {
                     clientSideRequestStatistics.addAll(
-                        diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
+                        diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
                             .pageResult.getCosmosDiagnostics()));
 
                     QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,

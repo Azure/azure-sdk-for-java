@@ -14,38 +14,38 @@ public final class VMSSExtensionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMSSExtensionProperties model = BinaryData.fromString(
-            "{\"publisher\":\"ebqaaysjkixqtnq\",\"type\":\"tezlwff\",\"typeHandlerVersion\":\"iakp\",\"autoUpgradeMinorVersion\":true,\"settings\":\"datam\",\"protectedSettings\":\"datad\",\"forceUpdateTag\":\"mmji\",\"provisionAfterExtensions\":[\"ozphvwauyqncygu\",\"kvi\"],\"provisioningState\":\"dscwxqupevzhf\",\"enableAutomaticUpgrade\":true,\"setupOrder\":[\"BeforeSFRuntime\",\"BeforeSFRuntime\"]}")
+            "{\"publisher\":\"brnjwmw\",\"type\":\"pn\",\"typeHandlerVersion\":\"saz\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"dataqkagfhsxt\\\"\",\"protectedSettings\":\"\\\"dataugzxnf\\\"\",\"forceUpdateTag\":\"zpxdt\",\"provisionAfterExtensions\":[\"mkqjj\"],\"provisioningState\":\"uenvrkp\",\"enableAutomaticUpgrade\":true,\"setupOrder\":[\"BeforeSFRuntime\",\"BeforeSFRuntime\"]}")
             .toObject(VMSSExtensionProperties.class);
-        Assertions.assertEquals("ebqaaysjkixqtnq", model.publisher());
-        Assertions.assertEquals("tezlwff", model.type());
-        Assertions.assertEquals("iakp", model.typeHandlerVersion());
+        Assertions.assertEquals("brnjwmw", model.publisher());
+        Assertions.assertEquals("pn", model.type());
+        Assertions.assertEquals("saz", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("mmji", model.forceUpdateTag());
-        Assertions.assertEquals("ozphvwauyqncygu", model.provisionAfterExtensions().get(0));
+        Assertions.assertEquals("zpxdt", model.forceUpdateTag());
+        Assertions.assertEquals("mkqjj", model.provisionAfterExtensions().get(0));
         Assertions.assertTrue(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMSSExtensionProperties model = new VMSSExtensionProperties().withPublisher("ebqaaysjkixqtnq")
-            .withType("tezlwff")
-            .withTypeHandlerVersion("iakp")
+        VMSSExtensionProperties model = new VMSSExtensionProperties().withPublisher("brnjwmw")
+            .withType("pn")
+            .withTypeHandlerVersion("saz")
             .withAutoUpgradeMinorVersion(true)
-            .withSettings("datam")
-            .withProtectedSettings("datad")
-            .withForceUpdateTag("mmji")
-            .withProvisionAfterExtensions(Arrays.asList("ozphvwauyqncygu", "kvi"))
+            .withSettings("\"dataqkagfhsxt\"")
+            .withProtectedSettings("\"dataugzxnf\"")
+            .withForceUpdateTag("zpxdt")
+            .withProvisionAfterExtensions(Arrays.asList("mkqjj"))
             .withEnableAutomaticUpgrade(true)
             .withSetupOrder(
                 Arrays.asList(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, VmssExtensionSetupOrder.BEFORE_SFRUNTIME));
         model = BinaryData.fromObject(model).toObject(VMSSExtensionProperties.class);
-        Assertions.assertEquals("ebqaaysjkixqtnq", model.publisher());
-        Assertions.assertEquals("tezlwff", model.type());
-        Assertions.assertEquals("iakp", model.typeHandlerVersion());
+        Assertions.assertEquals("brnjwmw", model.publisher());
+        Assertions.assertEquals("pn", model.type());
+        Assertions.assertEquals("saz", model.typeHandlerVersion());
         Assertions.assertTrue(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("mmji", model.forceUpdateTag());
-        Assertions.assertEquals("ozphvwauyqncygu", model.provisionAfterExtensions().get(0));
+        Assertions.assertEquals("zpxdt", model.forceUpdateTag());
+        Assertions.assertEquals("mkqjj", model.provisionAfterExtensions().get(0));
         Assertions.assertTrue(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }

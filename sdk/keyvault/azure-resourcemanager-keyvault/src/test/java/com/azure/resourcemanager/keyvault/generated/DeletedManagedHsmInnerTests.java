@@ -11,7 +11,7 @@ public final class DeletedManagedHsmInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedManagedHsmInner model = BinaryData.fromString(
-            "{\"properties\":{\"mhsmId\":\"lqiyntorzihl\",\"location\":\"sjswsrms\",\"deletionDate\":\"2021-07-10T12:22Z\",\"scheduledPurgeDate\":\"2021-03-30T08:07:03Z\",\"purgeProtectionEnabled\":true,\"tags\":{\"zynkedya\":\"ckqqzqioxiysui\",\"pyy\":\"rwyhqmibzyhwitsm\",\"mwzn\":\"pcdpumnz\"}},\"id\":\"biknsorgjhxbld\",\"name\":\"lwwrl\",\"type\":\"dmtnc\"}")
+            "{\"properties\":{\"mhsmId\":\"plsaknynfsynljph\",\"location\":\"pxodlqiyntorzih\",\"deletionDate\":\"2021-04-08T02:51:20Z\",\"scheduledPurgeDate\":\"2021-07-15T08:30:28Z\",\"purgeProtectionEnabled\":false,\"tags\":{\"ioxiysuiizyn\":\"mslyzrpzbchckqqz\",\"itsmypyyn\":\"edyatrwyhqmibzyh\",\"nzgmwznmabik\":\"cdpu\",\"xbldtlwwrlkdmtn\":\"sorgj\"}},\"id\":\"ok\",\"name\":\"tllxdyhgsyocogj\",\"type\":\"tdtbnnhadooc\"}")
             .toObject(DeletedManagedHsmInner.class);
     }
 }

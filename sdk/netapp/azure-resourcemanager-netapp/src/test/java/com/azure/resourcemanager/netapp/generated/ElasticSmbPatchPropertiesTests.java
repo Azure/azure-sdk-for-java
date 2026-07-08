@@ -13,15 +13,15 @@ public final class ElasticSmbPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticSmbPatchProperties model
-            = BinaryData.fromString("{\"smbEncryption\":\"Enabled\"}").toObject(ElasticSmbPatchProperties.class);
-        Assertions.assertEquals(ElasticSmbEncryption.ENABLED, model.smbEncryption());
+            = BinaryData.fromString("{\"smbEncryption\":\"Disabled\"}").toObject(ElasticSmbPatchProperties.class);
+        Assertions.assertEquals(ElasticSmbEncryption.DISABLED, model.smbEncryption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSmbPatchProperties model
-            = new ElasticSmbPatchProperties().withSmbEncryption(ElasticSmbEncryption.ENABLED);
+            = new ElasticSmbPatchProperties().withSmbEncryption(ElasticSmbEncryption.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSmbPatchProperties.class);
-        Assertions.assertEquals(ElasticSmbEncryption.ENABLED, model.smbEncryption());
+        Assertions.assertEquals(ElasticSmbEncryption.DISABLED, model.smbEncryption());
     }
 }

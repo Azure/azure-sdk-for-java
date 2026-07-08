@@ -12,14 +12,14 @@ public final class DeviceCredentialPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceCredentialPolicy model
-            = BinaryData.fromString("{\"resourceId\":\"rtuzqogs\"}").toObject(DeviceCredentialPolicy.class);
-        Assertions.assertEquals("rtuzqogs", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"fjhdg\"}").toObject(DeviceCredentialPolicy.class);
+        Assertions.assertEquals("fjhdg", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceCredentialPolicy model = new DeviceCredentialPolicy().withResourceId("rtuzqogs");
+        DeviceCredentialPolicy model = new DeviceCredentialPolicy().withResourceId("fjhdg");
         model = BinaryData.fromObject(model).toObject(DeviceCredentialPolicy.class);
-        Assertions.assertEquals("rtuzqogs", model.resourceId());
+        Assertions.assertEquals("fjhdg", model.resourceId());
     }
 }

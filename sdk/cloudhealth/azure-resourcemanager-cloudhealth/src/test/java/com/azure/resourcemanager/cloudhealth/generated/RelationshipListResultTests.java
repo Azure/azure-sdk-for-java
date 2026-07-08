@@ -12,12 +12,12 @@ public final class RelationshipListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationshipListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"mquxvypo\",\"parentEntityName\":\"gkopkwhojvpajqgx\",\"childEntityName\":\"smocmbq\",\"labels\":{\"lxprglyatddckcbc\":\"mkcxozapvh\",\"xsdqrhzoymibmrqy\":\"ejrjxgciqibrho\"},\"discoveredBy\":\"ahwfluszdtmhrk\",\"deletionDate\":\"2021-06-28T13:04:58Z\"},\"id\":\"yvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"}],\"nextLink\":\"washr\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"asdvl\",\"parentEntityName\":\"fwdgzxulucvp\",\"childEntityName\":\"mrsreuzvxurisjnh\",\"tags\":{\"hu\":\"xifqjzgxm\",\"cesutrgjupauut\":\"lw\"},\"discoveredBy\":\"oqh\"},\"id\":\"ejqgw\",\"name\":\"pnfqntcyp\",\"type\":\"xjvfoimwksl\"}],\"nextLink\":\"cizjxvydfceacvl\"}")
             .toObject(RelationshipListResult.class);
-        Assertions.assertEquals("mquxvypo", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("gkopkwhojvpajqgx", model.value().get(0).properties().parentEntityName());
-        Assertions.assertEquals("smocmbq", model.value().get(0).properties().childEntityName());
-        Assertions.assertEquals("mkcxozapvh", model.value().get(0).properties().labels().get("lxprglyatddckcbc"));
-        Assertions.assertEquals("washr", model.nextLink());
+        Assertions.assertEquals("asdvl", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("fwdgzxulucvp", model.value().get(0).properties().parentEntityName());
+        Assertions.assertEquals("mrsreuzvxurisjnh", model.value().get(0).properties().childEntityName());
+        Assertions.assertEquals("xifqjzgxm", model.value().get(0).properties().tags().get("hu"));
+        Assertions.assertEquals("cizjxvydfceacvl", model.nextLink());
     }
 }

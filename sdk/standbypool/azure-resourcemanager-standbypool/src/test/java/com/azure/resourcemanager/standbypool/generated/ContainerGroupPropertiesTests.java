@@ -15,22 +15,21 @@ public final class ContainerGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerGroupProperties model = BinaryData.fromString(
-            "{\"containerGroupProfile\":{\"id\":\"mxdcufufsrp\",\"revision\":9221150832525333730},\"subnetIds\":[{\"id\":\"sezcxtb\"}]}")
+            "{\"containerGroupProfile\":{\"id\":\"iachbo\",\"revision\":7002170087466409923},\"subnetIds\":[{\"id\":\"osfqpteehzzv\"}]}")
             .toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("mxdcufufsrp", model.containerGroupProfile().id());
-        Assertions.assertEquals(9221150832525333730L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("sezcxtb", model.subnetIds().get(0).id());
+        Assertions.assertEquals("iachbo", model.containerGroupProfile().id());
+        Assertions.assertEquals(7002170087466409923L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("osfqpteehzzv", model.subnetIds().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerGroupProperties model = new ContainerGroupProperties()
-            .withContainerGroupProfile(
-                new ContainerGroupProfile().withId("mxdcufufsrp").withRevision(9221150832525333730L))
-            .withSubnetIds(Arrays.asList(new Subnet().withId("sezcxtb")));
+            .withContainerGroupProfile(new ContainerGroupProfile().withId("iachbo").withRevision(7002170087466409923L))
+            .withSubnetIds(Arrays.asList(new Subnet().withId("osfqpteehzzv")));
         model = BinaryData.fromObject(model).toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("mxdcufufsrp", model.containerGroupProfile().id());
-        Assertions.assertEquals(9221150832525333730L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("sezcxtb", model.subnetIds().get(0).id());
+        Assertions.assertEquals("iachbo", model.containerGroupProfile().id());
+        Assertions.assertEquals(7002170087466409923L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("osfqpteehzzv", model.subnetIds().get(0).id());
     }
 }

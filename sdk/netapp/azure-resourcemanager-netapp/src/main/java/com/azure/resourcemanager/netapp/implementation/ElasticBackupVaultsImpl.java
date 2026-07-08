@@ -31,12 +31,8 @@ public final class ElasticBackupVaultsImpl implements ElasticBackupVaults {
         String backupVaultName, Context context) {
         Response<ElasticBackupVaultInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, backupVaultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticBackupVaultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticBackupVaultImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticBackupVault get(String resourceGroupName, String accountName, String backupVaultName) {

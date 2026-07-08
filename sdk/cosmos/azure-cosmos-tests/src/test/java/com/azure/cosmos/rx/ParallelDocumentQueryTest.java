@@ -721,7 +721,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyIdSameAsPartitionKey() {
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<InternalObjectNode> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);

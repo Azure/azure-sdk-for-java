@@ -49,12 +49,12 @@ public final class SearchIndexerClientImpl {
     private final SearchIndexerClientService service;
 
     /**
-     * Service host.
+     * The endpoint URL of the search service.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets The endpoint URL of the search service.
      * 
      * @return the endpoint value.
      */
@@ -107,7 +107,7 @@ public final class SearchIndexerClientImpl {
     /**
      * Initializes an instance of SearchIndexerClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
@@ -119,7 +119,7 @@ public final class SearchIndexerClientImpl {
      * Initializes an instance of SearchIndexerClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(HttpPipeline httpPipeline, String endpoint, SearchServiceVersion serviceVersion) {
@@ -131,7 +131,7 @@ public final class SearchIndexerClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
@@ -647,6 +647,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -690,6 +691,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -773,6 +775,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -816,6 +819,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -936,6 +940,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -998,6 +1003,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1070,6 +1076,7 @@ public final class SearchIndexerClientImpl {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -1143,6 +1150,7 @@ public final class SearchIndexerClientImpl {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -1204,6 +1212,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1247,6 +1256,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1310,6 +1320,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1353,6 +1364,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1710,6 +1722,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -1791,6 +1804,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -1913,6 +1927,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -1994,6 +2009,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2150,6 +2166,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2248,6 +2265,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2357,6 +2375,7 @@ public final class SearchIndexerClientImpl {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *             cache (Optional): {
      *                 id: String (Optional)
@@ -2468,6 +2487,7 @@ public final class SearchIndexerClientImpl {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *             cache (Optional): {
      *                 id: String (Optional)
@@ -2567,6 +2587,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2648,6 +2669,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2748,6 +2770,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -2829,6 +2852,7 @@ public final class SearchIndexerClientImpl {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      *     cache (Optional): {
      *         id: String (Optional)
@@ -3169,6 +3193,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3289,6 +3314,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3450,6 +3476,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3570,6 +3597,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3765,6 +3793,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3902,6 +3931,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4050,6 +4080,7 @@ public final class SearchIndexerClientImpl {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -4200,6 +4231,7 @@ public final class SearchIndexerClientImpl {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
+     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -4338,6 +4370,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4458,6 +4491,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4597,6 +4631,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -4717,6 +4752,7 @@ public final class SearchIndexerClientImpl {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }

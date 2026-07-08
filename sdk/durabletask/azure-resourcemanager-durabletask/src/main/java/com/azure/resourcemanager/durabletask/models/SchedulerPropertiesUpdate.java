@@ -37,6 +37,11 @@ public final class SchedulerPropertiesUpdate implements JsonSerializable<Schedul
      */
     private SchedulerSkuUpdate sku;
 
+    /*
+     * Allow or disallow public network access to durable task scheduler
+     */
+    private PublicNetworkAccess publicNetworkAccess;
+
     /**
      * Creates an instance of SchedulerPropertiesUpdate class.
      */
@@ -102,6 +107,26 @@ public final class SchedulerPropertiesUpdate implements JsonSerializable<Schedul
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to durable task scheduler.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to durable task scheduler.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SchedulerPropertiesUpdate object itself.
+     */
+    public SchedulerPropertiesUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +134,8 @@ public final class SchedulerPropertiesUpdate implements JsonSerializable<Schedul
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ipAllowlist", this.ipAllowlist, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -137,6 +164,9 @@ public final class SchedulerPropertiesUpdate implements JsonSerializable<Schedul
                     deserializedSchedulerPropertiesUpdate.ipAllowlist = ipAllowlist;
                 } else if ("sku".equals(fieldName)) {
                     deserializedSchedulerPropertiesUpdate.sku = SchedulerSkuUpdate.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSchedulerPropertiesUpdate.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

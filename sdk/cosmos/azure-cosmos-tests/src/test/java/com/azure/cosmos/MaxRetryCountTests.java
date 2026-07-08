@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
@@ -18,6 +19,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -1327,7 +1329,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverInternalServerError);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readMaxRetryCount_readSessionNotAvailable(
         String testCaseId,
         Duration endToEndTimeout,
@@ -2123,16 +2125,14 @@ public class MaxRetryCountTests extends TestSuiteBase {
         // setup db and container and pass their ids accordingly
         // ensure the container has a partition key definition of /mypk
 
-        databaseWithSeveralWriteableRegions
-            .createContainerIfNotExists(
-                new CosmosContainerProperties(
-                    containerId,
-                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
-                // for PHYSICAL_PARTITION_COUNT partitions
-                ThroughputProperties.createManualThroughput(6_000 * PHYSICAL_PARTITION_COUNT))
-            .block();
-
-        return databaseWithSeveralWriteableRegions.getContainer(containerId);
+        return createCollection(
+            databaseWithSeveralWriteableRegions,
+            new CosmosContainerProperties(
+                containerId,
+                new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
+            new CosmosContainerRequestOptions(),
+            // for PHYSICAL_PARTITION_COUNT partitions
+            6_000 * PHYSICAL_PARTITION_COUNT);
     }
 
     private static void inject(

@@ -78,6 +78,20 @@ public interface AmqpSendLink extends AmqpLink {
     Mono<Integer> getLinkSize();
 
     /**
+     * Gets the maximum batch payload size for the send link. The default implementation
+     * returns {@link #getLinkSize()}, which is correct for brokers that do not advertise a
+     * separate batch limit. {@code ReactorSender} overrides this to read the vendor property
+     * {@code com.microsoft:max-message-batch-size} from the remote link attach frame, which
+     * may be smaller than {@link #getLinkSize()} (e.g., 1 MB for batches vs. 100 MB for
+     * single messages on Premium large-message entities).
+     *
+     * @return A Mono that completes and returns the maximum batch size for the send link.
+     */
+    default Mono<Integer> getMaxBatchSize() {
+        return getLinkSize();
+    }
+
+    /**
      * Gets the context for this AMQP send link.
      *
      * @return The context for this AMQP send link.

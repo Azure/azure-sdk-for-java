@@ -13,9 +13,9 @@ public final class PoolContainerGroupStateCountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolContainerGroupStateCount model
-            = BinaryData.fromString("{\"state\":\"Running\",\"count\":771419692703034268}")
+            = BinaryData.fromString("{\"state\":\"Deleting\",\"count\":660618047562642046}")
                 .toObject(PoolContainerGroupStateCount.class);
-        Assertions.assertEquals(PoolContainerGroupState.RUNNING, model.state());
-        Assertions.assertEquals(771419692703034268L, model.count());
+        Assertions.assertEquals(PoolContainerGroupState.DELETING, model.state());
+        Assertions.assertEquals(660618047562642046L, model.count());
     }
 }

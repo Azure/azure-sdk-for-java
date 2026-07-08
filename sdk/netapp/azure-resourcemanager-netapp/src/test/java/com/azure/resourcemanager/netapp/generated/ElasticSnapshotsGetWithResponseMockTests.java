@@ -20,7 +20,7 @@ public final class ElasticSnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Patching\"},\"id\":\"ewqcfu\",\"name\":\"mdpv\",\"type\":\"zgl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\"},\"id\":\"d\",\"name\":\"pfqfpc\",\"type\":\"stcl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ElasticSnapshotsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticSnapshot response = manager.elasticSnapshots()
-            .getWithResponse("jwzzqseuzu", "kykcyqhyqqzz", "c", "keys", "ewfopazdazg", com.azure.core.util.Context.NONE)
+            .getWithResponse("mvpsimioyo", "glkmiqwnnr", "clibbfqpsp", "ladydgnhautwu", "exzgpmnmabedd",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

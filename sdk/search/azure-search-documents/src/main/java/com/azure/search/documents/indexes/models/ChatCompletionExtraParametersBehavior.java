@@ -17,7 +17,7 @@ public final class ChatCompletionExtraParametersBehavior
      * Passes any extra parameters directly to the model.
      */
     @Generated
-    public static final ChatCompletionExtraParametersBehavior PASS_THROUGH = fromString("pass-through");
+    public static final ChatCompletionExtraParametersBehavior PASS_THROUGH = fromString("passThrough");
 
     /**
      * Drops all extra parameters.

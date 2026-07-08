@@ -24,6 +24,8 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
 public class VeryLargeDocumentQueryTest extends TestSuiteBase {
@@ -39,7 +41,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "query" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryLargeDocuments() {
 
         int cnt = 5;

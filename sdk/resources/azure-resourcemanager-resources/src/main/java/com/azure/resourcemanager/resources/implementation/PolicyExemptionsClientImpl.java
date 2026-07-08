@@ -68,7 +68,7 @@ public final class PolicyExemptionsClientImpl
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyClientPolicyEx")
+    @ServiceInterface(name = "PolicyClientPolicyExemptions")
     public interface PolicyExemptionsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}")
@@ -1875,6 +1875,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1900,6 +1902,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1926,6 +1930,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1953,6 +1959,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1980,6 +1988,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2006,6 +2016,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2033,6 +2045,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a management group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2060,6 +2074,8 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
+     * Retrieves all policy exemptions that apply to a management group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

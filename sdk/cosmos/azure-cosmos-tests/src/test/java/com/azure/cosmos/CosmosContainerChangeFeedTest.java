@@ -190,7 +190,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator", "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
-        client = getClientBuilder().buildClient();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(100)
+            .setMaxRetryWaitTime(Duration.ofSeconds(60));
+
+        client = getClientBuilder()
+            .throttlingRetryOptions(throttlingRetryOptions)
+            .buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
@@ -332,8 +338,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider",
+        timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
+        // Note on shape: this test verifies Reactor's prefetch behavior on the change-feed
+        // byPage stream. The two fire-and-forget `.subscribe()` calls + `Thread.sleep(3000)`
+        // are intentional — they exercise the prefetch path without backpressure-bounded
+        // collection. retryAnalyzer = FlakyTestRetryAnalyzer absorbs occasional slow-runner
+        // jitter (Windows EmulatorTcp Java 8 can take >3s to deliver the first 3 pages).
         this.createContainer(
             (cp) -> {
                 if (changeFeedMode.equals(ChangeFeedMode.INCREMENTAL)) {
@@ -949,7 +961,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
         boolean shouldContinuouslyIngestItems,

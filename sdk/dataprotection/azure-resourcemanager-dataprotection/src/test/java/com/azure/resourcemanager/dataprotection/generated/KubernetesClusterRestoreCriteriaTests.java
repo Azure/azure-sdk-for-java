@@ -18,58 +18,56 @@ public final class KubernetesClusterRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesClusterRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"KubernetesClusterRestoreCriteria\",\"includeClusterScopeResources\":true,\"includedNamespaces\":[\"oenkouknvudwti\"],\"excludedNamespaces\":[\"ldngkpoci\",\"azyxoegukg\",\"npiucgygevqznty\"],\"includedResourceTypes\":[\"bpizcdrqjsdpydn\",\"yhxdeoejzicwi\"],\"excludedResourceTypes\":[\"ttgzfbis\",\"cbkhajdeyeamdph\"],\"labelSelectors\":[\"lpbuxwgipwhonowk\",\"shwankixzbinje\",\"uttmrywnuzoqft\",\"yqzrnkcqvyxlw\"],\"persistentVolumeRestoreMode\":\"RestoreWithoutVolumeData\",\"conflictPolicy\":\"Patch\",\"namespaceMappings\":{\"avwhheunm\":\"hoqqnwvlr\",\"yaxuconuqszfkb\":\"qhgyxzkonocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\",\"ihkaetcktvfc\":\"ffrzpwvlqdqgbiqy\"},\"restoreHookReferences\":[{\"name\":\"nkymuctqhjfbebrj\",\"namespace\":\"erfuwuttt\"},{\"name\":\"vjrbirphxepcyvah\",\"namespace\":\"ljkyqxjvuuj\"},{\"name\":\"idokgjlj\",\"namespace\":\"xgvcl\"}],\"resourceModifierReference\":{\"name\":\"sncghkjeszz\",\"namespace\":\"ijhtxf\"}}")
+            "{\"objectType\":\"KubernetesClusterRestoreCriteria\",\"includeClusterScopeResources\":false,\"includedNamespaces\":[\"beypewrmjmw\",\"vjektcxsenh\"],\"excludedNamespaces\":[\"s\",\"frzpwvlqdqgb\",\"qylihkaetckt\",\"fcivfsnkym\"],\"includedResourceTypes\":[\"qhjfbebr\",\"cxerf\",\"wutttxfvjrbi\"],\"excludedResourceTypes\":[\"xepcyvahfn\",\"jky\",\"xjvuujqgidokg\",\"ljyoxgvcltb\"],\"labelSelectors\":[\"c\",\"hkjeszzhbi\"],\"persistentVolumeRestoreMode\":\"RestoreWithVolumeData\",\"conflictPolicy\":\"Patch\",\"namespaceMappings\":{\"mxnehmp\":\"xbf\"},\"restoreHookReferences\":[{\"name\":\"godebfqkkrbmpu\",\"namespace\":\"riwflzlfb\"},{\"name\":\"puz\",\"namespace\":\"ispnqzahmgkbrp\"}],\"resourceModifierReference\":{\"name\":\"hibnuqqkpika\",\"namespace\":\"gvtqagnbuynh\"}}")
             .toObject(KubernetesClusterRestoreCriteria.class);
-        Assertions.assertTrue(model.includeClusterScopeResources());
-        Assertions.assertEquals("oenkouknvudwti", model.includedNamespaces().get(0));
-        Assertions.assertEquals("ldngkpoci", model.excludedNamespaces().get(0));
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.includedResourceTypes().get(0));
-        Assertions.assertEquals("ttgzfbis", model.excludedResourceTypes().get(0));
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.labelSelectors().get(0));
-        Assertions.assertEquals(PersistentVolumeRestoreMode.RESTORE_WITHOUT_VOLUME_DATA,
+        Assertions.assertFalse(model.includeClusterScopeResources());
+        Assertions.assertEquals("beypewrmjmw", model.includedNamespaces().get(0));
+        Assertions.assertEquals("s", model.excludedNamespaces().get(0));
+        Assertions.assertEquals("qhjfbebr", model.includedResourceTypes().get(0));
+        Assertions.assertEquals("xepcyvahfn", model.excludedResourceTypes().get(0));
+        Assertions.assertEquals("c", model.labelSelectors().get(0));
+        Assertions.assertEquals(PersistentVolumeRestoreMode.RESTORE_WITH_VOLUME_DATA,
             model.persistentVolumeRestoreMode());
         Assertions.assertEquals(ExistingResourcePolicy.PATCH, model.conflictPolicy());
-        Assertions.assertEquals("hoqqnwvlr", model.namespaceMappings().get("avwhheunm"));
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.restoreHookReferences().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.restoreHookReferences().get(0).namespace());
-        Assertions.assertEquals("sncghkjeszz", model.resourceModifierReference().name());
-        Assertions.assertEquals("ijhtxf", model.resourceModifierReference().namespace());
+        Assertions.assertEquals("xbf", model.namespaceMappings().get("mxnehmp"));
+        Assertions.assertEquals("godebfqkkrbmpu", model.restoreHookReferences().get(0).name());
+        Assertions.assertEquals("riwflzlfb", model.restoreHookReferences().get(0).namespace());
+        Assertions.assertEquals("hibnuqqkpika", model.resourceModifierReference().name());
+        Assertions.assertEquals("gvtqagnbuynh", model.resourceModifierReference().namespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesClusterRestoreCriteria model = new KubernetesClusterRestoreCriteria()
-            .withIncludeClusterScopeResources(true)
-            .withIncludedNamespaces(Arrays.asList("oenkouknvudwti"))
-            .withExcludedNamespaces(Arrays.asList("ldngkpoci", "azyxoegukg", "npiucgygevqznty"))
-            .withIncludedResourceTypes(Arrays.asList("bpizcdrqjsdpydn", "yhxdeoejzicwi"))
-            .withExcludedResourceTypes(Arrays.asList("ttgzfbis", "cbkhajdeyeamdph"))
-            .withLabelSelectors(Arrays.asList("lpbuxwgipwhonowk", "shwankixzbinje", "uttmrywnuzoqft", "yqzrnkcqvyxlw"))
-            .withPersistentVolumeRestoreMode(PersistentVolumeRestoreMode.RESTORE_WITHOUT_VOLUME_DATA)
-            .withConflictPolicy(ExistingResourcePolicy.PATCH)
-            .withNamespaceMappings(mapOf("avwhheunm", "hoqqnwvlr", "yaxuconuqszfkb", "qhgyxzkonocukok", "xsenhwlr",
-                "ypewrmjmwvvjekt", "ihkaetcktvfc", "ffrzpwvlqdqgbiqy"))
-            .withRestoreHookReferences(
-                Arrays.asList(new NamespacedNameResource().withName("nkymuctqhjfbebrj").withNamespace("erfuwuttt"),
-                    new NamespacedNameResource().withName("vjrbirphxepcyvah").withNamespace("ljkyqxjvuuj"),
-                    new NamespacedNameResource().withName("idokgjlj").withNamespace("xgvcl")))
-            .withResourceModifierReference(
-                new NamespacedNameResource().withName("sncghkjeszz").withNamespace("ijhtxf"));
+        KubernetesClusterRestoreCriteria model
+            = new KubernetesClusterRestoreCriteria().withIncludeClusterScopeResources(false)
+                .withIncludedNamespaces(Arrays.asList("beypewrmjmw", "vjektcxsenh"))
+                .withExcludedNamespaces(Arrays.asList("s", "frzpwvlqdqgb", "qylihkaetckt", "fcivfsnkym"))
+                .withIncludedResourceTypes(Arrays.asList("qhjfbebr", "cxerf", "wutttxfvjrbi"))
+                .withExcludedResourceTypes(Arrays.asList("xepcyvahfn", "jky", "xjvuujqgidokg", "ljyoxgvcltb"))
+                .withLabelSelectors(Arrays.asList("c", "hkjeszzhbi"))
+                .withPersistentVolumeRestoreMode(PersistentVolumeRestoreMode.RESTORE_WITH_VOLUME_DATA)
+                .withConflictPolicy(ExistingResourcePolicy.PATCH)
+                .withNamespaceMappings(mapOf("mxnehmp", "xbf"))
+                .withRestoreHookReferences(
+                    Arrays.asList(new NamespacedNameResource().withName("godebfqkkrbmpu").withNamespace("riwflzlfb"),
+                        new NamespacedNameResource().withName("puz").withNamespace("ispnqzahmgkbrp")))
+                .withResourceModifierReference(
+                    new NamespacedNameResource().withName("hibnuqqkpika").withNamespace("gvtqagnbuynh"));
         model = BinaryData.fromObject(model).toObject(KubernetesClusterRestoreCriteria.class);
-        Assertions.assertTrue(model.includeClusterScopeResources());
-        Assertions.assertEquals("oenkouknvudwti", model.includedNamespaces().get(0));
-        Assertions.assertEquals("ldngkpoci", model.excludedNamespaces().get(0));
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.includedResourceTypes().get(0));
-        Assertions.assertEquals("ttgzfbis", model.excludedResourceTypes().get(0));
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.labelSelectors().get(0));
-        Assertions.assertEquals(PersistentVolumeRestoreMode.RESTORE_WITHOUT_VOLUME_DATA,
+        Assertions.assertFalse(model.includeClusterScopeResources());
+        Assertions.assertEquals("beypewrmjmw", model.includedNamespaces().get(0));
+        Assertions.assertEquals("s", model.excludedNamespaces().get(0));
+        Assertions.assertEquals("qhjfbebr", model.includedResourceTypes().get(0));
+        Assertions.assertEquals("xepcyvahfn", model.excludedResourceTypes().get(0));
+        Assertions.assertEquals("c", model.labelSelectors().get(0));
+        Assertions.assertEquals(PersistentVolumeRestoreMode.RESTORE_WITH_VOLUME_DATA,
             model.persistentVolumeRestoreMode());
         Assertions.assertEquals(ExistingResourcePolicy.PATCH, model.conflictPolicy());
-        Assertions.assertEquals("hoqqnwvlr", model.namespaceMappings().get("avwhheunm"));
-        Assertions.assertEquals("nkymuctqhjfbebrj", model.restoreHookReferences().get(0).name());
-        Assertions.assertEquals("erfuwuttt", model.restoreHookReferences().get(0).namespace());
-        Assertions.assertEquals("sncghkjeszz", model.resourceModifierReference().name());
-        Assertions.assertEquals("ijhtxf", model.resourceModifierReference().namespace());
+        Assertions.assertEquals("xbf", model.namespaceMappings().get("mxnehmp"));
+        Assertions.assertEquals("godebfqkkrbmpu", model.restoreHookReferences().get(0).name());
+        Assertions.assertEquals("riwflzlfb", model.restoreHookReferences().get(0).namespace());
+        Assertions.assertEquals("hibnuqqkpika", model.resourceModifierReference().name());
+        Assertions.assertEquals("gvtqagnbuynh", model.resourceModifierReference().namespace());
     }
 
     // Use "Map.of" if available

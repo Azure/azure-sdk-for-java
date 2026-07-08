@@ -32,12 +32,8 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
         Response<DnsResolverPolicyVirtualNetworkLinkInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsResolverPolicyVirtualNetworkLinkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsResolverPolicyVirtualNetworkLinkImpl(inner.getValue(), this.manager()));
     }
 
     public DnsResolverPolicyVirtualNetworkLink get(String resourceGroupName, String dnsResolverPolicyName,

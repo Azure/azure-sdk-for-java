@@ -246,7 +246,7 @@ class CosmosPartitionPlannerITest
     val initialFeedRangesCount = pagesRetrievedCounterMap.size()
 
     // mocking container to count number of pages retrieved
-    val mockContainer = Mockito.spy(container)
+    val mockContainer = Mockito.spy[CosmosAsyncContainer](container)
     Mockito.doAnswer(new Answer[CosmosPagedFlux[ObjectNode]]() {
       override def answer(invocationOnMock: InvocationOnMock): CosmosPagedFlux[ObjectNode] = {
         val requestOptions: CosmosChangeFeedRequestOptions =
@@ -285,7 +285,7 @@ class CosmosPartitionPlannerITest
 
     val container = this.cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
-    val mockContainer = Mockito.spy(container)
+    val mockContainer = Mockito.spy[CosmosAsyncContainer](container)
     val invocationCount = new AtomicInteger(0)
     Mockito.doAnswer(new Answer[Mono[util.List[FeedRange]]]() {
       override def answer(invocationOnMock: InvocationOnMock): Mono[util.List[FeedRange]] = {

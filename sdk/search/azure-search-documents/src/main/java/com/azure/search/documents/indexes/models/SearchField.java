@@ -109,18 +109,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private Boolean facetable;
 
     /*
-     * A value indicating whether the field should be used as a permission filter.
-     */
-    @Generated
-    private PermissionFilter permissionFilter;
-
-    /*
-     * A value indicating whether the field contains sensitivity label information.
-     */
-    @Generated
-    private Boolean sensitivityLabel;
-
-    /*
      * The name of the analyzer to use for the field. This option can be used only with searchable fields and it can't
      * be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot be changed
      * for the field. Must be null for complex fields.
@@ -484,50 +472,6 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @return the permissionFilter value.
-     */
-    @Generated
-    public PermissionFilter getPermissionFilter() {
-        return this.permissionFilter;
-    }
-
-    /**
-     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
-     *
-     * @param permissionFilter the permissionFilter value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
-        this.permissionFilter = permissionFilter;
-        return this;
-    }
-
-    /**
-     * Get the sensitivityLabel property: A value indicating whether the field contains sensitivity label information.
-     *
-     * @return the sensitivityLabel value.
-     */
-    @Generated
-    public Boolean isSensitivityLabel() {
-        return this.sensitivityLabel;
-    }
-
-    /**
-     * Set the sensitivityLabel property: A value indicating whether the field contains sensitivity label information.
-     *
-     * @param sensitivityLabel the sensitivityLabel value to set.
-     * @return the SearchField object itself.
-     */
-    @Generated
-    public SearchField setSensitivityLabel(Boolean sensitivityLabel) {
-        this.sensitivityLabel = sensitivityLabel;
-        return this;
-    }
-
-    /**
      * Get the analyzerName property: The name of the analyzer to use for the field. This option can be used only with
      * searchable fields and it can't be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is
      * chosen, it cannot be changed for the field. Must be null for complex fields.
@@ -806,7 +750,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("facetable", this.facetable);
         jsonWriter.writeStringField("permissionFilter",
             this.permissionFilter == null ? null : this.permissionFilter.toString());
-        jsonWriter.writeBooleanField("sensitivityLabel", this.sensitivityLabel);
+        jsonWriter.writeBooleanField("sensitivityLabelId", this.sensitivityLabelId);
+        jsonWriter.writeBooleanField("sensitivityLabelName", this.sensitivityLabelName);
+        jsonWriter.writeBooleanField("sourceDocumentId", this.sourceDocumentId);
+        jsonWriter.writeBooleanField("sharepointSiteUrl", this.sharepointSiteUrl);
         jsonWriter.writeStringField("analyzer", this.analyzerName == null ? null : this.analyzerName.toString());
         jsonWriter.writeStringField("searchAnalyzer",
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
@@ -845,7 +792,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean sortable = null;
             Boolean facetable = null;
             PermissionFilter permissionFilter = null;
-            Boolean sensitivityLabel = null;
+            Boolean sensitivityLabelId = null;
+            Boolean sensitivityLabelName = null;
+            Boolean sourceDocumentId = null;
+            Boolean sharepointSiteUrl = null;
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
@@ -878,8 +828,14 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     facetable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("permissionFilter".equals(fieldName)) {
                     permissionFilter = PermissionFilter.fromString(reader.getString());
-                } else if ("sensitivityLabel".equals(fieldName)) {
-                    sensitivityLabel = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sensitivityLabelId".equals(fieldName)) {
+                    sensitivityLabelId = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sensitivityLabelName".equals(fieldName)) {
+                    sensitivityLabelName = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceDocumentId".equals(fieldName)) {
+                    sourceDocumentId = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sharepointSiteUrl".equals(fieldName)) {
+                    sharepointSiteUrl = reader.getNullable(JsonReader::getBoolean);
                 } else if ("analyzer".equals(fieldName)) {
                     analyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("searchAnalyzer".equals(fieldName)) {
@@ -911,7 +867,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.sortable = sortable;
             deserializedSearchField.facetable = facetable;
             deserializedSearchField.permissionFilter = permissionFilter;
-            deserializedSearchField.sensitivityLabel = sensitivityLabel;
+            deserializedSearchField.sensitivityLabelId = sensitivityLabelId;
+            deserializedSearchField.sensitivityLabelName = sensitivityLabelName;
+            deserializedSearchField.sourceDocumentId = sourceDocumentId;
+            deserializedSearchField.sharepointSiteUrl = sharepointSiteUrl;
             deserializedSearchField.analyzerName = analyzerName;
             deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
             deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
@@ -923,5 +882,155 @@ public final class SearchField implements JsonSerializable<SearchField> {
             deserializedSearchField.fields = fields;
             return deserializedSearchField;
         });
+    }
+
+    /*
+     * A value indicating whether the field should be used as a permission filter.
+     */
+    @Generated
+    private PermissionFilter permissionFilter;
+
+    /*
+     * A value indicating whether the field should be used for sensitivity label ID filtering. This enables
+     * document-level filtering based on Microsoft Purview sensitivity label IDs.
+     */
+    @Generated
+    private Boolean sensitivityLabelId;
+
+    /*
+     * A value indicating whether the field contains the name of a Microsoft Purview sensitivity label applied to the
+     * document.
+     */
+    @Generated
+    private Boolean sensitivityLabelName;
+
+    /*
+     * A value indicating whether the field contains the source document identifier used for Purview audit tracking.
+     */
+    @Generated
+    private Boolean sourceDocumentId;
+
+    /*
+     * A value indicating whether the field contains a SharePoint site URL used for SharePoint group-based filtering.
+     */
+    @Generated
+    private Boolean sharepointSiteUrl;
+
+    /**
+     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @return the permissionFilter value.
+     */
+    @Generated
+    public PermissionFilter getPermissionFilter() {
+        return this.permissionFilter;
+    }
+
+    /**
+     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @param permissionFilter the permissionFilter value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
+        this.permissionFilter = permissionFilter;
+        return this;
+    }
+
+    /**
+     * Get the sensitivityLabelId property: A value indicating whether the field should be used for sensitivity label ID
+     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity label IDs.
+     *
+     * @return the sensitivityLabelId value.
+     */
+    @Generated
+    public Boolean isSensitivityLabelId() {
+        return this.sensitivityLabelId;
+    }
+
+    /**
+     * Set the sensitivityLabelId property: A value indicating whether the field should be used for sensitivity label ID
+     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity label IDs.
+     *
+     * @param sensitivityLabelId the sensitivityLabelId value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setSensitivityLabelId(Boolean sensitivityLabelId) {
+        this.sensitivityLabelId = sensitivityLabelId;
+        return this;
+    }
+
+    /**
+     * Get the sensitivityLabelName property: A value indicating whether the field contains the name of a Microsoft
+     * Purview sensitivity label applied to the document.
+     *
+     * @return the sensitivityLabelName value.
+     */
+    @Generated
+    public Boolean isSensitivityLabelName() {
+        return this.sensitivityLabelName;
+    }
+
+    /**
+     * Set the sensitivityLabelName property: A value indicating whether the field contains the name of a Microsoft
+     * Purview sensitivity label applied to the document.
+     *
+     * @param sensitivityLabelName the sensitivityLabelName value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setSensitivityLabelName(Boolean sensitivityLabelName) {
+        this.sensitivityLabelName = sensitivityLabelName;
+        return this;
+    }
+
+    /**
+     * Get the sourceDocumentId property: A value indicating whether the field contains the source document identifier
+     * used for Purview audit tracking.
+     *
+     * @return the sourceDocumentId value.
+     */
+    @Generated
+    public Boolean isSourceDocumentId() {
+        return this.sourceDocumentId;
+    }
+
+    /**
+     * Set the sourceDocumentId property: A value indicating whether the field contains the source document identifier
+     * used for Purview audit tracking.
+     *
+     * @param sourceDocumentId the sourceDocumentId value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setSourceDocumentId(Boolean sourceDocumentId) {
+        this.sourceDocumentId = sourceDocumentId;
+        return this;
+    }
+
+    /**
+     * Get the sharepointSiteUrl property: A value indicating whether the field contains a SharePoint site URL used for
+     * SharePoint group-based filtering.
+     *
+     * @return the sharepointSiteUrl value.
+     */
+    @Generated
+    public Boolean isSharepointSiteUrl() {
+        return this.sharepointSiteUrl;
+    }
+
+    /**
+     * Set the sharepointSiteUrl property: A value indicating whether the field contains a SharePoint site URL used for
+     * SharePoint group-based filtering.
+     *
+     * @param sharepointSiteUrl the sharepointSiteUrl value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setSharepointSiteUrl(Boolean sharepointSiteUrl) {
+        this.sharepointSiteUrl = sharepointSiteUrl;
+        return this;
     }
 }

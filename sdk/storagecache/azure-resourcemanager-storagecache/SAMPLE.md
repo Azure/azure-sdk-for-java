@@ -55,6 +55,14 @@
 - [Update](#caches_update)
 - [UpgradeFirmware](#caches_upgradefirmware)
 
+## ExpansionJobs
+
+- [CreateOrUpdate](#expansionjobs_createorupdate)
+- [Delete](#expansionjobs_delete)
+- [Get](#expansionjobs_get)
+- [ListByAmlFilesystem](#expansionjobs_listbyamlfilesystem)
+- [Update](#expansionjobs_update)
+
 ## ImportJobs
 
 - [CreateOrUpdate](#importjobs_createorupdate)
@@ -105,9 +113,7 @@ import com.azure.resourcemanager.storagecache.models.AmlFilesystemArchiveInfo;
  */
 public final class AmlFilesystemsArchiveSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_Archive.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_Archive.json
      */
     /**
      * Sample code: amlFilesystems_Archive.
@@ -130,9 +136,7 @@ public final class AmlFilesystemsArchiveSamples {
  */
 public final class AmlFilesystemsCancelArchiveSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_CancelArchive.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_CancelArchive.json
      */
     /**
      * Sample code: amlFilesystems_cancelArchive.
@@ -170,9 +174,7 @@ import java.util.Map;
  */
 public final class AmlFilesystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_CreateOrUpdate.json
      */
     /**
      * Sample code: amlFilesystems_CreateOrUpdate.
@@ -236,9 +238,7 @@ public final class AmlFilesystemsCreateOrUpdateSamples {
  */
 public final class AmlFilesystemsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_Delete.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_Delete.json
      */
     /**
      * Sample code: amlFilesystems_Delete.
@@ -259,9 +259,7 @@ public final class AmlFilesystemsDeleteSamples {
  */
 public final class AmlFilesystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/amlFilesystems_Get.
-     * json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_Get.json
      */
     /**
      * Sample code: amlFilesystems_Get.
@@ -282,9 +280,7 @@ public final class AmlFilesystemsGetByResourceGroupSamples {
  */
 public final class AmlFilesystemsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/amlFilesystems_List
-     * .json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_List.json
      */
     /**
      * Sample code: amlFilesystems_List.
@@ -305,9 +301,7 @@ public final class AmlFilesystemsListSamples {
  */
 public final class AmlFilesystemsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_ListByResourceGroup.json
      */
     /**
      * Sample code: amlFilesystems_ListByResourceGroup.
@@ -340,9 +334,7 @@ import java.util.Map;
  */
 public final class AmlFilesystemsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * amlFilesystems_Update.json
+     * x-ms-original-file: 2026-01-01/amlFilesystems_Update.json
      */
     /**
      * Sample code: amlFilesystems_Update.
@@ -391,9 +383,7 @@ public final class AmlFilesystemsUpdateSamples {
  */
 public final class AscOperationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/AscOperations_Get.
-     * json
+     * x-ms-original-file: 2026-01-01/AscOperations_Get.json
      */
     /**
      * Sample code: AscOperations_Get.
@@ -414,9 +404,7 @@ public final class AscOperationsGetSamples {
  */
 public final class AscUsagesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * AscResourceUsages_Get.json
+     * x-ms-original-file: 2026-01-01/AscResourceUsages_Get.json
      */
     /**
      * Sample code: AscUsages_List.
@@ -441,9 +429,7 @@ import java.util.Map;
  */
 public final class AutoExportJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoExportJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/autoExportJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: autoExportJobs_CreateOrUpdate.
@@ -483,9 +469,7 @@ public final class AutoExportJobsCreateOrUpdateSamples {
  */
 public final class AutoExportJobsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoExportJobs_Delete.json
+     * x-ms-original-file: 2026-01-01/autoExportJobs_Delete.json
      */
     /**
      * Sample code: autoExportJobs_Delete.
@@ -506,9 +490,7 @@ public final class AutoExportJobsDeleteSamples {
  */
 public final class AutoExportJobsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/autoExportJobs_Get.
-     * json
+     * x-ms-original-file: 2026-01-01/autoExportJobs_Get.json
      */
     /**
      * Sample code: autoExportJobs_Get.
@@ -529,9 +511,7 @@ public final class AutoExportJobsGetSamples {
  */
 public final class AutoExportJobsListByAmlFilesystemSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoExportJobs_ListByAmlFilesystem.json
+     * x-ms-original-file: 2026-01-01/autoExportJobs_ListByAmlFilesystem.json
      */
     /**
      * Sample code: autoExportJobs_ListByAmlFilesystem.
@@ -557,9 +537,7 @@ import java.util.Map;
  */
 public final class AutoExportJobsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoExportJobs_Update.json
+     * x-ms-original-file: 2026-01-01/autoExportJobs_Update.json
      */
     /**
      * Sample code: autoExportJobs_Update.
@@ -601,9 +579,7 @@ import java.util.Map;
  */
 public final class AutoImportJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoImportJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/autoImportJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: autoImportJobs_CreateOrUpdate.
@@ -647,9 +623,7 @@ public final class AutoImportJobsCreateOrUpdateSamples {
  */
 public final class AutoImportJobsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoImportJobs_Delete.json
+     * x-ms-original-file: 2026-01-01/autoImportJobs_Delete.json
      */
     /**
      * Sample code: autoImportJobs_Delete.
@@ -670,9 +644,7 @@ public final class AutoImportJobsDeleteSamples {
  */
 public final class AutoImportJobsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/autoImportJobs_Get.
-     * json
+     * x-ms-original-file: 2026-01-01/autoImportJobs_Get.json
      */
     /**
      * Sample code: autoImportJobs_Get.
@@ -693,9 +665,7 @@ public final class AutoImportJobsGetSamples {
  */
 public final class AutoImportJobsListByAmlFilesystemSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoImportJobs_ListByAmlFilesystem.json
+     * x-ms-original-file: 2026-01-01/autoImportJobs_ListByAmlFilesystem.json
      */
     /**
      * Sample code: autoImportJobs_ListByAmlFilesystem.
@@ -720,9 +690,7 @@ import com.azure.resourcemanager.storagecache.models.AutoImportJobUpdateProperti
  */
 public final class AutoImportJobsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * autoImportJobs_Update.json
+     * x-ms-original-file: 2026-01-01/autoImportJobs_Update.json
      */
     /**
      * Sample code: autoImportJobs_Update.
@@ -758,7 +726,7 @@ import com.azure.resourcemanager.storagecache.models.NfsAccessPolicy;
 import com.azure.resourcemanager.storagecache.models.NfsAccessRule;
 import com.azure.resourcemanager.storagecache.models.NfsAccessRuleAccess;
 import com.azure.resourcemanager.storagecache.models.NfsAccessRuleScope;
-import com.azure.resourcemanager.storagecache.models.UserAssignedIdentitiesValueAutoGenerated;
+import com.azure.resourcemanager.storagecache.models.UserAssignedIdentitiesValue;
 import com.azure.resourcemanager.storagecache.models.UsernameSource;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -770,9 +738,7 @@ import java.util.Map;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * Caches_CreateOrUpdate_ldap_only.json
+     * x-ms-original-file: 2026-01-01/Caches_CreateOrUpdate_ldap_only.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_ldap_only.
@@ -783,8 +749,8 @@ public final class CachesCreateOrUpdateSamples {
         cachesCreateOrUpdateLdapOnly(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches()
             .define("sc1")
-            .withRegion("westus")
             .withExistingResourceGroup("scgroup")
+            .withRegion("westus")
             .withTags(mapOf("Dept", "Contoso"))
             .withSku(new CacheSku().withName("Standard_2G"))
             .withCacheSizeGB(3072)
@@ -815,9 +781,7 @@ public final class CachesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -827,13 +791,13 @@ public final class CachesCreateOrUpdateSamples {
     public static void cachesCreateOrUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches()
             .define("sc1")
-            .withRegion("westus")
             .withExistingResourceGroup("scgroup")
+            .withRegion("westus")
             .withTags(mapOf("Dept", "Contoso"))
             .withIdentity(new CacheIdentity().withType(CacheIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
-                    new UserAssignedIdentitiesValueAutoGenerated())))
+                    new UserAssignedIdentitiesValue())))
             .withSku(new CacheSku().withName("Standard_2G"))
             .withCacheSizeGB(3072)
             .withSubnet(
@@ -891,9 +855,7 @@ public final class CachesCreateOrUpdateSamples {
  */
 public final class CachesDebugInfoSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_DebugInfo.
-     * json
+     * x-ms-original-file: 2026-01-01/Caches_DebugInfo.json
      */
     /**
      * Sample code: Caches_DebugInfo.
@@ -914,8 +876,7 @@ public final class CachesDebugInfoSamples {
  */
 public final class CachesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Delete.json
+     * x-ms-original-file: 2026-01-01/Caches_Delete.json
      */
     /**
      * Sample code: Caches_Delete.
@@ -936,8 +897,7 @@ public final class CachesDeleteSamples {
  */
 public final class CachesFlushSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Flush.json
+     * x-ms-original-file: 2026-01-01/Caches_Flush.json
      */
     /**
      * Sample code: Caches_Flush.
@@ -958,8 +918,7 @@ public final class CachesFlushSamples {
  */
 public final class CachesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Get.json
+     * x-ms-original-file: 2026-01-01/Caches_Get.json
      */
     /**
      * Sample code: Caches_Get.
@@ -980,8 +939,7 @@ public final class CachesGetByResourceGroupSamples {
  */
 public final class CachesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_List.json
+     * x-ms-original-file: 2026-01-01/Caches_List.json
      */
     /**
      * Sample code: Caches_List.
@@ -1002,9 +960,7 @@ public final class CachesListSamples {
  */
 public final class CachesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * Caches_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/Caches_ListByResourceGroup.json
      */
     /**
      * Sample code: Caches_ListByResourceGroup.
@@ -1027,9 +983,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
  */
 public final class CachesPausePrimingJobSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/PausePrimingJob.
-     * json
+     * x-ms-original-file: 2026-01-01/PausePrimingJob.json
      */
     /**
      * Sample code: PausePrimingJob.
@@ -1054,9 +1008,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
  */
 public final class CachesResumePrimingJobSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/ResumePrimingJob.
-     * json
+     * x-ms-original-file: 2026-01-01/ResumePrimingJob.json
      */
     /**
      * Sample code: ResumePrimingJob.
@@ -1082,9 +1034,7 @@ import java.util.Arrays;
  */
 public final class CachesSpaceAllocationSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * SpaceAllocation_Post.json
+     * x-ms-original-file: 2026-01-01/SpaceAllocation_Post.json
      */
     /**
      * Sample code: SpaceAllocation_Post.
@@ -1110,8 +1060,7 @@ public final class CachesSpaceAllocationSamples {
  */
 public final class CachesStartSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Start.json
+     * x-ms-original-file: 2026-01-01/Caches_Start.json
      */
     /**
      * Sample code: Caches_Start.
@@ -1134,9 +1083,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJob;
  */
 public final class CachesStartPrimingJobSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/StartPrimingJob.
-     * json
+     * x-ms-original-file: 2026-01-01/StartPrimingJob.json
      */
     /**
      * Sample code: StartPrimingJob.
@@ -1161,8 +1108,7 @@ public final class CachesStartPrimingJobSamples {
  */
 public final class CachesStopSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Stop.json
+     * x-ms-original-file: 2026-01-01/Caches_Stop.json
      */
     /**
      * Sample code: Caches_Stop.
@@ -1185,8 +1131,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
  */
 public final class CachesStopPrimingJobSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/StopPrimingJob.json
+     * x-ms-original-file: 2026-01-01/StopPrimingJob.json
      */
     /**
      * Sample code: StopPrimingJob.
@@ -1227,9 +1172,7 @@ import java.util.Map;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * Caches_Update_ldap_only.json
+     * x-ms-original-file: 2026-01-01/Caches_Update_ldap_only.json
      */
     /**
      * Sample code: Caches_Update_ldap_only.
@@ -1288,8 +1231,7 @@ public final class CachesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Caches_Update.json
+     * x-ms-original-file: 2026-01-01/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.
@@ -1369,9 +1311,7 @@ public final class CachesUpdateSamples {
  */
 public final class CachesUpgradeFirmwareSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * Caches_UpgradeFirmware.json
+     * x-ms-original-file: 2026-01-01/Caches_UpgradeFirmware.json
      */
     /**
      * Sample code: Caches_UpgradeFirmware.
@@ -1380,6 +1320,152 @@ public final class CachesUpgradeFirmwareSamples {
      */
     public static void cachesUpgradeFirmware(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches().upgradeFirmware("scgroup", "sc1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExpansionJobs_CreateOrUpdate
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ExpansionJobs CreateOrUpdate.
+ */
+public final class ExpansionJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01/expansionJobs_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: expansionJobs_CreateOrUpdate.
+     * 
+     * @param manager Entry point to StorageCacheManager.
+     */
+    public static void expansionJobsCreateOrUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+        manager.expansionJobs()
+            .define("expansionjob1")
+            .withRegion("eastus")
+            .withExistingAmlFilesystem("scgroup", "fs1")
+            .withTags(mapOf("Dept", "ContosoAds"))
+            .withNewStorageCapacityTiB(16.0F)
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ExpansionJobs_Delete
+
+```java
+/**
+ * Samples for ExpansionJobs Delete.
+ */
+public final class ExpansionJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-01-01/expansionJobs_Delete.json
+     */
+    /**
+     * Sample code: expansionJobs_Delete.
+     * 
+     * @param manager Entry point to StorageCacheManager.
+     */
+    public static void expansionJobsDelete(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+        manager.expansionJobs().delete("scgroup", "fs1", "expansionjob1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExpansionJobs_Get
+
+```java
+/**
+ * Samples for ExpansionJobs Get.
+ */
+public final class ExpansionJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-01-01/expansionJobs_Get.json
+     */
+    /**
+     * Sample code: expansionJobs_Get.
+     * 
+     * @param manager Entry point to StorageCacheManager.
+     */
+    public static void expansionJobsGet(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+        manager.expansionJobs().getWithResponse("scgroup", "fs1", "expansionjob1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExpansionJobs_ListByAmlFilesystem
+
+```java
+/**
+ * Samples for ExpansionJobs ListByAmlFilesystem.
+ */
+public final class ExpansionJobsListByAmlFilesystemSamples {
+    /*
+     * x-ms-original-file: 2026-01-01/expansionJobs_ListByAmlFilesystem.json
+     */
+    /**
+     * Sample code: expansionJobs_ListByAmlFilesystem.
+     * 
+     * @param manager Entry point to StorageCacheManager.
+     */
+    public static void
+        expansionJobsListByAmlFilesystem(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+        manager.expansionJobs().listByAmlFilesystem("scgroup", "fs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExpansionJobs_Update
+
+```java
+import com.azure.resourcemanager.storagecache.models.ExpansionJob;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ExpansionJobs Update.
+ */
+public final class ExpansionJobsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-01-01/expansionJobs_Update.json
+     */
+    /**
+     * Sample code: expansionJobs_Update.
+     * 
+     * @param manager Entry point to StorageCacheManager.
+     */
+    public static void expansionJobsUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
+        ExpansionJob resource = manager.expansionJobs()
+            .getWithResponse("scgroup", "fs1", "expansionjob1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Dept", "ContosoFinance")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1397,9 +1483,7 @@ import java.util.Map;
  */
 public final class ImportJobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * importJobs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/importJobs_CreateOrUpdate.json
      */
     /**
      * Sample code: importJobs_CreateOrUpdate.
@@ -1440,9 +1524,7 @@ public final class ImportJobsCreateOrUpdateSamples {
  */
 public final class ImportJobsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_Delete.
-     * json
+     * x-ms-original-file: 2026-01-01/importJobs_Delete.json
      */
     /**
      * Sample code: importJobs_Delete.
@@ -1463,8 +1545,7 @@ public final class ImportJobsDeleteSamples {
  */
 public final class ImportJobsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_Get.json
+     * x-ms-original-file: 2026-01-01/importJobs_Get.json
      */
     /**
      * Sample code: importJobs_Get.
@@ -1485,9 +1566,7 @@ public final class ImportJobsGetSamples {
  */
 public final class ImportJobsListByAmlFilesystemSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * importJobs_ListByAmlFilesystem.json
+     * x-ms-original-file: 2026-01-01/importJobs_ListByAmlFilesystem.json
      */
     /**
      * Sample code: importJobs_ListByAmlFilesystem.
@@ -1513,9 +1592,7 @@ import java.util.Map;
  */
 public final class ImportJobsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJob_Update.
-     * json
+     * x-ms-original-file: 2026-01-01/importJob_Update.json
      */
     /**
      * Sample code: importJobs_Update.
@@ -1551,9 +1628,7 @@ public final class ImportJobsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Operations_List.
-     * json
+     * x-ms-original-file: 2026-01-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -1577,9 +1652,7 @@ import com.azure.resourcemanager.storagecache.models.SkuName;
  */
 public final class ResourceProviderCheckAmlFSSubnetsSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/checkAmlFSSubnets.
-     * json
+     * x-ms-original-file: 2026-01-01/checkAmlFSSubnets.json
      */
     /**
      * Sample code: checkAmlFSSubnets.
@@ -1605,9 +1678,7 @@ public final class ResourceProviderCheckAmlFSSubnetsSamples {
  */
 public final class ResourceProviderGetRequiredAmlFSSubnetsSizeSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * getRequiredAmlFSSubnetsSize.json
+     * x-ms-original-file: 2026-01-01/getRequiredAmlFSSubnetsSize.json
      */
     /**
      * Sample code: getRequiredAmlFilesystemSubnetsSize.
@@ -1629,8 +1700,7 @@ public final class ResourceProviderGetRequiredAmlFSSubnetsSizeSamples {
  */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/Skus_List.json
+     * x-ms-original-file: 2026-01-01/Skus_List.json
      */
     /**
      * Sample code: Skus_List.
@@ -1651,9 +1721,7 @@ public final class SkusListSamples {
  */
 public final class StorageTargetOperationFlushSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_Flush.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Flush.json
      */
     /**
      * Sample code: StorageTargets_Flush.
@@ -1674,9 +1742,7 @@ public final class StorageTargetOperationFlushSamples {
  */
 public final class StorageTargetOperationInvalidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_Invalidate.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Invalidate.json
      */
     /**
      * Sample code: StorageTargets_Invalidate.
@@ -1697,9 +1763,7 @@ public final class StorageTargetOperationInvalidateSamples {
  */
 public final class StorageTargetOperationResumeSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_Resume.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Resume.json
      */
     /**
      * Sample code: StorageTargets_Resume.
@@ -1720,9 +1784,7 @@ public final class StorageTargetOperationResumeSamples {
  */
 public final class StorageTargetOperationSuspendSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_Suspend.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Suspend.json
      */
     /**
      * Sample code: StorageTargets_Suspend.
@@ -1749,9 +1811,7 @@ import java.util.Arrays;
  */
 public final class StorageTargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate.
@@ -1778,9 +1838,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_CreateOrUpdate_BlobNfs.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate_BlobNfs.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_BlobNfs.
@@ -1803,9 +1861,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_CreateOrUpdate_NoJunctions.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_CreateOrUpdate_NoJunctions.json
      */
     /**
      * Sample code: StorageTargets_CreateOrUpdate_NoJunctions.
@@ -1832,9 +1888,7 @@ public final class StorageTargetsCreateOrUpdateSamples {
  */
 public final class StorageTargetsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_Delete.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Delete.json
      */
     /**
      * Sample code: StorageTargets_Delete.
@@ -1855,9 +1909,7 @@ public final class StorageTargetsDeleteSamples {
  */
 public final class StorageTargetsDnsRefreshSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_DnsRefresh.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_DnsRefresh.json
      */
     /**
      * Sample code: Caches_DnsRefresh.
@@ -1878,9 +1930,7 @@ public final class StorageTargetsDnsRefreshSamples {
  */
 public final class StorageTargetsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/StorageTargets_Get.
-     * json
+     * x-ms-original-file: 2026-01-01/StorageTargets_Get.json
      */
     /**
      * Sample code: StorageTargets_Get.
@@ -1901,9 +1951,7 @@ public final class StorageTargetsGetSamples {
  */
 public final class StorageTargetsListByCacheSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_ListByCache.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_ListByCache.json
      */
     /**
      * Sample code: StorageTargets_List.
@@ -1924,9 +1972,7 @@ public final class StorageTargetsListByCacheSamples {
  */
 public final class StorageTargetsRestoreDefaultsSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
-     * StorageTargets_RestoreDefaults.json
+     * x-ms-original-file: 2026-01-01/StorageTargets_RestoreDefaults.json
      */
     /**
      * Sample code: StorageTargets_RestoreDefaults.
@@ -1948,9 +1994,7 @@ public final class StorageTargetsRestoreDefaultsSamples {
  */
 public final class UsageModelsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/UsageModels_List.
-     * json
+     * x-ms-original-file: 2026-01-01/UsageModels_List.json
      */
     /**
      * Sample code: UsageModels_List.

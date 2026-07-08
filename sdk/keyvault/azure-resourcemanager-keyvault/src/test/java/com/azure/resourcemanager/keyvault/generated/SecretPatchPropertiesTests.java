@@ -14,27 +14,27 @@ public final class SecretPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretPatchProperties model = BinaryData.fromString(
-            "{\"value\":\"ouicybxarzgszu\",\"contentType\":\"x\",\"attributes\":{\"enabled\":true,\"nbf\":1114621463,\"exp\":2028743450,\"created\":1543353321,\"updated\":1108967269}}")
+            "{\"value\":\"qtvcofudflvkgj\",\"contentType\":\"gdknnqv\",\"attributes\":{\"enabled\":true,\"nbf\":185421372,\"exp\":2034871579,\"created\":1262179758,\"updated\":761865502}}")
             .toObject(SecretPatchProperties.class);
-        Assertions.assertEquals("ouicybxarzgszu", model.value());
-        Assertions.assertEquals("x", model.contentType());
+        Assertions.assertEquals("qtvcofudflvkgj", model.value());
+        Assertions.assertEquals("gdknnqv", model.contentType());
         Assertions.assertTrue(model.attributes().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2005-04-27T17:04:23Z"), model.attributes().notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2034-04-15T19:50:50Z"), model.attributes().expires());
+        Assertions.assertEquals(OffsetDateTime.parse("1975-11-17T01:56:12Z"), model.attributes().notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("2034-06-25T18:06:19Z"), model.attributes().expires());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretPatchProperties model = new SecretPatchProperties().withValue("ouicybxarzgszu")
-            .withContentType("x")
+        SecretPatchProperties model = new SecretPatchProperties().withValue("qtvcofudflvkgj")
+            .withContentType("gdknnqv")
             .withAttributes(new SecretAttributes().withEnabled(true)
-                .withNotBefore(OffsetDateTime.parse("2005-04-27T17:04:23Z"))
-                .withExpires(OffsetDateTime.parse("2034-04-15T19:50:50Z")));
+                .withNotBefore(OffsetDateTime.parse("1975-11-17T01:56:12Z"))
+                .withExpires(OffsetDateTime.parse("2034-06-25T18:06:19Z")));
         model = BinaryData.fromObject(model).toObject(SecretPatchProperties.class);
-        Assertions.assertEquals("ouicybxarzgszu", model.value());
-        Assertions.assertEquals("x", model.contentType());
+        Assertions.assertEquals("qtvcofudflvkgj", model.value());
+        Assertions.assertEquals("gdknnqv", model.contentType());
         Assertions.assertTrue(model.attributes().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2005-04-27T17:04:23Z"), model.attributes().notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2034-04-15T19:50:50Z"), model.attributes().expires());
+        Assertions.assertEquals(OffsetDateTime.parse("1975-11-17T01:56:12Z"), model.attributes().notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("2034-06-25T18:06:19Z"), model.attributes().expires());
     }
 }

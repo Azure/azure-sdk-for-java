@@ -25,7 +25,7 @@ public final class CredentialsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"ng\",\"tags\":{\"qwm\":\"nykzcugswvxwlm\",\"jmxmcuqud\":\"tx\"},\"id\":\"cvclxynpdk\",\"name\":\"gfabuiyjibuzphdu\",\"type\":\"neiknpg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"gpicr\",\"tags\":{\"mqgjsxvpq\":\"hr\",\"bakclacjfrnxous\":\"bfrmbodthsqqgvri\",\"lwvsgm\":\"au\",\"xmmkjs\":\"ohqfzizv\"},\"id\":\"thnwpzte\",\"name\":\"ovmribiattg\",\"type\":\"lu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,14 @@ public final class CredentialsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Credential response = manager.credentials()
-            .createOrUpdate("xqpswok", "vkhlggdhbemz",
-                new CredentialInner().withLocation("uwiwtglxxhljfpg")
-                    .withTags(mapOf("mqgjsxvpq", "rmnzhr", "bakclacjfrnxous", "bfrmbodthsqqgvri", "lwvsgm", "au",
-                        "xmmkjs", "ohqfzizv"))
+            .createOrUpdate("hpzvuqdflvoniyp", "pubcpzgpxtivhjk",
+                new CredentialInner().withLocation("gqjxgpnrhgovfgp")
+                    .withTags(mapOf("wjrmzvuporqzd", "mhha", "vxcnqmxqps", "uydzvk"))
                     .withProperties(new CredentialProperties()),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ng", response.location());
-        Assertions.assertEquals("nykzcugswvxwlm", response.tags().get("qwm"));
+        Assertions.assertEquals("gpicr", response.location());
+        Assertions.assertEquals("hr", response.tags().get("mqgjsxvpq"));
     }
 
     // Use "Map.of" if available

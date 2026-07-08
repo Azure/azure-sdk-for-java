@@ -6,15 +6,11 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalDefinitionInner;
-import com.azure.resourcemanager.cloudhealth.models.DynamicDetectionRule;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -23,64 +19,43 @@ public final class SignalDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalDefinitionInner model = BinaryData.fromString(
-            "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Creating\",\"displayName\":\"zloc\",\"refreshInterval\":\"PT10M\",\"labels\":{\"j\":\"ierhhbcsglummaj\",\"jionpimexgstxgc\":\"odxobnbdxkqpxok\"},\"dataUnit\":\"dg\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":63.97488565542637,\"dynamicThresholdDirection\":\"GreaterThan\",\"trainingStartTime\":\"2021-07-18T09:47:03Z\"},\"degradedRule\":{\"operator\":\"LowerThan\",\"threshold\":\"zrlovmclwhijcoej\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"zaqsqsycbkbfk\"}},\"deletionDate\":\"2021-04-13T09:52:22Z\"},\"id\":\"kexxppof\",\"name\":\"xaxcfjpgddtocjjx\",\"type\":\"vpmouexhdzxib\"}")
+            "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"khixuigdtopbo\",\"refreshInterval\":\"PT30M\",\"tags\":{\"w\":\"m\"},\"dataUnit\":\"m\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":31.15801521797653},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":73.26301432130052}}},\"id\":\"t\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"}")
             .toObject(SignalDefinitionInner.class);
-        Assertions.assertEquals("zloc", model.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, model.properties().refreshInterval());
-        Assertions.assertEquals("ierhhbcsglummaj", model.properties().labels().get("j"));
-        Assertions.assertEquals("dg", model.properties().dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(63.97488565542637,
-            model.properties().evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_THAN,
-            model.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T09:47:03Z"),
-            model.properties().evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN,
-            model.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("zrlovmclwhijcoej", model.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("khixuigdtopbo", model.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.properties().refreshInterval());
+        Assertions.assertEquals("m", model.properties().tags().get("w"));
+        Assertions.assertEquals("m", model.properties().dataUnit());
         Assertions.assertEquals(SignalOperator.GREATER_THAN,
+            model.properties().evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(31.15801521797653, model.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("zaqsqsycbkbfk", model.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(73.26301432130052, model.properties().evaluationRules().unhealthyRule().threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalDefinitionInner model
-            = new SignalDefinitionInner().withProperties(new SignalDefinitionProperties().withDisplayName("zloc")
-                .withRefreshInterval(RefreshInterval.PT10M)
-                .withLabels(mapOf("j", "ierhhbcsglummaj", "jionpimexgstxgc", "odxobnbdxkqpxok"))
-                .withDataUnit("dg")
-                .withEvaluationRules(new EvaluationRule()
-                    .withDynamicDetectionRule(
-                        new DynamicDetectionRule().withDynamicThresholdModel(DynamicThresholdModel.ANOMALY_DETECTION)
-                            .withModelSensitivity(63.97488565542637)
-                            .withDynamicThresholdDirection(DynamicThresholdDirection.GREATER_THAN)
-                            .withTrainingStartTime(OffsetDateTime.parse("2021-07-18T09:47:03Z")))
-                    .withDegradedRule(
-                        new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("zrlovmclwhijcoej"))
-                    .withUnhealthyRule(
-                        new ThresholdRule().withOperator(SignalOperator.GREATER_THAN).withThreshold("zaqsqsycbkbfk"))));
+        SignalDefinitionInner model = new SignalDefinitionInner().withProperties(new SignalDefinitionProperties()
+            .withDisplayName("khixuigdtopbo")
+            .withRefreshInterval(RefreshInterval.PT30M)
+            .withTags(mapOf("w", "m"))
+            .withDataUnit("m")
+            .withEvaluationRules(new EvaluationRule()
+                .withDegradedRule(
+                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(31.15801521797653))
+                .withUnhealthyRule(
+                    new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN).withThreshold(73.26301432130052))));
         model = BinaryData.fromObject(model).toObject(SignalDefinitionInner.class);
-        Assertions.assertEquals("zloc", model.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, model.properties().refreshInterval());
-        Assertions.assertEquals("ierhhbcsglummaj", model.properties().labels().get("j"));
-        Assertions.assertEquals("dg", model.properties().dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(63.97488565542637,
-            model.properties().evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_THAN,
-            model.properties().evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T09:47:03Z"),
-            model.properties().evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN,
-            model.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("zrlovmclwhijcoej", model.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("khixuigdtopbo", model.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.properties().refreshInterval());
+        Assertions.assertEquals("m", model.properties().tags().get("w"));
+        Assertions.assertEquals("m", model.properties().dataUnit());
         Assertions.assertEquals(SignalOperator.GREATER_THAN,
+            model.properties().evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(31.15801521797653, model.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("zaqsqsycbkbfk", model.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(73.26301432130052, model.properties().evaluationRules().unhealthyRule().threshold());
     }
 
     // Use "Map.of" if available

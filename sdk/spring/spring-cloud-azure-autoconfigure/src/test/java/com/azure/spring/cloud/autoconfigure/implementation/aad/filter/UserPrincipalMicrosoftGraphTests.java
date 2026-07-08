@@ -7,8 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +20,9 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,7 +70,7 @@ class UserPrincipalMicrosoftGraphTests {
                 new TypeReference<HashMap<String, Object>>() {
                 });
             userGroupsJson = objectMapper.writeValueAsString(json);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Failed to load user groups json.", e);
             userGroupsJson = null;
         }

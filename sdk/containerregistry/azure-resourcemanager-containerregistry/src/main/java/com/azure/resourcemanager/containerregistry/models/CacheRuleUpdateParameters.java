@@ -22,6 +22,11 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
      */
     private CacheRuleUpdateProperties innerProperties;
 
+    /*
+     * The identity of the cache rule.
+     */
+    private IdentityProperties identity;
+
     /**
      * Creates an instance of CacheRuleUpdateParameters class.
      */
@@ -35,6 +40,26 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
      */
     private CacheRuleUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity of the cache rule.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the cache rule.
+     * 
+     * @param identity the identity value to set.
+     * @return the CacheRuleUpdateParameters object itself.
+     */
+    public CacheRuleUpdateParameters withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -63,6 +88,32 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
     }
 
     /**
+     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @return the additionalAuthenticationProperties value.
+     */
+    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalAuthenticationProperties();
+    }
+
+    /**
+     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
+     * @return the CacheRuleUpdateParameters object itself.
+     */
+    public CacheRuleUpdateParameters
+        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheRuleUpdateProperties();
+        }
+        this.innerProperties().withAdditionalAuthenticationProperties(additionalAuthenticationProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -70,6 +121,9 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -80,6 +134,7 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,6 +155,8 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
 
                 if ("properties".equals(fieldName)) {
                     deserializedCacheRuleUpdateParameters.innerProperties = CacheRuleUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCacheRuleUpdateParameters.identity = IdentityProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

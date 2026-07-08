@@ -100,7 +100,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare
@@ -116,16 +116,14 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT *2)
+    @Test(groups = {"query"}, timeOut = TIMEOUT *2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
             containerProperties,
-            ThroughputProperties.createManualThroughput(100000), // Create container with large number physical partitions
-            new CosmosContainerRequestOptions()
-        ).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+            new CosmosContainerRequestOptions(),
+            100000); // Create container with large number physical partitions
 
         int partitionDocCount = 5;
         int pageSize = partitionDocCount + 1;
@@ -157,7 +155,7 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryOptionNullValidation() {
         String query = "Select top 1 * from c";
 
@@ -275,7 +273,7 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionCorrectness(String query) {
 
         String pk1 = "pk1";
@@ -310,7 +308,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         sqlQuerySpec.setQueryText("select * from c where c.id = @id");
@@ -379,8 +377,10 @@ public class QueryValidationTests extends TestSuiteBase {
 
         //Create container
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
         //Insert some documents
@@ -482,16 +482,17 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderbyContinuationOnUndefinedAndNull() throws Exception {
         /*
         Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
         and make sure all the records are obtained
          */
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         CosmosContainerResponse containerResponse = container.read().block();
         assert (containerResponse != null);
         CosmosContainerProperties properties = containerResponse.getProperties();
@@ -573,12 +574,14 @@ public class QueryValidationTests extends TestSuiteBase {
         return insertAllItemsBlocking(container, docsToInsert, true);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         //id as partitionkey > 100bytes
         String itemID1 = "cosmosdb" +
                              "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";

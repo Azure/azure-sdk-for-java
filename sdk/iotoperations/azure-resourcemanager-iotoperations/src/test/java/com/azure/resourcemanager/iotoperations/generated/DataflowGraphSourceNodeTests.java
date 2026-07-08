@@ -14,24 +14,24 @@ public final class DataflowGraphSourceNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphSourceNode model = BinaryData.fromString(
-            "{\"nodeType\":\"Source\",\"sourceSettings\":{\"endpointRef\":\"xqugjhkycubedd\",\"dataSources\":[\"sofwqmzqalkrmnji\",\"pxacqqudfn\",\"yxbaaabjyvayf\"],\"assetRef\":\"m\"},\"name\":\"zrtuzq\"}")
+            "{\"nodeType\":\"Source\",\"sourceSettings\":{\"endpointRef\":\"oruzfgsquyfxrxx\",\"dataSources\":[\"ptramxj\",\"zwl\"],\"assetRef\":\"wxuqlcvydypatdoo\"},\"name\":\"ojknio\"}")
             .toObject(DataflowGraphSourceNode.class);
-        Assertions.assertEquals("zrtuzq", model.name());
-        Assertions.assertEquals("xqugjhkycubedd", model.sourceSettings().endpointRef());
-        Assertions.assertEquals("sofwqmzqalkrmnji", model.sourceSettings().dataSources().get(0));
-        Assertions.assertEquals("m", model.sourceSettings().assetRef());
+        Assertions.assertEquals("ojknio", model.name());
+        Assertions.assertEquals("oruzfgsquyfxrxx", model.sourceSettings().endpointRef());
+        Assertions.assertEquals("ptramxj", model.sourceSettings().dataSources().get(0));
+        Assertions.assertEquals("wxuqlcvydypatdoo", model.sourceSettings().assetRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphSourceNode model = new DataflowGraphSourceNode().withName("zrtuzq")
-            .withSourceSettings(new DataflowGraphSourceSettings().withEndpointRef("xqugjhkycubedd")
-                .withDataSources(Arrays.asList("sofwqmzqalkrmnji", "pxacqqudfn", "yxbaaabjyvayf"))
-                .withAssetRef("m"));
+        DataflowGraphSourceNode model = new DataflowGraphSourceNode().withName("ojknio")
+            .withSourceSettings(new DataflowGraphSourceSettings().withEndpointRef("oruzfgsquyfxrxx")
+                .withDataSources(Arrays.asList("ptramxj", "zwl"))
+                .withAssetRef("wxuqlcvydypatdoo"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphSourceNode.class);
-        Assertions.assertEquals("zrtuzq", model.name());
-        Assertions.assertEquals("xqugjhkycubedd", model.sourceSettings().endpointRef());
-        Assertions.assertEquals("sofwqmzqalkrmnji", model.sourceSettings().dataSources().get(0));
-        Assertions.assertEquals("m", model.sourceSettings().assetRef());
+        Assertions.assertEquals("ojknio", model.name());
+        Assertions.assertEquals("oruzfgsquyfxrxx", model.sourceSettings().endpointRef());
+        Assertions.assertEquals("ptramxj", model.sourceSettings().dataSources().get(0));
+        Assertions.assertEquals("wxuqlcvydypatdoo", model.sourceSettings().assetRef());
     }
 }

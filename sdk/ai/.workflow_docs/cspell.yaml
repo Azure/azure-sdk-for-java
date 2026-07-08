@@ -1,0 +1,18 @@
+import:
+  - ../../../.vscode/cspell.json
+overrides:
+  - filename: "**/sdk/ai/.workflow_docs/*"
+    words:
+    - Danimal
+    - Dbuildhelper
+    - Dcheckstyle
+    - Dcodesnippet
+    - Djacoco
+    - dpkg
+    - Drevapi
+    - Dspotbugs
+    - Dspotless
+    - Dtest
+    - dedup
+    - FQCN
+    - javap

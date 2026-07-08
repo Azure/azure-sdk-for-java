@@ -254,7 +254,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         try {
             // CREATE collection
             DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
-                                                                             getCollectionDefinition(), null).block().getResource();
+                                                                             getInternalCollectionDefinition(), null).block().getResource();
 
             // Document to lock pause/resume clients
             Document documentDefinition = getDocumentDefinition();

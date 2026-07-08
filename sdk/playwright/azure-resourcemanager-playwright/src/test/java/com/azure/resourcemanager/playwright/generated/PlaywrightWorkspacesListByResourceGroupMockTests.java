@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.playwright.PlaywrightManager;
 import com.azure.resourcemanager.playwright.models.EnablementStatus;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspace;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ public final class PlaywrightWorkspacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"zsgfyccsnewmd\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"chboosflnrosf\"},\"location\":\"t\",\"tags\":{\"swjdkirso\":\"zzvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\"},\"id\":\"gr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"ithlvmezyvshxm\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"ggi\",\"reporting\":\"Disabled\",\"storageUri\":\"burvjxxjnspy\"},\"identity\":{\"principalId\":\"koen\",\"tenantId\":\"uknvudwti\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"gevqznty\":{\"principalId\":\"ngkpocipazy\",\"clientId\":\"egukgjnpiucg\"},\"jzicwifsjt\":{\"principalId\":\"rbpizc\",\"clientId\":\"qjsdpydnfyhxdeo\"},\"xw\":{\"principalId\":\"zfbishcbkhaj\",\"clientId\":\"yeamdphagalpb\"}}},\"location\":\"pwhonowkg\",\"tags\":{\"mryw\":\"ankixzbinjeput\",\"yqzrnkcqvyxlw\":\"uzoqft\",\"oqqnwvlryav\":\"zlsico\"},\"id\":\"hheunmmqhgyx\",\"name\":\"konocu\",\"type\":\"oklyaxuconuq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +34,15 @@ public final class PlaywrightWorkspacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PlaywrightWorkspace> response
-            = manager.playwrightWorkspaces().listByResourceGroup("fsrpymzidnse", com.azure.core.util.Context.NONE);
+            = manager.playwrightWorkspaces().listByResourceGroup("vleggzfbuhfmvfax", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("t", response.iterator().next().location());
-        Assertions.assertEquals("zzvypyqrimzinp", response.iterator().next().tags().get("swjdkirso"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().properties().localAuth());
+        Assertions.assertEquals("pwhonowkg", response.iterator().next().location());
+        Assertions.assertEquals("ankixzbinjeput", response.iterator().next().tags().get("mryw"));
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().reporting());
+        Assertions.assertEquals("burvjxxjnspy", response.iterator().next().properties().storageUri());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }

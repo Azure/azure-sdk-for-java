@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.disconnectedoperations.implementation;
 
 import com.azure.resourcemanager.disconnectedoperations.fluent.models.DisconnectedOperationDeploymentManifestInner;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
 import com.azure.resourcemanager.disconnectedoperations.models.BillingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationDeploymentManifest;
@@ -46,6 +48,14 @@ public final class DisconnectedOperationDeploymentManifestImpl implements Discon
 
     public String cloud() {
         return this.innerModel().cloud();
+    }
+
+    public BillingConfiguration billingConfiguration() {
+        return this.innerModel().billingConfiguration();
+    }
+
+    public BenefitPlans benefitPlans() {
+        return this.innerModel().benefitPlans();
     }
 
     public DisconnectedOperationDeploymentManifestInner innerModel() {

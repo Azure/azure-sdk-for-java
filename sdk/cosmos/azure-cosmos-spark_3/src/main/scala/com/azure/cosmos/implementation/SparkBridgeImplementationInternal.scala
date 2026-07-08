@@ -180,6 +180,19 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .toString
   }
 
+  def extractChangeFeedStateForRanges
+  (
+    changeFeedState: ChangeFeedState,
+    feedRanges: Seq[NormalizedRange]
+  ): Seq[String] = {
+    val cosmosRanges = feedRanges.map(toCosmosRange).asJava
+    changeFeedState
+      .extractForEffectiveRanges(cosmosRanges)
+      .asScala
+      .map(_.toString)
+      .toSeq
+  }
+
   def parseChangeFeedState(changeFeedStateJsonString: String): ChangeFeedState = {
     assert(!Strings.isNullOrWhiteSpace(changeFeedStateJsonString), s"Argument 'changeFeedStateJsonString' must not be null or empty.")
     ChangeFeedState.fromString(changeFeedStateJsonString)

@@ -27,7 +27,7 @@ public final class ApiKeysDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.apiKeys().deleteWithResponse("zsoibjudpfrxtr", "hzv", "ytdw", com.azure.core.util.Context.NONE);
+        manager.apiKeys().deleteWithResponse("xje", "wlwnwxuqlcv", "dy", com.azure.core.util.Context.NONE);
 
     }
 }

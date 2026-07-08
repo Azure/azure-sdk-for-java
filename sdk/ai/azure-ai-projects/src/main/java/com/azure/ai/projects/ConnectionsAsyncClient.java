@@ -45,7 +45,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -53,11 +55,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -72,8 +74,10 @@ public final class ConnectionsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, without populating connection credentials along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -82,7 +86,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -90,11 +96,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -109,7 +115,9 @@ public final class ConnectionsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, with its connection credentials along with {@link Response} on successful
+     * @return a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
@@ -119,15 +127,39 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * Get a connection by name.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @param includeCredentials Whether to include connection credentials in the response.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a connection by name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getConnectionWithResponse(String name, boolean includeCredentials,
+        RequestOptions requestOptions) {
+        if (includeCredentials) {
+            return getConnectionWithCredentialsWithResponse(name, requestOptions);
+        } else {
+            return getConnectionWithResponse(name, requestOptions);
+        }
+    }
+
+    /**
+     * List connections
+     *
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -138,11 +170,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -165,7 +197,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values.
      *
      * @param name The friendly name of the connection, provided by the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +208,10 @@ public final class ConnectionsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials on successful completion of {@link Mono}.
+     * @return a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -186,7 +223,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values.
      *
      * @param name The friendly name of the connection, provided by the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +234,9 @@ public final class ConnectionsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, with its connection credentials on successful completion of {@link Mono}.
+     * @return a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -207,10 +248,12 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
      *
-     * @param connectionType List connections of this specific type.
-     * @param defaultConnection List connections that are default connections.
+     * Returns the connections available in the current project, optionally filtered by type or default status.
+     *
+     * @param connectionType Lists connections of this specific type.
+     * @param defaultConnection Lists connections that are default connections.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -246,7 +289,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     *
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -290,10 +335,33 @@ public final class ConnectionsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Connection> getConnection(String name, boolean includeCredentials) {
-        if (includeCredentials) {
-            return getConnectionWithCredentials(name);
-        } else {
-            return getConnection(name);
+        RequestOptions requestOptions = new RequestOptions();
+        return getConnectionWithResponse(name, includeCredentials, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Connection.class));
+    }
+
+    /**
+     * Get the default connection for a given connection type.
+     *
+     * @param connectionType The type of the connection. Required.
+     * @param includeCredentials Whether to include credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Mono that completes with the default connection for the given type.
+     * @throws IllegalStateException if no default connection is found for the given type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Connection> getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
+        if (connectionType == null) {
+            return Mono.error(new IllegalArgumentException("connectionType cannot be null."));
         }
+        return listConnections(connectionType, true).next()
+            .switchIfEmpty(
+                Mono.error(new IllegalStateException("No default connection found for type: " + connectionType)))
+            .flatMap(connection -> getConnection(connection.getName(), includeCredentials));
     }
 }

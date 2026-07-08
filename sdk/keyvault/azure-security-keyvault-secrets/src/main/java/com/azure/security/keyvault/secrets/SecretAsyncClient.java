@@ -440,6 +440,88 @@ public final class SecretAsyncClient {
         }
     }
 
+    /**
+     * Gets the specified secret with specified version from the key vault, optionally converting the secret content
+     * to the specified format. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>The {@code outContentType} parameter is used to request conversion of the secret content. Currently, only
+     * PFX to PEM conversion is supported for certificate-backed secrets. Allowed values are
+     * {@code "application/x-pkcs12"} and {@code "application/x-pem-file"}.</p>
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this
+     * call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @param outContentType The desired content type for the secret. If {@code null}, the secret is returned in its
+     * original format. Allowed values: {@code "application/x-pkcs12"}, {@code "application/x-pem-file"}.
+     * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultSecret> getSecret(String name, String version, String outContentType) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        try {
+            RequestOptions requestOptions = new RequestOptions();
+
+            if (!CoreUtils.isNullOrEmpty(outContentType)) {
+                requestOptions.addQueryParam("outContentType", outContentType);
+            }
+
+            return implClient.getSecretWithResponseAsync(name, version, requestOptions)
+                .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
+                .map(response -> createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the specified secret with specified version from the key vault, optionally converting the secret content
+     * to the specified format. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>The {@code outContentType} parameter is used to request conversion of the secret content. Currently, only
+     * PFX to PEM conversion is supported for certificate-backed secrets. Allowed values are
+     * {@code "application/x-pkcs12"} and {@code "application/x-pem-file"}.</p>
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this call is equivalent
+     * to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @param outContentType The desired content type for the secret. If {@code null}, the secret is returned in its
+     * original format. Allowed values: {@code "application/x-pkcs12"}, {@code "application/x-pem-file"}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * requested {@link KeyVaultSecret secret}.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version, String outContentType) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        try {
+            RequestOptions requestOptions = new RequestOptions();
+
+            if (!CoreUtils.isNullOrEmpty(outContentType)) {
+                requestOptions.addQueryParam("outContentType", outContentType);
+            }
+
+            return implClient.getSecretWithResponseAsync(name, version, requestOptions)
+                .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
     // For some reason, the service does not return a 409 when a secret with the same name exists. Instead, it returns
     // a 403.
     static HttpResponseException mapGetSecretException(HttpResponseException e) {

@@ -59,6 +59,11 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     private ProvisioningState provisioningState;
 
     /*
+     * The status for the broker.
+     */
+    private BrokerStatus status;
+
+    /*
      * The health state of the resource.
      */
     private ResourceHealthState healthState;
@@ -223,6 +228,15 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
+     * Get the status property: The status for the broker.
+     * 
+     * @return the status value.
+     */
+    public BrokerStatus status() {
+        return this.status;
+    }
+
+    /**
      * Get the healthState property: The health state of the resource.
      * 
      * @return the healthState value.
@@ -278,6 +292,8 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
                     deserializedBrokerProperties.persistence = BrokerPersistence.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedBrokerProperties.status = BrokerStatus.fromJson(reader);
                 } else if ("healthState".equals(fieldName)) {
                     deserializedBrokerProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {

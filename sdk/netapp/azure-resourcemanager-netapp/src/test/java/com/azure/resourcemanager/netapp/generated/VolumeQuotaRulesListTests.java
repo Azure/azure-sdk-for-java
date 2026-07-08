@@ -6,20 +6,20 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.implementation.models.VolumeQuotaRulesList;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import org.junit.jupiter.api.Assertions;
 
 public final class VolumeQuotaRulesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":4207252489076853449,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"ytisibir\"},\"location\":\"pikpz\",\"tags\":{\"anlfzxiavrmbz\":\"j\",\"frl\":\"nokixrjqcirgz\"},\"id\":\"zszrnwoiindfpw\",\"name\":\"jylwbtlhflsj\",\"type\":\"dhszfjv\"},{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":4854317837359079981,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"rqmq\"},\"location\":\"dvriiiojnal\",\"tags\":{\"ueluqhhahhxvrhmz\":\"kvtvsexso\"},\"id\":\"wpjgwws\",\"name\":\"ughftqsx\",\"type\":\"qxujxukndxd\"}],\"nextLink\":\"rjguufzdmsyqtf\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":3361403308892839308,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"lbjbsyb\"},\"location\":\"wrv\",\"tags\":{\"paslthaqfxssmwu\":\"gmfpgvmp\",\"zpdrhneu\":\"wbdsr\",\"ircgpikpz\":\"owqkdwytisi\",\"rmbzo\":\"mejzanlfzxia\"},\"id\":\"okixrjqcir\",\"name\":\"zpfrla\",\"type\":\"szrnwo\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":2655439268574784215,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"lwbtlhf\"},\"location\":\"jcdh\",\"tags\":{\"rqmq\":\"jvfbgofelja\",\"tvsexsowuel\":\"ldvriiiojnalghfk\",\"wws\":\"qhhahhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\"},\"id\":\"grjguufzd\",\"name\":\"syqtfi\",\"type\":\"whbotzingamv\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":7578366703491273982,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"phqamvdkfwynwcvt\"},\"location\":\"kayh\",\"tags\":{\"kzwpcnpw\":\"vyqia\"},\"id\":\"cjaesgvvs\",\"name\":\"cyajguqf\",\"type\":\"wygzlvdnkfxusem\"}],\"nextLink\":\"zrmuhapfcqdps\"}")
             .toObject(VolumeQuotaRulesList.class);
-        Assertions.assertEquals("pikpz", model.value().get(0).location());
-        Assertions.assertEquals("j", model.value().get(0).tags().get("anlfzxiavrmbz"));
-        Assertions.assertEquals(4207252489076853449L, model.value().get(0).quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.value().get(0).quotaType());
-        Assertions.assertEquals("ytisibir", model.value().get(0).quotaTarget());
-        Assertions.assertEquals("rjguufzdmsyqtf", model.nextLink());
+        Assertions.assertEquals("wrv", model.value().get(0).location());
+        Assertions.assertEquals("gmfpgvmp", model.value().get(0).tags().get("paslthaqfxssmwu"));
+        Assertions.assertEquals(3361403308892839308L, model.value().get(0).quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.value().get(0).quotaType());
+        Assertions.assertEquals("lbjbsyb", model.value().get(0).quotaTarget());
+        Assertions.assertEquals("zrmuhapfcqdps", model.nextLink());
     }
 }

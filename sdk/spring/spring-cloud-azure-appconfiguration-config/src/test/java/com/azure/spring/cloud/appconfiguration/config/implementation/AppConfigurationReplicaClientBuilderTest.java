@@ -2,17 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,8 +31,10 @@ import org.mockito.quality.Strictness;
 import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
@@ -51,7 +55,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Mock
     private ConfigurationClientBuilderFactory clientFactoryMock;
-    
+
     @Mock
     private Environment envMock;
 
@@ -177,7 +181,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-        
+
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(clientFactoryMock.build()).thenReturn(builderMock);
         when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
@@ -201,7 +205,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
 
         String message = assertThrows(IllegalArgumentException.class,
-            () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
+                () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
 
         assertEquals("More than 1 connection method was set for connecting to App Configuration.", message);
     }
@@ -267,7 +271,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("URI is not absolute", exception.getMessage());
     }
@@ -279,7 +283,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("invalid connection string segment count", exception.getMessage());
     }
@@ -291,11 +295,118 @@ public class AppConfigurationReplicaClientBuilderTest {
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+                () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals(
-            "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:Not;A;Connection String",
-            exception.getMessage());
+                "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'.",
+                exception.getMessage());
+    }
+
+    @Test
+    public void buildClientsWithLoadBalancingEnabledTest() {
+        // Test that load balancing shuffles the order of clients
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        // Add multiple endpoints to shuffle
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+        endpoints.add("https://third.test.config.io");
+        endpoints.add("https://fourth.test.config.io");
+
+        configStore.setEndpoints(endpoints);
+        configStore.setLoadBalancingEnabled(true);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        // Build clients multiple times and verify that order changes (due to shuffle)
+        List<AppConfigurationReplicaClient> clients1 = spy.buildClients(configStore);
+        List<AppConfigurationReplicaClient> clients2 = spy.buildClients(configStore);
+
+        assertEquals(4, clients1.size());
+        assertEquals(4, clients2.size());
+
+        // The order should potentially differ due to random shuffling
+        // We can't guarantee they're different, but we can verify the same endpoints exist
+        List<String> endpoints1 = clients1.stream().map(AppConfigurationReplicaClient::getEndpoint).toList();
+        List<String> endpoints2 = clients2.stream().map(AppConfigurationReplicaClient::getEndpoint).toList();
+
+        // All endpoints should be present in both lists (just potentially in different order)
+        assertTrue(endpoints1.containsAll(endpoints));
+        assertTrue(endpoints2.containsAll(endpoints));
+    }
+
+    @Test
+    public void buildClientsWithLoadBalancingDisabledTest() {
+        // Test that without load balancing, order is preserved
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+        endpoints.add("https://third.test.config.io");
+
+        configStore.setEndpoints(endpoints);
+        configStore.setLoadBalancingEnabled(false);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
+
+        assertEquals(3, clients.size());
+        // When load balancing is disabled, order should match input order
+        assertEquals(TEST_ENDPOINT, clients.get(0).getEndpoint());
+        assertEquals(TEST_ENDPOINT_GEO, clients.get(1).getEndpoint());
+        assertEquals("https://third.test.config.io", clients.get(2).getEndpoint());
+    }
+
+    @Test
+    public void buildClientsFromMultipleEndpointsReplicaCountTest() {
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+
+        configStore.setEndpoints(endpoints);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, true);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
+
+        assertEquals(2, clients.size());
+
+        // Capture the policy passed to addPolicy and verify it contains the correct replica count
+        ArgumentCaptor<HttpPipelinePolicy> policyCaptor = ArgumentCaptor.forClass(HttpPipelinePolicy.class);
+        verify(builderMock, atLeastOnce()).addPolicy(policyCaptor.capture());
+
+        List<HttpPipelinePolicy> policies = policyCaptor.getAllValues();
+        // All captured policies should be BaseAppConfigurationPolicy instances
+        for (HttpPipelinePolicy policy : policies) {
+            assertTrue(policy instanceof BaseAppConfigurationPolicy,
+                "Expected BaseAppConfigurationPolicy but got " + policy.getClass().getSimpleName());
+        }
     }
 
 }

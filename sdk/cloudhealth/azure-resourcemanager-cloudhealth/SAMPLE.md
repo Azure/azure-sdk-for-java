@@ -20,6 +20,9 @@
 - [CreateOrUpdate](#entities_createorupdate)
 - [Delete](#entities_delete)
 - [Get](#entities_get)
+- [GetHistory](#entities_gethistory)
+- [GetSignalHistory](#entities_getsignalhistory)
+- [IngestHealthReport](#entities_ingesthealthreport)
 - [ListByHealthModel](#entities_listbyhealthmodel)
 
 ## HealthModels
@@ -58,7 +61,7 @@ import com.azure.resourcemanager.cloudhealth.models.ManagedIdentityAuthenticatio
  */
 public final class AuthenticationSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthenticationSettings_CreateOrUpdate.
@@ -85,7 +88,7 @@ public final class AuthenticationSettingsCreateOrUpdateSamples {
  */
 public final class AuthenticationSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_Delete.json
      */
     /**
      * Sample code: AuthenticationSettings_Delete.
@@ -94,8 +97,7 @@ public final class AuthenticationSettingsDeleteSamples {
      */
     public static void authenticationSettingsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.authenticationSettings()
-            .deleteWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
-                com.azure.core.util.Context.NONE);
+            .delete("my-resource-group", "my-health-model", "my-auth-setting", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -108,7 +110,7 @@ public final class AuthenticationSettingsDeleteSamples {
  */
 public final class AuthenticationSettingsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_Get.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_Get.json
      */
     /**
      * Sample code: AuthenticationSettings_Get.
@@ -131,7 +133,7 @@ public final class AuthenticationSettingsGetSamples {
  */
 public final class AuthenticationSettingsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/AuthenticationSettings_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_ListByHealthModel.json
      */
     /**
      * Sample code: AuthenticationSettings_ListByHealthModel.
@@ -152,13 +154,14 @@ public final class AuthenticationSettingsListByHealthModelSamples {
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceGraphQuerySpecification;
 
 /**
  * Samples for DiscoveryRules CreateOrUpdate.
  */
 public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
      * Sample code: DiscoveryRules_CreateOrUpdate.
@@ -170,11 +173,11 @@ public final class DiscoveryRulesCreateOrUpdateSamples {
             .define("myDiscoveryRule")
             .withExistingHealthmodel("myResourceGroup", "myHealthModel")
             .withProperties(new DiscoveryRuleProperties().withDisplayName("myDisplayName")
-                .withResourceGraphQuery(
-                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")
                 .withAuthenticationSetting("authSetting1")
                 .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
-                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED))
+                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
+                .withSpecification(new ResourceGraphQuerySpecification().withResourceGraphQuery(
+                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")))
             .create();
     }
 }
@@ -188,7 +191,7 @@ public final class DiscoveryRulesCreateOrUpdateSamples {
  */
 public final class DiscoveryRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_Delete.json
      */
     /**
      * Sample code: DiscoveryRules_Delete.
@@ -197,8 +200,7 @@ public final class DiscoveryRulesDeleteSamples {
      */
     public static void discoveryRulesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.discoveryRules()
-            .deleteWithResponse("my-resource-group", "my-health-model", "my-discovery-rule",
-                com.azure.core.util.Context.NONE);
+            .delete("my-resource-group", "my-health-model", "my-discovery-rule", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -211,7 +213,7 @@ public final class DiscoveryRulesDeleteSamples {
  */
 public final class DiscoveryRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_Get.json
+     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_Get.json
      */
     /**
      * Sample code: DiscoveryRules_Get.
@@ -234,7 +236,7 @@ public final class DiscoveryRulesGetSamples {
  */
 public final class DiscoveryRulesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_ListByHealthModel.json
      */
     /**
      * Sample code: DiscoveryRules_ListByHealthModel.
@@ -254,18 +256,26 @@ public final class DiscoveryRulesListByHealthModelSamples {
 ```java
 import com.azure.resourcemanager.cloudhealth.models.AlertConfiguration;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
-import com.azure.resourcemanager.cloudhealth.models.AzureMonitorWorkspaceSignalGroup;
-import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignalGroup;
+import com.azure.resourcemanager.cloudhealth.models.AzureMonitorWorkspaceSignals;
+import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignal;
+import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignals;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesSignalGroup;
+import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationUnit;
+import com.azure.resourcemanager.cloudhealth.models.DependenciesSignalGroupV2;
 import com.azure.resourcemanager.cloudhealth.models.EntityAlerts;
 import com.azure.resourcemanager.cloudhealth.models.EntityCoordinates;
 import com.azure.resourcemanager.cloudhealth.models.EntityImpact;
 import com.azure.resourcemanager.cloudhealth.models.EntityProperties;
+import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.IconDefinition;
-import com.azure.resourcemanager.cloudhealth.models.LogAnalyticsSignalGroup;
-import com.azure.resourcemanager.cloudhealth.models.SignalAssignment;
-import com.azure.resourcemanager.cloudhealth.models.SignalGroup;
+import com.azure.resourcemanager.cloudhealth.models.LogAnalyticsSignal;
+import com.azure.resourcemanager.cloudhealth.models.LogAnalyticsSignals;
+import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
+import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignal;
+import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
+import com.azure.resourcemanager.cloudhealth.models.SignalGroups;
+import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -275,7 +285,7 @@ import java.util.Map;
  */
 public final class EntitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/Entities_CreateOrUpdate.json
      */
     /**
      * Sample code: Entities_CreateOrUpdate.
@@ -291,28 +301,64 @@ public final class EntitiesCreateOrUpdateSamples {
                 .withIcon(new IconDefinition().withIconName("Custom").withCustomData("rcitntvapruccrhtxmkqjphbxunkz"))
                 .withHealthObjective(62.0D)
                 .withImpact(EntityImpact.STANDARD)
-                .withLabels(mapOf("key1376", "fakeTokenPlaceholder"))
-                .withSignals(new SignalGroup().withAzureResource(new AzureResourceSignalGroup()
-                    .withSignalAssignments(
-                        Arrays.asList(new SignalAssignment().withSignalDefinitions(Arrays.asList("sigdef1"))))
-                    .withAuthenticationSetting("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX")
+                .withTags(mapOf("key1376", "fakeTokenPlaceholder"))
+                .withSignalGroups(new SignalGroups().withAzureResource(new AzureResourceSignals()
+                    .withAuthenticationSetting("auth123")
                     .withAzureResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"))
-                    .withAzureLogAnalytics(new LogAnalyticsSignalGroup()
-                        .withSignalAssignments(Arrays.asList(new SignalAssignment().withSignalDefinitions(
-                            Arrays.asList("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"))))
-                        .withAuthenticationSetting("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX")
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1")
+                    .withAzureResourceKind("functionapp")
+                    .withSignals(Arrays.asList(new AzureResourceSignal().withName("uniqueSignalName1")
+                        .withSignalDefinitionName("sigdef1")
+                        .withMetricNamespace("microsoft.compute/virtualMachines")
+                        .withMetricName("cpuusage")
+                        .withTimeGrain("PT1M")
+                        .withAggregationType(MetricAggregationType.NONE)
+                        .withDimension("nodename")
+                        .withDimensionFilter("node1")
+                        .withDisplayName("CPU usage")
+                        .withRefreshInterval(RefreshInterval.PT1M)
+                        .withDataUnit("Count")
+                        .withEvaluationRules(new EvaluationRule()
+                            .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan"))
+                                .withThreshold(10.0))
+                            .withUnhealthyRule(
+                                new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan"))
+                                    .withThreshold(1.0))))))
+                    .withAzureLogAnalytics(new LogAnalyticsSignals().withAuthenticationSetting("auth123")
                         .withLogAnalyticsWorkspaceResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"))
-                    .withAzureMonitorWorkspace(new AzureMonitorWorkspaceSignalGroup()
-                        .withSignalAssignments(
-                            Arrays.asList(new SignalAssignment().withSignalDefinitions(Arrays.asList("sigdef2")),
-                                new SignalAssignment().withSignalDefinitions(Arrays.asList("sigdef3"))))
-                        .withAuthenticationSetting("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX")
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace")
+                        .withSignals(Arrays.asList(new LogAnalyticsSignal().withName("uniqueSignalName2")
+                            .withQueryText("print 1")
+                            .withTimeGrain("PT30M")
+                            .withValueColumnName("result")
+                            .withDisplayName("Test LA signal")
+                            .withRefreshInterval(RefreshInterval.PT1M)
+                            .withDataUnit("my unit")
+                            .withEvaluationRules(new EvaluationRule()
+                                .withDegradedRule(
+                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(1.0))
+                                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                    .withThreshold(5.0))))))
+                    .withAzureMonitorWorkspace(new AzureMonitorWorkspaceSignals().withAuthenticationSetting("auth123")
                         .withAzureMonitorWorkspaceResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"))
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace")
+                        .withSignals(Arrays.asList(new PrometheusMetricsSignal().withName("pod-cpu-usage")
+                            .withSignalDefinitionName("PodCpuUsageDefinition")
+                            .withQueryText("rate(container_cpu_usage_seconds_total{pod=~\"my-app-.*\"}[5m]) * 100")
+                            .withTimeGrain("PT5M")
+                            .withDisplayName("Pod CPU Usage")
+                            .withRefreshInterval(RefreshInterval.PT1M)
+                            .withDataUnit("Percent")
+                            .withEvaluationRules(new EvaluationRule()
+                                .withDegradedRule(
+                                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0))
+                                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                                    .withThreshold(90.0))))))
                     .withDependencies(
-                        new DependenciesSignalGroup().withAggregationType(DependenciesAggregationType.WORST_OF)))
+                        new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MIN_HEALTHY)
+                            .withDegradedThreshold(80.0D)
+                            .withUnhealthyThreshold(50.0D)
+                            .withUnit(DependenciesAggregationUnit.PERCENTAGE)))
                 .withAlerts(new EntityAlerts().withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
                     .withDescription("Alert description")
                     .withActionGroupIds(Arrays.asList(
@@ -346,7 +392,7 @@ public final class EntitiesCreateOrUpdateSamples {
  */
 public final class EntitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/Entities_Delete.json
      */
     /**
      * Sample code: Entities_Delete.
@@ -355,8 +401,7 @@ public final class EntitiesDeleteSamples {
      */
     public static void entitiesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .deleteWithResponse("rgopenapi", "model1", "U4VTRFlUkm9kR6H23-c-6U-XHq7n",
-                com.azure.core.util.Context.NONE);
+            .delete("rgopenapi", "model1", "U4VTRFlUkm9kR6H23-c-6U-XHq7n", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -369,7 +414,7 @@ public final class EntitiesDeleteSamples {
  */
 public final class EntitiesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_Get.json
+     * x-ms-original-file: 2026-01-01-preview/Entities_Get.json
      */
     /**
      * Sample code: Entities_Get.
@@ -378,6 +423,102 @@ public final class EntitiesGetSamples {
      */
     public static void entitiesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities().getWithResponse("rgopenapi", "myHealthModel", "entity1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Entities_GetHistory
+
+```java
+import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for Entities GetHistory.
+ */
+public final class EntitiesGetHistorySamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Entities_GetHistory.json
+     */
+    /**
+     * Sample code: Entities_GetHistory.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void entitiesGetHistory(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.entities()
+            .getHistoryWithResponse("rgopenapi", "myHealthModel", "entity1",
+                new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2025-12-11T10:00:00Z"))
+                    .withEndAt(OffsetDateTime.parse("2025-12-12T10:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Entities_GetSignalHistory
+
+```java
+import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for Entities GetSignalHistory.
+ */
+public final class EntitiesGetSignalHistorySamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Entities_GetSignalHistory.json
+     */
+    /**
+     * Sample code: Entities_GetSignalHistory.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void entitiesGetSignalHistory(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.entities()
+            .getSignalHistoryWithResponse("rgopenapi", "myHealthModel", "entity1",
+                new SignalHistoryRequest().withSignalName("uniqueSignalName1")
+                    .withStartAt(OffsetDateTime.parse("2025-12-11T10:00:00Z"))
+                    .withEndAt(OffsetDateTime.parse("2025-12-12T10:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Entities_IngestHealthReport
+
+```java
+import com.azure.resourcemanager.cloudhealth.models.HealthReportEvaluationRule;
+import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
+import com.azure.resourcemanager.cloudhealth.models.HealthState;
+import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
+
+/**
+ * Samples for Entities IngestHealthReport.
+ */
+public final class EntitiesIngestHealthReportSamples {
+    /*
+     * x-ms-original-file: 2026-01-01-preview/Entities_IngestHealthReport.json
+     */
+    /**
+     * Sample code: Entities_IngestHealthReport.
+     * 
+     * @param manager Entry point to CloudHealthManager.
+     */
+    public static void entitiesIngestHealthReport(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
+        manager.entities()
+            .ingestHealthReportWithResponse("rgopenapi", "myHealthModel", "entity1",
+                new HealthReportRequest().withSignalName("uniqueSignalName1")
+                    .withHealthState(HealthState.DEGRADED)
+                    .withValue(85.5D)
+                    .withEvaluationRules(new HealthReportEvaluationRule()
+                        .withDegradedRule(
+                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0))
+                        .withUnhealthyRule(
+                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(90.0)))
+                    .withExpiresInMinutes(60)
+                    .withAdditionalContext("CPU usage elevated due to batch processing job"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -391,7 +532,7 @@ public final class EntitiesGetSamples {
  */
 public final class EntitiesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/Entities_ListByHealthModel.json
      */
     /**
      * Sample code: Entities_ListByHealthModel.
@@ -409,11 +550,9 @@ public final class EntitiesListByHealthModelSamples {
 ### HealthModels_Create
 
 ```java
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
 import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -423,7 +562,7 @@ import java.util.Map;
  */
 public final class HealthModelsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Create.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_Create.json
      */
     /**
      * Sample code: HealthModels_Create.
@@ -436,10 +575,7 @@ public final class HealthModelsCreateSamples {
             .withRegion("eastus2")
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("key2961", "fakeTokenPlaceholder"))
-            .withProperties(new HealthModelProperties().withDiscovery(
-                new ModelDiscoverySettings().withScope("/providers/Microsoft.Management/serviceGroups/myServiceGroup")
-                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-                    .withIdentity("SystemAssigned")))
+            .withProperties(new HealthModelProperties())
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
                 .withUserAssignedIdentities(mapOf(
@@ -470,7 +606,7 @@ public final class HealthModelsCreateSamples {
  */
 public final class HealthModelsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_Delete.json
      */
     /**
      * Sample code: HealthModels_Delete.
@@ -491,7 +627,7 @@ public final class HealthModelsDeleteSamples {
  */
 public final class HealthModelsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Get.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_Get.json
      */
     /**
      * Sample code: HealthModels_Get.
@@ -513,7 +649,7 @@ public final class HealthModelsGetByResourceGroupSamples {
  */
 public final class HealthModelsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_ListBySubscription.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_ListBySubscription.json
      */
     /**
      * Sample code: HealthModels_ListBySubscription.
@@ -535,7 +671,7 @@ public final class HealthModelsListSamples {
  */
 public final class HealthModelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_ListByResourceGroup.json
      */
     /**
      * Sample code: HealthModels_ListByResourceGroup.
@@ -564,7 +700,7 @@ import java.util.Map;
  */
 public final class HealthModelsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Update.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_Update.json
      */
     /**
      * Sample code: HealthModels_Update.
@@ -607,7 +743,7 @@ public final class HealthModelsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-01-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -632,7 +768,7 @@ import java.util.Map;
  */
 public final class RelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/Relationships_CreateOrUpdate.json
      */
     /**
      * Sample code: Relationships_CreateOrUpdate.
@@ -646,7 +782,7 @@ public final class RelationshipsCreateOrUpdateSamples {
             .withProperties(new RelationshipProperties().withDisplayName("My relationship")
                 .withParentEntityName("Entity1")
                 .withChildEntityName("Entity2")
-                .withLabels(mapOf("key9681", "fakeTokenPlaceholder")))
+                .withTags(mapOf("key9681", "fakeTokenPlaceholder")))
             .create();
     }
 
@@ -672,7 +808,7 @@ public final class RelationshipsCreateOrUpdateSamples {
  */
 public final class RelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/Relationships_Delete.json
      */
     /**
      * Sample code: Relationships_Delete.
@@ -680,7 +816,7 @@ public final class RelationshipsDeleteSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void relationshipsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.relationships().deleteWithResponse("rgopenapi", "model1", "rel1", com.azure.core.util.Context.NONE);
+        manager.relationships().delete("rgopenapi", "model1", "rel1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -693,7 +829,7 @@ public final class RelationshipsDeleteSamples {
  */
 public final class RelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_Get.json
+     * x-ms-original-file: 2026-01-01-preview/Relationships_Get.json
      */
     /**
      * Sample code: Relationships_Get.
@@ -717,7 +853,7 @@ public final class RelationshipsGetSamples {
  */
 public final class RelationshipsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/Relationships_ListByHealthModel.json
      */
     /**
      * Sample code: Relationships_ListByHealthModel.
@@ -739,7 +875,7 @@ import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceMetricSignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -748,7 +884,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.
@@ -762,11 +898,13 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
             .withExistingHealthmodel("rgopenapi", "myHealthModel")
             .withProperties(new ResourceMetricSignalDefinitionProperties().withDisplayName("cpu usage")
                 .withRefreshInterval(RefreshInterval.PT1M)
-                .withLabels(mapOf("key4788", "fakeTokenPlaceholder"))
+                .withTags(mapOf("key4788", "fakeTokenPlaceholder"))
                 .withDataUnit("byte")
                 .withEvaluationRules(new EvaluationRule()
-                    .withDegradedRule(new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("65"))
-                    .withUnhealthyRule(new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("60")))
+                    .withDegradedRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(65.0))
+                    .withUnhealthyRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(60.0)))
                 .withMetricNamespace("microsoft.compute/virtualMachines")
                 .withMetricName("cpuusage")
                 .withTimeGrain("PT1M")
@@ -798,7 +936,7 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
  */
 public final class SignalDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_Delete.json
      */
     /**
      * Sample code: SignalDefinitions_Delete.
@@ -806,7 +944,7 @@ public final class SignalDefinitionsDeleteSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void signalDefinitionsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.signalDefinitions().deleteWithResponse("rgopenapi", "model1", "sig", com.azure.core.util.Context.NONE);
+        manager.signalDefinitions().delete("rgopenapi", "model1", "sig", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -819,7 +957,7 @@ public final class SignalDefinitionsDeleteSamples {
  */
 public final class SignalDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_Get.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_Get.json
      */
     /**
      * Sample code: SignalDefinitions_Get.
@@ -842,7 +980,7 @@ public final class SignalDefinitionsGetSamples {
  */
 public final class SignalDefinitionsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_ListByHealthModel.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_ListByHealthModel.json
      */
     /**
      * Sample code: SignalDefinitions_ListByHealthModel.

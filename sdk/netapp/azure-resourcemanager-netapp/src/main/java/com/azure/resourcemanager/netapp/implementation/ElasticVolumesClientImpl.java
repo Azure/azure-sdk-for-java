@@ -1350,7 +1350,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return netApp Elastic Volume resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> revertWithResponseAsync(String resourceGroupName, String accountName,
@@ -1401,7 +1401,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return netApp Elastic Volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revertWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -1456,7 +1456,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return netApp Elastic Volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revertWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -1510,7 +1510,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of netApp Elastic Volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ElasticVolumeInner>, ElasticVolumeInner> beginRevertAsync(String resourceGroupName,
@@ -1532,7 +1532,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticVolumeInner>, ElasticVolumeInner> beginRevert(String resourceGroupName,
@@ -1554,7 +1554,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticVolumeInner>, ElasticVolumeInner> beginRevert(String resourceGroupName,
@@ -1576,7 +1576,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return netApp Elastic Volume resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ElasticVolumeInner> revertAsync(String resourceGroupName, String accountName, String poolName,
@@ -1596,7 +1596,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticVolumeInner revert(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -1616,7 +1616,7 @@ public final class ElasticVolumesClientImpl implements ElasticVolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticVolumeInner revert(String resourceGroupName, String accountName, String poolName, String volumeName,

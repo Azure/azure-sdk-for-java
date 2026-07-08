@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.EntraIdConfig;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
@@ -30,6 +31,11 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * Active Directories
      */
     private List<ActiveDirectory> activeDirectories;
+
+    /*
+     * Entra ID configuration for the account.
+     */
+    private EntraIdConfig entraIdConfig;
 
     /*
      * Encryption settings
@@ -89,6 +95,26 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     public AccountProperties withActiveDirectories(List<ActiveDirectory> activeDirectories) {
         this.activeDirectories = activeDirectories;
+        return this;
+    }
+
+    /**
+     * Get the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @return the entraIdConfig value.
+     */
+    public EntraIdConfig entraIdConfig() {
+        return this.entraIdConfig;
+    }
+
+    /**
+     * Set the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @param entraIdConfig the entraIdConfig value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withEntraIdConfig(EntraIdConfig entraIdConfig) {
+        this.entraIdConfig = entraIdConfig;
         return this;
     }
 
@@ -182,6 +208,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         if (activeDirectories() != null) {
             activeDirectories().forEach(e -> e.validate());
         }
+        if (entraIdConfig() != null) {
+            entraIdConfig().validate();
+        }
         if (encryption() != null) {
             encryption().validate();
         }
@@ -198,6 +227,7 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("activeDirectories", this.activeDirectories,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
         jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
@@ -225,6 +255,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<ActiveDirectory> activeDirectories
                         = reader.readArray(reader1 -> ActiveDirectory.fromJson(reader1));
                     deserializedAccountProperties.activeDirectories = activeDirectories;
+                } else if ("entraIdConfig".equals(fieldName)) {
+                    deserializedAccountProperties.entraIdConfig = EntraIdConfig.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedAccountProperties.encryption = AccountEncryption.fromJson(reader);
                 } else if ("disableShowmount".equals(fieldName)) {

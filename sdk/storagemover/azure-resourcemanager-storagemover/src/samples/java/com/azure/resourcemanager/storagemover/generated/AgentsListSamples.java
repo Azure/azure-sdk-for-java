@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class AgentsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_List_MaximumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_List_MaximumSet.json
      */
     /**
      * Sample code: Agents_List_MaximumSet.
@@ -21,7 +21,7 @@ public final class AgentsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_List_MinimumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_List_MinimumSet.json
      */
     /**
      * Sample code: Agents_List_MinimumSet.

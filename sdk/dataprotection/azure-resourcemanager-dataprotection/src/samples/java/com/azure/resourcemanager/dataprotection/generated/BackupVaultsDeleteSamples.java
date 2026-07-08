@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/DeleteBackupVault.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/DeleteBackupVault.json
      */
     /**
      * Sample code: Delete BackupVault.

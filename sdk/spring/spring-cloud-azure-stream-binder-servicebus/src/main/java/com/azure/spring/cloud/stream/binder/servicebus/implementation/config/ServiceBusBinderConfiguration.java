@@ -37,6 +37,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.retry.support.RetryTemplate;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
@@ -96,6 +97,7 @@ public class ServiceBusBinderConfiguration {
      * @param messageConverter the message converter.
      * @param producerFactoryCustomizers customizers to customize producer factories.
      * @param processorFactoryCustomizers customizers to customize processor factories.
+     * @param retryTemplate optional custom retry template for message processing retries; must be a bean named {@code serviceBusRetryTemplate}.
      *
      * @return the {@link ServiceBusMessageChannelBinder} bean.
      */
@@ -106,7 +108,8 @@ public class ServiceBusBinderConfiguration {
                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
                                                            ObjectProvider<ServiceBusMessageConverter> messageConverter,
                                                            ObjectProvider<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers,
-                                                           ObjectProvider<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers) {
+                                                           ObjectProvider<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers,
+                                                           @Qualifier("serviceBusRetryTemplate") ObjectProvider<RetryTemplate> retryTemplate) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
@@ -114,6 +117,7 @@ public class ServiceBusBinderConfiguration {
         binder.setMessageConverter(messageConverter.getIfAvailable());
         producerFactoryCustomizers.orderedStream().forEach(binder::addProducerFactoryCustomizer);
         processorFactoryCustomizers.orderedStream().forEach(binder::addProcessorFactoryCustomizer);
+        retryTemplate.ifAvailable(binder::setRetryTemplate);
         return binder;
     }
 

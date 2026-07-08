@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckElasticResourceAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckElasticResourceAvailabilityResponseInner model = BinaryData
-            .fromString("{\"isAvailable\":\"False\",\"reason\":\"Invalid\",\"message\":\"fonkphhqyikvyla\"}")
-            .toObject(CheckElasticResourceAvailabilityResponseInner.class);
-        Assertions.assertEquals(CheckElasticResourceAvailabilityStatus.FALSE, model.isAvailable());
-        Assertions.assertEquals(CheckElasticResourceAvailabilityReason.INVALID, model.reason());
-        Assertions.assertEquals("fonkphhqyikvyla", model.message());
+        CheckElasticResourceAvailabilityResponseInner model
+            = BinaryData.fromString("{\"isAvailable\":\"True\",\"reason\":\"AlreadyExists\",\"message\":\"cnifm\"}")
+                .toObject(CheckElasticResourceAvailabilityResponseInner.class);
+        Assertions.assertEquals(CheckElasticResourceAvailabilityStatus.TRUE, model.isAvailable());
+        Assertions.assertEquals(CheckElasticResourceAvailabilityReason.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("cnifm", model.message());
     }
 }

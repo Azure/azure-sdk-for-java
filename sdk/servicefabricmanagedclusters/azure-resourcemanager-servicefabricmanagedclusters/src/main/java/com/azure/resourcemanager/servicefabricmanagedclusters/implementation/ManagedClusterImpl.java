@@ -296,6 +296,10 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return this.innerModel().enableOutboundOnlyNodeTypes();
     }
 
+    public Boolean skipManagedNsgAssignment() {
+        return this.innerModel().skipManagedNsgAssignment();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -631,6 +635,11 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
 
     public ManagedClusterImpl withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
         this.innerModel().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
+        return this;
+    }
+
+    public ManagedClusterImpl withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        this.innerModel().withSkipManagedNsgAssignment(skipManagedNsgAssignment);
         return this;
     }
 

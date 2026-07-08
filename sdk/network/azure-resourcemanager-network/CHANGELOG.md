@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.60.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.59.0 (2026-06-29)
+
+### Other Changes
+
+- Updated `api-version` to `2025-07-01`.
+
+## 2.58.2 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
+## 2.58.1 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.6` to version `2.54.0`.
+
+
+## 2.58.0 (2026-02-14)
+
+### Breaking Changes
+
+- Removed `ADVANCED`, `BASIC`, and `STANDARD` from `FirewallPolicyIntrusionDetectionProfileType` to align with the service model.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
 
 ## 2.57.1 (2026-01-29)
 

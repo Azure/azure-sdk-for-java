@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"jdjltymkmvgui\",\"subnetId\":\"wartspphkixkykxd\",\"networkSiblingSetStateId\":\"j\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Succeeded\",\"nicInfoList\":[{\"ipAddress\":\"hikkflrmy\",\"volumeResourceIds\":[\"nc\",\"lhrisw\",\"lmiiiovg\"]},{\"ipAddress\":\"gxuugqkctotio\",\"volumeResourceIds\":[\"teqdptj\",\"wdtgukranblw\",\"hqlkccuzgygqwaho\",\"ulwgniiprglvawuw\"]},{\"ipAddress\":\"ufypiv\",\"volumeResourceIds\":[\"bjpmcubk\",\"ifoxxkubvphav\",\"mhbrbqgvg\"]},{\"ipAddress\":\"pbbttefjoknss\",\"volumeResourceIds\":[\"qedikdfrd\",\"iqmrjgeihfqlggw\",\"iwzcxmjpbyeph\"]}]}")
+            "{\"networkSiblingSetId\":\"twwgzwx\",\"subnetId\":\"mecvogygzyvneeza\",\"networkSiblingSetStateId\":\"gh\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"fhzbkr\",\"volumeResourceIds\":[\"javfqn\",\"hnqoewdo\"]},{\"ipAddress\":\"yetesy\",\"volumeResourceIds\":[\"dbztjhqtfbov\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("jdjltymkmvgui", model.networkSiblingSetId());
-        Assertions.assertEquals("wartspphkixkykxd", model.subnetId());
-        Assertions.assertEquals("j", model.networkSiblingSetStateId());
-        Assertions.assertEquals(NetworkFeatures.BASIC, model.networkFeatures());
-        Assertions.assertEquals("nc", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("twwgzwx", model.networkSiblingSetId());
+        Assertions.assertEquals("mecvogygzyvneeza", model.subnetId());
+        Assertions.assertEquals("gh", model.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
+        Assertions.assertEquals("javfqn", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

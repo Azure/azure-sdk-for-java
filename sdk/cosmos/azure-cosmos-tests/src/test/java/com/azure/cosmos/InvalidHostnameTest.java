@@ -19,7 +19,8 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
@@ -36,6 +37,8 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
+
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 
 import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +65,7 @@ public class InvalidHostnameTest extends TestSuiteBase {
         directConnectionTestCore(true);
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void directConnectionFailsWhenHostnameIsInvalidAndHostnameValidationIsNotSet() throws Exception {
         directConnectionFailsWhenHostnameIsInvalidCore(null);
     }
@@ -121,10 +124,11 @@ public class InvalidHostnameTest extends TestSuiteBase {
 
             String dbName = CosmosDatabaseForTest.generateId();
             createdDatabase = createSyncDatabase(client, dbName);
-            createdDatabase.createContainer(
-                "TestContainer",
-                "/id",
-                ThroughputProperties.createManualThroughput(400));
+            createCollection(
+                client.asyncClient().getDatabase(dbName),
+                new CosmosContainerProperties("TestContainer", "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
             CosmosContainer createdContainer = client.getDatabase(dbName).getContainer("TestContainer");
             ObjectNode newObject = Utils.getSimpleObjectMapper().createObjectNode();
             newObject.put("id", UUID.randomUUID().toString());

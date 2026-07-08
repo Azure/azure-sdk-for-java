@@ -30,7 +30,7 @@ import java.util.Arrays;
  */
 public final class AkriConnectorTemplateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_CreateOrUpdate_MaximumSet.

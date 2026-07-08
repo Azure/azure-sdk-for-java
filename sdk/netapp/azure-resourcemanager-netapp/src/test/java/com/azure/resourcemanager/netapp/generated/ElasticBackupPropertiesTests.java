@@ -13,24 +13,24 @@ public final class ElasticBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupProperties model = BinaryData.fromString(
-            "{\"creationDate\":\"2021-11-28T23:19:16Z\",\"snapshotCreationDate\":\"2021-10-30T08:45:06Z\",\"completionDate\":\"2021-12-08T12:55:11Z\",\"provisioningState\":\"Deleting\",\"size\":3083692456009895216,\"label\":\"aulk\",\"backupType\":\"Manual\",\"failureReason\":\"kifmjn\",\"elasticVolumeResourceId\":\"awtqabpxuckpgg\",\"snapshotUsage\":\"UseExistingSnapshot\",\"elasticSnapshotResourceId\":\"yirdhlisngwflqq\",\"elasticBackupPolicyResourceId\":\"izruwnpqxpxiwfc\",\"volumeSize\":\"Large\"}")
+            "{\"creationDate\":\"2021-07-06T06:01Z\",\"snapshotCreationDate\":\"2021-04-01T11:02:42Z\",\"completionDate\":\"2021-07-21T06:19:54Z\",\"provisioningState\":\"Failed\",\"size\":7439641289820148849,\"label\":\"pngajin\",\"backupType\":\"Manual\",\"failureReason\":\"awrtmjfjmyccxlz\",\"elasticVolumeResourceId\":\"coxovn\",\"snapshotUsage\":\"CreateNewSnapshot\",\"elasticSnapshotResourceId\":\"nlusfnrd\",\"elasticBackupPolicyResourceId\":\"xtxrdcqtjvidt\",\"volumeSize\":\"Large\"}")
             .toObject(ElasticBackupProperties.class);
-        Assertions.assertEquals("aulk", model.label());
-        Assertions.assertEquals("awtqabpxuckpgg", model.elasticVolumeResourceId());
-        Assertions.assertEquals(SnapshotUsage.USE_EXISTING_SNAPSHOT, model.snapshotUsage());
-        Assertions.assertEquals("yirdhlisngwflqq", model.elasticSnapshotResourceId());
+        Assertions.assertEquals("pngajin", model.label());
+        Assertions.assertEquals("coxovn", model.elasticVolumeResourceId());
+        Assertions.assertEquals(SnapshotUsage.CREATE_NEW_SNAPSHOT, model.snapshotUsage());
+        Assertions.assertEquals("nlusfnrd", model.elasticSnapshotResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticBackupProperties model = new ElasticBackupProperties().withLabel("aulk")
-            .withElasticVolumeResourceId("awtqabpxuckpgg")
-            .withSnapshotUsage(SnapshotUsage.USE_EXISTING_SNAPSHOT)
-            .withElasticSnapshotResourceId("yirdhlisngwflqq");
+        ElasticBackupProperties model = new ElasticBackupProperties().withLabel("pngajin")
+            .withElasticVolumeResourceId("coxovn")
+            .withSnapshotUsage(SnapshotUsage.CREATE_NEW_SNAPSHOT)
+            .withElasticSnapshotResourceId("nlusfnrd");
         model = BinaryData.fromObject(model).toObject(ElasticBackupProperties.class);
-        Assertions.assertEquals("aulk", model.label());
-        Assertions.assertEquals("awtqabpxuckpgg", model.elasticVolumeResourceId());
-        Assertions.assertEquals(SnapshotUsage.USE_EXISTING_SNAPSHOT, model.snapshotUsage());
-        Assertions.assertEquals("yirdhlisngwflqq", model.elasticSnapshotResourceId());
+        Assertions.assertEquals("pngajin", model.label());
+        Assertions.assertEquals("coxovn", model.elasticVolumeResourceId());
+        Assertions.assertEquals(SnapshotUsage.CREATE_NEW_SNAPSHOT, model.snapshotUsage());
+        Assertions.assertEquals("nlusfnrd", model.elasticSnapshotResourceId());
     }
 }

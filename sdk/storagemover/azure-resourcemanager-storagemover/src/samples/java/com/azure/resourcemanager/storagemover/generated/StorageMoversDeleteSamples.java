@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class StorageMoversDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/StorageMovers_Delete.json
+     * x-ms-original-file: 2025-12-01/StorageMovers_Delete.json
      */
     /**
      * Sample code: StorageMovers_Delete.
