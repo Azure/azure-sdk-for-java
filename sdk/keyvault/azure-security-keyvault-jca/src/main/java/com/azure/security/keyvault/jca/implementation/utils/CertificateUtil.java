@@ -531,7 +531,8 @@ public final class CertificateUtil {
      * <p>This method performs two checks:
      * <ol>
      *   <li>Verifies that the signature on the certificate was created by the issuer's private key</li>
-     *   <li>Verifies that the issuer is authorized to be a CA (either self-signed root or has CA bit set in basicConstraints)</li>
+     *   <li>Verifies that the issuer is authorized to be a CA
+     *       (either self-signed root or has CA bit set in basicConstraints)</li>
      * </ol>
      *
      * @param issuer the potential issuer certificate
