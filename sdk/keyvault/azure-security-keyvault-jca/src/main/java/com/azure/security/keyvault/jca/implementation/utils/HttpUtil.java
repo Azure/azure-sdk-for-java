@@ -112,7 +112,7 @@ public final class HttpUtil {
             // and other runtime exceptions that may occur during HTTP execution.
             // Gracefully return null to allow AIA completion to fail silently instead of breaking
             // the entire jarsigner/signing operation.
-            LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: {0}", url);
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + url, e);
             return null;
         }
     }
