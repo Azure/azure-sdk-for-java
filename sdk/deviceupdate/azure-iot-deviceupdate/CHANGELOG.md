@@ -1,14 +1,420 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
+## 1.1.0-beta.1 (2026-07-08)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `DeviceManagementAsyncClient` was modified
 
-### Other Changes
+* `getBestUpdatesForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `retryDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getOperationStatusWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listHealthOfDevices(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getLogCollectionDetailedStatusWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listBestUpdatesForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listInstallableUpdatesForDeviceClass(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listGroups(com.azure.core.http.rest.RequestOptions)` was removed
+* `stopDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `updateDeviceClassWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeploymentsForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `startLogCollectionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `listOperationStatuses(com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceModuleWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupUpdateComplianceWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `beginImportDevices(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `listLogCollections(com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `createOrUpdateDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `getLogCollectionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getUpdateComplianceForGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getUpdateComplianceWithResponse(com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceClassSubgroupsForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceClasses(com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeviceClassWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDevices(com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+
+#### `DeviceManagementClient` was modified
+
+* `createOrUpdateDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeploymentsForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `retryDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `beginImportDevices(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `getLogCollectionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `stopDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceClasses(com.azure.core.http.rest.RequestOptions)` was removed
+* `listHealthOfDevices(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getLogCollectionDetailedStatusWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listOperationStatuses(com.azure.core.http.rest.RequestOptions)` was removed
+* `updateDeviceClassWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listGroups(com.azure.core.http.rest.RequestOptions)` was removed
+* `getGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceModuleWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listInstallableUpdatesForDeviceClass(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getUpdateComplianceForGroupWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getBestUpdatesForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceClassSubgroupsForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listLogCollections(com.azure.core.http.rest.RequestOptions)` was removed
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getOperationStatusWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeviceClassWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeploymentStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `listDevices(com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `deleteDeploymentWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getDeviceClassSubgroupUpdateComplianceWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `getUpdateComplianceWithResponse(com.azure.core.http.rest.RequestOptions)` was removed
+* `listBestUpdatesForGroup(java.lang.String,com.azure.core.http.rest.RequestOptions)` was removed
+* `startLogCollectionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was removed
+
+#### `DeviceManagementClientBuilder` was modified
+
+* `instanceId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.StepType` was added
+
+* `models.DeviceClass` was added
+
+* `models.OperationStatus` was added
+
+* `models.DeviceHealth` was added
+
+* `models.DeviceClassSubgroupDeploymentState` was added
+
+* `models.DeviceUpdateAgentId` was added
+
+* `models.UpdateId` was added
+
+* `models.DeviceClassSubgroupDeploymentStatus` was added
+
+* `models.Step` was added
+
+* `models.ImportType` was added
+
+* `models.LogCollectionOperationDetailedStatus` was added
+
+* `models.UpdateFile` was added
+
+* `models.DeviceDeploymentState` was added
+
+* `models.LogCollection` was added
+
+* `models.Error` was added
+
+* `models.PatchBody` was added
+
+* `models.UpdateOperation` was added
+
+* `models.Group` was added
+
+* `models.UpdateFileDownloadHandler` was added
+
+* `models.InstallResult` was added
+
+* `models.StepResult` was added
+
+* `models.DeploymentStatus` was added
+
+* `models.HealthCheck` was added
+
+* `models.FileImportMetadata` was added
+
+* `models.InnerError` was added
+
+* `models.GroupType` was added
+
+* `models.CloudInitiatedRollbackPolicyFailure` was added
+
+* `models.UpdateCompliance` was added
+
+* `models.Deployment` was added
+
+* `models.ImportUpdateInputItem` was added
+
+* `models.DownloadSecurity` was added
+
+* `models.UpdateFileBase` was added
+
+* `models.Device` was added
+
+* `models.DeviceOperation` was added
+
+* `models.UpdateInfo` was added
+
+* `models.DeploymentDeviceState` was added
+
+* `models.DeviceClassSubgroupUpdatableDevices` was added
+
+* `models.LogCollectionOperationDeviceStatus` was added
+
+* `models.HealthCheckResult` was added
+
+* `models.Update` was added
+
+* `models.DeviceHealthState` was added
+
+* `models.Instructions` was added
+
+* `models.Compatibility` was added
+
+* `models.DeviceClassSubgroup` was added
+
+* `models.ContractModel` was added
+
+* `models.CloudInitiatedRollbackPolicy` was added
+
+* `models.DeviceClassProperties` was added
+
+* `models.DeploymentState` was added
+
+* `models.ImportManifestMetadata` was added
+
+#### `DeviceUpdateClient` was modified
+
+* `listProviders()` was added
+* `beginDeleteUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listNames(java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `beginImportUpdate(java.util.List)` was added
+* `listFiles(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listUpdates(java.lang.String,java.lang.String)` was added
+* `listUpdates()` was added
+* `listVersions(java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `listOperationStatuses()` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listVersions(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `DeviceManagementAsyncClient` was modified
+
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `retryDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUpdateCompliance(java.lang.String)` was added
+* `getDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDevices(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `retryDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroupDeploymentStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String)` was added
+* `startLogCollection(java.lang.String,java.lang.String,models.LogCollection)` was added
+* `getLogCollectionDetailedStatus(java.lang.String,java.lang.String)` was added
+* `getDeploymentStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listGroups(java.lang.String,java.lang.String)` was added
+* `getDeviceClass(java.lang.String,java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLogCollections(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listOperationStatuses(java.lang.String)` was added
+* `getLogCollectionDetailedStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `beginImportDevices(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUpdateComplianceWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listGroups(java.lang.String)` was added
+* `getDeviceClassSubgroupUpdateCompliance(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listHealthOfDevices(java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceModule(java.lang.String,java.lang.String,java.lang.String)` was added
+* `stopDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `createOrUpdateDeployment(java.lang.String,java.lang.String,java.lang.String,models.Deployment)` was added
+* `listGroups(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLogCollections(java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.String,java.lang.Integer)` was added
+* `getDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDevices(java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listBestUpdatesForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getLogCollectionWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUpdateComplianceForGroup(java.lang.String,java.lang.String)` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String,java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `updateDeviceClass(java.lang.String,java.lang.String,models.PatchBody)` was added
+* `getDeviceClassSubgroupUpdateComplianceWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getBestUpdatesForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceModuleWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUpdateComplianceForGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `beginImportDevices(java.lang.String,models.ImportType)` was added
+* `getGroup(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getBestUpdatesForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroupDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String,java.lang.String)` was added
+* `listBestUpdatesForGroup(java.lang.String,java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String)` was added
+* `deleteGroup(java.lang.String,java.lang.String)` was added
+* `startLogCollectionWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listDevices(java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createOrUpdateDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `updateDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getLogCollection(java.lang.String,java.lang.String)` was added
+* `getDevice(java.lang.String,java.lang.String)` was added
+* `listHealthOfDevices(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeviceClass(java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `stopDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getOperationStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `DeviceManagementClient` was modified
+
+* `getDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getLogCollection(java.lang.String,java.lang.String)` was added
+* `getDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getLogCollectionDetailedStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listGroups(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listBestUpdatesForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getOperationStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listBestUpdatesForGroup(java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDevices(java.lang.String)` was added
+* `listHealthOfDevices(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDevice(java.lang.String,java.lang.String)` was added
+* `getDeviceWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateDeployment(java.lang.String,java.lang.String,java.lang.String,models.Deployment)` was added
+* `deleteDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUpdateComplianceForGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String)` was added
+* `deleteGroup(java.lang.String,java.lang.String)` was added
+* `updateDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClass(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String)` was added
+* `getBestUpdatesForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdateComplianceForGroup(java.lang.String,java.lang.String)` was added
+* `getUpdateComplianceWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `getLogCollectionDetailedStatus(java.lang.String,java.lang.String)` was added
+* `getOperationStatusWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeploymentStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroupDeploymentStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLogCollections(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceModuleWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `stopDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroupDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroupUpdateComplianceWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `retryDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listHealthOfDevices(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.String,java.lang.Integer)` was added
+* `listOperationStatuses(java.lang.String)` was added
+* `getLogCollectionWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeviceClass(java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String,java.lang.String)` was added
+* `updateDeviceClass(java.lang.String,java.lang.String,models.PatchBody)` was added
+* `stopDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceModule(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listGroups(java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeploymentStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `beginImportDevices(java.lang.String,models.ImportType)` was added
+* `listDevices(java.lang.String,java.lang.String)` was added
+* `getUpdateCompliance(java.lang.String)` was added
+* `retryDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLogCollections(java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `startLogCollectionWithResponse(java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `beginImportDevices(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listDevices(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `startLogCollection(java.lang.String,java.lang.String,models.LogCollection)` was added
+* `getDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listGroups(java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateDeploymentWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getDeviceClassSubgroupUpdateCompliance(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String)` was added
+* `getGroup(java.lang.String,java.lang.String)` was added
+* `getBestUpdatesForDeviceClassSubgroupWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+
+#### `DeviceUpdateServiceVersion` was modified
+
+* `V2026_06_01` was added
+
+#### `DeviceUpdateAsyncClient` was modified
+
+* `listVersions(java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `listProviders()` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `beginDeleteUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listOperationStatuses()` was added
+* `beginImportUpdate(java.util.List)` was added
+* `listNames(java.lang.String)` was added
+* `listUpdates(java.lang.String,java.lang.String)` was added
+* `listUpdates()` was added
+* `listFiles(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listVersions(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String)` was added
 
 ## 1.0.33 (2026-05-05)
 
