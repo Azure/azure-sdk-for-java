@@ -34,6 +34,49 @@ Nothing else changes.
   version of that dependency released to Maven. Correct any bullets if the
   release branch entry is wrong.
 
+  The release-branch patch entry is frequently wrong here: it often copies the
+  "from" version from an older release instead of the immediately preceding one.
+  To find the correct "from" version, look at the **immediately preceding
+  release entry** in that same `CHANGELOG.md` (the next `## X.Y.Z (DATE)` section
+  below the patch entry, on the release branch, which contains the library's full
+  history). For each dependency bumped in the patch entry, its correct "from"
+  version is the **"to" version recorded for that same dependency in the
+  immediately preceding release entry**. If that preceding entry did not touch
+  the dependency, walk further back to the most recent release that did.
+
+  Concretely, for every dependency-bump bullet in the patch entry, of the form:
+
+  ```
+  - Upgraded `dep` from `A` to version `B`.
+  ```
+
+  1. Find the most recent release entry below it that also upgraded `dep`, and
+     read that entry's "to" version `C`.
+  2. If `A` is not equal to `C`, replace `A` with `C` so the bullet reads
+     `from` `C` `to version` `B`.
+
+  Example — a `2.53.9` patch entry says:
+
+  ```
+  - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
+  ```
+
+  but the preceding `2.53.8` release entry says:
+
+  ```
+  - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+  ```
+
+  Because `2.53.8` already shipped `2.54.1`, the `2.53.9` bullet's "from" must be
+  corrected to `2.54.1`:
+
+  ```
+  - Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+  ```
+
+  Apply this check to **every** dependency bullet, since a single patch entry can
+  list several dependencies each with its own preceding "to" version.
+
 ## Example (before → after)
 
 `main` CHANGELOG top:
