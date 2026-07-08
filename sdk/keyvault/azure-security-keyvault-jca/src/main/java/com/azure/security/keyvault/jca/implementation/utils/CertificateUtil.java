@@ -344,6 +344,27 @@ public final class CertificateUtil {
                 break;
             }
 
+            // Check if a valid issuer for x509Top already exists anywhere in the chain.
+            // We check *validity* (signature + CA capability), not just subject DN equality,
+            // because re-issued or cross-signed intermediates may share the same subject DN
+            // but have a different key and therefore cannot validate x509Top's signature.
+            boolean validIssuerAlreadyInChain = false;
+            for (Certificate cert : chain) {
+                if (cert instanceof X509Certificate) {
+                    X509Certificate candidate = (X509Certificate) cert;
+                    if (candidate.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())
+                        && isValidIssuer(candidate, x509Top)) {
+                        validIssuerAlreadyInChain = true;
+                        LOGGER.log(FINE, "Valid issuer [{0}] already present in chain. Skipping AIA download.",
+                            candidate.getSubjectX500Principal().getName());
+                        break;
+                    }
+                }
+            }
+            if (validIssuerAlreadyInChain) {
+                break;
+            }
+
             // Try to download the issuer certificate via the AIA extension
             X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
             if (issuer == null) {
@@ -369,24 +390,6 @@ public final class CertificateUtil {
                 LOGGER.log(WARNING,
                     "Downloaded certificate cannot verify signature on current certificate or is not a CA. "
                         + "Stopping AIA chain completion.");
-                break;
-            }
-
-            // Avoid duplicates: check if a certificate with the same subject DN is already in the chain
-            // (check both the valid portion and any unplaced/extra certificates appended by orderCertificateChain)
-            boolean isDuplicate = false;
-            for (Certificate cert : chain) {
-                if (cert instanceof X509Certificate) {
-                    X509Certificate x509Cert = (X509Certificate) cert;
-                    if (x509Cert.getSubjectX500Principal().equals(issuer.getSubjectX500Principal())) {
-                        isDuplicate = true;
-                        break;
-                    }
-                }
-            }
-            if (isDuplicate) {
-                LOGGER.log(FINE, "Certificate [{0}] is already in the chain. Stopping AIA download.",
-                    issuer.getSubjectX500Principal().getName());
                 break;
             }
 
