@@ -16,7 +16,10 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -53,7 +56,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * <p>Covers the scenario where a non-exportable certificate stored in Azure Key Vault has
  * only its leaf certificate in the secret bundle. The missing intermediate CA certificates
  * must be downloaded via the CA Issuers URL in the AIA extension of each certificate.
+ *
+ * <p>Tests must run sequentially because they share JVM-global state (system properties and
+ * Mockito static mocks). Parallel execution would cause property-pollution flakiness.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class AiaCertificateChainTest {
 
     private static final String AIA_INTERMEDIATE_URL = "http://aia.example.com/intermediate.crt";
@@ -86,10 +93,21 @@ public class AiaCertificateChainTest {
             intermediateKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
     }
 
+    @BeforeEach
+    void setupClean() {
+        // Ensure each test starts with a clean state - clear the disable property
+        System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+    }
+
     @AfterEach
     void cleanup() {
-        // Ensure the system property is cleared after each test to prevent interference
-        System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        // Ensure the system property is cleared after each test to prevent interference with subsequent tests
+        // Use try-catch to ensure cleanup even if exceptions occur
+        try {
+            System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        } catch (Exception e) {
+            // Silently ignore cleanup failures; the property will be cleared in @BeforeEach of the next test
+        }
     }
 
     // -----------------------------------------------------------------------
