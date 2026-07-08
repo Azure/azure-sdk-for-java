@@ -34,6 +34,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.nio.charset.StandardCharsets;
 
 final class CreateAndTestRouterCommand {
@@ -88,13 +90,36 @@ final class CreateAndTestRouterCommand {
                 System.err.println("--schema-dir is not a directory: " + dir);
                 return 2;
             }
-            try (var stream = Files.list(dir)) {
-                stream
-                    .filter(p -> p.getFileName().toString().endsWith(".json"))
-                    .sorted()
-                    .forEach(p -> aliasToPath.putIfAbsent(
-                        stripExtension(p.getFileName().toString()), p));
+            // Read the outer schema so we know which aliases to look for.
+            // Matches Python's `_discover_inner_from_dir` and .NET's
+            // `DiscoverInnerFromDir`: for every category whose `analyzerId` is
+            // a non-`prebuilt-*` string, find a file whose stem is exactly
+            // `<alias>` or starts with `<alias>_`, and pick the
+            // alphabetically-last match (so `invoice_v2.json` wins over
+            // `invoice_v1.json`).
+            ObjectNode outerPreview;
+            try {
+                outerPreview = CreateAndTestCommand.stripComments(
+                    (ObjectNode) MAPPER.readTree(Files.readString(outerPath)));
+            } catch (IOException | RuntimeException ex) {
+                System.err.println("outer schema is not valid JSON: " + ex.getMessage());
+                return 2;
             }
+            Map<String, Path> resolved = discoverInnerFromDir(outerPreview, dir);
+            if (resolved == null) {
+                return 2;
+            }
+            for (Map.Entry<String, Path> e : resolved.entrySet()) {
+                aliasToPath.putIfAbsent(e.getKey(), e.getValue());
+            }
+            StringBuilder summary = new StringBuilder();
+            for (Map.Entry<String, Path> e : resolved.entrySet()) {
+                if (summary.length() > 0) {
+                    summary.append(", ");
+                }
+                summary.append(e.getKey()).append("=").append(e.getValue().getFileName());
+            }
+            System.out.println("[SCHEMA-DIR] resolved: " + summary);
         }
         if (aliasToPath.isEmpty()) {
             System.err.println("provide at least one --inner-schema or --schema-dir");
@@ -249,6 +274,132 @@ final class CreateAndTestRouterCommand {
 
         System.out.println(summarizeRouted(results));
         return fail == 0 ? 0 : 1;
+    }
+
+    /**
+     * Auto-build {@code {alias: path}} from a directory of inner schema files.
+     * For every category in the outer schema whose {@code analyzerId} is a
+     * non-{@code "prebuilt-"} alias, find a matching JSON file: filename stem
+     * equals the alias, or the stem starts with {@code "<alias>_"}. When
+     * multiple files match, pick the highest-numbered version — so
+     * {@code "invoice_v10.json"} beats {@code "invoice_v9.json"} (plain
+     * alphabetical sort broke as soon as version numbers hit two digits).
+     * If any alias has no match, logs the missing set to stderr and returns
+     * {@code null}.
+     *
+     * <p>Mirrors Python's {@code _discover_inner_from_dir} and .NET's
+     * {@code DiscoverInnerFromDir}.
+     */
+    static Map<String, Path> discoverInnerFromDir(ObjectNode outerSchema, Path schemaDir) throws IOException {
+        List<String> aliases = new ArrayList<>();
+        JsonNode config = outerSchema.get("config");
+        if (config instanceof ObjectNode configObj) {
+            JsonNode cats = configObj.get("contentCategories");
+            if (cats instanceof ObjectNode catsObj) {
+                Iterator<String> it = catsObj.fieldNames();
+                while (it.hasNext()) {
+                    JsonNode entry = catsObj.get(it.next());
+                    if (!(entry instanceof ObjectNode entryObj)) {
+                        continue;
+                    }
+                    JsonNode aliasNode = entryObj.get("analyzerId");
+                    if (aliasNode == null || !aliasNode.isTextual()) {
+                        continue;
+                    }
+                    String alias = aliasNode.asText();
+                    if (alias.startsWith("prebuilt-")) {
+                        continue;
+                    }
+                    aliases.add(alias);
+                }
+            }
+        }
+
+        List<Path> jsonFiles;
+        try (var stream = Files.list(schemaDir)) {
+            jsonFiles = stream
+                .filter(p -> p.getFileName().toString().endsWith(".json"))
+                .toList();
+        }
+
+        Map<String, Path> resolved = new LinkedHashMap<>();
+        List<String> missing = new ArrayList<>();
+        for (String alias : aliases) {
+            List<Path> matches = new ArrayList<>();
+            String prefix = alias + "_";
+            for (Path p : jsonFiles) {
+                String stem = stripExtension(p.getFileName().toString());
+                if (stem.equals(alias) || stem.startsWith(prefix)) {
+                    matches.add(p);
+                }
+            }
+            if (matches.isEmpty()) {
+                missing.add(alias);
+                continue;
+            }
+            // Highest version key wins: v10 > v9 > bare baseline.
+            final String aliasFinal = alias;
+            matches.sort(Comparator.comparing(
+                p -> versionSortKey(stripExtension(p.getFileName().toString()), aliasFinal)));
+            resolved.put(alias, matches.get(matches.size() - 1));
+        }
+
+        if (!missing.isEmpty()) {
+            System.err.println(
+                "--schema-dir could not resolve inner schemas for: " + missing
+                    + ". Looked in " + schemaDir + " for files named <alias>.json or <alias>_*.json.");
+            return null;
+        }
+        return resolved;
+    }
+
+    /**
+     * Sort key for {@code <alias>[_suffix]} filename stems. Higher tuple = newer.
+     *
+     * <ul>
+     *   <li>Group 0: bare {@code <alias>} (no suffix) — oldest baseline.</li>
+     *   <li>Group 1: numeric suffix {@code <alias>_v<N>} or {@code <alias>_<N>}
+     *       — sorted by N as an integer, so v10 beats v9.</li>
+     *   <li>Group 2: any other suffix {@code <alias>_<suffix>} — lexicographic
+     *       tiebreaker.</li>
+     * </ul>
+     *
+     * <p>Package-private so tests can pin the key extractor directly.
+     */
+    static VersionKey versionSortKey(String stem, String alias) {
+        if (stem.equals(alias)) {
+            return new VersionKey(0, 0, "");
+        }
+        // We only get here for stems that already matched the `<alias>_` filter,
+        // so the underscore is guaranteed to be at index alias.length().
+        String suffix = stem.substring(alias.length() + 1);
+        Matcher m = VERSION_SUFFIX.matcher(suffix);
+        if (m.matches()) {
+            try {
+                return new VersionKey(1, Integer.parseInt(m.group(1)), "");
+            } catch (NumberFormatException ignore) {
+                // Fall through to group 2 if the number overflows int.
+            }
+        }
+        return new VersionKey(2, 0, suffix);
+    }
+
+    private static final Pattern VERSION_SUFFIX = Pattern.compile("^v?(\\d+)$");
+
+    /** Sort key tuple for {@link #versionSortKey}. Higher = newer. */
+    record VersionKey(int group, int version, String lex) implements Comparable<VersionKey> {
+        @Override
+        public int compareTo(VersionKey o) {
+            int c = Integer.compare(this.group, o.group);
+            if (c != 0) {
+                return c;
+            }
+            c = Integer.compare(this.version, o.version);
+            if (c != 0) {
+                return c;
+            }
+            return this.lex.compareTo(o.lex);
+        }
     }
 
     /**

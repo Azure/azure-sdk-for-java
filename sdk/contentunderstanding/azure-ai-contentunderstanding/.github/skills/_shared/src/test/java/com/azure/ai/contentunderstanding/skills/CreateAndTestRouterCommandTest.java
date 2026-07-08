@@ -14,14 +14,22 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateAndTestRouterCommandTest {
@@ -256,5 +264,234 @@ class CreateAndTestRouterCommandTest {
         ObjectNode patchedCats = (ObjectNode) wired.patched.get("config").get("contentCategories");
         assertFalse(patchedCats.get("other").has("analyzerId"),
             "'other' bucket must remain analyzerId-less");
+    }
+
+    // -------------------------------------------------------------------
+    // versionSortKey — pure key extractor
+    // -------------------------------------------------------------------
+
+    @Test
+    void versionSortKey_BareAlias_ReturnsGroupZero() {
+        CreateAndTestRouterCommand.VersionKey key
+            = CreateAndTestRouterCommand.versionSortKey("invoice", "invoice");
+        assertEquals(0, key.group());
+        assertEquals(0, key.version());
+    }
+
+    @Test
+    void versionSortKey_VPrefixedNumeric_ReturnsGroupOneWithVersion() {
+        CreateAndTestRouterCommand.VersionKey v9
+            = CreateAndTestRouterCommand.versionSortKey("invoice_v9", "invoice");
+        CreateAndTestRouterCommand.VersionKey v10
+            = CreateAndTestRouterCommand.versionSortKey("invoice_v10", "invoice");
+        assertEquals(1, v9.group());
+        assertEquals(9, v9.version());
+        assertEquals(1, v10.group());
+        assertEquals(10, v10.version());
+        // The whole point of the fix.
+        assertTrue(v10.compareTo(v9) > 0, "v10 must sort higher than v9");
+    }
+
+    @Test
+    void versionSortKey_BareNumeric_ReturnsGroupOneWithVersion() {
+        CreateAndTestRouterCommand.VersionKey key
+            = CreateAndTestRouterCommand.versionSortKey("invoice_42", "invoice");
+        assertEquals(1, key.group());
+        assertEquals(42, key.version());
+    }
+
+    @Test
+    void versionSortKey_NonNumericSuffix_ReturnsGroupTwoWithSuffix() {
+        CreateAndTestRouterCommand.VersionKey key
+            = CreateAndTestRouterCommand.versionSortKey("invoice_draft", "invoice");
+        assertEquals(2, key.group());
+        assertEquals(0, key.version());
+        assertEquals("draft", key.lex());
+    }
+
+    // -------------------------------------------------------------------
+    // discoverInnerFromDir — end-to-end filesystem-touching resolution
+    // -------------------------------------------------------------------
+
+    private static Path makeTempDir() throws IOException {
+        return Files.createTempDirectory("cu-skill-discover-");
+    }
+
+    private static void writeEmptyJson(Path dir, String name) throws IOException {
+        Files.writeString(dir.resolve(name), "{}");
+    }
+
+    private static void deleteRecursive(Path dir) throws IOException {
+        if (!Files.exists(dir)) {
+            return;
+        }
+        try (Stream<Path> paths = Files.walk(dir)) {
+            paths.sorted(Comparator.reverseOrder()).forEach(p -> {
+                try {
+                    Files.deleteIfExists(p);
+                } catch (IOException ignore) {
+                    // best-effort test cleanup
+                }
+            });
+        }
+    }
+
+    private static ObjectNode outerWithAliases(String... aliases) {
+        ObjectNode outer = MAPPER.createObjectNode();
+        outer.put("baseAnalyzerId", "prebuilt-document");
+        ObjectNode config = outer.putObject("config");
+        config.put("enableSegment", true);
+        ObjectNode cats = config.putObject("contentCategories");
+        for (int i = 0; i < aliases.length; i++) {
+            ObjectNode entry = cats.putObject("cat_" + i);
+            entry.put("description", "d");
+            if (aliases[i] != null) {
+                entry.put("analyzerId", aliases[i]);
+            }
+        }
+        return outer;
+    }
+
+    @Test
+    void discoverInnerFromDir_ResolvesExactMatchStem() throws IOException {
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+            writeEmptyJson(dir, "bank_statement.json");
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice", "bank_statement"), dir);
+
+            assertNotNull(resolved);
+            assertEquals(2, resolved.size());
+            assertEquals(dir.resolve("invoice.json"), resolved.get("invoice"));
+            assertEquals(dir.resolve("bank_statement.json"), resolved.get("bank_statement"));
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_PicksNaturalVersionMaxNotAlphabeticalLast() throws IOException {
+        // Regression: the previous implementation `.sorted()` alphabetically
+        // and took the last element as "newest". But '1' < '9' char-by-char,
+        // so `invoice_v10.json` sorted BEFORE `invoice_v9.json` — "alphabetical
+        // last" then picked v9, silently loading the older schema. Copilot
+        // flagged this on the .NET PR (#60394); the natural version sort fix
+        // brings all four languages back in lockstep.
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice_v1.json");
+            writeEmptyJson(dir, "invoice_v2.json");
+            writeEmptyJson(dir, "invoice_v9.json");
+            writeEmptyJson(dir, "invoice_v10.json");
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice"), dir);
+
+            assertNotNull(resolved);
+            assertEquals(dir.resolve("invoice_v10.json"), resolved.get("invoice"),
+                "v10 must beat v9 (natural version order, not alphabetical)");
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_PrefersVersionedOverBareAlias() throws IOException {
+        // Bare `<alias>.json` is group 0 (baseline); versioned files are
+        // group 1 (numeric) or group 2 (other suffix). Any versioned file
+        // beats the bare baseline as "newer".
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+            writeEmptyJson(dir, "invoice_v1.json");
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice"), dir);
+
+            assertNotNull(resolved);
+            assertEquals(dir.resolve("invoice_v1.json"), resolved.get("invoice"));
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_SkipsPrebuiltAliases() throws IOException {
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+            // No prebuilt-invoice.json on disk — it's a service alias.
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice", "prebuilt-invoice"), dir);
+
+            assertNotNull(resolved);
+            assertEquals(1, resolved.size());
+            assertTrue(resolved.containsKey("invoice"));
+            assertFalse(resolved.containsKey("prebuilt-invoice"));
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_SkipsCategoriesWithoutAnalyzerId() throws IOException {
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+
+            // Second element null → classification-only bucket, no schema needed.
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice", null), dir);
+
+            assertNotNull(resolved);
+            assertEquals(1, resolved.size());
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_MissingAliases_ReturnsNull() throws IOException {
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice", "bank_statement", "loan_application"), dir);
+
+            assertNull(resolved, "missing aliases must yield null");
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_UnrelatedJsonFilesIgnored() throws IOException {
+        Path dir = makeTempDir();
+        try {
+            writeEmptyJson(dir, "invoice.json");
+            writeEmptyJson(dir, "notes.json");
+            writeEmptyJson(dir, "settings.json");
+
+            Map<String, Path> resolved = CreateAndTestRouterCommand.discoverInnerFromDir(
+                outerWithAliases("invoice"), dir);
+
+            assertNotNull(resolved);
+            assertEquals(1, resolved.size());
+            assertEquals(dir.resolve("invoice.json"), resolved.get("invoice"));
+        } finally {
+            deleteRecursive(dir);
+        }
+    }
+
+    @Test
+    void discoverInnerFromDir_NonExistentDir_Throws() {
+        Path missing = Path.of(System.getProperty("java.io.tmpdir"),
+            "cu-skill-not-there-" + System.nanoTime());
+        assertThrows(IOException.class,
+            () -> CreateAndTestRouterCommand.discoverInnerFromDir(outerWithAliases("invoice"), missing));
     }
 }
