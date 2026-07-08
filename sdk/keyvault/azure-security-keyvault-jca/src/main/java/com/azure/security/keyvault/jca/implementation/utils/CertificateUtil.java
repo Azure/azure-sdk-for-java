@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -165,10 +166,12 @@ public final class CertificateUtil {
                 x509Certs[i] = (X509Certificate) certificates[i];
             }
 
-            // Create a map of subject DN to certificate for quick lookup
-            Map<String, X509Certificate> subjectToCert = new HashMap<>();
+            // Create a map of subject X500Principal to list of certificates
+            // This preserves multiple certs with the same subject DN (e.g. cross-signed roots)
+            Map<X500Principal, List<X509Certificate>> subjectToCerts = new HashMap<>();
             for (X509Certificate cert : x509Certs) {
-                subjectToCert.put(cert.getSubjectX500Principal().getName(), cert);
+                X500Principal subject = cert.getSubjectX500Principal();
+                subjectToCerts.computeIfAbsent(subject, k -> new ArrayList<>()).add(cert);
             }
 
             // Find the end-entity (leaf) certificate
@@ -176,11 +179,11 @@ public final class CertificateUtil {
             X509Certificate leafCert = null;
             for (X509Certificate cert : x509Certs) {
                 boolean isIssuerOfOther = false;
-                String certSubject = cert.getSubjectX500Principal().getName();
+                X500Principal certSubject = cert.getSubjectX500Principal();
 
                 for (X509Certificate otherCert : x509Certs) {
                     if (cert != otherCert) {
-                        String otherIssuer = otherCert.getIssuerX500Principal().getName();
+                        X500Principal otherIssuer = otherCert.getIssuerX500Principal();
                         if (certSubject.equals(otherIssuer)) {
                             isIssuerOfOther = true;
                             break;
@@ -207,31 +210,37 @@ public final class CertificateUtil {
                 orderedChain.add(current);
 
                 // Find the issuer of the current certificate
-                String issuerDN = current.getIssuerX500Principal().getName();
-                String currentSubjectDN = current.getSubjectX500Principal().getName();
+                X500Principal issuerPrincipal = current.getIssuerX500Principal();
+                X500Principal currentSubjectPrincipal = current.getSubjectX500Principal();
 
                 // Check if this is a self-signed certificate (root CA)
-                if (issuerDN.equals(currentSubjectDN)) {
+                if (issuerPrincipal.equals(currentSubjectPrincipal)) {
                     // Self-signed, we've reached the root
                     break;
                 }
 
                 // Look for the issuer in the certificate chain
-                X509Certificate issuer = subjectToCert.get(issuerDN);
-                if (issuer == null || issuer == current) {
-                    // No issuer found in chain, or circular reference
+                // There may be multiple candidates with the same subject DN (e.g. cross-signed roots)
+                List<X509Certificate> issuerCandidates = subjectToCerts.get(issuerPrincipal);
+                X509Certificate issuer = null;
+
+                if (issuerCandidates != null) {
+                    // Find the first candidate that can actually verify the current certificate's signature
+                    // Use a final reference for use in lambda expressions
+                    final X509Certificate currentCert = current;
+                    issuer = issuerCandidates.stream()
+                        .filter(candidate -> candidate != currentCert)
+                        .filter(candidate -> isValidIssuer(candidate, currentCert))
+                        .findFirst()
+                        .orElse(null);
+                }
+
+                if (issuer == null) {
+                    // No valid issuer found in chain
                     break;
                 }
 
                 current = issuer;
-            }
-
-            // Append any certificates that were not placed in the ordered chain
-            // (e.g. cross-signed roots or unrelated intermediates) so nothing is silently dropped.
-            for (X509Certificate cert : x509Certs) {
-                if (!orderedChain.contains(cert)) {
-                    orderedChain.add(cert);
-                }
             }
 
             // Convert back to Certificate array
