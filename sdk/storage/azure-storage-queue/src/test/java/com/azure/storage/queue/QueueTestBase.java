@@ -41,15 +41,26 @@ public class QueueTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(
-                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    // The TypeSpec-generated protocol layer carries the queue name in the client base URL and addresses
+                    // queue-scoped operations with query-only path templates (e.g. @Get("?comp=metadata")). azure-core's
+                    // RestProxy assembles those into '.../{queue}/?comp=metadata' (a slash before the query), whereas the
+                    // AutoRest recordings captured '.../{queue}?comp=metadata'. The trailing slash is semantically
+                    // insignificant to the Queue service (LIVE behavior is identical), so normalize it away for playback
+                    // matching rather than treating it as a behavior change.
+                    new TestProxySanitizer("(?<s>/)[?]comp=", "", TestProxySanitizerType.URL).setGroupForReplace("s")));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
+        // The 'Accept' header is excluded from matching because the TypeSpec-generated protocol layer omits it (sending
+        // the default '*/*') on operations without a response body, whereas the AutoRest recordings captured
+        // 'application/xml'. This mirrors the .NET migration, which added Accept to its LegacyExcludedHeaders.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Arrays
-            .asList(new CustomMatcher().setQueryOrderingIgnored(true).setIgnoredQueryParameters(Arrays.asList("sv"))));
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setQueryOrderingIgnored(true)
+            .setIgnoredQueryParameters(Arrays.asList("sv"))
+            .setExcludedHeaders(Arrays.asList("Accept"))));
     }
 
     /**
