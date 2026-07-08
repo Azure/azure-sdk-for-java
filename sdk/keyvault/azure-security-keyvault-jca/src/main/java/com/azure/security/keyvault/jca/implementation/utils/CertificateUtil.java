@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 public final class CertificateUtil {
@@ -268,15 +269,21 @@ public final class CertificateUtil {
 
             // Chain is complete once the top cert is self-signed (root CA)
             if (x509Top.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())) {
+                LOGGER.log(INFO, "Certificate chain is complete. Root CA: {0}",
+                    x509Top.getSubjectX500Principal().getName());
                 break;
             }
 
             // Try to download the issuer certificate via the AIA extension
             X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
             if (issuer == null) {
+                LOGGER.log(INFO, "Could not download issuer certificate for [{0}] via AIA extension. "
+                    + "Certificate chain may be incomplete.", x509Top.getSubjectX500Principal().getName());
                 break;
             }
 
+            LOGGER.log(INFO, "Downloaded intermediate CA certificate via AIA: {0}",
+                issuer.getSubjectX500Principal().getName());
             chain.add(issuer);
         }
 
@@ -315,8 +322,10 @@ public final class CertificateUtil {
                     continue; // Only HTTP/HTTPS URLs are supported
                 }
 
+                LOGGER.log(INFO, "Downloading issuer certificate from AIA URL: {0}", url);
                 byte[] certBytes = HttpUtil.getBytes(url);
                 if (certBytes == null) {
+                    LOGGER.log(WARNING, "Failed to download issuer certificate from AIA URL: {0}", url);
                     continue;
                 }
 
