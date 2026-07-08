@@ -275,14 +275,14 @@ public final class CertificateUtil {
      * Without the intermediate CA certificates, jarsigner cannot build a valid PKIX path to a trusted
      * root CA, producing "PKIX path building failed" warnings on verify.
      *
-     * <p>The method walks up the chain starting from the current top certificate. If that certificate
-     * is not self-signed (i.e. it is not a root CA) and its issuer is not already present in the chain,
-     * it fetches the issuer certificate from the {@code caIssuers} URL in the certificate's AIA extension.
+     * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
+     * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted
+     * immediately after the current end of the valid chain (before any unplaced/extra certificates).
      * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
      * the safety download limit is reached.
      *
-     * @param orderedCertificates certificate array already ordered leaf → intermediate(s) → root
-     * @return the (potentially extended) certificate array with missing intermediates appended
+     * @param orderedCertificates certificate array with contiguous issuer path + any unplaced certs appended
+     * @return the (potentially extended) certificate array with missing intermediates inserted in the valid chain
      */
     static Certificate[] completeChainViaAia(Certificate[] orderedCertificates) {
         if (orderedCertificates == null || orderedCertificates.length == 0) {
@@ -293,11 +293,19 @@ public final class CertificateUtil {
         int maxDownloads = 10; // Safety limit to prevent infinite loops
 
         while (maxDownloads-- > 0) {
-            Certificate top = chain.get(chain.size() - 1);
-            if (!(top instanceof X509Certificate)) {
+            // Find the end of the valid chain (continuous issuer path leaf → issuer → ...).
+            // This excludes any extra/unplaced certificates appended at the end.
+            int validChainEnd = findValidChainEnd(chain);
+            if (validChainEnd < 0) {
+                // Empty chain, stop
                 break;
             }
-            X509Certificate x509Top = (X509Certificate) top;
+
+            Certificate topOfValidChain = chain.get(validChainEnd);
+            if (!(topOfValidChain instanceof X509Certificate)) {
+                break;
+            }
+            X509Certificate x509Top = (X509Certificate) topOfValidChain;
 
             // Chain is complete once the top cert is actually self-signed (verified by signature)
             if (isSelfSignedCertificate(x509Top)) {
@@ -334,20 +342,29 @@ public final class CertificateUtil {
                 break;
             }
 
-            // Avoid duplicates: a cert with the same subject is already in the chain
-            boolean isDuplicate = chain.stream()
-                .filter(c -> c instanceof X509Certificate)
-                .anyMatch(
-                    c -> ((X509Certificate) c).getSubjectX500Principal().equals(issuer.getSubjectX500Principal()));
+            // Avoid duplicates: check if an existing cert can actually verify the current cert's signature
+            boolean isDuplicate = false;
+            for (int i = 0; i <= validChainEnd; i++) {
+                Certificate cert = chain.get(i);
+                if (cert instanceof X509Certificate) {
+                    X509Certificate x509Cert = (X509Certificate) cert;
+                    if (x509Cert.getSubjectX500Principal().equals(issuer.getSubjectX500Principal())
+                        && isValidIssuer(x509Cert, issuer)) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
             if (isDuplicate) {
-                LOGGER.log(FINE, "Certificate [{0}] is already in the chain. Stopping AIA download.",
+                LOGGER.log(FINE, "Certificate [{0}] is already in the valid chain. Stopping AIA download.",
                     issuer.getSubjectX500Principal().getName());
                 break;
             }
 
             LOGGER.log(FINE, "Downloaded intermediate CA certificate via AIA: {0}",
                 issuer.getSubjectX500Principal().getName());
-            chain.add(issuer);
+            // Insert the downloaded issuer immediately after the valid chain end, before any extra certs
+            chain.add(validChainEnd + 1, issuer);
         }
 
         Certificate[] result = chain.toArray(new Certificate[0]);
@@ -358,6 +375,67 @@ public final class CertificateUtil {
         }
 
         return result;
+    }
+
+    /**
+     * Finds the end position of the valid (contiguous) issuer chain.
+     * Starting from position 0, walks the chain as long as each certificate is the issuer of the next.
+     * Stops at the first position where the issuer relationship breaks or at a self-signed certificate.
+     *
+     * @param chain the certificate chain
+     * @return the index of the last certificate in the valid chain, or -1 if empty
+     */
+    private static int findValidChainEnd(List<Certificate> chain) {
+        if (chain == null || chain.isEmpty()) {
+            return -1;
+        }
+
+        int pos = 0;
+        while (pos < chain.size()) {
+            Certificate cert = chain.get(pos);
+            if (!(cert instanceof X509Certificate)) {
+                // Stop at non-X509 certificate
+                break;
+            }
+
+            X509Certificate x509Cert = (X509Certificate) cert;
+
+            // If this is the last certificate, it's the end of the valid chain
+            if (pos == chain.size() - 1) {
+                return pos;
+            }
+
+            // Check if the next certificate is the issuer of this one
+            Certificate nextCert = chain.get(pos + 1);
+            if (!(nextCert instanceof X509Certificate)) {
+                // Next cert is not X509, stop here
+                return pos;
+            }
+
+            X509Certificate nextX509Cert = (X509Certificate) nextCert;
+            X500Principal issuerPrincipal = x509Cert.getIssuerX500Principal();
+            X500Principal nextSubjectPrincipal = nextX509Cert.getSubjectX500Principal();
+
+            if (!issuerPrincipal.equals(nextSubjectPrincipal)) {
+                // Issuer relationship broken, stop here
+                return pos;
+            }
+
+            // Verify that next cert can actually sign this one
+            if (!isValidIssuer(nextX509Cert, x509Cert)) {
+                // Next cert cannot validate this cert's signature, stop here
+                return pos;
+            }
+
+            // If this cert is self-signed, it's the end of the chain
+            if (isSelfSignedCertificate(x509Cert)) {
+                return pos;
+            }
+
+            pos++;
+        }
+
+        return pos > 0 ? pos - 1 : 0;
     }
 
     /**
