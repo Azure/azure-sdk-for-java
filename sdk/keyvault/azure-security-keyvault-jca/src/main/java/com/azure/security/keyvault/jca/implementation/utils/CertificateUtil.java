@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.pkcs.ContentInfo;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.asn1.x509.AccessDescription;
+import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.pkcs.PKCS12PfxPdu;
 import org.bouncycastle.pkcs.PKCS12SafeBag;
@@ -25,13 +31,18 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static java.util.logging.Level.WARNING;
+
 public final class CertificateUtil {
+    private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class.getName());
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
@@ -46,7 +57,12 @@ public final class CertificateUtil {
 
         // Ensure certificates are in the correct order: end-entity (leaf) → intermediate(s) → root CA
         // This is required for jarsigner and other Java security tools
-        return orderCertificateChain(certificates);
+        certificates = orderCertificateChain(certificates);
+        // Complete the chain by downloading any missing intermediate CA certificates via the AIA extension.
+        // This handles the case where only the leaf certificate was stored in Azure Key Vault
+        // (e.g. a non-exportable certificate where the caller only merged the leaf cert during CSR completion).
+        certificates = completeChainViaAia(certificates);
+        return certificates;
     }
 
     private static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
@@ -215,6 +231,117 @@ public final class CertificateUtil {
             // If any error occurs during ordering, return original order
             return certificates;
         }
+    }
+
+    /**
+     * Completes an incomplete certificate chain by downloading missing intermediate CA certificates
+     * using the AIA (Authority Information Access) extension embedded in each certificate.
+     *
+     * <p>This is needed when Azure Key Vault's secrets endpoint returns only the leaf certificate
+     * (e.g. when the caller merged only the leaf cert during CSR completion for a non-exportable key).
+     * Without the intermediate CA certificates, jarsigner cannot build a valid PKIX path to a trusted
+     * root CA, producing "PKIX path building failed" warnings on verify.
+     *
+     * <p>The method walks up the chain starting from the current top certificate. If that certificate
+     * is not self-signed (i.e. it is not a root CA) and its issuer is not already present in the chain,
+     * it fetches the issuer certificate from the {@code caIssuers} URL in the certificate's AIA extension.
+     * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
+     * the safety download limit is reached.
+     *
+     * @param orderedCertificates certificate array already ordered leaf → intermediate(s) → root
+     * @return the (potentially extended) certificate array with missing intermediates appended
+     */
+    static Certificate[] completeChainViaAia(Certificate[] orderedCertificates) {
+        if (orderedCertificates == null || orderedCertificates.length == 0) {
+            return orderedCertificates;
+        }
+
+        List<Certificate> chain = new ArrayList<>(Arrays.asList(orderedCertificates));
+        int maxDownloads = 10; // Safety limit to prevent infinite loops
+
+        while (maxDownloads-- > 0) {
+            Certificate top = chain.get(chain.size() - 1);
+            if (!(top instanceof X509Certificate)) {
+                break;
+            }
+            X509Certificate x509Top = (X509Certificate) top;
+
+            // Chain is complete once the top cert is self-signed (root CA)
+            if (x509Top.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())) {
+                break;
+            }
+
+            // Try to download the issuer certificate via the AIA extension
+            X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
+            if (issuer == null) {
+                break;
+            }
+
+            chain.add(issuer);
+        }
+
+        return chain.toArray(new Certificate[0]);
+    }
+
+    /**
+     * Downloads the issuer certificate for the given certificate using the CA Issuers URL
+     * found in the certificate's AIA (Authority Information Access) extension.
+     *
+     * @param cert the certificate whose issuer should be downloaded
+     * @return the issuer {@link X509Certificate}, or {@code null} if it cannot be retrieved
+     */
+    static X509Certificate downloadIssuerCertificateFromAia(X509Certificate cert) {
+        try {
+            byte[] aiaValue = cert.getExtensionValue(Extension.authorityInfoAccess.getId());
+            if (aiaValue == null) {
+                return null;
+            }
+
+            // getExtensionValue() wraps the value in an OCTET STRING; unwrap it first
+            ASN1OctetString octStr = ASN1OctetString.getInstance(aiaValue);
+            AuthorityInformationAccess aia = AuthorityInformationAccess.getInstance(octStr.getOctets());
+
+            for (AccessDescription ad : aia.getAccessDescriptions()) {
+                // id-ad-caIssuers (1.3.6.1.5.5.7.48.2) points to the issuer's certificate
+                if (!X509ObjectIdentifiers.id_ad_caIssuers.equals(ad.getAccessMethod())) {
+                    continue;
+                }
+                GeneralName location = ad.getAccessLocation();
+                if (location.getTagNo() != GeneralName.uniformResourceIdentifier) {
+                    continue;
+                }
+                String url = location.getName().toString();
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    continue; // Only HTTP/HTTPS URLs are supported
+                }
+
+                byte[] certBytes = HttpUtil.getBytes(url);
+                if (certBytes == null) {
+                    continue;
+                }
+
+                CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                try {
+                    // CA certs from AIA are typically DER-encoded
+                    Certificate downloaded = cf.generateCertificate(new ByteArrayInputStream(certBytes));
+                    if (downloaded instanceof X509Certificate) {
+                        return (X509Certificate) downloaded;
+                    }
+                } catch (CertificateException e) {
+                    // Fall back to PEM format
+                    String pem = new String(certBytes, StandardCharsets.UTF_8);
+                    if (pem.contains(BEGIN_CERTIFICATE)) {
+                        Certificate[] pemCerts = loadCertificatesFromSecretBundleValuePem(pem);
+                        if (pemCerts.length > 0 && pemCerts[0] instanceof X509Certificate) {
+                            return (X509Certificate) pemCerts[0];
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(WARNING, "Failed to download issuer certificate from AIA extension.", e);
+        }
+        return null;
     }
 
 }

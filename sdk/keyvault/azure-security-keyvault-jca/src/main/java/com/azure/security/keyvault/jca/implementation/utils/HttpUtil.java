@@ -78,6 +78,33 @@ public final class HttpUtil {
         return result;
     }
 
+    /**
+     * Performs an HTTP GET request and returns the raw response body as a byte array.
+     * Used primarily for downloading DER-encoded certificates from CA Issuers URLs in
+     * AIA (Authority Information Access) certificate extensions.
+     *
+     * @param url the URL to fetch
+     * @return the response body bytes, or {@code null} if the request fails or returns non-2xx
+     */
+    public static byte[] getBytes(String url) {
+        try (CloseableHttpClient client = buildClient()) {
+            HttpGet httpGet = new HttpGet(url);
+            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            return client.execute(httpGet, (ClassicHttpResponse response) -> {
+                int status = response.getCode();
+                if (status >= 200 && status < 300) {
+                    HttpEntity entity = response.getEntity();
+                    return entity != null ? EntityUtils.toByteArray(entity) : null;
+                }
+                LOGGER.log(WARNING, "HTTP GET returned status {0} for URL: {1}", new Object[] { status, url });
+                return null;
+            });
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET (bytes) request for URL: " + url, e);
+            return null;
+        }
+    }
+
     public static String post(String uri, String body, String contentType) {
         return post(uri, null, body, contentType);
     }
