@@ -197,7 +197,6 @@ public final class CertificateUtil {
                 if (!isIssuerOfOther) {
                     // This cert is not the issuer of any other cert in the chain
                     X500Principal issuerPrincipal = cert.getIssuerX500Principal();
-                    X500Principal subjectPrincipal = cert.getSubjectX500Principal();
 
                     if (!isSelfSignedCertificate(cert)) {
                         // Non-self-signed cert: check if issuer exists in the chain AND can verify signature
@@ -245,7 +244,6 @@ public final class CertificateUtil {
 
                 // Find the issuer of the current certificate
                 X500Principal issuerPrincipal = current.getIssuerX500Principal();
-                X500Principal currentSubjectPrincipal = current.getSubjectX500Principal();
 
                 // Check if this is actually a self-signed certificate (root CA) by verifying signature
                 if (isSelfSignedCertificate(current)) {
@@ -401,8 +399,8 @@ public final class CertificateUtil {
                 continue;
             }
 
-            // Try to download the issuer certificate via the AIA extension
-            // Only decrement maxDownloads when attempting an actual HTTP download
+            // Try to download the issuer certificate via the AIA extension.
+            // Decrement maxDownloads for each attempted issuer resolution to avoid infinite loops.
             if (--maxDownloads < 0) {
                 LOGGER.log(FINE, "Reached maximum AIA download attempts ({0}). Certificate chain may be incomplete.",
                     10);
