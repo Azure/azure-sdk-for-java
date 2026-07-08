@@ -47,7 +47,7 @@ public final class CertificateUtil {
     private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class.getName());
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
-    private static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disableAiaDownload";
+    private static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
 
     public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
@@ -296,7 +296,7 @@ public final class CertificateUtil {
      * the safety download limit is reached.
      *
      * <p><strong>Security Note:</strong> AIA downloading can trigger outbound HTTP(S) requests to URLs
-     * embedded in certificates. Set the system property {@code azure.keyvault.jca.disableAiaDownload=true}
+     * embedded in certificates. Set the system property {@code azure.keyvault.jca.disable-aia-download=true}
      * to disable AIA chain completion in locked-down environments or when loading untrusted certificates.
      *
      * @param orderedCertificates certificate array with contiguous issuer path + any unplaced certs appended
