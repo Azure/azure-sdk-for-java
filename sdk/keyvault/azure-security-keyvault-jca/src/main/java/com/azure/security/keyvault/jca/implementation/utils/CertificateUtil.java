@@ -342,14 +342,13 @@ public final class CertificateUtil {
                 break;
             }
 
-            // Avoid duplicates: check if an existing cert can actually verify the current cert's signature
+            // Avoid duplicates: check if a certificate with the same subject DN is already in the valid chain
             boolean isDuplicate = false;
             for (int i = 0; i <= validChainEnd; i++) {
                 Certificate cert = chain.get(i);
                 if (cert instanceof X509Certificate) {
                     X509Certificate x509Cert = (X509Certificate) cert;
-                    if (x509Cert.getSubjectX500Principal().equals(issuer.getSubjectX500Principal())
-                        && isValidIssuer(x509Cert, issuer)) {
+                    if (x509Cert.getSubjectX500Principal().equals(issuer.getSubjectX500Principal())) {
                         isDuplicate = true;
                         break;
                     }
