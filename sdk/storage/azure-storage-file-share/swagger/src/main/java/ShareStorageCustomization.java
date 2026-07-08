@@ -34,8 +34,8 @@ public class ShareStorageCustomization extends Customization {
 
         customization.getClass("com.azure.storage.file.share.models", "NfsFileType")
             .customizeAst(ast -> ast.getClassByName("NfsFileType").ifPresent(clazz -> clazz.setJavadocComment(
-                "Type of the file.\n\n"
-                    + "This enumeration represents the type of a file item in Azure Files shares. "
+                "Type of the file.\n<p>\n"
+                    + "This enumeration represents the type of file item in Azure Files shares. "
                     + "The file type is populated for all item types in both SMB and NFS-enabled shares.\n\n"
                     + "@see ShareFileItem#getFileType()")));
 
