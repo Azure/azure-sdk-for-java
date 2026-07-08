@@ -343,7 +343,7 @@ public final class CertificateUtil {
         List<Certificate> chain = new ArrayList<>(Arrays.asList(orderedCertificates));
         int maxDownloads = 10; // Safety limit to prevent infinite loops
 
-        while (maxDownloads-- > 0) {
+        while (true) {
             // Find the end of the valid chain (continuous issuer path leaf → issuer → ...).
             // This excludes any extra/unplaced certificates appended at the end.
             int validChainEnd = findValidChainEnd(chain);
@@ -402,6 +402,13 @@ public final class CertificateUtil {
             }
 
             // Try to download the issuer certificate via the AIA extension
+            // Only decrement maxDownloads when attempting an actual HTTP download
+            if (--maxDownloads < 0) {
+                LOGGER.log(FINE, "Reached maximum AIA download attempts ({0}). Certificate chain may be incomplete.",
+                    10);
+                break;
+            }
+
             X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
             if (issuer == null) {
                 LOGGER.log(FINE,
