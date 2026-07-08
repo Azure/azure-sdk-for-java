@@ -236,7 +236,14 @@ public final class CertificateUtil {
             }
 
             // Convert back to Certificate array
-            return orderedChain.toArray(new Certificate[0]);
+            Certificate[] result = orderedChain.toArray(new Certificate[0]);
+
+            // Log the ordered chain for debugging
+            if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+                logCertificateChain("Certificate chain after ordering", result);
+            }
+
+            return result;
 
         } catch (Exception e) {
             // If any error occurs during ordering, return original order
@@ -320,7 +327,53 @@ public final class CertificateUtil {
             chain.add(issuer);
         }
 
-        return chain.toArray(new Certificate[0]);
+        Certificate[] result = chain.toArray(new Certificate[0]);
+
+        // Log the completed chain for debugging
+        if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+            logCertificateChain("Certificate chain after AIA completion", result);
+        }
+
+        return result;
+    }
+
+    /**
+     * Logs the certificate chain for debugging purposes.
+     *
+     * @param label a descriptive label for the log
+     * @param certificates the certificate array to log
+     */
+    private static void logCertificateChain(String label, Certificate[] certificates) {
+        if (certificates == null || certificates.length == 0) {
+            LOGGER.log(FINE, "{0}: empty chain", label);
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(label).append(" [").append(certificates.length).append(" certs]:\n");
+
+        for (int i = 0; i < certificates.length; i++) {
+            if (certificates[i] instanceof X509Certificate) {
+                X509Certificate x509 = (X509Certificate) certificates[i];
+                String subject = x509.getSubjectX500Principal().getName();
+                String issuer = x509.getIssuerX500Principal().getName();
+                boolean isSelfSigned = subject.equals(issuer);
+
+                sb.append("  [")
+                    .append(i)
+                    .append("] Subject: ")
+                    .append(subject)
+                    .append(" | Issuer: ")
+                    .append(issuer)
+                    .append(" | Self-Signed: ")
+                    .append(isSelfSigned)
+                    .append("\n");
+            } else {
+                sb.append("  [").append(i).append("] Non-X509 certificate\n");
+            }
+        }
+
+        LOGGER.log(FINE, sb.toString());
     }
 
     /**
