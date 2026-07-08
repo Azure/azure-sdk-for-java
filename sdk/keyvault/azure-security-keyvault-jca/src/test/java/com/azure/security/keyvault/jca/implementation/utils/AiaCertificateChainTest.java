@@ -14,7 +14,6 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,13 +71,9 @@ public class AiaCertificateChainTest {
     private static X509Certificate rootCert;
     private static X509Certificate intermediateCert;
     private static X509Certificate leafCert;
-    // Original value of the system property before this test class runs; restored in @AfterAll.
-    private static String originalDisableAiaProperty;
 
     @BeforeAll
     static void generateTestChain() throws Exception {
-        originalDisableAiaProperty = System.getProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
-
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(2048);
 
@@ -106,18 +101,8 @@ public class AiaCertificateChainTest {
 
     @AfterEach
     void cleanup() {
-        // Clear the property after each test; the original JVM value is restored in @AfterAll
+        // Clear the property after each test to prevent interference with subsequent tests
         System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
-    }
-
-    @AfterAll
-    static void restoreSystemProperty() {
-        // Restore the property to whatever it was before this test class ran
-        if (originalDisableAiaProperty != null) {
-            System.setProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY, originalDisableAiaProperty);
-        } else {
-            System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
-        }
     }
 
     // -----------------------------------------------------------------------
