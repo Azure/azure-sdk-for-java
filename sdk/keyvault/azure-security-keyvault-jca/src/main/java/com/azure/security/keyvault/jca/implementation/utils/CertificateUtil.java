@@ -225,6 +225,14 @@ public final class CertificateUtil {
                 current = issuer;
             }
 
+            // Append any certificates that were not placed in the ordered chain
+            // (e.g. cross-signed roots or unrelated intermediates) so nothing is silently dropped.
+            for (X509Certificate cert : x509Certs) {
+                if (!orderedChain.contains(cert)) {
+                    orderedChain.add(cert);
+                }
+            }
+
             // Convert back to Certificate array
             return orderedChain.toArray(new Certificate[0]);
 
@@ -279,6 +287,27 @@ public final class CertificateUtil {
             if (issuer == null) {
                 LOGGER.log(INFO, "Could not download issuer certificate for [{0}] via AIA extension. "
                     + "Certificate chain may be incomplete.", x509Top.getSubjectX500Principal().getName());
+                break;
+            }
+
+            // Validate: the downloaded cert's subject must match the expected issuer DN
+            String expectedIssuerDN = x509Top.getIssuerX500Principal().getName();
+            if (!issuer.getSubjectX500Principal().getName().equals(expectedIssuerDN)) {
+                LOGGER.log(WARNING,
+                    "Downloaded certificate subject [{0}] does not match expected issuer DN [{1}]. "
+                        + "Ignoring and stopping AIA chain completion.",
+                    new Object[] { issuer.getSubjectX500Principal().getName(), expectedIssuerDN });
+                break;
+            }
+
+            // Avoid duplicates: a cert with the same subject is already in the chain
+            boolean isDuplicate = chain.stream()
+                .filter(c -> c instanceof X509Certificate)
+                .anyMatch(
+                    c -> ((X509Certificate) c).getSubjectX500Principal().equals(issuer.getSubjectX500Principal()));
+            if (isDuplicate) {
+                LOGGER.log(INFO, "Certificate [{0}] is already in the chain. Stopping AIA download.",
+                    issuer.getSubjectX500Principal().getName());
                 break;
             }
 

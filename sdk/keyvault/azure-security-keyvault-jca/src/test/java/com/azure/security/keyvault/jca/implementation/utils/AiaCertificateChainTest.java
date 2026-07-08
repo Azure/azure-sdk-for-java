@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -56,6 +57,8 @@ public class AiaCertificateChainTest {
 
     private static final String AIA_INTERMEDIATE_URL = "http://aia.example.com/intermediate.crt";
     private static final String AIA_ROOT_URL = "http://aia.example.com/root.crt";
+    // Monotonic counter avoids duplicate serial numbers when certificates are created back-to-back
+    private static final AtomicLong SERIAL_COUNTER = new AtomicLong(1);
 
     private static X509Certificate rootCert;
     private static X509Certificate intermediateCert;
@@ -282,7 +285,7 @@ public class AiaCertificateChainTest {
         X500Name issuer = new X500Name(issuerDn);
         Date notBefore = new Date(System.currentTimeMillis() - 86_400_000L);
         Date notAfter = new Date(System.currentTimeMillis() + 86_400_000L * 365);
-        BigInteger serial = BigInteger.valueOf(System.currentTimeMillis());
+        BigInteger serial = BigInteger.valueOf(SERIAL_COUNTER.getAndIncrement());
 
         JcaX509v3CertificateBuilder builder
             = new JcaX509v3CertificateBuilder(issuer, serial, notBefore, notAfter, subject, subjectPublicKey);
