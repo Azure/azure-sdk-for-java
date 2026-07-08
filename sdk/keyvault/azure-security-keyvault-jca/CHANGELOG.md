@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. The fix downloads missing intermediate CA certificates at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 
 ### Other Changes
 
