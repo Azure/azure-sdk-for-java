@@ -178,6 +178,8 @@ public final class CertificateUtil {
             // Prioritize: a cert whose issuer exists in the chain (true end-entity), otherwise not an issuer of others
             // Avoid: selecting a self-signed root as leaf if a true leaf with missing issuer exists
             X509Certificate leafCert = null;
+            X509Certificate selfSignedFallback = null;
+
             for (X509Certificate cert : x509Certs) {
                 boolean isIssuerOfOther = false;
                 X500Principal certSubject = cert.getSubjectX500Principal();
@@ -194,20 +196,31 @@ public final class CertificateUtil {
 
                 if (!isIssuerOfOther) {
                     // This cert is not the issuer of any other cert in the chain
-                    // Check if its issuer exists in the chain
                     X500Principal issuerPrincipal = cert.getIssuerX500Principal();
-                    List<X509Certificate> potentialIssuers = subjectToCerts.get(issuerPrincipal);
+                    X500Principal subjectPrincipal = cert.getSubjectX500Principal();
+                    boolean isSelfSigned = issuerPrincipal.equals(subjectPrincipal);
 
-                    if (potentialIssuers != null) {
-                        // Issuer is in the chain, this is a true leaf/end-entity
-                        leafCert = cert;
-                        break;
-                    } else if (leafCert == null) {
-                        // No issuer in chain, but remember this as fallback
-                        // (e.g., a true leaf with missing intermediate, or a self-signed root)
-                        leafCert = cert;
+                    if (!isSelfSigned) {
+                        // Non-self-signed cert: check if issuer exists in the chain
+                        List<X509Certificate> potentialIssuers = subjectToCerts.get(issuerPrincipal);
+                        if (potentialIssuers != null) {
+                            // Issuer is in the chain, this is a true leaf/end-entity - best choice
+                            leafCert = cert;
+                            break;
+                        } else if (leafCert == null) {
+                            // No issuer in chain and not self-signed = true leaf with missing intermediate
+                            leafCert = cert;
+                        }
+                    } else if (selfSignedFallback == null) {
+                        // Self-signed with no issuer in chain = likely a root, remember as fallback
+                        selfSignedFallback = cert;
                     }
                 }
+            }
+
+            // Use fallback (self-signed root) only if no non-self-signed leaf was found
+            if (leafCert == null) {
+                leafCert = selfSignedFallback;
             }
 
             if (leafCert == null) {

@@ -168,4 +168,42 @@ public class CertificateOrderTest {
         result = CertificateUtil.orderCertificateChain(singleCert);
         assertEquals(1, result.length, "Should return single certificate unchanged");
     }
+
+    /**
+     * Regression test: When input is [root, leaf] (incomplete chain),
+     * orderCertificateChain should not misidentify the root as the leaf.
+     * Previously, a self-signed root appearing before the leaf could be
+     * incorrectly selected as the leaf because its issuer (itself) appears
+     * in the chain, breaking leaf selection early and returning [root, leaf]
+     * instead of [leaf, root].
+     */
+    @Test
+    public void testOrderCertificateChainIncompleteRootFirst() throws CertificateException, IOException,
+        KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+        // Load full chain from PEM (leaf, intermediate, root)
+        String fullChainPem = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
+            StandardCharsets.UTF_8);
+
+        Certificate[] fullChain = CertificateUtil.loadCertificatesFromSecretBundleValue(fullChainPem);
+        assertEquals(3, fullChain.length, "Full chain should have 3 certificates");
+
+        // Create incomplete chain: [root, leaf] (missing intermediate)
+        Certificate[] incompleteChain = new Certificate[] { fullChain[2], fullChain[0] };
+
+        // Order the incomplete chain
+        Certificate[] result = CertificateUtil.orderCertificateChain(incompleteChain);
+
+        // Verify the leaf (fullChain[0]) is now first, not the root
+        X509Certificate leafCert = (X509Certificate) fullChain[0];
+        X509Certificate rootCert = (X509Certificate) fullChain[2];
+        X509Certificate resultFirst = (X509Certificate) result[0];
+        X509Certificate resultSecond = (X509Certificate) result[1];
+
+        assertEquals(leafCert.getSubjectX500Principal(), resultFirst.getSubjectX500Principal(),
+            "First cert should be the leaf");
+        assertEquals(rootCert.getSubjectX500Principal(), resultSecond.getSubjectX500Principal(),
+            "Second cert should be the root");
+    }
 }
