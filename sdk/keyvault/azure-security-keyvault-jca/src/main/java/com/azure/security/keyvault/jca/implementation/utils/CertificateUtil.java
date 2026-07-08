@@ -41,7 +41,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
-import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 public final class CertificateUtil {
@@ -284,8 +283,8 @@ public final class CertificateUtil {
             }
             X509Certificate x509Top = (X509Certificate) top;
 
-            // Chain is complete once the top cert is self-signed (root CA)
-            if (x509Top.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())) {
+            // Chain is complete once the top cert is actually self-signed (verified by signature)
+            if (isSelfSignedCertificate(x509Top)) {
                 LOGGER.log(FINE, "Certificate chain is complete. Root CA: {0}",
                     x509Top.getSubjectX500Principal().getName());
                 break;
@@ -300,7 +299,7 @@ public final class CertificateUtil {
             }
 
             // Validate: the downloaded cert's subject must match the expected issuer DN
-            // Compare X500Principal objects directly for correct DN equality regardless of formatting
+            // AND verify that it can actually sign the current certificate (issuer validation)
             X500Principal expectedIssuerPrincipal = x509Top.getIssuerX500Principal();
             X500Principal issuerPrincipal = issuer.getSubjectX500Principal();
             if (!issuerPrincipal.equals(expectedIssuerPrincipal)) {
@@ -308,6 +307,14 @@ public final class CertificateUtil {
                     "Downloaded certificate subject [{0}] does not match expected issuer DN [{1}]. "
                         + "Ignoring and stopping AIA chain completion.",
                     new Object[] { issuerPrincipal.getName(), expectedIssuerPrincipal.getName() });
+                break;
+            }
+
+            // Verify that the downloaded certificate is a CA and can verify the current certificate's signature
+            if (!isValidIssuer(issuer, x509Top)) {
+                LOGGER.log(WARNING,
+                    "Downloaded certificate cannot verify signature on current certificate or is not a CA. "
+                        + "Stopping AIA chain completion.");
                 break;
             }
 
@@ -374,6 +381,56 @@ public final class CertificateUtil {
         }
 
         LOGGER.log(FINE, sb.toString());
+    }
+
+    /**
+     * Verifies whether a certificate is self-signed (signed by its own private key).
+     * This is checked by verifying the certificate's signature using its own public key.
+     *
+     * @param cert the certificate to verify
+     * @return true if the certificate is self-signed, false otherwise
+     */
+    private static boolean isSelfSignedCertificate(X509Certificate cert) {
+        // First check: subject and issuer must be the same
+        if (!cert.getSubjectX500Principal().equals(cert.getIssuerX500Principal())) {
+            return false;
+        }
+
+        // Second check: verify the signature using its own public key
+        try {
+            cert.verify(cert.getPublicKey());
+            return true;
+        } catch (Exception e) {
+            // If signature verification fails, it's not self-signed
+            return false;
+        }
+    }
+
+    /**
+     * Verifies that an issuer certificate is valid for signing the given certificate.
+     * Checks:
+     * 1. The issuer's subject matches the certificate's issuer DN
+     * 2. The issuer can verify the certificate's signature
+     * 3. The issuer is a CA (has CA constraint or is self-signed)
+     *
+     * @param issuer the potential issuer certificate
+     * @param cert the certificate to verify
+     * @return true if the issuer certificate is valid, false otherwise
+     */
+    private static boolean isValidIssuer(X509Certificate issuer, X509Certificate cert) {
+        try {
+            // Verify the certificate's signature using the issuer's public key
+            cert.verify(issuer.getPublicKey());
+
+            // Check if the issuer is a CA (either self-signed or has CA basic constraints)
+            // A root CA is self-signed, intermediate CAs should have basicConstraints.CA=true
+            boolean isCA = isSelfSignedCertificate(issuer) || (issuer.getBasicConstraints() >= 0); // basicConstraints >= 0 means CA is true
+
+            return isCA;
+        } catch (Exception e) {
+            // If signature verification fails or any error occurs, it's not a valid issuer
+            return false;
+        }
     }
 
     /**
