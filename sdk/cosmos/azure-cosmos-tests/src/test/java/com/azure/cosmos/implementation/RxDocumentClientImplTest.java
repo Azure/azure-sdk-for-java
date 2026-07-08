@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -35,6 +36,11 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -47,6 +53,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
+import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -496,6 +504,109 @@ public class RxDocumentClientImplTest {
                     Mockito.eq(documentCollection.getResourceId()),
                     Mockito.isNull(),
                     Mockito.isNull());
+        } finally {
+            if (rxDocumentClient != null) {
+                rxDocumentClient.close();
+            }
+            httpClientMock.close();
+        }
+    }
+
+    // Regression test for the "partitionLevelCircuitBreakerCfg" diagnostics field silently disappearing from the
+    // CosmosDiagnostics "clientCfgs" section. Prior to the fix, the field was only written on the PPAF
+    // (service-mandated) path, so a client that did not have PPAF-mandated PPCB never surfaced it. The field must
+    // now be present for every client regardless of any PPCB configuration. This test constructs a real
+    // RxDocumentClientImpl (exercising the actual constructor wiring), drives the private
+    // initializePerPartitionCircuitBreaker() init path without setting any PPCB configuration, serializes the
+    // resulting DiagnosticsClientConfig, and asserts that every expected "clientCfgs" key - including
+    // partitionLevelCircuitBreakerCfg - is present (guarding against future serialization truncation as well as
+    // the specific regression).
+    @Test(groups = {"unit"})
+    public void diagnosticsClientConfigContainsAllClientCfgKeysIncludingPartitionLevelCircuitBreaker() throws Exception {
+        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(1);
+        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(null);
+        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(Duration.ZERO);
+        Mockito.when(this.connectionPolicyMock.getHttp2ConnectionConfig()).thenReturn(new Http2ConnectionConfig());
+        // The serializer eagerly calls getConnectionMode().toString() for the very first "connectionMode" key; if this
+        // returns null (Mockito default), serialization would NPE and silently drop every subsequent key.
+        Mockito.when(this.connectionPolicyMock.getConnectionMode()).thenReturn(ConnectionMode.DIRECT);
+
+        MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
+        httpClientMock
+            .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+            .thenReturn(dummyHttpClient());
+
+        RxDocumentClientImpl rxDocumentClient = null;
+
+        try {
+            rxDocumentClient = new RxDocumentClientImpl(
+                this.serviceEndpointMock,
+                this.masterKeyOrResourceTokenMock,
+                this.permissionFeedMock,
+                this.connectionPolicyMock,
+                this.consistencyLevelMock,
+                null,
+                this.configsMock,
+                this.cosmosAuthorizationTokenResolverMock,
+                this.azureKeyCredentialMock,
+                false,
+                false,
+                false,
+                this.metadataCachesSnapshotMock,
+                this.apiTypeMock,
+                this.cosmosClientTelemetryConfigMock,
+                this.clientCorrelationIdMock,
+                this.endToEndOperationLatencyPolicyConfig,
+                this.sessionRetryOptionsMock,
+                this.containerProactiveInitConfigMock,
+                this.defaultItemSerializer,
+                false
+            );
+
+            // Drive the exact wiring that regressed: explicit (client-side) Per-Partition Circuit Breaker
+            // initialization. The constructor does not invoke init() (which would require network), so invoke the
+            // private no-arg initializer reflectively.
+            Method initPpcb = RxDocumentClientImpl.class.getDeclaredMethod("initializePerPartitionCircuitBreaker");
+            initPpcb.setAccessible(true);
+            initPpcb.invoke(rxDocumentClient);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            StringWriter jsonWriter = new StringWriter();
+            JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
+            SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
+            DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE
+                .serialize(rxDocumentClient.getConfig(), jsonGenerator, serializerProvider);
+            jsonGenerator.flush();
+            ObjectNode clientCfgs = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
+
+            String serializedJson = clientCfgs.toString();
+
+            // Every key the serializer unconditionally writes, including the (previously regressed)
+            // partitionLevelCircuitBreakerCfg which must be present for every client regardless of PPCB config.
+            String[] expectedKeys = new String[] {
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg"
+            };
+
+            for (String expectedKey : expectedKeys) {
+                assertThat(clientCfgs.has(expectedKey))
+                    .withFailMessage("Expected clientCfgs key '%s' to be present. Serialized clientCfgs: %s",
+                        expectedKey, serializedJson)
+                    .isTrue();
+            }
         } finally {
             if (rxDocumentClient != null) {
                 rxDocumentClient.close();

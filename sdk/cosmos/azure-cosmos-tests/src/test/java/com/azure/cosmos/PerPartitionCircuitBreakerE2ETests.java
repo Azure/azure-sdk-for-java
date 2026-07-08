@@ -4613,6 +4613,65 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
+    /**
+     * Regression validation for the Per-Partition Circuit Breaker (PPCB) diagnostics fix (see PR 49734).
+     *
+     * The {@code clientCfgs} section of the emitted {@link CosmosDiagnostics} must always include the
+     * {@code partitionLevelCircuitBreakerCfg} field for every client, regardless of whether PPCB is
+     * explicitly enabled. A prior regression silently dropped this field unless PPAF mandated it. This
+     * test asserts that all the expected {@code clientCfgs} keys - including
+     * {@code partitionLevelCircuitBreakerCfg} - are present in the diagnostics of a real operation
+     * without setting any PPCB configuration.
+     */
+    @Test(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = TIMEOUT)
+    public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
+
+        try (CosmosAsyncClient client = getClientBuilder().buildAsyncClient()) {
+
+            CosmosAsyncContainer container = client
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            TestObject item = TestObject.create();
+
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(item, new PartitionKey(item.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+
+            String diagnosticsString = createResponse.getDiagnostics().toString();
+
+            assertThat(diagnosticsString)
+                .as("clientCfgs section should be present in the CosmosDiagnostics")
+                .contains("\"clientCfgs\"");
+
+            // All the clientCfgs keys unconditionally emitted by DiagnosticsClientConfigSerializer,
+            // including partitionLevelCircuitBreakerCfg (the field the regression previously dropped).
+            List<String> expectedClientCfgsKeys = Arrays.asList(
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg");
+
+            for (String expectedKey : expectedClientCfgsKeys) {
+                assertThat(diagnosticsString)
+                    .as("clientCfgs key '%s' should be present in the CosmosDiagnostics", expectedKey)
+                    .contains("\"" + expectedKey + "\"");
+            }
+        }
+    }
+
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
         switch (faultInjectionOperationType) {

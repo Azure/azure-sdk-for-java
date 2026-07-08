@@ -2710,16 +2710,26 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         assertThat(requests).isNotNull();
         assertThat(requests.size()).isPositive();
 
+        // Validate every request rather than early-returning on the first thin-client match: a mixed
+        // scenario (some data requests via the thin-client endpoint, some via the classic gateway) must
+        // fail. Every non-QueryPlan (data) request must route through the thin-client proxy endpoint;
+        // QueryPlan calls are resolved via the classic gateway in thin-client mode, so they are the only
+        // requests allowed to target a non-thin-client endpoint.
         for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            if (requestInfo.getEndpoint() != null
-                && requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
-                return;
+            // requestType has the form "<ResourceType>:<OperationType>" (OperationType.QueryPlan
+            // stringifies to "QueryPlan").
+            String requestType = requestInfo.getRequestType();
+            if (requestType != null && requestType.endsWith(":QueryPlan")) {
+                continue;
             }
-        }
 
-        assertThat(false)
-            .as("No request targeting thin client proxy endpoint (" + THIN_CLIENT_ENDPOINT_INDICATOR + ")")
-            .isTrue();
+            String endpoint = requestInfo.getEndpoint();
+            assertThat(endpoint != null && endpoint.contains(THIN_CLIENT_ENDPOINT_INDICATOR))
+                .as("Non-QueryPlan request must target the thin client proxy endpoint ("
+                    + THIN_CLIENT_ENDPOINT_INDICATOR + "), but was: " + endpoint
+                    + " (requestType: " + requestType + ")")
+                .isTrue();
+        }
     }
 
     protected static void safeClose(AsyncDocumentClient client) {
