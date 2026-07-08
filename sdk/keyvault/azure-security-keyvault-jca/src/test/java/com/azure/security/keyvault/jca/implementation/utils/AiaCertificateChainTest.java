@@ -90,7 +90,7 @@ public class AiaCertificateChainTest {
     // -----------------------------------------------------------------------
 
     @Test
-    void completeChainViaAia_leafOnly_downloadsIntermediateAndRoot() throws Exception {
+    void completeChainViaAiaLeafOnlyDownloadsIntermediateAndRoot() throws Exception {
         // Simulate AKV returning only the leaf cert (non-exportable, leaf-only secret)
         Certificate[] leafOnly = new Certificate[] { leafCert };
 
@@ -108,7 +108,7 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void completeChainViaAia_leafAndIntermediate_downloadsRootOnly() throws Exception {
+    void completeChainViaAiaLeafAndIntermediateDownloadsRootOnly() throws Exception {
         // Chain already has leaf + intermediate; only root is missing
         Certificate[] partial = new Certificate[] { leafCert, intermediateCert };
 
@@ -123,7 +123,7 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void completeChainViaAia_fullChain_noDownloadNeeded() throws Exception {
+    void completeChainViaAiaFullChainNoDownloadNeeded() throws Exception {
         // Already complete: root is self-signed, no AIA download should happen
         Certificate[] full = new Certificate[] { leafCert, intermediateCert, rootCert };
 
@@ -136,7 +136,7 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void completeChainViaAia_downloadFails_returnsOriginal() throws Exception {
+    void completeChainViaAiaDownloadFailsReturnsOriginal() throws Exception {
         Certificate[] leafOnly = new Certificate[] { leafCert };
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
@@ -149,12 +149,12 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void completeChainViaAia_nullInput_returnsNull() {
+    void completeChainViaAiaNullInputReturnsNull() {
         assertNull(CertificateUtil.completeChainViaAia(null));
     }
 
     @Test
-    void completeChainViaAia_emptyInput_returnsEmpty() {
+    void completeChainViaAiaEmptyInputReturnsEmpty() {
         Certificate[] result = CertificateUtil.completeChainViaAia(new Certificate[0]);
         assertEquals(0, result.length);
     }
@@ -164,7 +164,7 @@ public class AiaCertificateChainTest {
     // -----------------------------------------------------------------------
 
     @Test
-    void downloadIssuerCertificateFromAia_returnsDerEncodedCert() throws Exception {
+    void downloadIssuerCertificateFromAiaReturnsDerEncodedCert() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
             httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
 
@@ -176,7 +176,7 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void downloadIssuerCertificateFromAia_noCertWithoutAia_returnsNull() throws Exception {
+    void downloadIssuerCertificateFromAiaNoCertWithoutAiaReturnsNull() throws Exception {
         // Root cert has no AIA extension
         X509Certificate result = CertificateUtil.downloadIssuerCertificateFromAia(rootCert);
         assertNull(result);
@@ -205,7 +205,7 @@ public class AiaCertificateChainTest {
      * </pre>
      */
     @Test
-    void pkixPathBuilding_withoutFix_failsWithReportedError() throws Exception {
+    void pkixPathBuildingWithoutFixFailsWithReportedError() throws Exception {
         // Trust store contains only the root CA – mirrors the system JRE cacerts behaviour
         Set<TrustAnchor> trustAnchors = Collections.singleton(new TrustAnchor(rootCert, null));
 
@@ -242,7 +242,7 @@ public class AiaCertificateChainTest {
      * the full chain (leaf → intermediate → root) is present and PKIX path building succeeds.
      */
     @Test
-    void pkixPathBuilding_withFix_succeeds() throws Exception {
+    void pkixPathBuildingWithFixSucceeds() throws Exception {
         // Simulate AKV returning only the leaf cert – the broken starting state
         Certificate[] leafOnly = new Certificate[] { leafCert };
         Certificate[] completedChain;
