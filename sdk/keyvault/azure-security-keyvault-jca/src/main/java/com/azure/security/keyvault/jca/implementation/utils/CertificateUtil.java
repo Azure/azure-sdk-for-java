@@ -47,7 +47,7 @@ public final class CertificateUtil {
     private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class.getName());
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
-    private static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
+    static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
 
     public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
@@ -275,7 +275,11 @@ public final class CertificateUtil {
             return result;
 
         } catch (Exception e) {
-            // If any error occurs during ordering, return original order
+            // If any error occurs during ordering, log it and return original order
+            // This prevents silently hiding certificate chain issues in production
+            LOGGER.log(FINE,
+                "Failed to order certificate chain. Returning original order. This may cause jarsigner PKIX issues.",
+                e);
             return certificates;
         }
     }

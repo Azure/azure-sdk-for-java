@@ -285,9 +285,8 @@ public class AiaCertificateChainTest {
     @Test
     void aiaDownloadDisabledBySystemProperty() throws Exception {
         // Set the disable system property
-        String propertyName = "azure.keyvault.jca.disable-aia-download";
-        String originalValue = System.getProperty(propertyName);
-        System.setProperty(propertyName, "true");
+        String originalValue = System.getProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        System.setProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY, "true");
 
         try {
             // Simulate AKV returning only the leaf cert
@@ -310,9 +309,9 @@ public class AiaCertificateChainTest {
         } finally {
             // Clean up: restore the original property value
             if (originalValue != null) {
-                System.setProperty(propertyName, originalValue);
+                System.setProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY, originalValue);
             } else {
-                System.clearProperty(propertyName);
+                System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
             }
         }
     }
