@@ -299,19 +299,19 @@ public class AiaCertificateChainTest {
             // Simulate AKV returning only the leaf cert
             Certificate[] leafOnly = new Certificate[] { leafCert };
 
-            // Call completeChainViaAia with the property set to true
-            // It should return the same array without downloading anything
-            Certificate[] result = CertificateUtil.completeChainViaAia(leafOnly);
-
-            // Verify the chain was NOT extended (still only 1 certificate)
-            assertEquals(1, result.length, "Chain should remain unchanged when AIA download is disabled");
-            assertEquals(leafCert, result[0], "The returned certificate should be the leaf certificate");
-
-            // Verify that no HTTP calls were made (HttpUtil.getBytes should not be called)
+            // Mock HttpUtil BEFORE calling completeChainViaAia to ensure property check
+            // doesn't trigger real network I/O if it regresses
             try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-                result = CertificateUtil.completeChainViaAia(leafOnly);
+                // Call completeChainViaAia with the property set to true
+                // It should return the same array without downloading anything
+                Certificate[] result = CertificateUtil.completeChainViaAia(leafOnly);
+
+                // Verify the chain was NOT extended (still only 1 certificate)
+                assertEquals(1, result.length, "Chain should remain unchanged when AIA download is disabled");
+                assertEquals(leafCert, result[0], "The returned certificate should be the leaf certificate");
+
+                // Verify that no HTTP calls were made (HttpUtil.getBytes should not be called)
                 httpMock.verify(() -> HttpUtil.getBytes(Mockito.anyString()), Mockito.never());
-                assertEquals(1, result.length, "Chain should remain unchanged and no HTTP calls should be made");
             }
         } finally {
             // Clean up: restore the original property value

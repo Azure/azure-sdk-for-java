@@ -198,21 +198,29 @@ public final class CertificateUtil {
                     // This cert is not the issuer of any other cert in the chain
                     X500Principal issuerPrincipal = cert.getIssuerX500Principal();
                     X500Principal subjectPrincipal = cert.getSubjectX500Principal();
-                    boolean isSelfSigned = issuerPrincipal.equals(subjectPrincipal);
 
-                    if (!isSelfSigned) {
-                        // Non-self-signed cert: check if issuer exists in the chain
+                    if (!isSelfSignedCertificate(cert)) {
+                        // Non-self-signed cert: check if issuer exists in the chain AND can verify signature
                         List<X509Certificate> potentialIssuers = subjectToCerts.get(issuerPrincipal);
                         if (potentialIssuers != null) {
-                            // Issuer is in the chain, this is a true leaf/end-entity - best choice
-                            leafCert = cert;
-                            break;
-                        } else if (leafCert == null) {
-                            // No issuer in chain and not self-signed = true leaf with missing intermediate
+                            // Check if any potential issuer can actually verify this cert's signature
+                            for (X509Certificate potentialIssuer : potentialIssuers) {
+                                if (isValidIssuer(potentialIssuer, cert)) {
+                                    // Valid issuer found and verified, this is a true leaf/end-entity
+                                    leafCert = cert;
+                                    break;
+                                }
+                            }
+                            if (leafCert != null) {
+                                break; // Found valid issuer, stop searching
+                            }
+                        }
+                        if (leafCert == null) {
+                            // No verified issuer in chain and not self-signed = true leaf with missing intermediate
                             leafCert = cert;
                         }
                     } else if (selfSignedFallback == null) {
-                        // Self-signed with no issuer in chain = likely a root, remember as fallback
+                        // Self-signed cert with no issuer in chain = likely a root, remember as fallback
                         selfSignedFallback = cert;
                     }
                 }
@@ -239,9 +247,9 @@ public final class CertificateUtil {
                 X500Principal issuerPrincipal = current.getIssuerX500Principal();
                 X500Principal currentSubjectPrincipal = current.getSubjectX500Principal();
 
-                // Check if this is a self-signed certificate (root CA)
-                if (issuerPrincipal.equals(currentSubjectPrincipal)) {
-                    // Self-signed, we've reached the root
+                // Check if this is actually a self-signed certificate (root CA) by verifying signature
+                if (isSelfSignedCertificate(current)) {
+                    // Truly self-signed, we've reached the root
                     break;
                 }
 
@@ -361,21 +369,36 @@ public final class CertificateUtil {
             // We check *validity* (signature + CA capability), not just subject DN equality,
             // because re-issued or cross-signed intermediates may share the same subject DN
             // but have a different key and therefore cannot validate x509Top's signature.
-            boolean validIssuerAlreadyInChain = false;
-            for (Certificate cert : chain) {
+            X509Certificate validIssuerInChain = null;
+            int validIssuerIndex = -1;
+            for (int i = 0; i < chain.size(); i++) {
+                Certificate cert = chain.get(i);
                 if (cert instanceof X509Certificate) {
                     X509Certificate candidate = (X509Certificate) cert;
                     if (candidate.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())
                         && isValidIssuer(candidate, x509Top)) {
-                        validIssuerAlreadyInChain = true;
-                        LOGGER.log(FINE, "Valid issuer [{0}] already present in chain. Skipping AIA download.",
-                            candidate.getSubjectX500Principal().getName());
+                        validIssuerInChain = candidate;
+                        validIssuerIndex = i;
+                        LOGGER.log(FINE, "Valid issuer [{0}] already present in chain at index {1}.",
+                            new Object[] { candidate.getSubjectX500Principal().getName(), i });
                         break;
                     }
                 }
             }
-            if (validIssuerAlreadyInChain) {
-                break;
+
+            if (validIssuerInChain != null) {
+                // Issuer exists in the chain. If it's not in the expected position (validChainEnd+1),
+                // move it to make the chain contiguous
+                if (validIssuerIndex != validChainEnd + 1) {
+                    LOGGER.log(FINE, "Valid issuer found but not at contiguous position. Moving from index {0} to {1}.",
+                        new Object[] { validIssuerIndex, validChainEnd + 1 });
+                    chain.remove(validIssuerIndex);
+                    chain.add(validChainEnd + 1, validIssuerInChain);
+                } else {
+                    LOGGER.log(FINE, "Valid issuer already at correct contiguous position.");
+                }
+                // Continue the loop to potentially download the issuer's issuer
+                continue;
             }
 
             // Try to download the issuer certificate via the AIA extension
