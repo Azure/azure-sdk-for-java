@@ -1,14 +1,252 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-07-08)
 
 ### Features Added
 
-### Breaking Changes
+* `models.StepType` was added
 
-### Bugs Fixed
+* `models.DeviceClass` was added
 
-### Other Changes
+* `models.OperationStatus` was added
+
+* `models.DeviceHealth` was added
+
+* `models.DeviceClassSubgroupDeploymentState` was added
+
+* `models.DeviceUpdateAgentId` was added
+
+* `models.UpdateId` was added
+
+* `models.DeviceClassSubgroupDeploymentStatus` was added
+
+* `models.Step` was added
+
+* `models.ImportType` was added
+
+* `models.LogCollectionOperationDetailedStatus` was added
+
+* `models.UpdateFile` was added
+
+* `models.DeviceDeploymentState` was added
+
+* `models.LogCollection` was added
+
+* `models.Error` was added
+
+* `models.PatchBody` was added
+
+* `models.UpdateOperation` was added
+
+* `models.Group` was added
+
+* `models.UpdateFileDownloadHandler` was added
+
+* `models.InstallResult` was added
+
+* `models.StepResult` was added
+
+* `models.DeploymentStatus` was added
+
+* `models.HealthCheck` was added
+
+* `models.FileImportMetadata` was added
+
+* `models.InnerError` was added
+
+* `models.GroupType` was added
+
+* `models.CloudInitiatedRollbackPolicyFailure` was added
+
+* `models.UpdateCompliance` was added
+
+* `models.Deployment` was added
+
+* `models.ImportUpdateInputItem` was added
+
+* `models.DownloadSecurity` was added
+
+* `models.UpdateFileBase` was added
+
+* `models.Device` was added
+
+* `models.DeviceOperation` was added
+
+* `models.UpdateInfo` was added
+
+* `models.DeploymentDeviceState` was added
+
+* `models.DeviceClassSubgroupUpdatableDevices` was added
+
+* `models.LogCollectionOperationDeviceStatus` was added
+
+* `models.HealthCheckResult` was added
+
+* `models.Update` was added
+
+* `models.DeviceHealthState` was added
+
+* `models.Instructions` was added
+
+* `models.Compatibility` was added
+
+* `models.DeviceClassSubgroup` was added
+
+* `models.ContractModel` was added
+
+* `models.CloudInitiatedRollbackPolicy` was added
+
+* `models.DeviceClassProperties` was added
+
+* `models.DeploymentState` was added
+
+* `models.ImportManifestMetadata` was added
+
+#### `DeviceUpdateClient` was modified
+
+* `getOperationStatus(java.lang.String)` was added
+* `listUpdates(java.lang.String,java.lang.String)` was added
+* `listNames(java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `beginDeleteUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listProviders()` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listFiles(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listUpdates()` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `listOperationStatuses()` was added
+* `listVersions(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listVersions(java.lang.String,java.lang.String)` was added
+* `beginImportUpdate(java.util.List)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `DeviceManagementAsyncClient` was modified
+
+* `getDevice(java.lang.String)` was added
+* `listDevices()` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String)` was added
+* `getUpdateComplianceForGroup(java.lang.String)` was added
+* `listDeviceClasses(java.lang.String)` was added
+* `getLogCollection(java.lang.String)` was added
+* `getLogCollectionDetailedStatus(java.lang.String)` was added
+* `listGroups(java.lang.String)` was added
+* `beginImportDevices(models.ImportType)` was added
+* `getDeviceClassSubgroupDeploymentStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getBestUpdatesForDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `getDeploymentStatus(java.lang.String,java.lang.String)` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceModule(java.lang.String,java.lang.String)` was added
+* `updateDeviceClass(java.lang.String,models.PatchBody)` was added
+* `deleteDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listGroups()` was added
+* `getDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `listBestUpdatesForGroup(java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `stopDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listLogCollections()` was added
+* `deleteGroup(java.lang.String)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getGroup(java.lang.String)` was added
+* `deleteDeployment(java.lang.String,java.lang.String)` was added
+* `getDeployment(java.lang.String,java.lang.String)` was added
+* `getDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createOrUpdateDeployment(java.lang.String,java.lang.String,models.Deployment)` was added
+* `getDeviceClass(java.lang.String)` was added
+* `startLogCollection(java.lang.String,models.LogCollection)` was added
+* `deleteDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroupUpdateCompliance(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses()` was added
+* `getOperationStatus(java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String)` was added
+* `retryDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdateCompliance()` was added
+* `listHealthOfDevices(java.lang.String)` was added
+* `listOperationStatuses()` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String)` was added
+* `listDevices(java.lang.String)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `deleteDeviceClass(java.lang.String)` was added
+
+#### `DeviceManagementClient` was modified
+
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `getUpdateCompliance()` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String)` was added
+* `getDeploymentStatus(java.lang.String,java.lang.String)` was added
+* `getGroup(java.lang.String)` was added
+* `deleteGroup(java.lang.String)` was added
+* `listDevices()` was added
+* `startLogCollection(java.lang.String,models.LogCollection)` was added
+* `getDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String,java.lang.String)` was added
+* `deleteDeploymentForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `retryDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `listDeploymentsForDeviceClassSubgroup(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteDeployment(java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `deleteDeviceClass(java.lang.String)` was added
+* `listDeploymentsForGroup(java.lang.String)` was added
+* `getLogCollectionDetailedStatus(java.lang.String)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `listLogCollections()` was added
+* `stopDeployment(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `getBestUpdatesForDeviceClassSubgroup(java.lang.String,java.lang.String)` was added
+* `listBestUpdatesForGroup(java.lang.String)` was added
+* `getDevice(java.lang.String)` was added
+* `getDeviceModule(java.lang.String,java.lang.String)` was added
+* `listDeviceClasses(java.lang.String)` was added
+* `listDevices(java.lang.String)` was added
+* `listDeviceClassSubgroupsForGroup(java.lang.String,java.lang.String)` was added
+* `listDeviceStatesForDeviceClassSubgroupDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listGroups()` was added
+* `getDeployment(java.lang.String,java.lang.String)` was added
+* `getDeviceClassSubgroupDeploymentStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listGroups(java.lang.String)` was added
+* `getUpdateComplianceForGroup(java.lang.String)` was added
+* `createOrUpdateDeployment(java.lang.String,java.lang.String,models.Deployment)` was added
+* `listDeviceClasses()` was added
+* `listInstallableUpdatesForDeviceClass(java.lang.String)` was added
+* `beginImportDevices(models.ImportType)` was added
+* `listHealthOfDevices(java.lang.String)` was added
+* `listOperationStatuses()` was added
+* `updateDeviceClass(java.lang.String,models.PatchBody)` was added
+* `getLogCollection(java.lang.String)` was added
+* `getDeviceClass(java.lang.String)` was added
+* `getDeviceClassSubgroupUpdateCompliance(java.lang.String,java.lang.String)` was added
+
+#### `DeviceUpdateServiceVersion` was modified
+
+* `V2026_06_01` was added
+
+#### `DeviceUpdateAsyncClient` was modified
+
+* `listUpdates(java.lang.String,java.lang.String)` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `beginImportUpdate(java.util.List)` was added
+* `getOperationStatus(java.lang.String,java.lang.String)` was added
+* `listOperationStatuses(java.lang.String,java.lang.Integer)` was added
+* `listNames(java.lang.String)` was added
+* `listOperationStatuses()` was added
+* `listProviders()` was added
+* `listVersions(java.lang.String,java.lang.String,java.lang.String)` was added
+* `beginDeleteUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listVersions(java.lang.String,java.lang.String)` was added
+* `getFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listUpdates()` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getUpdate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getOperationStatus(java.lang.String)` was added
+* `listFiles(java.lang.String,java.lang.String,java.lang.String)` was added
 
 ## 1.0.33 (2026-05-05)
 
