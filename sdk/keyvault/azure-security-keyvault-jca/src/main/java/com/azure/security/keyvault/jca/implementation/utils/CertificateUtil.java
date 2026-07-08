@@ -526,15 +526,17 @@ public final class CertificateUtil {
     }
 
     /**
-     * Verifies that an issuer certificate is valid for signing the given certificate.
-     * Checks:
-     * 1. The issuer's subject matches the certificate's issuer DN
-     * 2. The issuer can verify the certificate's signature
-     * 3. The issuer is a CA (has CA constraint or is self-signed)
+     * Validates that an issuer certificate is legitimate for signing another certificate.
+     *
+     * <p>This method performs two checks:
+     * <ol>
+     *   <li>Verifies that the signature on the certificate was created by the issuer's private key</li>
+     *   <li>Verifies that the issuer is authorized to be a CA (either self-signed root or has CA bit set in basicConstraints)</li>
+     * </ol>
      *
      * @param issuer the potential issuer certificate
      * @param cert the certificate to verify
-     * @return true if the issuer certificate is valid, false otherwise
+     * @return true if the issuer certificate can validly issue the certificate, false otherwise
      */
     private static boolean isValidIssuer(X509Certificate issuer, X509Certificate cert) {
         try {
