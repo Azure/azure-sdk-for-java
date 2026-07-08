@@ -28,8 +28,11 @@ Nothing else changes.
 - Do not merge, reorder, or de-duplicate other entries.
 - Do not modify wording anywhere except inserting the patch block.
 - Verify dependency-bump bullets inside the patch entry reference the correct
-  "from" version (the previously released version). Correct them if the release
-  branch entry is wrong.
+  "from" version. The "from" version is the version of each dependency that was
+  present in the release that the patch was applied to (i.e., the base version
+  the patch built on top of) — this is **not** necessarily the most recent
+  version of that dependency released to Maven. Correct any bullets if the
+  release branch entry is wrong.
 
 ## Example (before → after)
 
