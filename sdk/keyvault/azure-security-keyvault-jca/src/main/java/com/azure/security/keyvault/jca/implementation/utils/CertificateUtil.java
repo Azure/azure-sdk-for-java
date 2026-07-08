@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Collectors;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -243,6 +242,14 @@ public final class CertificateUtil {
                 current = issuer;
             }
 
+            // Append any certificates that were not placed in the ordered chain
+            // (e.g. cross-signed roots or unrelated intermediates) so nothing is silently dropped.
+            for (X509Certificate cert : x509Certs) {
+                if (!orderedChain.contains(cert)) {
+                    orderedChain.add(cert);
+                }
+            }
+
             // Convert back to Certificate array
             Certificate[] result = orderedChain.toArray(new Certificate[0]);
 
@@ -433,7 +440,8 @@ public final class CertificateUtil {
 
             // Check if the issuer is a CA (either self-signed or has CA basic constraints)
             // A root CA is self-signed, intermediate CAs should have basicConstraints.CA=true
-            boolean isCA = isSelfSignedCertificate(issuer) || (issuer.getBasicConstraints() >= 0); // basicConstraints >= 0 means CA is true
+            // basicConstraints >= 0 means CA is true
+            boolean isCA = isSelfSignedCertificate(issuer) || (issuer.getBasicConstraints() >= 0);
 
             return isCA;
         } catch (Exception e) {

@@ -108,7 +108,7 @@ public final class HttpUtil {
                 return null;
             });
         } catch (Exception e) {
-            // Catch all exceptions including IOException, IllegalArgumentException (malformed URL), 
+            // Catch all exceptions including IOException, IllegalArgumentException (malformed URL),
             // and other runtime exceptions that may occur during HTTP execution.
             // Gracefully return null to allow AIA completion to fail silently instead of breaking
             // the entire jarsigner/signing operation.
