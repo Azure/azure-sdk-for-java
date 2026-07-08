@@ -2,7 +2,7 @@
 
 Azure Resource Manager Virtual Enclaves client library for Java.
 
-This package contains Microsoft Azure SDK for Virtual Enclaves Management SDK. Microsoft Mission Resource Provider management API. Package api-version 2025-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Virtual Enclaves Management SDK. Microsoft Mission Resource Provider management API. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

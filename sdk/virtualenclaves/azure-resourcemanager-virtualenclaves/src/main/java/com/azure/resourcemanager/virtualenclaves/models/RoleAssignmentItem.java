@@ -27,6 +27,11 @@ public final class RoleAssignmentItem implements JsonSerializable<RoleAssignment
      */
     private List<Principal> principals;
 
+    /*
+     * Condition under which the principal can be granted permission
+     */
+    private String condition;
+
     /**
      * Creates an instance of RoleAssignmentItem class.
      */
@@ -74,6 +79,26 @@ public final class RoleAssignmentItem implements JsonSerializable<RoleAssignment
     }
 
     /**
+     * Get the condition property: Condition under which the principal can be granted permission.
+     * 
+     * @return the condition value.
+     */
+    public String condition() {
+        return this.condition;
+    }
+
+    /**
+     * Set the condition property: Condition under which the principal can be granted permission.
+     * 
+     * @param condition the condition value to set.
+     * @return the RoleAssignmentItem object itself.
+     */
+    public RoleAssignmentItem withCondition(String condition) {
+        this.condition = condition;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,6 +106,7 @@ public final class RoleAssignmentItem implements JsonSerializable<RoleAssignment
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
         jsonWriter.writeArrayField("principals", this.principals, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("condition", this.condition);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,6 +131,8 @@ public final class RoleAssignmentItem implements JsonSerializable<RoleAssignment
                 } else if ("principals".equals(fieldName)) {
                     List<Principal> principals = reader.readArray(reader1 -> Principal.fromJson(reader1));
                     deserializedRoleAssignmentItem.principals = principals;
+                } else if ("condition".equals(fieldName)) {
+                    deserializedRoleAssignmentItem.condition = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

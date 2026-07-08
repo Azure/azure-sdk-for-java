@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class VirtualEnclavesHandleApprovalDeletionMockTests {
     @Test
     public void testHandleApprovalDeletion() throws Exception {
-        String responseStr = "{\"message\":\"khlg\"}";
+        String responseStr = "{\"message\":\"cacoyvivbsiz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class VirtualEnclavesHandleApprovalDeletionMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ApprovalActionResponse response = manager.virtualEnclaves()
-            .handleApprovalDeletion("fuyd", "vkfvxcnqmxqpswok", new ApprovalDeletionCallbackRequest()
-                .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.DELETE),
-                com.azure.core.util.Context.NONE);
+        ApprovalActionResponse response
+            = manager.virtualEnclaves()
+                .handleApprovalDeletion("cmpzqjhhhqx", "w", new ApprovalDeletionCallbackRequest()
+                    .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.UPDATE),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("khlg", response.message());
+        Assertions.assertEquals("cacoyvivbsiz", response.message());
     }
 }

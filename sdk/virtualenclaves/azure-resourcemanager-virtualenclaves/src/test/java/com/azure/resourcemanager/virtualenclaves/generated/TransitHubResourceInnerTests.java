@@ -6,6 +6,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.virtualenclaves.fluent.models.TransitHubResourceInner;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOption;
@@ -19,33 +20,34 @@ public final class TransitHubResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitHubResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Creating\",\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":5250086231147283633,\"remoteVirtualNetworkId\":\"lmdjrkvfgbvfvpdb\"}},\"resourceCollection\":[\"cizsjqlhkrribdei\",\"qipqkghvxndz\",\"mkrefajpjorwkq\"]},\"location\":\"hgbijt\",\"tags\":{\"wfsdjpvkvpbj\":\"fxzsjabibsyst\",\"ncj\":\"bkzbzkd\"},\"id\":\"budurgkakmo\",\"name\":\"zhjjklffhmouwq\",\"type\":\"gzrf\"}")
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":7768139446228613639,\"remoteVirtualNetworkId\":\"khyawfvjlboxqv\"}},\"resourceCollection\":[\"mxho\",\"dynhdwdigum\",\"nraauzz\"],\"securityProvider\":\"AzureFirewall\"},\"location\":\"zysdzh\",\"tags\":{\"qyuvvfonkp\":\"wva\",\"auy\":\"hqyikvy\",\"y\":\"vluwmncsttij\",\"krsgsgb\":\"vpo\"},\"id\":\"huzqgn\",\"name\":\"dgkynscliqhzvhxn\",\"type\":\"omtkub\"}")
             .toObject(TransitHubResourceInner.class);
-        Assertions.assertEquals("hgbijt", model.location());
-        Assertions.assertEquals("fxzsjabibsyst", model.tags().get("wfsdjpvkvpbj"));
-        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, model.properties().state());
-        Assertions.assertEquals(TransitOptionType.PEERING, model.properties().transitOption().type());
-        Assertions.assertEquals(5250086231147283633L, model.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("lmdjrkvfgbvfvpdb",
-            model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals("zysdzh", model.location());
+        Assertions.assertEquals("wva", model.tags().get("qyuvvfonkp"));
+        Assertions.assertEquals(TransitHubState.APPROVED, model.properties().state());
+        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.properties().transitOption().type());
+        Assertions.assertEquals(7768139446228613639L, model.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("khyawfvjlboxqv", model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, model.properties().securityProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransitHubResourceInner model = new TransitHubResourceInner().withLocation("hgbijt")
-            .withTags(mapOf("wfsdjpvkvpbj", "fxzsjabibsyst", "ncj", "bkzbzkd"))
-            .withProperties(new TransitHubProperties().withState(TransitHubState.PENDING_UPDATE)
-                .withTransitOption(new TransitOption().withType(TransitOptionType.PEERING)
-                    .withParams(new TransitOptionParams().withScaleUnits(5250086231147283633L)
-                        .withRemoteVirtualNetworkId("lmdjrkvfgbvfvpdb"))));
+        TransitHubResourceInner model = new TransitHubResourceInner().withLocation("zysdzh")
+            .withTags(mapOf("qyuvvfonkp", "wva", "auy", "hqyikvy", "y", "vluwmncsttij", "krsgsgb", "vpo"))
+            .withProperties(new TransitHubProperties().withState(TransitHubState.APPROVED)
+                .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
+                    .withParams(new TransitOptionParams().withScaleUnits(7768139446228613639L)
+                        .withRemoteVirtualNetworkId("khyawfvjlboxqv")))
+                .withSecurityProvider(SecurityProvider.AZURE_FIREWALL));
         model = BinaryData.fromObject(model).toObject(TransitHubResourceInner.class);
-        Assertions.assertEquals("hgbijt", model.location());
-        Assertions.assertEquals("fxzsjabibsyst", model.tags().get("wfsdjpvkvpbj"));
-        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, model.properties().state());
-        Assertions.assertEquals(TransitOptionType.PEERING, model.properties().transitOption().type());
-        Assertions.assertEquals(5250086231147283633L, model.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("lmdjrkvfgbvfvpdb",
-            model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals("zysdzh", model.location());
+        Assertions.assertEquals("wva", model.tags().get("qyuvvfonkp"));
+        Assertions.assertEquals(TransitHubState.APPROVED, model.properties().state());
+        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.properties().transitOption().type());
+        Assertions.assertEquals(7768139446228613639L, model.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("khyawfvjlboxqv", model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, model.properties().securityProvider());
     }
 
     // Use "Map.of" if available

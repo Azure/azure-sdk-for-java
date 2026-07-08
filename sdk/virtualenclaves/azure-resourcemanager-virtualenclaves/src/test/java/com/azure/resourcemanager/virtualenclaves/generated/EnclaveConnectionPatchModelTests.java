@@ -15,20 +15,20 @@ public final class EnclaveConnectionPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionPatchModel model
-            = BinaryData.fromString("{\"properties\":{\"sourceCidr\":\"qmt\"},\"tags\":{\"wau\":\"tmmjihyeozph\"}}")
+            = BinaryData.fromString("{\"properties\":{\"sourceCidr\":\"em\"},\"tags\":{\"swtwkozzwc\":\"ohu\"}}")
                 .toObject(EnclaveConnectionPatchModel.class);
-        Assertions.assertEquals("qmt", model.properties().sourceCidr());
-        Assertions.assertEquals("tmmjihyeozph", model.tags().get("wau"));
+        Assertions.assertEquals("em", model.properties().sourceCidr());
+        Assertions.assertEquals("ohu", model.tags().get("swtwkozzwc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnclaveConnectionPatchModel model = new EnclaveConnectionPatchModel()
-            .withProperties(new EnclaveConnectionPatchProperties().withSourceCidr("qmt"))
-            .withTags(mapOf("wau", "tmmjihyeozph"));
+            .withProperties(new EnclaveConnectionPatchProperties().withSourceCidr("em"))
+            .withTags(mapOf("swtwkozzwc", "ohu"));
         model = BinaryData.fromObject(model).toObject(EnclaveConnectionPatchModel.class);
-        Assertions.assertEquals("qmt", model.properties().sourceCidr());
-        Assertions.assertEquals("tmmjihyeozph", model.tags().get("wau"));
+        Assertions.assertEquals("em", model.properties().sourceCidr());
+        Assertions.assertEquals("ohu", model.tags().get("swtwkozzwc"));
     }
 
     // Use "Map.of" if available

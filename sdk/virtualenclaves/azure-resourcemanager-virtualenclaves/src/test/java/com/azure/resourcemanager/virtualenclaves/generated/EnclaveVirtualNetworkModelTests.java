@@ -14,37 +14,33 @@ public final class EnclaveVirtualNetworkModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveVirtualNetworkModel model = BinaryData.fromString(
-            "{\"networkName\":\"jdyggdtji\",\"networkSize\":\"b\",\"customCidrRange\":\"ofqweykhmenevfye\",\"subnetConfigurations\":[{\"subnetName\":\"hybcibv\",\"subnetResourceId\":\"dcsi\",\"networkPrefixSize\":1451837179,\"subnetDelegation\":\"naamde\",\"addressPrefix\":\"eh\",\"networkSecurityGroupResourceId\":\"qsc\"},{\"subnetName\":\"eypvhezrkg\",\"subnetResourceId\":\"c\",\"networkPrefixSize\":1889311419,\"subnetDelegation\":\"fovgmkqsleyyvxy\",\"addressPrefix\":\"pkc\",\"networkSecurityGroupResourceId\":\"tpngjcrcczsqpjh\"}],\"allowSubnetCommunication\":false}")
+            "{\"networkName\":\"e\",\"networkSize\":\"noae\",\"customCidrRange\":\"fhyhltrpmopjmcma\",\"subnetConfigurations\":[{\"subnetName\":\"kthfui\",\"subnetResourceId\":\"odsfcpkvxodpuozm\",\"networkPrefixSize\":2044584540,\"subnetDelegation\":\"dagfuaxbezyiuok\",\"addressPrefix\":\"whrdxwzywqsmbsu\",\"networkSecurityGroupResourceId\":\"xim\"}],\"allowSubnetCommunication\":false}")
             .toObject(EnclaveVirtualNetworkModel.class);
-        Assertions.assertEquals("jdyggdtji", model.networkName());
-        Assertions.assertEquals("b", model.networkSize());
-        Assertions.assertEquals("ofqweykhmenevfye", model.customCidrRange());
-        Assertions.assertEquals("hybcibv", model.subnetConfigurations().get(0).subnetName());
-        Assertions.assertEquals(1451837179, model.subnetConfigurations().get(0).networkPrefixSize());
-        Assertions.assertEquals("naamde", model.subnetConfigurations().get(0).subnetDelegation());
+        Assertions.assertEquals("e", model.networkName());
+        Assertions.assertEquals("noae", model.networkSize());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.customCidrRange());
+        Assertions.assertEquals("kthfui", model.subnetConfigurations().get(0).subnetName());
+        Assertions.assertEquals(2044584540, model.subnetConfigurations().get(0).networkPrefixSize());
+        Assertions.assertEquals("dagfuaxbezyiuok", model.subnetConfigurations().get(0).subnetDelegation());
         Assertions.assertFalse(model.allowSubnetCommunication());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveVirtualNetworkModel model = new EnclaveVirtualNetworkModel().withNetworkName("jdyggdtji")
-            .withNetworkSize("b")
-            .withCustomCidrRange("ofqweykhmenevfye")
-            .withSubnetConfigurations(Arrays.asList(
-                new SubnetConfiguration().withSubnetName("hybcibv")
-                    .withNetworkPrefixSize(1451837179)
-                    .withSubnetDelegation("naamde"),
-                new SubnetConfiguration().withSubnetName("eypvhezrkg")
-                    .withNetworkPrefixSize(1889311419)
-                    .withSubnetDelegation("fovgmkqsleyyvxy")))
+        EnclaveVirtualNetworkModel model = new EnclaveVirtualNetworkModel().withNetworkName("e")
+            .withNetworkSize("noae")
+            .withCustomCidrRange("fhyhltrpmopjmcma")
+            .withSubnetConfigurations(Arrays.asList(new SubnetConfiguration().withSubnetName("kthfui")
+                .withNetworkPrefixSize(2044584540)
+                .withSubnetDelegation("dagfuaxbezyiuok")))
             .withAllowSubnetCommunication(false);
         model = BinaryData.fromObject(model).toObject(EnclaveVirtualNetworkModel.class);
-        Assertions.assertEquals("jdyggdtji", model.networkName());
-        Assertions.assertEquals("b", model.networkSize());
-        Assertions.assertEquals("ofqweykhmenevfye", model.customCidrRange());
-        Assertions.assertEquals("hybcibv", model.subnetConfigurations().get(0).subnetName());
-        Assertions.assertEquals(1451837179, model.subnetConfigurations().get(0).networkPrefixSize());
-        Assertions.assertEquals("naamde", model.subnetConfigurations().get(0).subnetDelegation());
+        Assertions.assertEquals("e", model.networkName());
+        Assertions.assertEquals("noae", model.networkSize());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.customCidrRange());
+        Assertions.assertEquals("kthfui", model.subnetConfigurations().get(0).subnetName());
+        Assertions.assertEquals(2044584540, model.subnetConfigurations().get(0).networkPrefixSize());
+        Assertions.assertEquals("dagfuaxbezyiuok", model.subnetConfigurations().get(0).subnetDelegation());
         Assertions.assertFalse(model.allowSubnetCommunication());
     }
 }

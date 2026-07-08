@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class CommunityListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/Community_ListBySubscription.json
      */
     /**
      * Sample code: Community_ListBySubscription.

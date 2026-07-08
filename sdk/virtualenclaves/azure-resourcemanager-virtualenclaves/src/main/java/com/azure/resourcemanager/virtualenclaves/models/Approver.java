@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Approver Metadata for approvals request.
@@ -33,6 +34,11 @@ public final class Approver implements JsonSerializable<Approver> {
      * approval request last updated at
      */
     private OffsetDateTime lastUpdatedAt;
+
+    /*
+     * Indicates if this approver is part of a mandatory approver group with list of Entra IDs
+     */
+    private List<String> mandatoryApprovalGroupMembershipIds;
 
     /**
      * Creates an instance of Approver class.
@@ -101,6 +107,16 @@ public final class Approver implements JsonSerializable<Approver> {
     }
 
     /**
+     * Get the mandatoryApprovalGroupMembershipIds property: Indicates if this approver is part of a mandatory approver
+     * group with list of Entra IDs.
+     * 
+     * @return the mandatoryApprovalGroupMembershipIds value.
+     */
+    public List<String> mandatoryApprovalGroupMembershipIds() {
+        return this.mandatoryApprovalGroupMembershipIds;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -137,6 +153,9 @@ public final class Approver implements JsonSerializable<Approver> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("actionPerformed".equals(fieldName)) {
                     deserializedApprover.actionPerformed = ActionPerformed.fromString(reader.getString());
+                } else if ("mandatoryApprovalGroupMembershipIds".equals(fieldName)) {
+                    List<String> mandatoryApprovalGroupMembershipIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApprover.mandatoryApprovalGroupMembershipIds = mandatoryApprovalGroupMembershipIds;
                 } else {
                     reader.skipChildren();
                 }

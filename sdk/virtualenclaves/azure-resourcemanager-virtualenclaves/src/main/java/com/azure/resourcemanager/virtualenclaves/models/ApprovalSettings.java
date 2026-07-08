@@ -10,87 +10,46 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * ApprovalSettings Properties.
+ * Granular ApprovalSettings Properties for 2025-11-01-preview and later versions.
  */
 @Fluent
 public final class ApprovalSettings implements JsonSerializable<ApprovalSettings> {
     /*
-     * Approval required for endpoint creation (Required or NotRequired).
+     * Approval configuration for community endpoint updates.
      */
-    private ApprovalPolicy endpointCreation;
+    private ApprovalSettingConfiguration communityEndpointUpdate;
 
     /*
-     * Approval required for endpoint update (Required or NotRequired).
+     * Approval configuration for enclave endpoint updates.
      */
-    private ApprovalPolicy endpointUpdate;
+    private ApprovalSettingConfiguration enclaveEndpointUpdate;
 
     /*
-     * Approval required for endpoint deletion (Required or NotRequired).
+     * Approval configuration for enclave creation.
      */
-    private ApprovalPolicy endpointDeletion;
+    private ApprovalSettingConfiguration enclaveCreation;
 
     /*
-     * Approval required for enclave connection creation (Required or NotRequired).
+     * Approval configuration for connection creation.
      */
-    private ApprovalPolicy connectionCreation;
+    private ApprovalSettingConfiguration connectionCreation;
 
     /*
-     * Approval required for enclave connection update (Required or NotRequired).
+     * Approval configuration for connection updates.
      */
-    private ApprovalPolicy connectionUpdate;
+    private ApprovalSettingConfiguration connectionUpdate;
 
     /*
-     * Approval required for enclave connection deletion (Required or NotRequired).
+     * Approval configuration for community maintenance mode.
      */
-    private ApprovalPolicy connectionDeletion;
+    private ApprovalSettingConfiguration communityMaintenanceMode;
 
     /*
-     * Approval required for virtual enclave creation (Required or NotRequired).
+     * Approval configuration for enclave maintenance mode.
      */
-    private ApprovalPolicy enclaveCreation;
-
-    /*
-     * Approval required for virtual enclave deletion (Required or NotRequired).
-     */
-    private ApprovalPolicy enclaveDeletion;
-
-    /*
-     * Approval required for toggling maintenance mode (Required or NotRequired).
-     */
-    private ApprovalPolicy maintenanceMode;
-
-    /*
-     * Approval required for deploying service catalog templates (Required or NotRequired).
-     */
-    private ApprovalPolicy serviceCatalogDeployment;
-
-    /*
-     * Notification will be sent on creation of an Approval Request
-     */
-    private ApprovalPolicy notificationOnApprovalCreation;
-
-    /*
-     * Notification will be sent on any action taken (Approve/Reject) on an Approval Request
-     */
-    private ApprovalPolicy notificationOnApprovalAction;
-
-    /*
-     * Notification will be sent on deletion of an Approval Request
-     */
-    private ApprovalPolicy notificationOnApprovalDeletion;
-
-    /*
-     * List of mandatory approvers for the approval request
-     */
-    private List<MandatoryApprover> mandatoryApprovers;
-
-    /*
-     * Minimum number of approvers required for the approval request
-     */
-    private Long minimumApproversRequired;
+    private ApprovalSettingConfiguration enclaveMaintenanceMode;
 
     /**
      * Creates an instance of ApprovalSettings class.
@@ -99,306 +58,142 @@ public final class ApprovalSettings implements JsonSerializable<ApprovalSettings
     }
 
     /**
-     * Get the endpointCreation property: Approval required for endpoint creation (Required or NotRequired).
+     * Get the communityEndpointUpdate property: Approval configuration for community endpoint updates.
      * 
-     * @return the endpointCreation value.
+     * @return the communityEndpointUpdate value.
      */
-    public ApprovalPolicy endpointCreation() {
-        return this.endpointCreation;
+    public ApprovalSettingConfiguration communityEndpointUpdate() {
+        return this.communityEndpointUpdate;
     }
 
     /**
-     * Set the endpointCreation property: Approval required for endpoint creation (Required or NotRequired).
+     * Set the communityEndpointUpdate property: Approval configuration for community endpoint updates.
      * 
-     * @param endpointCreation the endpointCreation value to set.
+     * @param communityEndpointUpdate the communityEndpointUpdate value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withEndpointCreation(ApprovalPolicy endpointCreation) {
-        this.endpointCreation = endpointCreation;
+    public ApprovalSettings withCommunityEndpointUpdate(ApprovalSettingConfiguration communityEndpointUpdate) {
+        this.communityEndpointUpdate = communityEndpointUpdate;
         return this;
     }
 
     /**
-     * Get the endpointUpdate property: Approval required for endpoint update (Required or NotRequired).
+     * Get the enclaveEndpointUpdate property: Approval configuration for enclave endpoint updates.
      * 
-     * @return the endpointUpdate value.
+     * @return the enclaveEndpointUpdate value.
      */
-    public ApprovalPolicy endpointUpdate() {
-        return this.endpointUpdate;
+    public ApprovalSettingConfiguration enclaveEndpointUpdate() {
+        return this.enclaveEndpointUpdate;
     }
 
     /**
-     * Set the endpointUpdate property: Approval required for endpoint update (Required or NotRequired).
+     * Set the enclaveEndpointUpdate property: Approval configuration for enclave endpoint updates.
      * 
-     * @param endpointUpdate the endpointUpdate value to set.
+     * @param enclaveEndpointUpdate the enclaveEndpointUpdate value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withEndpointUpdate(ApprovalPolicy endpointUpdate) {
-        this.endpointUpdate = endpointUpdate;
+    public ApprovalSettings withEnclaveEndpointUpdate(ApprovalSettingConfiguration enclaveEndpointUpdate) {
+        this.enclaveEndpointUpdate = enclaveEndpointUpdate;
         return this;
     }
 
     /**
-     * Get the endpointDeletion property: Approval required for endpoint deletion (Required or NotRequired).
-     * 
-     * @return the endpointDeletion value.
-     */
-    public ApprovalPolicy endpointDeletion() {
-        return this.endpointDeletion;
-    }
-
-    /**
-     * Set the endpointDeletion property: Approval required for endpoint deletion (Required or NotRequired).
-     * 
-     * @param endpointDeletion the endpointDeletion value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withEndpointDeletion(ApprovalPolicy endpointDeletion) {
-        this.endpointDeletion = endpointDeletion;
-        return this;
-    }
-
-    /**
-     * Get the connectionCreation property: Approval required for enclave connection creation (Required or NotRequired).
-     * 
-     * @return the connectionCreation value.
-     */
-    public ApprovalPolicy connectionCreation() {
-        return this.connectionCreation;
-    }
-
-    /**
-     * Set the connectionCreation property: Approval required for enclave connection creation (Required or NotRequired).
-     * 
-     * @param connectionCreation the connectionCreation value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withConnectionCreation(ApprovalPolicy connectionCreation) {
-        this.connectionCreation = connectionCreation;
-        return this;
-    }
-
-    /**
-     * Get the connectionUpdate property: Approval required for enclave connection update (Required or NotRequired).
-     * 
-     * @return the connectionUpdate value.
-     */
-    public ApprovalPolicy connectionUpdate() {
-        return this.connectionUpdate;
-    }
-
-    /**
-     * Set the connectionUpdate property: Approval required for enclave connection update (Required or NotRequired).
-     * 
-     * @param connectionUpdate the connectionUpdate value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withConnectionUpdate(ApprovalPolicy connectionUpdate) {
-        this.connectionUpdate = connectionUpdate;
-        return this;
-    }
-
-    /**
-     * Get the connectionDeletion property: Approval required for enclave connection deletion (Required or NotRequired).
-     * 
-     * @return the connectionDeletion value.
-     */
-    public ApprovalPolicy connectionDeletion() {
-        return this.connectionDeletion;
-    }
-
-    /**
-     * Set the connectionDeletion property: Approval required for enclave connection deletion (Required or NotRequired).
-     * 
-     * @param connectionDeletion the connectionDeletion value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withConnectionDeletion(ApprovalPolicy connectionDeletion) {
-        this.connectionDeletion = connectionDeletion;
-        return this;
-    }
-
-    /**
-     * Get the enclaveCreation property: Approval required for virtual enclave creation (Required or NotRequired).
+     * Get the enclaveCreation property: Approval configuration for enclave creation.
      * 
      * @return the enclaveCreation value.
      */
-    public ApprovalPolicy enclaveCreation() {
+    public ApprovalSettingConfiguration enclaveCreation() {
         return this.enclaveCreation;
     }
 
     /**
-     * Set the enclaveCreation property: Approval required for virtual enclave creation (Required or NotRequired).
+     * Set the enclaveCreation property: Approval configuration for enclave creation.
      * 
      * @param enclaveCreation the enclaveCreation value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withEnclaveCreation(ApprovalPolicy enclaveCreation) {
+    public ApprovalSettings withEnclaveCreation(ApprovalSettingConfiguration enclaveCreation) {
         this.enclaveCreation = enclaveCreation;
         return this;
     }
 
     /**
-     * Get the enclaveDeletion property: Approval required for virtual enclave deletion (Required or NotRequired).
+     * Get the connectionCreation property: Approval configuration for connection creation.
      * 
-     * @return the enclaveDeletion value.
+     * @return the connectionCreation value.
      */
-    public ApprovalPolicy enclaveDeletion() {
-        return this.enclaveDeletion;
+    public ApprovalSettingConfiguration connectionCreation() {
+        return this.connectionCreation;
     }
 
     /**
-     * Set the enclaveDeletion property: Approval required for virtual enclave deletion (Required or NotRequired).
+     * Set the connectionCreation property: Approval configuration for connection creation.
      * 
-     * @param enclaveDeletion the enclaveDeletion value to set.
+     * @param connectionCreation the connectionCreation value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withEnclaveDeletion(ApprovalPolicy enclaveDeletion) {
-        this.enclaveDeletion = enclaveDeletion;
+    public ApprovalSettings withConnectionCreation(ApprovalSettingConfiguration connectionCreation) {
+        this.connectionCreation = connectionCreation;
         return this;
     }
 
     /**
-     * Get the maintenanceMode property: Approval required for toggling maintenance mode (Required or NotRequired).
+     * Get the connectionUpdate property: Approval configuration for connection updates.
      * 
-     * @return the maintenanceMode value.
+     * @return the connectionUpdate value.
      */
-    public ApprovalPolicy maintenanceMode() {
-        return this.maintenanceMode;
+    public ApprovalSettingConfiguration connectionUpdate() {
+        return this.connectionUpdate;
     }
 
     /**
-     * Set the maintenanceMode property: Approval required for toggling maintenance mode (Required or NotRequired).
+     * Set the connectionUpdate property: Approval configuration for connection updates.
      * 
-     * @param maintenanceMode the maintenanceMode value to set.
+     * @param connectionUpdate the connectionUpdate value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withMaintenanceMode(ApprovalPolicy maintenanceMode) {
-        this.maintenanceMode = maintenanceMode;
+    public ApprovalSettings withConnectionUpdate(ApprovalSettingConfiguration connectionUpdate) {
+        this.connectionUpdate = connectionUpdate;
         return this;
     }
 
     /**
-     * Get the serviceCatalogDeployment property: Approval required for deploying service catalog templates (Required or
-     * NotRequired).
+     * Get the communityMaintenanceMode property: Approval configuration for community maintenance mode.
      * 
-     * @return the serviceCatalogDeployment value.
+     * @return the communityMaintenanceMode value.
      */
-    public ApprovalPolicy serviceCatalogDeployment() {
-        return this.serviceCatalogDeployment;
+    public ApprovalSettingConfiguration communityMaintenanceMode() {
+        return this.communityMaintenanceMode;
     }
 
     /**
-     * Set the serviceCatalogDeployment property: Approval required for deploying service catalog templates (Required or
-     * NotRequired).
+     * Set the communityMaintenanceMode property: Approval configuration for community maintenance mode.
      * 
-     * @param serviceCatalogDeployment the serviceCatalogDeployment value to set.
+     * @param communityMaintenanceMode the communityMaintenanceMode value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withServiceCatalogDeployment(ApprovalPolicy serviceCatalogDeployment) {
-        this.serviceCatalogDeployment = serviceCatalogDeployment;
+    public ApprovalSettings withCommunityMaintenanceMode(ApprovalSettingConfiguration communityMaintenanceMode) {
+        this.communityMaintenanceMode = communityMaintenanceMode;
         return this;
     }
 
     /**
-     * Get the notificationOnApprovalCreation property: Notification will be sent on creation of an Approval Request.
+     * Get the enclaveMaintenanceMode property: Approval configuration for enclave maintenance mode.
      * 
-     * @return the notificationOnApprovalCreation value.
+     * @return the enclaveMaintenanceMode value.
      */
-    public ApprovalPolicy notificationOnApprovalCreation() {
-        return this.notificationOnApprovalCreation;
+    public ApprovalSettingConfiguration enclaveMaintenanceMode() {
+        return this.enclaveMaintenanceMode;
     }
 
     /**
-     * Set the notificationOnApprovalCreation property: Notification will be sent on creation of an Approval Request.
+     * Set the enclaveMaintenanceMode property: Approval configuration for enclave maintenance mode.
      * 
-     * @param notificationOnApprovalCreation the notificationOnApprovalCreation value to set.
+     * @param enclaveMaintenanceMode the enclaveMaintenanceMode value to set.
      * @return the ApprovalSettings object itself.
      */
-    public ApprovalSettings withNotificationOnApprovalCreation(ApprovalPolicy notificationOnApprovalCreation) {
-        this.notificationOnApprovalCreation = notificationOnApprovalCreation;
-        return this;
-    }
-
-    /**
-     * Get the notificationOnApprovalAction property: Notification will be sent on any action taken (Approve/Reject) on
-     * an Approval Request.
-     * 
-     * @return the notificationOnApprovalAction value.
-     */
-    public ApprovalPolicy notificationOnApprovalAction() {
-        return this.notificationOnApprovalAction;
-    }
-
-    /**
-     * Set the notificationOnApprovalAction property: Notification will be sent on any action taken (Approve/Reject) on
-     * an Approval Request.
-     * 
-     * @param notificationOnApprovalAction the notificationOnApprovalAction value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withNotificationOnApprovalAction(ApprovalPolicy notificationOnApprovalAction) {
-        this.notificationOnApprovalAction = notificationOnApprovalAction;
-        return this;
-    }
-
-    /**
-     * Get the notificationOnApprovalDeletion property: Notification will be sent on deletion of an Approval Request.
-     * 
-     * @return the notificationOnApprovalDeletion value.
-     */
-    public ApprovalPolicy notificationOnApprovalDeletion() {
-        return this.notificationOnApprovalDeletion;
-    }
-
-    /**
-     * Set the notificationOnApprovalDeletion property: Notification will be sent on deletion of an Approval Request.
-     * 
-     * @param notificationOnApprovalDeletion the notificationOnApprovalDeletion value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withNotificationOnApprovalDeletion(ApprovalPolicy notificationOnApprovalDeletion) {
-        this.notificationOnApprovalDeletion = notificationOnApprovalDeletion;
-        return this;
-    }
-
-    /**
-     * Get the mandatoryApprovers property: List of mandatory approvers for the approval request.
-     * 
-     * @return the mandatoryApprovers value.
-     */
-    public List<MandatoryApprover> mandatoryApprovers() {
-        return this.mandatoryApprovers;
-    }
-
-    /**
-     * Set the mandatoryApprovers property: List of mandatory approvers for the approval request.
-     * 
-     * @param mandatoryApprovers the mandatoryApprovers value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withMandatoryApprovers(List<MandatoryApprover> mandatoryApprovers) {
-        this.mandatoryApprovers = mandatoryApprovers;
-        return this;
-    }
-
-    /**
-     * Get the minimumApproversRequired property: Minimum number of approvers required for the approval request.
-     * 
-     * @return the minimumApproversRequired value.
-     */
-    public Long minimumApproversRequired() {
-        return this.minimumApproversRequired;
-    }
-
-    /**
-     * Set the minimumApproversRequired property: Minimum number of approvers required for the approval request.
-     * 
-     * @param minimumApproversRequired the minimumApproversRequired value to set.
-     * @return the ApprovalSettings object itself.
-     */
-    public ApprovalSettings withMinimumApproversRequired(Long minimumApproversRequired) {
-        this.minimumApproversRequired = minimumApproversRequired;
+    public ApprovalSettings withEnclaveMaintenanceMode(ApprovalSettingConfiguration enclaveMaintenanceMode) {
+        this.enclaveMaintenanceMode = enclaveMaintenanceMode;
         return this;
     }
 
@@ -408,35 +203,13 @@ public final class ApprovalSettings implements JsonSerializable<ApprovalSettings
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("endpointCreation",
-            this.endpointCreation == null ? null : this.endpointCreation.toString());
-        jsonWriter.writeStringField("endpointUpdate",
-            this.endpointUpdate == null ? null : this.endpointUpdate.toString());
-        jsonWriter.writeStringField("endpointDeletion",
-            this.endpointDeletion == null ? null : this.endpointDeletion.toString());
-        jsonWriter.writeStringField("connectionCreation",
-            this.connectionCreation == null ? null : this.connectionCreation.toString());
-        jsonWriter.writeStringField("connectionUpdate",
-            this.connectionUpdate == null ? null : this.connectionUpdate.toString());
-        jsonWriter.writeStringField("connectionDeletion",
-            this.connectionDeletion == null ? null : this.connectionDeletion.toString());
-        jsonWriter.writeStringField("enclaveCreation",
-            this.enclaveCreation == null ? null : this.enclaveCreation.toString());
-        jsonWriter.writeStringField("enclaveDeletion",
-            this.enclaveDeletion == null ? null : this.enclaveDeletion.toString());
-        jsonWriter.writeStringField("maintenanceMode",
-            this.maintenanceMode == null ? null : this.maintenanceMode.toString());
-        jsonWriter.writeStringField("serviceCatalogDeployment",
-            this.serviceCatalogDeployment == null ? null : this.serviceCatalogDeployment.toString());
-        jsonWriter.writeStringField("notificationOnApprovalCreation",
-            this.notificationOnApprovalCreation == null ? null : this.notificationOnApprovalCreation.toString());
-        jsonWriter.writeStringField("notificationOnApprovalAction",
-            this.notificationOnApprovalAction == null ? null : this.notificationOnApprovalAction.toString());
-        jsonWriter.writeStringField("notificationOnApprovalDeletion",
-            this.notificationOnApprovalDeletion == null ? null : this.notificationOnApprovalDeletion.toString());
-        jsonWriter.writeArrayField("mandatoryApprovers", this.mandatoryApprovers,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("minimumApproversRequired", this.minimumApproversRequired);
+        jsonWriter.writeJsonField("communityEndpointUpdate", this.communityEndpointUpdate);
+        jsonWriter.writeJsonField("enclaveEndpointUpdate", this.enclaveEndpointUpdate);
+        jsonWriter.writeJsonField("enclaveCreation", this.enclaveCreation);
+        jsonWriter.writeJsonField("connectionCreation", this.connectionCreation);
+        jsonWriter.writeJsonField("connectionUpdate", this.connectionUpdate);
+        jsonWriter.writeJsonField("communityMaintenanceMode", this.communityMaintenanceMode);
+        jsonWriter.writeJsonField("enclaveMaintenanceMode", this.enclaveMaintenanceMode);
         return jsonWriter.writeEndObject();
     }
 
@@ -455,42 +228,22 @@ public final class ApprovalSettings implements JsonSerializable<ApprovalSettings
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("endpointCreation".equals(fieldName)) {
-                    deserializedApprovalSettings.endpointCreation = ApprovalPolicy.fromString(reader.getString());
-                } else if ("endpointUpdate".equals(fieldName)) {
-                    deserializedApprovalSettings.endpointUpdate = ApprovalPolicy.fromString(reader.getString());
-                } else if ("endpointDeletion".equals(fieldName)) {
-                    deserializedApprovalSettings.endpointDeletion = ApprovalPolicy.fromString(reader.getString());
-                } else if ("connectionCreation".equals(fieldName)) {
-                    deserializedApprovalSettings.connectionCreation = ApprovalPolicy.fromString(reader.getString());
-                } else if ("connectionUpdate".equals(fieldName)) {
-                    deserializedApprovalSettings.connectionUpdate = ApprovalPolicy.fromString(reader.getString());
-                } else if ("connectionDeletion".equals(fieldName)) {
-                    deserializedApprovalSettings.connectionDeletion = ApprovalPolicy.fromString(reader.getString());
+                if ("communityEndpointUpdate".equals(fieldName)) {
+                    deserializedApprovalSettings.communityEndpointUpdate
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("enclaveEndpointUpdate".equals(fieldName)) {
+                    deserializedApprovalSettings.enclaveEndpointUpdate = ApprovalSettingConfiguration.fromJson(reader);
                 } else if ("enclaveCreation".equals(fieldName)) {
-                    deserializedApprovalSettings.enclaveCreation = ApprovalPolicy.fromString(reader.getString());
-                } else if ("enclaveDeletion".equals(fieldName)) {
-                    deserializedApprovalSettings.enclaveDeletion = ApprovalPolicy.fromString(reader.getString());
-                } else if ("maintenanceMode".equals(fieldName)) {
-                    deserializedApprovalSettings.maintenanceMode = ApprovalPolicy.fromString(reader.getString());
-                } else if ("serviceCatalogDeployment".equals(fieldName)) {
-                    deserializedApprovalSettings.serviceCatalogDeployment
-                        = ApprovalPolicy.fromString(reader.getString());
-                } else if ("notificationOnApprovalCreation".equals(fieldName)) {
-                    deserializedApprovalSettings.notificationOnApprovalCreation
-                        = ApprovalPolicy.fromString(reader.getString());
-                } else if ("notificationOnApprovalAction".equals(fieldName)) {
-                    deserializedApprovalSettings.notificationOnApprovalAction
-                        = ApprovalPolicy.fromString(reader.getString());
-                } else if ("notificationOnApprovalDeletion".equals(fieldName)) {
-                    deserializedApprovalSettings.notificationOnApprovalDeletion
-                        = ApprovalPolicy.fromString(reader.getString());
-                } else if ("mandatoryApprovers".equals(fieldName)) {
-                    List<MandatoryApprover> mandatoryApprovers
-                        = reader.readArray(reader1 -> MandatoryApprover.fromJson(reader1));
-                    deserializedApprovalSettings.mandatoryApprovers = mandatoryApprovers;
-                } else if ("minimumApproversRequired".equals(fieldName)) {
-                    deserializedApprovalSettings.minimumApproversRequired = reader.getNullable(JsonReader::getLong);
+                    deserializedApprovalSettings.enclaveCreation = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("connectionCreation".equals(fieldName)) {
+                    deserializedApprovalSettings.connectionCreation = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("connectionUpdate".equals(fieldName)) {
+                    deserializedApprovalSettings.connectionUpdate = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("communityMaintenanceMode".equals(fieldName)) {
+                    deserializedApprovalSettings.communityMaintenanceMode
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("enclaveMaintenanceMode".equals(fieldName)) {
+                    deserializedApprovalSettings.enclaveMaintenanceMode = ApprovalSettingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

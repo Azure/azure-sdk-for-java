@@ -25,7 +25,7 @@ public final class WorkloadsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGroupCollection\":[\"uxtyasiibmi\",\"bnn\",\"stgnl\",\"hnmgixhcm\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"oudorhcgyyp\"},{\"id\":\"twypundmbxh\"},{\"id\":\"cmjkavlgorbmftpm\"}]}},\"location\":\"zfjltfvnzcyjto\",\"tags\":{\"bdb\":\"opv\",\"ibcysihsgqc\":\"qgqqihedsvqwthmk\"},\"id\":\"dhohsdtmcdzsuf\",\"name\":\"ohdxbzlmcmu\",\"type\":\"pcvhdbevwqqxeys\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGroupCollection\":[\"um\",\"ikjcjcazt\",\"wsnsqowx\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ikytwvczcswka\"},{\"id\":\"ejyfdvlvhbwrnfx\"}]}},\"location\":\"ddpqt\",\"tags\":{\"naoyank\":\"n\"},\"id\":\"oe\",\"name\":\"swankltytmh\",\"type\":\"roznnhdrlktgj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,18 @@ public final class WorkloadsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadResource response = manager.workloads()
-            .define("fnmdxotn")
-            .withRegion("leohibetnluankr")
-            .withExistingVirtualEnclave("lzo", "hpc")
-            .withTags(mapOf("mq", "eeebtijvacv", "nw", "bqqxlaj", "afgaoqlt", "acevehjkuyx", "gv", "aeylinm"))
-            .withProperties(new WorkloadProperties()
-                .withResourceGroupCollection(Arrays.asList("eyzihgrky", "i", "absnmfpp", "ojeevy")))
+            .define("wfpfmdgycx")
+            .withRegion("esi")
+            .withExistingVirtualEnclave("digsxcdgl", "plkeuachtomflryt")
+            .withTags(mapOf("hcecybmrqbr", "tljqobbpih", "crse", "bbmpxdlvykfre", "jggsvo", "wjksghudgzhxo",
+                "hrkmdyomkxfbvfbh", "jkxibda"))
+            .withProperties(
+                new WorkloadProperties().withResourceGroupCollection(Arrays.asList("qjjyslurl", "shhkvpedw")))
             .create();
 
-        Assertions.assertEquals("zfjltfvnzcyjto", response.location());
-        Assertions.assertEquals("opv", response.tags().get("bdb"));
-        Assertions.assertEquals("uxtyasiibmi", response.properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("ddpqt", response.location());
+        Assertions.assertEquals("n", response.tags().get("naoyank"));
+        Assertions.assertEquals("um", response.properties().resourceGroupCollection().get(0));
     }
 
     // Use "Map.of" if available

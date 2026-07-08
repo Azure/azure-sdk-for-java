@@ -15,32 +15,32 @@ public final class EnclaveConnectionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disconnected\",\"communityResourceId\":\"tlpdn\",\"sourceResourceId\":\"itvgbmhrixkwm\",\"sourceCidr\":\"jejveg\",\"destinationEndpointId\":\"hbpnaixexccbd\",\"provisioningState\":\"Deleting\",\"resourceCollection\":[\"cexdrrvqa\",\"qkghtpwijnhy\",\"svfycxzbfv\"]},\"location\":\"wvrvmtg\",\"tags\":{\"nsxkmcwaekrrjr\":\"pyostronzmyhgfi\",\"jglikkxwslolb\":\"afxtsgum\",\"elfk\":\"pvuzlmv\",\"njwmwkpnbsazejj\":\"gplcrpwjxeznoigb\"},\"id\":\"qkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"}")
+            "{\"properties\":{\"state\":\"Failed\",\"communityResourceId\":\"lcwkhihihlhz\",\"sourceResourceId\":\"sqtzbsrg\",\"sourceCidr\":\"wcjhfgmv\",\"destinationEndpointId\":\"cact\",\"provisioningState\":\"Creating\",\"resourceCollection\":[\"e\",\"owcluqo\"],\"updateMode\":\"Automatic\"},\"location\":\"vgqouwifzmpj\",\"tags\":{\"grttikteusqczk\":\"vqikfxcvhrfsphu\",\"qcuubgqibrta\":\"yklxubyjaffmmfbl\",\"lqxihhrmooiz\":\"metttwgd\"},\"id\":\"seypxiutcxapz\",\"name\":\"y\",\"type\":\"petogebjox\"}")
             .toObject(EnclaveConnectionResourceInner.class);
-        Assertions.assertEquals("wvrvmtg", model.location());
-        Assertions.assertEquals("pyostronzmyhgfi", model.tags().get("nsxkmcwaekrrjr"));
-        Assertions.assertEquals("tlpdn", model.properties().communityResourceId());
-        Assertions.assertEquals("itvgbmhrixkwm", model.properties().sourceResourceId());
-        Assertions.assertEquals("jejveg", model.properties().sourceCidr());
-        Assertions.assertEquals("hbpnaixexccbd", model.properties().destinationEndpointId());
+        Assertions.assertEquals("vgqouwifzmpj", model.location());
+        Assertions.assertEquals("vqikfxcvhrfsphu", model.tags().get("grttikteusqczk"));
+        Assertions.assertEquals("lcwkhihihlhz", model.properties().communityResourceId());
+        Assertions.assertEquals("sqtzbsrg", model.properties().sourceResourceId());
+        Assertions.assertEquals("wcjhfgmv", model.properties().sourceCidr());
+        Assertions.assertEquals("cact", model.properties().destinationEndpointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveConnectionResourceInner model = new EnclaveConnectionResourceInner().withLocation("wvrvmtg")
-            .withTags(mapOf("nsxkmcwaekrrjr", "pyostronzmyhgfi", "jglikkxwslolb", "afxtsgum", "elfk", "pvuzlmv",
-                "njwmwkpnbsazejj", "gplcrpwjxeznoigb"))
-            .withProperties(new EnclaveConnectionProperties().withCommunityResourceId("tlpdn")
-                .withSourceResourceId("itvgbmhrixkwm")
-                .withSourceCidr("jejveg")
-                .withDestinationEndpointId("hbpnaixexccbd"));
+        EnclaveConnectionResourceInner model = new EnclaveConnectionResourceInner().withLocation("vgqouwifzmpj")
+            .withTags(mapOf("grttikteusqczk", "vqikfxcvhrfsphu", "qcuubgqibrta", "yklxubyjaffmmfbl", "lqxihhrmooiz",
+                "metttwgd"))
+            .withProperties(new EnclaveConnectionProperties().withCommunityResourceId("lcwkhihihlhz")
+                .withSourceResourceId("sqtzbsrg")
+                .withSourceCidr("wcjhfgmv")
+                .withDestinationEndpointId("cact"));
         model = BinaryData.fromObject(model).toObject(EnclaveConnectionResourceInner.class);
-        Assertions.assertEquals("wvrvmtg", model.location());
-        Assertions.assertEquals("pyostronzmyhgfi", model.tags().get("nsxkmcwaekrrjr"));
-        Assertions.assertEquals("tlpdn", model.properties().communityResourceId());
-        Assertions.assertEquals("itvgbmhrixkwm", model.properties().sourceResourceId());
-        Assertions.assertEquals("jejveg", model.properties().sourceCidr());
-        Assertions.assertEquals("hbpnaixexccbd", model.properties().destinationEndpointId());
+        Assertions.assertEquals("vgqouwifzmpj", model.location());
+        Assertions.assertEquals("vqikfxcvhrfsphu", model.tags().get("grttikteusqczk"));
+        Assertions.assertEquals("lcwkhihihlhz", model.properties().communityResourceId());
+        Assertions.assertEquals("sqtzbsrg", model.properties().sourceResourceId());
+        Assertions.assertEquals("wcjhfgmv", model.properties().sourceCidr());
+        Assertions.assertEquals("cact", model.properties().destinationEndpointId());
     }
 
     // Use "Map.of" if available

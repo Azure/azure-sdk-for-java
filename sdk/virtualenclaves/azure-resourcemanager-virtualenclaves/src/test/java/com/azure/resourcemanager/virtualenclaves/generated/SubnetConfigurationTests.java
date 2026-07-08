@@ -12,21 +12,21 @@ public final class SubnetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubnetConfiguration model = BinaryData.fromString(
-            "{\"subnetName\":\"ajvnysounqe\",\"subnetResourceId\":\"noae\",\"networkPrefixSize\":1344764188,\"subnetDelegation\":\"hy\",\"addressPrefix\":\"trpmo\",\"networkSecurityGroupResourceId\":\"mcmatuokthfuiu\"}")
+            "{\"subnetName\":\"ocfs\",\"subnetResourceId\":\"s\",\"networkPrefixSize\":610021021,\"subnetDelegation\":\"dystkiiuxhqyud\",\"addressPrefix\":\"rrqnbpoczvyifqrv\",\"networkSecurityGroupResourceId\":\"vjsllrmvvdfw\"}")
             .toObject(SubnetConfiguration.class);
-        Assertions.assertEquals("ajvnysounqe", model.subnetName());
-        Assertions.assertEquals(1344764188, model.networkPrefixSize());
-        Assertions.assertEquals("hy", model.subnetDelegation());
+        Assertions.assertEquals("ocfs", model.subnetName());
+        Assertions.assertEquals(610021021, model.networkPrefixSize());
+        Assertions.assertEquals("dystkiiuxhqyud", model.subnetDelegation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetConfiguration model = new SubnetConfiguration().withSubnetName("ajvnysounqe")
-            .withNetworkPrefixSize(1344764188)
-            .withSubnetDelegation("hy");
+        SubnetConfiguration model = new SubnetConfiguration().withSubnetName("ocfs")
+            .withNetworkPrefixSize(610021021)
+            .withSubnetDelegation("dystkiiuxhqyud");
         model = BinaryData.fromObject(model).toObject(SubnetConfiguration.class);
-        Assertions.assertEquals("ajvnysounqe", model.subnetName());
-        Assertions.assertEquals(1344764188, model.networkPrefixSize());
-        Assertions.assertEquals("hy", model.subnetDelegation());
+        Assertions.assertEquals("ocfs", model.subnetName());
+        Assertions.assertEquals(610021021, model.networkPrefixSize());
+        Assertions.assertEquals("dystkiiuxhqyud", model.subnetDelegation());
     }
 }

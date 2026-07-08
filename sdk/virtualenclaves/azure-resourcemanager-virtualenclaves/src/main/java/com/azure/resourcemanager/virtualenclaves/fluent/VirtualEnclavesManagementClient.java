@@ -103,6 +103,13 @@ public interface VirtualEnclavesManagementClient {
     CommunityEndpointsClient getCommunityEndpoints();
 
     /**
+     * Gets the DedicatedHubsClient object to access its operations.
+     * 
+     * @return the DedicatedHubsClient object.
+     */
+    DedicatedHubsClient getDedicatedHubs();
+
+    /**
      * Gets the ApprovalsClient object to access its operations.
      * 
      * @return the ApprovalsClient object.

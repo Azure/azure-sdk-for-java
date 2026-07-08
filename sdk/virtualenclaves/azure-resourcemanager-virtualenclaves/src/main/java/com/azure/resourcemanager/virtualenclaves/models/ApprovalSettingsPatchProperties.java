@@ -10,17 +10,46 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * ApprovalSettings Properties.
+ * Granular ApprovalSettings Patch Properties.
  */
 @Fluent
 public final class ApprovalSettingsPatchProperties implements JsonSerializable<ApprovalSettingsPatchProperties> {
     /*
-     * List of mandatory approvers for the approval request
+     * Approval configuration for community endpoint updates.
      */
-    private List<MandatoryApprover> mandatoryApprovers;
+    private ApprovalSettingConfiguration communityEndpointUpdate;
+
+    /*
+     * Approval configuration for enclave endpoint updates.
+     */
+    private ApprovalSettingConfiguration enclaveEndpointUpdate;
+
+    /*
+     * Approval configuration for enclave creation.
+     */
+    private ApprovalSettingConfiguration enclaveCreation;
+
+    /*
+     * Approval configuration for connection creation.
+     */
+    private ApprovalSettingConfiguration connectionCreation;
+
+    /*
+     * Approval configuration for connection updates.
+     */
+    private ApprovalSettingConfiguration connectionUpdate;
+
+    /*
+     * Approval configuration for community maintenance mode.
+     */
+    private ApprovalSettingConfiguration communityMaintenanceMode;
+
+    /*
+     * Approval configuration for enclave maintenance mode.
+     */
+    private ApprovalSettingConfiguration enclaveMaintenanceMode;
 
     /**
      * Creates an instance of ApprovalSettingsPatchProperties class.
@@ -29,22 +58,146 @@ public final class ApprovalSettingsPatchProperties implements JsonSerializable<A
     }
 
     /**
-     * Get the mandatoryApprovers property: List of mandatory approvers for the approval request.
+     * Get the communityEndpointUpdate property: Approval configuration for community endpoint updates.
      * 
-     * @return the mandatoryApprovers value.
+     * @return the communityEndpointUpdate value.
      */
-    public List<MandatoryApprover> mandatoryApprovers() {
-        return this.mandatoryApprovers;
+    public ApprovalSettingConfiguration communityEndpointUpdate() {
+        return this.communityEndpointUpdate;
     }
 
     /**
-     * Set the mandatoryApprovers property: List of mandatory approvers for the approval request.
+     * Set the communityEndpointUpdate property: Approval configuration for community endpoint updates.
      * 
-     * @param mandatoryApprovers the mandatoryApprovers value to set.
+     * @param communityEndpointUpdate the communityEndpointUpdate value to set.
      * @return the ApprovalSettingsPatchProperties object itself.
      */
-    public ApprovalSettingsPatchProperties withMandatoryApprovers(List<MandatoryApprover> mandatoryApprovers) {
-        this.mandatoryApprovers = mandatoryApprovers;
+    public ApprovalSettingsPatchProperties
+        withCommunityEndpointUpdate(ApprovalSettingConfiguration communityEndpointUpdate) {
+        this.communityEndpointUpdate = communityEndpointUpdate;
+        return this;
+    }
+
+    /**
+     * Get the enclaveEndpointUpdate property: Approval configuration for enclave endpoint updates.
+     * 
+     * @return the enclaveEndpointUpdate value.
+     */
+    public ApprovalSettingConfiguration enclaveEndpointUpdate() {
+        return this.enclaveEndpointUpdate;
+    }
+
+    /**
+     * Set the enclaveEndpointUpdate property: Approval configuration for enclave endpoint updates.
+     * 
+     * @param enclaveEndpointUpdate the enclaveEndpointUpdate value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties
+        withEnclaveEndpointUpdate(ApprovalSettingConfiguration enclaveEndpointUpdate) {
+        this.enclaveEndpointUpdate = enclaveEndpointUpdate;
+        return this;
+    }
+
+    /**
+     * Get the enclaveCreation property: Approval configuration for enclave creation.
+     * 
+     * @return the enclaveCreation value.
+     */
+    public ApprovalSettingConfiguration enclaveCreation() {
+        return this.enclaveCreation;
+    }
+
+    /**
+     * Set the enclaveCreation property: Approval configuration for enclave creation.
+     * 
+     * @param enclaveCreation the enclaveCreation value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties withEnclaveCreation(ApprovalSettingConfiguration enclaveCreation) {
+        this.enclaveCreation = enclaveCreation;
+        return this;
+    }
+
+    /**
+     * Get the connectionCreation property: Approval configuration for connection creation.
+     * 
+     * @return the connectionCreation value.
+     */
+    public ApprovalSettingConfiguration connectionCreation() {
+        return this.connectionCreation;
+    }
+
+    /**
+     * Set the connectionCreation property: Approval configuration for connection creation.
+     * 
+     * @param connectionCreation the connectionCreation value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties withConnectionCreation(ApprovalSettingConfiguration connectionCreation) {
+        this.connectionCreation = connectionCreation;
+        return this;
+    }
+
+    /**
+     * Get the connectionUpdate property: Approval configuration for connection updates.
+     * 
+     * @return the connectionUpdate value.
+     */
+    public ApprovalSettingConfiguration connectionUpdate() {
+        return this.connectionUpdate;
+    }
+
+    /**
+     * Set the connectionUpdate property: Approval configuration for connection updates.
+     * 
+     * @param connectionUpdate the connectionUpdate value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties withConnectionUpdate(ApprovalSettingConfiguration connectionUpdate) {
+        this.connectionUpdate = connectionUpdate;
+        return this;
+    }
+
+    /**
+     * Get the communityMaintenanceMode property: Approval configuration for community maintenance mode.
+     * 
+     * @return the communityMaintenanceMode value.
+     */
+    public ApprovalSettingConfiguration communityMaintenanceMode() {
+        return this.communityMaintenanceMode;
+    }
+
+    /**
+     * Set the communityMaintenanceMode property: Approval configuration for community maintenance mode.
+     * 
+     * @param communityMaintenanceMode the communityMaintenanceMode value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties
+        withCommunityMaintenanceMode(ApprovalSettingConfiguration communityMaintenanceMode) {
+        this.communityMaintenanceMode = communityMaintenanceMode;
+        return this;
+    }
+
+    /**
+     * Get the enclaveMaintenanceMode property: Approval configuration for enclave maintenance mode.
+     * 
+     * @return the enclaveMaintenanceMode value.
+     */
+    public ApprovalSettingConfiguration enclaveMaintenanceMode() {
+        return this.enclaveMaintenanceMode;
+    }
+
+    /**
+     * Set the enclaveMaintenanceMode property: Approval configuration for enclave maintenance mode.
+     * 
+     * @param enclaveMaintenanceMode the enclaveMaintenanceMode value to set.
+     * @return the ApprovalSettingsPatchProperties object itself.
+     */
+    public ApprovalSettingsPatchProperties
+        withEnclaveMaintenanceMode(ApprovalSettingConfiguration enclaveMaintenanceMode) {
+        this.enclaveMaintenanceMode = enclaveMaintenanceMode;
         return this;
     }
 
@@ -54,8 +207,13 @@ public final class ApprovalSettingsPatchProperties implements JsonSerializable<A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("mandatoryApprovers", this.mandatoryApprovers,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("communityEndpointUpdate", this.communityEndpointUpdate);
+        jsonWriter.writeJsonField("enclaveEndpointUpdate", this.enclaveEndpointUpdate);
+        jsonWriter.writeJsonField("enclaveCreation", this.enclaveCreation);
+        jsonWriter.writeJsonField("connectionCreation", this.connectionCreation);
+        jsonWriter.writeJsonField("connectionUpdate", this.connectionUpdate);
+        jsonWriter.writeJsonField("communityMaintenanceMode", this.communityMaintenanceMode);
+        jsonWriter.writeJsonField("enclaveMaintenanceMode", this.enclaveMaintenanceMode);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,10 +233,27 @@ public final class ApprovalSettingsPatchProperties implements JsonSerializable<A
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("mandatoryApprovers".equals(fieldName)) {
-                    List<MandatoryApprover> mandatoryApprovers
-                        = reader.readArray(reader1 -> MandatoryApprover.fromJson(reader1));
-                    deserializedApprovalSettingsPatchProperties.mandatoryApprovers = mandatoryApprovers;
+                if ("communityEndpointUpdate".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.communityEndpointUpdate
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("enclaveEndpointUpdate".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.enclaveEndpointUpdate
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("enclaveCreation".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.enclaveCreation
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("connectionCreation".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.connectionCreation
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("connectionUpdate".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.connectionUpdate
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("communityMaintenanceMode".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.communityMaintenanceMode
+                        = ApprovalSettingConfiguration.fromJson(reader);
+                } else if ("enclaveMaintenanceMode".equals(fieldName)) {
+                    deserializedApprovalSettingsPatchProperties.enclaveMaintenanceMode
+                        = ApprovalSettingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

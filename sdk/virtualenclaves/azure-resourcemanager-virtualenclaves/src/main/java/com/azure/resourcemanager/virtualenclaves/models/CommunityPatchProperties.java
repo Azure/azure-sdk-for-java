@@ -44,14 +44,24 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
     private FirewallSKU firewallSku;
 
     /*
-     * Approval requirements for various actions on the community's resources.
+     * Granular approval requirements for various actions on the community's resources.
      */
-    private ApprovalSettingsPatchProperties approvalSettings;
+    private ApprovalSettingsPatchProperties granularApprovalSettings;
 
     /*
      * Maintenance Mode configuration.
      */
     private MaintenanceModeConfigurationPatchModel maintenanceModeConfiguration;
+
+    /*
+     * Community Monitoring Settings for diagnostic and virtual network flow logs
+     */
+    private MonitoringSettingsPatchModel monitoringSettings;
+
+    /*
+     * Address spaces list
+     */
+    private List<String> addressSpaces;
 
     /**
      * Creates an instance of CommunityPatchProperties class.
@@ -164,22 +174,25 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
     }
 
     /**
-     * Get the approvalSettings property: Approval requirements for various actions on the community's resources.
+     * Get the granularApprovalSettings property: Granular approval requirements for various actions on the community's
+     * resources.
      * 
-     * @return the approvalSettings value.
+     * @return the granularApprovalSettings value.
      */
-    public ApprovalSettingsPatchProperties approvalSettings() {
-        return this.approvalSettings;
+    public ApprovalSettingsPatchProperties granularApprovalSettings() {
+        return this.granularApprovalSettings;
     }
 
     /**
-     * Set the approvalSettings property: Approval requirements for various actions on the community's resources.
+     * Set the granularApprovalSettings property: Granular approval requirements for various actions on the community's
+     * resources.
      * 
-     * @param approvalSettings the approvalSettings value to set.
+     * @param granularApprovalSettings the granularApprovalSettings value to set.
      * @return the CommunityPatchProperties object itself.
      */
-    public CommunityPatchProperties withApprovalSettings(ApprovalSettingsPatchProperties approvalSettings) {
-        this.approvalSettings = approvalSettings;
+    public CommunityPatchProperties
+        withGranularApprovalSettings(ApprovalSettingsPatchProperties granularApprovalSettings) {
+        this.granularApprovalSettings = granularApprovalSettings;
         return this;
     }
 
@@ -205,6 +218,46 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
     }
 
     /**
+     * Get the monitoringSettings property: Community Monitoring Settings for diagnostic and virtual network flow logs.
+     * 
+     * @return the monitoringSettings value.
+     */
+    public MonitoringSettingsPatchModel monitoringSettings() {
+        return this.monitoringSettings;
+    }
+
+    /**
+     * Set the monitoringSettings property: Community Monitoring Settings for diagnostic and virtual network flow logs.
+     * 
+     * @param monitoringSettings the monitoringSettings value to set.
+     * @return the CommunityPatchProperties object itself.
+     */
+    public CommunityPatchProperties withMonitoringSettings(MonitoringSettingsPatchModel monitoringSettings) {
+        this.monitoringSettings = monitoringSettings;
+        return this;
+    }
+
+    /**
+     * Get the addressSpaces property: Address spaces list.
+     * 
+     * @return the addressSpaces value.
+     */
+    public List<String> addressSpaces() {
+        return this.addressSpaces;
+    }
+
+    /**
+     * Set the addressSpaces property: Address spaces list.
+     * 
+     * @param addressSpaces the addressSpaces value to set.
+     * @return the CommunityPatchProperties object itself.
+     */
+    public CommunityPatchProperties withAddressSpaces(List<String> addressSpaces) {
+        this.addressSpaces = addressSpaces;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -218,8 +271,11 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
         jsonWriter.writeArrayField("communityRoleAssignments", this.communityRoleAssignments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("firewallSku", this.firewallSku == null ? null : this.firewallSku.toString());
-        jsonWriter.writeJsonField("approvalSettings", this.approvalSettings);
+        jsonWriter.writeJsonField("approvalSettings", this.granularApprovalSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
+        jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeArrayField("addressSpaces", this.addressSpaces,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -255,11 +311,17 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
                 } else if ("firewallSku".equals(fieldName)) {
                     deserializedCommunityPatchProperties.firewallSku = FirewallSKU.fromString(reader.getString());
                 } else if ("approvalSettings".equals(fieldName)) {
-                    deserializedCommunityPatchProperties.approvalSettings
+                    deserializedCommunityPatchProperties.granularApprovalSettings
                         = ApprovalSettingsPatchProperties.fromJson(reader);
                 } else if ("maintenanceModeConfiguration".equals(fieldName)) {
                     deserializedCommunityPatchProperties.maintenanceModeConfiguration
                         = MaintenanceModeConfigurationPatchModel.fromJson(reader);
+                } else if ("monitoringSettings".equals(fieldName)) {
+                    deserializedCommunityPatchProperties.monitoringSettings
+                        = MonitoringSettingsPatchModel.fromJson(reader);
+                } else if ("addressSpaces".equals(fieldName)) {
+                    List<String> addressSpaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityPatchProperties.addressSpaces = addressSpaces;
                 } else {
                     reader.skipChildren();
                 }

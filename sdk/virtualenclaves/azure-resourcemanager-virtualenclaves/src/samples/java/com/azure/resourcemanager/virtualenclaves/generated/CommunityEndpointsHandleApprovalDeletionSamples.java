@@ -12,7 +12,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalDeletionCallback
  */
 public final class CommunityEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalDeletion.

@@ -21,7 +21,7 @@ public final class WorkloadsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"resourceGroupCollection\":[\"ujrtrhqvwr\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"nlnzonzlrpi\"}]}},\"location\":\"wncvjtszcofiz\",\"tags\":{\"jeamurv\":\"dhgbjkvre\",\"mjerbdk\":\"mlovuanashcxl\",\"bccxjmonfdgn\":\"lvidizozs\"},\"id\":\"n\",\"name\":\"ypuuwwltvuqjctze\",\"type\":\"keifzzhmkdasv\"}";
+            = "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"resourceGroupCollection\":[\"pie\",\"gbebjf\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ichdlpn\"},{\"id\":\"ubntnbatzviqsow\"},{\"id\":\"aelcat\"},{\"id\":\"ju\"}]}},\"location\":\"lrvkmjc\",\"tags\":{\"vkyylizrzbjpsf\":\"vlgfgg\",\"gbwidqlvh\":\"sfuztlvtmv\",\"zrvjfnmjmvlwyzgi\":\"koveof\",\"jpu\":\"lkujrllfojui\"},\"id\":\"yjucejikzoeo\",\"name\":\"vtzejetjklnti\",\"type\":\"yjuzkdb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class WorkloadsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadResource response = manager.workloads()
-            .getWithResponse("frddgamquhiosrsj", "ivfcdisyirnx", "hcz", com.azure.core.util.Context.NONE)
+            .getWithResponse("jgnrefqyhqoto", "hiqakydiwfbrk", "pzdqtvhcspod", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wncvjtszcofiz", response.location());
-        Assertions.assertEquals("dhgbjkvre", response.tags().get("jeamurv"));
-        Assertions.assertEquals("ujrtrhqvwr", response.properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("lrvkmjc", response.location());
+        Assertions.assertEquals("vlgfgg", response.tags().get("vkyylizrzbjpsf"));
+        Assertions.assertEquals("pie", response.properties().resourceGroupCollection().get(0));
     }
 }

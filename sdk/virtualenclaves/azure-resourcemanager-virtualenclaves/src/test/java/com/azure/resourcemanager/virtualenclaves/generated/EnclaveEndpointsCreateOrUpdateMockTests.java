@@ -14,6 +14,7 @@ import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinati
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointResource;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public final class EnclaveEndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"TCP\",\"ANY\",\"ANY\"],\"endpointRuleName\":\"aqbzgyhfwwvuatbw\",\"destination\":\"amteuliyslpkc\",\"ports\":\"w\"},{\"protocols\":[\"ANY\"],\"endpointRuleName\":\"epmywbormcqm\",\"destination\":\"iijq\",\"ports\":\"zfboj\"},{\"protocols\":[\"UDP\",\"ESP\",\"UDP\"],\"endpointRuleName\":\"qwixvcpwnk\",\"destination\":\"wzwofalickduo\",\"ports\":\"tamtyv\"},{\"protocols\":[\"ICMP\",\"TCP\",\"TCP\"],\"endpointRuleName\":\"awnvsbcfhza\",\"destination\":\"nvhycvdimwrz\",\"ports\":\"gzgy\"}],\"resourceCollection\":[\"trwpw\",\"ryekzkd\",\"meottawj\"],\"provisioningState\":\"Succeeded\"},\"location\":\"wwhnhjtfvpn\",\"tags\":{\"jpnwynudql\":\"i\",\"lxeehuxiq\":\"zsauzp\",\"xls\":\"zlrayme\"},\"id\":\"ihmxrfdsajredn\",\"name\":\"yyshtuwgmevua\",\"type\":\"pwzyi\"}";
+            = "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"AH\",\"ICMP\",\"ANY\",\"AH\"],\"endpointRuleName\":\"umvpsimioyoigl\",\"destination\":\"iqwnnraclibbfq\",\"ports\":\"pkl\"},{\"protocols\":[\"ESP\",\"ICMP\"],\"endpointRuleName\":\"hautw\",\"destination\":\"exzgpmnmabedd\",\"ports\":\"lwgdfpfqfpcvs\"}],\"resourceCollection\":[\"gq\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Manual\"},\"location\":\"wxbsmtbl\",\"tags\":{\"ci\":\"h\",\"ekqhs\":\"kwdvbtb\",\"ejuwyqwdqigmghgi\":\"htfpwpqb\"},\"id\":\"z\",\"name\":\"xlujkhnjcm\",\"type\":\"nkfm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,43 +38,26 @@ public final class EnclaveEndpointsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EnclaveEndpointResource response = manager.enclaveEndpoints()
-            .define("yeji")
-            .withRegion("v")
-            .withExistingVirtualEnclave("vbiztjofqcv", "vjufycsjmlbe")
-            .withTags(mapOf("uazjcgmxitpfinz", "goaqylkjztj", "mtbdrvcqgu", "pdltkrlg", "urelyujlfyoump", "fzhompheq",
-                "brzmqxucycijoclx", "kyeclcdigpta"))
-            .withProperties(new EnclaveEndpointProperties().withRuleCollection(Arrays.asList(
-                new EnclaveEndpointDestinationRule()
-                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.ESP,
-                        EnclaveEndpointProtocol.ICMP))
-                    .withEndpointRuleName("rtudawlpjfel")
-                    .withDestination("rpptcbgqnzmnhiil")
-                    .withPorts("lwcjgckbbcccgzpr"),
-                new EnclaveEndpointDestinationRule()
-                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.ICMP,
-                        EnclaveEndpointProtocol.ESP, EnclaveEndpointProtocol.ESP))
-                    .withEndpointRuleName("a")
-                    .withDestination("gftipwc")
-                    .withPorts("yubhiqdx"),
-                new EnclaveEndpointDestinationRule()
-                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.ICMP,
-                        EnclaveEndpointProtocol.ICMP, EnclaveEndpointProtocol.AH))
-                    .withEndpointRuleName("zafccnuhiigb")
-                    .withDestination("bui")
-                    .withPorts("xvatvcr"),
-                new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
-                    .withEndpointRuleName("bqxvhcsyhzlwxae")
-                    .withDestination("vurex")
-                    .withPorts("d"))))
+            .define("angp")
+            .withRegion("xxij")
+            .withExistingVirtualEnclave("h", "whlpuzjpceezn")
+            .withTags(mapOf("gkjgya", "ws", "fcvoinwoqar", "wrasekw"))
+            .withProperties(new EnclaveEndpointProperties().withRuleCollection(Arrays
+                .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
+                    .withEndpointRuleName("zlbciphmse")
+                    .withDestination("oqrndktxfvonfeeq")
+                    .withPorts("krie")))
+                .withUpdateMode(UpdateMode.MANUAL))
             .create();
 
-        Assertions.assertEquals("wwhnhjtfvpn", response.location());
-        Assertions.assertEquals("i", response.tags().get("jpnwynudql"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
+        Assertions.assertEquals("wxbsmtbl", response.location());
+        Assertions.assertEquals("h", response.tags().get("ci"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.AH,
             response.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("aqbzgyhfwwvuatbw", response.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("amteuliyslpkc", response.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("w", response.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("umvpsimioyoigl", response.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("iqwnnraclibbfq", response.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("pkl", response.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.MANUAL, response.properties().updateMode());
     }
 
     // Use "Map.of" if available

@@ -9,6 +9,7 @@ import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointPatchPr
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointResource;
 import com.azure.resourcemanager.virtualenclaves.models.DestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_Update.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_Update.json
      */
     /**
      * Sample code: CommunityEndpoints_Update.
@@ -39,7 +40,8 @@ public final class CommunityEndpointsUpdateSamples {
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
                     .withDestination("foo.example.com")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .apply();
     }
 

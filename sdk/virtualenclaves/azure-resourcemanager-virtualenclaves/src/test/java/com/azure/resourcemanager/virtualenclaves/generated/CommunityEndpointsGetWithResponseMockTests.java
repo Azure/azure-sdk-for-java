@@ -13,6 +13,7 @@ import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointResource;
 import com.azure.resourcemanager.virtualenclaves.models.DestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class CommunityEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"ICMP\",\"HTTP\",\"ANY\",\"HTTP\"],\"transitHubResourceId\":\"nqxaekqsyk\",\"endpointRuleName\":\"jtqpkevmyltjcrsp\",\"destination\":\"l\",\"ports\":\"cclfgxannn\"},{\"destinationType\":\"FQDN\",\"protocols\":[\"UDP\",\"AH\"],\"transitHubResourceId\":\"wxigpxv\",\"endpointRuleName\":\"maupxvpi\",\"destination\":\"f\",\"ports\":\"fyzyzeyuub\"},{\"destinationType\":\"FQDN\",\"protocols\":[\"ANY\",\"UDP\"],\"transitHubResourceId\":\"toi\",\"endpointRuleName\":\"gygvfltgvdiho\",\"destination\":\"krxwet\",\"ports\":\"drcyrucpcun\"}],\"resourceCollection\":[\"dqumoenodnai\",\"nhq\"],\"provisioningState\":\"Updating\"},\"location\":\"dnelqkaad\",\"tags\":{\"anniyopetxivcnr\":\"wf\"},\"id\":\"yxnu\",\"name\":\"aephblkw\",\"type\":\"pat\"}";
+            = "{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"ICMP\"],\"transitHubResourceId\":\"bkew\",\"endpointRuleName\":\"yn\",\"destination\":\"gbvoffbkk\",\"ports\":\"dxaexqokmyrljia\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"AH\",\"AH\"],\"transitHubResourceId\":\"lpbcjtrpz\",\"endpointRuleName\":\"udivbxnhsqeaeonq\",\"destination\":\"wgdhu\",\"ports\":\"zytzarogatmolj\"}],\"resourceCollection\":[\"mpinmzvfkneerzzt\",\"knsjulugd\"],\"provisioningState\":\"NotSpecified\",\"updateMode\":\"Automatic\"},\"location\":\"lelfjhkeizcpih\",\"tags\":{\"p\":\"iwje\"},\"id\":\"ycayd\",\"name\":\"jzcqymlcfnz\",\"type\":\"mhsurlgwqkpmm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +34,19 @@ public final class CommunityEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunityEndpointResource response = manager.communityEndpoints()
-            .getWithResponse("rkgwltxeqip", "gzdyimsfayorp", "avkjog", com.azure.core.util.Context.NONE)
+            .getWithResponse("h", "qtwmlmhjnqtqeahj", "dvragpokddxejhh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dnelqkaad", response.location());
-        Assertions.assertEquals("wf", response.tags().get("anniyopetxivcnr"));
+        Assertions.assertEquals("lelfjhkeizcpih", response.location());
+        Assertions.assertEquals("iwje", response.tags().get("p"));
         Assertions.assertEquals(DestinationType.PRIVATE_NETWORK,
             response.properties().ruleCollection().get(0).destinationType());
         Assertions.assertEquals(CommunityEndpointProtocol.ICMP,
             response.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("nqxaekqsyk", response.properties().ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("jtqpkevmyltjcrsp", response.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("l", response.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("cclfgxannn", response.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("bkew", response.properties().ruleCollection().get(0).transitHubResourceId());
+        Assertions.assertEquals("yn", response.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("gbvoffbkk", response.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("dxaexqokmyrljia", response.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, response.properties().updateMode());
     }
 }

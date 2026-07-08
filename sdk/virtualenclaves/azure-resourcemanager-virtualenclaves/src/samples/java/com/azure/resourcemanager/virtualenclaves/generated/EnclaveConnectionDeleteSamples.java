@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class EnclaveConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Delete.json
      */
     /**
      * Sample code: EnclaveConnection_Delete.

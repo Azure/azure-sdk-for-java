@@ -12,24 +12,24 @@ public final class EnclaveConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionProperties model = BinaryData.fromString(
-            "{\"state\":\"PendingApproval\",\"communityResourceId\":\"jlwuenvrkp\",\"sourceResourceId\":\"ou\",\"sourceCidr\":\"bre\",\"destinationEndpointId\":\"qaaysjkixqt\",\"provisioningState\":\"Running\",\"resourceCollection\":[\"zlwfffiakp\"]}")
+            "{\"state\":\"Failed\",\"communityResourceId\":\"vnh\",\"sourceResourceId\":\"abrqnkkzj\",\"sourceCidr\":\"b\",\"destinationEndpointId\":\"rgaehvvibrxjj\",\"provisioningState\":\"Deleting\",\"resourceCollection\":[\"eitpkxztmo\",\"bklftidgfcwqmpim\"],\"updateMode\":\"Automatic\"}")
             .toObject(EnclaveConnectionProperties.class);
-        Assertions.assertEquals("jlwuenvrkp", model.communityResourceId());
-        Assertions.assertEquals("ou", model.sourceResourceId());
-        Assertions.assertEquals("bre", model.sourceCidr());
-        Assertions.assertEquals("qaaysjkixqt", model.destinationEndpointId());
+        Assertions.assertEquals("vnh", model.communityResourceId());
+        Assertions.assertEquals("abrqnkkzj", model.sourceResourceId());
+        Assertions.assertEquals("b", model.sourceCidr());
+        Assertions.assertEquals("rgaehvvibrxjj", model.destinationEndpointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveConnectionProperties model = new EnclaveConnectionProperties().withCommunityResourceId("jlwuenvrkp")
-            .withSourceResourceId("ou")
-            .withSourceCidr("bre")
-            .withDestinationEndpointId("qaaysjkixqt");
+        EnclaveConnectionProperties model = new EnclaveConnectionProperties().withCommunityResourceId("vnh")
+            .withSourceResourceId("abrqnkkzj")
+            .withSourceCidr("b")
+            .withDestinationEndpointId("rgaehvvibrxjj");
         model = BinaryData.fromObject(model).toObject(EnclaveConnectionProperties.class);
-        Assertions.assertEquals("jlwuenvrkp", model.communityResourceId());
-        Assertions.assertEquals("ou", model.sourceResourceId());
-        Assertions.assertEquals("bre", model.sourceCidr());
-        Assertions.assertEquals("qaaysjkixqt", model.destinationEndpointId());
+        Assertions.assertEquals("vnh", model.communityResourceId());
+        Assertions.assertEquals("abrqnkkzj", model.sourceResourceId());
+        Assertions.assertEquals("b", model.sourceCidr());
+        Assertions.assertEquals("rgaehvvibrxjj", model.destinationEndpointId());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubPatchModel;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
@@ -19,29 +20,32 @@ public final class TransitHubPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitHubPatchModel model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Failed\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":1576593550947167989,\"remoteVirtualNetworkId\":\"zimejzanlfzx\"}}},\"tags\":{\"okixrjqcir\":\"rmbzo\",\"szrnwo\":\"zpfrla\"}}")
+            "{\"properties\":{\"state\":\"Failed\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":9072853354036346008,\"remoteVirtualNetworkId\":\"qrouda\"}},\"securityProvider\":\"AzureFirewall\"},\"tags\":{\"r\":\"h\"}}")
             .toObject(TransitHubPatchModel.class);
         Assertions.assertEquals(TransitHubState.FAILED, model.properties().state());
-        Assertions.assertEquals(TransitOptionType.GATEWAY, model.properties().transitOption().type());
-        Assertions.assertEquals(1576593550947167989L, model.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("zimejzanlfzx", model.properties().transitOption().params().remoteVirtualNetworkId());
-        Assertions.assertEquals("rmbzo", model.tags().get("okixrjqcir"));
+        Assertions.assertEquals(TransitOptionType.PEERING, model.properties().transitOption().type());
+        Assertions.assertEquals(9072853354036346008L, model.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("qrouda", model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, model.properties().securityProvider());
+        Assertions.assertEquals("h", model.tags().get("r"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransitHubPatchModel model = new TransitHubPatchModel()
             .withProperties(new TransitHubPatchProperties().withState(TransitHubState.FAILED)
-                .withTransitOption(new TransitOption().withType(TransitOptionType.GATEWAY)
-                    .withParams(new TransitOptionParams().withScaleUnits(1576593550947167989L)
-                        .withRemoteVirtualNetworkId("zimejzanlfzx"))))
-            .withTags(mapOf("okixrjqcir", "rmbzo", "szrnwo", "zpfrla"));
+                .withTransitOption(new TransitOption().withType(TransitOptionType.PEERING)
+                    .withParams(new TransitOptionParams().withScaleUnits(9072853354036346008L)
+                        .withRemoteVirtualNetworkId("qrouda")))
+                .withSecurityProvider(SecurityProvider.AZURE_FIREWALL))
+            .withTags(mapOf("r", "h"));
         model = BinaryData.fromObject(model).toObject(TransitHubPatchModel.class);
         Assertions.assertEquals(TransitHubState.FAILED, model.properties().state());
-        Assertions.assertEquals(TransitOptionType.GATEWAY, model.properties().transitOption().type());
-        Assertions.assertEquals(1576593550947167989L, model.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("zimejzanlfzx", model.properties().transitOption().params().remoteVirtualNetworkId());
-        Assertions.assertEquals("rmbzo", model.tags().get("okixrjqcir"));
+        Assertions.assertEquals(TransitOptionType.PEERING, model.properties().transitOption().type());
+        Assertions.assertEquals(9072853354036346008L, model.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("qrouda", model.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, model.properties().securityProvider());
+        Assertions.assertEquals("h", model.tags().get("r"));
     }
 
     // Use "Map.of" if available

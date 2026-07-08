@@ -32,6 +32,11 @@ public final class DestinationType extends ExpandableStringEnum<DestinationType>
     public static final DestinationType PRIVATE_NETWORK = fromString("PrivateNetwork");
 
     /**
+     * DestinationType Type ServiceTag.
+     */
+    public static final DestinationType SERVICE_TAG = fromString("ServiceTag");
+
+    /**
      * Creates a new instance of DestinationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

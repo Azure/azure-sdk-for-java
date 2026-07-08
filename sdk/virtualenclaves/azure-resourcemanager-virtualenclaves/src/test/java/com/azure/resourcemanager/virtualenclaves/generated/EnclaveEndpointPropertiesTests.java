@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinationRule;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,37 +16,46 @@ public final class EnclaveEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveEndpointProperties model = BinaryData.fromString(
-            "{\"ruleCollection\":[{\"protocols\":[\"ANY\",\"ANY\"],\"endpointRuleName\":\"ojfmwnco\",\"destination\":\"rfh\",\"ports\":\"ctymoxoftp\"},{\"protocols\":[\"ESP\",\"ANY\"],\"endpointRuleName\":\"zuhx\",\"destination\":\"pqjlihhyusps\",\"ports\":\"sdvlmfwdgzxulucv\"},{\"protocols\":[\"ESP\",\"ICMP\",\"UDP\",\"ICMP\"],\"endpointRuleName\":\"zvxurisjnhny\",\"destination\":\"ifqjz\",\"ports\":\"mrhublwpc\"}],\"resourceCollection\":[\"trgjupauutpwoqh\"],\"provisioningState\":\"Running\"}")
+            "{\"ruleCollection\":[{\"protocols\":[\"ANY\",\"TCP\",\"ICMP\",\"AH\"],\"endpointRuleName\":\"cealzxwh\",\"destination\":\"nsymoyqhlwigd\",\"ports\":\"bkbxgomfa\"},{\"protocols\":[\"UDP\",\"ANY\",\"ANY\"],\"endpointRuleName\":\"daeyygux\",\"destination\":\"jsqzhzbezk\",\"ports\":\"msidxasicddyvv\"},{\"protocols\":[\"UDP\",\"ANY\",\"AH\"],\"endpointRuleName\":\"cw\",\"destination\":\"pqg\",\"ports\":\"jeaahhvjhh\"},{\"protocols\":[\"ANY\"],\"endpointRuleName\":\"bbjjidjksyxk\",\"destination\":\"vxevblb\",\"ports\":\"dnlj\"}],\"resourceCollection\":[\"euaulxu\",\"smjbnkppxyn\"],\"provisioningState\":\"Accepted\",\"updateMode\":\"Automatic\"}")
             .toObject(EnclaveEndpointProperties.class);
         Assertions.assertEquals(EnclaveEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("ojfmwnco", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("rfh", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("ctymoxoftp", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals("cealzxwh", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("nsymoyqhlwigd", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("bkbxgomfa", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnclaveEndpointProperties model = new EnclaveEndpointProperties().withRuleCollection(Arrays.asList(
             new EnclaveEndpointDestinationRule()
-                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ANY, EnclaveEndpointProtocol.ANY))
-                .withEndpointRuleName("ojfmwnco")
-                .withDestination("rfh")
-                .withPorts("ctymoxoftp"),
+                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ANY, EnclaveEndpointProtocol.TCP,
+                    EnclaveEndpointProtocol.ICMP, EnclaveEndpointProtocol.AH))
+                .withEndpointRuleName("cealzxwh")
+                .withDestination("nsymoyqhlwigd")
+                .withPorts("bkbxgomfa"),
             new EnclaveEndpointDestinationRule()
-                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ESP, EnclaveEndpointProtocol.ANY))
-                .withEndpointRuleName("zuhx")
-                .withDestination("pqjlihhyusps")
-                .withPorts("sdvlmfwdgzxulucv"),
+                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.ANY,
+                    EnclaveEndpointProtocol.ANY))
+                .withEndpointRuleName("daeyygux")
+                .withDestination("jsqzhzbezk")
+                .withPorts("msidxasicddyvv"),
             new EnclaveEndpointDestinationRule()
-                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ESP, EnclaveEndpointProtocol.ICMP,
-                    EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.ICMP))
-                .withEndpointRuleName("zvxurisjnhny")
-                .withDestination("ifqjz")
-                .withPorts("mrhublwpc")));
+                .withProtocols(
+                    Arrays.asList(EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.ANY, EnclaveEndpointProtocol.AH))
+                .withEndpointRuleName("cw")
+                .withDestination("pqg")
+                .withPorts("jeaahhvjhh"),
+            new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.ANY))
+                .withEndpointRuleName("bbjjidjksyxk")
+                .withDestination("vxevblb")
+                .withPorts("dnlj")))
+            .withUpdateMode(UpdateMode.AUTOMATIC);
         model = BinaryData.fromObject(model).toObject(EnclaveEndpointProperties.class);
         Assertions.assertEquals(EnclaveEndpointProtocol.ANY, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("ojfmwnco", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("rfh", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("ctymoxoftp", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals("cealzxwh", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("nsymoyqhlwigd", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("bkbxgomfa", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
     }
 }

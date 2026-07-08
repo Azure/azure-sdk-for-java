@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class CommunityDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/Community_Delete.json
      */
     /**
      * Sample code: Community_Delete.

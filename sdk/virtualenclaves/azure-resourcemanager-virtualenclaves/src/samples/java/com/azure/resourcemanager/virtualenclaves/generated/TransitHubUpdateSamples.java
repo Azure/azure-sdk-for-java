@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.virtualenclaves.generated;
 
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubResource;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
@@ -18,7 +19,7 @@ import java.util.Map;
  */
 public final class TransitHubUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_Update.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_Update.json
      */
     /**
      * Sample code: TransitHub_Update.
@@ -33,7 +34,8 @@ public final class TransitHubUpdateSamples {
             .withTags(mapOf("key4278", "fakeTokenPlaceholder"))
             .withProperties(new TransitHubPatchProperties().withState(TransitHubState.PENDING_APPROVAL)
                 .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-                    .withParams(new TransitOptionParams().withScaleUnits(1L))))
+                    .withParams(new TransitOptionParams().withScaleUnits(1L)))
+                .withSecurityProvider(SecurityProvider.NONE))
             .apply();
     }
 

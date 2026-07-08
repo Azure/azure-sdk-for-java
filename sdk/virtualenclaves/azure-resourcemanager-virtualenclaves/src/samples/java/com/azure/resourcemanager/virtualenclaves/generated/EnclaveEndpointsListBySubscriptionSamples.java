@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class EnclaveEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: EnclaveEndpoints_ListBySubscription.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOption;
@@ -16,24 +17,28 @@ public final class TransitHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitHubProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"state\":\"Failed\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":3361403308892839308,\"remoteVirtualNetworkId\":\"hqlbjbsybbq\"}},\"resourceCollection\":[\"t\",\"dgmfpgvmpipasl\",\"haq\",\"x\"]}")
+            "{\"provisioningState\":\"Accepted\",\"state\":\"Failed\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":8293741546882547786,\"remoteVirtualNetworkId\":\"frbbc\"}},\"resourceCollection\":[\"agtltdhlfkqoj\"],\"securityProvider\":\"None\"}")
             .toObject(TransitHubProperties.class);
         Assertions.assertEquals(TransitHubState.FAILED, model.state());
         Assertions.assertEquals(TransitOptionType.GATEWAY, model.transitOption().type());
-        Assertions.assertEquals(3361403308892839308L, model.transitOption().params().scaleUnits());
-        Assertions.assertEquals("hqlbjbsybbq", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(8293741546882547786L, model.transitOption().params().scaleUnits());
+        Assertions.assertEquals("frbbc", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, model.securityProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransitHubProperties model = new TransitHubProperties().withState(TransitHubState.FAILED)
-            .withTransitOption(new TransitOption().withType(TransitOptionType.GATEWAY)
-                .withParams(new TransitOptionParams().withScaleUnits(3361403308892839308L)
-                    .withRemoteVirtualNetworkId("hqlbjbsybbq")));
+        TransitHubProperties model
+            = new TransitHubProperties().withState(TransitHubState.FAILED)
+                .withTransitOption(new TransitOption().withType(TransitOptionType.GATEWAY)
+                    .withParams(new TransitOptionParams().withScaleUnits(8293741546882547786L)
+                        .withRemoteVirtualNetworkId("frbbc")))
+                .withSecurityProvider(SecurityProvider.NONE);
         model = BinaryData.fromObject(model).toObject(TransitHubProperties.class);
         Assertions.assertEquals(TransitHubState.FAILED, model.state());
         Assertions.assertEquals(TransitOptionType.GATEWAY, model.transitOption().type());
-        Assertions.assertEquals(3361403308892839308L, model.transitOption().params().scaleUnits());
-        Assertions.assertEquals("hqlbjbsybbq", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(8293741546882547786L, model.transitOption().params().scaleUnits());
+        Assertions.assertEquals("frbbc", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, model.securityProvider());
     }
 }
