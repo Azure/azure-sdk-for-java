@@ -6,13 +6,19 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
-* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `DataGenerationJobs` operations.
-* **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `Models` operations.
-* **Create and dispatch routines** using the preview `Routines` operations.
-* **Create and manage skills** using the preview `Skills` operations.
+* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `BetaDatasetsClient`.
+* **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
+* **Create and dispatch routines** using the preview `BetaRoutinesClient`.
+* **Create and manage skills** using the preview `BetaSkillsClient`.
 * **Create and enumerate Search Indexes** using the `Indexes` operations.
 
 The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
+
+> [!IMPORTANT]
+> **Preview and beta features**
+> - Build `Beta*Client` and `Beta*AsyncClient` instances through `AIProjectClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
+> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient`.
+> - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
 
 ## Documentation
 
@@ -35,7 +41,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +56,7 @@ The Azure AI Foundry provides a centralized spot to manage your AI Foundry resou
 
 ```java com.azure.ai.projects.clientInitialization
 AIProjectClientBuilder builder = new AIProjectClientBuilder()
-    .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
+    .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 // Beta* clients automatically opt in to their preview service area.
@@ -116,6 +122,8 @@ OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 
 Several operation groups in the AI Projects client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
 
+APIs annotated with `@Beta` are part of the SDK's preview surface, even when they appear on a non-Beta client. These APIs are subject to breaking changes in future releases and should be used with the same compatibility expectations as other preview features.
+
 Use `AIProjectClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `EvaluationRulesClient` and `EvaluationRulesAsyncClient` use this builder setting to allow the service to return preview response types:
 
 ```java
@@ -125,7 +133,7 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
 ```
 
-Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
+Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
@@ -143,7 +151,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, and related trigger/dispatch samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
 
 ### Connections operations
 

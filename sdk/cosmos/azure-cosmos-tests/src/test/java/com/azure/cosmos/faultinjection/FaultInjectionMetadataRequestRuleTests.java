@@ -35,6 +35,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -361,7 +362,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             container.createItem(TestObject.create()).block();
         }
 
-        List<FeedRange> feedRanges = container.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            container,
+            "get feed ranges for metadata fault injection setup");
         assertThat(feedRanges.size()).isGreaterThan(1);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -637,6 +640,66 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         } finally {
             pkRangesConnectionDelayRule.disable();
             dataOperationGoneRule.disable();
+            safeClose(testClient);
+        }
+    }
+
+    @Test(groups = { "multi-region", "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = 4 * TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_OwnerResourceNotExistsCrossRegionRetry(
+        boolean shouldInjectPreferredRegionsOnClient) {
+
+        if (this.readPreferredLocations.size() < 2) {
+            throw new SkipException("This test requires at least two read regions.");
+        }
+
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule pkRangesOwnerResourceNotExistsRule = null;
+
+        try {
+            testClient = getClientBuilder()
+                .contentResponseOnWriteEnabled(true)
+                .preferredRegions(shouldInjectPreferredRegionsOnClient ? this.readPreferredLocations : Collections.emptyList())
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                testClient
+                    .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(this.cosmosAsyncContainer.getId());
+
+            String pkRangesOwnerResourceNotExists = "PkRanges-ownerResourceNotExists-" + UUID.randomUUID();
+            pkRangesOwnerResourceNotExistsRule =
+                new FaultInjectionRuleBuilder(pkRangesOwnerResourceNotExists)
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .region(this.readPreferredLocations.get(0))
+                            .operationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS)
+                            .times(Integer.MAX_VALUE)
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                    container,
+                    Arrays.asList(pkRangesOwnerResourceNotExistsRule))
+                .block();
+
+            CosmosItemResponse<TestObject> itemResponse = container.createItem(TestObject.create()).block();
+
+            assertThat(itemResponse).isNotNull();
+            assertThat(pkRangesOwnerResourceNotExistsRule.getHitCount()).isGreaterThan(0);
+        } catch (CosmosException cosmosException) {
+            fail("CreateItem should have succeeded by retrying partition key range metadata in another region. "
+                + cosmosException.getDiagnostics());
+        } finally {
+            if (pkRangesOwnerResourceNotExistsRule != null) {
+                pkRangesOwnerResourceNotExistsRule.disable();
+            }
             safeClose(testClient);
         }
     }

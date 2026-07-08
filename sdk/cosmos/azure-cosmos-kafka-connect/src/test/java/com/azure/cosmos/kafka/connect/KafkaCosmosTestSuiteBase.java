@@ -19,6 +19,8 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
@@ -35,9 +37,11 @@ import org.testng.annotations.Listeners;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Listeners({KafkaCosmosTestNGLogListener.class})
 public class KafkaCosmosTestSuiteBase implements ITest {
@@ -46,6 +50,9 @@ public class KafkaCosmosTestSuiteBase implements ITest {
 
     protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
+    private static final int KAFKA_COSMOS_SUITE_SETUP_TIMEOUT = 10 * SUITE_SETUP_TIMEOUT;
+    private static final Duration CONTAINER_METADATA_MAX_WAIT = Duration.ofMinutes(2);
+    private static final Duration CONTAINER_METADATA_ATTEMPT_TIMEOUT = Duration.ofSeconds(10);
 
     protected static final AzureKeyCredential credential;
     protected static String databaseName;
@@ -89,7 +96,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
     }
 
-    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = KAFKA_COSMOS_SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -119,9 +126,11 @@ public class KafkaCosmosTestSuiteBase implements ITest {
                     options,
                     6000);
         }
+
+        waitForCreatedContainersToBeQueryable();
     }
 
-    @BeforeSuite(groups = { "kafka-emulator" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka-emulator" }, timeOut = KAFKA_COSMOS_SUITE_SETUP_TIMEOUT)
     public void beforeSuite_emulator() {
 
         logger.info("beforeSuite Started");
@@ -151,6 +160,8 @@ public class KafkaCosmosTestSuiteBase implements ITest {
                     options,
                     6000);
         }
+
+        waitForCreatedContainersToBeQueryable();
     }
 
     @BeforeSuite(groups = { "unit" }, timeOut = SUITE_SETUP_TIMEOUT)
@@ -225,6 +236,98 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
 
         return cosmosContainerProperties.getId();
+    }
+
+    private static void waitForCreatedContainersToBeQueryable() {
+        try (CosmosAsyncClient probeClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
+            waitForCreatedContainersToBeQueryable(
+                probeClient,
+                databaseName,
+                Arrays.asList(
+                    multiPartitionContainerName,
+                    multiPartitionContainerWithIdAsPartitionKeyName,
+                    singlePartitionContainerName));
+        }
+    }
+
+    private static void waitForCreatedContainersToBeQueryable(
+        CosmosAsyncClient cosmosAsyncClient,
+        String databaseName,
+        List<String> expectedContainerNames) {
+
+        long deadlineNanos = System.nanoTime() + CONTAINER_METADATA_MAX_WAIT.toNanos();
+        int attempts = 0;
+        Throwable lastFailure = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            attempts++;
+            try {
+                List<String> visibleContainerNames = getVisibleContainerNames(
+                    cosmosAsyncClient,
+                    databaseName,
+                    expectedContainerNames);
+
+                if (visibleContainerNames.containsAll(expectedContainerNames)) {
+                    logger.info(
+                        "Kafka test containers {} became queryable in database {} after {} attempt(s).",
+                        expectedContainerNames,
+                        databaseName,
+                        attempts);
+                    return;
+                }
+
+                lastFailure = new AssertionError(
+                    "Expected containers " + expectedContainerNames + " but only found " + visibleContainerNames);
+            } catch (Exception exception) {
+                lastFailure = exception;
+            }
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for Kafka test containers to become queryable.", exception);
+            }
+        }
+
+        throw new AssertionError(
+            "Kafka test containers " + expectedContainerNames + " were not queryable in database "
+                + databaseName + " within " + CONTAINER_METADATA_MAX_WAIT.getSeconds() + " seconds after "
+                + attempts + " attempt(s).",
+            lastFailure);
+    }
+
+    private static List<String> getVisibleContainerNames(
+        CosmosAsyncClient cosmosAsyncClient,
+        String databaseName,
+        List<String> expectedContainerNames) {
+
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM c WHERE c.id IN (");
+        List<SqlParameter> parameters = new ArrayList<>();
+        for (int index = 0; index < expectedContainerNames.size(); index++) {
+            String parameterName = "@container" + index;
+            parameters.add(new SqlParameter(parameterName, expectedContainerNames.get(index)));
+            queryBuilder.append(parameterName);
+            if (index < expectedContainerNames.size() - 1) {
+                queryBuilder.append(", ");
+            }
+        }
+        queryBuilder.append(")");
+
+        List<CosmosContainerProperties> visibleContainers = cosmosAsyncClient
+            .getDatabase(databaseName)
+            .queryContainers(new SqlQuerySpec(queryBuilder.toString(), parameters))
+            .byPage()
+            .flatMapIterable(response -> response.getResults())
+            .collectList()
+            .block(CONTAINER_METADATA_ATTEMPT_TIMEOUT);
+
+        List<String> visibleContainerNames = new ArrayList<>();
+        for (CosmosContainerProperties visibleContainer : visibleContainers) {
+            visibleContainerNames.add(visibleContainer.getId());
+        }
+
+        return visibleContainerNames;
     }
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(boolean enableAllVersionsAndDeletesPolicy) {

@@ -18,14 +18,8 @@ import java.util.Map;
  * Tuning knobs and run-mode for an optimization job.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentsOptimization=V1Preview")
+@Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class OptimizationOptions implements JsonSerializable<OptimizationOptions> {
-
-    /*
-     * Maximum optimization iterations per strategy. Must be >= 1. Default: 5.
-     */
-    @Generated
-    private Integer maxIterations;
 
     /*
      * Model deployment used for evaluation. Defaults to server config (typically 'gpt-4o').
@@ -38,28 +32,6 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
      */
     @Generated
     public OptimizationOptions() {
-    }
-
-    /**
-     * Get the maxIterations property: Maximum optimization iterations per strategy. Must be &gt;= 1. Default: 5.
-     *
-     * @return the maxIterations value.
-     */
-    @Generated
-    public Integer getMaxIterations() {
-        return this.maxIterations;
-    }
-
-    /**
-     * Set the maxIterations property: Maximum optimization iterations per strategy. Must be &gt;= 1. Default: 5.
-     *
-     * @param maxIterations the maxIterations value to set.
-     * @return the OptimizationOptions object itself.
-     */
-    @Generated
-    public OptimizationOptions setMaxIterations(Integer maxIterations) {
-        this.maxIterations = maxIterations;
-        return this;
     }
 
     /**
@@ -91,7 +63,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("max_iterations", this.maxIterations);
+        jsonWriter.writeNumberField("max_candidates", this.maxCandidates);
         jsonWriter.writeMapField("optimization_config", this.optimizationConfig, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
@@ -121,8 +93,8 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("max_iterations".equals(fieldName)) {
-                    deserializedOptimizationOptions.maxIterations = reader.getNullable(JsonReader::getInt);
+                if ("max_candidates".equals(fieldName)) {
+                    deserializedOptimizationOptions.maxCandidates = reader.getNullable(JsonReader::getInt);
                 } else if ("optimization_config".equals(fieldName)) {
                     Map<String, BinaryData> optimizationConfig = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
@@ -231,6 +203,36 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     @Generated
     public OptimizationOptions setEvaluationLevel(EvaluationLevel evaluationLevel) {
         this.evaluationLevel = evaluationLevel;
+        return this;
+    }
+
+    /*
+     * Maximum number of optimization candidates to generate. Must be >= 1. Default: 5.
+     */
+    @Generated
+    private Integer maxCandidates;
+
+    /**
+     * Get the maxCandidates property: Maximum number of optimization candidates to generate. Must be &gt;= 1. Default:
+     * 5.
+     *
+     * @return the maxCandidates value.
+     */
+    @Generated
+    public Integer getMaxCandidates() {
+        return this.maxCandidates;
+    }
+
+    /**
+     * Set the maxCandidates property: Maximum number of optimization candidates to generate. Must be &gt;= 1. Default:
+     * 5.
+     *
+     * @param maxCandidates the maxCandidates value to set.
+     * @return the OptimizationOptions object itself.
+     */
+    @Generated
+    public OptimizationOptions setMaxCandidates(Integer maxCandidates) {
+        this.maxCandidates = maxCandidates;
         return this;
     }
 }

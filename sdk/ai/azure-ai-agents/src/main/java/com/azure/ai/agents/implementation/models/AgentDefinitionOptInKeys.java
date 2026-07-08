@@ -9,29 +9,19 @@ package com.azure.ai.agents.implementation.models;
  */
 public enum AgentDefinitionOptInKeys {
     /**
-     * Enum value HostedAgents=V1Preview.
-     */
-    HOSTED_AGENTS_V1_PREVIEW("HostedAgents=V1Preview"),
-
-    /**
      * Enum value WorkflowAgents=V1Preview.
      */
     WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),
 
     /**
-     * Enum value AgentEndpoints=V1Preview.
-     */
-    AGENT_ENDPOINT_V1_PREVIEW("AgentEndpoints=V1Preview"),
-
-    /**
-     * Enum value CodeAgents=V1Preview.
-     */
-    CODE_AGENTS_V1_PREVIEW("CodeAgents=V1Preview"),
-
-    /**
      * Enum value ExternalAgents=V1Preview.
      */
-    EXTERNAL_AGENTS_V1_PREVIEW("ExternalAgents=V1Preview");
+    EXTERNAL_AGENTS_V1_PREVIEW("ExternalAgents=V1Preview"),
+
+    /**
+     * Enum value DraftAgents=V1Preview.
+     */
+    DRAFT_AGENTS_V1_PREVIEW("DraftAgents=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

@@ -144,6 +144,73 @@ public class ClientRetryPolicyTest {
         }
     }
 
+    @DataProvider(name = "partitionKeyRangeMetadataNotAvailableArgProvider")
+    public static Object[][] partitionKeyRangeMetadataNotAvailableArgProvider() {
+        return new Object[][]{
+            // operationType, resourceType, subStatusCode, shouldCrossRegionRetry
+            { OperationType.ReadFeed, ResourceType.PartitionKeyRange, HttpConstants.SubStatusCodes.UNKNOWN, Boolean.TRUE },
+            { OperationType.ReadFeed, ResourceType.PartitionKeyRange, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS, Boolean.TRUE },
+            { OperationType.ReadFeed, ResourceType.PartitionKeyRange, HttpConstants.SubStatusCodes.COLLECTION_NOT_AVAILABLE_FOR_READ, Boolean.TRUE },
+            // Same 404 sub-status on a data-plane read must NOT take the partition key range metadata cross-region branch.
+            { OperationType.Read, ResourceType.Document, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS, Boolean.FALSE }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "partitionKeyRangeMetadataNotAvailableArgProvider")
+    public void shouldRetryOnPartitionKeyRangeMetadataNotAvailable(
+        OperationType operationType,
+        ResourceType resourceType,
+        int subStatusCode,
+        boolean shouldCrossRegionRetry) throws Exception {
+
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost")))
+            .when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        // More than one preferred location so a cross-region retry is possible when the branch is taken.
+        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
+
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
+            mockDiagnosticsClientContext(),
+            endpointManager,
+            true,
+            throttlingRetryOptions,
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
+
+        CosmosException cosmosException = BridgeInternal.createCosmosException(
+            null,
+            HttpConstants.StatusCodes.NOTFOUND,
+            new RuntimeException("partition key range metadata not available"));
+        BridgeInternal.setSubStatusCode(cosmosException, subStatusCode);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(), operationType, "/dbs/db/colls/col/pkranges", resourceType);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.routeToLocation(0, true);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        if (shouldCrossRegionRetry) {
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .nullException()
+                .shouldRetry(true)
+                .build());
+        } else {
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .shouldRetry(false)
+                .build());
+        }
+    }
+
     @DataProvider(name = "tcpNetworkFailureOnWriteArgProvider")
     public static Object[][] tcpNetworkFailureOnWriteArgProvider() {
         return new Object[][]{

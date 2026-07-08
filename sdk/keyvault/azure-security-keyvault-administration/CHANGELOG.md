@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.9.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.9.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added support for service version `2026-01-01-preview`
+- Added support for External Key Management (EKM) features using clients `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`
 
 ## 4.8.0 (2026-05-27)
 
