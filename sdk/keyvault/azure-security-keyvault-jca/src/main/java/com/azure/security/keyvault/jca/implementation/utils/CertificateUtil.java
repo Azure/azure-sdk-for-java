@@ -372,10 +372,10 @@ public final class CertificateUtil {
                 break;
             }
 
-            // Avoid duplicates: check if a certificate with the same subject DN is already in the valid chain
+            // Avoid duplicates: check if a certificate with the same subject DN is already in the chain
+            // (check both the valid portion and any unplaced/extra certificates appended by orderCertificateChain)
             boolean isDuplicate = false;
-            for (int i = 0; i <= validChainEnd; i++) {
-                Certificate cert = chain.get(i);
+            for (Certificate cert : chain) {
                 if (cert instanceof X509Certificate) {
                     X509Certificate x509Cert = (X509Certificate) cert;
                     if (x509Cert.getSubjectX500Principal().equals(issuer.getSubjectX500Principal())) {
@@ -385,7 +385,7 @@ public final class CertificateUtil {
                 }
             }
             if (isDuplicate) {
-                LOGGER.log(FINE, "Certificate [{0}] is already in the valid chain. Stopping AIA download.",
+                LOGGER.log(FINE, "Certificate [{0}] is already in the chain. Stopping AIA download.",
                     issuer.getSubjectX500Principal().getName());
                 break;
             }
@@ -485,16 +485,16 @@ public final class CertificateUtil {
         for (int i = 0; i < certificates.length; i++) {
             if (certificates[i] instanceof X509Certificate) {
                 X509Certificate x509 = (X509Certificate) certificates[i];
-                String subject = x509.getSubjectX500Principal().getName();
-                String issuer = x509.getIssuerX500Principal().getName();
+                X500Principal subject = x509.getSubjectX500Principal();
+                X500Principal issuer = x509.getIssuerX500Principal();
                 boolean isSelfSigned = subject.equals(issuer);
 
                 sb.append("  [")
                     .append(i)
                     .append("] Subject: ")
-                    .append(subject)
+                    .append(subject.getName())
                     .append(" | Issuer: ")
-                    .append(issuer)
+                    .append(issuer.getName())
                     .append(" | Self-Signed: ")
                     .append(isSelfSigned)
                     .append("\n");
