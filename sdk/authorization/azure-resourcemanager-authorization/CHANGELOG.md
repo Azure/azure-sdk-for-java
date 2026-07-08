@@ -16,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
 
 
 ## 2.53.9 (2026-05-05)

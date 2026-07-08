@@ -16,8 +16,8 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
-- Upgraded `azure-resourcemanager-authorization` from `2.53.8` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
 
 
 ## 2.54.0-beta.1 (2026-05-22)
