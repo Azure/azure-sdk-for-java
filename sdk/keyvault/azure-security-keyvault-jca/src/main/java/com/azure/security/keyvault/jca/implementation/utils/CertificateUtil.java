@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -278,7 +279,7 @@ public final class CertificateUtil {
 
             // Chain is complete once the top cert is self-signed (root CA)
             if (x509Top.getSubjectX500Principal().equals(x509Top.getIssuerX500Principal())) {
-                LOGGER.log(INFO, "Certificate chain is complete. Root CA: {0}",
+                LOGGER.log(FINE, "Certificate chain is complete. Root CA: {0}",
                     x509Top.getSubjectX500Principal().getName());
                 break;
             }
@@ -286,7 +287,7 @@ public final class CertificateUtil {
             // Try to download the issuer certificate via the AIA extension
             X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
             if (issuer == null) {
-                LOGGER.log(INFO, "Could not download issuer certificate for [{0}] via AIA extension. "
+                LOGGER.log(FINE, "Could not download issuer certificate for [{0}] via AIA extension. "
                     + "Certificate chain may be incomplete.", x509Top.getSubjectX500Principal().getName());
                 break;
             }
@@ -309,12 +310,12 @@ public final class CertificateUtil {
                 .anyMatch(
                     c -> ((X509Certificate) c).getSubjectX500Principal().equals(issuer.getSubjectX500Principal()));
             if (isDuplicate) {
-                LOGGER.log(INFO, "Certificate [{0}] is already in the chain. Stopping AIA download.",
+                LOGGER.log(FINE, "Certificate [{0}] is already in the chain. Stopping AIA download.",
                     issuer.getSubjectX500Principal().getName());
                 break;
             }
 
-            LOGGER.log(INFO, "Downloaded intermediate CA certificate via AIA: {0}",
+            LOGGER.log(FINE, "Downloaded intermediate CA certificate via AIA: {0}",
                 issuer.getSubjectX500Principal().getName());
             chain.add(issuer);
         }
@@ -354,10 +355,10 @@ public final class CertificateUtil {
                     continue; // Only HTTP/HTTPS URLs are supported
                 }
 
-                LOGGER.log(INFO, "Downloading issuer certificate from AIA URL: {0}", url);
+                LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
                 byte[] certBytes = HttpUtil.getBytes(url);
                 if (certBytes == null) {
-                    LOGGER.log(WARNING, "Failed to download issuer certificate from AIA URL: {0}", url);
+                    LOGGER.log(FINE, "Failed to download issuer certificate from AIA URL: {0}", url);
                     continue;
                 }
 
@@ -380,7 +381,7 @@ public final class CertificateUtil {
                 }
             }
         } catch (Exception e) {
-            LOGGER.log(WARNING, "Failed to download issuer certificate from AIA extension.", e);
+            LOGGER.log(FINE, "Failed to download issuer certificate from AIA extension.", e);
         }
         return null;
     }
