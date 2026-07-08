@@ -10,6 +10,10 @@
 - Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. The fix downloads missing intermediate CA certificates at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 
 ### Other Changes
+- Added system property `azure.keyvault.jca.disableAiaDownload` to disable automatic AIA chain completion. This allows locked-down environments to prevent outbound HTTP(S) requests triggered by embedded certificate AIA extensions, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
+
+## Security Advisory
+- **AIA Chain Completion**: The AIA chain completion feature downloads certificates from URLs embedded in certificate extensions. In locked-down environments or when processing untrusted certificates, set `azure.keyvault.jca.disableAiaDownload=true` to disable this feature and prevent unexpected network requests.
 
 ## 2.11.0 (2026-02-28)
 
