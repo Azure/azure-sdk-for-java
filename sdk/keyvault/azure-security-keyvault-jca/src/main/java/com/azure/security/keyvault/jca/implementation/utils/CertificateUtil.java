@@ -47,6 +47,7 @@ public final class CertificateUtil {
     private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class.getName());
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
+    private static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disableAiaDownload";
 
     public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
@@ -294,11 +295,23 @@ public final class CertificateUtil {
      * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
      * the safety download limit is reached.
      *
+     * <p><strong>Security Note:</strong> AIA downloading can trigger outbound HTTP(S) requests to URLs
+     * embedded in certificates. Set the system property {@code azure.keyvault.jca.disableAiaDownload=true}
+     * to disable AIA chain completion in locked-down environments or when loading untrusted certificates.
+     *
      * @param orderedCertificates certificate array with contiguous issuer path + any unplaced certs appended
      * @return the (potentially extended) certificate array with missing intermediates inserted in the valid chain
      */
     static Certificate[] completeChainViaAia(Certificate[] orderedCertificates) {
         if (orderedCertificates == null || orderedCertificates.length == 0) {
+            return orderedCertificates;
+        }
+
+        // Check if AIA downloading is disabled by system property
+        String disableAiaDownload = System.getProperty(DISABLE_AIA_DOWNLOAD_PROPERTY);
+        if ("true".equalsIgnoreCase(disableAiaDownload)) {
+            LOGGER.log(FINE, "AIA chain completion is disabled by system property [{0}]",
+                DISABLE_AIA_DOWNLOAD_PROPERTY);
             return orderedCertificates;
         }
 
