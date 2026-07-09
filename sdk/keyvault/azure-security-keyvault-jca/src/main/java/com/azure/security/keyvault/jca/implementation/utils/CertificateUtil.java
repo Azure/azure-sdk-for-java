@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -610,7 +611,7 @@ public final class CertificateUtil {
             }
 
             return true;
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             // If signature verification fails or any error occurs, it's not a valid issuer
             return false;
         }
