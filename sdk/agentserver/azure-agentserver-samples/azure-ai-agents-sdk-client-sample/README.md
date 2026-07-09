@@ -1,8 +1,7 @@
 # Financial-jersey hosted-agent SDK client sample
 
 This sample shows the **client side** of Azure AI Foundry hosted agents. It takes the
-[`azure-agentserver-langchain4j-financial-jersey-sample`](../financial-agent/azure-agentserver-langchain4j-financial-jersey-sample)
-Agent Server, packaged as a container image, and:
+azure-agentserver-langchain4j-financial-jersey-sample Agent Server, packaged as a container image, and:
 
 1. Deploys it as a **hosted agent** in an Azure AI Foundry project.
 2. Waits for the agent version to become `ACTIVE`.
@@ -11,7 +10,8 @@ Agent Server, packaged as a container image, and:
 5. Invokes the agent with a financial question using an **agent-scoped OpenAI Responses client**.
 6. Prints the response and then deletes the session and agent version.
 
-Everything is driven through the [`com.azure:azure-ai-agents`](https://central.sonatype.com/artifact/com.azure/azure-ai-agents)
+Everything is driven through the [
+`com.azure:azure-ai-agents`](https://central.sonatype.com/artifact/com.azure/azure-ai-agents)
 Java SDK — there are no raw REST calls or shell scripts.
 
 ## How it differs from the other financial samples
@@ -43,16 +43,16 @@ docker push <acr>.azurecr.io/lc4jfinancialjersey:latest
 
 The sample is configured entirely through environment variables:
 
-| Variable                        | Required | Default                            | Description                                                       |
-|---------------------------------|----------|------------------------------------|-------------------------------------------------------------------|
-| `FOUNDRY_PROJECT_ENDPOINT`      | yes      | –                                  | The Azure AI Foundry project endpoint.                            |
-| `FOUNDRY_AGENT_CONTAINER_IMAGE` | yes      | –                                  | The financial-jersey container image reference (tag or digest).   |
-| `MODEL_DEPLOYMENT_NAME`         | no       | `gpt-5.4`                          | Model deployment the financial agent uses. Injected into the container. |
-| `AGENT_NAME`                    | no       | `java-financial-jersey-sdk-sample` | The hosted-agent name.                                            |
-| `AGENT_CPU`                     | no       | `2`                                | vCPU allocation for the hosted agent.                            |
-| `AGENT_MEMORY`                  | no       | `4Gi`                              | Memory allocation for the hosted agent.                          |
-| `PROMPT`                        | no       | a sample expense-summary prompt    | The question to send to the financial agent.                     |
-| `SKIP_CLEANUP`                  | no       | `false`                            | If `true`, leaves the agent version and session in place after the run. |
+| Variable                        | Required | Default                            | Description                                                                      |
+|---------------------------------|----------|------------------------------------|----------------------------------------------------------------------------------|
+| `FOUNDRY_PROJECT_ENDPOINT`      | yes      | –                                  | The Azure AI Foundry project endpoint.                                           |
+| `FOUNDRY_AGENT_CONTAINER_IMAGE` | yes      | –                                  | The financial-jersey container image reference (tag or digest).                  |
+| `MODEL_DEPLOYMENT_NAME`         | no       | `gpt-5.4`                          | Model deployment the financial agent uses. Injected into the container.          |
+| `AGENT_NAME`                    | no       | `java-financial-jersey-sdk-sample` | The hosted-agent name.                                                           |
+| `AGENT_CPU`                     | no       | `2`                                | vCPU allocation for the hosted agent.                                            |
+| `AGENT_MEMORY`                  | no       | `4Gi`                              | Memory allocation for the hosted agent.                                          |
+| `PROMPT`                        | no       | a sample expense-summary prompt    | The question to send to the financial agent.                                     |
+| `SKIP_CLEANUP`                  | no       | `false`                            | If `true`, leaves the agent version and session in place after the run.          |
 | `AZURE_SUBSCRIPTION_ID`         | no       | –                                  | Subscription hosting the AI Services account. Used in the printed RBAC commands. |
 
 ## Run

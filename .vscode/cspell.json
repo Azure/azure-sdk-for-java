@@ -481,6 +481,7 @@
         "changeit",
         "dotenv",
         "jaxrs",
+        "jfinancialjersey",
         "noprompt",
         "PKIX",
         "trustcacerts"
