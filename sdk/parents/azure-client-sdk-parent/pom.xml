@@ -602,6 +602,10 @@
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
+
+                <!-- Apache Arrow format parsing. flatbuffers-java is the sole (compile-scoped) dependency used by
+                     azure-storage-blob's vendored Arrow FlatBuffer accessors -->
+                <include>com.google.flatbuffers:flatbuffers-java:[24.3.25]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
               </includes>
             </bannedDependencies>
 
