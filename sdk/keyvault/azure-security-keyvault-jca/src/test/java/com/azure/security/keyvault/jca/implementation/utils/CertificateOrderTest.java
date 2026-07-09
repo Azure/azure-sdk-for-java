@@ -19,6 +19,7 @@ import java.security.cert.X509Certificate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CertificateOrderTest {
@@ -154,7 +155,8 @@ public class CertificateOrderTest {
      * Test to verify that orderCertificateChain handles null and empty arrays correctly.
      */
     @Test
-    public void testOrderCertificateChainEdgeCases() {
+    public void testOrderCertificateChainEdgeCases() throws CertificateException, IOException, KeyStoreException,
+        NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         // Test null array
         Certificate[] result = CertificateUtil.orderCertificateChain(null);
         assertNull(result, "Should return null for null input");
@@ -164,9 +166,15 @@ public class CertificateOrderTest {
         assertEquals(0, result.length, "Should return empty array for empty input");
 
         // Test single certificate
-        Certificate[] singleCert = new Certificate[1];
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
+            StandardCharsets.UTF_8);
+        Certificate concreteSingleCert = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString)[0];
+        Certificate[] singleCert = new Certificate[] { concreteSingleCert };
         result = CertificateUtil.orderCertificateChain(singleCert);
         assertEquals(1, result.length, "Should return single certificate unchanged");
+        assertSame(concreteSingleCert, result[0], "Should return the same certificate instance for single input");
     }
 
     /**

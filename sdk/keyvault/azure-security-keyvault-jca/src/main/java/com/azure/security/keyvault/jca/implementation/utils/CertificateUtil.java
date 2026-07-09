@@ -454,7 +454,7 @@ public final class CertificateUtil {
 
     /**
      * Finds the end position of the valid (contiguous) issuer chain.
-     * Starting from position 0, walks the chain as long as each certificate is the issuer of the next.
+     * Starting from position 0, walks the chain as long as the next certificate is the issuer of the current one.
      * Stops at the first position where the issuer relationship breaks or at a self-signed certificate.
      *
      * @param chain the certificate chain
