@@ -411,9 +411,8 @@ public final class CertificateUtil {
 
             X509Certificate issuer = downloadIssuerCertificateFromAia(x509Top);
             if (issuer == null) {
-                LOGGER.log(FINE,
-                    "Could not download issuer certificate for [{0}] via AIA extension. Certificate chain may be incomplete.",
-                    x509Top.getSubjectX500Principal().getName());
+                LOGGER.log(FINE, "Could not download issuer certificate for [{0}] via AIA extension. "
+                    + "Certificate chain may be incomplete.", x509Top.getSubjectX500Principal().getName());
                 break;
             }
 
@@ -423,7 +422,8 @@ public final class CertificateUtil {
             X500Principal issuerPrincipal = issuer.getSubjectX500Principal();
             if (!issuerPrincipal.equals(expectedIssuerPrincipal)) {
                 LOGGER.log(WARNING,
-                    "Downloaded certificate subject [{0}] does not match expected issuer DN [{1}]. Ignoring and stopping AIA chain completion.",
+                    "Downloaded certificate subject [{0}] does not match expected issuer DN [{1}]. "
+                        + "Ignoring and stopping AIA chain completion.",
                     new Object[] { issuerPrincipal.getName(), expectedIssuerPrincipal.getName() });
                 break;
             }
@@ -431,7 +431,8 @@ public final class CertificateUtil {
             // Verify that the downloaded certificate is a CA and can verify the current certificate's signature
             if (!isValidIssuer(issuer, x509Top)) {
                 LOGGER.log(WARNING,
-                    "Downloaded certificate cannot verify signature on current certificate or is not a CA. Stopping AIA chain completion.");
+                    "Downloaded certificate cannot verify signature on current certificate or is not a CA. "
+                        + "Stopping AIA chain completion.");
                 break;
             }
 
