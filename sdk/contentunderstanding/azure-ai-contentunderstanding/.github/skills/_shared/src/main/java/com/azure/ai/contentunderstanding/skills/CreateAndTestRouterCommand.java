@@ -670,41 +670,53 @@ final class CreateAndTestRouterCommand {
 
     private static Options parseArgs(String[] args) {
         Options o = new Options();
-        for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
-                case "--outer-schema":
-                    o.outerSchema = args[++i];
-                    break;
-                case "--inner-schema":
-                    o.innerSchemas.add(args[++i]);
-                    break;
-                case "--schema-dir":
-                    o.schemaDir = args[++i];
-                    break;
-                case "--input":
-                    o.input = args[++i];
-                    break;
-                case "--output":
-                    o.output = args[++i];
-                    break;
-                case "--analyzer-id":
-                    o.analyzerId = args[++i];
-                    break;
-                case "--ephemeral":
-                    o.ephemeral = true;
-                    break;
-                case "--reuse":
-                    o.reuse = true;
-                    break;
-                case "-h":
-                case "--help":
-                    printUsage();
-                    return null;
-                default:
-                    System.err.println("unknown argument: " + args[i]);
-                    printUsage();
-                    return null;
+        try {
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "--outer-schema":
+                        o.outerSchema = requireValue(args, i, "--outer-schema");
+                        i++;
+                        break;
+                    case "--inner-schema":
+                        o.innerSchemas.add(requireValue(args, i, "--inner-schema"));
+                        i++;
+                        break;
+                    case "--schema-dir":
+                        o.schemaDir = requireValue(args, i, "--schema-dir");
+                        i++;
+                        break;
+                    case "--input":
+                        o.input = requireValue(args, i, "--input");
+                        i++;
+                        break;
+                    case "--output":
+                        o.output = requireValue(args, i, "--output");
+                        i++;
+                        break;
+                    case "--analyzer-id":
+                        o.analyzerId = requireValue(args, i, "--analyzer-id");
+                        i++;
+                        break;
+                    case "--ephemeral":
+                        o.ephemeral = true;
+                        break;
+                    case "--reuse":
+                        o.reuse = true;
+                        break;
+                    case "-h":
+                    case "--help":
+                        printUsage();
+                        return null;
+                    default:
+                        System.err.println("unknown argument: " + args[i]);
+                        printUsage();
+                        return null;
+                }
             }
+        } catch (IllegalArgumentException ex) {
+            System.err.println(ex.getMessage());
+            printUsage();
+            return null;
         }
         if (o.outerSchema == null || o.input == null || o.output == null) {
             System.err.println("--outer-schema, --input, and --output are required");
@@ -717,6 +729,19 @@ final class CreateAndTestRouterCommand {
             return null;
         }
         return o;
+    }
+
+    /**
+     * Returns the value following a flag ({@code args[i+1]}), or throws
+     * {@link IllegalArgumentException} with a usage-friendly message if the flag
+     * is at the end of {@code args}. Callers must {@code i++} themselves after
+     * consuming the value so the outer loop skips past it.
+     */
+    private static String requireValue(String[] args, int i, String flag) {
+        if (i + 1 >= args.length) {
+            throw new IllegalArgumentException("missing value for " + flag);
+        }
+        return args[i + 1];
     }
 
     private static void printUsage() {

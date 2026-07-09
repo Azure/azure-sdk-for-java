@@ -223,26 +223,35 @@ final class ExtractLayoutCommand {
         String input = null;
         String output = null;
         String analyzerId = "prebuilt-documentSearch";
-        for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
-                case "--input":
-                    input = args[++i];
-                    break;
-                case "--output":
-                    output = args[++i];
-                    break;
-                case "--analyzer-id":
-                    analyzerId = args[++i];
-                    break;
-                case "-h":
-                case "--help":
-                    printUsage();
-                    return null;
-                default:
-                    System.err.println("unknown argument: " + args[i]);
-                    printUsage();
-                    return null;
+        try {
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "--input":
+                        input = requireValue(args, i, "--input");
+                        i++;
+                        break;
+                    case "--output":
+                        output = requireValue(args, i, "--output");
+                        i++;
+                        break;
+                    case "--analyzer-id":
+                        analyzerId = requireValue(args, i, "--analyzer-id");
+                        i++;
+                        break;
+                    case "-h":
+                    case "--help":
+                        printUsage();
+                        return null;
+                    default:
+                        System.err.println("unknown argument: " + args[i]);
+                        printUsage();
+                        return null;
+                }
             }
+        } catch (IllegalArgumentException ex) {
+            System.err.println(ex.getMessage());
+            printUsage();
+            return null;
         }
         if (input == null || output == null) {
             System.err.println("--input and --output are required");
@@ -254,6 +263,19 @@ final class ExtractLayoutCommand {
         o.output = output;
         o.analyzerId = analyzerId;
         return o;
+    }
+
+    /**
+     * Returns the value following a flag ({@code args[i+1]}), or throws
+     * {@link IllegalArgumentException} with a usage-friendly message if the flag
+     * is at the end of {@code args}. Callers must {@code i++} themselves after
+     * consuming the value so the outer loop skips past it.
+     */
+    private static String requireValue(String[] args, int i, String flag) {
+        if (i + 1 >= args.length) {
+            throw new IllegalArgumentException("missing value for " + flag);
+        }
+        return args[i + 1];
     }
 
     private static void printUsage() {

@@ -36,9 +36,11 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Skip Checkstyle / SpotBugs / javadoc enforcement; this is internal tooling. -->
-        <checkstyle.skip>true</checkstyle.skip>
-        <spotbugs.skip>true</spotbugs.skip>
+        <!-- This module deliberately runs outside azure-client-sdk-parent (see file header):
+             the parent's checkstyle/spotbugs bindings never fire here, so the corresponding
+             .skip properties would be no-ops and are omitted. Only maven.javadoc.skip is
+             kept because the default javadoc plugin bound to `verify` in a standalone
+             module still needs suppression. -->
         <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
 
