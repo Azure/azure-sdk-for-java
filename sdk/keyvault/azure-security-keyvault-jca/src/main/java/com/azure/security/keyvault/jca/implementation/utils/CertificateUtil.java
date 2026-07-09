@@ -531,7 +531,7 @@ public final class CertificateUtil {
                 X509Certificate x509 = (X509Certificate) certificates[i];
                 X500Principal subject = x509.getSubjectX500Principal();
                 X500Principal issuer = x509.getIssuerX500Principal();
-                boolean isSelfSigned = subject.equals(issuer);
+                boolean isSelfSigned = isSelfSignedCertificate(x509);
 
                 sb.append("  [")
                     .append(i)
