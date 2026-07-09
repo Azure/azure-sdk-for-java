@@ -560,6 +560,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("agent", this.agent);
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("expires_at", this.expiresAt);
         return jsonWriter.writeEndObject();
     }
 
@@ -648,6 +649,8 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                     deserializedVoiceLiveSessionResponse.agent = RespondingAgentOptions.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.id = reader.getString();
+                } else if ("expires_at".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.expiresAt = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -906,6 +909,37 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     @Generated
     public VoiceLiveSessionResponse setParallelToolCalls(Boolean parallelToolCalls) {
         this.parallelToolCalls = parallelToolCalls;
+        return this;
+    }
+
+    /*
+     * Expiration timestamp for the session, in seconds since epoch. This value is set by
+     * the server and cannot be changed with `session.update`.
+     */
+    @Generated
+    private Long expiresAt;
+
+    /**
+     * Get the expiresAt property: Expiration timestamp for the session, in seconds since epoch. This value is set by
+     * the server and cannot be changed with `session.update`.
+     *
+     * @return the expiresAt value.
+     */
+    @Generated
+    public Long getExpiresAt() {
+        return this.expiresAt;
+    }
+
+    /**
+     * Set the expiresAt property: Expiration timestamp for the session, in seconds since epoch. This value is set by
+     * the server and cannot be changed with `session.update`.
+     *
+     * @param expiresAt the expiresAt value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setExpiresAt(Long expiresAt) {
+        this.expiresAt = expiresAt;
         return this;
     }
 }
