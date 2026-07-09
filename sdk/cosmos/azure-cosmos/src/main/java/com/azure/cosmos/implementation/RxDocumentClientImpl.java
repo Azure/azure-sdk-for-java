@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.MetadataHedgingStrategy;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -944,6 +945,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
+            MetadataHedgingStrategy metadataHedgingStrategy = new MetadataHedgingStrategy(
+                this.globalEndpointManager,
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                Configs.getMetadataHedgingEnabledOverride(),
+                Configs.getMetadataHedgingThreshold());
+
             if (metadataCachesSnapshot != null) {
                 AsyncCache<String, DocumentCollection> nameCache = metadataCachesSnapshot.getCollectionInfoByNameCache();
                 AsyncCache<String, DocumentCollection> idCache = metadataCachesSnapshot.getCollectionInfoByIdCache();
@@ -954,7 +961,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         this,
                         this.retryPolicy,
                         nameCache,
-                        idCache
+                        idCache,
+                        metadataHedgingStrategy
                     );
                 } else {
                     // Cache data could not be deserialized (e.g., old format); fall back to fresh fetch
@@ -962,19 +970,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         this.sessionContainer,
                         this.gatewayProxy,
                         this,
-                        this.retryPolicy);
+                        this.retryPolicy,
+                        metadataHedgingStrategy);
                 }
             } else {
                 this.collectionCache = new RxClientCollectionCache(this,
                     this.sessionContainer,
                     this.gatewayProxy,
                     this,
-                    this.retryPolicy);
+                    this.retryPolicy,
+                    metadataHedgingStrategy);
             }
             this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
-                collectionCache);
+                collectionCache,
+                metadataHedgingStrategy);
 
             updateGatewayProxy();
             updateThinProxy();
@@ -7285,6 +7296,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
+
+            // Honor per-request excluded regions on non-document ReadFeed reads so a region-pinned read
+            // (e.g. a PartitionKeyRange metadata-hedging branch) is actually routed to its intended
+            // region. Only applied when excluded regions are explicitly set, so all other callers are
+            // unaffected.
+            List<String> readFeedExcludedRegions = nonNullOptions.getExcludedRegions();
+            if (readFeedExcludedRegions != null && !readFeedExcludedRegions.isEmpty()) {
+                request.requestContext.setExcludeRegions(readFeedExcludedRegions);
+            }
             return request;
         };
 

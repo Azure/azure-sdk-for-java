@@ -55,6 +55,20 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Metadata cross-region hedging (port of .NET azure-cosmos-dotnet-v3 PR #5999).
+    // Tri-state opt-in:
+    //   - explicit override via the COSMOS.metadataHedgingEnabled system property, or the
+    //     COSMOS_METADATA_HEDGING_ENABLED / AZURE_COSMOS_METADATA_HEDGING_ENABLED (.NET parity) env vars
+    //   - when unset, the caller follows the account's PPAF (Per-Partition Automatic Failover) state,
+    //     resolved once at client construction.
+    private static final String METADATA_HEDGING_ENABLED = "COSMOS.metadataHedgingEnabled";
+    private static final String METADATA_HEDGING_ENABLED_VARIABLE = "COSMOS_METADATA_HEDGING_ENABLED";
+    private static final String METADATA_HEDGING_ENABLED_AZURE_VARIABLE = "AZURE_COSMOS_METADATA_HEDGING_ENABLED";
+    // Fixed configurable threshold (Q4): fire the single hedge after this delay when the primary is slow.
+    private static final int DEFAULT_METADATA_HEDGING_THRESHOLD_IN_MS = 1_500;
+    private static final String METADATA_HEDGING_THRESHOLD_IN_MS = "COSMOS.metadataHedgingThresholdInMs";
+    private static final String METADATA_HEDGING_THRESHOLD_IN_MS_VARIABLE = "COSMOS_METADATA_HEDGING_THRESHOLD_IN_MS";
+
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -583,6 +597,54 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    /**
+     * Tri-state opt-in for metadata cross-region hedging.
+     *
+     * @return {@code TRUE}/{@code FALSE} when explicitly overridden via the
+     * {@code COSMOS.metadataHedgingEnabled} system property or the
+     * {@code COSMOS_METADATA_HEDGING_ENABLED} / {@code AZURE_COSMOS_METADATA_HEDGING_ENABLED}
+     * environment variables; {@code null} when unset (the caller should then follow the
+     * account's PPAF state).
+     */
+    public static Boolean getMetadataHedgingEnabledOverride() {
+        String valueFromSystemProperty = System.getProperty(METADATA_HEDGING_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(METADATA_HEDGING_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        String valueFromAzureEnvVariable = System.getenv(METADATA_HEDGING_ENABLED_AZURE_VARIABLE);
+        if (valueFromAzureEnvVariable != null && !valueFromAzureEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromAzureEnvVariable);
+        }
+
+        return null;
+    }
+
+    /**
+     * The fixed, configurable threshold after which a slow primary-region metadata read triggers a
+     * single cross-region hedge. Defaults to 1.5s; overridable via the
+     * {@code COSMOS.metadataHedgingThresholdInMs} system property or
+     * {@code COSMOS_METADATA_HEDGING_THRESHOLD_IN_MS} environment variable.
+     */
+    public static Duration getMetadataHedgingThreshold() {
+        String valueFromSystemProperty = System.getProperty(METADATA_HEDGING_THRESHOLD_IN_MS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Duration.ofMillis(Long.parseLong(valueFromSystemProperty.trim()));
+        }
+
+        String valueFromEnvVariable = System.getenv(METADATA_HEDGING_THRESHOLD_IN_MS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Duration.ofMillis(Long.parseLong(valueFromEnvVariable.trim()));
+        }
+
+        return Duration.ofMillis(DEFAULT_METADATA_HEDGING_THRESHOLD_IN_MS);
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {
