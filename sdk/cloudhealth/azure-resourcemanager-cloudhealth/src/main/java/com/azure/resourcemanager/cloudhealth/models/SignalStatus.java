@@ -38,6 +38,11 @@ public final class SignalStatus implements JsonSerializable<SignalStatus> {
      */
     private String error;
 
+    /*
+     * Additional context as provided by the submitter
+     */
+    private String additionalContext;
+
     /**
      * Creates an instance of SignalStatus class.
      */
@@ -81,11 +86,21 @@ public final class SignalStatus implements JsonSerializable<SignalStatus> {
     }
 
     /**
+     * Get the additionalContext property: Additional context as provided by the submitter.
+     * 
+     * @return the additionalContext value.
+     */
+    public String additionalContext() {
+        return this.additionalContext;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("additionalContext", this.additionalContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +128,8 @@ public final class SignalStatus implements JsonSerializable<SignalStatus> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("error".equals(fieldName)) {
                     deserializedSignalStatus.error = reader.getString();
+                } else if ("additionalContext".equals(fieldName)) {
+                    deserializedSignalStatus.additionalContext = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,12 +6,14 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.models.SignalStatus;
+import org.junit.jupiter.api.Assertions;
 
 public final class SignalStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalStatus model = BinaryData.fromString(
-            "{\"healthState\":\"Degraded\",\"value\":8.247990586519617,\"reportedAt\":\"2021-11-05T10:39:03Z\",\"error\":\"hemms\"}")
+            "{\"healthState\":\"Healthy\",\"value\":85.72325317752029,\"reportedAt\":\"2021-08-12T09:54:47Z\",\"error\":\"amvdkfwynwcvtbv\",\"additionalContext\":\"yhmtnvyqiat\"}")
             .toObject(SignalStatus.class);
+        Assertions.assertEquals("yhmtnvyqiat", model.additionalContext());
     }
 }

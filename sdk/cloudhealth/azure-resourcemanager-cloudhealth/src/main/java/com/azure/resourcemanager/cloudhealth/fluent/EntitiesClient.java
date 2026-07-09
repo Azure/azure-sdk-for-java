@@ -11,10 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cloudhealth.fluent.models.DataAnnotationInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetDataAnnotationsResponseInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
+import com.azure.resourcemanager.cloudhealth.models.AddDataAnnotationRequest;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsRequest;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
 import java.time.OffsetDateTime;
@@ -303,4 +308,105 @@ public interface EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
         HealthReportRequest body);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DataAnnotationInner> addDataAnnotationWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body, Context context);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataAnnotationInner addDataAnnotation(String resourceGroupName, String healthModelName, String entityName,
+        AddDataAnnotationRequest body);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GetDataAnnotationsResponseInner> getDataAnnotationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body, Context context);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetDataAnnotationsResponseInner getDataAnnotations(String resourceGroupName, String healthModelName,
+        String entityName, GetDataAnnotationsRequest body);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GetSignalRecommendationsResponseInner> getSignalRecommendationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, Context context);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GetSignalRecommendationsResponseInner getSignalRecommendations(String resourceGroupName, String healthModelName,
+        String entityName);
 }
