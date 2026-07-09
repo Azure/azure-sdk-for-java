@@ -67,14 +67,14 @@ class VoiceLiveRequestOptionsClientTest {
 
         // Act
         URI result
-            = convert(client, testEndpoint, "gpt-4o-realtime-preview", requestOptions.getCustomQueryParameters());
+            = convert(client, testEndpoint, "gpt-realtime", requestOptions.getCustomQueryParameters());
 
         // Assert
         assertNotNull(result);
         assertEquals("wss", result.getScheme());
         assertNotNull(result.getQuery());
         assertTrue(result.getQuery().contains("api-version=" + apiVersion));
-        assertTrue(result.getQuery().contains("model=gpt-4o-realtime-preview"));
+        assertTrue(result.getQuery().contains("model=gpt-realtime"));
         assertTrue(result.getQuery().contains("deployment-id=test-deployment"));
         assertTrue(result.getQuery().contains("custom-param=custom-value"));
     }
@@ -112,7 +112,7 @@ class VoiceLiveRequestOptionsClientTest {
 
         // Act
         URI result
-            = convert(client, endpointWithQuery, "gpt-4o-realtime-preview", requestOptions.getCustomQueryParameters());
+            = convert(client, endpointWithQuery, "gpt-realtime", requestOptions.getCustomQueryParameters());
 
         // Assert - SDK's api-version should take precedence
         assertNotNull(result);
