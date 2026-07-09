@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,13 +30,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_WORKFLOW_ACTION;
-import static com.azure.ai.agents.telemetry.GenAiConstants.OPERATION_CHAT;
-import static com.azure.ai.agents.telemetry.GenAiConstants.OPERATION_CREATE_CONVERSATION;
-import static com.azure.ai.agents.telemetry.GenAiConstants.OPERATION_INVOKE_AGENT;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_WORKFLOW_ACTION;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_CHAT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_CREATE_CONVERSATION;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_INVOKE_AGENT;
 
 /**
  * Provides tracing integration for GenAI response operations.
@@ -106,7 +110,7 @@ public final class GenAiResponseTracing {
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
             }
-            throw new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } finally {
             scope.close();
         }
@@ -161,7 +165,7 @@ public final class GenAiResponseTracing {
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
             }
-            throw new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 
@@ -197,7 +201,7 @@ public final class GenAiResponseTracing {
         String agentName = agentRef != null ? agentRef.getName() : null;
         String operationName = agentName != null ? OPERATION_INVOKE_AGENT : OPERATION_CHAT;
         String nameForSpan = agentName != null ? agentName : model;
-        String inputMessages = extractInputMessages(builtParams);
+        String inputMessages = formatInputMessages(builtParams);
         String instructions = builtParams.instructions().orElse("");
         String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
 
@@ -221,7 +225,7 @@ public final class GenAiResponseTracing {
         String agentName = agentRef != null ? agentRef.getName() : null;
         String operationName = agentName != null ? OPERATION_INVOKE_AGENT : OPERATION_CHAT;
         String nameForSpan = agentName != null ? agentName : model;
-        String inputMessages = extractInputMessages(builtParams);
+        String inputMessages = formatInputMessages(builtParams);
         String instructions = builtParams.instructions().orElse("");
         String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
 
@@ -235,7 +239,7 @@ public final class GenAiResponseTracing {
      * @param builtParams the built request parameters.
      * @return formatted input messages JSON string, or null if input cannot be extracted.
      */
-    static String extractInputMessages(ResponseCreateParams builtParams) {
+    static String formatInputMessages(ResponseCreateParams builtParams) {
         if (!builtParams.input().isPresent()) {
             return null;
         }
@@ -731,5 +735,137 @@ public final class GenAiResponseTracing {
         } finally {
             scope.close();
         }
+    }
+
+    /**
+     * Traces a non-streaming response operation asynchronously, extracting tracing parameters from the request objects.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the built request parameters.
+     * @param endpoint the service endpoint.
+     * @param operation the Mono that performs the actual API call.
+     * @return a Mono wrapping the response with tracing.
+     */
+    public static Mono<Response> traceResponseAsync(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, URI endpoint, Mono<Response> operation) {
+        String model = builtParams.model().isPresent() ? extractModelString(builtParams.model().get()) : null;
+        AgentReference agentRef = createResponse.getAgentReference();
+        String agentName = agentRef != null ? agentRef.getName() : null;
+        String operationName = agentName != null ? OPERATION_INVOKE_AGENT : OPERATION_CHAT;
+        String nameForSpan = agentName != null ? agentName : model;
+        String inputMessages = formatInputMessages(builtParams);
+        String instructions = builtParams.instructions().orElse("");
+        String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
+
+        return traceResponseAsync(operationName, nameForSpan, agentName, endpoint, inputMessages, instructions,
+            conversationId, operation);
+    }
+
+    /**
+     * Traces a non-streaming response operation asynchronously.
+     *
+     * @param operationName the operation name ("chat" or "invoke_agent").
+     * @param nameForSpan the model or agent name for the span name.
+     * @param agentName the agent name (null for chat operations).
+     * @param endpoint the service endpoint.
+     * @param inputMessages the formatted input messages (content-gated).
+     * @param instructions the system instructions (may be null).
+     * @param conversationId the conversation ID (may be null).
+     * @param operation the Mono that performs the actual API call.
+     * @return a Mono wrapping the response with tracing.
+     */
+    public static Mono<Response> traceResponseAsync(String operationName, String nameForSpan, String agentName,
+        URI endpoint, String inputMessages, String instructions, String conversationId, Mono<Response> operation) {
+        return Mono.defer(() -> {
+            GenAiTracingScope scope = startOperationScope(operationName, nameForSpan, endpoint);
+            if (scope == null) {
+                return operation;
+            }
+
+            boolean isInvokeAgent = OPERATION_INVOKE_AGENT.equals(operationName);
+
+            if (agentName != null) {
+                scope.setAgentAttributes(null, agentName, null, null);
+            }
+            scope.setInputMessages(inputMessages);
+            if (!isInvokeAgent && instructions != null && GenAiTracingConfiguration.isContentRecordingEnabled()) {
+                scope.setSystemInstructions(instructions);
+            }
+            if (conversationId != null) {
+                scope.setConversationId(conversationId);
+            }
+
+            return operation.doOnSuccess(response -> recordResponseAttributes(scope, response, isInvokeAgent))
+                .doOnError(scope::recordError)
+                .doFinally(signal -> scope.close());
+        });
+    }
+
+    /**
+     * Traces a streaming response operation asynchronously, extracting tracing parameters from the request objects.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the built request parameters.
+     * @param endpoint the service endpoint.
+     * @param operation the Flux that produces the stream of events.
+     * @return a Flux wrapping the stream with tracing.
+     */
+    public static Flux<ResponseStreamEvent> traceStreamingResponseAsync(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, URI endpoint, Flux<ResponseStreamEvent> operation) {
+        String model = builtParams.model().isPresent() ? extractModelString(builtParams.model().get()) : null;
+        AgentReference agentRef = createResponse.getAgentReference();
+        String agentName = agentRef != null ? agentRef.getName() : null;
+        String operationName = agentName != null ? OPERATION_INVOKE_AGENT : OPERATION_CHAT;
+        String nameForSpan = agentName != null ? agentName : model;
+        String inputMessages = formatInputMessages(builtParams);
+        String instructions = builtParams.instructions().orElse("");
+        String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
+
+        return traceStreamingResponseAsync(operationName, nameForSpan, agentName, endpoint, inputMessages, instructions,
+            conversationId, operation);
+    }
+
+    /**
+     * Traces a streaming response operation asynchronously.
+     *
+     * @param operationName the operation name ("chat" or "invoke_agent").
+     * @param nameForSpan the model or agent name for the span name.
+     * @param agentName the agent name (null for chat operations).
+     * @param endpoint the service endpoint.
+     * @param inputMessages the formatted input messages (content-gated).
+     * @param instructions the system instructions (may be null).
+     * @param conversationId the conversation ID (may be null).
+     * @param operation the Flux that produces the stream of events.
+     * @return a Flux wrapping the stream with tracing.
+     */
+    public static Flux<ResponseStreamEvent> traceStreamingResponseAsync(String operationName, String nameForSpan,
+        String agentName, URI endpoint, String inputMessages, String instructions, String conversationId,
+        Flux<ResponseStreamEvent> operation) {
+        return Flux.defer(() -> {
+            GenAiTracingScope scope = startOperationScope(operationName, nameForSpan, endpoint);
+            if (scope == null) {
+                return operation;
+            }
+
+            boolean isInvokeAgent = OPERATION_INVOKE_AGENT.equals(operationName);
+
+            if (agentName != null) {
+                scope.setAgentAttributes(null, agentName, null, null);
+            }
+            scope.setInputMessages(inputMessages);
+            if (!isInvokeAgent && instructions != null && GenAiTracingConfiguration.isContentRecordingEnabled()) {
+                scope.setSystemInstructions(instructions);
+            }
+            if (conversationId != null) {
+                scope.setConversationId(conversationId);
+            }
+
+            return operation.doOnNext(event -> {
+                if (event.isCompleted()) {
+                    Response response = event.asCompleted().response();
+                    recordResponseAttributes(scope, response, isInvokeAgent);
+                }
+            }).doOnError(scope::recordError).doFinally(signal -> scope.close());
+        });
     }
 }

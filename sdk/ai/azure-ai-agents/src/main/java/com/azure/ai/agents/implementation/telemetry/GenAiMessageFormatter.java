@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import java.util.List;
 
 /**
@@ -81,9 +82,9 @@ public final class GenAiMessageFormatter {
         if (GenAiTracingConfiguration.isContentRecordingEnabled() && content != null) {
             sb.append(",\"content\":{\"type\":").append(jsonEscape(toolType));
             sb.append(",\"id\":").append(jsonEscape(toolCallId));
+            sb.append(",\"output\":").append(jsonEscape(content));
             sb.append("}");
-        } else if (content != null) {
-            // No content, but include the type info for code interpreter etc.
+        } else if (toolType != null) {
             sb.append(",\"content\":{\"type\":").append(jsonEscape(toolType));
             sb.append(",\"id\":").append(jsonEscape(toolCallId));
             sb.append("}");

@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
+import com.azure.ai.agents.telemetry.GenAiTracingOptions;
 import com.openai.core.JsonValue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

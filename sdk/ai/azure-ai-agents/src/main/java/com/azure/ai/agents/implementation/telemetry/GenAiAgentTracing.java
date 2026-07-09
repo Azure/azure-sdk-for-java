@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -14,12 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.azure.ai.agents.telemetry.GenAiConstants.AGENT_TYPE_PROMPT;
-import static com.azure.ai.agents.telemetry.GenAiConstants.AGENT_TYPE_WORKFLOW;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_AGENT_WORKFLOW;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
-import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
+import reactor.core.publisher.Mono;
+
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.AGENT_TYPE_PROMPT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.AGENT_TYPE_WORKFLOW;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_AGENT_WORKFLOW;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
 
 /**
  * Provides tracing integration for GenAI agent CRUD operations.
@@ -32,6 +36,8 @@ import static com.azure.ai.agents.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_
  * }</pre>
  */
 public final class GenAiAgentTracing {
+
+    private static final ClientLogger LOGGER = new ClientLogger(GenAiAgentTracing.class);
 
     private GenAiAgentTracing() {
         // utility class
@@ -149,7 +155,7 @@ public final class GenAiAgentTracing {
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
             }
-            throw new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } finally {
             scope.close();
         }
@@ -205,7 +211,7 @@ public final class GenAiAgentTracing {
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
             }
-            throw new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } finally {
             scope.close();
         }
@@ -238,7 +244,7 @@ public final class GenAiAgentTracing {
             if (ex instanceof RuntimeException) {
                 throw (RuntimeException) ex;
             }
-            throw new RuntimeException(ex);
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         } finally {
             scope.close();
         }
@@ -323,5 +329,123 @@ public final class GenAiAgentTracing {
                 scope.setAgentIdAndVersion(name + ":" + version, version);
             }
         }
+    }
+
+    /**
+     * Traces a create_agent operation asynchronously by extracting relevant attributes from the agent definition.
+     * This method handles the instanceof dispatch for all known definition types.
+     *
+     * @param <T> the return type of the operation.
+     * @param agentName the agent name.
+     * @param endpoint the service endpoint.
+     * @param definition the agent definition (PromptAgentDefinition, HostedAgentDefinition, WorkflowAgentDefinition).
+     * @param operation the Mono that performs the actual API call.
+     * @return a Mono wrapping the result with tracing.
+     */
+    public static <T> Mono<T> traceCreateAgentVersionAsync(String agentName, URI endpoint, AgentDefinition definition,
+        Mono<T> operation) {
+        if (definition instanceof PromptAgentDefinition) {
+            PromptAgentDefinition prompt = (PromptAgentDefinition) definition;
+            return traceCreateAgentAsync(agentName, endpoint, null, null, AGENT_TYPE_PROMPT, prompt.getModel(),
+                prompt.getTemperature(), prompt.getTopP(), prompt.getInstructions(), null, operation);
+        } else if (definition instanceof WorkflowAgentDefinition) {
+            WorkflowAgentDefinition workflow = (WorkflowAgentDefinition) definition;
+            return traceCreateAgentAsync(agentName, endpoint, null, null, AGENT_TYPE_WORKFLOW, null, null, null, null,
+                workflow.getWorkflow(), operation);
+        } else if (definition instanceof HostedAgentDefinition) {
+            HostedAgentDefinition hosted = (HostedAgentDefinition) definition;
+            String protocol = null;
+            String protocolVersion = null;
+            if (hosted.getContainerProtocolVersions() != null && !hosted.getContainerProtocolVersions().isEmpty()) {
+                protocol = hosted.getContainerProtocolVersions().get(0).getProtocol() != null
+                    ? hosted.getContainerProtocolVersions().get(0).getProtocol().toString()
+                    : null;
+                protocolVersion = hosted.getContainerProtocolVersions().get(0).getVersion();
+            }
+            return traceCreateHostedAgentAsync(agentName, endpoint, null, null, null, null, null, null, hosted.getCpu(),
+                hosted.getMemory(), hosted.getImage(), protocol, protocolVersion, operation);
+        }
+        // Unknown definition type — just execute without detailed attributes
+        return traceCreateAgentAsync(agentName, endpoint, null, null, null, null, null, null, null, null, operation);
+    }
+
+    /**
+     * Traces a create_agent operation asynchronously, optionally emitting a workflow event.
+     *
+     * @param <T> the return type of the operation.
+     * @param agentName the agent name.
+     * @param endpoint the service endpoint.
+     * @param agentId the agent ID.
+     * @param agentVersion the agent version string.
+     * @param agentType the agent type.
+     * @param model the model name.
+     * @param temperature temperature parameter (may be null).
+     * @param topP top_p parameter (may be null).
+     * @param instructions system instructions text (content-gated).
+     * @param workflowDefinition the workflow definition (only for workflow agents, may be null).
+     * @param operation the Mono that performs the actual API call.
+     * @return a Mono wrapping the result with tracing.
+     */
+    public static <T> Mono<T> traceCreateAgentAsync(String agentName, URI endpoint, String agentId, String agentVersion,
+        String agentType, String model, Double temperature, Double topP, String instructions, String workflowDefinition,
+        Mono<T> operation) {
+        return Mono.defer(() -> {
+            GenAiTracingScope scope = GenAiTracingScope.startCreateAgent(agentName, endpoint);
+            if (scope == null) {
+                return operation;
+            }
+
+            scope.setAgentAttributes(agentId, agentName, agentVersion, agentType);
+            scope.setRequestModelAttributes(model, temperature, topP);
+            scope.setSystemInstructions(instructions);
+
+            if (AGENT_TYPE_WORKFLOW.equals(agentType)) {
+                emitWorkflowEvent(scope, workflowDefinition);
+            }
+
+            return operation.doOnSuccess(result -> enrichFromResult(scope, result))
+                .doOnError(scope::recordError)
+                .doFinally(signal -> scope.close());
+        });
+    }
+
+    /**
+     * Traces a create_agent operation asynchronously with hosted agent attributes.
+     *
+     * @param <T> the return type of the operation.
+     * @param agentName the agent name.
+     * @param endpoint the service endpoint.
+     * @param agentId the agent ID.
+     * @param agentVersion the agent version.
+     * @param model the model name.
+     * @param temperature temperature (may be null).
+     * @param topP top_p (may be null).
+     * @param instructions system instructions (content-gated).
+     * @param cpu hosted CPU allocation.
+     * @param memory hosted memory allocation.
+     * @param image hosted container image.
+     * @param protocol hosted protocol.
+     * @param protocolVersion hosted protocol version.
+     * @param operation the Mono that performs the actual API call.
+     * @return a Mono wrapping the result with tracing.
+     */
+    public static <T> Mono<T> traceCreateHostedAgentAsync(String agentName, URI endpoint, String agentId,
+        String agentVersion, String model, Double temperature, Double topP, String instructions, String cpu,
+        String memory, String image, String protocol, String protocolVersion, Mono<T> operation) {
+        return Mono.defer(() -> {
+            GenAiTracingScope scope = GenAiTracingScope.startCreateAgent(agentName, endpoint);
+            if (scope == null) {
+                return operation;
+            }
+
+            scope.setAgentAttributes(agentId, agentName, agentVersion, GenAiConstants.AGENT_TYPE_HOSTED);
+            scope.setRequestModelAttributes(model, temperature, topP);
+            scope.setSystemInstructions(instructions);
+            scope.setHostedAgentAttributes(cpu, memory, image, protocol, protocolVersion);
+
+            return operation.doOnSuccess(result -> enrichFromResult(scope, result))
+                .doOnError(scope::recordError)
+                .doFinally(signal -> scope.close());
+        });
     }
 }

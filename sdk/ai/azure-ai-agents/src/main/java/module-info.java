@@ -9,6 +9,7 @@ module com.azure.ai.agents {
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;
+    exports com.azure.ai.agents.telemetry;
 
     opens com.azure.ai.agents.models to com.azure.core;
     opens com.azure.ai.agents.implementation.models to com.azure.core;

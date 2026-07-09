@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.ai.agents.telemetry.GenAiConstants.*;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.*;
 
 /**
  * Manages the lifecycle of a GenAI tracing span, including attribute setting,
@@ -144,7 +145,7 @@ public final class GenAiTracingScope implements AutoCloseable {
         if (!GenAiTracingConfiguration.isTracingEnabled()) {
             return null;
         }
-        if (!getTracer().isEnabled() && !DURATION_HISTOGRAM.isEnabled()) {
+        if (!getTracer().isEnabled() && !DURATION_HISTOGRAM.isEnabled() && !TOKEN_USAGE_HISTOGRAM.isEnabled()) {
             return null;
         }
 
@@ -355,16 +356,14 @@ public final class GenAiTracingScope implements AutoCloseable {
     public void close() {
         if (ended.compareAndSet(0, 1)) {
             recordMetrics();
-            getTracer().end(errorType, errorType != null ? null : null, spanContext);
+            getTracer().end(errorType, null, spanContext);
         }
     }
 
     // --- Private helpers ---
 
     private void recordMetrics() {
-        double durationSeconds = (System.nanoTime() - startTime.toEpochMilli() * 1_000_000L) / 1_000_000_000.0;
-        // Use wall-clock for more accurate duration
-        durationSeconds = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+        double durationSeconds = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
 
         Map<String, Object> baseAttributes = new HashMap<>();
         baseAttributes.put(GEN_AI_OPERATION_NAME, operationName);

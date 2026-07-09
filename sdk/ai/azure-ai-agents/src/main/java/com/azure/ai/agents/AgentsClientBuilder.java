@@ -346,7 +346,8 @@ public final class AgentsClientBuilder
     public ResponsesAsyncClient buildResponsesAsyncClient() {
         return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
             .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))),
+            toURI(this.endpoint));
     }
 
     /**
@@ -472,9 +473,10 @@ public final class AgentsClientBuilder
      *
      * @return an instance of AgentsAsyncClient.
      */
-    @Generated
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient().getAgents());
+        AgentsAsyncClient client = new AgentsAsyncClient(buildInnerClient().getAgents());
+        client.setEndpoint(toURI(this.endpoint));
+        return client;
     }
 
     /**

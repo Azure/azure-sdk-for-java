@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
+import com.azure.ai.agents.telemetry.GenAiTracingOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,19 +47,11 @@ public class GenAiResponseTracingTests {
 
         // When tracing is disabled, the operation should still execute normally
         // (returns null from scope, calls operation directly)
-        assertDoesNotThrow(() -> {
-            // We can't easily create a real Response without the OpenAI SDK internals,
-            // so test with a RuntimeException to verify the code path
-            try {
-                GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                    inputMessages, null, null, () -> {
-                        called.set(true);
-                        return null; // Response would be returned here
-                    });
-            } catch (Exception ignored) {
-                // null response may cause NPE in attribute recording
-            }
-        });
+        GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT, inputMessages,
+            null, null, () -> {
+                called.set(true);
+                return null; // Response would be returned here
+            });
 
         assertTrue(called.get());
     }
@@ -70,17 +63,11 @@ public class GenAiResponseTracingTests {
 
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("Hello");
 
-        assertDoesNotThrow(() -> {
-            try {
-                GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                    inputMessages, null, null, () -> {
-                        called.set(true);
-                        return null;
-                    });
-            } catch (Exception ignored) {
-                // null response handling
-            }
-        });
+        GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT, inputMessages,
+            null, null, () -> {
+                called.set(true);
+                return null;
+            });
 
         assertTrue(called.get());
     }
@@ -102,16 +89,11 @@ public class GenAiResponseTracingTests {
         AtomicBoolean called = new AtomicBoolean(false);
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("What's the weather?");
 
-        assertDoesNotThrow(() -> {
-            try {
-                GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_INVOKE_AGENT, "WeatherAgent",
-                    "WeatherAgent", TEST_ENDPOINT, inputMessages, null, null, () -> {
-                        called.set(true);
-                        return null;
-                    });
-            } catch (Exception ignored) {
-            }
-        });
+        GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_INVOKE_AGENT, "WeatherAgent", "WeatherAgent",
+            TEST_ENDPOINT, inputMessages, null, null, () -> {
+                called.set(true);
+                return null;
+            });
 
         assertTrue(called.get());
     }

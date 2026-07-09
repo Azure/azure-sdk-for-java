@@ -10,6 +10,8 @@ import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.SessionLogEvent;
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
+import com.azure.ai.agents.telemetry.GenAiTracingOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -110,5 +112,35 @@ public final class ReadmeSamples {
             }
         }
         // END: com.azure.ai.agents.session_logs_sync
+    }
+
+    public void enableTracing() {
+        String endpoint = "my-resource-url";
+        // BEGIN: readme-sample-enableTracing
+        // 1. Set up OpenTelemetry (console exporter example)
+        // SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+        //     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+        //     .build();
+        // OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+
+        // 2. Enable GenAI tracing
+        GenAiTracingConfiguration.enableGenAiTracing(
+            new GenAiTracingOptions().setExperimental(true));
+
+        // 3. Use the client normally — spans are emitted automatically
+        AgentsClient client = new AgentsClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAgentsClient();
+        // END: readme-sample-enableTracing
+    }
+
+    public void enableContentRecording() {
+        // BEGIN: readme-sample-enableContentRecording
+        GenAiTracingConfiguration.enableGenAiTracing(
+            new GenAiTracingOptions()
+                .setExperimental(true)
+                .setContentRecording(true));
+        // END: readme-sample-enableContentRecording
     }
 }

@@ -43,7 +43,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.openai.models.conversations.Conversation;
+import java.net.URI;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
@@ -57,6 +60,8 @@ public final class AgentsAsyncClient {
 
     @Generated
     private final AgentsImpl serviceClient;
+
+    private URI endpoint;
 
     /**
      * Retrieves the agent.
@@ -456,16 +461,23 @@ public final class AgentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing)
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        Mono<AgentVersionDetails> operation
+            = createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return operation;
+        }
+
+        return GenAiAgentTracing.traceCreateAgentVersionAsync(agentName, endpoint, definition, operation);
     }
 
     /**
@@ -790,6 +802,15 @@ public final class AgentsAsyncClient {
     @Generated
     AgentsAsyncClient(AgentsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Sets the service endpoint URI for tracing.
+     *
+     * @param endpoint the service endpoint URI.
+     */
+    void setEndpoint(URI endpoint) {
+        this.endpoint = endpoint;
     }
 
     /**
@@ -2724,7 +2745,7 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
         AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing)
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
@@ -2732,9 +2753,17 @@ public final class AgentsAsyncClient {
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        Mono<AgentVersionDetails> operation
+            = createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return operation;
+        }
+
+        return GenAiAgentTracing.traceCreateAgentVersionAsync(agentName, endpoint, definition, operation);
     }
 
     /**
@@ -2758,15 +2787,24 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
         CreateAgentVersionInput createAgentVersionInput) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing)
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        Mono<AgentVersionDetails> operation
+            = createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return operation;
+        }
+
+        return GenAiAgentTracing.traceCreateAgentVersionAsync(agentName, endpoint,
+            createAgentVersionInput.getDefinition(), operation);
     }
 
     /**

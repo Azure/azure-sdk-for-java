@@ -26,7 +26,7 @@ import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
-import com.azure.ai.agents.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
 import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;

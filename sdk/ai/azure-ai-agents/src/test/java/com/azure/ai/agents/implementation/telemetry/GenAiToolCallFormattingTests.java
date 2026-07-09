@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.telemetry;
+package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
+import com.azure.ai.agents.telemetry.GenAiTracingOptions;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
 import com.openai.models.responses.ResponseFileSearchToolCall;
 import com.openai.models.responses.ResponseFunctionToolCall;
@@ -22,6 +25,8 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -566,5 +571,155 @@ public class GenAiToolCallFormattingTests {
             .build());
         assertFalse(msgResult.contains("4111"), "Output message leaked credit card");
         assertFalse(msgResult.contains("credit card"), "Output message leaked content");
+    }
+
+    // =========================================================================
+    // formatToolCallOutput tests
+    // =========================================================================
+
+    @Test
+    void formatToolCallOutput_contentOff_noOutput() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(false));
+
+        String result = GenAiMessageFormatter.formatToolCallOutput("call_123", "function", "The weather is sunny");
+
+        // Structural fields should be present
+        assertTrue(result.contains("\"type\":\"tool_call\""));
+        assertTrue(result.contains("\"id\":\"call_123\""));
+        assertTrue(result.contains("\"type\":\"function\""));
+
+        // Content must NOT be included when recording is OFF
+        assertFalse(result.contains("sunny"), "Tool call output leaked content when recording is OFF");
+        assertFalse(result.contains("weather"), "Tool call output leaked content when recording is OFF");
+        assertFalse(result.contains("\"output\""), "Tool call output field present when recording is OFF");
+    }
+
+    @Test
+    void formatToolCallOutput_contentOn_includesOutput() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
+
+        String result
+            = GenAiMessageFormatter.formatToolCallOutput("call_456", "code_interpreter", "print('hello world')");
+
+        // Structural fields should be present
+        assertTrue(result.contains("\"type\":\"tool_call\""));
+        assertTrue(result.contains("\"id\":\"call_456\""));
+        assertTrue(result.contains("\"type\":\"code_interpreter\""));
+
+        // Content SHOULD be included when recording is ON
+        assertTrue(result.contains("\"output\":\"print('hello world')\""),
+            "Tool call output content missing when recording is ON");
+    }
+
+    @Test
+    void formatToolCallOutput_contentOn_nullContent() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
+
+        String result = GenAiMessageFormatter.formatToolCallOutput("call_789", "function", null);
+
+        // Structural fields present
+        assertTrue(result.contains("\"type\":\"tool_call\""));
+        assertTrue(result.contains("\"id\":\"call_789\""));
+
+        // No output field when content is null even with recording on
+        assertFalse(result.contains("\"output\""));
+        // Type info should still be present
+        assertTrue(result.contains("\"type\":\"function\""));
+    }
+
+    // =========================================================================
+    // formatOutputFromResponse tests
+    // =========================================================================
+
+    @Test
+    void formatOutputFromResponse_emptyOutput_returnsNull() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
+
+        String result = GenAiResponseTracing.formatOutputFromResponse(
+            responseFromJson("{\"id\":\"resp_1\",\"output\":[],\"model\":\"gpt-4.1\",\"created_at\":1000}"));
+        assertNull(result);
+    }
+
+    @Test
+    void formatOutputFromResponse_messageOutput_contentOff() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(false));
+
+        String result = GenAiResponseTracing.formatOutputFromResponse(
+            responseFromJson("{\"id\":\"resp_1\",\"output\":[{\"type\":\"message\",\"id\":\"msg_1\","
+                + "\"role\":\"assistant\",\"status\":\"completed\","
+                + "\"content\":[{\"type\":\"output_text\",\"text\":\"The secret password is abc123\","
+                + "\"annotations\":[]}]}],\"model\":\"gpt-4.1\",\"created_at\":1000}"));
+        assertNotNull(result);
+        assertTrue(result.contains("\"role\":\"assistant\""));
+        assertTrue(result.contains("\"type\":\"text\""));
+        assertTrue(result.contains("\"finish_reason\":\"completed\""));
+        assertFalse(result.contains("secret password"), "Content leaked when recording is OFF");
+        assertFalse(result.contains("abc123"), "Content leaked when recording is OFF");
+    }
+
+    @Test
+    void formatOutputFromResponse_messageOutput_contentOn() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
+
+        String result = GenAiResponseTracing.formatOutputFromResponse(
+            responseFromJson("{\"id\":\"resp_1\",\"output\":[{\"type\":\"message\",\"id\":\"msg_1\","
+                + "\"role\":\"assistant\",\"status\":\"completed\","
+                + "\"content\":[{\"type\":\"output_text\",\"text\":\"Hello, world!\","
+                + "\"annotations\":[]}]}],\"model\":\"gpt-4.1\",\"created_at\":1000}"));
+        assertNotNull(result);
+        assertTrue(result.contains("\"content\":\"Hello, world!\""));
+        assertTrue(result.contains("\"finish_reason\":\"completed\""));
+    }
+
+    @Test
+    void formatOutputFromResponse_functionCallOutput_contentOff() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(false));
+
+        String result = GenAiResponseTracing.formatOutputFromResponse(
+            responseFromJson("{\"id\":\"resp_1\",\"output\":[{\"type\":\"function_call\",\"id\":\"fc_1\","
+                + "\"call_id\":\"call_abc\",\"name\":\"get_weather\","
+                + "\"arguments\":\"{\\\"location\\\":\\\"Seattle\\\"}\","
+                + "\"status\":\"completed\"}],\"model\":\"gpt-4.1\",\"created_at\":1000}"));
+        assertNotNull(result);
+        assertTrue(result.contains("\"type\":\"tool_call\""));
+        assertTrue(result.contains("call_abc"));
+        assertFalse(result.contains("get_weather"), "Function name leaked when recording is OFF");
+        assertFalse(result.contains("Seattle"), "Arguments leaked when recording is OFF");
+    }
+
+    @Test
+    void formatOutputFromResponse_multipleOutputItems() {
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
+
+        String result = GenAiResponseTracing.formatOutputFromResponse(responseFromJson(
+            "{\"id\":\"resp_1\",\"output\":[" + "{\"type\":\"function_call\",\"id\":\"fc_1\",\"call_id\":\"call_1\","
+                + "\"name\":\"lookup\",\"arguments\":\"{}\",\"status\":\"completed\"},"
+                + "{\"type\":\"message\",\"id\":\"msg_1\",\"role\":\"assistant\","
+                + "\"status\":\"completed\",\"content\":[{\"type\":\"output_text\","
+                + "\"text\":\"Done\",\"annotations\":[]}]}" + "],\"model\":\"gpt-4.1\",\"created_at\":1000}"));
+        assertNotNull(result);
+        assertTrue(result.startsWith("["));
+        assertTrue(result.endsWith("]"));
+        assertTrue(result.contains("\"type\":\"tool_call\""));
+        assertTrue(result.contains("\"type\":\"text\""));
+        // Verify comma separation of multiple items
+        assertTrue(result.contains("},{"));
+    }
+
+    private static Response responseFromJson(String json) {
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper mapper = com.openai.core.ObjectMappers.jsonMapper();
+            return mapper.readValue(json, Response.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse Response JSON", e);
+        }
     }
 }

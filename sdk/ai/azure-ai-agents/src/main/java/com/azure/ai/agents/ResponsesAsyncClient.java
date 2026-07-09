@@ -7,6 +7,8 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -23,6 +25,7 @@ import com.openai.services.async.ResponseServiceAsync;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
@@ -32,14 +35,17 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
     private final ResponseServiceAsync responseServiceAsync;
+    private final URI endpoint;
 
     /**
      * Initializes an instance of ResponsesAsyncClient class using the official OpenAI client library.
      *
      * @param openAIClientAsync the OpenAI async client.
+     * @param endpoint the service endpoint URI.
      */
-    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync) {
+    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync, URI endpoint) {
         this.responseServiceAsync = openAIClientAsync.responses();
+        this.endpoint = endpoint;
     }
 
     /**
@@ -67,7 +73,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return GenAiResponseTracing.traceResponseAsync(createResponse, builtParams, endpoint,
+            Mono.fromFuture(this.responseServiceAsync.create(builtParams)));
     }
 
     /**
@@ -86,7 +99,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return GenAiResponseTracing.traceStreamingResponseAsync(createResponse, builtParams, endpoint,
+            StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(builtParams)));
     }
 
     /**

@@ -746,7 +746,7 @@ This package supports OpenTelemetry-based tracing for GenAI operations. When ena
 
 ### Quick Start
 
-```java
+```java readme-sample-enableTracing
 // 1. Set up OpenTelemetry (console exporter example)
 // SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
 //     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
@@ -760,7 +760,7 @@ GenAiTracingConfiguration.enableGenAiTracing(
 // 3. Use the client normally — spans are emitted automatically
 AgentsClient client = new AgentsClientBuilder()
     .endpoint(endpoint)
-    .credential(credential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAgentsClient();
 ```
 
@@ -779,9 +779,16 @@ All tracing settings follow the same precedence order:
 
 ### Content Recording
 
-By default, message content is **NOT** recorded in traces to avoid capturing sensitive user data. When enabled, full prompt and response text (which may include personal or confidential information) is included in trace spans. To enable:
+By default, message content is **NOT** recorded in traces to avoid capturing sensitive user data. When enabled, full prompt and response text (which may include personal or sensitive information) is included in trace spans. To enable:
 - Set environment variable `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`, or
-- Pass programmatically: `new GenAiTracingOptions().setContentRecording(true)`
+- Pass programmatically:
+
+```java readme-sample-enableContentRecording
+GenAiTracingConfiguration.enableGenAiTracing(
+    new GenAiTracingOptions()
+        .setExperimental(true)
+        .setContentRecording(true));
+```
 
 ### Trace Context Propagation
 

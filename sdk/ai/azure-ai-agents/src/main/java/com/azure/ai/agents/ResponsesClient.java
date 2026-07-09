@@ -8,9 +8,9 @@ import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.telemetry.GenAiResponseTracing;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
-import com.azure.ai.agents.telemetry.TracedStreamIterable;
+import com.azure.ai.agents.implementation.telemetry.TracedStreamIterable;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -74,17 +74,6 @@ public final class ResponsesClient {
             GenAiResponseTracing.traceCreateConversation(endpoint, conversation.id());
         }
         return conversation;
-    }
-
-    /**
-     * Deletes a conversation.
-     *
-     * @param conversationId the ID of the conversation to delete.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteConversation(String conversationId) {
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
-        conversationService.delete(conversationId);
     }
 
     /**
