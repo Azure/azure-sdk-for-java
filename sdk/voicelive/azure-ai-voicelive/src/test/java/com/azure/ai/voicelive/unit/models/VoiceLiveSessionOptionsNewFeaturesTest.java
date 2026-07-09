@@ -92,6 +92,7 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
             .setLatencyThresholdMs(1500);
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-realtime")
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-realtime")
             .setInterimResponse(BinaryData.fromObject(interimConfig));
 
         // Act
@@ -112,12 +113,14 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
 
         // Act
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-realtime")
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-realtime")
             .setInstructions("Test instructions")
             .setReasoningEffort(ReasoningEffort.LOW)
             .setInterimResponse(BinaryData.fromObject(interimConfig))
             .setTemperature(0.8);
 
         // Assert
+        assertEquals("gpt-realtime", options.getModel());
         assertEquals("gpt-realtime", options.getModel());
         assertEquals("Test instructions", options.getInstructions());
         assertEquals(ReasoningEffort.LOW, options.getReasoningEffort());
@@ -158,6 +161,7 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
     void testVoiceLiveSessionOptionsParallelToolCallsRoundTrip() {
         VoiceLiveSessionOptions options
             = new VoiceLiveSessionOptions().setModel("gpt-realtime").setParallelToolCalls(true);
+            = new VoiceLiveSessionOptions().setModel("gpt-realtime").setParallelToolCalls(true);
 
         VoiceLiveSessionOptions deserialized = BinaryData.fromObject(options).toObject(VoiceLiveSessionOptions.class);
 
@@ -166,6 +170,7 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
 
     @Test
     void testVoiceLiveSessionResponseParallelToolCallsDeserialization() {
+        String json = "{\"id\":\"sess-1\",\"model\":\"gpt-realtime\",\"parallel_tool_calls\":false}";
         String json = "{\"id\":\"sess-1\",\"model\":\"gpt-realtime\",\"parallel_tool_calls\":false}";
 
         VoiceLiveSessionResponse response = BinaryData.fromString(json).toObject(VoiceLiveSessionResponse.class);

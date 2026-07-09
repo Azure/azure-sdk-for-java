@@ -74,6 +74,7 @@ class VoiceLiveRequestOptionsClientTest {
         assertNotNull(result.getQuery());
         assertTrue(result.getQuery().contains("api-version=" + apiVersion));
         assertTrue(result.getQuery().contains("model=gpt-realtime"));
+        assertTrue(result.getQuery().contains("model=gpt-realtime"));
         assertTrue(result.getQuery().contains("deployment-id=test-deployment"));
         assertTrue(result.getQuery().contains("custom-param=custom-value"));
     }
