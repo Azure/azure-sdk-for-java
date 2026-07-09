@@ -9,6 +9,7 @@ import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
@@ -38,6 +39,7 @@ import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +67,7 @@ public class AiaCertificateChainTest {
 
     private static final String AIA_INTERMEDIATE_URL = "http://aia.example.com/intermediate.crt";
     private static final String AIA_ROOT_URL = "http://aia.example.com/root.crt";
+    private static final String AIA_BAD_ISSUER_URL = "http://aia.example.com/bad-issuer.crt";
     // Monotonic counter avoids duplicate serial numbers when certificates are created back-to-back
     private static final AtomicLong SERIAL_COUNTER = new AtomicLong(1);
 
@@ -200,6 +203,46 @@ public class AiaCertificateChainTest {
         // Root cert has no AIA extension
         X509Certificate result = CertificateUtil.downloadIssuerCertificateFromAia(rootCert);
         assertNull(result);
+    }
+
+    @Test
+    void downloadIssuerCertificateFromAiaPemBundleSelectsMatchingIssuer() throws Exception {
+        String pemBundle = toPem(rootCert) + toPem(intermediateCert);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL))
+                .thenReturn(pemBundle.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+            X509Certificate result = CertificateUtil.downloadIssuerCertificateFromAia(leafCert);
+
+            assertNotNull(result);
+            assertEquals(intermediateCert, result,
+                "Should select the matching issuer from PEM bundle, not the first certificate");
+        }
+    }
+
+    @Test
+    void completeChainViaAiaRejectsIssuerWithoutKeyCertSign() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        KeyPair badIssuerKeyPair = keyGen.generateKeyPair();
+        X509Certificate badIssuerCert = buildCertificate(badIssuerKeyPair.getPublic(), "CN=Bad Issuer", "CN=Bad Issuer",
+            badIssuerKeyPair.getPrivate(), true, null, KeyUsage.digitalSignature);
+
+        KeyPair leafKeyPair = keyGen.generateKeyPair();
+        X509Certificate leafWithBadIssuerAia = buildCertificate(leafKeyPair.getPublic(), "CN=Leaf With Bad Issuer",
+            "CN=Bad Issuer", badIssuerKeyPair.getPrivate(), false, AIA_BAD_ISSUER_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_BAD_ISSUER_URL)).thenReturn(badIssuerCert.getEncoded());
+
+            Certificate[] result = CertificateUtil.completeChainViaAia(new Certificate[] { leafWithBadIssuerAia });
+
+            assertEquals(1, result.length,
+                "Issuer without keyCertSign should be rejected even if basicConstraints indicates CA");
+            assertEquals(leafWithBadIssuerAia, result[0]);
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -342,6 +385,11 @@ public class AiaCertificateChainTest {
 
     private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
         String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl) throws Exception {
+        return buildCertificate(subjectPublicKey, subjectDn, issuerDn, signingKey, isCa, aiaUrl, null);
+    }
+
+    private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
+        String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags) throws Exception {
 
         X500Name subject = new X500Name(subjectDn);
         X500Name issuer = new X500Name(issuerDn);
@@ -354,6 +402,10 @@ public class AiaCertificateChainTest {
 
         builder.addExtension(Extension.basicConstraints, true, new BasicConstraints(isCa));
 
+        if (keyUsageFlags != null) {
+            builder.addExtension(Extension.keyUsage, true, new KeyUsage(keyUsageFlags));
+        }
+
         if (aiaUrl != null) {
             GeneralName accessLocation = new GeneralName(GeneralName.uniformResourceIdentifier, aiaUrl);
             AccessDescription caIssuers = new AccessDescription(X509ObjectIdentifiers.id_ad_caIssuers, accessLocation);
@@ -362,5 +414,10 @@ public class AiaCertificateChainTest {
 
         ContentSigner signer = new JcaContentSignerBuilder("SHA256withRSA").build(signingKey);
         return new JcaX509CertificateConverter().getCertificate(builder.build(signer));
+    }
+
+    private static String toPem(X509Certificate certificate) throws Exception {
+        String base64 = Base64.getMimeEncoder(64, new byte[] { '\n' }).encodeToString(certificate.getEncoded());
+        return "-----BEGIN CERTIFICATE-----\n" + base64 + "\n-----END CERTIFICATE-----\n";
     }
 }

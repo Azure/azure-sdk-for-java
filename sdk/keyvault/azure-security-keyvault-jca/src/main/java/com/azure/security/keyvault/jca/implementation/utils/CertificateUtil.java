@@ -34,6 +34,7 @@ import javax.security.auth.x500.X500Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -595,8 +596,20 @@ public final class CertificateUtil {
             // A root CA is self-signed, intermediate CAs should have basicConstraints.CA=true
             // basicConstraints >= 0 means CA is true
             boolean isCA = isSelfSignedCertificate(issuer) || (issuer.getBasicConstraints() >= 0);
+            if (!isCA) {
+                return false;
+            }
 
-            return isCA;
+            // RFC 5280: if KeyUsage is present for a CA certificate, keyCertSign must be set.
+            boolean[] keyUsage = issuer.getKeyUsage();
+            if (keyUsage != null) {
+                // keyCertSign is bit 5; if missing or false, the cert must not issue other certs.
+                if (keyUsage.length <= 5 || !keyUsage[5]) {
+                    return false;
+                }
+            }
+
+            return true;
         } catch (Exception e) {
             // If signature verification fails or any error occurs, it's not a valid issuer
             return false;
@@ -644,18 +657,35 @@ public final class CertificateUtil {
 
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                 try {
-                    // CA certs from AIA are typically DER-encoded
-                    Certificate downloaded = cf.generateCertificate(new ByteArrayInputStream(certBytes));
-                    if (downloaded instanceof X509Certificate) {
-                        return (X509Certificate) downloaded;
+                    // Parse all certificates in the response. Some AIA endpoints return a bundle.
+                    Collection<? extends Certificate> downloadedCerts
+                        = cf.generateCertificates(new ByteArrayInputStream(certBytes));
+                    X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
+                    for (Certificate downloaded : downloadedCerts) {
+                        if (!(downloaded instanceof X509Certificate)) {
+                            continue;
+                        }
+                        X509Certificate downloadedX509Cert = (X509Certificate) downloaded;
+                        if (expectedIssuerPrincipal.equals(downloadedX509Cert.getSubjectX500Principal())
+                            && isValidIssuer(downloadedX509Cert, cert)) {
+                            return downloadedX509Cert;
+                        }
                     }
                 } catch (CertificateException e) {
                     // Fall back to PEM format
                     String pem = new String(certBytes, StandardCharsets.UTF_8);
                     if (pem.contains(BEGIN_CERTIFICATE)) {
                         Certificate[] pemCerts = loadCertificatesFromSecretBundleValuePem(pem);
-                        if (pemCerts.length > 0 && pemCerts[0] instanceof X509Certificate) {
-                            return (X509Certificate) pemCerts[0];
+                        X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
+                        for (Certificate pemCert : pemCerts) {
+                            if (!(pemCert instanceof X509Certificate)) {
+                                continue;
+                            }
+                            X509Certificate pemX509Cert = (X509Certificate) pemCert;
+                            if (expectedIssuerPrincipal.equals(pemX509Cert.getSubjectX500Principal())
+                                && isValidIssuer(pemX509Cert, cert)) {
+                                return pemX509Cert;
+                            }
                         }
                     }
                 }
