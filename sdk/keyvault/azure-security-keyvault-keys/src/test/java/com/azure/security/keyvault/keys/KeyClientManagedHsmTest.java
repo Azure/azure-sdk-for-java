@@ -6,6 +6,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -325,6 +327,36 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
             assertNotNull(keyAttestation.getPublicKeyAttestation());
             assertTrue(keyAttestation.getPublicKeyAttestation().length > 0);
             assertNotNull(keyAttestation.getVersion());
+        });
+    }
+
+    /**
+     * Tests that an external key can be registered, retrieved, and deleted on a Managed HSM.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void externalKeyLifecycle(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        createExternalKeyRunner((keyToCreate) -> {
+            KeyVaultKey createdKey = keyClient.createExternalKey(keyToCreate);
+
+            assertEquals(keyToCreate.getName(), createdKey.getName());
+            assertNotNull(createdKey.getProperties().getExternalKey());
+            assertNotNull(createdKey.getProperties().getExternalKey().getId());
+
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToCreate.getName());
+
+            assertEquals(keyToCreate.getName(), retrievedKey.getName());
+            assertNotNull(retrievedKey.getProperties().getExternalKey());
+            assertEquals(createdKey.getProperties().getExternalKey().getId(),
+                retrievedKey.getProperties().getExternalKey().getId());
+
+            SyncPoller<DeletedKey, Void> deletedKeyPoller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(keyToCreate.getName()));
+            DeletedKey deletedKey = deletedKeyPoller.waitForCompletion().getValue();
+
+            assertEquals(keyToCreate.getName(), deletedKey.getName());
         });
     }
 }

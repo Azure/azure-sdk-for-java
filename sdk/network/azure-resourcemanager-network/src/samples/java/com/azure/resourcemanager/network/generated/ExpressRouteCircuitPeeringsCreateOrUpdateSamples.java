@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeerin
  */
 public final class ExpressRouteCircuitPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitPeeringCreate.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitPeeringCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit Peerings.

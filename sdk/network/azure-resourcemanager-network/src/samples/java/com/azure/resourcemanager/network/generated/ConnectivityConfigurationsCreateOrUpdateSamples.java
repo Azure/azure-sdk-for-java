@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectivityConfigurationPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerConnectivityConfigurationPut.json
      */
     /**
      * Sample code: ConnectivityConfigurationsPut.

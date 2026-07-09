@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsListRoutesTableSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitRouteTableList.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitRouteTableList.json
      */
     /**
      * Sample code: List Route Tables.

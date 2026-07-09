@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilit
  */
 public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
      */
     /**
      * Sample code: Check private link service visibility.

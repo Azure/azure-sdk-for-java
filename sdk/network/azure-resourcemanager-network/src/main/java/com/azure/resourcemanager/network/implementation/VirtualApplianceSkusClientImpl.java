@@ -110,7 +110,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
         if (skuName == null) {
             return Mono.error(new IllegalArgumentException("Parameter skuName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -142,7 +142,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
         if (skuName == null) {
             return Mono.error(new IllegalArgumentException("Parameter skuName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), skuName, accept,
@@ -210,7 +210,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -240,7 +240,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)

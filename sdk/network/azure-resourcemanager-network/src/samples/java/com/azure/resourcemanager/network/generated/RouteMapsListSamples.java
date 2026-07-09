@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteMapsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteMapList.json
+     * x-ms-original-file: 2025-07-01/RouteMapList.json
      */
     /**
      * Sample code: RouteMapList.

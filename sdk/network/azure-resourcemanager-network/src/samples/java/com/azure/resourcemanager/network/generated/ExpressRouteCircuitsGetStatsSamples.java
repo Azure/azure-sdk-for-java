@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsGetStatsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitStats.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitStats.json
      */
     /**
      * Sample code: Get ExpressRoute Circuit Traffic Stats.

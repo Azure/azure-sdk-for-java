@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FleetCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetCreate.json
+     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetCreate.json
      */
     /**
      * Sample code: CosmosDB Fleet Create.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class TokensListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TokenList.json
+     * x-ms-original-file: 2026-03-01-preview/TokenList.json
      */
     /**
      * Sample code: TokenList.

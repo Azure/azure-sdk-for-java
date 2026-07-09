@@ -105,6 +105,11 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
      */
     private SubResource defaultPublicNatGateway;
 
+    /*
+     * A configurable list of summarized gateway prefixes advertised for the virtual network.
+     */
+    private AddressSpace summarizedGatewayPrefixes;
+
     /**
      * Creates an instance of VirtualNetworkPropertiesFormat class.
      */
@@ -403,6 +408,28 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     }
 
     /**
+     * Get the summarizedGatewayPrefixes property: A configurable list of summarized gateway prefixes advertised for the
+     * virtual network.
+     * 
+     * @return the summarizedGatewayPrefixes value.
+     */
+    public AddressSpace summarizedGatewayPrefixes() {
+        return this.summarizedGatewayPrefixes;
+    }
+
+    /**
+     * Set the summarizedGatewayPrefixes property: A configurable list of summarized gateway prefixes advertised for the
+     * virtual network.
+     * 
+     * @param summarizedGatewayPrefixes the summarizedGatewayPrefixes value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat withSummarizedGatewayPrefixes(AddressSpace summarizedGatewayPrefixes) {
+        this.summarizedGatewayPrefixes = summarizedGatewayPrefixes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -429,6 +456,9 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
         if (flowLogs() != null) {
             flowLogs().forEach(e -> e.validate());
         }
+        if (summarizedGatewayPrefixes() != null) {
+            summarizedGatewayPrefixes().validate();
+        }
     }
 
     /**
@@ -451,6 +481,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
         jsonWriter.writeArrayField("ipAllocations", this.ipAllocations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointVNetPolicies",
             this.privateEndpointVNetPolicies == null ? null : this.privateEndpointVNetPolicies.toString());
+        jsonWriter.writeJsonField("summarizedGatewayPrefixes", this.summarizedGatewayPrefixes);
         return jsonWriter.writeEndObject();
     }
 
@@ -513,6 +544,9 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
                         = PrivateEndpointVNetPolicies.fromString(reader.getString());
                 } else if ("defaultPublicNatGateway".equals(fieldName)) {
                     deserializedVirtualNetworkPropertiesFormat.defaultPublicNatGateway = SubResource.fromJson(reader);
+                } else if ("summarizedGatewayPrefixes".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesFormat.summarizedGatewayPrefixes
+                        = AddressSpace.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

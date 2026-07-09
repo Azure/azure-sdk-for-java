@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ServiceGatewaysUpdateAddressLocationsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
+     * x-ms-original-file: 2025-07-01/ServiceGatewayFullUpdateAddressLocationsRequest.json
      */
     /**
      * Sample code: Full Update: Create, update, or delete address locations in the service gateway.
@@ -43,7 +43,7 @@ public final class ServiceGatewaysUpdateAddressLocationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
+     * x-ms-original-file: 2025-07-01/ServiceGatewayPartialUpdateAddressLocationsRequest.json
      */
     /**
      * Sample code: Partial Update: Create, update, or delete address locations in the service gateway.

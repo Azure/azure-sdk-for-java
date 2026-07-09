@@ -12,9 +12,9 @@ public final class AuthenticationSettingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationSettingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"cohslkev\"},\"id\":\"ggzfbu\",\"name\":\"fmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"rxwburv\"},\"id\":\"xjnspy\",\"name\":\"ptkoenkoukn\",\"type\":\"udwtiukbl\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"ocipazyxoeg\"},\"id\":\"g\",\"name\":\"npiucgygevqznty\",\"type\":\"mrbpizcdrqj\"}],\"nextLink\":\"pyd\"}")
+            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"npc\"},\"id\":\"ocohslkevleg\",\"name\":\"zfbuhf\",\"type\":\"vfaxkffeiith\"}],\"nextLink\":\"m\"}")
             .toObject(AuthenticationSettingListResult.class);
-        Assertions.assertEquals("cohslkev", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("pyd", model.nextLink());
+        Assertions.assertEquals("npc", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("m", model.nextLink());
     }
 }

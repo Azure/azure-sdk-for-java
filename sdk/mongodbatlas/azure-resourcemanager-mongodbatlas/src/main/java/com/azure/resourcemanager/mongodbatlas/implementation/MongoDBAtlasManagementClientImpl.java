@@ -26,9 +26,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.mongodbatlas.fluent.ClustersClient;
 import com.azure.resourcemanager.mongodbatlas.fluent.MongoDBAtlasManagementClient;
 import com.azure.resourcemanager.mongodbatlas.fluent.OperationsClient;
 import com.azure.resourcemanager.mongodbatlas.fluent.OrganizationsClient;
+import com.azure.resourcemanager.mongodbatlas.fluent.ProjectsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -156,6 +158,34 @@ public final class MongoDBAtlasManagementClientImpl implements MongoDBAtlasManag
     }
 
     /**
+     * The ProjectsClient object to access its operations.
+     */
+    private final ProjectsClient projects;
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    public ProjectsClient getProjects() {
+        return this.projects;
+    }
+
+    /**
+     * The ClustersClient object to access its operations.
+     */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /**
      * Initializes an instance of MongoDBAtlasManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -172,9 +202,11 @@ public final class MongoDBAtlasManagementClientImpl implements MongoDBAtlasManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01";
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
+        this.projects = new ProjectsClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
     }
 
     /**
