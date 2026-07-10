@@ -122,8 +122,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param accessToken Access token.
      * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
      */
-    public void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
+    public synchronized void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId,
+        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
 
         if (keyVaultUri != null) {
             setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
@@ -256,14 +256,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public synchronized void refreshCertificates() {
         KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
         if (currentKeyVaultClient == null) {
-            aliases = new ArrayList<>();
-            loadedCertificateAliases.clear();
-            loadedCertificateChainAliases.clear();
-            loadedCertificateKeyAliases.clear();
-            certificateKeys.clear();
-            certificates.clear();
-            certificateChains.clear();
-            lastRefreshTime = null;
+            clearCachedState();
             return;
         }
 
