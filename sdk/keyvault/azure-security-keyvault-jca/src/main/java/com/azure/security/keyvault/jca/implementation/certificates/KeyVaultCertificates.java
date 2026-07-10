@@ -11,19 +11,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * Store certificates loaded from KeyVault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificates.class.getName());
+
     /**
      * Stores the list of aliases.
      */
     private List<String> aliases = new ArrayList<>();
+
+    /**
+     * Stores aliases whose certificate details have already been loaded.
+     */
+    private final Set<String> loadedAliases = new HashSet<>();
 
     /**
      * Stores the certificates by alias.
@@ -49,18 +62,36 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
+    private final Set<String> configuredCertificateAliases;
+
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
+        this(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
+            disableChallengeResourceVerification, Collections.emptySet());
+    }
+
+    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
+        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
+        Set<String> configuredCertificateAliases) {
 
         this.refreshInterval = refreshInterval;
+        this.configuredCertificateAliases
+            = new HashSet<>(Optional.ofNullable(configuredCertificateAliases).orElse(Collections.emptySet()));
 
         updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
             disableChallengeResourceVerification);
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
+        this(refreshInterval, keyVaultClient, Collections.emptySet());
+    }
+
+    public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient,
+        Set<String> configuredCertificateAliases) {
         this.refreshInterval = refreshInterval;
         this.keyVaultClient = keyVaultClient;
+        this.configuredCertificateAliases
+            = new HashSet<>(Optional.ofNullable(configuredCertificateAliases).orElse(Collections.emptySet()));
     }
 
     /**
@@ -140,6 +171,39 @@ public final class KeyVaultCertificates implements AzureCertificates {
         return certificateKeys;
     }
 
+    /**
+     * Get key by alias.
+     *
+     * @param alias The alias.
+     * @return The key, or {@code null}.
+     */
+    public Key getCertificateKey(String alias) {
+        loadCertificateDetailsIfNeeded(alias);
+        return certificateKeys.get(alias);
+    }
+
+    /**
+     * Get certificate by alias.
+     *
+     * @param alias The alias.
+     * @return The certificate, or {@code null}.
+     */
+    public Certificate getCertificate(String alias) {
+        loadCertificateDetailsIfNeeded(alias);
+        return certificates.get(alias);
+    }
+
+    /**
+     * Get certificate chain by alias.
+     *
+     * @param alias The alias.
+     * @return The certificate chain, or {@code null}.
+     */
+    public Certificate[] getCertificateChain(String alias) {
+        loadCertificateDetailsIfNeeded(alias);
+        return certificateChains.get(alias);
+    }
+
     private void refreshCertificatesIfNeeded() {
         if (certificatesNeedRefresh()) { // Avoid acquiring the lock as much as possible.
             synchronized (this) {
@@ -154,28 +218,48 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * Refresh certificates. Including certificates, aliases, certificate keys, certificate chains.
      */
     public synchronized void refreshCertificates() {
-        // When refreshing certificates, the update of the 3 variables should be an atomic operation.
-        aliases = keyVaultClient.getAliases();
+        // Refresh alias list only. Certificate details are loaded lazily per alias when requested.
+        List<String> refreshedAliases
+            = Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList());
+        if (configuredCertificateAliases.isEmpty()) {
+            aliases = refreshedAliases;
+        } else {
+            aliases
+                = refreshedAliases.stream().filter(configuredCertificateAliases::contains).collect(Collectors.toList());
+        }
+
+        loadedAliases.clear();
         certificateKeys.clear();
         certificates.clear();
         certificateChains.clear();
 
-        Optional.ofNullable(aliases).orElse(Collections.emptyList()).forEach(alias -> {
-            Key key = keyVaultClient.getKey(alias, null);
-            if (!Objects.isNull(key)) {
-                certificateKeys.put(alias, key);
-            }
-            Certificate certificate = keyVaultClient.getCertificate(alias);
-            if (!Objects.isNull(certificate)) {
-                certificates.put(alias, certificate);
-            }
-            Certificate[] certificateChain = keyVaultClient.getCertificateChain(alias);
-            if (!Objects.isNull(certificateChain)) {
-                certificateChains.put(alias, certificateChain);
-            }
-        });
-
         lastRefreshTime = new Date();
+    }
+
+    private void loadCertificateDetailsIfNeeded(String alias) {
+        refreshCertificatesIfNeeded();
+
+        if (alias == null || keyVaultClient == null) {
+            return;
+        }
+
+        synchronized (this) {
+            if (loadedAliases.contains(alias)
+                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                return;
+            }
+
+            try {
+                certificateKeys.put(alias, keyVaultClient.getKey(alias, null));
+                certificates.put(alias, keyVaultClient.getCertificate(alias));
+                certificateChains.put(alias, keyVaultClient.getCertificateChain(alias));
+            } catch (RuntimeException exception) {
+                LOGGER.log(WARNING, String.format("Failed to load certificate details for alias: %s", alias),
+                    exception);
+            } finally {
+                loadedAliases.add(alias);
+            }
+        }
     }
 
     /**
@@ -187,6 +271,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
      */
     public String refreshAndGetAliasByCertificate(Certificate certificate) {
         refreshCertificates();
+
+        Optional.ofNullable(aliases).orElse(Collections.emptyList()).forEach(this::loadCertificateDetailsIfNeeded);
+
         return getCertificates().entrySet()
             .stream()
             .filter(entry -> certificate.equals(entry.getValue()))
@@ -206,6 +293,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         if (aliases != null) {
             aliases.remove(alias);
         }
+        loadedAliases.remove(alias);
         certificates.remove(alias);
         certificateChains.remove(alias);
         certificateKeys.remove(alias);

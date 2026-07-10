@@ -3,18 +3,26 @@
 
 package com.azure.security.keyvault.jca;
 
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeyStoreUnitTest {
 
     /**
@@ -89,6 +97,47 @@ public class KeyVaultKeyStoreUnitTest {
 
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificate("setcert"));
+    }
+
+    @Test
+    public void testGetConfiguredKeyVaultCertificateAliases() {
+        System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+        KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
+        assertTrue(keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases().isEmpty());
+
+        System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, "cert1, cert2 ,, cert3 ");
+        keyVaultKeyStore = new KeyVaultKeyStore();
+        Set<String> aliases = keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases();
+
+        assertEquals(3, aliases.size());
+        assertTrue(aliases.contains("cert1"));
+        assertTrue(aliases.contains("cert2"));
+        assertTrue(aliases.contains("cert3"));
+
+        System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+    }
+
+    @Test
+    public void testConfiguredAliasesWiredToKeyVaultCertificates() throws Exception {
+        try {
+            System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, "certA, certB");
+            KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
+
+            Field keyVaultCertificatesField = KeyVaultKeyStore.class.getDeclaredField("keyVaultCertificates");
+            keyVaultCertificatesField.setAccessible(true);
+            KeyVaultCertificates keyVaultCertificates
+                = (KeyVaultCertificates) keyVaultCertificatesField.get(keyVaultKeyStore);
+
+            Field configuredAliasesField = KeyVaultCertificates.class.getDeclaredField("configuredCertificateAliases");
+            configuredAliasesField.setAccessible(true);
+            Set<?> configuredAliases = (Set<?>) configuredAliasesField.get(keyVaultCertificates);
+
+            assertEquals(2, configuredAliases.size());
+            assertTrue(configuredAliases.contains("certA"));
+            assertTrue(configuredAliases.contains("certB"));
+        } finally {
+            System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+        }
     }
 
 }

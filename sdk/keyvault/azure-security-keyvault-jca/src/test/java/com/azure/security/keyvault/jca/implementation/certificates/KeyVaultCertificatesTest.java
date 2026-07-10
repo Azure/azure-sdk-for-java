@@ -4,12 +4,17 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +28,8 @@ public class KeyVaultCertificatesTest {
 
     private final Certificate certificate = mock(Certificate.class);
 
+    private final Certificate[] certificateChain = new Certificate[] { certificate };
+
     private KeyVaultCertificates keyVaultCertificates;
 
     @BeforeEach
@@ -32,6 +39,7 @@ public class KeyVaultCertificatesTest {
         when(keyVaultClient.getAliases()).thenReturn(aliases);
         when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
         when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
+        when(keyVaultClient.getCertificateChain("myalias")).thenReturn(certificateChain);
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
     }
 
@@ -42,12 +50,17 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testGetKey() {
-        Assertions.assertTrue(keyVaultCertificates.getCertificateKeys().containsValue(key));
+        Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
     }
 
     @Test
     public void testGetCertificate() {
-        Assertions.assertTrue(keyVaultCertificates.getCertificates().containsValue(certificate));
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
+    }
+
+    @Test
+    public void testGetCertificateChain() {
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
     }
 
     @Test
@@ -64,6 +77,96 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
         keyVaultCertificates.deleteEntry("myalias");
         Assertions.assertFalse(keyVaultCertificates.getAliases().contains("myalias"));
+    }
+
+    @Test
+    public void testGetAliasesDoesNotLoadCertificateDetailsEagerly() {
+        keyVaultCertificates.getAliases();
+
+        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testLoadCertificateDetailsForRequestedAliasOnly() {
+        List<String> aliases = new ArrayList<>();
+        aliases.add("myalias");
+        aliases.add("otheralias");
+
+        Key otherKey = mock(Key.class);
+        Certificate otherCertificate = mock(Certificate.class);
+
+        when(keyVaultClient.getAliases()).thenReturn(aliases);
+        when(keyVaultClient.getKey("otheralias", null)).thenReturn(otherKey);
+        when(keyVaultClient.getCertificate("otheralias")).thenReturn(otherCertificate);
+
+        keyVaultCertificates.getCertificate("myalias");
+
+        verify(keyVaultClient, times(1)).getKey("myalias", null);
+        verify(keyVaultClient, times(1)).getCertificate("myalias");
+        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).getKey("otheralias", null);
+        verify(keyVaultClient, never()).getCertificate("otheralias");
+        verify(keyVaultClient, never()).getCertificateChain("otheralias");
+    }
+
+    @Test
+    public void testConfiguredAliasesFilter() {
+        List<String> aliases = new ArrayList<>();
+        aliases.add("myalias");
+        aliases.add("otheralias");
+        when(keyVaultClient.getAliases()).thenReturn(aliases);
+
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+
+        List<String> result = keyVaultCertificates.getAliases();
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertTrue(result.contains("myalias"));
+        Assertions.assertFalse(result.contains("otheralias"));
+    }
+
+    @Test
+    public void testConfiguredAliasesFilterAfterRefresh() {
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("myalias", "otheralias"));
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("otheralias", "myalias", "new"));
+
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+
+        Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
+
+        keyVaultCertificates.refreshCertificates();
+
+        List<String> refreshedAliases = keyVaultCertificates.getAliases();
+        Assertions.assertEquals(1, refreshedAliases.size());
+        Assertions.assertTrue(refreshedAliases.contains("myalias"));
+        Assertions.assertFalse(refreshedAliases.contains("otheralias"));
+        Assertions.assertFalse(refreshedAliases.contains("new"));
+    }
+
+    @Test
+    public void testGetCertificateWithUnconfiguredAliasDoesNotFetchDetails() {
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+
+        Assertions.assertNull(keyVaultCertificates.getCertificate("otheralias"));
+
+        verify(keyVaultClient, never()).getKey("otheralias", null);
+        verify(keyVaultClient, never()).getCertificate("otheralias");
+        verify(keyVaultClient, never()).getCertificateChain("otheralias");
+    }
+
+    @Test
+    public void testAliasLoadFailureIsNotRetriedUntilRefresh() {
+        when(keyVaultClient.getKey("myalias", null)).thenThrow(new RuntimeException("transient error")).thenReturn(key);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+        verify(keyVaultClient, times(1)).getKey("myalias", null);
+
+        keyVaultCertificates.refreshCertificates();
+
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
+        verify(keyVaultClient, times(2)).getKey("myalias", null);
     }
 
 }
