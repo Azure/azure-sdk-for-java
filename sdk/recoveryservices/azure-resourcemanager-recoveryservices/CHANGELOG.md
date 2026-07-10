@@ -1,16 +1,28 @@
 # Release History
 
-## 1.7.0-beta.1 (2026-07-10)
+## 1.7.0 (2026-07-10)
 
 - Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.GranularityLevel` was added
 
-### Bugs Fixed
+* `models.ImmutabilityType` was added
 
-### Other Changes
+* `models.CostManagementSettings` was added
+
+* `models.ImmutabilityConfiguration` was added
+
+#### `models.ImmutabilitySettings` was modified
+
+* `withConfiguration(models.ImmutabilityConfiguration)` was added
+* `configuration()` was added
+
+#### `models.VaultProperties` was modified
+
+* `withCostManagementSettings(models.CostManagementSettings)` was added
+* `costManagementSettings()` was added
 
 ## 1.6.0 (2025-11-18)
 
