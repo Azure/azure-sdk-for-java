@@ -43,10 +43,10 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
     private String customEndpointAddress;
 
     /**
-     * Whether the shared ServiceBusClientBuilder should inherit the configuration derived from the producer, consumer or
-     * processor properties. Defaults to {@code null} (treated as {@code true}), preserving the existing behavior. Set to
-     * {@code false} to preserve configuration already set on the shared builder, for example the ClientOptions carrying
-     * TracingOptions set through an AzureServiceClientBuilderCustomizer.
+     * Whether the shared ServiceBusClientBuilder should inherit the configuration derived from the producer, consumer,
+     * or processor properties. Defaults to {@code null} (treated as {@code true}), preserving the existing behavior.
+     * Set to {@code false} to preserve configuration already set on the shared builder, for example ClientOptions
+     * carrying TracingOptions set through an AzureServiceClientBuilderCustomizer.
      */
     private Boolean inheritConfiguration;
 
