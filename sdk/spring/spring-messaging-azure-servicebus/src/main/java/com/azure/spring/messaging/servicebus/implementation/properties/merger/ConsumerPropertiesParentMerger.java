@@ -40,6 +40,7 @@ public class ConsumerPropertiesParentMerger implements PropertiesMerger<Consumer
         propertyMapper.from(parent.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(parent.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(parent.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(parent.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         // If a same property appears in both two objects, the value from the child will take precedence.
         copyConsumerPropertiesIfNotNull(child, properties);
@@ -56,6 +57,7 @@ public class ConsumerPropertiesParentMerger implements PropertiesMerger<Consumer
         propertyMapper.from(source.getEntityName()).to(target::setEntityName);
         propertyMapper.from(source.getEntityType()).to(target::setEntityType);
         propertyMapper.from(source.getCustomEndpointAddress()).to(target::setCustomEndpointAddress);
+        propertyMapper.from(source.getInheritConfiguration()).to(target::setInheritConfiguration);
 
         propertyMapper.from(source.getSessionEnabled()).to(target::setSessionEnabled);
         propertyMapper.from(source.getAutoComplete()).to(target::setAutoComplete);

@@ -25,6 +25,7 @@ import static com.azure.spring.cloud.service.implementation.servicebus.factory.S
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -133,6 +134,44 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         buildClient(builder);
 
         verify(factory.getServiceBusClientBuilder(), times(1)).connectionString(connectionString);
+    }
+
+    @Test
+    void inheritConfigurationFalseSkipsConfiguringServiceBusClientBuilder() {
+        P properties = createMinimalServiceProperties();
+        properties.setShareServiceBusClientBuilder(false);
+        properties.setInheritConfiguration(false);
+        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(false).when(factory).isShareServiceBusClientBuilder();
+        ServiceBusClientBuilder rootBuilder = mock(ServiceBusClientBuilder.class);
+        doReturn(rootBuilder).when(factory).getServiceBusClientBuilder();
+
+        B builder = factory.build();
+        buildClient(builder);
+
+        // With inherit-configuration=false, the sub-client builder factory must not overwrite the shared builder, so
+        // that a customizer-configured builder (e.g. ClientOptions carrying TracingOptions) is preserved. See #49742.
+        verify(rootBuilder, times(0)).fullyQualifiedNamespace(any());
+        verify(rootBuilder, times(0)).clientOptions(any());
+        verify(rootBuilder, times(0)).proxyOptions(any());
+        verify(rootBuilder, times(0)).retryOptions(any());
+        verify(rootBuilder, times(0)).transportType(any());
+    }
+
+    @Test
+    void inheritConfigurationNotSetConfiguresServiceBusClientBuilder() {
+        P properties = createMinimalServiceProperties();
+        properties.setShareServiceBusClientBuilder(false);
+        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(false).when(factory).isShareServiceBusClientBuilder();
+        ServiceBusClientBuilder rootBuilder = mock(ServiceBusClientBuilder.class);
+        doReturn(rootBuilder).when(factory).getServiceBusClientBuilder();
+
+        B builder = factory.build();
+        buildClient(builder);
+
+        // By default (unset, treated as true) the behavior is unchanged: the shared builder is configured.
+        verify(rootBuilder, atLeast(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private void verifyFqdnConfigured(boolean isShareServiceClientBuilder) {

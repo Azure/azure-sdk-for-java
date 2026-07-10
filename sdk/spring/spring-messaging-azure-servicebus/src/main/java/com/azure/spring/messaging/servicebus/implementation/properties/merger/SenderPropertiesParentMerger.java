@@ -39,6 +39,7 @@ public class SenderPropertiesParentMerger implements PropertiesMerger<ProducerPr
         propertyMapper.from(parent.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(parent.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(parent.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(parent.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(child.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(child.getNamespace()).to(properties::setNamespace);
@@ -46,6 +47,7 @@ public class SenderPropertiesParentMerger implements PropertiesMerger<ProducerPr
         propertyMapper.from(child.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(child.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(child.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
+        propertyMapper.from(child.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         return properties;
 

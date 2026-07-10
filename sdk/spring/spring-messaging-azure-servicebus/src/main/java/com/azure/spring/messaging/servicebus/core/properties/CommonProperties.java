@@ -29,6 +29,7 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
     private String entityName;
     private ServiceBusEntityType entityType;
     private String customEndpointAddress;
+    private Boolean inheritConfiguration;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -125,5 +126,20 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
      */
     public void setCustomEndpointAddress(String customEndpointAddress) {
         this.customEndpointAddress = customEndpointAddress;
+    }
+
+    @Override
+    public Boolean getInheritConfiguration() {
+        return inheritConfiguration;
+    }
+
+    /**
+     * Set whether the shared {@code ServiceBusClientBuilder} should inherit the configuration derived from this
+     * sub-client's properties. Defaults to {@code true}; set to {@code false} to preserve configuration already set on
+     * the shared builder.
+     * @param inheritConfiguration whether to inherit the shared {@code ServiceBusClientBuilder} configuration.
+     */
+    public void setInheritConfiguration(Boolean inheritConfiguration) {
+        this.inheritConfiguration = inheritConfiguration;
     }
 }

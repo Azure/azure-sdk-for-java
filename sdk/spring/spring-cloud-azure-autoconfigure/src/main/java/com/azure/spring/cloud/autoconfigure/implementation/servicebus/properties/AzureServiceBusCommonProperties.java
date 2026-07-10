@@ -42,6 +42,14 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
      */
     private String customEndpointAddress;
 
+    /**
+     * Whether the shared ServiceBusClientBuilder should inherit the configuration derived from the sender, receiver or
+     * processor properties. Defaults to true (existing behavior). Set to false to preserve configuration already set on
+     * the shared builder, for example the ClientOptions carrying TracingOptions set through an
+     * AzureServiceClientBuilderCustomizer.
+     */
+    private Boolean inheritConfiguration;
+
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
@@ -106,5 +114,13 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     public void setCustomEndpointAddress(String customEndpointAddress) {
         this.customEndpointAddress = customEndpointAddress;
+    }
+
+    public Boolean getInheritConfiguration() {
+        return inheritConfiguration;
+    }
+
+    public void setInheritConfiguration(Boolean inheritConfiguration) {
+        this.inheritConfiguration = inheritConfiguration;
     }
 }

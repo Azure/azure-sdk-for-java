@@ -109,10 +109,22 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         return shareServiceBusClientBuilder;
     }
 
+    private boolean isInheritConfiguration() {
+        // Not set defaults to true, preserving the existing behavior.
+        return this.properties.getInheritConfiguration() == null || this.properties.getInheritConfiguration();
+    }
+
+    // In the non-shared path the sub-client builder applies its property-derived configuration to the underlying
+    // ServiceBusClientBuilder when inherit-configuration is true (the default). Set it to false to preserve configuration
+    // already set on the shared builder (e.g. ClientOptions carrying TracingOptions from a customizer). See #49742.
+    private boolean shouldConfigureServiceBusClientBuilder() {
+        return !isShareServiceBusClientBuilder() && isInheritConfiguration();
+    }
+
     @Override
     protected BiConsumer<T, ProxyOptions> consumeProxyOptions() {
         return (builder, proxy) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().proxyOptions(proxy);
             }
         };
@@ -121,7 +133,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, AmqpTransportType> consumeAmqpTransportType() {
         return (builder, t) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().transportType(t);
             }
         };
@@ -130,7 +142,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions() {
         return (builder, retry) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().retryOptions(retry);
             }
         };
@@ -139,7 +151,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
         return (builder, client) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().clientOptions(client);
             }
         };
@@ -154,17 +166,17 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
+                if (shouldConfigureServiceBusClientBuilder()) {
                     getServiceBusClientBuilder().credential(credential);
                 }
             }),
             new SasAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
+                if (shouldConfigureServiceBusClientBuilder()) {
                     getServiceBusClientBuilder().credential(credential);
                 }
             }),
             new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
-                if (!isShareServiceBusClientBuilder()) {
+                if (shouldConfigureServiceBusClientBuilder()) {
                     getServiceBusClientBuilder().credential(credential);
                 }
             })
@@ -174,7 +186,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {
         return (builder, configuration) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().configuration(configuration);
             }
         };
@@ -183,7 +195,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, credential) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().credential(credential);
             }
         };
@@ -192,7 +204,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
         return (builder, connectionString) -> {
-            if (!isShareServiceBusClientBuilder()) {
+            if (shouldConfigureServiceBusClientBuilder()) {
                 getServiceBusClientBuilder().connectionString(connectionString);
             }
         };
@@ -200,7 +212,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     @Override
     protected void configureService(T builder) {
-        if (!isShareServiceBusClientBuilder()) {
+        if (shouldConfigureServiceBusClientBuilder()) {
             getServiceBusClientBuilder().fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
         }
     }

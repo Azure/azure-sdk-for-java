@@ -108,6 +108,30 @@ class AzureServiceBusPropertiesTest {
     }
 
     @Test
+    void inheritConfigurationDefaultsToNull() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        assertNull(serviceBusProperties.getInheritConfiguration());
+        assertNull(serviceBusProperties.buildProducerProperties().getInheritConfiguration());
+        assertNull(serviceBusProperties.buildConsumerProperties().getInheritConfiguration());
+        assertNull(serviceBusProperties.buildProcessorProperties().getInheritConfiguration());
+    }
+
+    @Test
+    void inheritConfigurationIsInheritedByChildrenAndOverridableByChild() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.setInheritConfiguration(true);
+
+        // Children inherit the namespace-level inherit-configuration value.
+        assertEquals(Boolean.TRUE, serviceBusProperties.buildProducerProperties().getInheritConfiguration());
+        assertEquals(Boolean.TRUE, serviceBusProperties.buildConsumerProperties().getInheritConfiguration());
+        assertEquals(Boolean.TRUE, serviceBusProperties.buildProcessorProperties().getInheritConfiguration());
+
+        // A child-level value takes precedence over the namespace-level value.
+        serviceBusProperties.getProcessor().setInheritConfiguration(false);
+        assertEquals(Boolean.FALSE, serviceBusProperties.buildProcessorProperties().getInheritConfiguration());
+    }
+
+    @Test
     void buildProducerPropertiesUseParent() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
         serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);

@@ -19,6 +19,7 @@ public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
     private String customEndpointAddress;
 
     private boolean shareServiceBusClientBuilder;
+    private Boolean inheritConfiguration;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -92,5 +93,14 @@ public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
 
     public void setShareServiceBusClientBuilder(boolean shareServiceBusClientBuilder) {
         this.shareServiceBusClientBuilder = shareServiceBusClientBuilder;
+    }
+
+    @Override
+    public Boolean getInheritConfiguration() {
+        return inheritConfiguration;
+    }
+
+    public void setInheritConfiguration(Boolean inheritConfiguration) {
+        this.inheritConfiguration = inheritConfiguration;
     }
 }

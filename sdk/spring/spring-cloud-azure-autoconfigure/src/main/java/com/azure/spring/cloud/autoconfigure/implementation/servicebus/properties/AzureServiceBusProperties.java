@@ -69,6 +69,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
@@ -76,6 +77,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.producer.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(this.producer.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.producer.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         return properties;
     }
@@ -93,6 +95,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
@@ -100,6 +103,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.consumer.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(this.consumer.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.consumer.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(this.consumer.getSessionEnabled()).to(properties::setSessionEnabled);
         propertyMapper.from(this.consumer.getAutoComplete()).to(properties::setAutoComplete);
@@ -125,6 +129,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
+        propertyMapper.from(this.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
@@ -132,6 +137,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.processor.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(this.processor.getEntityName()).to(properties::setEntityName);
+        propertyMapper.from(this.processor.getInheritConfiguration()).to(properties::setInheritConfiguration);
 
         propertyMapper.from(this.processor.getSessionEnabled()).to(properties::setSessionEnabled);
         propertyMapper.from(this.processor.getAutoComplete()).to(properties::setAutoComplete);
