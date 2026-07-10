@@ -238,10 +238,11 @@ public final class KeyVaultCertificates implements AzureCertificates {
         List<String> refreshedAliases
             = Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList());
         if (configuredCertificateAliases.isEmpty()) {
-            aliases = refreshedAliases;
+            aliases = new ArrayList<>(refreshedAliases);
         } else {
-            aliases
-                = refreshedAliases.stream().filter(configuredCertificateAliases::contains).collect(Collectors.toList());
+            aliases = refreshedAliases.stream()
+                .filter(configuredCertificateAliases::contains)
+                .collect(Collectors.toCollection(ArrayList::new));
         }
 
         loadedAliases.clear();
