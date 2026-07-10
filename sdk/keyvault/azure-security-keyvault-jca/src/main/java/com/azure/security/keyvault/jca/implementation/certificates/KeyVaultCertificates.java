@@ -131,6 +131,19 @@ public final class KeyVaultCertificates implements AzureCertificates {
         } else {
             setKeyVaultClient(null);
         }
+
+        clearCachedState();
+    }
+
+    private synchronized void clearCachedState() {
+        aliases = new ArrayList<>();
+        loadedCertificateAliases.clear();
+        loadedCertificateChainAliases.clear();
+        loadedCertificateKeyAliases.clear();
+        certificateKeys.clear();
+        certificates.clear();
+        certificateChains.clear();
+        lastRefreshTime = null;
     }
 
     synchronized boolean certificatesNeedRefresh() {

@@ -247,4 +247,18 @@ public class KeyVaultCertificatesTest {
         verify(keyVaultClient, never()).getKey("myalias", null);
     }
 
+    @Test
+    public void testUpdateKeyVaultClientClearsCachedState() {
+        Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
+
+        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false);
+
+        Assertions.assertTrue(keyVaultCertificates.getAliases().isEmpty());
+        Assertions.assertTrue(keyVaultCertificates.getCertificates().isEmpty());
+        Assertions.assertTrue(keyVaultCertificates.getCertificateChains().isEmpty());
+        Assertions.assertTrue(keyVaultCertificates.getCertificateKeys().isEmpty());
+        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+    }
+
 }
