@@ -34,9 +34,19 @@ public final class KeyVaultCertificates implements AzureCertificates {
     private List<String> aliases = new ArrayList<>();
 
     /**
-     * Stores aliases whose certificate details have already been loaded.
+     * Stores aliases whose certificate has already been loaded.
      */
-    private final Set<String> loadedAliases = new HashSet<>();
+    private final Set<String> loadedCertificateAliases = new HashSet<>();
+
+    /**
+     * Stores aliases whose certificate chain has already been loaded.
+     */
+    private final Set<String> loadedCertificateChainAliases = new HashSet<>();
+
+    /**
+     * Stores aliases whose private key has already been loaded.
+     */
+    private final Set<String> loadedCertificateKeyAliases = new HashSet<>();
 
     /**
      * Stores the certificates by alias.
@@ -178,7 +188,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @return The key, or {@code null}.
      */
     public Key getCertificateKey(String alias) {
-        loadCertificateDetailsIfNeeded(alias);
+        loadCertificateKeyIfNeeded(alias);
         synchronized (this) {
             return certificateKeys.get(alias);
         }
@@ -191,7 +201,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @return The certificate, or {@code null}.
      */
     public Certificate getCertificate(String alias) {
-        loadCertificateDetailsIfNeeded(alias);
+        loadCertificateIfNeeded(alias);
         synchronized (this) {
             return certificates.get(alias);
         }
@@ -204,7 +214,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @return The certificate chain, or {@code null}.
      */
     public Certificate[] getCertificateChain(String alias) {
-        loadCertificateDetailsIfNeeded(alias);
+        loadCertificateChainIfNeeded(alias);
         synchronized (this) {
             return certificateChains.get(alias);
         }
@@ -226,7 +236,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public synchronized void refreshCertificates() {
         if (keyVaultClient == null) {
             aliases = new ArrayList<>();
-            loadedAliases.clear();
+            loadedCertificateAliases.clear();
+            loadedCertificateChainAliases.clear();
+            loadedCertificateKeyAliases.clear();
             certificateKeys.clear();
             certificates.clear();
             certificateChains.clear();
@@ -234,18 +246,17 @@ public final class KeyVaultCertificates implements AzureCertificates {
             return;
         }
 
-        // Refresh alias list only. Certificate details are loaded lazily per alias when requested.
-        List<String> refreshedAliases
-            = Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList());
         if (configuredCertificateAliases.isEmpty()) {
-            aliases = new ArrayList<>(refreshedAliases);
+            // If aliases are not configured, discover aliases from Key Vault.
+            aliases = new ArrayList<>(Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList()));
         } else {
-            aliases = refreshedAliases.stream()
-                .filter(configuredCertificateAliases::contains)
-                .collect(Collectors.toCollection(ArrayList::new));
+            // If aliases are configured, avoid the list API and only use the configured aliases.
+            aliases = configuredCertificateAliases.stream().sorted().collect(Collectors.toCollection(ArrayList::new));
         }
 
-        loadedAliases.clear();
+        loadedCertificateAliases.clear();
+        loadedCertificateChainAliases.clear();
+        loadedCertificateKeyAliases.clear();
         certificateKeys.clear();
         certificates.clear();
         certificateChains.clear();
@@ -253,7 +264,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         lastRefreshTime = new Date();
     }
 
-    private void loadCertificateDetailsIfNeeded(String alias) {
+    private void loadCertificateIfNeeded(String alias) {
         refreshCertificatesIfNeeded();
 
         if (alias == null || keyVaultClient == null) {
@@ -261,23 +272,63 @@ public final class KeyVaultCertificates implements AzureCertificates {
         }
 
         synchronized (this) {
-            if (loadedAliases.contains(alias)
+            if (loadedCertificateAliases.contains(alias)
+                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                return;
+            }
+
+            try {
+                Certificate loadedCertificate = keyVaultClient.getCertificate(alias);
+                certificates.put(alias, loadedCertificate);
+                loadedCertificateAliases.add(alias);
+            } catch (RuntimeException exception) {
+                LOGGER.log(WARNING, String.format("Failed to load certificate for alias: %s", alias), exception);
+            }
+        }
+    }
+
+    private void loadCertificateChainIfNeeded(String alias) {
+        refreshCertificatesIfNeeded();
+
+        if (alias == null || keyVaultClient == null) {
+            return;
+        }
+
+        synchronized (this) {
+            if (loadedCertificateChainAliases.contains(alias)
+                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                return;
+            }
+
+            try {
+                Certificate[] loadedCertificateChain = keyVaultClient.getCertificateChain(alias);
+                certificateChains.put(alias, loadedCertificateChain);
+                loadedCertificateChainAliases.add(alias);
+            } catch (RuntimeException exception) {
+                LOGGER.log(WARNING, String.format("Failed to load certificate chain for alias: %s", alias), exception);
+            }
+        }
+    }
+
+    private void loadCertificateKeyIfNeeded(String alias) {
+        refreshCertificatesIfNeeded();
+
+        if (alias == null || keyVaultClient == null) {
+            return;
+        }
+
+        synchronized (this) {
+            if (loadedCertificateKeyAliases.contains(alias)
                 || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                 return;
             }
 
             try {
                 Key loadedKey = keyVaultClient.getKey(alias, null);
-                Certificate loadedCertificate = keyVaultClient.getCertificate(alias);
-                Certificate[] loadedCertificateChain = keyVaultClient.getCertificateChain(alias);
-
                 certificateKeys.put(alias, loadedKey);
-                certificates.put(alias, loadedCertificate);
-                certificateChains.put(alias, loadedCertificateChain);
-                loadedAliases.add(alias);
+                loadedCertificateKeyAliases.add(alias);
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, String.format("Failed to load certificate details for alias: %s", alias),
-                    exception);
+                LOGGER.log(WARNING, String.format("Failed to load certificate key for alias: %s", alias), exception);
             }
         }
     }
@@ -297,7 +348,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             aliasesSnapshot = new ArrayList<>(Optional.ofNullable(aliases).orElse(Collections.emptyList()));
         }
 
-        aliasesSnapshot.forEach(this::loadCertificateDetailsIfNeeded);
+        aliasesSnapshot.forEach(this::loadCertificateIfNeeded);
 
         Map<String, Certificate> certificatesSnapshot;
         synchronized (this) {
@@ -323,7 +374,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
         if (aliases != null) {
             aliases.remove(alias);
         }
-        loadedAliases.remove(alias);
+        loadedCertificateAliases.remove(alias);
+        loadedCertificateChainAliases.remove(alias);
+        loadedCertificateKeyAliases.remove(alias);
         certificates.remove(alias);
         certificateChains.remove(alias);
         certificateKeys.remove(alias);

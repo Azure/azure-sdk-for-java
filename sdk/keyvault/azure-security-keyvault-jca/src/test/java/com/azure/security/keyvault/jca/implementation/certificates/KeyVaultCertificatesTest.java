@@ -104,12 +104,30 @@ public class KeyVaultCertificatesTest {
 
         keyVaultCertificates.getCertificate("myalias");
 
-        verify(keyVaultClient, times(1)).getKey("myalias", null);
         verify(keyVaultClient, times(1)).getCertificate("myalias");
-        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
         verify(keyVaultClient, never()).getKey("otheralias", null);
         verify(keyVaultClient, never()).getCertificate("otheralias");
         verify(keyVaultClient, never()).getCertificateChain("otheralias");
+    }
+
+    @Test
+    public void testGetKeyLoadsOnlyKeyForRequestedAlias() {
+        keyVaultCertificates.getCertificateKey("myalias");
+
+        verify(keyVaultClient, times(1)).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testGetCertificateChainLoadsOnlyChainForRequestedAlias() {
+        keyVaultCertificates.getCertificateChain("myalias");
+
+        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificate("myalias");
     }
 
     @Test
@@ -151,6 +169,15 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testConfiguredAliasesDoNotCallListApi() {
+        keyVaultCertificates
+            = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("configured-alias"));
+
+        Assertions.assertEquals(Collections.singletonList("configured-alias"), keyVaultCertificates.getAliases());
+        verify(keyVaultClient, never()).getAliases();
+    }
+
+    @Test
     public void testGetCertificateWithUnconfiguredAliasDoesNotFetchDetails() {
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
 
@@ -162,12 +189,15 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testAliasLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getKey("myalias", null)).thenThrow(new RuntimeException("transient error")).thenReturn(key);
+    public void testAliasCertificateLoadFailureIsRetriedOnNextAccess() {
+        when(keyVaultClient.getCertificate("myalias")).thenThrow(new RuntimeException("transient error"))
+            .thenReturn(certificate);
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
-        verify(keyVaultClient, times(2)).getKey("myalias", null);
+        verify(keyVaultClient, times(2)).getCertificate("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
     }
 
 }
