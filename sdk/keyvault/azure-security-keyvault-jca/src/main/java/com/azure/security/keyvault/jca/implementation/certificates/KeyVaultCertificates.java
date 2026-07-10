@@ -179,7 +179,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
      */
     public Key getCertificateKey(String alias) {
         loadCertificateDetailsIfNeeded(alias);
-        return certificateKeys.get(alias);
+        synchronized (this) {
+            return certificateKeys.get(alias);
+        }
     }
 
     /**
@@ -190,7 +192,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
      */
     public Certificate getCertificate(String alias) {
         loadCertificateDetailsIfNeeded(alias);
-        return certificates.get(alias);
+        synchronized (this) {
+            return certificates.get(alias);
+        }
     }
 
     /**
@@ -201,7 +205,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
      */
     public Certificate[] getCertificateChain(String alias) {
         loadCertificateDetailsIfNeeded(alias);
-        return certificateChains.get(alias);
+        synchronized (this) {
+            return certificateChains.get(alias);
+        }
     }
 
     private void refreshCertificatesIfNeeded() {
@@ -224,7 +230,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             certificateKeys.clear();
             certificates.clear();
             certificateChains.clear();
-            lastRefreshTime = new Date();
+            lastRefreshTime = null;
             return;
         }
 
@@ -260,14 +266,17 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             try {
-                certificateKeys.put(alias, keyVaultClient.getKey(alias, null));
-                certificates.put(alias, keyVaultClient.getCertificate(alias));
-                certificateChains.put(alias, keyVaultClient.getCertificateChain(alias));
+                Key loadedKey = keyVaultClient.getKey(alias, null);
+                Certificate loadedCertificate = keyVaultClient.getCertificate(alias);
+                Certificate[] loadedCertificateChain = keyVaultClient.getCertificateChain(alias);
+
+                certificateKeys.put(alias, loadedKey);
+                certificates.put(alias, loadedCertificate);
+                certificateChains.put(alias, loadedCertificateChain);
+                loadedAliases.add(alias);
             } catch (RuntimeException exception) {
                 LOGGER.log(WARNING, String.format("Failed to load certificate details for alias: %s", alias),
                     exception);
-            } finally {
-                loadedAliases.add(alias);
             }
         }
     }

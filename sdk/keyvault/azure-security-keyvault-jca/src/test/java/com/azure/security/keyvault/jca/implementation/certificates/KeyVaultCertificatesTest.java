@@ -162,15 +162,10 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testAliasLoadFailureIsNotRetriedUntilRefresh() {
+    public void testAliasLoadFailureIsRetriedOnNextAccess() {
         when(keyVaultClient.getKey("myalias", null)).thenThrow(new RuntimeException("transient error")).thenReturn(key);
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
-        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
-        verify(keyVaultClient, times(1)).getKey("myalias", null);
-
-        keyVaultCertificates.refreshCertificates();
-
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
         verify(keyVaultClient, times(2)).getKey("myalias", null);
     }

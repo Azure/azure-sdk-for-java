@@ -101,20 +101,22 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetConfiguredKeyVaultCertificateAliases() {
-        System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
-        KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
-        assertTrue(keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases().isEmpty());
+        try {
+            System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
+            assertTrue(keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases().isEmpty());
 
-        System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, "cert1, cert2 ,, cert3 ");
-        keyVaultKeyStore = new KeyVaultKeyStore();
-        Set<String> aliases = keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases();
+            System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, "cert1, cert2 ,, cert3 ");
+            keyVaultKeyStore = new KeyVaultKeyStore();
+            Set<String> aliases = keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases();
 
-        assertEquals(3, aliases.size());
-        assertTrue(aliases.contains("cert1"));
-        assertTrue(aliases.contains("cert2"));
-        assertTrue(aliases.contains("cert3"));
-
-        System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            assertEquals(3, aliases.size());
+            assertTrue(aliases.contains("cert1"));
+            assertTrue(aliases.contains("cert2"));
+            assertTrue(aliases.contains("cert3"));
+        } finally {
+            System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+        }
     }
 
     @Test
