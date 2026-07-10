@@ -70,7 +70,7 @@ If either value is ambiguous, ask the user to confirm before proceeding.
    ```bash
    python eng/versioning/update_versions.py --skip-readme
    ```
-   Do not stage any manual pom.xml edits; only the generated output. Confirm no
+   Do not stage any manual `pom.xml` edits; only the generated output. Confirm no
    `README.md` files appear in the resulting diff.
 7. **Review & sanity-check** — Verify no v2 (`*-v2`) or unrelated libraries were
    touched, no `current-version` values were altered, and no beta version was
