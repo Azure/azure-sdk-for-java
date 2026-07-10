@@ -75,6 +75,13 @@ public interface ContainerInstanceManagementClient {
     CGProfilesClient getCGProfiles();
 
     /**
+     * Gets the SandboxGroupsClient object to access its operations.
+     * 
+     * @return the SandboxGroupsClient object.
+     */
+    SandboxGroupsClient getSandboxGroups();
+
+    /**
      * Gets the ContainersClient object to access its operations.
      * 
      * @return the ContainersClient object.
