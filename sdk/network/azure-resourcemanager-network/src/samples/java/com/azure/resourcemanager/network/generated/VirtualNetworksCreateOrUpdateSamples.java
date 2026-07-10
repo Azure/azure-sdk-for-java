@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class VirtualNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateSubnet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateSubnet.json
      */
     /**
      * Sample code: Create virtual network with subnet.
@@ -39,7 +39,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateWithIpamPool.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateWithIpamPool.json
      */
     /**
      * Sample code: Create virtual network with ipamPool.
@@ -63,7 +63,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateWithBgpCommunities.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateWithBgpCommunities.json
      */
     /**
      * Sample code: Create virtual network with Bgp Communities.
@@ -83,7 +83,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateSubnetWithAddressPrefixes.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateSubnetWithAddressPrefixes.json
      */
     /**
      * Sample code: Create virtual network with subnet containing address prefixes.
@@ -103,7 +103,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateSubnetWithDelegation.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateSubnetWithDelegation.json
      */
     /**
      * Sample code: Create virtual network with delegated subnets.
@@ -124,7 +124,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateWithEncryption.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateWithEncryption.json
      */
     /**
      * Sample code: Create virtual network with encryption.
@@ -144,7 +144,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreate.json
      */
     /**
      * Sample code: Create virtual network.
@@ -162,7 +162,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateServiceEndpointPolicy.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateServiceEndpointPolicy.json
      */
     /**
      * Sample code: Create virtual network with service endpoints and service endpoint policy.
@@ -185,7 +185,7 @@ public final class VirtualNetworksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCreateServiceEndpoints.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCreateServiceEndpoints.json
      */
     /**
      * Sample code: Create virtual network with service endpoints.

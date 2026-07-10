@@ -24,7 +24,18 @@ public final class ThresholdRuleV2 implements JsonSerializable<ThresholdRuleV2> 
     /*
      * Threshold value
      */
-    private double threshold;
+    private Double threshold;
+
+    /*
+     * Sensitivity level for dynamic threshold detection. Only applicable when operator is Dynamic.
+     */
+    private DynamicThresholdSensitivity sensitivity;
+
+    /*
+     * ISO 8601 duration for the historical look-back window used by dynamic threshold computation. Only applicable when
+     * operator is Dynamic.
+     */
+    private LookBackWindow lookBackWindow;
 
     /**
      * Creates an instance of ThresholdRuleV2 class.
@@ -57,7 +68,7 @@ public final class ThresholdRuleV2 implements JsonSerializable<ThresholdRuleV2> 
      * 
      * @return the threshold value.
      */
-    public double threshold() {
+    public Double threshold() {
         return this.threshold;
     }
 
@@ -67,8 +78,52 @@ public final class ThresholdRuleV2 implements JsonSerializable<ThresholdRuleV2> 
      * @param threshold the threshold value to set.
      * @return the ThresholdRuleV2 object itself.
      */
-    public ThresholdRuleV2 withThreshold(double threshold) {
+    public ThresholdRuleV2 withThreshold(Double threshold) {
         this.threshold = threshold;
+        return this;
+    }
+
+    /**
+     * Get the sensitivity property: Sensitivity level for dynamic threshold detection. Only applicable when operator is
+     * Dynamic.
+     * 
+     * @return the sensitivity value.
+     */
+    public DynamicThresholdSensitivity sensitivity() {
+        return this.sensitivity;
+    }
+
+    /**
+     * Set the sensitivity property: Sensitivity level for dynamic threshold detection. Only applicable when operator is
+     * Dynamic.
+     * 
+     * @param sensitivity the sensitivity value to set.
+     * @return the ThresholdRuleV2 object itself.
+     */
+    public ThresholdRuleV2 withSensitivity(DynamicThresholdSensitivity sensitivity) {
+        this.sensitivity = sensitivity;
+        return this;
+    }
+
+    /**
+     * Get the lookBackWindow property: ISO 8601 duration for the historical look-back window used by dynamic threshold
+     * computation. Only applicable when operator is Dynamic.
+     * 
+     * @return the lookBackWindow value.
+     */
+    public LookBackWindow lookBackWindow() {
+        return this.lookBackWindow;
+    }
+
+    /**
+     * Set the lookBackWindow property: ISO 8601 duration for the historical look-back window used by dynamic threshold
+     * computation. Only applicable when operator is Dynamic.
+     * 
+     * @param lookBackWindow the lookBackWindow value to set.
+     * @return the ThresholdRuleV2 object itself.
+     */
+    public ThresholdRuleV2 withLookBackWindow(LookBackWindow lookBackWindow) {
+        this.lookBackWindow = lookBackWindow;
         return this;
     }
 
@@ -79,7 +134,10 @@ public final class ThresholdRuleV2 implements JsonSerializable<ThresholdRuleV2> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
-        jsonWriter.writeDoubleField("threshold", this.threshold);
+        jsonWriter.writeNumberField("threshold", this.threshold);
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
+        jsonWriter.writeStringField("lookBackWindow",
+            this.lookBackWindow == null ? null : this.lookBackWindow.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -102,7 +160,12 @@ public final class ThresholdRuleV2 implements JsonSerializable<ThresholdRuleV2> 
                 if ("operator".equals(fieldName)) {
                     deserializedThresholdRuleV2.operator = SignalOperator.fromString(reader.getString());
                 } else if ("threshold".equals(fieldName)) {
-                    deserializedThresholdRuleV2.threshold = reader.getDouble();
+                    deserializedThresholdRuleV2.threshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("sensitivity".equals(fieldName)) {
+                    deserializedThresholdRuleV2.sensitivity
+                        = DynamicThresholdSensitivity.fromString(reader.getString());
+                } else if ("lookBackWindow".equals(fieldName)) {
+                    deserializedThresholdRuleV2.lookBackWindow = LookBackWindow.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

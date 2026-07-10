@@ -3,8 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
 import jakarta.jms.Connection;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Destination;
@@ -19,9 +22,13 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.jms.autoconfigure.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerEndpoint;
 import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -181,6 +188,90 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
     }
 
     @Test
+    void useCustomServiceBusJmsConnectionFactoryClassForServiceBusFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.servicebus.pool.enabled=false",
+                "spring.jms.cache.enabled=false"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context.getBean(ServiceBusJmsConnectionFactory.class))
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClassForPasswordlessServiceBusFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.servicebus.passwordless-enabled=true",
+                "spring.jms.servicebus.namespace=test-namespace",
+                "spring.jms.servicebus.pool.enabled=false",
+                "spring.jms.cache.enabled=false"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context.getBean(ServiceBusJmsConnectionFactory.class))
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClassForCachingFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.cache.enabled=true"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                CachingConnectionFactory cachingConnectionFactory = context.getBean(CachingConnectionFactory.class);
+                assertThat(cachingConnectionFactory.getTargetConnectionFactory())
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void useCustomServiceBusJmsConnectionFactoryClassForPoolingFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium",
+                "spring.jms.servicebus.pool.enabled=true"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                JmsPoolConnectionFactory poolConnectionFactory = context.getBean(JmsPoolConnectionFactory.class);
+                assertThat(poolConnectionFactory.getConnectionFactory())
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
+    void listenerContainerUsesCustomServiceBusJmsConnectionFactory() {
+        this.contextRunner
+            .withUserConfiguration(CustomConnectionFactoryClassConfiguration.class)
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=premium"
+            )
+            .run(context -> {
+                DefaultJmsListenerContainerFactory listenerContainerFactory =
+                    (DefaultJmsListenerContainerFactory) context.getBean("jmsListenerContainerFactory");
+                DefaultMessageListenerContainer container =
+                    listenerContainerFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+
+                assertThat(container.getConnectionFactory())
+                    .isInstanceOf(CustomServiceBusJmsConnectionFactory.class);
+            });
+    }
+
+    @Test
     void cachingConnectionFactoryReusesSameProducerForSameDestination() throws Exception {
         // Create mock objects for JMS components
         ConnectionFactory mockTargetConnectionFactory = mock(ConnectionFactory.class);
@@ -275,5 +366,28 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
     @PropertySource("classpath:servicebus/additional.properties")
     static class AdditionalPropertySourceConfiguration {
 
+    }
+
+    @Configuration
+    static class CustomConnectionFactoryClassConfiguration {
+        @Bean
+        AzureServiceBusJmsConnectionFactoryFactory connectionFactoryFactory() {
+            return () -> new CustomServiceBusJmsConnectionFactory(
+                String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                new ServiceBusJmsConnectionFactorySettings());
+        }
+    }
+
+    static class CustomServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
+        CustomServiceBusJmsConnectionFactory(
+            String connectionString,
+            ServiceBusJmsConnectionFactorySettings settings) {
+            super(connectionString, settings);
+        }
+
+        CustomServiceBusJmsConnectionFactory(TokenCredential tokenCredential, String host,
+            ServiceBusJmsConnectionFactorySettings settings) {
+            super(tokenCredential, host, settings);
+        }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PublicIpAddressesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressUpdateTags.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressUpdateTags.json
      */
     /**
      * Sample code: Update public IP address tags.

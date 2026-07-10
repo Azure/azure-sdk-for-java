@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class CachesListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Caches_List.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_List.json
      */
     /**
      * Sample code: Caches_List.

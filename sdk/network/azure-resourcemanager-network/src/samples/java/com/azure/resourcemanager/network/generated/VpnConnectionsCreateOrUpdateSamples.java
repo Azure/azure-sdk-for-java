@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class VpnConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnConnectionPut.json
+     * x-ms-original-file: 2025-07-01/VpnConnectionPut.json
      */
     /**
      * Sample code: VpnConnectionPut.

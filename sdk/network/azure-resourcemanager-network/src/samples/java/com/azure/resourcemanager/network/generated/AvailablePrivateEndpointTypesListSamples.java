@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AvailablePrivateEndpointTypesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AvailablePrivateEndpointTypesGet.json
+     * x-ms-original-file: 2025-07-01/AvailablePrivateEndpointTypesGet.json
      */
     /**
      * Sample code: Get available PrivateEndpoint types.

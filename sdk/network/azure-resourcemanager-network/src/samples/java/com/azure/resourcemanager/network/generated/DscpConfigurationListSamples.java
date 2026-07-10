@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class DscpConfigurationListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DscpConfigurationListAll.json
+     * x-ms-original-file: 2025-07-01/DscpConfigurationListAll.json
      */
     /**
      * Sample code: List all network interfaces.

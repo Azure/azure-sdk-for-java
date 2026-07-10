@@ -42,6 +42,7 @@
     <module>sdk/batch</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
+    <module>sdk/billingtrust</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
@@ -53,6 +54,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/commvaultcontentstore</module>
     <module>sdk/compute</module>
     <module>sdk/computebulkactions</module>
     <module>sdk/computefleet</module>

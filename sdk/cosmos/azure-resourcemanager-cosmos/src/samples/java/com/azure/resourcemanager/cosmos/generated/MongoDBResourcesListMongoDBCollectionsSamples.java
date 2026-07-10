@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesListMongoDBCollectionsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionList.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBCollectionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionList.

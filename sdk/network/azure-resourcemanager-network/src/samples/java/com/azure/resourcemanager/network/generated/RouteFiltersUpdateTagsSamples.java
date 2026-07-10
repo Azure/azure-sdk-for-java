@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RouteFiltersUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteFilterUpdateTags.json
+     * x-ms-original-file: 2025-07-01/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.

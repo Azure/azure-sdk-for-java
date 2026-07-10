@@ -20,7 +20,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"eventTime\":\"2020-12-21T22:06:42Z\",\"state\":\"Resolved\",\"severity\":\"None\",\"clearedCount\":303307328,\"reportedCount\":1541422170,\"suspects\":[{\"extension\":\"xzujksrlsm\",\"resolution\":\"FalsePositive\",\"fileCount\":1111002496,\"suspectFiles\":[{},{},{}]}],\"provisioningState\":\"mjc\"},\"id\":\"ewbidyvteowxv\",\"name\":\"piudeugfsxzecpa\",\"type\":\"wkufykhvuhxepm\"}";
+            = "{\"properties\":{\"eventTime\":\"2021-06-15T09:32:44Z\",\"state\":\"Active\",\"severity\":\"Moderate\",\"clearedCount\":2119468951,\"reportedCount\":121614822,\"suspects\":[{\"extension\":\"uthhllnmwynefxe\",\"resolution\":\"FalsePositive\",\"fileCount\":110653977,\"suspectFiles\":[{},{},{}]}],\"provisioningState\":\"tjrrlkmds\"},\"id\":\"hh\",\"name\":\"dl\",\"type\":\"jfoxcxscvslxl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class RansomwareReportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RansomwareReport response = manager.ransomwareReports()
-            .getWithResponse("tmhdroznnhdr", "ktgj", "sggux", "eml", "ywaeeczgf", com.azure.core.util.Context.NONE)
+            .getWithResponse("hpycvjqdvdwkq", "ldrlefgnaavua", "n", "etaoutnpdc", "uhspfefyihduy",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -42,6 +42,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -63,6 +64,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
     private static final int TIMEOUT = 30000;
+    private static final int SETUP_CREATE_RETRY_ATTEMPTS = 5;
+    private static final Duration SETUP_CREATE_RETRY_DELAY = Duration.ofSeconds(2);
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -492,6 +495,9 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         Document createdDocument = client
                 .createDocument(getCollectionLink(), docDefinition, null, false)
+                .retryWhen(Retry.fixedDelay(SETUP_CREATE_RETRY_ATTEMPTS, SETUP_CREATE_RETRY_DELAY)
+                    .filter(ChangeFeedTest::isTransientSetupCreateFailure)
+                    .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()))
                 .block()
                 .getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
@@ -508,20 +514,33 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     public List<Document> bulkInsert(AsyncDocumentClient client, List<Document> docs) {
-        ArrayList<Mono<ResourceResponse<Document>>> result = new ArrayList<Mono<ResourceResponse<Document>>>();
+        ArrayList<Mono<Document>> result = new ArrayList<Mono<Document>>();
+        String collectionLink = "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
         for (int i = 0; i < docs.size(); i++) {
+            Document doc = docs.get(i);
             result.add(client
                 .createDocument(
-                    "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(),
-                    docs.get(i),
+                    collectionLink,
+                    doc,
                     null,
-                    false));
+                    false)
+                .retryWhen(Retry.fixedDelay(SETUP_CREATE_RETRY_ATTEMPTS, SETUP_CREATE_RETRY_DELAY)
+                    .filter(ChangeFeedTest::isTransientSetupCreateFailure)
+                    .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()))
+                .map(ResourceResponse::getResource)
+                // A retried create is non-idempotent: when a create times out (e.g. 408) the initial attempt
+                // may still have succeeded on the backend, so a subsequent retry fails with 409 Conflict.
+                // Treat that as success by returning the document we tried to create (ids are unique per
+                // document, so a 409 here can only mean the prior attempt already landed).
+                .onErrorResume(
+                    ChangeFeedTest::isConflictSetupCreateFailure,
+                    error -> Mono.just(doc)));
         }
 
         return Flux.merge(
             Flux.fromIterable(result),
             100)
-                   .map(ResourceResponse::getResource).collectList().block();
+                   .collectList().block();
     }
 
     @AfterMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
@@ -594,6 +613,22 @@ public class ChangeFeedTest extends TestSuiteBase {
         doc.set("mypk", partitionKey);
         doc.set("prop", uuid);
         return doc;
+    }
+
+    private static boolean isTransientSetupCreateFailure(Throwable error) {
+        Throwable unwrapped = reactor.core.Exceptions.unwrap(error);
+        if (!(unwrapped instanceof com.azure.cosmos.CosmosException)) {
+            return false;
+        }
+
+        int statusCode = ((com.azure.cosmos.CosmosException) unwrapped).getStatusCode();
+        return statusCode == 408 || statusCode == 429 || statusCode == 500 || statusCode == 503;
+    }
+
+    private static boolean isConflictSetupCreateFailure(Throwable error) {
+        Throwable unwrapped = reactor.core.Exceptions.unwrap(error);
+        return unwrapped instanceof com.azure.cosmos.CosmosException
+            && ((com.azure.cosmos.CosmosException) unwrapped).getStatusCode() == 409;
     }
 
     private static void waitAtleastASecond(Instant befTime) throws InterruptedException {

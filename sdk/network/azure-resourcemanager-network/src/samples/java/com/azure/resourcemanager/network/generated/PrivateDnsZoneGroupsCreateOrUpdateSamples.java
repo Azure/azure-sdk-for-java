@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class PrivateDnsZoneGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointDnsZoneGroupCreate.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointDnsZoneGroupCreate.json
      */
     /**
      * Sample code: Create private dns zone group.

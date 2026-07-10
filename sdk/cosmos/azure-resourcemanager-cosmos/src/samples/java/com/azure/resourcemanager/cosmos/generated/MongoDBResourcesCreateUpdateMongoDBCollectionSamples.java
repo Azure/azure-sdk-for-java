@@ -4,15 +4,11 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
 import com.azure.resourcemanager.cosmos.models.MongoIndex;
-import com.azure.resourcemanager.cosmos.models.MongoIndexKeys;
 import com.azure.resourcemanager.cosmos.models.MongoIndexOptions;
-import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,31 +18,7 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionRestore.json
-     */
-    /**
-     * Sample code: CosmosDBMongoDBCollectionRestore.
-     * 
-     * @param manager Entry point to CosmosManager.
-     */
-    public static void cosmosDBMongoDBCollectionRestore(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
-            .getMongoDBResources()
-            .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
-                new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
-                    .withTags(mapOf())
-                    .withResource(new MongoDBCollectionResource().withId("collectionName")
-                        .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
-                            "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
-                            .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
-                            .withRestoreWithTtlDisabled(false))
-                        .withCreateMode(CreateMode.RESTORE))
-                    .withOptions(new CreateUpdateOptions()),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
@@ -59,13 +31,16 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
             .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
                 new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
                     .withTags(mapOf())
-                    .withResource(new MongoDBCollectionResource().withId("collectionName")
-                        .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
-                        .withIndexes(Arrays.asList(
-                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_ts")))
-                                .withOptions(new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true)),
-                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_id")))))
-                        .withAnalyticalStorageTtl(500))
+                    .withResource(
+                        new MongoDBCollectionResource().withId("collectionName")
+                            .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
+                            .withIndexes(
+                                Arrays.asList(
+                                    new MongoIndex()
+                                        .withOptions(
+                                            new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true))
+                                        .withKeys(Arrays.asList("_ts")),
+                                    new MongoIndex().withKeys(Arrays.asList("_id")))))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }
