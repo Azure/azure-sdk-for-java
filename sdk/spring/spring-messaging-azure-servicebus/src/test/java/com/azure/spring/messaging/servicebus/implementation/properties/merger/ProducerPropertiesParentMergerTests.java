@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProducerPropertiesParentMergerTests {
     private final SenderPropertiesParentMerger merger = new SenderPropertiesParentMerger();
@@ -65,6 +67,20 @@ public class ProducerPropertiesParentMergerTests {
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP, result.getClient().getTransportType());
+    }
+
+    @Test
+    void inheritConfigurationShouldFollowParentChildPrecedence() {
+        NamespaceProperties parent = new NamespaceProperties();
+        parent.setInheritConfiguration(true);
+
+        // Parent value is used when the child does not set it.
+        assertTrue(merger.merge(new ProducerProperties(), parent).getInheritConfiguration());
+
+        // Child value takes precedence over the parent value.
+        ProducerProperties child = new ProducerProperties();
+        child.setInheritConfiguration(false);
+        assertFalse(merger.merge(child, parent).getInheritConfiguration());
     }
 
 }
