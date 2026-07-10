@@ -11,6 +11,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -913,33 +916,39 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     }
 
     /*
-     * Expiration timestamp for the session, in seconds since epoch. This value is set by
-     * the server and cannot be changed with `session.update`.
+     * Expiration time for the session. This value is set by the server and cannot be changed with `session.update`.
      */
     @Generated
     private Long expiresAt;
 
     /**
-     * Get the expiresAt property: Expiration timestamp for the session, in seconds since epoch. This value is set by
-     * the server and cannot be changed with `session.update`.
+     * Get the expiresAt property: Expiration time for the session. This value is set by the server and cannot be
+     * changed with `session.update`.
      *
      * @return the expiresAt value.
      */
     @Generated
-    public Long getExpiresAt() {
-        return this.expiresAt;
+    public OffsetDateTime getExpiresAt() {
+        if (this.expiresAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.expiresAt), ZoneOffset.UTC);
     }
 
     /**
-     * Set the expiresAt property: Expiration timestamp for the session, in seconds since epoch. This value is set by
-     * the server and cannot be changed with `session.update`.
+     * Set the expiresAt property: Expiration time for the session. This value is set by the server and cannot be
+     * changed with `session.update`.
      *
      * @param expiresAt the expiresAt value to set.
      * @return the VoiceLiveSessionResponse object itself.
      */
     @Generated
-    public VoiceLiveSessionResponse setExpiresAt(Long expiresAt) {
-        this.expiresAt = expiresAt;
+    public VoiceLiveSessionResponse setExpiresAt(OffsetDateTime expiresAt) {
+        if (expiresAt == null) {
+            this.expiresAt = null;
+        } else {
+            this.expiresAt = expiresAt.toEpochSecond();
+        }
         return this;
     }
 }
