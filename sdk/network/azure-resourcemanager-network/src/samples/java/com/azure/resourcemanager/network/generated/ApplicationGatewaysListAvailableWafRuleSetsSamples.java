@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysListAvailableWafRuleSetsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayAvailableWafRuleSetsGet.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayAvailableWafRuleSetsGet.json
      */
     /**
      * Sample code: Get Available Waf Rule Sets.

@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class VirtualNetworkGatewayNatRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayNatRulePut.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayNatRulePut.json
      */
     /**
      * Sample code: VirtualNetworkGatewayNatRulePut.

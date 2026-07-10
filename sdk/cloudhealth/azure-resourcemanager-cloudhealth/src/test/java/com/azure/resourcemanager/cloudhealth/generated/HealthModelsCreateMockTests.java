@@ -27,7 +27,7 @@ public final class HealthModelsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ev\",\"tenantId\":\"epr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vf\":{\"principalId\":\"ytp\",\"clientId\":\"mov\"}}},\"location\":\"awzqadfl\",\"tags\":{\"ndtic\":\"riglaec\"},\"id\":\"kpvzmlq\",\"name\":\"mldgxobfirc\",\"type\":\"npkc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"or\",\"tenantId\":\"wjlvizbfhfov\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"cwyhahno\":{\"principalId\":\"btuodxeszabbel\",\"clientId\":\"umuaslzkwrrwoycq\"},\"rzpgep\":{\"principalId\":\"rkywuhpsvfuu\",\"clientId\":\"tlwexxwlalniexz\"},\"hzyvlixqnrkcx\":{\"principalId\":\"yb\",\"clientId\":\"wpgdak\"}}},\"location\":\"ibn\",\"tags\":{\"ttexoqqpwcyyufmh\":\"suxswqrntvlwijp\"},\"id\":\"uncuw\",\"name\":\"qspkcdqzhlctd\",\"type\":\"unqndyfpchrqb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,19 +37,18 @@ public final class HealthModelsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .define("pgogtqxepny")
-            .withRegion("twkuziycs")
-            .withExistingResourceGroup("y")
-            .withTags(mapOf("dcgzul", "ufuztcktyhjtq"))
+            .define("hcz")
+            .withRegion("vidizozsdb")
+            .withExistingResourceGroup("ivfcdisyirnx")
+            .withTags(mapOf("n", "jmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze"))
             .withProperties(new HealthModelProperties())
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("pvdwxf", new UserAssignedIdentity(), "pa",
-                        new UserAssignedIdentity(), "zapeewchpx", new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ofizehtdhgbj", new UserAssignedIdentity(), "mjerbdk", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("awzqadfl", response.location());
-        Assertions.assertEquals("riglaec", response.tags().get("ndtic"));
+        Assertions.assertEquals("ibn", response.location());
+        Assertions.assertEquals("suxswqrntvlwijp", response.tags().get("ttexoqqpwcyyufmh"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 

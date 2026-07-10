@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyGet.json
      */
     /**
      * Sample code: Get FirewallPolicy.

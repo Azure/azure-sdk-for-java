@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkAppliancesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkAppliances_ListBySubscription.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkAppliances_ListBySubscription.json
      */
     /**
      * Sample code: List all virtual network appliances.

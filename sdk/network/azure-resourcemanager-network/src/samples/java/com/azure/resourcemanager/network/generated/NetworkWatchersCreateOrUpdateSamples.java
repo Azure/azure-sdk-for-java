@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
  */
 public final class NetworkWatchersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherCreate.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherCreate.json
      */
     /**
      * Sample code: Create network watcher.

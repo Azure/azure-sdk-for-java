@@ -12,20 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityHistoryRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityHistoryRequest model
-            = BinaryData.fromString("{\"startAt\":\"2021-07-17T10:48:48Z\",\"endAt\":\"2021-02-21T18:31:28Z\"}")
-                .toObject(EntityHistoryRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T10:48:48Z"), model.startAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T18:31:28Z"), model.endAt());
+        EntityHistoryRequest model = BinaryData.fromString(
+            "{\"startAt\":\"2021-02-06T07:28:46Z\",\"endAt\":\"2021-08-05T02:44:40Z\",\"top\":1919581142,\"nextMarker\":\"u\"}")
+            .toObject(EntityHistoryRequest.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T07:28:46Z"), model.startAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T02:44:40Z"), model.endAt());
+        Assertions.assertEquals(1919581142, model.top());
+        Assertions.assertEquals("u", model.nextMarker());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntityHistoryRequest model
-            = new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2021-07-17T10:48:48Z"))
-                .withEndAt(OffsetDateTime.parse("2021-02-21T18:31:28Z"));
+            = new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2021-02-06T07:28:46Z"))
+                .withEndAt(OffsetDateTime.parse("2021-08-05T02:44:40Z"))
+                .withTop(1919581142)
+                .withNextMarker("u");
         model = BinaryData.fromObject(model).toObject(EntityHistoryRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T10:48:48Z"), model.startAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T18:31:28Z"), model.endAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T07:28:46Z"), model.startAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T02:44:40Z"), model.endAt());
+        Assertions.assertEquals(1919581142, model.top());
+        Assertions.assertEquals("u", model.nextMarker());
     }
 }

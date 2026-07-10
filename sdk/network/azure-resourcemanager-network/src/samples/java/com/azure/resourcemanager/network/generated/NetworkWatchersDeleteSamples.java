@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkWatchersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherDelete.json
      */
     /**
      * Sample code: Delete network watcher.

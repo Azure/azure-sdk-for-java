@@ -9,7 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmos.fluent.models.MongoIndexKeys;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Cosmos DB MongoDB collection index key.
@@ -19,7 +21,7 @@ public final class MongoIndex implements JsonSerializable<MongoIndex> {
     /*
      * Cosmos DB MongoDB collection index keys
      */
-    private MongoIndexKeys key;
+    private MongoIndexKeys innerKey;
 
     /*
      * Cosmos DB MongoDB collection index key options
@@ -33,23 +35,12 @@ public final class MongoIndex implements JsonSerializable<MongoIndex> {
     }
 
     /**
-     * Get the key property: Cosmos DB MongoDB collection index keys.
+     * Get the innerKey property: Cosmos DB MongoDB collection index keys.
      * 
-     * @return the key value.
+     * @return the innerKey value.
      */
-    public MongoIndexKeys key() {
-        return this.key;
-    }
-
-    /**
-     * Set the key property: Cosmos DB MongoDB collection index keys.
-     * 
-     * @param key the key value to set.
-     * @return the MongoIndex object itself.
-     */
-    public MongoIndex withKey(MongoIndexKeys key) {
-        this.key = key;
-        return this;
+    private MongoIndexKeys innerKey() {
+        return this.innerKey;
     }
 
     /**
@@ -73,13 +64,36 @@ public final class MongoIndex implements JsonSerializable<MongoIndex> {
     }
 
     /**
+     * Get the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.
+     * 
+     * @return the keys value.
+     */
+    public List<String> keys() {
+        return this.innerKey() == null ? null : this.innerKey().keys();
+    }
+
+    /**
+     * Set the keys property: List of keys for each MongoDB collection in the Azure Cosmos DB service.
+     * 
+     * @param keys the keys value to set.
+     * @return the MongoIndex object itself.
+     */
+    public MongoIndex withKeys(List<String> keys) {
+        if (this.innerKey() == null) {
+            this.innerKey = new MongoIndexKeys();
+        }
+        this.innerKey().withKeys(keys);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (key() != null) {
-            key().validate();
+        if (innerKey() != null) {
+            innerKey().validate();
         }
         if (options() != null) {
             options().validate();
@@ -92,7 +106,7 @@ public final class MongoIndex implements JsonSerializable<MongoIndex> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("key", this.key);
+        jsonWriter.writeJsonField("key", this.innerKey);
         jsonWriter.writeJsonField("options", this.options);
         return jsonWriter.writeEndObject();
     }
@@ -113,7 +127,7 @@ public final class MongoIndex implements JsonSerializable<MongoIndex> {
                 reader.nextToken();
 
                 if ("key".equals(fieldName)) {
-                    deserializedMongoIndex.key = MongoIndexKeys.fromJson(reader);
+                    deserializedMongoIndex.innerKey = MongoIndexKeys.fromJson(reader);
                 } else if ("options".equals(fieldName)) {
                     deserializedMongoIndex.options = MongoIndexOptions.fromJson(reader);
                 } else {

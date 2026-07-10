@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConn
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-05-15-preview/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: PutPrivateEndpointConnection.

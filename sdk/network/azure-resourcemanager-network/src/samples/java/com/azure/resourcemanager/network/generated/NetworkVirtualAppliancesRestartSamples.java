@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesRestartSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkVirtualApplianceSpecificRestart.json
+     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceSpecificRestart.json
      */
     /**
      * Sample code: Restart Specific NetworkVirtualAppliance VMs in VM Scale Set.
@@ -24,7 +24,7 @@ public final class NetworkVirtualAppliancesRestartSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkVirtualApplianceEmptyRestart.json
+     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceEmptyRestart.json
      */
     /**
      * Sample code: Restart All NetworkVirtualAppliance VMs in VM Scale Set.

@@ -8,10 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.models.AddDataAnnotationRequest;
+import com.azure.resourcemanager.cloudhealth.models.DataAnnotation;
 import com.azure.resourcemanager.cloudhealth.models.Entity;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryResponse;
 import com.azure.resourcemanager.cloudhealth.models.EntityProperties;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsRequest;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsResponse;
+import com.azure.resourcemanager.cloudhealth.models.GetSignalRecommendationsResponse;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryResponse;
@@ -152,6 +157,34 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
 
     public void ingestHealthReport(HealthReportRequest body) {
         serviceManager.entities().ingestHealthReport(resourceGroupName, healthModelName, entityName, body);
+    }
+
+    public Response<DataAnnotation> addDataAnnotationWithResponse(AddDataAnnotationRequest body, Context context) {
+        return serviceManager.entities()
+            .addDataAnnotationWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+    }
+
+    public DataAnnotation addDataAnnotation(AddDataAnnotationRequest body) {
+        return serviceManager.entities().addDataAnnotation(resourceGroupName, healthModelName, entityName, body);
+    }
+
+    public Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(GetDataAnnotationsRequest body,
+        Context context) {
+        return serviceManager.entities()
+            .getDataAnnotationsWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+    }
+
+    public GetDataAnnotationsResponse getDataAnnotations(GetDataAnnotationsRequest body) {
+        return serviceManager.entities().getDataAnnotations(resourceGroupName, healthModelName, entityName, body);
+    }
+
+    public Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(Context context) {
+        return serviceManager.entities()
+            .getSignalRecommendationsWithResponse(resourceGroupName, healthModelName, entityName, context);
+    }
+
+    public GetSignalRecommendationsResponse getSignalRecommendations() {
+        return serviceManager.entities().getSignalRecommendations(resourceGroupName, healthModelName, entityName);
     }
 
     public EntityImpl withProperties(EntityProperties properties) {

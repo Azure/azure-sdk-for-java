@@ -41,7 +41,11 @@ public enum KeyServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2025-07-01}.
      */
-    V2025_07_01("2025-07-01");
+    V2025_07_01("2025-07-01"),
+    /**
+     * Service version {@code 2026-01-01-preview}.
+     */
+    V2026_01_01_PREVIEW("2026-01-01-preview");
 
     private final String version;
 
@@ -63,6 +67,6 @@ public enum KeyServiceVersion implements ServiceVersion {
      * @return The latest {@link KeyServiceVersion}.
      */
     public static KeyServiceVersion getLatest() {
-        return V2025_07_01;
+        return V2026_01_01_PREVIEW;
     }
 }

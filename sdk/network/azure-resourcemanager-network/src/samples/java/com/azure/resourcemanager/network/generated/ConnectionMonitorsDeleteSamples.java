@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectionMonitorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherConnectionMonitorDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherConnectionMonitorDelete.json
      */
     /**
      * Sample code: Delete connection monitor.

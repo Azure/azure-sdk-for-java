@@ -40,7 +40,7 @@ public class FoundryFeaturesHeaderVerificationTest {
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
     private static final String AGENT_PREVIEW_FEATURES = Stream
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
         .collect(Collectors.joining(","));
 
     @Test
@@ -48,7 +48,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient).allowPreview(true);
 
-        builder.beta().buildBetaAgentsClient().getSessionWithResponse("agent", "session", new RequestOptions());
+        builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
         builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
@@ -56,9 +56,6 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
-
-        builder.beta().buildBetaToolboxesClient().getToolboxWithResponse("toolbox", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.buildAgentsClient()
             .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
@@ -70,14 +67,11 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaAgentsClient().getSessionWithResponse("agent", "session", new RequestOptions());
+        builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
-
-        builder.beta().buildBetaToolboxesClient().getToolboxWithResponse("toolbox", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
     }
 
     @Test
@@ -99,13 +93,13 @@ public class FoundryFeaturesHeaderVerificationTest {
     @Test
     public void allowPreviewDoesNotOverrideExplicitHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
-        String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString();
+        String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString();
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
         createBuilder(httpClient).allowPreview(true)
             .beta()
             .buildBetaAgentsClient()
-            .getSessionWithResponse("agent", "session", requestOptions);
+            .getOptimizationJobWithResponse("job", requestOptions);
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
     }
@@ -129,7 +123,7 @@ public class FoundryFeaturesHeaderVerificationTest {
             .allowPreview(true)
             .beta()
             .buildBetaAgentsClient()
-            .getSessionWithResponse("agent", "session", new RequestOptions());
+            .getOptimizationJobWithResponse("job", new RequestOptions());
 
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
     }
@@ -171,12 +165,12 @@ public class FoundryFeaturesHeaderVerificationTest {
     @Test
     public void customPipelineDoesNotOverrideExplicitFoundryHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
-        String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString();
+        String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString();
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
         createBuilder(createCustomPipeline(httpClient)).beta()
             .buildBetaAgentsClient()
-            .getSessionWithResponse("agent", "session", requestOptions);
+            .getOptimizationJobWithResponse("job", requestOptions);
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));

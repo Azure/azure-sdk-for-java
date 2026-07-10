@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/InboundSecurityRulePut.json
+     * x-ms-original-file: 2025-07-01/InboundSecurityRulePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.

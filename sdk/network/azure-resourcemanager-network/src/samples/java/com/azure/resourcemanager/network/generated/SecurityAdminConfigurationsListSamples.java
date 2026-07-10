@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityAdminConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityAdminConfigurationList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityAdminConfigurationList.json
      */
     /**
      * Sample code: List security admin configurations in a network manager.

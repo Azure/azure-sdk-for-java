@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateDnsZoneGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointDnsZoneGroupList.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointDnsZoneGroupList.json
      */
     /**
      * Sample code: List private endpoints in resource group.

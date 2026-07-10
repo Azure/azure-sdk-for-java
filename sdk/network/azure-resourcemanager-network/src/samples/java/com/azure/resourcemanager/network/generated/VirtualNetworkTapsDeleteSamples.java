@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkTapsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkTapDelete.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkTapDelete.json
      */
     /**
      * Sample code: Delete Virtual Network Tap resource.

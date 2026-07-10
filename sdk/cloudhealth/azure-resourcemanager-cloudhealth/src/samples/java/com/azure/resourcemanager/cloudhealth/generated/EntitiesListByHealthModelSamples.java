@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class EntitiesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Entities_ListByHealthModel.json
+     * x-ms-original-file: 2026-05-01-preview/Entities_ListByHealthModel.json
      */
     /**
      * Sample code: Entities_ListByHealthModel.
@@ -17,8 +17,6 @@ public final class EntitiesListByHealthModelSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void entitiesListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.entities()
-            .listByHealthModel("rgopenapi", "gPWT6GP85xRV248L7LhNRTD--2Yc73wu-5Qk-0tS", null,
-                com.azure.core.util.Context.NONE);
+        manager.entities().listByHealthModel("online-store-rg", "online-store", null, com.azure.core.util.Context.NONE);
     }
 }
