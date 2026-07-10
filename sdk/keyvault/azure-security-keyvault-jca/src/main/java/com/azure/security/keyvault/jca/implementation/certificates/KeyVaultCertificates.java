@@ -98,9 +98,17 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient,
         Set<String> configuredCertificateAliases) {
         this.refreshInterval = refreshInterval;
-        this.keyVaultClient = keyVaultClient;
+        setKeyVaultClient(keyVaultClient);
         this.configuredCertificateAliases
             = new HashSet<>(Optional.ofNullable(configuredCertificateAliases).orElse(Collections.emptySet()));
+    }
+
+    private synchronized KeyVaultClient getKeyVaultClient() {
+        return keyVaultClient;
+    }
+
+    private synchronized void setKeyVaultClient(KeyVaultClient keyVaultClient) {
+        this.keyVaultClient = keyVaultClient;
     }
 
     /**
@@ -118,15 +126,15 @@ public final class KeyVaultCertificates implements AzureCertificates {
         String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
 
         if (keyVaultUri != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification);
+            setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+                accessToken, disableChallengeResourceVerification));
         } else {
-            keyVaultClient = null;
+            setKeyVaultClient(null);
         }
     }
 
-    boolean certificatesNeedRefresh() {
-        if (keyVaultClient == null) {
+    synchronized boolean certificatesNeedRefresh() {
+        if (getKeyVaultClient() == null) {
             return false;
         }
         if (lastRefreshTime == null) {
@@ -233,7 +241,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * Refresh certificates. Including certificates, aliases, certificate keys, certificate chains.
      */
     public synchronized void refreshCertificates() {
-        if (keyVaultClient == null) {
+        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
+        if (currentKeyVaultClient == null) {
             aliases = new ArrayList<>();
             loadedCertificateAliases.clear();
             loadedCertificateChainAliases.clear();
@@ -247,7 +256,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
         if (configuredCertificateAliases.isEmpty()) {
             // If aliases are not configured, discover aliases from Key Vault.
-            aliases = new ArrayList<>(Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList()));
+            aliases = new ArrayList<>(
+                Optional.ofNullable(currentKeyVaultClient.getAliases()).orElse(Collections.emptyList()));
         } else {
             // If aliases are configured, avoid the list API and only use the configured aliases.
             aliases = configuredCertificateAliases.stream().sorted().collect(Collectors.toCollection(ArrayList::new));
@@ -265,8 +275,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void loadCertificateIfNeeded(String alias) {
         refreshCertificatesIfNeeded();
+        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
 
-        if (alias == null || keyVaultClient == null) {
+        if (alias == null || currentKeyVaultClient == null) {
             return;
         }
 
@@ -277,7 +288,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             try {
-                Certificate loadedCertificate = keyVaultClient.getCertificate(alias);
+                Certificate loadedCertificate = currentKeyVaultClient.getCertificate(alias);
                 if (loadedCertificate != null) {
                     certificates.put(alias, loadedCertificate);
                     loadedCertificateAliases.add(alias);
@@ -290,8 +301,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void loadCertificateChainIfNeeded(String alias) {
         refreshCertificatesIfNeeded();
+        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
 
-        if (alias == null || keyVaultClient == null) {
+        if (alias == null || currentKeyVaultClient == null) {
             return;
         }
 
@@ -302,7 +314,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             try {
-                Certificate[] loadedCertificateChain = keyVaultClient.getCertificateChain(alias);
+                Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
                 certificateChains.put(alias, loadedCertificateChain);
                 loadedCertificateChainAliases.add(alias);
             } catch (RuntimeException exception) {
@@ -313,8 +325,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void loadCertificateKeyIfNeeded(String alias) {
         refreshCertificatesIfNeeded();
+        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
 
-        if (alias == null || keyVaultClient == null) {
+        if (alias == null || currentKeyVaultClient == null) {
             return;
         }
 
@@ -325,7 +338,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             try {
-                Key loadedKey = keyVaultClient.getKey(alias, null);
+                Key loadedKey = currentKeyVaultClient.getKey(alias, null);
                 certificateKeys.put(alias, loadedKey);
                 loadedCertificateKeyAliases.add(alias);
             } catch (RuntimeException exception) {
