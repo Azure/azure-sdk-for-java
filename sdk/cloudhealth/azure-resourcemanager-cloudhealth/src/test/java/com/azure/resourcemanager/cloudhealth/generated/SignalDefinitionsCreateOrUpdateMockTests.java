@@ -10,7 +10,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinitionProperties;
@@ -28,7 +30,7 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"qxtjjfzqlqhyca\",\"refreshInterval\":\"PT10M\",\"tags\":{\"ariaawi\":\"xdbeesmieknl\",\"wqfbylyrfgiagt\":\"agy\",\"zjvusfzldmo\":\"ojocqwogf\"},\"dataUnit\":\"xylfsb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":11.050071561561914},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":4.695037263110901}}},\"id\":\"nbtgkbugrjqctoj\",\"name\":\"mi\",\"type\":\"of\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"fkbg\",\"refreshInterval\":\"PT5M\",\"tags\":{\"jmygvk\":\"xeqoc\",\"fezrx\":\"qkjjeokbz\",\"q\":\"czurtlei\",\"zvd\":\"bkwvzg\"},\"dataUnit\":\"zdix\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":24.78869102736636,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":85.03154881452447,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT5M\"}}},\"id\":\"cgsbost\",\"name\":\"eln\",\"type\":\"la\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,29 +40,42 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SignalDefinition response = manager.signalDefinitions()
-            .define("spave")
-            .withExistingHealthmodel("khocxvdfffwaf", "roud")
-            .withProperties(new SignalDefinitionProperties().withDisplayName("bunzozudh")
-                .withRefreshInterval(RefreshInterval.PT2H)
-                .withTags(mapOf("mfdn", "oyxcdyuib"))
-                .withDataUnit("ydvfvfcjnae")
+            .define("ugcmjkavlgorb")
+            .withExistingHealthmodel("wy", "undmbx")
+            .withProperties(new SignalDefinitionProperties().withDisplayName("dtzfjltfvnzcy")
+                .withRefreshInterval(RefreshInterval.PT30M)
+                .withTags(mapOf("dbzqgqqihed", "vopvp"))
+                .withDataUnit("qwthmky")
                 .withEvaluationRules(new EvaluationRule()
-                    .withDegradedRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(40.47698334777199))
-                    .withUnhealthyRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(66.67512243948644))))
+                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                        .withThreshold(82.00838158982012D)
+                        .withSensitivity(DynamicThresholdSensitivity.LOW)
+                        .withLookBackWindow(LookBackWindow.PT15M))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                        .withThreshold(85.99224581908882D)
+                        .withSensitivity(DynamicThresholdSensitivity.LOW)
+                        .withLookBackWindow(LookBackWindow.PT15M))))
             .create();
 
-        Assertions.assertEquals("qxtjjfzqlqhyca", response.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, response.properties().refreshInterval());
-        Assertions.assertEquals("xdbeesmieknl", response.properties().tags().get("ariaawi"));
-        Assertions.assertEquals("xylfsb", response.properties().dataUnit());
-        Assertions.assertEquals(SignalOperator.EQUAL,
+        Assertions.assertEquals("fkbg", response.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT5M, response.properties().refreshInterval());
+        Assertions.assertEquals("xeqoc", response.properties().tags().get("jmygvk"));
+        Assertions.assertEquals("zdix", response.properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
             response.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(11.050071561561914, response.properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals(24.78869102736636D, response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            response.properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT30M,
+            response.properties().evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(4.695037263110901, response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(85.03154881452447D,
+            response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            response.properties().evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M,
+            response.properties().evaluationRules().unhealthyRule().lookBackWindow());
     }
 
     // Use "Map.of" if available

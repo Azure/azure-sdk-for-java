@@ -29,8 +29,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsClient {
 
     @Generated
@@ -51,16 +51,10 @@ public final class BetaModelsClient {
      *
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -118,16 +112,10 @@ public final class BetaModelsClient {
      *
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -184,16 +172,10 @@ public final class BetaModelsClient {
      *
      * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -276,7 +258,7 @@ public final class BetaModelsClient {
      *
      * Update an existing ModelVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -287,18 +269,12 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -360,16 +336,10 @@ public final class BetaModelsClient {
      * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
      * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -407,9 +377,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -441,7 +411,7 @@ public final class BetaModelsClient {
      *
      * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -451,9 +421,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -495,7 +465,7 @@ public final class BetaModelsClient {
      *
      * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -503,9 +473,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

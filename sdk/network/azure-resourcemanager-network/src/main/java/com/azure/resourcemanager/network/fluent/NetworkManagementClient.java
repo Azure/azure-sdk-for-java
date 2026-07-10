@@ -370,6 +370,13 @@ public interface NetworkManagementClient {
     ScopeConnectionsClient getScopeConnections();
 
     /**
+     * Gets the CommitsClient object to access its operations.
+     * 
+     * @return the CommitsClient object.
+     */
+    CommitsClient getCommits();
+
+    /**
      * Gets the SecurityAdminConfigurationsClient object to access its operations.
      * 
      * @return the SecurityAdminConfigurationsClient object.
@@ -706,6 +713,13 @@ public interface NetworkManagementClient {
     HubRouteTablesClient getHubRouteTables();
 
     /**
+     * Gets the ConnectionPoliciesClient object to access its operations.
+     * 
+     * @return the ConnectionPoliciesClient object.
+     */
+    ConnectionPoliciesClient getConnectionPolicies();
+
+    /**
      * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
      * 
      * @return the WebApplicationFirewallPoliciesClient object.
@@ -725,6 +739,20 @@ public interface NetworkManagementClient {
      * @return the ServiceGatewaysClient object.
      */
     ServiceGatewaysClient getServiceGateways();
+
+    /**
+     * Gets the InterconnectGroupsClient object to access its operations.
+     * 
+     * @return the InterconnectGroupsClient object.
+     */
+    InterconnectGroupsClient getInterconnectGroups();
+
+    /**
+     * Gets the SubgroupsClient object to access its operations.
+     * 
+     * @return the SubgroupsClient object.
+     */
+    SubgroupsClient getSubgroups();
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.

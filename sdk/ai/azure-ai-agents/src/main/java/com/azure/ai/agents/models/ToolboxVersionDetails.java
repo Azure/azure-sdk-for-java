@@ -67,7 +67,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      * The list of tools contained in this toolbox version.
      */
     @Generated
-    private final List<Tool> tools;
+    private final List<ToolboxTool> tools;
 
     /*
      * Policy configuration for the toolbox version.
@@ -87,7 +87,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      */
     @Generated
     private ToolboxVersionDetails(Map<String, String> metadata, String id, String name, String version,
-        OffsetDateTime createdAt, List<Tool> tools) {
+        OffsetDateTime createdAt, List<ToolboxTool> tools) {
         this.metadata = metadata;
         this.id = id;
         this.name = name;
@@ -172,7 +172,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      * @return the tools value.
      */
     @Generated
-    public List<Tool> getTools() {
+    public List<ToolboxTool> getTools() {
         return this.tools;
     }
 
@@ -222,7 +222,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
             String name = null;
             String version = null;
             OffsetDateTime createdAt = null;
-            List<Tool> tools = null;
+            List<ToolboxTool> tools = null;
             String description = null;
             List<ToolboxSkill> skills = null;
             ToolboxPolicies policies = null;
@@ -240,7 +240,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
+                    tools = reader.readArray(reader1 -> ToolboxTool.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("skills".equals(fieldName)) {

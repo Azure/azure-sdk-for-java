@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +15,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseCreateUpdate.
@@ -34,29 +31,6 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
                     .withResource(new SqlDatabaseResource().withId("databaseName"))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlDatabaseRestore.json
-     */
-    /**
-     * Sample code: CosmosDBSqlDatabaseRestore.
-     * 
-     * @param manager Entry point to CosmosManager.
-     */
-    public static void cosmosDBSqlDatabaseRestore(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
-            .getSqlResources()
-            .createUpdateSqlDatabase("rg1", "ddb1", "databaseName", new SqlDatabaseCreateUpdateParameters()
-                .withLocation("West US")
-                .withTags(mapOf())
-                .withResource(new SqlDatabaseResource().withId("databaseName")
-                    .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
-                        .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
-                        .withRestoreWithTtlDisabled(true))
-                    .withCreateMode(CreateMode.RESTORE))
-                .withOptions(new CreateUpdateOptions()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

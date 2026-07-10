@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
  */
 public final class CustomIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CustomIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: 2025-07-01/CustomIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create custom IP prefix allocation method.

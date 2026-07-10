@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortDelete.json
+     * x-ms-original-file: 2025-07-01/ExpressRoutePortDelete.json
      */
     /**
      * Sample code: ExpressRoutePortDelete.

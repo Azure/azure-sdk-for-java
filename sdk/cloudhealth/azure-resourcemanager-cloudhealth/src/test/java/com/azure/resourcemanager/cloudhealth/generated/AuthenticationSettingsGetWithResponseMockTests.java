@@ -21,7 +21,7 @@ public final class AuthenticationSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"gmvecactxmw\"},\"id\":\"e\",\"name\":\"owcluqo\",\"type\":\"ekqvgqouwif\"}";
+            = "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"okayzejnhlbkp\"},\"id\":\"pcpil\",\"name\":\"hahzvechndbnwi\",\"type\":\"hol\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AuthenticationSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthenticationSetting response = manager.authenticationSettings()
-            .getWithResponse("eypefojyqd", "cuplcplcwkhih", "hlhzdsqtzbsrgno", com.azure.core.util.Context.NONE)
+            .getWithResponse("utmzlbiojlvfhrbb", "neqvcwwyyurmo", "hppr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gmvecactxmw", response.properties().displayName());
+        Assertions.assertEquals("okayzejnhlbkp", response.properties().displayName());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectivityConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectivityConfigurationGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerConnectivityConfigurationGet.json
      */
     /**
      * Sample code: ConnectivityConfigurationsGet.

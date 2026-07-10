@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.Nat64State;
 import com.azure.resourcemanager.network.models.NatGatewaySku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -347,6 +348,29 @@ public final class NatGatewayInner extends Resource {
             this.innerProperties = new NatGatewayPropertiesFormat();
         }
         this.innerProperties().withServiceGateway(serviceGateway);
+        return this;
+    }
+
+    /**
+     * Get the nat64 property: Whether Nat64 is enabled for the NAT gateway resource.
+     * 
+     * @return the nat64 value.
+     */
+    public Nat64State nat64() {
+        return this.innerProperties() == null ? null : this.innerProperties().nat64();
+    }
+
+    /**
+     * Set the nat64 property: Whether Nat64 is enabled for the NAT gateway resource.
+     * 
+     * @param nat64 the nat64 value to set.
+     * @return the NatGatewayInner object itself.
+     */
+    public NatGatewayInner withNat64(Nat64State nat64) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NatGatewayPropertiesFormat();
+        }
+        this.innerProperties().withNat64(nat64);
         return this;
     }
 

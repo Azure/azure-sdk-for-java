@@ -914,6 +914,9 @@ public final class BetaRoutinesImpl {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)
@@ -984,6 +987,9 @@ public final class BetaRoutinesImpl {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)
@@ -1047,6 +1053,9 @@ public final class BetaRoutinesImpl {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)
@@ -1114,6 +1123,9 @@ public final class BetaRoutinesImpl {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)

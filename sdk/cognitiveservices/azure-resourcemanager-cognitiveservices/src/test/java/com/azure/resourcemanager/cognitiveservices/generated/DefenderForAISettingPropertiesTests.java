@@ -13,15 +13,15 @@ public final class DefenderForAISettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingProperties model
-            = BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(DefenderForAISettingProperties.class);
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(DefenderForAISettingProperties.class);
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForAISettingProperties model
-            = new DefenderForAISettingProperties().withState(DefenderForAISettingState.ENABLED);
+            = new DefenderForAISettingProperties().withState(DefenderForAISettingState.DISABLED);
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingProperties.class);
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 }
