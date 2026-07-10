@@ -44,9 +44,9 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     /**
      * Whether the shared ServiceBusClientBuilder should inherit the configuration derived from the sender, receiver or
-     * processor properties. Defaults to true (existing behavior). Set to false to preserve configuration already set on
-     * the shared builder, for example the ClientOptions carrying TracingOptions set through an
-     * AzureServiceClientBuilderCustomizer.
+     * processor properties. Defaults to {@code null} (treated as {@code true}), preserving the existing behavior. Set to
+     * {@code false} to preserve configuration already set on the shared builder, for example the ClientOptions carrying
+     * TracingOptions set through an AzureServiceClientBuilderCustomizer.
      */
     private Boolean inheritConfiguration;
 
