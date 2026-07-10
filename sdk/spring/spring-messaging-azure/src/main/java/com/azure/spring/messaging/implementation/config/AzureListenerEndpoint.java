@@ -8,7 +8,7 @@ import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 
 /**
- * Model for a Azure listener endpoint. Can be used against a {@link AzureListenerConfigurer AzureListenerConfigurer} to
+ * Model for an Azure listener endpoint. Can be used against a {@link AzureListenerConfigurer AzureListenerConfigurer} to
  * register endpoints programmatically.
  */
 public interface AzureListenerEndpoint {
