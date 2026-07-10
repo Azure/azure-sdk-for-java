@@ -114,9 +114,10 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         return this.properties.getInheritConfiguration() == null || this.properties.getInheritConfiguration();
     }
 
-    // In the non-shared path the sub-client builder applies its property-derived configuration to the underlying
-    // ServiceBusClientBuilder when inherit-configuration is true (the default). Set it to false to preserve configuration
-    // already set on the shared builder (e.g. ClientOptions carrying TracingOptions from a customizer). See #49742.
+    // In the non-shared path, the sub-client builder applies its property-derived configuration to the underlying
+    // ServiceBusClientBuilder when inherit-configuration is true (the default).
+    // Set it to false to preserve configuration already set on the shared builder (for example, ClientOptions carrying
+    // TracingOptions from a customizer). See #49742.
     private boolean shouldConfigureServiceBusClientBuilder() {
         return !isShareServiceBusClientBuilder() && isInheritConfiguration();
     }
