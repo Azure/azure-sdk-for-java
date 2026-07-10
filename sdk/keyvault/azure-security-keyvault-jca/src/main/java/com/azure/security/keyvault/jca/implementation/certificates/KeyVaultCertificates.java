@@ -294,7 +294,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
                     loadedCertificateAliases.add(alias);
                 }
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, String.format("Failed to load certificate for alias: %s", alias), exception);
+                LOGGER.log(WARNING, exception, () -> "Failed to load certificate for alias: " + alias);
             }
         }
     }
@@ -320,7 +320,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
                     loadedCertificateChainAliases.add(alias);
                 }
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, String.format("Failed to load certificate chain for alias: %s", alias), exception);
+                LOGGER.log(WARNING, exception, () -> "Failed to load certificate chain for alias: " + alias);
             }
         }
     }
@@ -346,7 +346,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
                     loadedCertificateKeyAliases.add(alias);
                 }
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, String.format("Failed to load certificate key for alias: %s", alias), exception);
+                LOGGER.log(WARNING, exception, () -> "Failed to load certificate key for alias: " + alias);
             }
         }
     }
