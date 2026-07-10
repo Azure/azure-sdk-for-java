@@ -135,8 +135,8 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
 
     /**
      * Set whether the shared {@code ServiceBusClientBuilder} should inherit the configuration derived from this
-     * sub-client's properties. Defaults to {@code null} (treated as {@code true}), preserving the existing behavior; set
-     * to {@code false} to preserve configuration already set on the shared builder.
+     * sub-client's properties. Defaults to {@code null} (treated as {@code true}), preserving the existing behavior.
+     * Set to {@code false} to preserve configuration already set on the shared builder.
      * @param inheritConfiguration whether to inherit the shared {@code ServiceBusClientBuilder} configuration.
      */
     public void setInheritConfiguration(Boolean inheritConfiguration) {
