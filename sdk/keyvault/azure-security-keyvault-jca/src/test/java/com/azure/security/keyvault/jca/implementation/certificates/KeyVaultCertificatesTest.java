@@ -202,4 +202,49 @@ public class KeyVaultCertificatesTest {
         verify(keyVaultClient, never()).getCertificateChain("myalias");
     }
 
+    @Test
+    public void testAliasKeyLoadFailureIsRetriedOnNextAccess() {
+        when(keyVaultClient.getKey("myalias", null)).thenThrow(new RuntimeException("transient error")).thenReturn(key);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificateKey("myalias"));
+        Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
+        verify(keyVaultClient, times(2)).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testAliasKeyNullLoadIsRetriedOnNextAccess() {
+        when(keyVaultClient.getKey("myalias", null)).thenReturn(null).thenReturn(key);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificateKey("myalias"));
+        Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
+        verify(keyVaultClient, times(2)).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testAliasChainLoadFailureIsRetriedOnNextAccess() {
+        when(keyVaultClient.getCertificateChain("myalias")).thenThrow(new RuntimeException("transient error"))
+            .thenReturn(certificateChain);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+    }
+
+    @Test
+    public void testAliasChainEmptyLoadIsRetriedOnNextAccess() {
+        when(keyVaultClient.getCertificateChain("myalias")).thenReturn(new Certificate[0]).thenReturn(certificateChain);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+    }
+
 }

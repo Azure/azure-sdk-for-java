@@ -315,8 +315,10 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
             try {
                 Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
-                certificateChains.put(alias, loadedCertificateChain);
-                loadedCertificateChainAliases.add(alias);
+                if (loadedCertificateChain != null && loadedCertificateChain.length > 0) {
+                    certificateChains.put(alias, loadedCertificateChain);
+                    loadedCertificateChainAliases.add(alias);
+                }
             } catch (RuntimeException exception) {
                 LOGGER.log(WARNING, String.format("Failed to load certificate chain for alias: %s", alias), exception);
             }
@@ -339,8 +341,10 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
             try {
                 Key loadedKey = currentKeyVaultClient.getKey(alias, null);
-                certificateKeys.put(alias, loadedKey);
-                loadedCertificateKeyAliases.add(alias);
+                if (loadedKey != null) {
+                    certificateKeys.put(alias, loadedKey);
+                    loadedCertificateKeyAliases.add(alias);
+                }
             } catch (RuntimeException exception) {
                 LOGGER.log(WARNING, String.format("Failed to load certificate key for alias: %s", alias), exception);
             }
