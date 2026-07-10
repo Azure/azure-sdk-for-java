@@ -218,6 +218,16 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * Refresh certificates. Including certificates, aliases, certificate keys, certificate chains.
      */
     public synchronized void refreshCertificates() {
+        if (keyVaultClient == null) {
+            aliases = new ArrayList<>();
+            loadedAliases.clear();
+            certificateKeys.clear();
+            certificates.clear();
+            certificateChains.clear();
+            lastRefreshTime = new Date();
+            return;
+        }
+
         // Refresh alias list only. Certificate details are loaded lazily per alias when requested.
         List<String> refreshedAliases
             = Optional.ofNullable(keyVaultClient.getAliases()).orElse(Collections.emptyList());
@@ -289,7 +299,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param alias Deleted certificate.
      */
     @Override
-    public void deleteEntry(String alias) {
+    public synchronized void deleteEntry(String alias) {
         if (aliases != null) {
             aliases.remove(alias);
         }

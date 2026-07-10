@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -128,8 +129,13 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testConfiguredAliasesFilterAfterRefresh() {
-        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("myalias", "otheralias"));
-        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("otheralias", "myalias", "new"));
+        AtomicInteger invocationCount = new AtomicInteger(0);
+        when(keyVaultClient.getAliases()).thenAnswer(invocation -> {
+            if (invocationCount.getAndIncrement() == 0) {
+                return Arrays.asList("myalias", "otheralias");
+            }
+            return Arrays.asList("otheralias", "myalias", "new");
+        });
 
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
 
