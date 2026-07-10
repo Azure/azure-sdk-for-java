@@ -191,4 +191,15 @@ public class KeyVaultCertificatesTest {
         verify(keyVaultClient, never()).getCertificateChain("myalias");
     }
 
+    @Test
+    public void testAliasCertificateNullLoadIsRetriedOnNextAccess() {
+        when(keyVaultClient.getCertificate("myalias")).thenReturn(null).thenReturn(certificate);
+
+        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
+        verify(keyVaultClient, times(2)).getCertificate("myalias");
+        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, never()).getCertificateChain("myalias");
+    }
+
 }
