@@ -252,7 +252,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     /**
-     * Refresh certificates. Including certificates, aliases, certificate keys, certificate chains.
+     * Refresh aliases and invalidate cached certificate details.
      */
     public synchronized void refreshCertificates() {
         KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
@@ -369,6 +369,10 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @return Certificate alias if it exists.
      */
     public String refreshAndGetAliasByCertificate(Certificate certificate) {
+        if (certificate == null) {
+            return null;
+        }
+
         refreshCertificates();
 
         List<String> aliasesSnapshot;

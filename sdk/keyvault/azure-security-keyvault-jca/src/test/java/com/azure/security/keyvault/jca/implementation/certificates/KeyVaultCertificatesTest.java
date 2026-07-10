@@ -75,6 +75,11 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testRefreshAndGetAliasByCertificateWithNullCertificate() {
+        Assertions.assertNull(keyVaultCertificates.refreshAndGetAliasByCertificate(null));
+    }
+
+    @Test
     public void testDeleteAlias() {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
         keyVaultCertificates.deleteEntry("myalias");
