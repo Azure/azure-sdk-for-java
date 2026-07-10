@@ -268,20 +268,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates)
-            .stream()
-            .map(AzureCertificates::getCertificates)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificates -> certificates.get(alias))
-            .orElse(null);
+        Certificate certificate = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificate = ((KeyVaultCertificates) certificatesSource).getCertificate(alias);
+            } else {
+                certificate = certificatesSource.getCertificates().get(alias);
+            }
 
-        if (certificate == null) {
-            certificate = keyVaultCertificates.getCertificate(alias);
-        }
-
-        if (certificate == null) {
-            certificate = classpathCertificates.getCertificates().get(alias);
+            if (certificate != null) {
+                break;
+            }
         }
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
@@ -330,20 +327,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        Certificate[] certificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates)
-            .stream()
-            .map(AzureCertificates::getCertificateChains)
-            .filter(Objects::nonNull)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(m -> m.get(alias))
-            .orElse(null);
-        if (certificates == null) {
-            certificates = keyVaultCertificates.getCertificateChain(alias);
-        }
+        Certificate[] certificates = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificates = ((KeyVaultCertificates) certificatesSource).getCertificateChain(alias);
+            } else {
+                certificates = certificatesSource.getCertificateChains().get(alias);
+            }
 
-        if (certificates == null) {
-            certificates = classpathCertificates.getCertificateChains().get(alias);
+            if (certificates != null) {
+                break;
+            }
         }
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
@@ -390,20 +384,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        Key key = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates)
-            .stream()
-            .map(AzureCertificates::getCertificateKeys)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificateKeys -> certificateKeys.get(alias))
-            .orElse(null);
+        Key key = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                key = ((KeyVaultCertificates) certificatesSource).getCertificateKey(alias);
+            } else {
+                key = certificatesSource.getCertificateKeys().get(alias);
+            }
 
-        if (key == null) {
-            key = keyVaultCertificates.getCertificateKey(alias);
-        }
-
-        if (key == null) {
-            key = classpathCertificates.getCertificateKeys().get(alias);
+            if (key != null) {
+                break;
+            }
         }
 
         return key;
