@@ -12,6 +12,10 @@ import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingStorageAd
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingStorageNetworks;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingVirtualSwitchConfigurationOverrides;
 import com.azure.resourcemanager.azurestackhci.models.QosPolicyOverrides;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterIPConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterProperties;
+import com.azure.resourcemanager.azurestackhci.models.SanClusterNetworkConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanNetworks;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -19,160 +23,181 @@ public final class DeploymentSettingHostNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSettingHostNetwork model = BinaryData.fromString(
-            "{\"intents\":[{\"name\":\"wubmwmbesldn\",\"trafficType\":[\"tppjflcx\",\"gaokonzmnsikv\",\"kqze\",\"qkdltfz\"],\"adapter\":[\"hvhgureod\"],\"overrideVirtualSwitchConfiguration\":true,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"agxti\",\"loadBalancingAlgorithm\":\"dxbx\"},\"overrideQosPolicy\":true,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"gqxndlkzgxhuripl\",\"priorityValue8021Action_SMB\":\"odxun\",\"bandwidthPercentage_SMB\":\"ebxmubyynt\"},\"overrideAdapterProperty\":false,\"adapterPropertyOverrides\":{\"jumboPacket\":\"tkoievseotgq\",\"networkDirect\":\"ltmuwlauwzizx\",\"networkDirectTechnology\":\"pgcjefuzmuvp\"}},{\"name\":\"tdum\",\"trafficType\":[\"pxebmnzbt\"],\"adapter\":[\"pglkf\",\"ohdneuel\",\"phsdyhto\"],\"overrideVirtualSwitchConfiguration\":true,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"owwquuvxz\",\"loadBalancingAlgorithm\":\"lvithhqzonosgg\"},\"overrideQosPolicy\":false,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"fwdsj\",\"priorityValue8021Action_SMB\":\"aljutiiswac\",\"bandwidthPercentage_SMB\":\"gdkz\"},\"overrideAdapterProperty\":true,\"adapterPropertyOverrides\":{\"jumboPacket\":\"vhqcrail\",\"networkDirect\":\"n\",\"networkDirectTechnology\":\"fuflrwdmhdlx\"}}],\"storageNetworks\":[{\"name\":\"sag\",\"networkAdapterName\":\"cnihgwqapnedgfbc\",\"vlanId\":\"cvqvpkeqdcv\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"ood\",\"ipv4Address\":\"tbobz\",\"subnetMask\":\"pcjwv\"},{\"physicalNode\":\"dldwmgxc\",\"ipv4Address\":\"slpmutwuo\",\"subnetMask\":\"rpkhjwn\"},{\"physicalNode\":\"qsluicp\",\"ipv4Address\":\"gk\",\"subnetMask\":\"lvmbmpaxmodfvuef\"},{\"physicalNode\":\"sbpfvmwyhr\",\"ipv4Address\":\"uyfta\",\"subnetMask\":\"cpwi\"}]},{\"name\":\"vqtmnub\",\"networkAdapterName\":\"kpzksmondjmq\",\"vlanId\":\"vypomgkopkwho\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"jqg\",\"ipv4Address\":\"smocmbq\",\"subnetMask\":\"vmkcx\"},{\"physicalNode\":\"apvhelxprgly\",\"ipv4Address\":\"dd\",\"subnetMask\":\"cbcuejrjxgciqi\"},{\"physicalNode\":\"hos\",\"ipv4Address\":\"dqrhzoymib\",\"subnetMask\":\"qyib\"}]},{\"name\":\"wfluszdt\",\"networkAdapterName\":\"rkwofyyvoqa\",\"vlanId\":\"iexpbtgiwbwo\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"shrtdtkcnqxwb\",\"ipv4Address\":\"kulpiujwaasi\",\"subnetMask\":\"i\"},{\"physicalNode\":\"byuqerpqlp\",\"ipv4Address\":\"cciuqgbdbutau\",\"subnetMask\":\"btkuwhh\"}]},{\"name\":\"ykojoxafnndlpic\",\"networkAdapterName\":\"o\",\"vlanId\":\"kcdyhbpk\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"reqnovvqfov\",\"ipv4Address\":\"xywsuws\",\"subnetMask\":\"s\"},{\"physicalNode\":\"sytgadgvraea\",\"ipv4Address\":\"e\",\"subnetMask\":\"zar\"},{\"physicalNode\":\"lquuijfqkacewii\",\"ipv4Address\":\"pubjibw\",\"subnetMask\":\"f\"},{\"physicalNode\":\"hqkvpuvksgplsak\",\"ipv4Address\":\"n\",\"subnetMask\":\"ynl\"}]}],\"storageConnectivitySwitchless\":true,\"enableStorageAutoIp\":false}")
+            "{\"intents\":[{\"name\":\"jutiiswacff\",\"trafficType\":[\"zzewkfvhqcrai\"],\"adapter\":[\"n\",\"pfuflrw\"],\"overrideVirtualSwitchConfiguration\":true,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"xyjrxsagafcnih\",\"loadBalancingAlgorithm\":\"qapnedgfbcv\"},\"overrideQosPolicy\":false,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"pkeqdcvdrhvoo\",\"priorityValue8021Action_SMB\":\"otbobzdopcj\",\"bandwidthPercentage_SMB\":\"nhdldwmgxcx\"},\"overrideAdapterProperty\":true,\"adapterPropertyOverrides\":{\"jumboPacket\":\"utwu\",\"networkDirect\":\"grpkhjwniyqs\",\"networkDirectTechnology\":\"i\"}},{\"name\":\"dggkzzlvmbmpa\",\"trafficType\":[\"dfvue\",\"yw\",\"bpfvm\"],\"adapter\":[\"rfouyftaakcpw\",\"yzvqt\"],\"overrideVirtualSwitchConfiguration\":false,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"xkp\",\"loadBalancingAlgorithm\":\"smond\"},\"overrideQosPolicy\":true,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"vypomgkopkwho\",\"priorityValue8021Action_SMB\":\"pajqgxysm\",\"bandwidthPercentage_SMB\":\"mbqfqvmk\"},\"overrideAdapterProperty\":false,\"adapterPropertyOverrides\":{\"jumboPacket\":\"pvhelxprg\",\"networkDirect\":\"atddc\",\"networkDirectTechnology\":\"bcuejrjxgci\"}},{\"name\":\"brh\",\"trafficType\":[\"sdqrhzoymibmrq\",\"ibahwflus\",\"dtmhrkwofyyvoqa\",\"piexpbtgiw\"],\"adapter\":[\"enwash\",\"tdtkcn\"],\"overrideVirtualSwitchConfiguration\":true,\"virtualSwitchConfigurationOverrides\":{\"enableIov\":\"okulpiujwa\",\"loadBalancingAlgorithm\":\"ipqiiobyuqerpq\"},\"overrideQosPolicy\":false,\"qosPolicyOverrides\":{\"priorityValue8021Action_Cluster\":\"ciuqgbdb\",\"priorityValue8021Action_SMB\":\"auvfbtkuwhhmhyk\",\"bandwidthPercentage_SMB\":\"oxafn\"},\"overrideAdapterProperty\":false,\"adapterPropertyOverrides\":{\"jumboPacket\":\"chkoymkcdyh\",\"networkDirect\":\"kkpwdreqnovvq\",\"networkDirectTechnology\":\"vljxywsu\"}}],\"storageNetworks\":[{\"name\":\"s\",\"networkAdapterName\":\"sytgadgvraea\",\"vlanId\":\"e\",\"storageAdapterIPInfo\":[{\"physicalNode\":\"rrwlquuijfqkace\",\"ipv4Address\":\"ipfpubji\",\"subnetMask\":\"wifto\"}]}],\"sanNetworks\":{\"clusterNetworkConfig\":{\"adapterProperties\":{\"priorityValue8021ActionCluster\":2128432962,\"priorityValue8021ActionSmb\":1615767806,\"bandwidthPercentageSmb\":491288629,\"jumboPacket\":710710602},\"adapterIPConfig\":[{\"name\":\"nynfsynljphuo\",\"networkAdapterName\":\"odlqiyntor\",\"vlanId\":1915861757,\"addressPrefix\":\"eosjswsr\"},{\"name\":\"lyzrpzbchckqqzqi\",\"networkAdapterName\":\"iysui\",\"vlanId\":2121235922,\"addressPrefix\":\"ked\"},{\"name\":\"trwyhqmib\",\"networkAdapterName\":\"hwit\",\"vlanId\":1364304656,\"addressPrefix\":\"yynpcdpumnzgmwz\"},{\"name\":\"abikns\",\"networkAdapterName\":\"gj\",\"vlanId\":1714142762,\"addressPrefix\":\"dtlwwrlkd\"}]}},\"storageConnectivitySwitchless\":true,\"enableStorageAutoIp\":true}")
             .toObject(DeploymentSettingHostNetwork.class);
-        Assertions.assertEquals("wubmwmbesldn", model.intents().get(0).name());
-        Assertions.assertEquals("tppjflcx", model.intents().get(0).trafficType().get(0));
-        Assertions.assertEquals("hvhgureod", model.intents().get(0).adapter().get(0));
+        Assertions.assertEquals("jutiiswacff", model.intents().get(0).name());
+        Assertions.assertEquals("zzewkfvhqcrai", model.intents().get(0).trafficType().get(0));
+        Assertions.assertEquals("n", model.intents().get(0).adapter().get(0));
         Assertions.assertTrue(model.intents().get(0).overrideVirtualSwitchConfiguration());
-        Assertions.assertEquals("agxti", model.intents().get(0).virtualSwitchConfigurationOverrides().enableIov());
-        Assertions.assertEquals("dxbx",
+        Assertions.assertEquals("xyjrxsagafcnih",
+            model.intents().get(0).virtualSwitchConfigurationOverrides().enableIov());
+        Assertions.assertEquals("qapnedgfbcv",
             model.intents().get(0).virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
-        Assertions.assertTrue(model.intents().get(0).overrideQosPolicy());
-        Assertions.assertEquals("gqxndlkzgxhuripl",
+        Assertions.assertFalse(model.intents().get(0).overrideQosPolicy());
+        Assertions.assertEquals("pkeqdcvdrhvoo",
             model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionCluster());
-        Assertions.assertEquals("odxun", model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionSmb());
-        Assertions.assertEquals("ebxmubyynt", model.intents().get(0).qosPolicyOverrides().bandwidthPercentageSmb());
-        Assertions.assertFalse(model.intents().get(0).overrideAdapterProperty());
-        Assertions.assertEquals("tkoievseotgq", model.intents().get(0).adapterPropertyOverrides().jumboPacket());
-        Assertions.assertEquals("ltmuwlauwzizx", model.intents().get(0).adapterPropertyOverrides().networkDirect());
-        Assertions.assertEquals("pgcjefuzmuvp",
-            model.intents().get(0).adapterPropertyOverrides().networkDirectTechnology());
-        Assertions.assertEquals("sag", model.storageNetworks().get(0).name());
-        Assertions.assertEquals("cnihgwqapnedgfbc", model.storageNetworks().get(0).networkAdapterName());
-        Assertions.assertEquals("cvqvpkeqdcv", model.storageNetworks().get(0).vlanId());
-        Assertions.assertEquals("ood", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).physicalNode());
-        Assertions.assertEquals("tbobz", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).ipv4Address());
-        Assertions.assertEquals("pcjwv", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals("otbobzdopcj",
+            model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionSmb());
+        Assertions.assertEquals("nhdldwmgxcx", model.intents().get(0).qosPolicyOverrides().bandwidthPercentageSmb());
+        Assertions.assertTrue(model.intents().get(0).overrideAdapterProperty());
+        Assertions.assertEquals("utwu", model.intents().get(0).adapterPropertyOverrides().jumboPacket());
+        Assertions.assertEquals("grpkhjwniyqs", model.intents().get(0).adapterPropertyOverrides().networkDirect());
+        Assertions.assertEquals("i", model.intents().get(0).adapterPropertyOverrides().networkDirectTechnology());
+        Assertions.assertEquals("s", model.storageNetworks().get(0).name());
+        Assertions.assertEquals("sytgadgvraea", model.storageNetworks().get(0).networkAdapterName());
+        Assertions.assertEquals("e", model.storageNetworks().get(0).vlanId());
+        Assertions.assertEquals("rrwlquuijfqkace",
+            model.storageNetworks().get(0).storageAdapterIpInfo().get(0).physicalNode());
+        Assertions.assertEquals("ipfpubji", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).ipv4Address());
+        Assertions.assertEquals("wifto", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals(2128432962,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().priorityValue8021ActionCluster());
+        Assertions.assertEquals(1615767806,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().priorityValue8021ActionSmb());
+        Assertions.assertEquals(491288629,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
+        Assertions.assertEquals(710710602,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().jumboPacket());
+        Assertions.assertEquals("nynfsynljphuo",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).name());
+        Assertions.assertEquals("odlqiyntor",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
+        Assertions.assertEquals(1915861757,
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
+        Assertions.assertEquals("eosjswsr",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
         Assertions.assertTrue(model.storageConnectivitySwitchless());
-        Assertions.assertFalse(model.enableStorageAutoIp());
+        Assertions.assertTrue(model.enableStorageAutoIp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentSettingHostNetwork model
-            = new DeploymentSettingHostNetwork()
-                .withIntents(
-                    Arrays
-                        .asList(
-                            new DeploymentSettingIntents().withName("wubmwmbesldn")
-                                .withTrafficType(Arrays.asList("tppjflcx", "gaokonzmnsikv", "kqze", "qkdltfz"))
-                                .withAdapter(Arrays.asList("hvhgureod"))
-                                .withOverrideVirtualSwitchConfiguration(true)
-                                .withVirtualSwitchConfigurationOverrides(
-                                    new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("agxti")
-                                        .withLoadBalancingAlgorithm("dxbx"))
-                                .withOverrideQosPolicy(true)
-                                .withQosPolicyOverrides(
-                                    new QosPolicyOverrides().withPriorityValue8021ActionCluster("gqxndlkzgxhuripl")
-                                        .withPriorityValue8021ActionSmb("odxun")
-                                        .withBandwidthPercentageSmb("ebxmubyynt"))
-                                .withOverrideAdapterProperty(false)
-                                .withAdapterPropertyOverrides(
-                                    new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("tkoievseotgq")
-                                        .withNetworkDirect("ltmuwlauwzizx")
-                                        .withNetworkDirectTechnology("pgcjefuzmuvp")),
-                            new DeploymentSettingIntents().withName("tdum")
-                                .withTrafficType(Arrays.asList("pxebmnzbt"))
-                                .withAdapter(Arrays.asList("pglkf", "ohdneuel", "phsdyhto"))
-                                .withOverrideVirtualSwitchConfiguration(true)
-                                .withVirtualSwitchConfigurationOverrides(
-                                    new DeploymentSettingVirtualSwitchConfigurationOverrides()
-                                        .withEnableIov("owwquuvxz")
-                                        .withLoadBalancingAlgorithm("lvithhqzonosgg"))
-                                .withOverrideQosPolicy(false)
-                                .withQosPolicyOverrides(
-                                    new QosPolicyOverrides().withPriorityValue8021ActionCluster("fwdsj")
-                                        .withPriorityValue8021ActionSmb("aljutiiswac")
-                                        .withBandwidthPercentageSmb("gdkz"))
-                                .withOverrideAdapterProperty(true)
-                                .withAdapterPropertyOverrides(
-                                    new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("vhqcrail")
-                                        .withNetworkDirect("n")
-                                        .withNetworkDirectTechnology("fuflrwdmhdlx"))))
-                .withStorageNetworks(Arrays.asList(
-                    new DeploymentSettingStorageNetworks().withName("sag")
-                        .withNetworkAdapterName("cnihgwqapnedgfbc")
-                        .withVlanId("cvqvpkeqdcv")
-                        .withStorageAdapterIpInfo(Arrays.asList(
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("ood")
-                                .withIpv4Address("tbobz")
-                                .withSubnetMask("pcjwv"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("dldwmgxc")
-                                .withIpv4Address("slpmutwuo")
-                                .withSubnetMask("rpkhjwn"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("qsluicp")
-                                .withIpv4Address("gk")
-                                .withSubnetMask("lvmbmpaxmodfvuef"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("sbpfvmwyhr")
-                                .withIpv4Address("uyfta")
-                                .withSubnetMask("cpwi"))),
-                    new DeploymentSettingStorageNetworks().withName("vqtmnub")
-                        .withNetworkAdapterName("kpzksmondjmq")
-                        .withVlanId("vypomgkopkwho")
-                        .withStorageAdapterIpInfo(Arrays.asList(
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("jqg")
-                                .withIpv4Address("smocmbq")
-                                .withSubnetMask("vmkcx"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("apvhelxprgly")
-                                .withIpv4Address("dd")
-                                .withSubnetMask("cbcuejrjxgciqi"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("hos")
-                                .withIpv4Address("dqrhzoymib")
-                                .withSubnetMask("qyib"))),
-                    new DeploymentSettingStorageNetworks().withName("wfluszdt")
-                        .withNetworkAdapterName("rkwofyyvoqa")
-                        .withVlanId("iexpbtgiwbwo")
-                        .withStorageAdapterIpInfo(Arrays.asList(
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("shrtdtkcnqxwb")
-                                .withIpv4Address("kulpiujwaasi")
-                                .withSubnetMask("i"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("byuqerpqlp")
-                                .withIpv4Address("cciuqgbdbutau")
-                                .withSubnetMask("btkuwhh"))),
-                    new DeploymentSettingStorageNetworks().withName("ykojoxafnndlpic")
-                        .withNetworkAdapterName("o")
-                        .withVlanId("kcdyhbpk")
-                        .withStorageAdapterIpInfo(Arrays.asList(
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("reqnovvqfov")
-                                .withIpv4Address("xywsuws")
-                                .withSubnetMask("s"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("sytgadgvraea")
-                                .withIpv4Address("e")
-                                .withSubnetMask("zar"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("lquuijfqkacewii")
-                                .withIpv4Address("pubjibw")
-                                .withSubnetMask("f"),
-                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("hqkvpuvksgplsak")
-                                .withIpv4Address("n")
-                                .withSubnetMask("ynl")))))
-                .withStorageConnectivitySwitchless(true)
-                .withEnableStorageAutoIp(false);
+        DeploymentSettingHostNetwork model = new DeploymentSettingHostNetwork()
+            .withIntents(Arrays.asList(
+                new DeploymentSettingIntents().withName("jutiiswacff")
+                    .withTrafficType(Arrays.asList("zzewkfvhqcrai"))
+                    .withAdapter(Arrays.asList("n", "pfuflrw"))
+                    .withOverrideVirtualSwitchConfiguration(true)
+                    .withVirtualSwitchConfigurationOverrides(
+                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("xyjrxsagafcnih")
+                            .withLoadBalancingAlgorithm("qapnedgfbcv"))
+                    .withOverrideQosPolicy(false)
+                    .withQosPolicyOverrides(new QosPolicyOverrides().withPriorityValue8021ActionCluster("pkeqdcvdrhvoo")
+                        .withPriorityValue8021ActionSmb("otbobzdopcj")
+                        .withBandwidthPercentageSmb("nhdldwmgxcx"))
+                    .withOverrideAdapterProperty(true)
+                    .withAdapterPropertyOverrides(
+                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("utwu")
+                            .withNetworkDirect("grpkhjwniyqs")
+                            .withNetworkDirectTechnology("i")),
+                new DeploymentSettingIntents().withName("dggkzzlvmbmpa")
+                    .withTrafficType(Arrays.asList("dfvue", "yw", "bpfvm"))
+                    .withAdapter(Arrays.asList("rfouyftaakcpw", "yzvqt"))
+                    .withOverrideVirtualSwitchConfiguration(false)
+                    .withVirtualSwitchConfigurationOverrides(
+                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("xkp")
+                            .withLoadBalancingAlgorithm("smond"))
+                    .withOverrideQosPolicy(true)
+                    .withQosPolicyOverrides(new QosPolicyOverrides().withPriorityValue8021ActionCluster("vypomgkopkwho")
+                        .withPriorityValue8021ActionSmb("pajqgxysm")
+                        .withBandwidthPercentageSmb("mbqfqvmk"))
+                    .withOverrideAdapterProperty(false)
+                    .withAdapterPropertyOverrides(
+                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("pvhelxprg")
+                            .withNetworkDirect("atddc")
+                            .withNetworkDirectTechnology("bcuejrjxgci")),
+                new DeploymentSettingIntents().withName("brh")
+                    .withTrafficType(Arrays.asList("sdqrhzoymibmrq", "ibahwflus", "dtmhrkwofyyvoqa", "piexpbtgiw"))
+                    .withAdapter(Arrays.asList("enwash", "tdtkcn"))
+                    .withOverrideVirtualSwitchConfiguration(true)
+                    .withVirtualSwitchConfigurationOverrides(
+                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("okulpiujwa")
+                            .withLoadBalancingAlgorithm("ipqiiobyuqerpq"))
+                    .withOverrideQosPolicy(false)
+                    .withQosPolicyOverrides(new QosPolicyOverrides().withPriorityValue8021ActionCluster("ciuqgbdb")
+                        .withPriorityValue8021ActionSmb("auvfbtkuwhhmhyk")
+                        .withBandwidthPercentageSmb("oxafn"))
+                    .withOverrideAdapterProperty(false)
+                    .withAdapterPropertyOverrides(
+                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("chkoymkcdyh")
+                            .withNetworkDirect("kkpwdreqnovvq")
+                            .withNetworkDirectTechnology("vljxywsu"))))
+            .withStorageNetworks(
+                Arrays
+                    .asList(new DeploymentSettingStorageNetworks().withName("s")
+                        .withNetworkAdapterName("sytgadgvraea")
+                        .withVlanId("e")
+                        .withStorageAdapterIpInfo(Arrays
+                            .asList(new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("rrwlquuijfqkace")
+                                .withIpv4Address("ipfpubji")
+                                .withSubnetMask("wifto")))))
+            .withSanNetworks(new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                .withAdapterProperties(new SanAdapterProperties().withPriorityValue8021ActionCluster(2128432962)
+                    .withPriorityValue8021ActionSmb(1615767806)
+                    .withBandwidthPercentageSmb(491288629)
+                    .withJumboPacket(710710602))
+                .withAdapterIPConfig(Arrays.asList(
+                    new SanAdapterIPConfig().withName("nynfsynljphuo")
+                        .withNetworkAdapterName("odlqiyntor")
+                        .withVlanId(1915861757)
+                        .withAddressPrefix("eosjswsr"),
+                    new SanAdapterIPConfig().withName("lyzrpzbchckqqzqi")
+                        .withNetworkAdapterName("iysui")
+                        .withVlanId(2121235922)
+                        .withAddressPrefix("ked"),
+                    new SanAdapterIPConfig().withName("trwyhqmib")
+                        .withNetworkAdapterName("hwit")
+                        .withVlanId(1364304656)
+                        .withAddressPrefix("yynpcdpumnzgmwz"),
+                    new SanAdapterIPConfig().withName("abikns")
+                        .withNetworkAdapterName("gj")
+                        .withVlanId(1714142762)
+                        .withAddressPrefix("dtlwwrlkd")))))
+            .withStorageConnectivitySwitchless(true)
+            .withEnableStorageAutoIp(true);
         model = BinaryData.fromObject(model).toObject(DeploymentSettingHostNetwork.class);
-        Assertions.assertEquals("wubmwmbesldn", model.intents().get(0).name());
-        Assertions.assertEquals("tppjflcx", model.intents().get(0).trafficType().get(0));
-        Assertions.assertEquals("hvhgureod", model.intents().get(0).adapter().get(0));
+        Assertions.assertEquals("jutiiswacff", model.intents().get(0).name());
+        Assertions.assertEquals("zzewkfvhqcrai", model.intents().get(0).trafficType().get(0));
+        Assertions.assertEquals("n", model.intents().get(0).adapter().get(0));
         Assertions.assertTrue(model.intents().get(0).overrideVirtualSwitchConfiguration());
-        Assertions.assertEquals("agxti", model.intents().get(0).virtualSwitchConfigurationOverrides().enableIov());
-        Assertions.assertEquals("dxbx",
+        Assertions.assertEquals("xyjrxsagafcnih",
+            model.intents().get(0).virtualSwitchConfigurationOverrides().enableIov());
+        Assertions.assertEquals("qapnedgfbcv",
             model.intents().get(0).virtualSwitchConfigurationOverrides().loadBalancingAlgorithm());
-        Assertions.assertTrue(model.intents().get(0).overrideQosPolicy());
-        Assertions.assertEquals("gqxndlkzgxhuripl",
+        Assertions.assertFalse(model.intents().get(0).overrideQosPolicy());
+        Assertions.assertEquals("pkeqdcvdrhvoo",
             model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionCluster());
-        Assertions.assertEquals("odxun", model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionSmb());
-        Assertions.assertEquals("ebxmubyynt", model.intents().get(0).qosPolicyOverrides().bandwidthPercentageSmb());
-        Assertions.assertFalse(model.intents().get(0).overrideAdapterProperty());
-        Assertions.assertEquals("tkoievseotgq", model.intents().get(0).adapterPropertyOverrides().jumboPacket());
-        Assertions.assertEquals("ltmuwlauwzizx", model.intents().get(0).adapterPropertyOverrides().networkDirect());
-        Assertions.assertEquals("pgcjefuzmuvp",
-            model.intents().get(0).adapterPropertyOverrides().networkDirectTechnology());
-        Assertions.assertEquals("sag", model.storageNetworks().get(0).name());
-        Assertions.assertEquals("cnihgwqapnedgfbc", model.storageNetworks().get(0).networkAdapterName());
-        Assertions.assertEquals("cvqvpkeqdcv", model.storageNetworks().get(0).vlanId());
-        Assertions.assertEquals("ood", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).physicalNode());
-        Assertions.assertEquals("tbobz", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).ipv4Address());
-        Assertions.assertEquals("pcjwv", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals("otbobzdopcj",
+            model.intents().get(0).qosPolicyOverrides().priorityValue8021ActionSmb());
+        Assertions.assertEquals("nhdldwmgxcx", model.intents().get(0).qosPolicyOverrides().bandwidthPercentageSmb());
+        Assertions.assertTrue(model.intents().get(0).overrideAdapterProperty());
+        Assertions.assertEquals("utwu", model.intents().get(0).adapterPropertyOverrides().jumboPacket());
+        Assertions.assertEquals("grpkhjwniyqs", model.intents().get(0).adapterPropertyOverrides().networkDirect());
+        Assertions.assertEquals("i", model.intents().get(0).adapterPropertyOverrides().networkDirectTechnology());
+        Assertions.assertEquals("s", model.storageNetworks().get(0).name());
+        Assertions.assertEquals("sytgadgvraea", model.storageNetworks().get(0).networkAdapterName());
+        Assertions.assertEquals("e", model.storageNetworks().get(0).vlanId());
+        Assertions.assertEquals("rrwlquuijfqkace",
+            model.storageNetworks().get(0).storageAdapterIpInfo().get(0).physicalNode());
+        Assertions.assertEquals("ipfpubji", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).ipv4Address());
+        Assertions.assertEquals("wifto", model.storageNetworks().get(0).storageAdapterIpInfo().get(0).subnetMask());
+        Assertions.assertEquals(2128432962,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().priorityValue8021ActionCluster());
+        Assertions.assertEquals(1615767806,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().priorityValue8021ActionSmb());
+        Assertions.assertEquals(491288629,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().bandwidthPercentageSmb());
+        Assertions.assertEquals(710710602,
+            model.sanNetworks().clusterNetworkConfig().adapterProperties().jumboPacket());
+        Assertions.assertEquals("nynfsynljphuo",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).name());
+        Assertions.assertEquals("odlqiyntor",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).networkAdapterName());
+        Assertions.assertEquals(1915861757,
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).vlanId());
+        Assertions.assertEquals("eosjswsr",
+            model.sanNetworks().clusterNetworkConfig().adapterIPConfig().get(0).addressPrefix());
         Assertions.assertTrue(model.storageConnectivitySwitchless());
-        Assertions.assertFalse(model.enableStorageAutoIp());
+        Assertions.assertTrue(model.enableStorageAutoIp());
     }
 }

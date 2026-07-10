@@ -10,9 +10,19 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentContentSegment;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +51,7 @@ public class Sample05_CreateClassifier {
 
     private static String createdAnalyzerId;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample05.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -65,8 +75,12 @@ public class Sample05_CreateClassifier {
 
         System.out.println("Creating classifier analyzer '" + analyzerId + "'...");
 
-        // Define content categories for classification
-        // Each category has a description that helps the AI model understand what documents belong to it
+        // Define content categories for classification.
+        // Each category has a description that helps the AI model identify matching documents.
+        // Optionally, set analyzerId on a category to route matched segments to a prebuilt
+        // or custom analyzer for field extraction. For example, setting
+        // analyzerId to "prebuilt-invoice" on the Invoice category will automatically extract
+        // invoice fields (vendor, line items, totals, etc.) from segments classified as Invoice.
         Map<String, ContentCategoryDefinition> categories = new HashMap<>();
 
         categories.put("Loan_Application", new ContentCategoryDefinition()
@@ -76,7 +90,8 @@ public class Sample05_CreateClassifier {
 
         categories.put("Invoice", new ContentCategoryDefinition()
             .setDescription("Billing documents issued by sellers or service providers to request payment "
-                + "for goods or services, detailing items, prices, taxes, totals, and payment terms."));
+                + "for goods or services, detailing items, prices, taxes, totals, and payment terms.")
+            .setAnalyzerId("prebuilt-invoice")); // Route Invoice segments for field extraction
 
         categories.put("Bank_Statement", new ContentCategoryDefinition()
             .setDescription("Official statements issued by banks that summarize account activity over a period, "
@@ -131,6 +146,53 @@ public class Sample05_CreateClassifier {
         // END:ContentUnderstandingCreateClassifier
 
         createdAnalyzerId = analyzerId; // Track for cleanup
+
+        // BEGIN:ContentUnderstandingAnalyzeWithClassifier
+        // Analyze a multi-page document with the classifier
+        String filePath = "src/samples/resources/mixed_financial_docs.pdf";
+        byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+
+        System.out.println("\nAnalyzing document with classifier '" + analyzerId + "'...");
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
+            = client.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes));
+        AnalysisResult analyzeResult = analyzePoller.getFinalResult();
+
+        // Display classification results
+        if (analyzeResult.getContents() != null && !analyzeResult.getContents().isEmpty()) {
+            DocumentContent documentContent = (DocumentContent) analyzeResult.getContents().get(0);
+            System.out.println("Pages: " + documentContent.getStartPageNumber()
+                + "-" + documentContent.getEndPageNumber());
+
+            // Display segments (classification results)
+            if (documentContent.getSegments() != null && !documentContent.getSegments().isEmpty()) {
+                System.out.println("\nFound " + documentContent.getSegments().size() + " segment(s):");
+                for (DocumentContentSegment segment : documentContent.getSegments()) {
+                    System.out.println("  Category: " + (segment.getCategory() != null ? segment.getCategory() : "(unknown)"));
+                    System.out.println("  Pages: " + segment.getStartPageNumber() + "-" + segment.getEndPageNumber());
+                    System.out.println("  Segment ID: " + (segment.getSegmentId() != null ? segment.getSegmentId() : "(not available)"));
+                    System.out.println();
+                }
+            } else {
+                System.out.println("No segments found (document classified as a single unit).");
+            }
+        } else {
+            System.out.println("No content found in the analysis result.");
+        }
+        // END:ContentUnderstandingAnalyzeWithClassifier
+
+        // BEGIN:ContentUnderstandingClassifierToLlmInput
+        // Convert classification results to LLM-friendly text.
+        // toLlmInput automatically detects classification results: it expands the parent
+        // into per-segment blocks, each with its category label in the YAML front matter.
+        // Segments are separated by a ***** divider.
+        System.out.println("\n============================================================");
+        System.out.println("CLASSIFICATION RESULT AS LLM INPUT");
+        System.out.println("============================================================");
+
+        String llmText = LlmInputHelper.toLlmInput(analyzeResult);
+        System.out.println(llmText);
+        // END:ContentUnderstandingClassifierToLlmInput
 
         // Cleanup - delete the created classifier analyzer
         System.out.println("\nCleaning up: deleting classifier analyzer '" + createdAnalyzerId + "'...");

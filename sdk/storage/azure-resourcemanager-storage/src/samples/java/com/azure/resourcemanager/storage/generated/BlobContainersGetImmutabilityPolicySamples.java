@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class BlobContainersGetImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersGetImmutabilityPolicy.json
+     * x-ms-original-file: 2026-04-01/BlobContainersGetImmutabilityPolicy.json
      */
     /**
      * Sample code: GetImmutabilityPolicy.

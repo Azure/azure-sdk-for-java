@@ -7,6 +7,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -259,6 +260,22 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
                 .println("⚠️ Content type: " + content.getClass().getSimpleName() + " (AnalysisContent validated)");
         }
         // END:Assertion_ContentUnderstandingAccessDocumentProperties
+
+        // BEGIN:ContentUnderstandingConvertToLlmInput
+        // The markdown above can be consumed directly by LLMs. For convenience, the SDK
+        // provides LlmInputHelper.toLlmInput() which packages the result into a single
+        // text block with YAML front matter (content type, pages, fields, optional metadata)
+        // followed by the markdown body — ready for LLM prompts, vector stores, or agentic tools.
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingConvertToLlmInput
+
+        // BEGIN:Assertion_ContentUnderstandingConvertToLlmInput
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("contentType: document"));
+        System.out.println("LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingConvertToLlmInput
     }
 
     @Test

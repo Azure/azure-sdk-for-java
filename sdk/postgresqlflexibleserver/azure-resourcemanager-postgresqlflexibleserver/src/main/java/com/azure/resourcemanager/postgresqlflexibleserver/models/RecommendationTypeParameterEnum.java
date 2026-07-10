@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class RecommendationTypeParameterEnum extends ExpandableStringEnum<RecommendationTypeParameterEnum> {
     /**
-     * Static value CreateIndex for RecommendationTypeParameterEnum.
+     * Recommendation to create an index to improve query performance.
      */
     public static final RecommendationTypeParameterEnum CREATE_INDEX = fromString("CreateIndex");
 
     /**
-     * Static value DropIndex for RecommendationTypeParameterEnum.
+     * Recommendation to drop an existing index because it's duplicate or unused.
      */
     public static final RecommendationTypeParameterEnum DROP_INDEX = fromString("DropIndex");
 
     /**
-     * Static value ReIndex for RecommendationTypeParameterEnum.
+     * Recommendation to reindex an existing invalid index.
      */
     public static final RecommendationTypeParameterEnum RE_INDEX = fromString("ReIndex");
 
     /**
-     * Static value AnalyzeTable for RecommendationTypeParameterEnum.
+     * Recommendation to analyze a table to update statistics for the query optimizer.
      */
     public static final RecommendationTypeParameterEnum ANALYZE_TABLE = fromString("AnalyzeTable");
 
     /**
-     * Static value VacuumTable for RecommendationTypeParameterEnum.
+     * Recommendation to vacuum a table to reclaim storage and optimize performance.
      */
     public static final RecommendationTypeParameterEnum VACUUM_TABLE = fromString("VacuumTable");
 

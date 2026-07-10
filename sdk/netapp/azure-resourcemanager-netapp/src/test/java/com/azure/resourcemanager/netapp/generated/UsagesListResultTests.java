@@ -12,8 +12,8 @@ public final class UsagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"rtceukdqkkyihzt\",\"name\":{\"value\":\"mgqzgwldoyc\",\"localizedValue\":\"llcecfehuwaoa\"},\"properties\":{\"currentValue\":543728655,\"limit\":12610137,\"unit\":\"lizst\"}},{\"id\":\"sjvh\",\"name\":{\"value\":\"ftkwq\",\"localizedValue\":\"pmvssehaep\"},\"properties\":{\"currentValue\":1006428749,\"limit\":1216217570,\"unit\":\"zhupeuknijduyye\"}}],\"nextLink\":\"ydjfb\"}")
+            "{\"value\":[{\"id\":\"tbsjuscvsf\",\"name\":{\"value\":\"ctmgxuupbezqccy\",\"localizedValue\":\"tce\"},\"properties\":{\"currentValue\":1300739006,\"limit\":348179592,\"unit\":\"ihztgeqmgqzgwldo\"}},{\"id\":\"hillce\",\"name\":{\"value\":\"huwaoaguhic\",\"localizedValue\":\"lizst\"},\"properties\":{\"currentValue\":1921879633,\"limit\":2124357758,\"unit\":\"weftkwq\"}},{\"id\":\"pmvssehaep\",\"name\":{\"value\":\"cxtczhupeukn\",\"localizedValue\":\"d\"},\"properties\":{\"currentValue\":519944825,\"limit\":1884090088,\"unit\":\"djfbocyv\"}}],\"nextLink\":\"ulrtywikdmh\"}")
             .toObject(UsagesListResult.class);
-        Assertions.assertEquals("ydjfb", model.nextLink());
+        Assertions.assertEquals("ulrtywikdmh", model.nextLink());
     }
 }

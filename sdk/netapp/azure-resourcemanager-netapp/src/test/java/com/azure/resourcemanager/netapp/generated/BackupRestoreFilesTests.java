@@ -13,22 +13,21 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"qyybxubmdnafcbq\",\"remj\",\"laqacigele\"],\"restoreFilePath\":\"d\",\"destinationVolumeId\":\"vqvwzkjopwbe\"}")
+            "{\"fileList\":[\"rueqthwm\",\"nmbscbbx\",\"gdhxi\"],\"restoreFilePath\":\"lopedbwdpyqyyb\",\"destinationVolumeId\":\"ubmdnafcbqwre\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
-        Assertions.assertEquals("d", model.restoreFilePath());
-        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
+        Assertions.assertEquals("rueqthwm", model.fileList().get(0));
+        Assertions.assertEquals("lopedbwdpyqyyb", model.restoreFilePath());
+        Assertions.assertEquals("ubmdnafcbqwre", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model
-            = new BackupRestoreFiles().withFileList(Arrays.asList("qyybxubmdnafcbq", "remj", "laqacigele"))
-                .withRestoreFilePath("d")
-                .withDestinationVolumeId("vqvwzkjopwbe");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("rueqthwm", "nmbscbbx", "gdhxi"))
+            .withRestoreFilePath("lopedbwdpyqyyb")
+            .withDestinationVolumeId("ubmdnafcbqwre");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("qyybxubmdnafcbq", model.fileList().get(0));
-        Assertions.assertEquals("d", model.restoreFilePath());
-        Assertions.assertEquals("vqvwzkjopwbe", model.destinationVolumeId());
+        Assertions.assertEquals("rueqthwm", model.fileList().get(0));
+        Assertions.assertEquals("lopedbwdpyqyyb", model.restoreFilePath());
+        Assertions.assertEquals("ubmdnafcbqwre", model.destinationVolumeId());
     }
 }

@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class ThreatProtectionName extends ExpandableStringEnum<ThreatProtectionName> {
     /**
-     * Static value Default for ThreatProtectionName.
+     * Default advanced threat protection settings.
      */
     public static final ThreatProtectionName DEFAULT = fromString("Default");
 

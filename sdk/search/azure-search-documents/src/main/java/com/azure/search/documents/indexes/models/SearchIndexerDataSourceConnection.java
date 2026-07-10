@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,13 +37,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     private final SearchIndexerDataSourceType type;
 
     /*
-     * A specific type of the data source, in case the resource is capable of different modalities. For example,
-     * 'MongoDb' for certain 'cosmosDb' accounts.
-     */
-    @Generated
-    private String subType;
-
-    /*
      * Credentials for the datasource.
      */
     @Generated
@@ -63,12 +55,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      */
     @Generated
     private SearchIndexerDataIdentity identity;
-
-    /*
-     * Ingestion options with various types of permission data.
-     */
-    @Generated
-    private List<IndexerPermissionOption> indexerPermissionOptions;
 
     /*
      * The data change detection policy for the datasource.
@@ -160,17 +146,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     }
 
     /**
-     * Get the subType property: A specific type of the data source, in case the resource is capable of different
-     * modalities. For example, 'MongoDb' for certain 'cosmosDb' accounts.
-     *
-     * @return the subType value.
-     */
-    @Generated
-    public String getSubType() {
-        return this.subType;
-    }
-
-    /**
      * Get the credentials property: Credentials for the datasource.
      *
      * @return the credentials value.
@@ -213,42 +188,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     @Generated
     public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
         this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the indexerPermissionOptions property: Ingestion options with various types of permission data.
-     *
-     * @return the indexerPermissionOptions value.
-     */
-    @Generated
-    public List<IndexerPermissionOption> getIndexerPermissionOptions() {
-        return this.indexerPermissionOptions;
-    }
-
-    /**
-     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
-     *
-     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    public SearchIndexerDataSourceConnection
-        setIndexerPermissionOptions(IndexerPermissionOption... indexerPermissionOptions) {
-        this.indexerPermissionOptions
-            = (indexerPermissionOptions == null) ? null : Arrays.asList(indexerPermissionOptions);
-        return this;
-    }
-
-    /**
-     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
-     *
-     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    @Generated
-    public SearchIndexerDataSourceConnection
-        setIndexerPermissionOptions(List<IndexerPermissionOption> indexerPermissionOptions) {
-        this.indexerPermissionOptions = indexerPermissionOptions;
         return this;
     }
 
@@ -444,5 +383,52 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
             deserializedSearchIndexerDataSourceConnection.encryptionKey = encryptionKey;
             return deserializedSearchIndexerDataSourceConnection;
         });
+    }
+
+    /*
+     * A specific type of the data source, in case the resource is capable of different modalities. For example,
+     * 'MongoDb' for certain 'cosmosDb' accounts.
+     */
+    @Generated
+    private String subType;
+
+    /*
+     * Ingestion options with various types of permission data.
+     */
+    @Generated
+    private List<IndexerPermissionOption> indexerPermissionOptions;
+
+    /**
+     * Get the subType property: A specific type of the data source, in case the resource is capable of different
+     * modalities. For example, 'MongoDb' for certain 'cosmosDb' accounts.
+     *
+     * @return the subType value.
+     */
+    @Generated
+    public String getSubType() {
+        return this.subType;
+    }
+
+    /**
+     * Get the indexerPermissionOptions property: Ingestion options with various types of permission data.
+     *
+     * @return the indexerPermissionOptions value.
+     */
+    @Generated
+    public List<IndexerPermissionOption> getIndexerPermissionOptions() {
+        return this.indexerPermissionOptions;
+    }
+
+    /**
+     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
+     *
+     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
+     * @return the SearchIndexerDataSourceConnection object itself.
+     */
+    @Generated
+    public SearchIndexerDataSourceConnection
+        setIndexerPermissionOptions(List<IndexerPermissionOption> indexerPermissionOptions) {
+        this.indexerPermissionOptions = indexerPermissionOptions;
+        return this;
     }
 }

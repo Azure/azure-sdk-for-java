@@ -29,12 +29,6 @@ public final class GetIndexStatisticsResult implements JsonSerializable<GetIndex
     @Generated
     private long storageSize;
 
-    /*
-     * The amount of memory in bytes consumed by vectors in the index.
-     */
-    @Generated
-    private long vectorIndexSize;
-
     /**
      * Creates an instance of GetIndexStatisticsResult class.
      */
@@ -60,16 +54,6 @@ public final class GetIndexStatisticsResult implements JsonSerializable<GetIndex
     @Generated
     public long getStorageSize() {
         return this.storageSize;
-    }
-
-    /**
-     * Get the vectorIndexSize property: The amount of memory in bytes consumed by vectors in the index.
-     *
-     * @return the vectorIndexSize value.
-     */
-    @Generated
-    public long getVectorIndexSize() {
-        return this.vectorIndexSize;
     }
 
     /**
@@ -103,12 +87,28 @@ public final class GetIndexStatisticsResult implements JsonSerializable<GetIndex
                 } else if ("storageSize".equals(fieldName)) {
                     deserializedGetIndexStatisticsResult.storageSize = reader.getLong();
                 } else if ("vectorIndexSize".equals(fieldName)) {
-                    deserializedGetIndexStatisticsResult.vectorIndexSize = reader.getLong();
+                    deserializedGetIndexStatisticsResult.vectorIndexSizeInBytes = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedGetIndexStatisticsResult;
         });
+    }
+
+    /*
+     * The amount of memory in bytes consumed by vectors in the index.
+     */
+    @Generated
+    private long vectorIndexSizeInBytes;
+
+    /**
+     * Get the vectorIndexSizeInBytes property: The amount of memory in bytes consumed by vectors in the index.
+     *
+     * @return the vectorIndexSizeInBytes value.
+     */
+    @Generated
+    public long getVectorIndexSizeInBytes() {
+        return this.vectorIndexSizeInBytes;
     }
 }

@@ -79,7 +79,8 @@ public final class ConfigurationSettingDeserializationHelper {
             .setLabel(label)
             .setContentType(contentType)
             .setETag(etag)
-            .setTags(tags);
+            .setTags(tags)
+            .setDescription(keyValue.getDescription());
         ConfigurationSettingHelper.setLastModified(setting, keyValue.getLastModified());
         ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked() != null && keyValue.isLocked());
         try {
@@ -97,7 +98,8 @@ public final class ConfigurationSettingDeserializationHelper {
                         .setLabel(label)
                         .setETag(etag)
                         .setContentType(contentType)
-                        .setTags(tags);
+                        .setTags(tags)
+                        .setDescription(setting.getDescription());
             } else {
                 // Configuration Setting
                 return setting;

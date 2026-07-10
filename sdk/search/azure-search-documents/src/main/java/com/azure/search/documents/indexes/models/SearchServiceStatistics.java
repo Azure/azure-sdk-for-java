@@ -29,27 +29,6 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     @Generated
     private final SearchServiceLimits limits;
 
-    /*
-     * Service level indexer runtime consumption.
-     */
-    @Generated
-    private final ServiceIndexersRuntime indexersRuntime;
-
-    /**
-     * Creates an instance of SearchServiceStatistics class.
-     *
-     * @param counters the counters value to set.
-     * @param limits the limits value to set.
-     * @param indexersRuntime the indexersRuntime value to set.
-     */
-    @Generated
-    private SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits,
-        ServiceIndexersRuntime indexersRuntime) {
-        this.counters = counters;
-        this.limits = limits;
-        this.indexersRuntime = indexersRuntime;
-    }
-
     /**
      * Get the counters property: Service level resource counters.
      *
@@ -68,16 +47,6 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     @Generated
     public SearchServiceLimits getLimits() {
         return this.limits;
-    }
-
-    /**
-     * Get the indexersRuntime property: Service level indexer runtime consumption.
-     *
-     * @return the indexersRuntime value.
-     */
-    @Generated
-    public ServiceIndexersRuntime getIndexersRuntime() {
-        return this.indexersRuntime;
     }
 
     /**
@@ -123,5 +92,36 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
             }
             return new SearchServiceStatistics(counters, limits, indexersRuntime);
         });
+    }
+
+    /*
+     * Service level indexer runtime consumption.
+     */
+    @Generated
+    private final ServiceIndexersRuntime indexersRuntime;
+
+    /**
+     * Creates an instance of SearchServiceStatistics class.
+     *
+     * @param counters the counters value to set.
+     * @param limits the limits value to set.
+     * @param indexersRuntime the indexersRuntime value to set.
+     */
+    @Generated
+    private SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits,
+        ServiceIndexersRuntime indexersRuntime) {
+        this.counters = counters;
+        this.limits = limits;
+        this.indexersRuntime = indexersRuntime;
+    }
+
+    /**
+     * Get the indexersRuntime property: Service level indexer runtime consumption.
+     *
+     * @return the indexersRuntime value.
+     */
+    @Generated
+    public ServiceIndexersRuntime getIndexersRuntime() {
+        return this.indexersRuntime;
     }
 }

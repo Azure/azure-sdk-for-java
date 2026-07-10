@@ -37,19 +37,14 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of SecurityAdminConfigurationInner class.
@@ -86,7 +81,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -96,7 +91,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -106,13 +101,12 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public SecurityAdminConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -226,6 +220,7 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -247,14 +242,14 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedSecurityAdminConfigurationInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationInner.innerProperties
                         = SecurityAdminConfigurationPropertiesFormat.fromJson(reader);

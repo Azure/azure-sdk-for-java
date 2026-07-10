@@ -37,12 +37,6 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     private String folderPath;
 
     /*
-     * Set to true if connecting to an ADLS Gen2 storage account. Default is false.
-     */
-    @Generated
-    private Boolean isADLSGen2;
-
-    /*
      * Consolidates all general ingestion settings.
      */
     @Generated
@@ -110,28 +104,6 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     }
 
     /**
-     * Get the isADLSGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
-     *
-     * @return the isADLSGen2 value.
-     */
-    @Generated
-    public Boolean isADLSGen2() {
-        return this.isADLSGen2;
-    }
-
-    /**
-     * Set the isADLSGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
-     *
-     * @param isADLSGen2 the isADLSGen2 value to set.
-     * @return the AzureBlobKnowledgeSourceParameters object itself.
-     */
-    @Generated
-    public AzureBlobKnowledgeSourceParameters setIsADLSGen2(Boolean isADLSGen2) {
-        this.isADLSGen2 = isADLSGen2;
-        return this;
-    }
-
-    /**
      * Get the ingestionParameters property: Consolidates all general ingestion settings.
      *
      * @return the ingestionParameters value.
@@ -174,7 +146,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
         jsonWriter.writeStringField("connectionString", this.connectionString);
         jsonWriter.writeStringField("containerName", this.containerName);
         jsonWriter.writeStringField("folderPath", this.folderPath);
-        jsonWriter.writeBooleanField("isADLSGen2", this.isADLSGen2);
+        jsonWriter.writeBooleanField("isADLSGen2", this.adlsGen2);
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
         return jsonWriter.writeEndObject();
     }
@@ -194,7 +166,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             String connectionString = null;
             String containerName = null;
             String folderPath = null;
-            Boolean isADLSGen2 = null;
+            Boolean adlsGen2 = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -207,7 +179,7 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
                 } else if ("folderPath".equals(fieldName)) {
                     folderPath = reader.getString();
                 } else if ("isADLSGen2".equals(fieldName)) {
-                    isADLSGen2 = reader.getNullable(JsonReader::getBoolean);
+                    adlsGen2 = reader.getNullable(JsonReader::getBoolean);
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
@@ -219,10 +191,38 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             AzureBlobKnowledgeSourceParameters deserializedAzureBlobKnowledgeSourceParameters
                 = new AzureBlobKnowledgeSourceParameters(connectionString, containerName);
             deserializedAzureBlobKnowledgeSourceParameters.folderPath = folderPath;
-            deserializedAzureBlobKnowledgeSourceParameters.isADLSGen2 = isADLSGen2;
+            deserializedAzureBlobKnowledgeSourceParameters.adlsGen2 = adlsGen2;
             deserializedAzureBlobKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
             deserializedAzureBlobKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedAzureBlobKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * Set to true if connecting to an ADLS Gen2 storage account. Default is false.
+     */
+    @Generated
+    private Boolean adlsGen2;
+
+    /**
+     * Get the adlsGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
+     *
+     * @return the adlsGen2 value.
+     */
+    @Generated
+    public Boolean isAdlsGen2() {
+        return this.adlsGen2;
+    }
+
+    /**
+     * Set the adlsGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
+     *
+     * @param adlsGen2 the adlsGen2 value to set.
+     * @return the AzureBlobKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public AzureBlobKnowledgeSourceParameters setAdlsGen2(Boolean adlsGen2) {
+        this.adlsGen2 = adlsGen2;
+        return this;
     }
 }

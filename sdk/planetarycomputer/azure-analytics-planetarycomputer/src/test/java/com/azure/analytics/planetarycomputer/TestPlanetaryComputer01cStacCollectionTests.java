@@ -47,7 +47,7 @@ public class TestPlanetaryComputer01cStacCollectionTests extends PlanetaryComput
 
         // Act - Get thumbnail as streaming response
         Response<BinaryData> response
-            = stacClient.getCollectionThumbnailWithResponse(collectionId, "image/png", new RequestOptions());
+            = stacClient.getCollectionThumbnailWithResponse(collectionId, new RequestOptions());
 
         // Assert
         assertNotNull(response, "Response should not be null");

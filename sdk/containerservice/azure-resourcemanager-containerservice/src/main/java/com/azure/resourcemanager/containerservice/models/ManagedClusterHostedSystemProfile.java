@@ -21,6 +21,22 @@ public final class ManagedClusterHostedSystemProfile implements JsonSerializable
      */
     private Boolean enabled;
 
+    /*
+     * The ID of the subnet that will be joined by system nodes managed and hosted by AKS for running critical system
+     * addons. This ID must be provided together with `nodeSubnetID` and `apiserverAccessProfile.subnetId`, and all
+     * three subnet IDs must belong to the same VNet. If you don’t specify it, AKS will create a subnet in the managed
+     * resource group using a default /26 CIDR.
+     */
+    private String systemNodeSubnetID;
+
+    /*
+     * The ID of the subnet that will be joined by worker nodes managed by node auto provisioner for running workload
+     * pods in your tenant. This must be provided together with `systemNodeSubnetID` and
+     * `apiserverAccessProfile.subnetId`, and all three subnet IDs must be in the same VNet. If you don’t specify it,
+     * AKS will create a subnet in the managed resource group using a default /16 CIDR.
+     */
+    private String nodeSubnetID;
+
     /**
      * Creates an instance of ManagedClusterHostedSystemProfile class.
      */
@@ -48,6 +64,58 @@ public final class ManagedClusterHostedSystemProfile implements JsonSerializable
     }
 
     /**
+     * Get the systemNodeSubnetID property: The ID of the subnet that will be joined by system nodes managed and hosted
+     * by AKS for running critical system addons. This ID must be provided together with `nodeSubnetID` and
+     * `apiserverAccessProfile.subnetId`, and all three subnet IDs must belong to the same VNet. If you don’t specify
+     * it, AKS will create a subnet in the managed resource group using a default /26 CIDR.
+     * 
+     * @return the systemNodeSubnetID value.
+     */
+    public String systemNodeSubnetID() {
+        return this.systemNodeSubnetID;
+    }
+
+    /**
+     * Set the systemNodeSubnetID property: The ID of the subnet that will be joined by system nodes managed and hosted
+     * by AKS for running critical system addons. This ID must be provided together with `nodeSubnetID` and
+     * `apiserverAccessProfile.subnetId`, and all three subnet IDs must belong to the same VNet. If you don’t specify
+     * it, AKS will create a subnet in the managed resource group using a default /26 CIDR.
+     * 
+     * @param systemNodeSubnetID the systemNodeSubnetID value to set.
+     * @return the ManagedClusterHostedSystemProfile object itself.
+     */
+    public ManagedClusterHostedSystemProfile withSystemNodeSubnetID(String systemNodeSubnetID) {
+        this.systemNodeSubnetID = systemNodeSubnetID;
+        return this;
+    }
+
+    /**
+     * Get the nodeSubnetID property: The ID of the subnet that will be joined by worker nodes managed by node auto
+     * provisioner for running workload pods in your tenant. This must be provided together with `systemNodeSubnetID`
+     * and `apiserverAccessProfile.subnetId`, and all three subnet IDs must be in the same VNet. If you don’t specify
+     * it, AKS will create a subnet in the managed resource group using a default /16 CIDR.
+     * 
+     * @return the nodeSubnetID value.
+     */
+    public String nodeSubnetID() {
+        return this.nodeSubnetID;
+    }
+
+    /**
+     * Set the nodeSubnetID property: The ID of the subnet that will be joined by worker nodes managed by node auto
+     * provisioner for running workload pods in your tenant. This must be provided together with `systemNodeSubnetID`
+     * and `apiserverAccessProfile.subnetId`, and all three subnet IDs must be in the same VNet. If you don’t specify
+     * it, AKS will create a subnet in the managed resource group using a default /16 CIDR.
+     * 
+     * @param nodeSubnetID the nodeSubnetID value to set.
+     * @return the ManagedClusterHostedSystemProfile object itself.
+     */
+    public ManagedClusterHostedSystemProfile withNodeSubnetID(String nodeSubnetID) {
+        this.nodeSubnetID = nodeSubnetID;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,6 +130,8 @@ public final class ManagedClusterHostedSystemProfile implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("systemNodeSubnetID", this.systemNodeSubnetID);
+        jsonWriter.writeStringField("nodeSubnetID", this.nodeSubnetID);
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +153,10 @@ public final class ManagedClusterHostedSystemProfile implements JsonSerializable
 
                 if ("enabled".equals(fieldName)) {
                     deserializedManagedClusterHostedSystemProfile.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("systemNodeSubnetID".equals(fieldName)) {
+                    deserializedManagedClusterHostedSystemProfile.systemNodeSubnetID = reader.getString();
+                } else if ("nodeSubnetID".equals(fieldName)) {
+                    deserializedManagedClusterHostedSystemProfile.nodeSubnetID = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

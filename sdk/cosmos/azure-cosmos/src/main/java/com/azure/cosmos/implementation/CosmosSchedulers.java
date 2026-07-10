@@ -16,6 +16,8 @@ public class CosmosSchedulers {
     private final static String OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME = "open-connections-bounded-elastic";
     private final static String ASYNC_CACHE_BACKGROUND_REFRESH_THREAD_NAME = "async-cache-background-refresh-bounded-elastic";
     private final static String FAULT_INJECTION_CONNECTION_ERROR_THREAD_NAME = "fault-injection-connection-error-bounded-elastic";
+    private final static String GLOBAL_ENDPOINT_MANAGER_THREAD_NAME = "global-endpoint-manager-bounded-elastic";
+    private final static String PARTITION_AVAILABILITY_CHECK_THREAD_NAME = "partition-availability-check-bounded-elastic";
 
     private final static int TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60; // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
@@ -94,6 +96,28 @@ public class CosmosSchedulers {
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         FAULT_INJECTION_CONNECTION_ERROR_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
+    // Shared scheduler for GlobalEndpointManager background location refresh tasks.
+    // Using a shared bounded elastic scheduler instead of per-client Schedulers.newSingle()
+    // to prevent thread count from scaling linearly with client/tenant count.
+    public final static Scheduler GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        GLOBAL_ENDPOINT_MANAGER_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
+    // Shared scheduler for per-partition circuit breaker availability staleness checks.
+    // Using a shared bounded elastic scheduler instead of per-client Schedulers.newSingle()
+    // to prevent thread count from scaling linearly with client/tenant count.
+    public final static Scheduler PARTITION_AVAILABILITY_CHECK_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        PARTITION_AVAILABILITY_CHECK_THREAD_NAME,
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );

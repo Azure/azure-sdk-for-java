@@ -16,7 +16,7 @@ import java.io.IOException;
  * cancel.
  */
 @Fluent
-public final class ClientEventResponseCancel extends ClientEvent {
+public final class ClientEventResponseCancel extends SessionClientEvent {
 
     /*
      * The type of event.

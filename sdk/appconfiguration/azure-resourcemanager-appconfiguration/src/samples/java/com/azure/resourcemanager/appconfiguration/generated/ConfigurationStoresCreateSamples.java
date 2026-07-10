@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ConfigurationStoresCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreate.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreate.json
      */
     /**
      * Sample code: ConfigurationStores_Create.
@@ -40,7 +40,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithIdentity.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithIdentity.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Identity.
@@ -63,7 +63,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Data_Plane_Proxy.
@@ -83,7 +83,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_AzureFrontDoor.
@@ -104,7 +104,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithTelemetry.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithTelemetry.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Telemetry.
@@ -125,7 +125,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Local_Auth_Disabled.

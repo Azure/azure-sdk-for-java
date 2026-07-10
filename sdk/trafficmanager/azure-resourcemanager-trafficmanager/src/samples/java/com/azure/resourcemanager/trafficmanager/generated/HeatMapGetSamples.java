@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class HeatMapGetSamples {
     /*
-     * x-ms-original-file: 2022-04-01/HeatMap-GET-With-TopLeft-BotRight.json
+     * x-ms-original-file: 2024-04-01-preview/HeatMap-GET-With-TopLeft-BotRight.json
      */
     /**
      * Sample code: HeatMap-GET-With-TopLeft-BotRight.
@@ -26,7 +26,7 @@ public final class HeatMapGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/HeatMap-GET.json
+     * x-ms-original-file: 2024-04-01-preview/HeatMap-GET.json
      */
     /**
      * Sample code: HeatMap-GET.
@@ -41,7 +41,7 @@ public final class HeatMapGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/HeatMap-GET-With-Null-Values.json
+     * x-ms-original-file: 2024-04-01-preview/HeatMap-GET-With-Null-Values.json
      */
     /**
      * Sample code: HeatMap-GET-With-Null-Values.

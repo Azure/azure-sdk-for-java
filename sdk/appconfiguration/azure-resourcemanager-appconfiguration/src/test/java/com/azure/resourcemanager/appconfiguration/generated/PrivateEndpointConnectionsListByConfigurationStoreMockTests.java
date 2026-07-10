@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByConfigurationStoreMockTests {
     @Test
     public void testListByConfigurationStore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"nsvs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"hxcr\",\"actionsRequired\":\"None\"}},\"id\":\"vasrruvwb\",\"name\":\"sqfsubcgjbirxb\",\"type\":\"ybsrfbjfdtwss\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"pjpqqmtedltmmji\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zphv\",\"actionsRequired\":\"Recreate\"}},\"id\":\"qncygupkvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class PrivateEndpointConnectionsListByConfigurationStoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listByConfigurationStore("obl", "tkblmpewww", com.azure.core.util.Context.NONE);
+            .listByConfigurationStore("ixqtn", "ttezlw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nsvs", response.iterator().next().privateEndpoint().id());
+        Assertions.assertEquals("pjpqqmtedltmmji", response.iterator().next().privateEndpoint().id());
         Assertions.assertEquals(ConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hxcr", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("zphv", response.iterator().next().privateLinkServiceConnectionState().description());
     }
 }

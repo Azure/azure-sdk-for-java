@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
@@ -23,7 +23,7 @@ public final class ProtectionPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/V2Policy/v2-Get-Policy.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
      * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
@@ -37,7 +37,7 @@ public final class ProtectionPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/ProtectionPolicies_Get_SapHanaDBInstance.json
+     * x-ms-original-file: 2026-01-31-preview/AzureWorkload/ProtectionPolicies_Get_SapHanaDBInstance.json
      */
     /**
      * Sample code: Get Sap Hana DB Instance Workload Protection Policy Details.

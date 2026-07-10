@@ -19,7 +19,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -32,7 +32,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,7 +44,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,7 +57,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +69,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param properties Access review schedule settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,7 +84,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param properties Access review schedule settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,7 +97,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param properties Access review schedule settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +112,7 @@ public interface ScopeAccessReviewDefaultSettingsClient {
     /**
      * Get access review default settings for the subscription.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param properties Access review schedule settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Sent when the server is in the process of establishing an avatar media connection and provides its SDP answer.
  */
 @Immutable
-public final class SessionUpdateAvatarConnecting extends SessionUpdate {
+public final class SessionUpdateAvatarConnecting extends SessionServerEvent {
 
     /*
      * The type of event.

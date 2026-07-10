@@ -11,7 +11,7 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
  */
 public final class EndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-DELETE-External.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-DELETE-External.json
      */
     /**
      * Sample code: Endpoint-DELETE-External.

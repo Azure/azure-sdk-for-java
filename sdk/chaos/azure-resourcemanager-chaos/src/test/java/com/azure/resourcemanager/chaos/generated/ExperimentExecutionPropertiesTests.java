@@ -11,7 +11,7 @@ public final class ExperimentExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentExecutionProperties model = BinaryData.fromString(
-            "{\"status\":\"jrybnwjewgdrjer\",\"startedAt\":\"2021-10-08T09:31:49Z\",\"stoppedAt\":\"2021-09-08T11:50:32Z\"}")
+            "{\"status\":\"twss\",\"startedAt\":\"2021-06-01T18:34:35Z\",\"stoppedAt\":\"2021-03-22T01:55:17Z\",\"provisioningState\":\"Succeeded\"}")
             .toObject(ExperimentExecutionProperties.class);
     }
 }

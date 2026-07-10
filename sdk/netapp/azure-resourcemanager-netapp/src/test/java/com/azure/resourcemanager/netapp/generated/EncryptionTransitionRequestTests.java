@@ -12,18 +12,18 @@ public final class EncryptionTransitionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EncryptionTransitionRequest model
-            = BinaryData.fromString("{\"virtualNetworkId\":\"jks\",\"privateEndpointId\":\"lsmdesqplpvmjc\"}")
+            = BinaryData.fromString("{\"virtualNetworkId\":\"plpvm\",\"privateEndpointId\":\"cdoewbidyv\"}")
                 .toObject(EncryptionTransitionRequest.class);
-        Assertions.assertEquals("jks", model.virtualNetworkId());
-        Assertions.assertEquals("lsmdesqplpvmjc", model.privateEndpointId());
+        Assertions.assertEquals("plpvm", model.virtualNetworkId());
+        Assertions.assertEquals("cdoewbidyv", model.privateEndpointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EncryptionTransitionRequest model
-            = new EncryptionTransitionRequest().withVirtualNetworkId("jks").withPrivateEndpointId("lsmdesqplpvmjc");
+            = new EncryptionTransitionRequest().withVirtualNetworkId("plpvm").withPrivateEndpointId("cdoewbidyv");
         model = BinaryData.fromObject(model).toObject(EncryptionTransitionRequest.class);
-        Assertions.assertEquals("jks", model.virtualNetworkId());
-        Assertions.assertEquals("lsmdesqplpvmjc", model.privateEndpointId());
+        Assertions.assertEquals("plpvm", model.virtualNetworkId());
+        Assertions.assertEquals("cdoewbidyv", model.privateEndpointId());
     }
 }

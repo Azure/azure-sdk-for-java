@@ -13,12 +13,12 @@ public final class NetworkSiblingSetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSiblingSetInner model = BinaryData.fromString(
-            "{\"networkSiblingSetId\":\"pvn\",\"subnetId\":\"wmtxkyctwwgz\",\"networkSiblingSetStateId\":\"jlmec\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Failed\",\"nicInfoList\":[{\"ipAddress\":\"neezaifg\",\"volumeResourceIds\":[\"oqqtl\",\"fhzbkr\",\"jjjavfqnvhnq\"]},{\"ipAddress\":\"wdogiyetesyp\",\"volumeResourceIds\":[\"bztjhqtfbovnynkb\",\"etnjuhpsprkz\",\"aupia\"]}]}")
+            "{\"networkSiblingSetId\":\"twwgzwx\",\"subnetId\":\"mecvogygzyvneeza\",\"networkSiblingSetStateId\":\"gh\",\"networkFeatures\":\"Standard\",\"provisioningState\":\"Canceled\",\"nicInfoList\":[{\"ipAddress\":\"fhzbkr\",\"volumeResourceIds\":[\"javfqn\",\"hnqoewdo\"]},{\"ipAddress\":\"yetesy\",\"volumeResourceIds\":[\"dbztjhqtfbov\"]}]}")
             .toObject(NetworkSiblingSetInner.class);
-        Assertions.assertEquals("pvn", model.networkSiblingSetId());
-        Assertions.assertEquals("wmtxkyctwwgz", model.subnetId());
-        Assertions.assertEquals("jlmec", model.networkSiblingSetStateId());
+        Assertions.assertEquals("twwgzwx", model.networkSiblingSetId());
+        Assertions.assertEquals("mecvogygzyvneeza", model.subnetId());
+        Assertions.assertEquals("gh", model.networkSiblingSetStateId());
         Assertions.assertEquals(NetworkFeatures.STANDARD, model.networkFeatures());
-        Assertions.assertEquals("oqqtl", model.nicInfoList().get(0).volumeResourceIds().get(0));
+        Assertions.assertEquals("javfqn", model.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

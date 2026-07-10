@@ -271,7 +271,7 @@ public interface CommunityEndpointResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(ApprovalCallbackRequest body);
 
@@ -283,7 +283,7 @@ public interface CommunityEndpointResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(ApprovalCallbackRequest body, Context context);
 
@@ -294,7 +294,7 @@ public interface CommunityEndpointResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(ApprovalDeletionCallbackRequest body);
 
@@ -306,7 +306,7 @@ public interface CommunityEndpointResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(ApprovalDeletionCallbackRequest body, Context context);
 }

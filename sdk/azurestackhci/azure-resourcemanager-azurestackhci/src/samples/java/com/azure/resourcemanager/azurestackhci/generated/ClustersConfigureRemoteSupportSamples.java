@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersConfigureRemoteSupportSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ConfigureRemoteSupport.json
+     * x-ms-original-file: 2026-04-30/ConfigureRemoteSupport.json
      */
     /**
      * Sample code: Configure Remote Support.

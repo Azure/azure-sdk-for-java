@@ -55,6 +55,11 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
     private Integer diskSizeGB;
 
     /*
+     * Specifies the storage fault domain alignment type for the disk.
+     */
+    private StorageFaultDomainAlignmentType storageFaultDomainAlignment;
+
+    /*
      * This property allows you to specify the type of the OS that is included in the disk if creating a VM from
      * user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**
      */
@@ -227,6 +232,27 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
     }
 
     /**
+     * Get the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @return the storageFaultDomainAlignment value.
+     */
+    public StorageFaultDomainAlignmentType storageFaultDomainAlignment() {
+        return this.storageFaultDomainAlignment;
+    }
+
+    /**
+     * Set the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @param storageFaultDomainAlignment the storageFaultDomainAlignment value to set.
+     * @return the VirtualMachineScaleSetOSDisk object itself.
+     */
+    public VirtualMachineScaleSetOSDisk
+        withStorageFaultDomainAlignment(StorageFaultDomainAlignmentType storageFaultDomainAlignment) {
+        this.storageFaultDomainAlignment = storageFaultDomainAlignment;
+        return this;
+    }
+
+    /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk if
      * creating a VM from user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**.
      * 
@@ -376,6 +402,8 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
         jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
         jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
         jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("storageFaultDomainAlignment",
+            this.storageFaultDomainAlignment == null ? null : this.storageFaultDomainAlignment.toString());
         jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeJsonField("image", this.image);
         jsonWriter.writeArrayField("vhdContainers", this.vhdContainers,
@@ -415,6 +443,9 @@ public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<Virt
                     deserializedVirtualMachineScaleSetOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageFaultDomainAlignment".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.storageFaultDomainAlignment
+                        = StorageFaultDomainAlignmentType.fromString(reader.getString());
                 } else if ("osType".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetOSDisk.osType
                         = OperatingSystemTypes.fromString(reader.getString());

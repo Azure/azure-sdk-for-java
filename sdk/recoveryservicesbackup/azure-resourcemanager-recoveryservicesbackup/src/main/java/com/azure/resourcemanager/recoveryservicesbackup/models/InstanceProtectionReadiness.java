@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class InstanceProtectionReadiness extends ExpandableStringEnum<InstanceProtectionReadiness> {
     /**
-     * Static value Unknown for InstanceProtectionReadiness.
+     * Instance protection readiness is unknown.
      */
     public static final InstanceProtectionReadiness UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value Ready for InstanceProtectionReadiness.
+     * Instance is ready for protection.
      */
     public static final InstanceProtectionReadiness READY = fromString("Ready");
 
     /**
-     * Static value ScheduleDisabled for InstanceProtectionReadiness.
+     * Backup schedule is disabled for this instance.
      */
     public static final InstanceProtectionReadiness SCHEDULE_DISABLED = fromString("ScheduleDisabled");
 
     /**
-     * Static value PartialProtection for InstanceProtectionReadiness.
+     * Instance is partially protected.
      */
     public static final InstanceProtectionReadiness PARTIAL_PROTECTION = fromString("PartialProtection");
 
     /**
-     * Static value ProtectionError for InstanceProtectionReadiness.
+     * Instance protection encountered an error.
      */
     public static final InstanceProtectionReadiness PROTECTION_ERROR = fromString("ProtectionError");
 

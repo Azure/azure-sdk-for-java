@@ -2,27 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
@@ -101,8 +103,8 @@ public class ConnectionManagerTest {
         configStore = new ConfigStore();
         List<String> endpoints = new ArrayList<>();
 
-        endpoints.add("https://fake.test.config.io");
-        endpoints.add("https://fake.test.geo.config.io");
+        endpoints.add("fake.test.endpoint.one");
+        endpoints.add("fake.test.endpoint.two");
 
         configStore.setEndpoints(endpoints);
 
@@ -419,7 +421,7 @@ public class ConnectionManagerTest {
         
         // Mock auto-failover endpoints
         List<String> autoFailoverEndpoints = new ArrayList<>();
-        String failoverEndpoint = "https://failover.test.config.io";
+        String failoverEndpoint = "fake.test.failover.endpoint";
         autoFailoverEndpoints.add(failoverEndpoint);
         when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
         
@@ -446,7 +448,7 @@ public class ConnectionManagerTest {
         
         // Set up auto-failover scenario
         List<String> autoFailoverEndpoints = new ArrayList<>();
-        String failoverEndpoint = "https://failover.test.config.io";
+        String failoverEndpoint = "fake.test.failover.endpoint";
         autoFailoverEndpoints.add(failoverEndpoint);
         when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
         
@@ -543,7 +545,7 @@ public class ConnectionManagerTest {
         
         // Mock auto-failover endpoints (but they should also be backed off)
         List<String> autoFailoverEndpoints = new ArrayList<>();
-        String failoverEndpoint = "https://failover.test.config.io";
+        String failoverEndpoint = "fake.test.failover.endpoint";
         autoFailoverEndpoints.add(failoverEndpoint);
         when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
         
@@ -577,6 +579,120 @@ public class ConnectionManagerTest {
         assertEquals(1, availableClients.size());
         assertEquals(replicaClient1, availableClients.get(0));
         assertEquals(AppConfigurationStoreHealth.UP, manager.getHealth());
+    }
+
+    /**
+     * Tests getMillisUntilNextClientAvailable returns 0 when a client is available immediately.
+     */
+    @Test
+    public void getMillisUntilNextClientAvailableReturnsZeroWhenClientAvailableTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        // Client is not in backoff (available now)
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Initialize clients by calling getAvailableClients
+        manager.getAvailableClients();
+        
+        long waitTime = manager.getMillisUntilNextClientAvailable();
+        assertEquals(0, waitTime);
+    }
+    
+    /**
+     * Tests getMillisUntilNextClientAvailable returns wait time when all clients are in backoff.
+     */
+    @Test
+    public void getMillisUntilNextClientAvailableReturnsWaitTimeWhenAllBackedOffTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        clients.add(replicaClient2);
+        
+        // Both clients are in backoff
+        Instant backoffEnd1 = Instant.now().plusSeconds(10);
+        Instant backoffEnd2 = Instant.now().plusSeconds(5); // This one expires sooner
+        when(replicaClient1.getBackoffEndTime()).thenReturn(backoffEnd1);
+        when(replicaClient2.getBackoffEndTime()).thenReturn(backoffEnd2);
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Initialize clients by calling getAvailableClients
+        manager.getAvailableClients();
+        
+        long waitTime = manager.getMillisUntilNextClientAvailable();
+        
+        // Should return approximately 5 seconds (the earlier backoff end time)
+        assertTrue(waitTime > 0);
+        assertTrue(waitTime <= 5000);
+    }
+    
+    /**
+     * Tests getMillisUntilNextClientAvailable considers auto-failover clients.
+     */
+    @Test
+    public void getMillisUntilNextClientAvailableWithAutoFailoverClientTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        // Regular client is in backoff for longer
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(30));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Setup auto-failover client with shorter backoff
+        List<String> autoFailoverEndpoints = new ArrayList<>();
+        String failoverEndpoint = "fake.test.failover.endpoint";
+        autoFailoverEndpoints.add(failoverEndpoint);
+        when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
+        
+        // Auto-failover client expires sooner
+        when(autoFailoverClient.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(5));
+        when(clientBuilderMock.buildClient(Mockito.eq(failoverEndpoint), Mockito.eq(configStore))).thenReturn(autoFailoverClient);
+        
+        // Initialize clients (will also add auto-failover client)
+        manager.getAvailableClients();
+        
+        long waitTime = manager.getMillisUntilNextClientAvailable();
+        
+        // Should return approximately 5 seconds (auto-failover client expires first)
+        assertTrue(waitTime > 0);
+        assertTrue(waitTime <= 5000);
+    }
+    
+    /**
+     * Tests getMillisUntilNextClientAvailable returns 0 when auto-failover client is available.
+     */
+    @Test
+    public void getMillisUntilNextClientAvailableAutoFailoverAvailableTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+        
+        // Regular client is in backoff
+        when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(30));
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        
+        // Setup auto-failover client that is available
+        List<String> autoFailoverEndpoints = new ArrayList<>();
+        String failoverEndpoint = "fake.test.failover.endpoint";
+        autoFailoverEndpoints.add(failoverEndpoint);
+        when(replicaLookUpMock.getAutoFailoverEndpoints(Mockito.eq(TEST_ENDPOINT))).thenReturn(autoFailoverEndpoints);
+        
+        // Auto-failover client is available (not in backoff)
+        when(autoFailoverClient.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
+        when(clientBuilderMock.buildClient(Mockito.eq(failoverEndpoint), Mockito.eq(configStore))).thenReturn(autoFailoverClient);
+        
+        // Initialize clients (will also add auto-failover client)
+        manager.getAvailableClients();
+        
+        long waitTime = manager.getMillisUntilNextClientAvailable();
+        assertEquals(0, waitTime);
     }
 
     

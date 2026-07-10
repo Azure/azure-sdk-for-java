@@ -117,7 +117,7 @@ public interface EnclaveConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
         ApprovalCallbackRequest body);
@@ -132,7 +132,7 @@ public interface EnclaveConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
         ApprovalCallbackRequest body, Context context);
@@ -146,7 +146,7 @@ public interface EnclaveConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
         ApprovalDeletionCallbackRequest body);
@@ -161,7 +161,7 @@ public interface EnclaveConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
         ApprovalDeletionCallbackRequest body, Context context);

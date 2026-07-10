@@ -53,6 +53,12 @@ try {
     $ymlContent = Get-Content $PackagesYmlPath -Raw
     $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
+
+    if ($null -eq $packagesData -or $packagesData.Count -eq 0) {
+        Write-Host "No artifacts need patching. Verify this is expected by checking the libraries in patch_release_client.txt and their dependency versions."
+        exit 0
+    }
+
     $libraryList = $null
 
     # Build the list of artifacts being patched and normalize version_client.txt
@@ -64,6 +70,34 @@ try {
         $patchedPomPaths += Join-Path $SourcesDirectory "sdk" $packageData["ServiceDirectory"] $packageData["name"] "pom.xml"
     }
     NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+
+    # Capture each patched package's current pom.xml version BEFORE the per-package loop runs.
+    # The first iteration's call to UpdateDependencyOfClientSDK invokes update_versions.py, which
+    # rewrites every pom.xml in the repo from version_client.txt — including the as-yet-unprocessed
+    # patched packages. By the time GeneratePatch reaches a sibling later in the loop, that
+    # sibling's pom.xml on disk already shows the GA version, which causes the
+    # "$currentPomFileVersion -ne $releaseVersion" reset gate in GeneratePatch to evaluate to
+    # false and skip the source reset (commit "Reset sources for <artifactId> ..."). Capturing
+    # the original pom version here and passing it through to GeneratePatch ensures the gate
+    # sees the actual pre-patch version (typically an in-progress -beta) so the reset runs.
+    $CurrentPomFileVersions = @{}
+    foreach ($packageData in $packagesData) {
+        $pkgArtifactId = $packageData["name"]
+        $pkgGroupId = $packageData["groupId"]
+        $pkgKey = "${pkgGroupId}:${pkgArtifactId}"
+        $pomPath = Join-Path $SourcesDirectory "sdk" $packageData["ServiceDirectory"] $pkgArtifactId "pom.xml"
+        if (Test-Path $pomPath) {
+            try {
+                $pomXml = [xml](Get-Content -Path $pomPath -Raw)
+                $pomVersion = $pomXml.project.version
+                if (![string]::IsNullOrWhiteSpace($pomVersion)) {
+                    $CurrentPomFileVersions[$pkgKey] = $pomVersion.Trim()
+                }
+            } catch {
+                Write-Warning "Could not read current pom.xml version for ${pkgArtifactId} from ${pomPath}: $_"
+            }
+        }
+    }
 
     # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → patch version for all
     # artifacts being patched. This is passed to generatepatch.ps1 so changelogs show the
@@ -84,7 +118,9 @@ try {
 
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
+        $pkgKey = $packageData["groupId"] + ":" + $packageData["name"]
+        $capturedPomVersion = $CurrentPomFileVersions[$pkgKey]
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides -CurrentPomFileVersion $capturedPomVersion
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 

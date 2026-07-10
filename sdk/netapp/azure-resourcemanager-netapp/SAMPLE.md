@@ -10,6 +10,7 @@
 - [GetChangeKeyVaultInformation](#accounts_getchangekeyvaultinformation)
 - [List](#accounts_list)
 - [ListByResourceGroup](#accounts_listbyresourcegroup)
+- [RefreshLdapBindPassword](#accounts_refreshldapbindpassword)
 - [RenewCredentials](#accounts_renewcredentials)
 - [TransitionToCmk](#accounts_transitiontocmk)
 - [Update](#accounts_update)
@@ -77,7 +78,7 @@
 - [CreateOrUpdate](#caches_createorupdate)
 - [Delete](#caches_delete)
 - [Get](#caches_get)
-- [ListByCapacityPools](#caches_listbycapacitypools)
+- [List](#caches_list)
 - [ListPeeringPassphrases](#caches_listpeeringpassphrases)
 - [PoolChange](#caches_poolchange)
 - [ResetSmbPassword](#caches_resetsmbpassword)
@@ -281,7 +282,7 @@ import java.util.Arrays;
  */
 public final class AccountsChangeKeyVaultSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_ChangeKeyVault.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_ChangeKeyVault.json
      */
     /**
      * Sample code: Accounts_ChangeKeyVault.
@@ -306,6 +307,8 @@ public final class AccountsChangeKeyVaultSamples {
 
 ```java
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.BindAuthenticationLevel;
+import com.azure.resourcemanager.netapp.models.BindPasswordAkvConfig;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import java.util.Arrays;
 
@@ -314,7 +317,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -326,7 +329,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -353,7 +356,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_CreateOrUpdateLdapConfig.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateLdapConfig.
@@ -367,7 +370,15 @@ public final class AccountsCreateOrUpdateSamples {
             .withExistingResourceGroup("myRG")
             .withLdapConfiguration(new LdapConfiguration().withDomain("example.com")
                 .withLdapServers(Arrays.asList("192.0.2.1", "192.0.2.2"))
-                .withLdapOverTLS(false))
+                .withLdapOverTLS(false)
+                .withServerCACertificate("<REDACTED>")
+                .withCertificateCNHost("ldap.krypton.com")
+                .withBindAuthenticationLevel(BindAuthenticationLevel.SIMPLE)
+                .withBindDN("cn=user,dc=domain,dc=com")
+                .withBindPasswordAkvConfig(new BindPasswordAkvConfig().withAzureKeyVaultUri("fakeTokenPlaceholder")
+                    .withSecretName("fakeTokenPlaceholder")
+                    .withUserAssignedIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity")))
             .create();
     }
 }
@@ -381,7 +392,7 @@ public final class AccountsCreateOrUpdateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_Delete.json
      */
     /**
      * Sample code: Accounts_Delete.
@@ -402,7 +413,7 @@ public final class AccountsDeleteSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
@@ -423,7 +434,7 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsGetChangeKeyVaultInformationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_GetChangeKeyVaultInformation.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_GetChangeKeyVaultInformation.json
      */
     /**
      * Sample code: Accounts_GetChangeKeyVaultInformation.
@@ -445,7 +456,7 @@ public final class AccountsGetChangeKeyVaultInformationSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_ListBySubscription.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_ListBySubscription.json
      */
     /**
      * Sample code: Accounts_ListBySubscription.
@@ -466,7 +477,7 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_List.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.
@@ -479,6 +490,28 @@ public final class AccountsListByResourceGroupSamples {
 }
 ```
 
+### Accounts_RefreshLdapBindPassword
+
+```java
+/**
+ * Samples for Accounts RefreshLdapBindPassword.
+ */
+public final class AccountsRefreshLdapBindPasswordSamples {
+    /*
+     * x-ms-original-file: 2026-04-15-preview/Accounts_RefreshLdapBindPassword.json
+     */
+    /**
+     * Sample code: NetAppAccounts_RefreshLdapBindPassword.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void
+        netAppAccountsRefreshLdapBindPassword(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().refreshLdapBindPassword("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Accounts_RenewCredentials
 
 ```java
@@ -487,7 +520,7 @@ public final class AccountsListByResourceGroupSamples {
  */
 public final class AccountsRenewCredentialsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_RenewCredentials.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_RenewCredentials.json
      */
     /**
      * Sample code: Accounts_RenewCredentials.
@@ -510,7 +543,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
  */
 public final class AccountsTransitionToCmkSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_TransitionEncryptionKey.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_TransitionEncryptionKey.json
      */
     /**
      * Sample code: Accounts_MigrateEncryptionKey.
@@ -540,7 +573,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Accounts_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -587,7 +620,7 @@ import java.util.Map;
  */
 public final class ActiveDirectoryConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_CreateOrUpdate.
@@ -645,7 +678,7 @@ public final class ActiveDirectoryConfigsCreateOrUpdateSamples {
  */
 public final class ActiveDirectoryConfigsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_Delete.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_Delete.
@@ -666,7 +699,7 @@ public final class ActiveDirectoryConfigsDeleteSamples {
  */
 public final class ActiveDirectoryConfigsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_Get.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_Get.
@@ -688,7 +721,7 @@ public final class ActiveDirectoryConfigsGetByResourceGroupSamples {
  */
 public final class ActiveDirectoryConfigsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_ListBySubscription.
@@ -710,7 +743,7 @@ public final class ActiveDirectoryConfigsListSamples {
  */
 public final class ActiveDirectoryConfigsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_ListByResourceGroup.
@@ -735,7 +768,7 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfigUpdateProper
  */
 public final class ActiveDirectoryConfigsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ActiveDirectoryConfigs_Update.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_Update.
@@ -761,7 +794,7 @@ public final class ActiveDirectoryConfigsUpdateSamples {
  */
 public final class BackupPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupPolicies_Create.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_Create.json
      */
     /**
      * Sample code: BackupPolicies_Create.
@@ -790,7 +823,7 @@ public final class BackupPoliciesCreateSamples {
  */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupPolicies_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_Delete.json
      */
     /**
      * Sample code: BackupPolicies_Delete.
@@ -812,7 +845,7 @@ public final class BackupPoliciesDeleteSamples {
  */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupPolicies_Get.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_Get.json
      */
     /**
      * Sample code: BackupPolicies_Get.
@@ -834,7 +867,7 @@ public final class BackupPoliciesGetSamples {
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupPolicies_List.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_List.json
      */
     /**
      * Sample code: BackupPolicies_List.
@@ -857,7 +890,7 @@ import com.azure.resourcemanager.netapp.models.BackupPolicy;
  */
 public final class BackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupPolicies_Update.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_Update.json
      */
     /**
      * Sample code: BackupPolicies_Update.
@@ -886,7 +919,7 @@ public final class BackupPoliciesUpdateSamples {
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupVaults_Create.json
+     * x-ms-original-file: 2026-04-15-preview/BackupVaults_Create.json
      */
     /**
      * Sample code: BackupVault_CreateOrUpdate.
@@ -911,7 +944,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
  */
 public final class BackupVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupVaults_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/BackupVaults_Delete.json
      */
     /**
      * Sample code: BackupVaults_Delete.
@@ -932,7 +965,7 @@ public final class BackupVaultsDeleteSamples {
  */
 public final class BackupVaultsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupVaults_Get.json
+     * x-ms-original-file: 2026-04-15-preview/BackupVaults_Get.json
      */
     /**
      * Sample code: BackupVaults_Get.
@@ -953,7 +986,7 @@ public final class BackupVaultsGetSamples {
  */
 public final class BackupVaultsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupVaults_List.json
+     * x-ms-original-file: 2026-04-15-preview/BackupVaults_List.json
      */
     /**
      * Sample code: BackupVaults_List.
@@ -978,7 +1011,7 @@ import java.util.Map;
  */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupVaults_Update.json
+     * x-ms-original-file: 2026-04-15-preview/BackupVaults_Update.json
      */
     /**
      * Sample code: BackupVaults_Update.
@@ -1014,7 +1047,7 @@ public final class BackupVaultsUpdateSamples {
  */
 public final class BackupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderBackupVault_Create.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderBackupVault_Create.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Create.
@@ -1041,7 +1074,7 @@ public final class BackupsCreateSamples {
  */
 public final class BackupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderBackupVault_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderBackupVault_Delete.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Delete.
@@ -1063,7 +1096,7 @@ public final class BackupsDeleteSamples {
  */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderBackupVault_Get.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderBackupVault_Get.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Get.
@@ -1085,7 +1118,7 @@ public final class BackupsGetSamples {
  */
 public final class BackupsGetLatestStatusSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_LatestBackupStatus.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_LatestBackupStatus.json
      */
     /**
      * Sample code: Volumes_BackupStatus.
@@ -1107,7 +1140,7 @@ public final class BackupsGetLatestStatusSamples {
  */
 public final class BackupsGetVolumeLatestRestoreStatusSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_LatestRestoreStatus.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_LatestRestoreStatus.json
      */
     /**
      * Sample code: Volumes_RestoreStatus.
@@ -1130,7 +1163,7 @@ public final class BackupsGetVolumeLatestRestoreStatusSamples {
  */
 public final class BackupsListByVaultSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Backups_ListByVault.json
+     * x-ms-original-file: 2026-04-15-preview/Backups_ListByVault.json
      */
     /**
      * Sample code: Backups_ListByVault.
@@ -1153,7 +1186,7 @@ import com.azure.resourcemanager.netapp.models.Backup;
  */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderBackupVault_Update.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderBackupVault_Update.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Update.
@@ -1179,7 +1212,7 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderAccountMigrateBackupsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderAccount_Migrate.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderAccount_Migrate.json
      */
     /**
      * Sample code: BackupsUnderAccount_Migrate.
@@ -1206,7 +1239,7 @@ import java.util.Arrays;
  */
 public final class BackupsUnderBackupVaultRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderBackupVault_SingleFileRestore.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderBackupVault_SingleFileRestore.json
      */
     /**
      * Sample code: Backups_SingleFileRestore.
@@ -1234,7 +1267,7 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderVolumeMigrateBackupsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/BackupsUnderVolume_Migrate.json
+     * x-ms-original-file: 2026-04-15-preview/BackupsUnderVolume_Migrate.json
      */
     /**
      * Sample code: BackupsUnderVolume_Migrate.
@@ -1267,7 +1300,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_CreateOrUpdate.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdate.
@@ -1288,7 +1321,7 @@ public final class BucketsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_CreateOrUpdateWithAkv.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_CreateOrUpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdateWithAkv.
@@ -1304,13 +1337,16 @@ public final class BucketsCreateOrUpdateSamples {
             .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
                 .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
             .withPermissions(BucketPermissions.READ_ONLY)
-            .withAkvDetails(new AzureKeyVaultDetails()
-                .withCertificateAkvDetails(
-                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
-                        .withCertificateName("my-certificate"))
-                .withCredentialsAkvDetails(
-                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
-                        .withSecretName("fakeTokenPlaceholder")))
+            .withAkvDetails(new AzureKeyVaultDetails().withCertificateAkvDetails(new CertificateAkvDetails()
+                .withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                .withCertificateName("my-certificate")
+                .withUserAssignedIdentity(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
+                .withCredentialsAkvDetails(new CredentialsAkvDetails()
+                    .withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                    .withSecretName("fakeTokenPlaceholder")
+                    .withUserAssignedIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
             .create();
     }
 }
@@ -1324,7 +1360,7 @@ public final class BucketsCreateOrUpdateSamples {
  */
 public final class BucketsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_Delete.json
      */
     /**
      * Sample code: Buckets_Delete.
@@ -1347,7 +1383,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateAkvCredentialsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_GenerateAkvCredentials.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_GenerateAkvCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateAkvCredentials.
@@ -1372,7 +1408,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_GenerateCredentials.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_GenerateCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateCredentials.
@@ -1395,7 +1431,7 @@ public final class BucketsGenerateCredentialsSamples {
  */
 public final class BucketsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_Get.json
      */
     /**
      * Sample code: Buckets_Get.
@@ -1417,7 +1453,7 @@ public final class BucketsGetSamples {
  */
 public final class BucketsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_List.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_List.json
      */
     /**
      * Sample code: Buckets_List.
@@ -1438,7 +1474,7 @@ public final class BucketsListSamples {
  */
 public final class BucketsRefreshCertificateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_RefreshCertificate.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_RefreshCertificate.json
      */
     /**
      * Sample code: Buckets_RefreshCertificate.
@@ -1468,7 +1504,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_Update.json
      */
     /**
      * Sample code: Buckets_Update.
@@ -1488,7 +1524,7 @@ public final class BucketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Buckets_UpdateWithAkv.json
+     * x-ms-original-file: 2026-04-15-preview/Buckets_UpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_UpdateWithAkv.
@@ -1503,13 +1539,16 @@ public final class BucketsUpdateSamples {
             .withServer(new BucketServerPatchProperties().withFqdn("fullyqualified.domainname.com")
                 .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
             .withPermissions(BucketPatchPermissions.READ_ONLY)
-            .withAkvDetails(new AzureKeyVaultDetails()
-                .withCertificateAkvDetails(
-                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
-                        .withCertificateName("my-certificate"))
-                .withCredentialsAkvDetails(
-                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
-                        .withSecretName("fakeTokenPlaceholder")))
+            .withAkvDetails(new AzureKeyVaultDetails().withCertificateAkvDetails(new CertificateAkvDetails()
+                .withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                .withCertificateName("my-certificate")
+                .withUserAssignedIdentity(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
+                .withCredentialsAkvDetails(new CredentialsAkvDetails()
+                    .withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                    .withSecretName("fakeTokenPlaceholder")
+                    .withUserAssignedIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
             .apply();
     }
 }
@@ -1530,7 +1569,7 @@ import java.util.Arrays;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -1568,7 +1607,7 @@ public final class CachesCreateOrUpdateSamples {
  */
 public final class CachesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_Delete.json
      */
     /**
      * Sample code: Caches_Delete.
@@ -1589,7 +1628,7 @@ public final class CachesDeleteSamples {
  */
 public final class CachesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_Get.json
      */
     /**
      * Sample code: Caches_Get.
@@ -1602,15 +1641,15 @@ public final class CachesGetSamples {
 }
 ```
 
-### Caches_ListByCapacityPools
+### Caches_List
 
 ```java
 /**
- * Samples for Caches ListByCapacityPools.
+ * Samples for Caches List.
  */
-public final class CachesListByCapacityPoolsSamples {
+public final class CachesListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_ListByCapacityPools.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_List.json
      */
     /**
      * Sample code: Caches_List.
@@ -1618,7 +1657,7 @@ public final class CachesListByCapacityPoolsSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void cachesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.caches().listByCapacityPools("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
+        manager.caches().list("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1631,7 +1670,7 @@ public final class CachesListByCapacityPoolsSamples {
  */
 public final class CachesListPeeringPassphrasesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_ListPeeringPassphrases.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_ListPeeringPassphrases.json
      */
     /**
      * Sample code: Caches_ListPeeringPassphrases.
@@ -1656,7 +1695,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
  */
 public final class CachesPoolChangeSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_PoolChange.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_PoolChange.json
      */
     /**
      * Sample code: Caches_PoolChange.
@@ -1680,7 +1719,7 @@ public final class CachesPoolChangeSamples {
  */
 public final class CachesResetSmbPasswordSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_ResetSmbPassword.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_ResetSmbPassword.json
      */
     /**
      * Sample code: Caches_ResetSmbPassword.
@@ -1705,7 +1744,7 @@ import com.azure.resourcemanager.netapp.models.CacheUpdateProperties;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Caches_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.
@@ -1733,7 +1772,7 @@ import java.util.Map;
  */
 public final class ElasticAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticAccounts_CreateOrUpdate.
@@ -1772,7 +1811,7 @@ public final class ElasticAccountsCreateOrUpdateSamples {
  */
 public final class ElasticAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_Delete.json
      */
     /**
      * Sample code: ElasticAccounts_Delete.
@@ -1793,7 +1832,7 @@ public final class ElasticAccountsDeleteSamples {
  */
 public final class ElasticAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_Get.json
      */
     /**
      * Sample code: ElasticAccounts_Get.
@@ -1814,7 +1853,7 @@ public final class ElasticAccountsGetByResourceGroupSamples {
  */
 public final class ElasticAccountsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_ListBySubscription.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_ListBySubscription.json
      */
     /**
      * Sample code: ElasticAccounts_ListBySubscription.
@@ -1835,7 +1874,7 @@ public final class ElasticAccountsListSamples {
  */
 public final class ElasticAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_ListByResourceGroup.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_ListByResourceGroup.json
      */
     /**
      * Sample code: ElasticAccounts_ListByResourceGroup.
@@ -1860,7 +1899,7 @@ import java.util.Map;
  */
 public final class ElasticAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticAccounts_Update.json
      */
     /**
      * Sample code: ElasticAccounts_Update.
@@ -1899,7 +1938,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
  */
 public final class ElasticBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticBackupPolicies_CreateOrUpdate.
@@ -1929,7 +1968,7 @@ public final class ElasticBackupPoliciesCreateOrUpdateSamples {
  */
 public final class ElasticBackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupPolicies_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_Delete.json
      */
     /**
      * Sample code: ElasticBackupPolicies_Delete.
@@ -1951,7 +1990,7 @@ public final class ElasticBackupPoliciesDeleteSamples {
  */
 public final class ElasticBackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupPolicies_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_Get.json
      */
     /**
      * Sample code: ElasticBackupPolicies_Get.
@@ -1973,7 +2012,7 @@ public final class ElasticBackupPoliciesGetSamples {
  */
 public final class ElasticBackupPoliciesListByElasticAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupPolicies_List.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_List.json
      */
     /**
      * Sample code: ElasticBackupPolicies_ListByElasticAccount.
@@ -1999,7 +2038,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdateProperti
  */
 public final class ElasticBackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupPolicies_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_Update.json
      */
     /**
      * Sample code: ElasticBackupPolicies_Update.
@@ -2028,7 +2067,7 @@ public final class ElasticBackupPoliciesUpdateSamples {
  */
 public final class ElasticBackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_Create.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupVaults_Create.json
      */
     /**
      * Sample code: ElasticBackupVaults_CreateOrUpdate.
@@ -2053,7 +2092,7 @@ public final class ElasticBackupVaultsCreateOrUpdateSamples {
  */
 public final class ElasticBackupVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupVaults_Delete.json
      */
     /**
      * Sample code: ElasticBackupVaults_Delete.
@@ -2075,7 +2114,7 @@ public final class ElasticBackupVaultsDeleteSamples {
  */
 public final class ElasticBackupVaultsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupVaults_Get.json
      */
     /**
      * Sample code: ElasticBackupVaults_Get.
@@ -2097,7 +2136,7 @@ public final class ElasticBackupVaultsGetSamples {
  */
 public final class ElasticBackupVaultsListByElasticAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_ListByElasticAccount.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupVaults_ListByElasticAccount.json
      */
     /**
      * Sample code: ElasticBackupVaults_ListByElasticAccount.
@@ -2123,7 +2162,7 @@ import java.util.Map;
  */
 public final class ElasticBackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackupVaults_Update.json
      */
     /**
      * Sample code: ElasticBackupVaults_Update.
@@ -2162,7 +2201,7 @@ import com.azure.resourcemanager.netapp.models.SnapshotUsage;
  */
 public final class ElasticBackupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticBackups_CreateOrUpdate.
@@ -2192,7 +2231,7 @@ public final class ElasticBackupsCreateOrUpdateSamples {
  */
 public final class ElasticBackupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_Delete.json
      */
     /**
      * Sample code: ElasticBackups_Delete.
@@ -2214,7 +2253,7 @@ public final class ElasticBackupsDeleteSamples {
  */
 public final class ElasticBackupsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_Get.json
      */
     /**
      * Sample code: ElasticBackups_Get.
@@ -2236,7 +2275,7 @@ public final class ElasticBackupsGetSamples {
  */
 public final class ElasticBackupsListByVaultSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_ListByVault.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_ListByVault.json
      */
     /**
      * Sample code: ElasticBackups_ListByVault.
@@ -2259,7 +2298,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackup;
  */
 public final class ElasticBackupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_Update.json
      */
     /**
      * Sample code: ElasticBackups_Update.
@@ -2285,7 +2324,7 @@ import com.azure.resourcemanager.netapp.models.ChangeZoneRequest;
  */
 public final class ElasticCapacityPoolsChangeZoneSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_ChangeZone.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_ChangeZone.json
      */
     /**
      * Sample code: ElasticCapacityPools_ChangeZone.
@@ -2310,7 +2349,7 @@ import com.azure.resourcemanager.netapp.models.CheckElasticVolumeFilePathAvailab
  */
 public final class ElasticCapacityPoolsCheckVolumeFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
      */
     /**
      * Sample code: ElasticCapacityPools_CheckVolumeFilePathAvailability.
@@ -2341,7 +2380,7 @@ import java.util.Arrays;
  */
 public final class ElasticCapacityPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
      */
     /**
      * Sample code: ElasticCapacityPools_CreateOrUpdateCMK.
@@ -2368,7 +2407,7 @@ public final class ElasticCapacityPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticCapacityPools_CreateOrUpdate.
@@ -2400,7 +2439,7 @@ public final class ElasticCapacityPoolsCreateOrUpdateSamples {
  */
 public final class ElasticCapacityPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_Delete.json
      */
     /**
      * Sample code: ElasticCapacityPools_Delete.
@@ -2421,7 +2460,7 @@ public final class ElasticCapacityPoolsDeleteSamples {
  */
 public final class ElasticCapacityPoolsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_Get.json
      */
     /**
      * Sample code: ElasticCapacityPools_Get.
@@ -2442,7 +2481,7 @@ public final class ElasticCapacityPoolsGetSamples {
  */
 public final class ElasticCapacityPoolsListByElasticAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_ListByElasticAccount.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_ListByElasticAccount.json
      */
     /**
      * Sample code: ElasticCapacityPools_ListByElasticAccount.
@@ -2467,7 +2506,7 @@ import com.azure.resourcemanager.netapp.models.ElasticCapacityPoolUpdateProperti
  */
 public final class ElasticCapacityPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticCapacityPools_Update.json
      */
     /**
      * Sample code: ElasticCapacityPools_Update.
@@ -2504,7 +2543,7 @@ import java.util.Arrays;
  */
 public final class ElasticSnapshotPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_CreateOrUpdate.
@@ -2543,7 +2582,7 @@ public final class ElasticSnapshotPoliciesCreateOrUpdateSamples {
  */
 public final class ElasticSnapshotPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_Delete.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_Delete.
@@ -2565,7 +2604,7 @@ public final class ElasticSnapshotPoliciesDeleteSamples {
  */
 public final class ElasticSnapshotPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_Get.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_Get.
@@ -2587,7 +2626,7 @@ public final class ElasticSnapshotPoliciesGetSamples {
  */
 public final class ElasticSnapshotPoliciesListByElasticAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_ListByElasticAccount.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_ListByElasticAccount.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_ListByElasticAccount.
@@ -2609,7 +2648,7 @@ public final class ElasticSnapshotPoliciesListByElasticAccountSamples {
  */
 public final class ElasticSnapshotPoliciesListElasticVolumesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_ListElasticVolumes.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_ListElasticVolumes.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_ListElasticVolumes.
@@ -2642,7 +2681,7 @@ import java.util.Arrays;
  */
 public final class ElasticSnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshotPolicies_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshotPolicies_Update.json
      */
     /**
      * Sample code: ElasticSnapshotPolicies_Update.
@@ -2680,7 +2719,7 @@ public final class ElasticSnapshotPoliciesUpdateSamples {
  */
 public final class ElasticSnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshots_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshots_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticSnapshots_CreateOrUpdate.
@@ -2704,7 +2743,7 @@ public final class ElasticSnapshotsCreateOrUpdateSamples {
  */
 public final class ElasticSnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshots_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshots_Delete.json
      */
     /**
      * Sample code: ElasticSnapshots_Delete.
@@ -2726,7 +2765,7 @@ public final class ElasticSnapshotsDeleteSamples {
  */
 public final class ElasticSnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshots_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshots_Get.json
      */
     /**
      * Sample code: ElasticSnapshots_Get.
@@ -2748,7 +2787,7 @@ public final class ElasticSnapshotsGetSamples {
  */
 public final class ElasticSnapshotsListByElasticVolumeSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticSnapshots_ListByElasticVolume.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticSnapshots_ListByElasticVolume.json
      */
     /**
      * Sample code: ElasticSnapshots_ListByElasticVolume.
@@ -2785,7 +2824,7 @@ import java.util.Arrays;
  */
 public final class ElasticVolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticVolumes_CreateOrUpdate.
@@ -2828,7 +2867,7 @@ public final class ElasticVolumesCreateOrUpdateSamples {
  */
 public final class ElasticVolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_Delete.json
      */
     /**
      * Sample code: ElasticVolumes_Delete.
@@ -2849,7 +2888,7 @@ public final class ElasticVolumesDeleteSamples {
  */
 public final class ElasticVolumesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Get.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_Get.json
      */
     /**
      * Sample code: ElasticVolumes_Get.
@@ -2871,7 +2910,7 @@ public final class ElasticVolumesGetSamples {
  */
 public final class ElasticVolumesListByElasticPoolSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_ListByElasticPool.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_ListByElasticPool.json
      */
     /**
      * Sample code: ElasticVolumes_ListByElasticPool.
@@ -2894,7 +2933,7 @@ import com.azure.resourcemanager.netapp.models.ElasticVolumeRevert;
  */
 public final class ElasticVolumesRevertSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Revert.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_Revert.json
      */
     /**
      * Sample code: ElasticVolumes_Revert.
@@ -2930,7 +2969,7 @@ import java.util.Arrays;
  */
 public final class ElasticVolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_Update.json
+     * x-ms-original-file: 2026-04-15-preview/ElasticVolumes_Update.json
      */
     /**
      * Sample code: ElasticVolumes_Update.
@@ -2968,7 +3007,7 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
  */
 public final class NetAppResourceCheckFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/CheckFilePathAvailability.json
+     * x-ms-original-file: 2026-04-15-preview/CheckFilePathAvailability.json
      */
     /**
      * Sample code: CheckFilePathAvailability.
@@ -2997,7 +3036,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
  */
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/CheckNameAvailability.json
+     * x-ms-original-file: 2026-04-15-preview/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -3026,7 +3065,7 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
  */
 public final class NetAppResourceCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/CheckQuotaAvailability.json
+     * x-ms-original-file: 2026-04-15-preview/CheckQuotaAvailability.json
      */
     /**
      * Sample code: CheckQuotaAvailability.
@@ -3054,7 +3093,7 @@ import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
  */
 public final class NetAppResourceQueryNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetworkSiblingSet_Query.json
+     * x-ms-original-file: 2026-04-15-preview/NetworkSiblingSet_Query.json
      */
     /**
      * Sample code: NetworkSiblingSet_Query.
@@ -3080,7 +3119,7 @@ public final class NetAppResourceQueryNetworkSiblingSetSamples {
  */
 public final class NetAppResourceQueryRegionInfoSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RegionInfo.json
+     * x-ms-original-file: 2026-04-15-preview/RegionInfo.json
      */
     /**
      * Sample code: RegionInfo_Query.
@@ -3104,7 +3143,7 @@ import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
  */
 public final class NetAppResourceUpdateNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetworkSiblingSet_Update.json
+     * x-ms-original-file: 2026-04-15-preview/NetworkSiblingSet_Update.json
      */
     /**
      * Sample code: NetworkFeatures_Update.
@@ -3117,7 +3156,7 @@ public final class NetAppResourceUpdateNetworkSiblingSetSamples {
                 .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
                 .withSubnetId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
-                .withNetworkSiblingSetStateId("12345_44420.8001578125")
+                .withNetworkSiblingSetStateId("1.2345444208001578E9")
                 .withNetworkFeatures(NetworkFeatures.STANDARD), com.azure.core.util.Context.NONE);
     }
 }
@@ -3131,7 +3170,7 @@ public final class NetAppResourceUpdateNetworkSiblingSetSamples {
  */
 public final class NetAppResourceQuotaLimitsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetAppResourceQuotaLimits_Get.json
+     * x-ms-original-file: 2026-04-15-preview/NetAppResourceQuotaLimits_Get.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3153,7 +3192,7 @@ public final class NetAppResourceQuotaLimitsGetSamples {
  */
 public final class NetAppResourceQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetAppResourceQuotaLimits_List.json
+     * x-ms-original-file: 2026-04-15-preview/NetAppResourceQuotaLimits_List.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3174,7 +3213,7 @@ public final class NetAppResourceQuotaLimitsListSamples {
  */
 public final class NetAppResourceQuotaLimitsAccountGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetAppResourceQuotaLimitsAccount_Get.json
+     * x-ms-original-file: 2026-04-15-preview/NetAppResourceQuotaLimitsAccount_Get.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3196,7 +3235,7 @@ public final class NetAppResourceQuotaLimitsAccountGetSamples {
  */
 public final class NetAppResourceQuotaLimitsAccountListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/NetAppResourceQuotaLimitsAccount_List.json
+     * x-ms-original-file: 2026-04-15-preview/NetAppResourceQuotaLimitsAccount_List.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3217,7 +3256,7 @@ public final class NetAppResourceQuotaLimitsAccountListSamples {
  */
 public final class NetAppResourceRegionInfosGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RegionInfos_Get.json
+     * x-ms-original-file: 2026-04-15-preview/RegionInfos_Get.json
      */
     /**
      * Sample code: RegionInfos_Get.
@@ -3238,7 +3277,7 @@ public final class NetAppResourceRegionInfosGetSamples {
  */
 public final class NetAppResourceRegionInfosListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RegionInfos_List.json
+     * x-ms-original-file: 2026-04-15-preview/RegionInfos_List.json
      */
     /**
      * Sample code: RegionInfos_List.
@@ -3259,7 +3298,7 @@ public final class NetAppResourceRegionInfosListSamples {
  */
 public final class NetAppResourceUsagesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Usages_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Usages_Get.json
      */
     /**
      * Sample code: Usages_Get.
@@ -3281,7 +3320,7 @@ public final class NetAppResourceUsagesGetSamples {
  */
 public final class NetAppResourceUsagesListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Usages_List.json
+     * x-ms-original-file: 2026-04-15-preview/Usages_List.json
      */
     /**
      * Sample code: Usages_List.
@@ -3302,7 +3341,7 @@ public final class NetAppResourceUsagesListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/OperationList.json
+     * x-ms-original-file: 2026-04-15-preview/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -3326,7 +3365,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -3345,7 +3384,7 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_CreateOrUpdate_CustomThroughput.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_CreateOrUpdate_CustomThroughput.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate_CustomThroughput.
@@ -3375,7 +3414,7 @@ public final class PoolsCreateOrUpdateSamples {
  */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.
@@ -3396,7 +3435,7 @@ public final class PoolsDeleteSamples {
  */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_Get_CustomThroughput.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_Get_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Get_CustomThroughput.
@@ -3408,7 +3447,7 @@ public final class PoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.
@@ -3429,7 +3468,7 @@ public final class PoolsGetSamples {
  */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_List.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_List.json
      */
     /**
      * Sample code: Pools_List.
@@ -3452,7 +3491,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -3466,7 +3505,7 @@ public final class PoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Pools_Update_CustomThroughput.json
+     * x-ms-original-file: 2026-04-15-preview/Pools_Update_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Update_CustomThroughput.
@@ -3494,7 +3533,7 @@ import java.util.Arrays;
  */
 public final class RansomwareReportsClearSuspectsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RansomwareReports_ClearSuspects.json
+     * x-ms-original-file: 2026-04-15-preview/RansomwareReports_ClearSuspects.json
      */
     /**
      * Sample code: RansomwareReports_ClearSuspects.
@@ -3519,7 +3558,7 @@ public final class RansomwareReportsClearSuspectsSamples {
  */
 public final class RansomwareReportsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RansomwareReports_Get.json
+     * x-ms-original-file: 2026-04-15-preview/RansomwareReports_Get.json
      */
     /**
      * Sample code: RansomwareReports_Get.
@@ -3542,7 +3581,7 @@ public final class RansomwareReportsGetSamples {
  */
 public final class RansomwareReportsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/RansomwareReports_List.json
+     * x-ms-original-file: 2026-04-15-preview/RansomwareReports_List.json
      */
     /**
      * Sample code: RansomwareReports_List.
@@ -3568,7 +3607,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_Create.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_Create.json
      */
     /**
      * Sample code: SnapshotPolicies_Create.
@@ -3600,7 +3639,7 @@ public final class SnapshotPoliciesCreateSamples {
  */
 public final class SnapshotPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_Delete.json
      */
     /**
      * Sample code: SnapshotPolicies_Delete.
@@ -3622,7 +3661,7 @@ public final class SnapshotPoliciesDeleteSamples {
  */
 public final class SnapshotPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_Get.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_Get.json
      */
     /**
      * Sample code: SnapshotPolicies_Get.
@@ -3644,7 +3683,7 @@ public final class SnapshotPoliciesGetSamples {
  */
 public final class SnapshotPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_List.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_List.json
      */
     /**
      * Sample code: SnapshotPolicies_List.
@@ -3665,7 +3704,7 @@ public final class SnapshotPoliciesListSamples {
  */
 public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_ListVolumes.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_ListVolumes.json
      */
     /**
      * Sample code: SnapshotPolicies_ListVolumes.
@@ -3693,7 +3732,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/SnapshotPolicies_Update.json
+     * x-ms-original-file: 2026-04-15-preview/SnapshotPolicies_Update.json
      */
     /**
      * Sample code: SnapshotPolicies_Update.
@@ -3725,7 +3764,7 @@ public final class SnapshotPoliciesUpdateSamples {
  */
 public final class SnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_Create.json
+     * x-ms-original-file: 2026-04-15-preview/Snapshots_Create.json
      */
     /**
      * Sample code: Snapshots_Create.
@@ -3750,7 +3789,7 @@ public final class SnapshotsCreateSamples {
  */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Snapshots_Delete.json
      */
     /**
      * Sample code: Snapshots_Delete.
@@ -3772,7 +3811,7 @@ public final class SnapshotsDeleteSamples {
  */
 public final class SnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Snapshots_Get.json
      */
     /**
      * Sample code: Snapshots_Get.
@@ -3794,7 +3833,7 @@ public final class SnapshotsGetSamples {
  */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_List.json
+     * x-ms-original-file: 2026-04-15-preview/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.
@@ -3818,7 +3857,7 @@ import java.util.Arrays;
  */
 public final class SnapshotsRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Snapshots_SingleFileRestore.json
+     * x-ms-original-file: 2026-04-15-preview/Snapshots_SingleFileRestore.json
      */
     /**
      * Sample code: Snapshots_SingleFileRestore.
@@ -3842,7 +3881,7 @@ public final class SnapshotsRestoreFilesSamples {
  */
 public final class SubvolumesCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_Create.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_Create.json
      */
     /**
      * Sample code: Subvolumes_Create.
@@ -3867,7 +3906,7 @@ public final class SubvolumesCreateSamples {
  */
 public final class SubvolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_Delete.json
      */
     /**
      * Sample code: Subvolumes_Delete.
@@ -3889,7 +3928,7 @@ public final class SubvolumesDeleteSamples {
  */
 public final class SubvolumesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_Get.json
      */
     /**
      * Sample code: Subvolumes_Get.
@@ -3911,7 +3950,7 @@ public final class SubvolumesGetSamples {
  */
 public final class SubvolumesGetMetadataSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_Metadata.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_Metadata.json
      */
     /**
      * Sample code: Subvolumes_Metadata.
@@ -3933,7 +3972,7 @@ public final class SubvolumesGetMetadataSamples {
  */
 public final class SubvolumesListByVolumeSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_List.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_List.json
      */
     /**
      * Sample code: Subvolumes_List.
@@ -3956,7 +3995,7 @@ import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
  */
 public final class SubvolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Subvolumes_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Subvolumes_Update.json
      */
     /**
      * Sample code: Subvolumes_Update.
@@ -3976,8 +4015,11 @@ public final class SubvolumesUpdateSamples {
 
 ```java
 import com.azure.resourcemanager.netapp.models.ApplicationType;
+import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.ExportPolicyRule;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
@@ -3988,7 +4030,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Create_SapHana.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Create_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Create_SapHana.
@@ -4148,7 +4190,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Create_Oracle.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Create_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Create_Oracle.
@@ -4490,6 +4532,573 @@ public final class VolumeGroupsCreateSamples {
                     .withVolumeSpecName("ora-backup")))
             .create();
     }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Create_Custom.json
+     */
+    /**
+     * Sample code: VolumeGroups_Create_Custom.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsCreateCustom(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups()
+            .define("group1")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withRegion("westus")
+            .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
+                .withApplicationType(ApplicationType.fromString("CUSTOM"))
+                .withApplicationIdentifier("CU2"))
+            .withVolumes(Arrays.asList(
+                new VolumeGroupVolumeProperties().withName("test-cus-data1")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data1"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data2")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data2"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data3")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data3"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data4")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data4"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data5")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data5"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data6")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data6"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data7")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data7"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data8")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data8"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data9")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data9"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data10")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data10"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data11")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data11"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data12")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withExportPolicy(new VolumePropertiesExportPolicy()
+                        .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(1)
+                            .withUnixReadOnly(true)
+                            .withUnixReadWrite(true)
+                            .withKerberos5ReadOnly(false)
+                            .withKerberos5ReadWrite(false)
+                            .withKerberos5IReadOnly(false)
+                            .withKerberos5IReadWrite(false)
+                            .withKerberos5PReadOnly(false)
+                            .withKerberos5PReadWrite(false)
+                            .withCifs(false)
+                            .withNfsv3(false)
+                            .withNfsv41(true)
+                            .withAllowedClients("0.0.0.0/0")
+                            .withHasRootAccess(true))))
+                    .withProtocolTypes(Arrays.asList("NFSv4.1"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withThroughputMibps(10.0F)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data12")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Create_Custom_SMB.json
+     */
+    /**
+     * Sample code: VolumeGroups_Create_Custom_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsCreateCustomSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups()
+            .define("group1")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withRegion("westus")
+            .withGroupMetadata(new VolumeGroupMetadata().withGroupDescription("Volume group")
+                .withApplicationType(ApplicationType.fromString("CUSTOM"))
+                .withApplicationIdentifier("CU2"))
+            .withVolumes(Arrays.asList(new VolumeGroupVolumeProperties().withName("test-cus-data1")
+                .withZones(Arrays.asList("1"))
+                .withCreationToken("fakeTokenPlaceholder")
+                .withServiceLevel(ServiceLevel.PREMIUM)
+                .withUsageThreshold(107374182400L)
+                .withProtocolTypes(Arrays.asList("CIFS"))
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                .withSmbEncryption(false)
+                .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                .withSmbContinuouslyAvailable(false)
+                .withThroughputMibps(10.0F)
+                .withAvsDataStore(AvsDataStore.DISABLED)
+                .withCapacityPoolResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                .withVolumeSpecName("cus-data1"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data2")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data2"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data3")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data3"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data4")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data4"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data5")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data5"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data6")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data6"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data7")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data7"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data8")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data8"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data9")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data9"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data10")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data10"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data11")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data11"),
+                new VolumeGroupVolumeProperties().withName("test-cus-data12")
+                    .withZones(Arrays.asList("1"))
+                    .withCreationToken("fakeTokenPlaceholder")
+                    .withServiceLevel(ServiceLevel.PREMIUM)
+                    .withUsageThreshold(107374182400L)
+                    .withProtocolTypes(Arrays.asList("CIFS"))
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                    .withSmbEncryption(false)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+                    .withSmbContinuouslyAvailable(false)
+                    .withThroughputMibps(10.0F)
+                    .withAvsDataStore(AvsDataStore.DISABLED)
+                    .withCapacityPoolResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1")
+                    .withVolumeSpecName("cus-data12")))
+            .create();
+    }
 }
 ```
 
@@ -4501,7 +5110,7 @@ public final class VolumeGroupsCreateSamples {
  */
 public final class VolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Delete.json
      */
     /**
      * Sample code: VolumeGroups_Delete.
@@ -4522,7 +5131,19 @@ public final class VolumeGroupsDeleteSamples {
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Get_SapHana.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Custom.json
+     */
+    /**
+     * Sample code: VolumeGroups_Get_Custom.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsGetCustom(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Get_SapHana.
@@ -4534,7 +5155,19 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Get_Oracle.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Custom_SMB.json
+     */
+    /**
+     * Sample code: VolumeGroups_Get_Custom_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsGetCustomSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_Get_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Get_Oracle.
@@ -4555,7 +5188,19 @@ public final class VolumeGroupsGetSamples {
  */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_List_Oracle.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_Custom.json
+     */
+    /**
+     * Sample code: VolumeGroups_List_Custom.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsListCustom(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_List_Oracle.
@@ -4567,7 +5212,7 @@ public final class VolumeGroupsListByNetAppAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_List_SapHana.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_List_SapHana.
@@ -4590,7 +5235,7 @@ import com.azure.resourcemanager.netapp.models.QuotaType;
  */
 public final class VolumeQuotaRulesCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_Create.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeQuotaRules_Create.json
      */
     /**
      * Sample code: VolumeQuotaRules_Create.
@@ -4618,7 +5263,7 @@ public final class VolumeQuotaRulesCreateSamples {
  */
 public final class VolumeQuotaRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeQuotaRules_Delete.json
      */
     /**
      * Sample code: VolumeQuotaRules_Delete.
@@ -4640,7 +5285,7 @@ public final class VolumeQuotaRulesDeleteSamples {
  */
 public final class VolumeQuotaRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_Get.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeQuotaRules_Get.json
      */
     /**
      * Sample code: VolumeQuotaRules_Get.
@@ -4663,7 +5308,7 @@ public final class VolumeQuotaRulesGetSamples {
  */
 public final class VolumeQuotaRulesListByVolumeSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_List.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeQuotaRules_List.json
      */
     /**
      * Sample code: VolumeQuotaRules_List.
@@ -4687,7 +5332,7 @@ import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
  */
 public final class VolumeQuotaRulesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_Update.json
+     * x-ms-original-file: 2026-04-15-preview/VolumeQuotaRules_Update.json
      */
     /**
      * Sample code: VolumeQuotaRules_Update.
@@ -4712,7 +5357,7 @@ public final class VolumeQuotaRulesUpdateSamples {
  */
 public final class VolumesAuthorizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_AuthorizeExternalReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_AuthorizeExternalReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeExternalReplication.
@@ -4737,7 +5382,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
  */
 public final class VolumesAuthorizeReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_AuthorizeReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_AuthorizeReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
@@ -4764,7 +5409,7 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
  */
 public final class VolumesBreakFileLocksSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_BreakFileLocks.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_BreakFileLocks.json
      */
     /**
      * Sample code: Volumes_BreakFileLocks.
@@ -4790,7 +5435,7 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
  */
 public final class VolumesBreakReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_BreakReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_BreakReplication.json
      */
     /**
      * Sample code: Volumes_BreakReplication.
@@ -4815,7 +5460,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -4845,7 +5490,7 @@ public final class VolumesCreateOrUpdateSamples {
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_Delete.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_Delete.json
      */
     /**
      * Sample code: Volumes_Delete.
@@ -4866,7 +5511,7 @@ public final class VolumesDeleteSamples {
  */
 public final class VolumesDeleteReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_DeleteReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_DeleteReplication.json
      */
     /**
      * Sample code: Volumes_DeleteReplication.
@@ -4887,7 +5532,7 @@ public final class VolumesDeleteReplicationSamples {
  */
 public final class VolumesFinalizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_FinalizeExternalReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_FinalizeExternalReplication.json
      */
     /**
      * Sample code: Volumes_FinalizeExternalReplication.
@@ -4909,7 +5554,7 @@ public final class VolumesFinalizeExternalReplicationSamples {
  */
 public final class VolumesFinalizeRelocationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_FinalizeRelocation.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_FinalizeRelocation.json
      */
     /**
      * Sample code: Volumes_FinalizeRelocation.
@@ -4930,7 +5575,7 @@ public final class VolumesFinalizeRelocationSamples {
  */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ExtraLargeVolumes_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ExtraLargeVolumes_Get.json
      */
     /**
      * Sample code: Volumes_ExtralargeVolumeGet.
@@ -4942,7 +5587,7 @@ public final class VolumesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_Get.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_Get.json
      */
     /**
      * Sample code: Volumes_Get.
@@ -4963,7 +5608,7 @@ public final class VolumesGetSamples {
  */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ExtraLargeVolumes_List.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ExtraLargeVolumes_List.json
      */
     /**
      * Sample code: Volumes_ExtralargeVolumeList.
@@ -4975,7 +5620,7 @@ public final class VolumesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_List.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_List.json
      */
     /**
      * Sample code: Volumes_List.
@@ -4998,7 +5643,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
  */
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/GroupIdListForLDAPUser.json
+     * x-ms-original-file: 2026-04-15-preview/GroupIdListForLDAPUser.json
      */
     /**
      * Sample code: GetGroupIdListForUser.
@@ -5022,7 +5667,7 @@ public final class VolumesListGetGroupIdListForLdapUserSamples {
  */
 public final class VolumesListQuotaReportSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ListQuotaReport.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ListQuotaReport.json
      */
     /**
      * Sample code: ListQuotaReport.
@@ -5047,7 +5692,7 @@ import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
  */
 public final class VolumesListReplicationsSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ListReplications.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ListReplications.json
      */
     /**
      * Sample code: Volumes_ListReplications.
@@ -5073,7 +5718,7 @@ import java.util.Arrays;
  */
 public final class VolumesPeerExternalClusterSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_PeerExternalCluster.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_PeerExternalCluster.json
      */
     /**
      * Sample code: Volumes_PeerExternalCluster.
@@ -5098,7 +5743,7 @@ public final class VolumesPeerExternalClusterSamples {
  */
 public final class VolumesPerformReplicationTransferSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_PerformReplicationTransfer.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_PerformReplicationTransfer.json
      */
     /**
      * Sample code: Volumes_PerformReplicationTransfer.
@@ -5122,7 +5767,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
  */
 public final class VolumesPoolChangeSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_PoolChange.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_PoolChange.json
      */
     /**
      * Sample code: Volumes_PoolChange.
@@ -5146,7 +5791,7 @@ public final class VolumesPoolChangeSamples {
  */
 public final class VolumesPopulateAvailabilityZoneSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_PopulateAvailabilityZones.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_PopulateAvailabilityZones.json
      */
     /**
      * Sample code: Volumes_PopulateAvailabilityZones.
@@ -5168,7 +5813,7 @@ public final class VolumesPopulateAvailabilityZoneSamples {
  */
 public final class VolumesReInitializeReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ReInitializeReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ReInitializeReplication.json
      */
     /**
      * Sample code: Volumes_ReInitializeReplication.
@@ -5192,7 +5837,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
  */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ReestablishReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ReestablishReplication.json
      */
     /**
      * Sample code: Volumes_ReestablishReplication.
@@ -5219,7 +5864,7 @@ import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
  */
 public final class VolumesRelocateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_Relocate.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_Relocate.json
      */
     /**
      * Sample code: Volumes_Relocate.
@@ -5242,7 +5887,7 @@ public final class VolumesRelocateSamples {
  */
 public final class VolumesReplicationStatusSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ReplicationStatus.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ReplicationStatus.json
      */
     /**
      * Sample code: Volumes_ReplicationStatus.
@@ -5264,7 +5909,7 @@ public final class VolumesReplicationStatusSamples {
  */
 public final class VolumesResetCifsPasswordSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ResetCifsPassword.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ResetCifsPassword.json
      */
     /**
      * Sample code: Volumes_ResetCifsPassword.
@@ -5285,7 +5930,7 @@ public final class VolumesResetCifsPasswordSamples {
  */
 public final class VolumesResyncReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ResyncReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_ResyncReplication.json
      */
     /**
      * Sample code: Volumes_ResyncReplication.
@@ -5308,7 +5953,7 @@ import com.azure.resourcemanager.netapp.models.VolumeRevert;
  */
 public final class VolumesRevertSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_Revert.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_Revert.json
      */
     /**
      * Sample code: Volumes_Revert.
@@ -5332,7 +5977,7 @@ public final class VolumesRevertSamples {
  */
 public final class VolumesRevertRelocationSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_RevertRelocation.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_RevertRelocation.json
      */
     /**
      * Sample code: Volumes_RevertRelocation.
@@ -5353,7 +5998,7 @@ public final class VolumesRevertRelocationSamples {
  */
 public final class VolumesSplitCloneFromParentSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_SplitClone.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_SplitClone.json
      */
     /**
      * Sample code: Volumes_SplitClone.
@@ -5377,7 +6022,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_Update.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.

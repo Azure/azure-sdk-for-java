@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.resourcemanager.storage.fluent.AdvancedPlatformMetricsClient;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
@@ -366,6 +367,20 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The AdvancedPlatformMetricsClient object to access its operations.
+     */
+    private final AdvancedPlatformMetricsClient advancedPlatformMetrics;
+
+    /**
+     * Gets the AdvancedPlatformMetricsClient object to access its operations.
+     * 
+     * @return the AdvancedPlatformMetricsClient object.
+     */
+    public AdvancedPlatformMetricsClient getAdvancedPlatformMetrics() {
+        return this.advancedPlatformMetrics;
+    }
+
+    /**
      * The PrivateLinkResourcesClient object to access its operations.
      */
     private final PrivateLinkResourcesClient privateLinkResources;
@@ -509,7 +524,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-01";
+        this.apiVersion = "2026-04-01";
         this.operations = new OperationsClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);
         this.blobServices = new BlobServicesClientImpl(this);
@@ -527,6 +542,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.storageTaskAssignments = new StorageTaskAssignmentsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
         this.dataShares = new DataSharesClientImpl(this);
+        this.advancedPlatformMetrics = new AdvancedPlatformMetricsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.storageTaskAssignmentsInstancesReports = new StorageTaskAssignmentsInstancesReportsClientImpl(this);
         this.queues = new QueuesClientImpl(this);

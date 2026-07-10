@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_Update.json
      */
     /**
      * Sample code: Update a Fleet.
@@ -37,7 +37,7 @@ public final class FleetsUpdateAsyncSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_PatchTags.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_PatchTags.json
      */
     /**
      * Sample code: Patch tags of a Fleet during Update.

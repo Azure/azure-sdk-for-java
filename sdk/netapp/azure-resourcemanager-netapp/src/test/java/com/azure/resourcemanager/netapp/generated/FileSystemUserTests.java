@@ -14,21 +14,21 @@ public final class FileSystemUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemUser model = BinaryData.fromString(
-            "{\"nfsUser\":{\"userId\":5744786061005129903,\"groupId\":5373165762406096070},\"cifsUser\":{\"username\":\"kh\"}}")
+            "{\"nfsUser\":{\"userId\":6352328391564368443,\"groupId\":3920970361798969582},\"cifsUser\":{\"username\":\"cesutrgjupauut\"}}")
             .toObject(FileSystemUser.class);
-        Assertions.assertEquals(5744786061005129903L, model.nfsUser().userId());
-        Assertions.assertEquals(5373165762406096070L, model.nfsUser().groupId());
-        Assertions.assertEquals("kh", model.cifsUser().username());
+        Assertions.assertEquals(6352328391564368443L, model.nfsUser().userId());
+        Assertions.assertEquals(3920970361798969582L, model.nfsUser().groupId());
+        Assertions.assertEquals("cesutrgjupauut", model.cifsUser().username());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileSystemUser model = new FileSystemUser()
-            .withNfsUser(new NfsUser().withUserId(5744786061005129903L).withGroupId(5373165762406096070L))
-            .withCifsUser(new CifsUser().withUsername("kh"));
+            .withNfsUser(new NfsUser().withUserId(6352328391564368443L).withGroupId(3920970361798969582L))
+            .withCifsUser(new CifsUser().withUsername("cesutrgjupauut"));
         model = BinaryData.fromObject(model).toObject(FileSystemUser.class);
-        Assertions.assertEquals(5744786061005129903L, model.nfsUser().userId());
-        Assertions.assertEquals(5373165762406096070L, model.nfsUser().groupId());
-        Assertions.assertEquals("kh", model.cifsUser().username());
+        Assertions.assertEquals(6352328391564368443L, model.nfsUser().userId());
+        Assertions.assertEquals(3920970361798969582L, model.nfsUser().groupId());
+        Assertions.assertEquals("cesutrgjupauut", model.cifsUser().username());
     }
 }

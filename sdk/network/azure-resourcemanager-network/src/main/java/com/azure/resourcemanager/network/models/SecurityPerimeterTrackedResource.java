@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -30,21 +31,20 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SecurityPerimeterSystemData systemData;
+    private SystemData systemData;
 
     /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The name of the resource
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -100,13 +100,12 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
      * @return the systemData value.
      */
     @Override
-    public SecurityPerimeterSystemData systemData() {
+    public SystemData systemData() {
         return this.systemData;
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -126,8 +125,7 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -147,9 +145,6 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property location in model SecurityPerimeterTrackedResource"));
-        }
-        if (systemData() != null) {
-            systemData().validate();
         }
     }
 
@@ -190,8 +185,7 @@ public class SecurityPerimeterTrackedResource extends SecurityPerimeterResource 
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityPerimeterTrackedResource.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedSecurityPerimeterTrackedResource.systemData
-                        = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedSecurityPerimeterTrackedResource.systemData = SystemData.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedSecurityPerimeterTrackedResource.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {

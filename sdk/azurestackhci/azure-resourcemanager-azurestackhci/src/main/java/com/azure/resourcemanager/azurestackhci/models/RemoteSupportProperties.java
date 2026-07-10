@@ -44,6 +44,11 @@ public final class RemoteSupportProperties implements JsonSerializable<RemoteSup
      */
     private List<PerNodeRemoteSupportSession> remoteSupportSessionDetails;
 
+    /*
+     * Remote Support Provisioning State
+     */
+    private RemoteSupportProvisioningState remoteSupportProvisioningState;
+
     /**
      * Creates an instance of RemoteSupportProperties class.
      */
@@ -96,6 +101,15 @@ public final class RemoteSupportProperties implements JsonSerializable<RemoteSup
     }
 
     /**
+     * Get the remoteSupportProvisioningState property: Remote Support Provisioning State.
+     * 
+     * @return the remoteSupportProvisioningState value.
+     */
+    public RemoteSupportProvisioningState remoteSupportProvisioningState() {
+        return this.remoteSupportProvisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -135,6 +149,9 @@ public final class RemoteSupportProperties implements JsonSerializable<RemoteSup
                     List<PerNodeRemoteSupportSession> remoteSupportSessionDetails
                         = reader.readArray(reader1 -> PerNodeRemoteSupportSession.fromJson(reader1));
                     deserializedRemoteSupportProperties.remoteSupportSessionDetails = remoteSupportSessionDetails;
+                } else if ("remoteSupportProvisioningState".equals(fieldName)) {
+                    deserializedRemoteSupportProperties.remoteSupportProvisioningState
+                        = RemoteSupportProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -22,7 +22,7 @@ public final class SubvolumesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"juktirzkaugpucd\",\"size\":1401968229593893615,\"parentPath\":\"lwgofm\",\"provisioningState\":\"wrjlvzkl\"},\"id\":\"bgikyjtkakvlbi\",\"name\":\"hjvpzaptu\",\"type\":\"skaoizjixwf\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"odvqgcnbhcbmj\",\"size\":1352727469674029270,\"parentPath\":\"n\",\"provisioningState\":\"ntsxjmfmeftvh\"},\"id\":\"o\",\"name\":\"gjrhs\",\"type\":\"bwgmjgrul\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class SubvolumesListByVolumeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SubvolumeInfo> response
-            = manager.subvolumes().listByVolume("bxv", "nzuz", "bgk", "cscpiuzvkunh", com.azure.core.util.Context.NONE);
+        PagedIterable<SubvolumeInfo> response = manager.subvolumes()
+            .listByVolume("zlgzawkgyepey", "mnnidmdia", "pzxkzrntmkct", "huosgwqpsqaz",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("juktirzkaugpucd", response.iterator().next().path());
-        Assertions.assertEquals(1401968229593893615L, response.iterator().next().size());
-        Assertions.assertEquals("lwgofm", response.iterator().next().parentPath());
+        Assertions.assertEquals("odvqgcnbhcbmj", response.iterator().next().path());
+        Assertions.assertEquals(1352727469674029270L, response.iterator().next().size());
+        Assertions.assertEquals("n", response.iterator().next().parentPath());
     }
 }

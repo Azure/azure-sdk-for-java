@@ -8,7 +8,6 @@ import com.azure.resourcemanager.cdn.models.AfdEndpoint;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
-import com.azure.resourcemanager.cdn.models.AfdRouteGrpcState;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
@@ -106,11 +105,6 @@ class RouteImpl extends ExternalChildResourceImpl<Route, RouteInner, AfdEndpoint
     }
 
     @Override
-    public AfdRouteGrpcState grpcState() {
-        return this.innerModel().grpcState();
-    }
-
-    @Override
     public AfdProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -148,8 +142,7 @@ class RouteImpl extends ExternalChildResourceImpl<Route, RouteInner, AfdEndpoint
             .withForwardingProtocol(this.innerModel().forwardingProtocol())
             .withLinkToDefaultDomain(this.innerModel().linkToDefaultDomain())
             .withHttpsRedirect(this.innerModel().httpsRedirect())
-            .withEnabledState(this.innerModel().enabledState())
-            .withGrpcState(this.innerModel().grpcState());
+            .withEnabledState(this.innerModel().enabledState());
         return this.parent()
             .parent()
             .manager()
@@ -261,9 +254,4 @@ class RouteImpl extends ExternalChildResourceImpl<Route, RouteInner, AfdEndpoint
         return this;
     }
 
-    @Override
-    public RouteImpl withGrpcState(AfdRouteGrpcState grpcState) {
-        this.innerModel().withGrpcState(grpcState);
-        return this;
-    }
 }

@@ -24,6 +24,8 @@ public class ContainerServiceManagementTest extends ResourceManagerTestProxyTest
     protected ResourceManager resourceManager;
     protected ContainerServiceManager containerServiceManager;
     protected String rgName = "";
+    protected static final String K8S_VERSION_OLD = "1.35.0";
+    protected static final String K8S_VERSION_NEW = "1.35.3";
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,

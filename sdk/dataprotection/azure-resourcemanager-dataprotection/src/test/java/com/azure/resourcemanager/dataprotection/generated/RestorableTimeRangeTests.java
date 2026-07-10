@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class RestorableTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorableTimeRange model
-            = BinaryData.fromString("{\"startTime\":\"pagmhrskdsnf\",\"endTime\":\"sd\",\"objectType\":\"kgtdlmkkze\"}")
-                .toObject(RestorableTimeRange.class);
-        Assertions.assertEquals("pagmhrskdsnf", model.startTime());
-        Assertions.assertEquals("sd", model.endTime());
-        Assertions.assertEquals("kgtdlmkkze", model.objectType());
+        RestorableTimeRange model = BinaryData
+            .fromString("{\"startTime\":\"hvxndzwmkrefajpj\",\"endTime\":\"rwkq\",\"objectType\":\"hgbijt\"}")
+            .toObject(RestorableTimeRange.class);
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.startTime());
+        Assertions.assertEquals("rwkq", model.endTime());
+        Assertions.assertEquals("hgbijt", model.objectType());
     }
 }

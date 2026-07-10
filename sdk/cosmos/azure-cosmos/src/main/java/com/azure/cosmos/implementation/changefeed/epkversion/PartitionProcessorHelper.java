@@ -16,6 +16,10 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 
 public class PartitionProcessorHelper {
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
+
     public static ChangeFeedStartFromInternal getStartFromSettings(
             FeedRangeInternal feedRange,
             ChangeFeedProcessorOptions processorOptions,
@@ -89,7 +93,7 @@ public class PartitionProcessorHelper {
                 .setMaxItemCount(maxItemCount);
 
             // in epk version change feed processor, we are going to use new wire format to be consistent with full fidelity
-            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+            changeFeedOptionsAccessor()
                 .setHeader(
                     changeFeedRequestOptions,
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
@@ -102,7 +106,7 @@ public class PartitionProcessorHelper {
             CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
             // in epk version change feed processor, we are going to use new wire format to be consistent with full fidelity
-            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+            changeFeedOptionsAccessor()
                 .setHeader(
                     changeFeedRequestOptions,
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,

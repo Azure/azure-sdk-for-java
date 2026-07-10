@@ -33,9 +33,10 @@ import java.util.function.BiFunction;
 public final class GroupByDocumentQueryExecutionContext implements
     IDocumentQueryExecutionComponent<Document> {
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
+
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
                                                                                     "for queries with GROUP BY." +
                                                                                     "Do not use continuation token" +
@@ -93,7 +94,7 @@ public final class GroupByDocumentQueryExecutionContext implements
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
                     diagnosticsList.addAll(
-                        diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
+                        diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
@@ -141,7 +142,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
             queryMetrics, null, false,
             false, null);
-        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+        diagAccessor().addClientSideDiagnosticsToFeed(
             frp.getCosmosDiagnostics(), diagnostics);
 
         return frp;

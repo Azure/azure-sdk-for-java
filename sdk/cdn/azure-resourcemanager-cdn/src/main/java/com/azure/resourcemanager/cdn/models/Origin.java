@@ -80,13 +80,6 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
     SharedPrivateLinkResourceProperties sharedPrivateLinkResource();
 
     /**
-     * Gets the capacity resource properties for this origin.
-     *
-     * @return the origin capacity resource properties
-     */
-    OriginCapacityResourceProperties originCapacityResource();
-
-    /**
      * Gets whether health probes are enabled for this origin.
      *
      * @return the enabled state
@@ -203,14 +196,6 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
              */
             WithAttach<ParentT>
                 withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource);
-
-            /**
-             * Specifies the capacity resource properties for the origin.
-             *
-             * @param originCapacityResource the origin capacity resource properties
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource);
 
             /**
              * Specifies whether health probes should be enabled for this origin.
@@ -344,14 +329,6 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
                 withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource);
 
             /**
-             * Specifies the capacity resource properties for the origin.
-             *
-             * @param originCapacityResource the origin capacity resource properties
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource);
-
-            /**
              * Specifies whether health probes should be enabled for this origin.
              *
              * @param enabledState the enabled state
@@ -450,14 +427,6 @@ public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasI
          * @return the next stage of the update
          */
         Update withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource);
-
-        /**
-         * Specifies the capacity resource properties for the origin.
-         *
-         * @param originCapacityResource the origin capacity resource properties
-         * @return the next stage of the update
-         */
-        Update withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource);
 
         /**
          * Specifies whether health probes should be enabled for this origin.

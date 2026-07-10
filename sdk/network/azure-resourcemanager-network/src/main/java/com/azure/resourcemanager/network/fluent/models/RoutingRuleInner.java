@@ -36,19 +36,14 @@ public final class RoutingRuleInner extends ChildResource {
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of RoutingRuleInner class.
@@ -85,7 +80,7 @@ public final class RoutingRuleInner extends ChildResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -95,7 +90,7 @@ public final class RoutingRuleInner extends ChildResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -105,13 +100,12 @@ public final class RoutingRuleInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public RoutingRuleInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -219,6 +213,7 @@ public final class RoutingRuleInner extends ChildResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -239,14 +234,14 @@ public final class RoutingRuleInner extends ChildResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedRoutingRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedRoutingRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedRoutingRuleInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedRoutingRuleInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRoutingRuleInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedRoutingRuleInner.innerProperties = RoutingRulePropertiesFormat.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

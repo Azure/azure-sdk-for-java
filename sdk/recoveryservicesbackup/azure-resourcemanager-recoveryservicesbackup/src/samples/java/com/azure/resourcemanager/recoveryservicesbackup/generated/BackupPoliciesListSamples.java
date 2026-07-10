@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/BackupPolicies_List.json
+     * x-ms-original-file: 2026-01-31-preview/AzureWorkload/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureWorkload.
@@ -24,7 +24,7 @@ public final class BackupPoliciesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/V2Policy/v2-List-Policies.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/V2Policy/v2-List-Policies.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm with both V1 and V2
@@ -40,7 +40,7 @@ public final class BackupPoliciesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/BackupPolicies_List.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm.

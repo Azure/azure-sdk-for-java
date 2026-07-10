@@ -40,19 +40,14 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of DefaultAdminRule class.
@@ -100,7 +95,7 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -110,7 +105,7 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -120,13 +115,12 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public DefaultAdminRule withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -271,6 +265,7 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
@@ -292,14 +287,14 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedDefaultAdminRule.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedDefaultAdminRule.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDefaultAdminRule.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedDefaultAdminRule.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDefaultAdminRule.withId(reader.getString());
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDefaultAdminRule.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {

@@ -119,23 +119,41 @@
         "BuildOptions": "",
         "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_3-5,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13"
       },
-      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 17'": {
+      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 17": {
         "ProfileFlag": "-Dspark-e2e_4-0_2-13",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.17",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
         "BuildOptions": "",
-        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13"
+        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4,com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13"
       },
-      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 21'": {
+      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 21": {
         "ProfileFlag": "-Dspark-e2e_4-0_2-13",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.21",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
         "BuildOptions": "",
-        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13"
+        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4,com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13"
+      },
+      "Spark 4.1, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 17": {
+        "ProfileFlag": "-Dspark-e2e_4-1_2-13",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.17",
+        "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
+        "BuildOptions": "",
+        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4,com.azure.cosmos.spark:azure-cosmos-spark_4-1_2-13"
+      },
+      "Spark 4.1, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 21": {
+        "ProfileFlag": "-Dspark-e2e_4-1_2-13",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.21",
+        "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true",
+        "BuildOptions": "",
+        "ProjectListOverride": "com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure:azure-cosmos-tests,com.azure.cosmos.spark:azure-cosmos-spark_3,com.azure.cosmos.spark:azure-cosmos-spark_4,com.azure.cosmos.spark:azure-cosmos-spark_4-1_2-13"
       },
       "Kafka Integration Tests targeting Cosmos Emulator - Java 11": {
         "ProfileFlag": "-Pkafka-emulator",

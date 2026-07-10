@@ -47,7 +47,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,9 +60,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
-    // Dedicated scheduler for encryption benchmark workload dispatch.
-    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
-    final Scheduler benchmarkScheduler;
+    private final AtomicLong operationCounter = new AtomicLong(0);
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -88,10 +85,9 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
-    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
 
         workloadConfig = workloadCfg;
-        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -165,7 +161,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses,
                 (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then(),
-                workloadConfig.getConcurrency());
+                workloadConfig.getIngestionRetryConcurrency());
 
             docsToRead = generatedDocs;
         } else {
@@ -199,70 +195,22 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
     protected abstract Mono<T> performWorkload(long i);
 
-    @SuppressWarnings("unchecked")
-    public void run() throws Exception {
-
-        long startTime = System.currentTimeMillis();
-        int concurrency = workloadConfig.getConcurrency();
-
-        Flux<Long> source;
-        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
-        if (maxDuration != null) {
-            final long deadline = startTime + maxDuration.toMillis();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    if (System.currentTimeMillis() < deadline) {
-                        sink.next(state.getAndIncrement());
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
-        } else {
-            // Count-based termination using Flux.generate to avoid long-to-int truncation
-            long numberOfOps = workloadConfig.getNumberOfOperations();
-            source = Flux.generate(
-                AtomicLong::new,
-                (state, sink) -> {
-                    long current = state.getAndIncrement();
-                    if (current < numberOfOps) {
-                        sink.next(current);
-                    } else {
-                        sink.complete();
-                    }
-                    return state;
-                });
+    @Override
+    public Mono<?> performSingleOperation() {
+        long operationIndex = operationCounter.getAndIncrement();
+        Mono<T> workload = performWorkload(operationIndex);
+        Mono<T> delayed = sparsityMono(operationIndex);
+        if (delayed != null) {
+            workload = delayed.then(workload);
         }
-
-        AtomicLong completedCount = new AtomicLong(0);
-
-        source
-            .flatMap(i -> {
-                Mono<T> workload = performWorkload(i);
-                Mono<T> delayed = sparsityMono(i);
-                if (delayed != null) {
-                    workload = delayed.then(workload);
-                }
-                return workload
-                    .subscribeOn(benchmarkScheduler)
-                    .doOnSuccess(v -> {
-                        completedCount.incrementAndGet();
-                        AsyncEncryptionBenchmark.this.onSuccess();
-                    })
-                    .doOnError(e -> {
-                        completedCount.incrementAndGet();
-                        logger.error("Encountered failure {} on thread {}",
-                            e.getMessage(), Thread.currentThread().getName(), e);
-                        AsyncEncryptionBenchmark.this.onError(e);
-                    })
-                    .onErrorResume(e -> Mono.empty());
-            }, concurrency)
-            .blockLast();
-
-        long endTime = System.currentTimeMillis();
-        logger.info("[{}] operations performed in [{}] seconds.",
-            completedCount.get(), (int) ((endTime - startTime) / 1000));
+        return workload
+            .doOnSuccess(v -> AsyncEncryptionBenchmark.this.onSuccess())
+            .doOnError(e -> {
+                logger.error("Encountered failure {} on thread {}",
+                    e.getMessage(), Thread.currentThread().getName(), e);
+                AsyncEncryptionBenchmark.this.onError(e);
+            })
+            .onErrorResume(e -> Mono.empty());
     }
 
     protected Mono sparsityMono(long i) {

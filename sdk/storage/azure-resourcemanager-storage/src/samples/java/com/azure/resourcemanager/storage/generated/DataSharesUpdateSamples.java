@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.resourcemanager.storage.fluent.models.DataShareInner;
+import com.azure.resourcemanager.storage.models.DataShareUpdate;
 import com.azure.resourcemanager.storage.models.StorageDataShareAccessPolicy;
 import com.azure.resourcemanager.storage.models.StorageDataShareAccessPolicyPermission;
 import com.azure.resourcemanager.storage.models.StorageDataShareAsset;
-import com.azure.resourcemanager.storage.models.StorageDataShareProperties;
+import com.azure.resourcemanager.storage.models.StorageDataSharePropertiesUpdate;
 import java.util.Arrays;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DataSharesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Update.json
+     * x-ms-original-file: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Update.json
      */
     /**
      * Sample code: UpdateDataShare.
@@ -27,9 +27,9 @@ public final class DataSharesUpdateSamples {
         manager.serviceClient()
             .getDataShares()
             .update("testrg", "teststorageaccount", "testdatashare",
-                new DataShareInner()
+                new DataShareUpdate()
                     .withProperties(
-                        new StorageDataShareProperties().withDescription("New dummy data share")
+                        new StorageDataSharePropertiesUpdate().withDescription("New dummy data share")
                             .withAccessPolicies(Arrays.asList(new StorageDataShareAccessPolicy()
                                 .withPrincipalId("00000000-0000-0000-0000-123456781234")
                                 .withTenantId("00000000-0000-0000-0000-987654321987")

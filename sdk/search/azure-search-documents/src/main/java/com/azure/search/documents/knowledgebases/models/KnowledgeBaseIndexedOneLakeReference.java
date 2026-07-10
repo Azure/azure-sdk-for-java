@@ -23,12 +23,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
     @Generated
     private KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_ONE_LAKE;
 
-    /*
-     * The document URL for the reference.
-     */
-    @Generated
-    private String docUrl;
-
     /**
      * Creates an instance of KnowledgeBaseIndexedOneLakeReference class.
      *
@@ -52,16 +46,6 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
     }
 
     /**
-     * Get the docUrl property: The document URL for the reference.
-     *
-     * @return the docUrl value.
-     */
-    @Generated
-    public String getDocUrl() {
-        return this.docUrl;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -73,7 +57,8 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
         jsonWriter.writeMapField("sourceData", getSourceData(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("docUrl", this.docUrl);
+        jsonWriter.writeStringField("docUrl", this.documentUrl);
+        jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,7 +79,8 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
             Map<String, Object> sourceData = null;
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_ONE_LAKE;
-            String docUrl = null;
+            String documentUrl = null;
+            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -109,7 +95,9 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docUrl".equals(fieldName)) {
-                    docUrl = reader.getString();
+                    documentUrl = reader.getString();
+                } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
+                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -119,8 +107,41 @@ public final class KnowledgeBaseIndexedOneLakeReference extends KnowledgeBaseRef
             deserializedKnowledgeBaseIndexedOneLakeReference.setSourceData(sourceData);
             deserializedKnowledgeBaseIndexedOneLakeReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseIndexedOneLakeReference.type = type;
-            deserializedKnowledgeBaseIndexedOneLakeReference.docUrl = docUrl;
+            deserializedKnowledgeBaseIndexedOneLakeReference.documentUrl = documentUrl;
+            deserializedKnowledgeBaseIndexedOneLakeReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
             return deserializedKnowledgeBaseIndexedOneLakeReference;
         });
+    }
+
+    /*
+     * The document URL for the reference.
+     */
+    @Generated
+    private String documentUrl;
+
+    /**
+     * Get the documentUrl property: The document URL for the reference.
+     *
+     * @return the documentUrl value.
+     */
+    @Generated
+    public String getDocumentUrl() {
+        return this.documentUrl;
+    }
+
+    /*
+     * The sensitivity label information for the reference.
+     */
+    @Generated
+    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
+
+    /**
+     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
+     *
+     * @return the searchSensitivityLabelInfo value.
+     */
+    @Generated
+    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
+        return this.searchSensitivityLabelInfo;
     }
 }

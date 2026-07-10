@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+     * x-ms-original-file: 2026-01-31-preview/BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.

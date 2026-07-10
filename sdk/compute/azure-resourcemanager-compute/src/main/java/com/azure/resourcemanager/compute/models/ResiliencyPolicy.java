@@ -12,8 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes an resiliency policy - AutomaticZoneRebalancingPolicy, ResilientVMCreationPolicy and/or
- * ResilientVMDeletionPolicy.
+ * Describes an resiliency policy - AutomaticZoneRebalancingPolicy, ResilientVMCreationPolicy, ResilientVMDeletionPolicy
+ * and OperationRecoverySettings (version &gt; 2025-11-01).
  */
 @Fluent
 public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy> {
@@ -36,6 +36,11 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
      * The configuration parameters used while performing zone allocation.
      */
     private ZoneAllocationPolicy zoneAllocationPolicy;
+
+    /*
+     * The configuration parameters used for operation recovery settings.
+     */
+    private OperationRecoverySettings operationRecoverySettings;
 
     /**
      * Creates an instance of ResiliencyPolicy class.
@@ -131,6 +136,26 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
     }
 
     /**
+     * Get the operationRecoverySettings property: The configuration parameters used for operation recovery settings.
+     * 
+     * @return the operationRecoverySettings value.
+     */
+    public OperationRecoverySettings operationRecoverySettings() {
+        return this.operationRecoverySettings;
+    }
+
+    /**
+     * Set the operationRecoverySettings property: The configuration parameters used for operation recovery settings.
+     * 
+     * @param operationRecoverySettings the operationRecoverySettings value to set.
+     * @return the ResiliencyPolicy object itself.
+     */
+    public ResiliencyPolicy withOperationRecoverySettings(OperationRecoverySettings operationRecoverySettings) {
+        this.operationRecoverySettings = operationRecoverySettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -148,6 +173,9 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         if (zoneAllocationPolicy() != null) {
             zoneAllocationPolicy().validate();
         }
+        if (operationRecoverySettings() != null) {
+            operationRecoverySettings().validate();
+        }
     }
 
     /**
@@ -160,6 +188,7 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         jsonWriter.writeJsonField("resilientVMDeletionPolicy", this.resilientVMDeletionPolicy);
         jsonWriter.writeJsonField("automaticZoneRebalancingPolicy", this.automaticZoneRebalancingPolicy);
         jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
+        jsonWriter.writeJsonField("operationRecoverySettings", this.operationRecoverySettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -187,6 +216,8 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
                         = AutomaticZoneRebalancingPolicy.fromJson(reader);
                 } else if ("zoneAllocationPolicy".equals(fieldName)) {
                     deserializedResiliencyPolicy.zoneAllocationPolicy = ZoneAllocationPolicy.fromJson(reader);
+                } else if ("operationRecoverySettings".equals(fieldName)) {
+                    deserializedResiliencyPolicy.operationRecoverySettings = OperationRecoverySettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

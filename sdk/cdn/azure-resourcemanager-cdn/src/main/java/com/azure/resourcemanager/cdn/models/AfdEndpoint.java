@@ -28,13 +28,6 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
     EnabledState enabledState();
 
     /**
-     * Gets the current mTLS enforcement configuration.
-     *
-     * @return the current mTLS enforcement configuration
-     */
-    EnforceMtlsEnabledState enforceMtls();
-
-    /**
      * Gets the scope that determines whether a generated host name can be reused.
      *
      * @return the scope that determines whether a generated host name can be reused
@@ -143,14 +136,6 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
             Blank<ParentT> withEnabledState(EnabledState enabledState);
 
             /**
-             * Specifies whether mTLS must be enforced for child routes.
-             *
-             * @param enforceMtls the mTLS enforcement configuration
-             * @return the next stage of the definition
-             */
-            Blank<ParentT> withEnforceMtls(EnforceMtlsEnabledState enforceMtls);
-
-            /**
              * Sets the reuse scope for the auto-generated domain label.
              *
              * @param scope the label reuse scope
@@ -214,14 +199,6 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
              * @return the next stage of the definition
              */
             Blank<ParentT> withEnabledState(EnabledState enabledState);
-
-            /**
-             * Specifies whether mTLS must be enforced for child routes.
-             *
-             * @param enforceMtls the mTLS enforcement configuration
-             * @return the next stage of the definition
-             */
-            Blank<ParentT> withEnforceMtls(EnforceMtlsEnabledState enforceMtls);
         }
 
         /**
@@ -258,14 +235,6 @@ public interface AfdEndpoint extends ExternalChildResource<AfdEndpoint, CdnProfi
          * @return the next stage of the update
          */
         Update withEnabledState(EnabledState enabledState);
-
-        /**
-         * Specifies whether mTLS must be enforced for child routes.
-         *
-         * @param enforceMtls the mTLS enforcement configuration
-         * @return the next stage of the update
-         */
-        Update withEnforceMtls(EnforceMtlsEnabledState enforceMtls);
 
         /**
          * Starts the definition of a new route to be attached to this endpoint.

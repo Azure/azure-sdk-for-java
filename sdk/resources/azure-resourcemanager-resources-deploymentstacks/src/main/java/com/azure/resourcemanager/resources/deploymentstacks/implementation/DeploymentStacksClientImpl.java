@@ -673,7 +673,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateStackAtResourceGroupWithResponseAsync(String resourceGroupName,
@@ -697,7 +698,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtResourceGroupWithResponse(String resourceGroupName,
@@ -720,7 +721,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtResourceGroupWithResponse(String resourceGroupName,
@@ -742,7 +743,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -765,7 +766,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -788,7 +789,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -810,7 +811,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentStackValidateResultInner> validateStackAtResourceGroupAsync(String resourceGroupName,
@@ -829,7 +830,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtResourceGroup(String resourceGroupName,
@@ -849,7 +850,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtResourceGroup(String resourceGroupName,
@@ -1626,7 +1627,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateStackAtSubscriptionWithResponseAsync(String deploymentStackName,
@@ -1649,7 +1651,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtSubscriptionWithResponse(String deploymentStackName,
@@ -1670,7 +1672,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtSubscriptionWithResponse(String deploymentStackName,
@@ -1690,7 +1692,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -1711,7 +1713,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -1731,7 +1733,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -1752,7 +1754,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentStackValidateResultInner> validateStackAtSubscriptionAsync(String deploymentStackName,
@@ -1770,7 +1772,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtSubscription(String deploymentStackName,
@@ -1788,7 +1790,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtSubscription(String deploymentStackName,
@@ -2549,7 +2551,8 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateStackAtManagementGroupWithResponseAsync(String managementGroupId,
@@ -2573,7 +2576,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtManagementGroupWithResponse(String managementGroupId,
@@ -2595,7 +2598,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the Deployment stack validation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateStackAtManagementGroupWithResponse(String managementGroupId,
@@ -2616,7 +2619,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -2639,7 +2642,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -2662,7 +2665,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStackValidateResultInner>, DeploymentStackValidateResultInner>
@@ -2684,7 +2687,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the Deployment stack validation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentStackValidateResultInner> validateStackAtManagementGroupAsync(String managementGroupId,
@@ -2703,7 +2706,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtManagementGroup(String managementGroupId,
@@ -2723,7 +2726,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the Deployment stack validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStackValidateResultInner validateStackAtManagementGroup(String managementGroupId,

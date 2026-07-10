@@ -75,22 +75,16 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
     private Boolean allowFallback;
 
     /*
-     * Defines complexity of LLM prompts to provide high accuracy translation.
+     * Desired tone of target translation. Accepted values are formal, informal, or neutral.
      */
     @Generated
-    private String grade;
+    private TranslationTone tone;
 
     /*
-     * Desired tone of target translation.
+     * Desired gender of target translation. Accepted values are female, male, or neutral.
      */
     @Generated
-    private String tone;
-
-    /*
-     * Desired gender of target translation.
-     */
-    @Generated
-    private String gender;
+    private TranslationGender gender;
 
     /*
      * Reference dataset ID having sentence pair to generate adaptive customized translation.
@@ -276,69 +270,23 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
     }
 
     /**
-     * Get the grade property: Defines complexity of LLM prompts to provide high accuracy translation.
-     *
-     * @return the grade value.
-     */
-    @Generated
-    public String getGrade() {
-        return this.grade;
-    }
-
-    /**
-     * Set the grade property: Defines complexity of LLM prompts to provide high accuracy translation.
-     *
-     * @param grade the grade value to set.
-     * @return the TranslationTarget object itself.
-     */
-    @Generated
-    public TranslationTarget setGrade(String grade) {
-        this.grade = grade;
-        return this;
-    }
-
-    /**
-     * Get the tone property: Desired tone of target translation.
+     * Get the tone property: Desired tone of target translation. Accepted values are formal, informal, or neutral.
      *
      * @return the tone value.
      */
     @Generated
-    public String getTone() {
+    public TranslationTone getTone() {
         return this.tone;
     }
 
     /**
-     * Set the tone property: Desired tone of target translation.
-     *
-     * @param tone the tone value to set.
-     * @return the TranslationTarget object itself.
-     */
-    @Generated
-    public TranslationTarget setTone(String tone) {
-        this.tone = tone;
-        return this;
-    }
-
-    /**
-     * Get the gender property: Desired gender of target translation.
+     * Get the gender property: Desired gender of target translation. Accepted values are female, male, or neutral.
      *
      * @return the gender value.
      */
     @Generated
-    public String getGender() {
+    public TranslationGender getGender() {
         return this.gender;
-    }
-
-    /**
-     * Set the gender property: Desired gender of target translation.
-     *
-     * @param gender the gender value to set.
-     * @return the TranslationTarget object itself.
-     */
-    @Generated
-    public TranslationTarget setGender(String gender) {
-        this.gender = gender;
-        return this;
     }
 
     /**
@@ -402,9 +350,8 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
             this.profanityMarker == null ? null : this.profanityMarker.toString());
         jsonWriter.writeStringField("deploymentName", this.deploymentName);
         jsonWriter.writeBooleanField("allowFallback", this.allowFallback);
-        jsonWriter.writeStringField("grade", this.grade);
-        jsonWriter.writeStringField("tone", this.tone);
-        jsonWriter.writeStringField("gender", this.gender);
+        jsonWriter.writeStringField("tone", this.tone == null ? null : this.tone.toString());
+        jsonWriter.writeStringField("gender", this.gender == null ? null : this.gender.toString());
         jsonWriter.writeStringField("adaptiveDatasetId", this.adaptiveDatasetId);
         jsonWriter.writeArrayField("referenceTextPairs", this.referenceTextPairs,
             (writer, element) -> writer.writeJson(element));
@@ -429,9 +376,8 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
             ProfanityMarker profanityMarker = null;
             String deploymentName = null;
             Boolean allowFallback = null;
-            String grade = null;
-            String tone = null;
-            String gender = null;
+            TranslationTone tone = null;
+            TranslationGender gender = null;
             String adaptiveDatasetId = null;
             List<ReferenceTextPair> referenceTextPairs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -449,12 +395,10 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
                     deploymentName = reader.getString();
                 } else if ("allowFallback".equals(fieldName)) {
                     allowFallback = reader.getNullable(JsonReader::getBoolean);
-                } else if ("grade".equals(fieldName)) {
-                    grade = reader.getString();
                 } else if ("tone".equals(fieldName)) {
-                    tone = reader.getString();
+                    tone = TranslationTone.fromString(reader.getString());
                 } else if ("gender".equals(fieldName)) {
-                    gender = reader.getString();
+                    gender = TranslationGender.fromString(reader.getString());
                 } else if ("adaptiveDatasetId".equals(fieldName)) {
                     adaptiveDatasetId = reader.getString();
                 } else if ("referenceTextPairs".equals(fieldName)) {
@@ -469,12 +413,35 @@ public final class TranslationTarget implements JsonSerializable<TranslationTarg
             deserializedTranslationTarget.profanityMarker = profanityMarker;
             deserializedTranslationTarget.deploymentName = deploymentName;
             deserializedTranslationTarget.allowFallback = allowFallback;
-            deserializedTranslationTarget.grade = grade;
             deserializedTranslationTarget.tone = tone;
             deserializedTranslationTarget.gender = gender;
             deserializedTranslationTarget.adaptiveDatasetId = adaptiveDatasetId;
             deserializedTranslationTarget.referenceTextPairs = referenceTextPairs;
             return deserializedTranslationTarget;
         });
+    }
+
+    /**
+     * Set the tone property: Desired tone of target translation. Accepted values are formal, informal, or neutral.
+     *
+     * @param tone the tone value to set.
+     * @return the TranslationTarget object itself.
+     */
+    @Generated
+    public TranslationTarget setTone(TranslationTone tone) {
+        this.tone = tone;
+        return this;
+    }
+
+    /**
+     * Set the gender property: Desired gender of target translation. Accepted values are female, male, or neutral.
+     *
+     * @param gender the gender value to set.
+     * @return the TranslationTarget object itself.
+     */
+    @Generated
+    public TranslationTarget setGender(TranslationGender gender) {
+        this.gender = gender;
+        return this;
     }
 }

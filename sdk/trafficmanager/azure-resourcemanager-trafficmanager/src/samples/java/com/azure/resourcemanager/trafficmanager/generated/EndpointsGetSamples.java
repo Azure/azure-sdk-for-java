@@ -11,7 +11,7 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
  */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-GET-External-WithGeoMapping.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-GET-External-WithGeoMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithGeoMapping.
@@ -27,7 +27,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-GET-External-WithSubnetMapping.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-GET-External-WithSubnetMapping.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithSubnetMapping.
@@ -43,7 +43,7 @@ public final class EndpointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-GET-External-WithLocation.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-GET-External-WithLocation.json
      */
     /**
      * Sample code: Endpoint-GET-External-WithLocation.

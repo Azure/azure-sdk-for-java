@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.SkuName;
  */
 public final class StorageAccountsCustomerInitiatedMigrationSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountPostMigration.json
+     * x-ms-original-file: 2026-04-01/StorageAccountPostMigration.json
      */
     /**
      * Sample code: StorageAccountPostMigration.

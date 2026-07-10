@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class SourceSideScanStatus extends ExpandableStringEnum<SourceSideScanStatus> {
     /**
-     * Static value Configured for SourceSideScanStatus.
+     * Source side scan is configured.
      */
     public static final SourceSideScanStatus CONFIGURED = fromString("Configured");
 
     /**
-     * Static value NotConfigured for SourceSideScanStatus.
+     * Source side scan is not configured.
      */
     public static final SourceSideScanStatus NOT_CONFIGURED = fromString("NotConfigured");
 
     /**
-     * Static value NotApplicable for SourceSideScanStatus.
+     * Source side scan is not applicable.
      */
     public static final SourceSideScanStatus NOT_APPLICABLE = fromString("NotApplicable");
 

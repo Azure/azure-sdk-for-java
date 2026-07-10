@@ -3,24 +3,26 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
-    AsyncReadBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
-        super(cfg, scheduler);
+    AsyncReadBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override
     protected Mono<PojoizedJson> performWorkload(long i) {
         int index = (int) (i % docsToRead.size());
         PojoizedJson doc = docsToRead.get(index);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
         return cosmosAsyncContainer.readItem(doc.getId(),
-            new PartitionKey(doc.getId()), PojoizedJson.class)
+            new PartitionKey(doc.getId()), options, PojoizedJson.class)
             .map(CosmosItemResponse::getItem);
     }
 }

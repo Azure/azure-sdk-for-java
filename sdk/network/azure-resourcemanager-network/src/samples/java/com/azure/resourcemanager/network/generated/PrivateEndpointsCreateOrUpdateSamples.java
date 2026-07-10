@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointCreateWithASG.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointCreateWithASG.json
      */
     /**
      * Sample code: Create private endpoint with application security groups.
@@ -42,7 +42,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointCreate.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointCreate.json
      */
     /**
      * Sample code: Create private endpoint.
@@ -69,7 +69,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointCreateForManualApproval.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointCreateForManualApproval.json
      */
     /**
      * Sample code: Create private endpoint with manual approval connection.

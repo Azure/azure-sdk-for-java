@@ -34,19 +34,14 @@ public final class ScopeConnectionInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of ScopeConnectionInner class.
@@ -83,7 +78,7 @@ public final class ScopeConnectionInner extends ChildResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -93,7 +88,7 @@ public final class ScopeConnectionInner extends ChildResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -103,13 +98,12 @@ public final class ScopeConnectionInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public ScopeConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -208,6 +202,7 @@ public final class ScopeConnectionInner extends ChildResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -228,12 +223,12 @@ public final class ScopeConnectionInner extends ChildResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedScopeConnectionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedScopeConnectionInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedScopeConnectionInner.type = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedScopeConnectionInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedScopeConnectionInner.innerProperties = ScopeConnectionProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {

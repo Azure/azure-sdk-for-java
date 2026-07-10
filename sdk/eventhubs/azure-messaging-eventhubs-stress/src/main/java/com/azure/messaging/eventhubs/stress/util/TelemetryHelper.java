@@ -89,13 +89,17 @@ public class TelemetryHelper {
      * Initializes telemetry helper: sets up Azure Monitor exporter, enables JVM metrics collection.
      */
     private static OpenTelemetry init() {
+        System.setProperty("otel.java.global-autoconfigure.enabled", "true");
+        
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString == null) {
-            return OpenTelemetry.noop();
+            System.setProperty("otel.traces.exporter", "none");
+            System.setProperty("otel.metrics.exporter", "none");
+            System.setProperty("otel.logs.exporter", "none");
+        } else {
+            AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
         }
-        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-        AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder
@@ -124,7 +128,7 @@ public class TelemetryHelper {
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
         Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel, false); // false disables the capture of the GC cause
+        GarbageCollector.registerObservers(otel, true);
         OpenTelemetryAppender.install(otel);
 
         return otel;
@@ -237,7 +241,6 @@ public class TelemetryHelper {
         span.setAttribute(AttributeKey.stringKey("eventHubName"), options.getEventHubsEventHubName());
         span.setAttribute(AttributeKey.stringKey("consumerGroupName"), options.getEventHubsConsumerGroup());
         span.setAttribute(AttributeKey.longKey("messageSize"), options.getMessageSize());
-        span.setAttribute(AttributeKey.booleanKey("useV2"), options.useV2Stack());
         span.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         span.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         span.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));

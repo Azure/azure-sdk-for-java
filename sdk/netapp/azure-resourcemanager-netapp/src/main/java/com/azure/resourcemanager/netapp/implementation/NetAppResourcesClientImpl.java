@@ -185,7 +185,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,7 +226,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,7 +244,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +285,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -302,7 +302,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,7 +343,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -362,7 +362,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,7 +403,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -420,7 +420,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,7 +461,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -479,7 +479,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -520,7 +520,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -537,7 +537,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -569,7 +569,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,7 +585,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -618,7 +618,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -634,7 +634,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -675,7 +675,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -693,7 +693,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -734,7 +734,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -751,12 +751,13 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes the contents of a network sibling set along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSetWithResponseAsync(String location,
@@ -791,12 +792,12 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return describes the contents of a network sibling set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateNetworkSiblingSetWithResponse(String location,
@@ -831,13 +832,13 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return describes the contents of a network sibling set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateNetworkSiblingSetWithResponse(String location,
@@ -872,12 +873,12 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes the contents of a network sibling set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
@@ -893,12 +894,12 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes the contents of a network sibling set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
@@ -913,13 +914,13 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes the contents of a network sibling set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
@@ -934,12 +935,12 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes the contents of a network sibling set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkSiblingSetInner> updateNetworkSiblingSetAsync(String location,
@@ -952,12 +953,12 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes the contents of a network sibling set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body) {
@@ -969,13 +970,13 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes the contents of a network sibling set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body,

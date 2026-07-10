@@ -29,6 +29,11 @@ public final class DeploymentSettingHostNetwork implements JsonSerializable<Depl
     private List<DeploymentSettingStorageNetworks> storageNetworks;
 
     /*
+     * SAN network configuration for the host network. Applicable when StorageType is 'SAN' or 'SANS2D'.
+     */
+    private SanNetworks sanNetworks;
+
+    /*
      * Defines how the storage adapters between nodes are connected either switch or switch less..
      */
     private Boolean storageConnectivitySwitchless;
@@ -88,6 +93,28 @@ public final class DeploymentSettingHostNetwork implements JsonSerializable<Depl
     }
 
     /**
+     * Get the sanNetworks property: SAN network configuration for the host network. Applicable when StorageType is
+     * 'SAN' or 'SANS2D'.
+     * 
+     * @return the sanNetworks value.
+     */
+    public SanNetworks sanNetworks() {
+        return this.sanNetworks;
+    }
+
+    /**
+     * Set the sanNetworks property: SAN network configuration for the host network. Applicable when StorageType is
+     * 'SAN' or 'SANS2D'.
+     * 
+     * @param sanNetworks the sanNetworks value to set.
+     * @return the DeploymentSettingHostNetwork object itself.
+     */
+    public DeploymentSettingHostNetwork withSanNetworks(SanNetworks sanNetworks) {
+        this.sanNetworks = sanNetworks;
+        return this;
+    }
+
+    /**
      * Get the storageConnectivitySwitchless property: Defines how the storage adapters between nodes are connected
      * either switch or switch less..
      * 
@@ -142,6 +169,7 @@ public final class DeploymentSettingHostNetwork implements JsonSerializable<Depl
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("storageNetworks", this.storageNetworks,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sanNetworks", this.sanNetworks);
         jsonWriter.writeBooleanField("storageConnectivitySwitchless", this.storageConnectivitySwitchless);
         jsonWriter.writeBooleanField("enableStorageAutoIp", this.enableStorageAutoIp);
         return jsonWriter.writeEndObject();
@@ -170,6 +198,8 @@ public final class DeploymentSettingHostNetwork implements JsonSerializable<Depl
                     List<DeploymentSettingStorageNetworks> storageNetworks
                         = reader.readArray(reader1 -> DeploymentSettingStorageNetworks.fromJson(reader1));
                     deserializedDeploymentSettingHostNetwork.storageNetworks = storageNetworks;
+                } else if ("sanNetworks".equals(fieldName)) {
+                    deserializedDeploymentSettingHostNetwork.sanNetworks = SanNetworks.fromJson(reader);
                 } else if ("storageConnectivitySwitchless".equals(fieldName)) {
                     deserializedDeploymentSettingHostNetwork.storageConnectivitySwitchless
                         = reader.getNullable(JsonReader::getBoolean);

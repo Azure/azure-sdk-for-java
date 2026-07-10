@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class ThreatStatus extends ExpandableStringEnum<ThreatStatus> {
     /**
-     * Static value Unknown for ThreatStatus.
+     * Threat status is unknown.
      */
     public static final ThreatStatus UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value Healthy for ThreatStatus.
+     * Recovery point is healthy.
      */
     public static final ThreatStatus HEALTHY = fromString("Healthy");
 
     /**
-     * Static value UnHealthy for ThreatStatus.
+     * Recovery point is unhealthy.
      */
     public static final ThreatStatus UN_HEALTHY = fromString("UnHealthy");
 
     /**
-     * Static value Warning for ThreatStatus.
+     * Recovery point has warning-level threats.
      */
     public static final ThreatStatus WARNING = fromString("Warning");
 
     /**
-     * Static value NotAvailable for ThreatStatus.
+     * Threat status is not available.
      */
     public static final ThreatStatus NOT_AVAILABLE = fromString("NotAvailable");
 

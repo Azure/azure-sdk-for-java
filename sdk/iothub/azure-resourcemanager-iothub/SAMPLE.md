@@ -69,9 +69,7 @@ import com.azure.resourcemanager.iothub.models.CertificateProperties;
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_certificatescreateorupdate.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_certificatescreateorupdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -87,9 +85,7 @@ public final class CertificatesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
+     * x-ms-original-file: 2025-08-01-preview/CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
      */
     /**
      * Sample code: CreateOrReplace_Certificates_With_DeviceRegistryPolicy.
@@ -115,9 +111,7 @@ public final class CertificatesCreateOrUpdateSamples {
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_certificatesdelete.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_certificatesdelete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -139,9 +133,7 @@ public final class CertificatesDeleteSamples {
  */
 public final class CertificatesGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_generateverificationcode.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_generateverificationcode.json
      */
     /**
      * Sample code: Certificates_GenerateVerificationCode.
@@ -164,9 +156,7 @@ public final class CertificatesGenerateVerificationCodeSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_getcertificate.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getcertificate.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -187,9 +177,7 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListByIotHubSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listcertificates.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listcertificates.json
      */
     /**
      * Sample code: Certificates_ListByIotHub.
@@ -212,9 +200,7 @@ import com.azure.resourcemanager.iothub.models.CertificateVerificationDescriptio
  */
 public final class CertificatesVerifySamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_certverify.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_certverify.json
      */
     /**
      * Sample code: Certificates_Verify.
@@ -240,9 +226,7 @@ import com.azure.resourcemanager.iothub.models.FailoverInput;
  */
 public final class IotHubManualFailoverSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * IotHub_ManualFailover.json
+     * x-ms-original-file: 2025-08-01-preview/IotHub_ManualFailover.json
      */
     /**
      * Sample code: IotHub_ManualFailover.
@@ -267,9 +251,7 @@ import com.azure.resourcemanager.iothub.models.OperationInputs;
  */
 public final class IotHubResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * checkNameAvailability.json
+     * x-ms-original-file: 2025-08-01-preview/checkNameAvailability.json
      */
     /**
      * Sample code: IotHubResource_CheckNameAvailability.
@@ -294,9 +276,7 @@ import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupName;
  */
 public final class IotHubResourceCreateEventHubConsumerGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_createconsumergroup.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_createconsumergroup.json
      */
     /**
      * Sample code: IotHubResource_CreateEventHubConsumerGroup.
@@ -347,9 +327,7 @@ import java.util.Map;
  */
 public final class IotHubResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * CreateOrReplace_IoTHub_With_DeviceRegistry.json
+     * x-ms-original-file: 2025-08-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_IoTHub_With_DeviceRegistry.
@@ -363,7 +341,6 @@ public final class IotHubResourceCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new IotHubSkuInfo().withName(IotHubSku.GEN2).withCapacity(1L))
             .withTags(mapOf())
-            .withEtag("AAAAAAFD6M4=")
             .withProperties(new IotHubProperties().withIpFilterRules(Arrays.asList())
                 .withNetworkRuleSets(new NetworkRuleSetProperties().withDefaultAction(DefaultAction.DENY)
                     .withApplyToBuiltInEventHubEndpoint(true)
@@ -410,13 +387,12 @@ public final class IotHubResourceCreateOrUpdateSamples {
                     "/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace")
                     .withIdentityResourceId(
                         "/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity")))
+            .withEtag("AAAAAAFD6M4=")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_createOrUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_createOrUpdate.json
      */
     /**
      * Sample code: IotHubResource_CreateOrUpdate.
@@ -430,7 +406,6 @@ public final class IotHubResourceCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new IotHubSkuInfo().withName(IotHubSku.S1).withCapacity(1L))
             .withTags(mapOf())
-            .withEtag("AAAAAAFD6M4=")
             .withProperties(new IotHubProperties().withIpFilterRules(Arrays.asList())
                 .withNetworkRuleSets(new NetworkRuleSetProperties().withDefaultAction(DefaultAction.DENY)
                     .withApplyToBuiltInEventHubEndpoint(true)
@@ -473,6 +448,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
                 .withEnableDataResidency(true)
                 .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true))
                 .withIpVersion(IpVersion.IPV4IPV6))
+            .withEtag("AAAAAAFD6M4=")
             .create();
     }
 
@@ -498,9 +474,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
  */
 public final class IotHubResourceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_delete.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_delete.json
      */
     /**
      * Sample code: IotHubResource_Delete.
@@ -521,9 +495,7 @@ public final class IotHubResourceDeleteSamples {
  */
 public final class IotHubResourceDeleteEventHubConsumerGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_deleteconsumergroup.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_deleteconsumergroup.json
      */
     /**
      * Sample code: IotHubResource_DeleteEventHubConsumerGroup.
@@ -551,9 +523,7 @@ import com.azure.resourcemanager.iothub.models.ManagedIdentity;
  */
 public final class IotHubResourceExportDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_exportdevices.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_exportdevices.json
      */
     /**
      * Sample code: IotHubResource_ExportDevices.
@@ -581,9 +551,7 @@ public final class IotHubResourceExportDevicesSamples {
  */
 public final class IotHubResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_get.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_get.json
      */
     /**
      * Sample code: IotHubResource_Get.
@@ -605,9 +573,7 @@ public final class IotHubResourceGetByResourceGroupSamples {
  */
 public final class IotHubResourceGetEndpointHealthSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_routingendpointhealth.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_routingendpointhealth.json
      */
     /**
      * Sample code: IotHubResource_GetEndpointHealth.
@@ -628,9 +594,7 @@ public final class IotHubResourceGetEndpointHealthSamples {
  */
 public final class IotHubResourceGetEventHubConsumerGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_getconsumergroup.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getconsumergroup.json
      */
     /**
      * Sample code: IotHubResource_ListEventHubConsumerGroups.
@@ -654,9 +618,7 @@ public final class IotHubResourceGetEventHubConsumerGroupSamples {
  */
 public final class IotHubResourceGetJobSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_getjob.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getjob.json
      */
     /**
      * Sample code: IotHubResource_GetJob.
@@ -678,9 +640,7 @@ public final class IotHubResourceGetJobSamples {
  */
 public final class IotHubResourceGetKeysForKeyNameSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_getkey.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getkey.json
      */
     /**
      * Sample code: IotHubResource_GetKeysForKeyName.
@@ -703,9 +663,7 @@ public final class IotHubResourceGetKeysForKeyNameSamples {
  */
 public final class IotHubResourceGetQuotaMetricsSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_quotametrics.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_quotametrics.json
      */
     /**
      * Sample code: IotHubResource_GetQuotaMetrics.
@@ -726,9 +684,7 @@ public final class IotHubResourceGetQuotaMetricsSamples {
  */
 public final class IotHubResourceGetStatsSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_stats.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_stats.json
      */
     /**
      * Sample code: IotHubResource_GetStats.
@@ -749,9 +705,7 @@ public final class IotHubResourceGetStatsSamples {
  */
 public final class IotHubResourceGetValidSkusSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_getskus
-     * .json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getskus.json
      */
     /**
      * Sample code: IotHubResource_GetValidSkus.
@@ -774,9 +728,7 @@ import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
  */
 public final class IotHubResourceImportDevicesSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_importdevices.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_importdevices.json
      */
     /**
      * Sample code: IotHubResource_ImportDevices.
@@ -800,9 +752,7 @@ public final class IotHubResourceImportDevicesSamples {
  */
 public final class IotHubResourceListSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listbysubscription.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listbysubscription.json
      */
     /**
      * Sample code: IotHubResource_ListBySubscription.
@@ -823,9 +773,7 @@ public final class IotHubResourceListSamples {
  */
 public final class IotHubResourceListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listbyrg.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listbyrg.json
      */
     /**
      * Sample code: IotHubResource_ListByResourceGroup.
@@ -846,9 +794,7 @@ public final class IotHubResourceListByResourceGroupSamples {
  */
 public final class IotHubResourceListEventHubConsumerGroupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listehgroups.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listehgroups.json
      */
     /**
      * Sample code: IotHubResource_ListEventHubConsumerGroups.
@@ -871,9 +817,7 @@ public final class IotHubResourceListEventHubConsumerGroupsSamples {
  */
 public final class IotHubResourceListJobsSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listjobs.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listjobs.json
      */
     /**
      * Sample code: IotHubResource_ListJobs.
@@ -894,9 +838,7 @@ public final class IotHubResourceListJobsSamples {
  */
 public final class IotHubResourceListKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listkeys.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listkeys.json
      */
     /**
      * Sample code: IotHubResource_ListKeys.
@@ -923,9 +865,7 @@ import java.util.Map;
  */
 public final class IotHubResourceTestAllRoutesSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_testallroutes.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_testallroutes.json
      */
     /**
      * Sample code: IotHubResource_TestAllRoutes.
@@ -972,9 +912,7 @@ import java.util.Map;
  */
 public final class IotHubResourceTestRouteSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_testnewroute.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_testnewroute.json
      */
     /**
      * Sample code: IotHubResource_TestRoute.
@@ -1021,9 +959,7 @@ import java.util.Map;
  */
 public final class IotHubResourceUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_patch.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_patch.json
      */
     /**
      * Sample code: IotHubResource_Update.
@@ -1059,9 +995,7 @@ public final class IotHubResourceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_operations.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_operations.json
      */
     /**
      * Sample code: Operations_List.
@@ -1082,9 +1016,7 @@ public final class OperationsListSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_deleteprivateendpointconnection.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_deleteprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
@@ -1106,9 +1038,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_getprivateendpointconnection.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -1131,9 +1061,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listprivateendpointconnections.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listprivateendpointconnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
@@ -1160,9 +1088,7 @@ import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatu
  */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_updateprivateendpointconnection.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_updateprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.
@@ -1189,9 +1115,7 @@ public final class PrivateEndpointConnectionsUpdateSamples {
  */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_getprivatelinkresources.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_getprivatelinkresources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -1213,9 +1137,7 @@ public final class PrivateLinkResourcesOperationGetSamples {
  */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
-     * iothub_listprivatelinkresources.json
+     * x-ms-original-file: 2025-08-01-preview/iothub_listprivatelinkresources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -1237,9 +1159,7 @@ public final class PrivateLinkResourcesOperationListSamples {
  */
 public final class ResourceProviderCommonGetSubscriptionQuotaSamples {
     /*
-     * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_usages.
-     * json
+     * x-ms-original-file: 2025-08-01-preview/iothub_usages.json
      */
     /**
      * Sample code: ResourceProviderCommon_GetSubscriptionQuota.

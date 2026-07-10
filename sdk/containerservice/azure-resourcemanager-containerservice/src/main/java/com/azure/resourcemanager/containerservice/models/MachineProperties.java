@@ -117,6 +117,17 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     }
 
     /**
+     * Set the network property: network properties of the machine.
+     * 
+     * @param network the network value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withNetwork(MachineNetworkProperties network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
      * Get the resourceId property: Azure resource id of the machine. It can be used to GET underlying VM Instance.
      * 
      * @return the resourceId value.
@@ -407,6 +418,7 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("network", this.network);
         jsonWriter.writeJsonField("hardware", this.hardware);
         jsonWriter.writeJsonField("operatingSystem", this.operatingSystem);
         jsonWriter.writeJsonField("kubernetes", this.kubernetes);

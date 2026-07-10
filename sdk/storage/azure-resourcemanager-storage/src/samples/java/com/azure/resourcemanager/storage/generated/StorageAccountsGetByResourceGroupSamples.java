@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountExpand;
  */
 public final class StorageAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.
@@ -27,7 +27,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetProperties.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetProperties.json
      */
     /**
      * Sample code: StorageAccountGetProperties.
@@ -41,7 +41,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKVersionExpirationTime.
@@ -56,7 +56,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.
@@ -72,7 +72,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetAsyncSkuConversionStatus.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetAsyncSkuConversionStatus.json
      */
     /**
      * Sample code: StorageAccountGetAsyncSkuConversionStatus.
@@ -87,7 +87,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetPropertiesCMKEnabled.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetPropertiesCMKEnabled.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKEnabled.

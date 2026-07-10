@@ -36,11 +36,20 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
 
     /*
      * List of access policies that specify the permission allowed to a managed identity.
+     * For Create - This property is required and cannot be null. If no access policies are provided at creation time,
+     * specify an empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing access policies are left
+     * unchanged.
+     * If provided with a non-null value, the existing access policies are replaced with the specified list.
      */
     private List<StorageDataShareAccessPolicy> accessPolicies;
 
     /*
      * List of assets that specify the properties of the shared resources.
+     * For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an
+     * empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+     * If provided with a non-null value, the existing assets are replaced with the specified list.
      */
     private List<StorageDataShareAsset> assets;
 
@@ -98,6 +107,11 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
     /**
      * Get the accessPolicies property: List of access policies that specify the permission allowed to a managed
      * identity.
+     * For Create - This property is required and cannot be null. If no access policies are provided at creation time,
+     * specify an empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing access policies are left
+     * unchanged.
+     * If provided with a non-null value, the existing access policies are replaced with the specified list.
      * 
      * @return the accessPolicies value.
      */
@@ -108,6 +122,11 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
     /**
      * Set the accessPolicies property: List of access policies that specify the permission allowed to a managed
      * identity.
+     * For Create - This property is required and cannot be null. If no access policies are provided at creation time,
+     * specify an empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing access policies are left
+     * unchanged.
+     * If provided with a non-null value, the existing access policies are replaced with the specified list.
      * 
      * @param accessPolicies the accessPolicies value to set.
      * @return the StorageDataShareProperties object itself.
@@ -119,6 +138,10 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
 
     /**
      * Get the assets property: List of assets that specify the properties of the shared resources.
+     * For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an
+     * empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+     * If provided with a non-null value, the existing assets are replaced with the specified list.
      * 
      * @return the assets value.
      */
@@ -128,6 +151,10 @@ public final class StorageDataShareProperties implements JsonSerializable<Storag
 
     /**
      * Set the assets property: List of assets that specify the properties of the shared resources.
+     * For Create - This property is required and cannot be null. If no assets are provided at creation time, specify an
+     * empty array.
+     * For Update - This property is optional. If set to null or not passed, the existing assets are left unchanged.
+     * If provided with a non-null value, the existing assets are replaced with the specified list.
      * 
      * @param assets the assets value to set.
      * @return the StorageDataShareProperties object itself.

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
-
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -24,6 +24,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * @param <TInternal> The type of item.
  */
 public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOperationBase {
+
+    private static CosmosItemSerializer internalDefaultSerializer() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer();
+    }
 
     private final TInternal item;
     private final TContext context;
@@ -77,14 +81,14 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
             ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()),
-            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+            internalDefaultSerializer(),
             false);
 
         if (StringUtils.isNotEmpty(this.getPartitionKeyJson())) {
             jsonSerializable.set(
                 BatchRequestResponseConstants.FIELD_PARTITION_KEY,
                 this.getPartitionKeyJson(),
-                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                internalDefaultSerializer(),
                 false);
         }
 
@@ -92,7 +96,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
             jsonSerializable.set(
                 BatchRequestResponseConstants.FIELD_ID,
                 this.getId(),
-                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                internalDefaultSerializer(),
                 false);
         }
 
@@ -103,7 +107,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                     PatchUtil.serializableBatchPatchOperation(
                         (CosmosPatchOperations) this.getItemInternal(),
                         this.getRequestOptions()),
-                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                    internalDefaultSerializer(),
                     false);
             } else {
                 jsonSerializable.set(
@@ -121,7 +125,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_IF_MATCH,
                     requestOptions.getIfMatchETag(),
-                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                    internalDefaultSerializer(),
                     false);
             }
 
@@ -129,7 +133,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_IF_NONE_MATCH,
                     requestOptions.getIfNoneMatchETag(),
-                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                    internalDefaultSerializer(),
                     false);
             }
 
@@ -140,7 +144,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                     jsonSerializable.set(
                         BatchRequestResponseConstants.FIELD_MINIMAL_RETURN_PREFERENCE,
                         true,
-                        DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                        internalDefaultSerializer(),
                         false);
                 }
             }

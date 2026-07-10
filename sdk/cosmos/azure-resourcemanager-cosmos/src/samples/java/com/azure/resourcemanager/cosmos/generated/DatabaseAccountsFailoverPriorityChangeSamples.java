@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountFailoverPriorityChange.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountFailoverPriorityChange.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountFailoverPriorityChange.

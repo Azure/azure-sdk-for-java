@@ -347,7 +347,8 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> actionWithResponseAsync(String resourceGroupName,
@@ -371,7 +372,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String cloudvmclustername,
@@ -394,7 +395,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String cloudvmclustername,
@@ -416,7 +417,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DbNodeInner>, DbNodeInner> beginActionAsync(String resourceGroupName,
@@ -437,7 +438,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
@@ -458,7 +459,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
@@ -479,7 +480,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the DbNode resource belonging to vmCluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DbNodeInner> actionAsync(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
@@ -498,7 +499,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
@@ -517,7 +518,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid, DbNodeAction body,

@@ -20,7 +20,7 @@ public interface ScopeAccessReviewHistoryDefinitionInstancesClient {
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +37,7 @@ public interface ScopeAccessReviewHistoryDefinitionInstancesClient {
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +53,7 @@ public interface ScopeAccessReviewHistoryDefinitionInstancesClient {
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @param context The context to associate with this operation.
@@ -70,7 +70,7 @@ public interface ScopeAccessReviewHistoryDefinitionInstancesClient {
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

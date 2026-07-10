@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.models.ConnectorInner;
 import com.azure.resourcemanager.storage.fluent.models.TestConnectionResponseInner;
+import com.azure.resourcemanager.storage.models.ConnectorUpdate;
 import com.azure.resourcemanager.storage.models.TestExistingConnectionRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -242,7 +243,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String connectorName, ConnectorInner properties);
+        String connectorName, ConnectorUpdate properties);
 
     /**
      * Update a Storage Connector.
@@ -260,7 +261,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ConnectorInner>, ConnectorInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String connectorName, ConnectorInner properties);
+        String accountName, String connectorName, ConnectorUpdate properties);
 
     /**
      * Update a Storage Connector.
@@ -278,7 +279,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginUpdate(String resourceGroupName, String accountName,
-        String connectorName, ConnectorInner properties);
+        String connectorName, ConnectorUpdate properties);
 
     /**
      * Update a Storage Connector.
@@ -297,7 +298,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginUpdate(String resourceGroupName, String accountName,
-        String connectorName, ConnectorInner properties, Context context);
+        String connectorName, ConnectorUpdate properties, Context context);
 
     /**
      * Update a Storage Connector.
@@ -315,7 +316,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ConnectorInner> updateAsync(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties);
+        ConnectorUpdate properties);
 
     /**
      * Update a Storage Connector.
@@ -332,7 +333,7 @@ public interface ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConnectorInner update(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties);
+        ConnectorUpdate properties);
 
     /**
      * Update a Storage Connector.
@@ -349,8 +350,8 @@ public interface ConnectorsClient {
      * @return a Connector is a tracked ARM resource modeled as a sub-resource of a Storage Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectorInner update(String resourceGroupName, String accountName, String connectorName, ConnectorInner properties,
-        Context context);
+    ConnectorInner update(String resourceGroupName, String accountName, String connectorName,
+        ConnectorUpdate properties, Context context);
 
     /**
      * Delete a Storage Connector.
@@ -522,7 +523,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return test connection response properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> testExistingConnectionWithResponseAsync(String resourceGroupName,
@@ -547,7 +548,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of test connection response properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<TestConnectionResponseInner>, TestConnectionResponseInner> beginTestExistingConnectionAsync(
@@ -572,7 +573,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of test connection response properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TestConnectionResponseInner>, TestConnectionResponseInner> beginTestExistingConnection(
@@ -598,7 +599,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of test connection response properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TestConnectionResponseInner>, TestConnectionResponseInner> beginTestExistingConnection(
@@ -624,7 +625,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return test connection response properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TestConnectionResponseInner> testExistingConnectionAsync(String resourceGroupName, String accountName,
@@ -649,7 +650,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return test connection response properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TestConnectionResponseInner testExistingConnection(String resourceGroupName, String accountName,
@@ -675,7 +676,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return test connection response properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TestConnectionResponseInner testExistingConnection(String resourceGroupName, String accountName,

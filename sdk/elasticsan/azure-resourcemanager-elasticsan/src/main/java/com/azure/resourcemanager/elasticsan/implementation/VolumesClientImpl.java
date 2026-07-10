@@ -1508,7 +1508,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response object for pre validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> preBackupWithResponseAsync(String resourceGroupName, String elasticSanName,
@@ -1557,7 +1558,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response object for pre validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preBackupWithResponse(String resourceGroupName, String elasticSanName,
@@ -1609,7 +1610,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response object for pre validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preBackupWithResponse(String resourceGroupName, String elasticSanName,
@@ -1660,7 +1661,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackupAsync(
@@ -1683,7 +1684,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -1706,7 +1707,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -1729,7 +1730,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response object for pre validation api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreValidationResponseInner> preBackupAsync(String resourceGroupName, String elasticSanName,
@@ -1749,7 +1750,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -1769,7 +1770,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -1788,7 +1789,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response object for pre validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> preRestoreWithResponseAsync(String resourceGroupName,
@@ -1837,7 +1839,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response object for pre validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preRestoreWithResponse(String resourceGroupName, String elasticSanName,
@@ -1889,7 +1891,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response object for pre validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preRestoreWithResponse(String resourceGroupName, String elasticSanName,
@@ -1940,7 +1942,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestoreAsync(
@@ -1963,7 +1965,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -1986,7 +1988,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -2009,7 +2011,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return response object for pre validation api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreValidationResponseInner> preRestoreAsync(String resourceGroupName, String elasticSanName,
@@ -2029,7 +2031,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName,
@@ -2049,7 +2051,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName,

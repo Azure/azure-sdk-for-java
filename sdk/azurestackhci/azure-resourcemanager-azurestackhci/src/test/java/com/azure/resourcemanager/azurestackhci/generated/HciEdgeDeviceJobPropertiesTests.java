@@ -13,7 +13,7 @@ public final class HciEdgeDeviceJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceJobProperties model = BinaryData.fromString(
-            "{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Deploy\",\"provisioningState\":\"Updating\",\"jobId\":\"xsspuunnoxyhk\",\"startTimeUtc\":\"2021-05-10T01:50:40Z\",\"endTimeUtc\":\"2021-07-24T05:54:49Z\",\"status\":\"DeploymentInProgress\"}")
+            "{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Deploy\",\"provisioningState\":\"Updating\",\"jobId\":\"njdgkynscliq\",\"startTimeUtc\":\"2020-12-25T01:29:23Z\",\"endTimeUtc\":\"2021-03-22T17:48:05Z\",\"status\":\"Succeeded\"}")
             .toObject(HciEdgeDeviceJobProperties.class);
         Assertions.assertEquals(DeploymentMode.DEPLOY, model.deploymentMode());
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,68 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2026-06-22)
+
+- Azure Resource Manager Qumulo client library for Java. This package contains Microsoft Azure SDK for Qumulo Management SDK.  Package api-version 2026-04-16. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.OperationListResult` was removed
+
+#### `models.FileSystemResourceListResult` was removed
+
+#### `models.FileSystemResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+
+#### `models.FileSystemResourceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.UserDetails` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplaceDetails` was modified
+
+* `validate()` was removed
+
+#### `QumuloManager` was modified
+
+* `fluent.QumuloStorage serviceClient()` -> `fluent.QumuloManagementClient serviceClient()`
+
+### Features Added
+
+#### `models.FileSystemResource` was modified
+
+* `performanceTier()` was added
+
+#### `models.FileSystemResourceUpdateProperties` was modified
+
+* `withPerformanceTier(java.lang.String)` was added
+* `performanceTier()` was added
+
+#### `models.FileSystemResource$Definition` was modified
+
+* `withPerformanceTier(java.lang.String)` was added
 
 ## 1.1.0 (2024-09-10)
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class KeyValuesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeleteKeyValue.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeleteKeyValue.json
      */
     /**
      * Sample code: KeyValues_Delete.

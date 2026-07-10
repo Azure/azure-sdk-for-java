@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnServerConfigurationsAssociatedWithVirtualWanListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/GetVirtualWanVpnServerConfigurations.json
+     * x-ms-original-file: 2025-07-01/GetVirtualWanVpnServerConfigurations.json
      */
     /**
      * Sample code: GetVirtualWanVpnServerConfigurations.

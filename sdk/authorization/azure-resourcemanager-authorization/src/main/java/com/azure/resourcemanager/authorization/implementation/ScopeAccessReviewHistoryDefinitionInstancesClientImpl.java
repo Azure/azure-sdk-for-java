@@ -65,7 +65,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewHistoryInstanceInner>> generateDownloadUri(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("historyDefinitionId") String historyDefinitionId, @PathParam("instanceId") String instanceId,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -74,7 +74,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +112,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @param context The context to associate with this operation.
@@ -150,7 +150,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +169,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @param context The context to associate with this operation.
@@ -188,7 +188,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesClientImpl
      * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
      * retrieved by fetching the accessReviewHistoryDefinition object.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param instanceId The id of the access review history definition instance to generate a URI for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

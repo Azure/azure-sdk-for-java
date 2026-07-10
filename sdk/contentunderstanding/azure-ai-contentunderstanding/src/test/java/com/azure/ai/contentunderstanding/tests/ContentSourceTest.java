@@ -110,6 +110,70 @@ public class ContentSourceTest {
             () -> DocumentSource.parse("D(0,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)"));
     }
 
+    @Test
+    public void documentSourceParsePageOnly() {
+        List<DocumentSource> sources = DocumentSource.parse("D(3)");
+        assertEquals(1, sources.size());
+        DocumentSource source = sources.get(0);
+
+        assertEquals(3, source.getPageNumber());
+        assertNull(source.getPolygon(), "Polygon must be null for page-only D(page) form.");
+        assertNull(source.getBoundingBox(), "BoundingBox must be null for page-only D(page) form.");
+        assertEquals("D(3)", source.getRawValue());
+    }
+
+    @Test
+    public void documentSourceParseTriangleAccepts3Points() {
+        // 1 page + 3 points = 7 params
+        List<DocumentSource> sources = DocumentSource.parse("D(1,0.0,0.0,2.0,0.0,1.0,1.5)");
+        DocumentSource source = sources.get(0);
+
+        assertEquals(1, source.getPageNumber());
+        assertNotNull(source.getPolygon());
+        assertEquals(3, source.getPolygon().size());
+        assertNotNull(source.getBoundingBox());
+        assertEquals(0.0f, source.getBoundingBox().getX(), 0.0001f);
+        assertEquals(0.0f, source.getBoundingBox().getY(), 0.0001f);
+        assertEquals(2.0f, source.getBoundingBox().getWidth(), 0.0001f);
+        assertEquals(1.5f, source.getBoundingBox().getHeight(), 0.0001f);
+    }
+
+    @Test
+    public void documentSourceParsePentagonAccepts5Points() {
+        // 1 page + 5 points = 11 params
+        List<DocumentSource> sources = DocumentSource.parse("D(2,0.0,0.0,2.0,0.0,2.5,1.0,1.0,2.0,-0.5,1.0)");
+        DocumentSource source = sources.get(0);
+
+        assertEquals(2, source.getPageNumber());
+        assertNotNull(source.getPolygon());
+        assertEquals(5, source.getPolygon().size());
+        assertNotNull(source.getBoundingBox());
+        assertEquals(-0.5f, source.getBoundingBox().getX(), 0.0001f);
+        assertEquals(0.0f, source.getBoundingBox().getY(), 0.0001f);
+        assertEquals(3.0f, source.getBoundingBox().getWidth(), 0.0001f); // 2.5 - (-0.5)
+        assertEquals(2.0f, source.getBoundingBox().getHeight(), 0.0001f);
+    }
+
+    @Test
+    public void documentSourceParseOddCoordCountThrows() {
+        // 1 page + 7 coords = 8 params (odd coord count, not a valid pair set)
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.5)"));
+    }
+
+    @Test
+    public void documentSourceParseMultiRegionWithPageOnly() {
+        // Mix of page-only and full polygon segments must all parse successfully.
+        List<DocumentSource> sources = DocumentSource.parse("D(1);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+
+        assertEquals(2, sources.size());
+        assertEquals(1, sources.get(0).getPageNumber());
+        assertNull(sources.get(0).getPolygon());
+        assertNull(sources.get(0).getBoundingBox());
+        assertEquals(2, sources.get(1).getPageNumber());
+        assertNotNull(sources.get(1).getPolygon());
+        assertEquals(4, sources.get(1).getPolygon().size());
+    }
+
     // =================== AudioVisualSource Parsing ===================
 
     @Test

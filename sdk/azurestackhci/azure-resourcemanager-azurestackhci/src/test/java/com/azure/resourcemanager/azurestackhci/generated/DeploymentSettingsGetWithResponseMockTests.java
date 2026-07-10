@@ -23,7 +23,7 @@ public final class DeploymentSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"DisableInProgress\",\"arcNodeResourceIds\":[\"sf\",\"rlduyehiiittugy\",\"qwrldaxur\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"sozjvxdzciggbnv\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"zyxwhoe\",\"steps\":[{}]},\"deploymentStatus\":{\"status\":\"bdoeysf\",\"steps\":[{},{},{}]}}},\"id\":\"twuuhauegnk\",\"name\":\"mnfeub\",\"type\":\"zjy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"arcNodeResourceIds\":[\"omlnws\",\"v\",\"dls\",\"lxkqesdfeds\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"coinmphymcqi\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"nufbxwei\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"jovf\",\"steps\":[{},{}]}}},\"id\":\"dhuihaouwudhuao\",\"name\":\"hjkehwvumosqir\",\"type\":\"amqprlo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DeploymentSettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentSetting response = manager.deploymentSettings()
-            .getWithResponse("ekzyqxadyfhb", "wkhojqttbspvkhg", "aqjsgyzstujr", com.azure.core.util.Context.NONE)
+            .getWithResponse("dux", "pg", "cqeb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sf", response.arcNodeResourceIds().get(0));
-        Assertions.assertEquals(DeploymentMode.VALIDATE, response.deploymentMode());
+        Assertions.assertEquals("omlnws", response.arcNodeResourceIds().get(0));
+        Assertions.assertEquals(DeploymentMode.DEPLOY, response.deploymentMode());
         Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.operationType());
-        Assertions.assertEquals("sozjvxdzciggbnv", response.deploymentConfiguration().version());
+        Assertions.assertEquals("coinmphymcqi", response.deploymentConfiguration().version());
     }
 }

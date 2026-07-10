@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class LocalUsersOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/LocalUserGet.json
+     * x-ms-original-file: 2026-04-01/LocalUserGet.json
      */
     /**
      * Sample code: GetLocalUser.

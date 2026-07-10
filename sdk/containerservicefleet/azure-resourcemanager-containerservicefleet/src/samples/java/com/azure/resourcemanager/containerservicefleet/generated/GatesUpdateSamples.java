@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateState;
  */
 public final class GatesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_Update.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_Update.json
      */
     /**
      * Sample code: Updates a Gate resource.

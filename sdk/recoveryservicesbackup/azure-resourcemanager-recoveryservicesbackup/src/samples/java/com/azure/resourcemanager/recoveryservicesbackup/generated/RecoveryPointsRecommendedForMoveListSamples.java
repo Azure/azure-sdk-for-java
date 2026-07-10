@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points Recommended for Move.

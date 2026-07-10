@@ -8,6 +8,7 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -30,6 +31,7 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.cloud.azure.eventhubs.event-hub-name=eh1",
     "spring.cloud.azure.eventhubs.producer.event-hub-name=eh1"
 })
+@Tag("docker")
 @EnabledOnOs(OS.LINUX)
 class EventHubsDockerComposeConnectionDetailsFactoryTests {
 

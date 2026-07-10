@@ -27,11 +27,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The type Cosmos async user.
  */
 public class CosmosAsyncUser {
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
     private final CosmosAsyncDatabase database;
 
@@ -129,7 +131,6 @@ public class CosmosAsyncUser {
         return withContext(context -> upsertPermissionInternal(permission, requestOptions, context));
     }
 
-
     /**
      * Reads all permissions.
      * <p>
@@ -168,7 +169,7 @@ public class CosmosAsyncUser {
                 null,
                 ResourceType.Permission,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -177,7 +178,7 @@ public class CosmosAsyncUser {
 
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), state)
-                       .map(response -> feedResponseAccessor.createFeedResponse(
+                       .map(response -> feedResponseAccessor().createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders(),
                            response.getCosmosDiagnostics()));
@@ -224,7 +225,7 @@ public class CosmosAsyncUser {
                 null,
                 ResourceType.Permission,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(requestOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(requestOptions, spanName),
                 requestOptions,
                 pagedFluxOptions
             );
@@ -233,7 +234,7 @@ public class CosmosAsyncUser {
 
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, state)
-                       .map(response -> feedResponseAccessor.createFeedResponse(
+                       .map(response -> feedResponseAccessor().createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders(),
                            response.getCosmosDiagnostics()));

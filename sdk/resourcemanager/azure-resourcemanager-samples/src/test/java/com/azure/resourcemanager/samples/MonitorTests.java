@@ -9,6 +9,7 @@ import com.azure.resourcemanager.monitor.samples.QueryMetricsAndActivityLogs;
 import com.azure.resourcemanager.monitor.samples.SecurityBreachOrRiskActivityLogAlerts;
 import com.azure.resourcemanager.monitor.samples.WebAppPerformanceMonitoringAlerts;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class MonitorTests extends SamplesTestBase {
         Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azureResourceManager));
     }
 
+    @Disabled("Temporarily disabled, due to URL segment casing change from 'resourcegroup' to 'resourceGroup'. Need re-record after the fix.")
     @Test
     public void testWebAppPerformanceMonitoringAlerts() {
         Assertions.assertTrue(WebAppPerformanceMonitoringAlerts.runSample(azureResourceManager));

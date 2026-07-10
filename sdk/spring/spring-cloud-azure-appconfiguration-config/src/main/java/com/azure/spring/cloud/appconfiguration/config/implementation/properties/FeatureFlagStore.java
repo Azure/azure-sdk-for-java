@@ -16,7 +16,7 @@ public final class FeatureFlagStore {
     /**
      * Enables or disables feature flag loading from the store.
      */
-    private Boolean enabled = false;
+    private boolean enabled = false;
 
     private List<FeatureFlagKeyValueSelector> selects = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public final class FeatureFlagStore {
      *
      * @return {@code true} if enabled, {@code false} otherwise
      */
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
@@ -34,7 +34,7 @@ public final class FeatureFlagStore {
      *
      * @param enabled {@code true} to enable, {@code false} to disable
      */
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -62,7 +62,7 @@ public final class FeatureFlagStore {
      */
     @PostConstruct
     void validateAndInit() {
-        if (enabled && selects.size() == 0) {
+        if (enabled && selects.isEmpty()) {
             selects.add(new FeatureFlagKeyValueSelector());
         }
         selects.forEach(FeatureFlagKeyValueSelector::validateAndInit);

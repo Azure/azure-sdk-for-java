@@ -79,8 +79,38 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
      */
     @Generated
     @Override
+    public IndexedSharePointKnowledgeSourceParams setFailOnError(Boolean failOnError) {
+        super.setFailOnError(failOnError);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public IndexedSharePointKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedSharePointKnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
+        super.setMaxOutputDocuments(maxOutputDocuments);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedSharePointKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
+        super.setEnableImageServing(enableImageServing);
         return this;
     }
 
@@ -95,7 +125,10 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
+        jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -116,7 +149,10 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean failOnError = null;
             Float rerankerThreshold = null;
+            Integer maxOutputDocuments = null;
+            Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.INDEXED_SHARE_POINT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -129,8 +165,14 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failOnError".equals(fieldName)) {
+                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("enableImageServing".equals(fieldName)) {
+                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else {
@@ -143,7 +185,10 @@ public final class IndexedSharePointKnowledgeSourceParams extends KnowledgeSourc
             deserializedIndexedSharePointKnowledgeSourceParams
                 .setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedIndexedSharePointKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedIndexedSharePointKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedIndexedSharePointKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedIndexedSharePointKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
+            deserializedIndexedSharePointKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedIndexedSharePointKnowledgeSourceParams.kind = kind;
             return deserializedIndexedSharePointKnowledgeSourceParams;
         });

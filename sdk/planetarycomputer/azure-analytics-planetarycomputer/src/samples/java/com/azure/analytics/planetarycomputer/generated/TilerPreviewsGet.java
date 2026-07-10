@@ -23,8 +23,7 @@ public class TilerPreviewsGet {
             new GetPreviewOptions().setAssets(Arrays.asList("image"))
                 .setAssetBandIndices("image|1,2,3")
                 .setHeight(512)
-                .setWidth(512),
-            null);
+                .setWidth(512));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-preview.tiler-previews-get
     }
 }

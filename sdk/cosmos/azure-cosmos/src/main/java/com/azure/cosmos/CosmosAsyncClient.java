@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -58,6 +59,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -79,22 +81,25 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor() {
+        return ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(CosmosAsyncClient.class);
 
     private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
-    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
-        telemetryConfigAccessor = ImplementationBridgeHelpers
-        .CosmosClientTelemetryConfigHelper
-        .getCosmosClientTelemetryConfigAccessor();
-
-    private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor
-        readConsistencyStrategyAccessor = ImplementationBridgeHelpers
-            .ReadConsistencyStrategyHelper
-            .getReadConsistencyStrategyAccessor();
 
     private final static Function<CosmosAsyncContainer, CosmosAsyncContainer> DEFAULT_CONTAINER_FACTORY =
         (originalContainer) -> originalContainer;
@@ -148,7 +153,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryConfig = effectiveTelemetryConfig;
         boolean contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         ApiType apiType = builder.apiType();
-        String clientCorrelationId = telemetryConfigAccessor
+        String clientCorrelationId = clientTelemetryConfigAccessor()
             .getClientCorrelationId(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
@@ -186,6 +191,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withDefaultSerializer(this.defaultCustomSerializer)
                                        .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .withPerPartitionAutomaticFailoverEnabled(builder.isPerPartitionAutomaticFailoverEnabled())
+                                       .withAdditionalHeaders(builder.getAdditionalHeaders())
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -207,14 +213,13 @@ public final class CosmosAsyncClient implements Closeable {
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
 
-        this.clientMetricRegistrySnapshot = telemetryConfigAccessor
+        this.clientMetricRegistrySnapshot = clientTelemetryConfigAccessor()
             .getClientMetricRegistry(effectiveTelemetryConfig);
 
-        CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
+        CosmosMeterOptions cpuMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
-        CosmosMeterOptions memoryMeterOptions = telemetryConfigAccessor
+        CosmosMeterOptions memoryMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
-
 
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
@@ -224,15 +229,15 @@ public final class CosmosAsyncClient implements Closeable {
         );
 
         if (this.clientMetricRegistrySnapshot != null) {
-            telemetryConfigAccessor.setClientCorrelationTag(
+            clientTelemetryConfigAccessor().setClientCorrelationTag(
                 effectiveTelemetryConfig,
                 this.clientCorrelationTag );
-            telemetryConfigAccessor.setAccountName(
+            clientTelemetryConfigAccessor().setAccountName(
                 effectiveTelemetryConfig,
                 this.accountTagValue
             );
 
-            telemetryConfigAccessor.addDiagnosticsHandler(
+            clientTelemetryConfigAccessor().addDiagnosticsHandler(
                 effectiveTelemetryConfig,
                 new ClientMetricsDiagnosticsHandler(this)
             );
@@ -475,7 +480,7 @@ public final class CosmosAsyncClient implements Closeable {
                 null,
                 ResourceType.Database,
                 OperationType.ReadFeed,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -484,7 +489,7 @@ public final class CosmosAsyncClient implements Closeable {
 
             return getDocClientWrapper().readDatabases(state)
                 .map(response ->
-                    feedResponseAccessor.createFeedResponse(
+                    feedResponseAccessor().createFeedResponse(
                         ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                         response.getResponseHeaders(),
                         response.getCosmosDiagnostics()));
@@ -503,7 +508,6 @@ public final class CosmosAsyncClient implements Closeable {
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
         return readAllDatabases(new CosmosQueryRequestOptions());
     }
-
 
     /**
      * Query for databases.
@@ -662,7 +666,7 @@ public final class CosmosAsyncClient implements Closeable {
                 null,
                 ResourceType.Database,
                 OperationType.Query,
-                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                queryOptionsAccessor().getQueryNameOrDefault(nonNullOptions, spanName),
                 nonNullOptions,
                 pagedFluxOptions
             );
@@ -670,13 +674,12 @@ public final class CosmosAsyncClient implements Closeable {
             pagedFluxOptions.setFeedOperationState(state);
 
             return getDocClientWrapper().queryDatabases(querySpec, state)
-                .map(response -> feedResponseAccessor.createFeedResponse(
+                .map(response -> feedResponseAccessor().createFeedResponse(
                     ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
                     response.getCosmosDiagnostics()));
         });
     }
-
 
     private Mono<CosmosDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                            ThroughputProperties throughputProperties, Context context) {
@@ -749,11 +752,13 @@ public final class CosmosAsyncClient implements Closeable {
             return this.accountConsistencyLevel;
         }
 
-        if (desiredConsistencyLevelOfOperation != null) {
+        if (desiredConsistencyLevelOfOperation != null
+            && !Utils.isConsistencyLevelUpgrade(this.accountConsistencyLevel, desiredConsistencyLevelOfOperation)) {
             return desiredConsistencyLevelOfOperation;
         }
 
-        if (this.desiredConsistencyLevel != null) {
+        if (this.desiredConsistencyLevel != null
+            && !Utils.isConsistencyLevelUpgrade(this.accountConsistencyLevel, this.desiredConsistencyLevel)) {
             return desiredConsistencyLevel;
         }
 
@@ -765,7 +770,7 @@ public final class CosmosAsyncClient implements Closeable {
         OperationType operationType,
         ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation) {
 
-        return readConsistencyStrategyAccessor.getEffectiveReadConsistencyStrategy(
+        return readConsistencyStrategyAccessor().getEffectiveReadConsistencyStrategy(
             resourceType,
             operationType,
             desiredReadConsistencyStrategyOfOperation,
@@ -780,13 +785,12 @@ public final class CosmosAsyncClient implements Closeable {
             return operationLevelThresholds;
         }
 
-
         if (this.clientTelemetryConfig == null) {
             return new CosmosDiagnosticsThresholds();
         }
 
         CosmosDiagnosticsThresholds clientLevelThresholds =
-            telemetryConfigAccessor.getDiagnosticsThresholds(this.clientTelemetryConfig);
+            clientTelemetryConfigAccessor().getDiagnosticsThresholds(this.clientTelemetryConfig);
 
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
@@ -805,7 +809,7 @@ public final class CosmosAsyncClient implements Closeable {
             this.clientTelemetryConfig
             : DEFAULT_TELEMETRY_CONFIG;
 
-        if (telemetryConfigAccessor.isLegacyTracingEnabled(effectiveConfig)) {
+        if (clientTelemetryConfigAccessor().isLegacyTracingEnabled(effectiveConfig)) {
             return false;
         }
 
@@ -813,7 +817,7 @@ public final class CosmosAsyncClient implements Closeable {
             return false;
         }
 
-        return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
+        return clientTelemetryConfigAccessor().isTransportLevelTracingEnabled(effectiveConfig);
     }
 
     void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
@@ -859,13 +863,13 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client) {
-                    return  telemetryConfigAccessor
+                    return  clientTelemetryConfigAccessor()
                         .getMetricTagNames(client.clientTelemetryConfig);
                 }
 
                 @Override
                 public EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client) {
-                    return  telemetryConfigAccessor
+                    return  clientTelemetryConfigAccessor()
                         .getMetricCategories(client.clientTelemetryConfig);
                 }
 
@@ -877,6 +881,17 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public List<String> getPreferredRegions(CosmosAsyncClient client) {
                     return client.connectionPolicy.getPreferredRegions();
+                }
+
+                @Override
+                public List<String> getExcludedRegions(CosmosAsyncClient client) {
+                    if (client.connectionPolicy.getExcludedRegionsSupplier() == null
+                        || client.connectionPolicy.getExcludedRegionsSupplier().get() == null) {
+
+                        return Collections.emptyList();
+                    }
+
+                    return new ArrayList<>(client.connectionPolicy.getExcludedRegionsSupplier().get().getExcludedRegions());
                 }
 
                 @Override
@@ -896,7 +911,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
-                    return  telemetryConfigAccessor
+                    return  clientTelemetryConfigAccessor()
                         .getMeterOptions(client.clientTelemetryConfig, name);
                 }
 

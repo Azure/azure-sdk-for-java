@@ -9,9 +9,9 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - To make code changes, or contribute something new, please follow the [GitHub Forks / Pull requests model](https://help.github.com/articles/fork-a-repo/): Fork the repo, make the change and propose it back by submitting a pull request.
 
-- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
+- Refer to the [Code Quality guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
 
-- There are two Maven projects in the repo. Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) to learn about project structure for each.
+- There are two Maven projects in the repo. Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) to learn about project structure for each.
 
 Pull Requests
 -------------
@@ -68,7 +68,7 @@ mvn -f sdk/storage/pom.service.xml -Dgpg.skip -DskipTests clean install
 - `clean:` will remove any previous generated output.
 - `install:`  compiles project and installs it in the local Maven cache.
 
->**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11
+>**Note**: Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) for learning about how to build using Java 11
 
 ### Compiling one project only
 

@@ -21,7 +21,7 @@ public class TilerPartsGetCroppedToBoundingBox {
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-part.tiler-parts-get-cropped-to-bounding-box
         BinaryData response
             = dataClient.getPart("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.393, 33.6798, -84.367, 33.7058,
-                "png", new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"), null);
+                "png", new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-part.tiler-parts-get-cropped-to-bounding-box
     }
 }

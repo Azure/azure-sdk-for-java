@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPattern;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
 import com.azure.resourcemanager.azurestackhci.models.SecretsLocationDetails;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -126,6 +128,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private String billingModel;
 
     /*
+     * Billing properties of the cluster, including upcoming billing model details.
+     */
+    private ClusterBillingProperties billingProperties;
+
+    /*
      * First cluster sync timestamp.
      */
     private OffsetDateTime registrationTimestamp;
@@ -169,6 +176,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Identity Provider for the cluster
      */
     private IdentityProvider identityProvider;
+
+    /*
+     * Storage type of the cluster. Indicates whether the cluster uses S2D, SAN, or a combination.
+     */
+    private StorageType storageType;
 
     /**
      * Creates an instance of ClusterProperties class.
@@ -443,6 +455,15 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the billingProperties property: Billing properties of the cluster, including upcoming billing model details.
+     * 
+     * @return the billingProperties value.
+     */
+    public ClusterBillingProperties billingProperties() {
+        return this.billingProperties;
+    }
+
+    /**
      * Get the registrationTimestamp property: First cluster sync timestamp.
      * 
      * @return the registrationTimestamp value.
@@ -546,6 +567,16 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the storageType property: Storage type of the cluster. Indicates whether the cluster uses S2D, SAN, or a
+     * combination.
+     * 
+     * @return the storageType value.
+     */
+    public StorageType storageType() {
+        return this.storageType;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -621,6 +652,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.trialDaysRemaining = reader.getNullable(JsonReader::getDouble);
                 } else if ("billingModel".equals(fieldName)) {
                     deserializedClusterProperties.billingModel = reader.getString();
+                } else if ("billingProperties".equals(fieldName)) {
+                    deserializedClusterProperties.billingProperties = ClusterBillingProperties.fromJson(reader);
                 } else if ("registrationTimestamp".equals(fieldName)) {
                     deserializedClusterProperties.registrationTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -646,6 +679,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.localAvailabilityZones = localAvailabilityZones;
                 } else if ("identityProvider".equals(fieldName)) {
                     deserializedClusterProperties.identityProvider = IdentityProvider.fromString(reader.getString());
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedClusterProperties.storageType = StorageType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -69,16 +69,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
      */
     @Generated
     @Override
-    public AzureBlobKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public AzureBlobKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -95,7 +85,10 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
+        jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -116,7 +109,10 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean failOnError = null;
             Float rerankerThreshold = null;
+            Integer maxOutputDocuments = null;
+            Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.AZURE_BLOB;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -129,8 +125,14 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failOnError".equals(fieldName)) {
+                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("enableImageServing".equals(fieldName)) {
+                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else {
@@ -142,9 +144,52 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
             deserializedAzureBlobKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedAzureBlobKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedAzureBlobKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedAzureBlobKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedAzureBlobKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedAzureBlobKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
+            deserializedAzureBlobKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedAzureBlobKnowledgeSourceParams.kind = kind;
             return deserializedAzureBlobKnowledgeSourceParams;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AzureBlobKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
+        super.setAlwaysQuerySource(alwaysQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AzureBlobKnowledgeSourceParams setFailOnError(Boolean failOnError) {
+        super.setFailOnError(failOnError);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AzureBlobKnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
+        super.setMaxOutputDocuments(maxOutputDocuments);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AzureBlobKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
+        super.setEnableImageServing(enableImageServing);
+        return this;
     }
 }

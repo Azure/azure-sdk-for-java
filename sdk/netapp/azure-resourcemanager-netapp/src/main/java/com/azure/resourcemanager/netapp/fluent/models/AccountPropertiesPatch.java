@@ -13,12 +13,11 @@ import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
-import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * NetApp account properties for PATCH operations.
+ * NetApp account patch properties.
  */
 @Fluent
 public final class AccountPropertiesPatch implements JsonSerializable<AccountPropertiesPatch> {
@@ -26,11 +25,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * Active Directories
      */
     private List<ActiveDirectory> activeDirectories;
-
-    /*
-     * Entra ID configuration for the account.
-     */
-    private EntraIdConfigPatch entraIdConfig;
 
     /*
      * Encryption settings
@@ -44,9 +38,9 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     private String nfsV4IdDomain;
 
     /*
-     * MultiAD Status for the account
+     * Entra ID configuration for the account.
      */
-    private MultiAdStatus multiAdStatus;
+    private EntraIdConfigPatch entraIdConfig;
 
     /*
      * LDAP Configuration for the account.
@@ -76,26 +70,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      */
     public AccountPropertiesPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
         this.activeDirectories = activeDirectories;
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfigPatch entraIdConfig() {
-        return this.entraIdConfig;
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the AccountPropertiesPatch object itself.
-     */
-    public AccountPropertiesPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.entraIdConfig = entraIdConfig;
         return this;
     }
 
@@ -142,22 +116,22 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     }
 
     /**
-     * Get the multiAdStatus property: MultiAD Status for the account.
+     * Get the entraIdConfig property: Entra ID configuration for the account.
      * 
-     * @return the multiAdStatus value.
+     * @return the entraIdConfig value.
      */
-    public MultiAdStatus multiAdStatus() {
-        return this.multiAdStatus;
+    public EntraIdConfigPatch entraIdConfig() {
+        return this.entraIdConfig;
     }
 
     /**
-     * Set the multiAdStatus property: MultiAD Status for the account.
+     * Set the entraIdConfig property: Entra ID configuration for the account.
      * 
-     * @param multiAdStatus the multiAdStatus value to set.
+     * @param entraIdConfig the entraIdConfig value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withMultiAdStatus(MultiAdStatus multiAdStatus) {
-        this.multiAdStatus = multiAdStatus;
+    public AccountPropertiesPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
+        this.entraIdConfig = entraIdConfig;
         return this;
     }
 
@@ -190,11 +164,11 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
         if (activeDirectories() != null) {
             activeDirectories().forEach(e -> e.validate());
         }
-        if (entraIdConfig() != null) {
-            entraIdConfig().validate();
-        }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (entraIdConfig() != null) {
+            entraIdConfig().validate();
         }
         if (ldapConfiguration() != null) {
             ldapConfiguration().validate();
@@ -209,10 +183,9 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("activeDirectories", this.activeDirectories,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
-        jsonWriter.writeStringField("multiAdStatus", this.multiAdStatus == null ? null : this.multiAdStatus.toString());
+        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -236,14 +209,12 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
                     List<ActiveDirectory> activeDirectories
                         = reader.readArray(reader1 -> ActiveDirectory.fromJson(reader1));
                     deserializedAccountPropertiesPatch.activeDirectories = activeDirectories;
-                } else if ("entraIdConfig".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.entraIdConfig = EntraIdConfigPatch.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.encryption = AccountEncryption.fromJson(reader);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.nfsV4IdDomain = reader.getString();
-                } else if ("multiAdStatus".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.multiAdStatus = MultiAdStatus.fromString(reader.getString());
+                } else if ("entraIdConfig".equals(fieldName)) {
+                    deserializedAccountPropertiesPatch.entraIdConfig = EntraIdConfigPatch.fromJson(reader);
                 } else if ("ldapConfiguration".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.ldapConfiguration = LdapConfigurationPatch.fromJson(reader);
                 } else {

@@ -21,7 +21,7 @@ public final class ResourceGuardsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"rteeamm\",\"requestResourceType\":\"iekkkzddrtkgdojb\"},{\"vaultCriticalOperation\":\"vavrefdees\",\"requestResourceType\":\"cuijpxt\"},{\"vaultCriticalOperation\":\"uwprtujwsawd\",\"requestResourceType\":\"ibabxvititvtzeex\"},{\"vaultCriticalOperation\":\"oxtfglecdmdqbwp\",\"requestResourceType\":\"q\"}],\"vaultCriticalOperationExclusionList\":[\"fjacbslhhxudb\"],\"description\":\"odhtnsirudhzm\"},\"eTag\":\"sckdlp\",\"location\":\"zrcxfailcfxwmdbo\",\"tags\":{\"ckknhxkizvy\":\"gsftufqobrjlnacg\",\"nok\":\"nrzvuljraaer\",\"a\":\"gukkjqnvbroy\"},\"id\":\"xulcdisdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"lhjlmuoyxprimr\",\"requestResourceType\":\"pteecjme\"},{\"vaultCriticalOperation\":\"ls\",\"requestResourceType\":\"asylwx\"},{\"vaultCriticalOperation\":\"aumweoohguufu\",\"requestResourceType\":\"oyjathwtzol\"},{\"vaultCriticalOperation\":\"emwmdxmebwjs\",\"requestResourceType\":\"p\"}],\"vaultCriticalOperationExclusionList\":[\"xveabf\",\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"],\"description\":\"kpn\"},\"eTag\":\"aapm\",\"location\":\"qmeqwigpibudqwyx\",\"tags\":{\"tmhheioqa\":\"ybpmzznrtffyaq\"},\"id\":\"hvseufuqyrx\",\"name\":\"dlcgqlsismjqfr\",\"type\":\"dgamquhiosrsj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ResourceGuardsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardResource response = manager.resourceGuards()
-            .getByResourceGroupWithResponse("ynenlsvxeizz", "wklnsrmffeyc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bphbqzmizakakank", "p", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zrcxfailcfxwmdbo", response.location());
-        Assertions.assertEquals("gsftufqobrjlnacg", response.tags().get("ckknhxkizvy"));
-        Assertions.assertEquals("fjacbslhhxudb", response.properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("sckdlp", response.etag());
+        Assertions.assertEquals("qmeqwigpibudqwyx", response.location());
+        Assertions.assertEquals("ybpmzznrtffyaq", response.tags().get("tmhheioqa"));
+        Assertions.assertEquals("xveabf", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("aapm", response.etag());
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * network properties of the machine.
  */
-@Immutable
+@Fluent
 public final class MachineNetworkProperties implements JsonSerializable<MachineNetworkProperties> {
     /*
      * IPv4, IPv6 addresses of the machine
@@ -61,7 +61,7 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     /**
      * Creates an instance of MachineNetworkProperties class.
      */
-    private MachineNetworkProperties() {
+    public MachineNetworkProperties() {
     }
 
     /**
@@ -86,6 +86,20 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     }
 
     /**
+     * Set the vnetSubnetId property: The ID of the subnet which node and optionally pods will join on startup. If this
+     * is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this applies to
+     * nodes and pods, otherwise it applies to just nodes. This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @param vnetSubnetId the vnetSubnetId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
+        return this;
+    }
+
+    /**
      * Get the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
      * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
@@ -94,6 +108,19 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
      */
     public String podSubnetId() {
         return this.podSubnetId;
+    }
+
+    /**
+     * Set the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
+     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * 
+     * @param podSubnetId the podSubnetId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withPodSubnetId(String podSubnetId) {
+        this.podSubnetId = podSubnetId;
+        return this;
     }
 
     /**
@@ -109,6 +136,20 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     }
 
     /**
+     * Set the enableNodePublicIp property: Whether the machine is allocated its own public IP. Some scenarios may
+     * require the machine to receive their own dedicated public IP addresses. A common scenario is for gaming
+     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. The
+     * default is false.
+     * 
+     * @param enableNodePublicIp the enableNodePublicIp value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withEnableNodePublicIp(Boolean enableNodePublicIp) {
+        this.enableNodePublicIp = enableNodePublicIp;
+        return this;
+    }
+
+    /**
      * Get the nodePublicIpPrefixId property: The public IP prefix ID which VM node should use IPs from. This is of the
      * form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
@@ -120,12 +161,36 @@ public final class MachineNetworkProperties implements JsonSerializable<MachineN
     }
 
     /**
+     * Set the nodePublicIpPrefixId property: The public IP prefix ID which VM node should use IPs from. This is of the
+     * form:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
+     * 
+     * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
+        this.nodePublicIpPrefixId = nodePublicIpPrefixId;
+        return this;
+    }
+
+    /**
      * Get the nodePublicIpTags property: IPTags of instance-level public IPs.
      * 
      * @return the nodePublicIpTags value.
      */
     public List<IpTag> nodePublicIpTags() {
         return this.nodePublicIpTags;
+    }
+
+    /**
+     * Set the nodePublicIpTags property: IPTags of instance-level public IPs.
+     * 
+     * @param nodePublicIpTags the nodePublicIpTags value to set.
+     * @return the MachineNetworkProperties object itself.
+     */
+    public MachineNetworkProperties withNodePublicIpTags(List<IpTag> nodePublicIpTags) {
+        this.nodePublicIpTags = nodePublicIpTags;
+        return this;
     }
 
     /**

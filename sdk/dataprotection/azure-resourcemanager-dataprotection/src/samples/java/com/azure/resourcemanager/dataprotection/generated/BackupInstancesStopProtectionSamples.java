@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupInstancesStopProtectionSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/StopProtection.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/StopProtection.json
      */
     /**
      * Sample code: StopProtection.
@@ -25,7 +25,7 @@ public final class BackupInstancesStopProtectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
      */
     /**
      * Sample code: StopProtection with MUA.

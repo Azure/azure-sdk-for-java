@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 2.55.2 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-keyvault` from `2.55.0` to version `2.55.2`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.5`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.6` to version `2.53.8`.
+
 ## 2.55.1 (2026-03-30)
 
 ### Other Changes

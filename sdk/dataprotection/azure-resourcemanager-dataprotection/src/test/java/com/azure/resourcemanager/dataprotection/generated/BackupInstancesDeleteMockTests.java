@@ -27,7 +27,7 @@ public final class BackupInstancesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.backupInstances().delete("g", "khocxvdfffwaf", "roud", com.azure.core.util.Context.NONE);
+        manager.backupInstances().delete("lcplc", "khihihlhzds", "tzbsrgnowcjhf", com.azure.core.util.Context.NONE);
 
     }
 }

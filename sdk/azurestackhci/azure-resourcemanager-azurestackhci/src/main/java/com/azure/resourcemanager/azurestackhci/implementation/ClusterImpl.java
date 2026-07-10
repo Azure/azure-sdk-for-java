@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
+import com.azure.resourcemanager.azurestackhci.models.ClusterBillingProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
@@ -29,6 +30,7 @@ import com.azure.resourcemanager.azurestackhci.models.SecretsLocationsChangeRequ
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 import com.azure.resourcemanager.azurestackhci.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
@@ -64,6 +66,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String kind() {
+        return this.innerModel().kind();
     }
 
     public SystemData systemData() {
@@ -142,6 +148,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().billingModel();
     }
 
+    public ClusterBillingProperties billingProperties() {
+        return this.innerModel().billingProperties();
+    }
+
     public OffsetDateTime registrationTimestamp() {
         return this.innerModel().registrationTimestamp();
     }
@@ -186,6 +196,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public IdentityProvider identityProvider() {
         return this.innerModel().identityProvider();
+    }
+
+    public StorageType storageType() {
+        return this.innerModel().storageType();
     }
 
     public String principalId() {
@@ -377,6 +391,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateCluster.withTags(tags);
             return this;
         }
+    }
+
+    public ClusterImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
+        return this;
     }
 
     public ClusterImpl withCloudManagementEndpoint(String cloudManagementEndpoint) {

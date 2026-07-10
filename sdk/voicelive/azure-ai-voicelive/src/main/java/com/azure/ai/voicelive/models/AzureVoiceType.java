@@ -60,4 +60,10 @@ public final class AzureVoiceType extends ExpandableStringEnum<AzureVoiceType> {
     public static Collection<AzureVoiceType> values() {
         return values(AzureVoiceType.class);
     }
+
+    /**
+     * Azure avatar voice sync.
+     */
+    @Generated
+    public static final AzureVoiceType AVATAR_VOICE_SYNC = fromString("avatar-voice-sync");
 }

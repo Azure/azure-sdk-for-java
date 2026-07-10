@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceEndpointPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyListAll.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyListAll.json
      */
     /**
      * Sample code: List all service endpoint policy.

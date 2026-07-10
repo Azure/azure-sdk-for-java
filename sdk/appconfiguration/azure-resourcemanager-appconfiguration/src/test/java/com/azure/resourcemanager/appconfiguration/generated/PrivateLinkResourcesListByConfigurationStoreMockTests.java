@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListByConfigurationStoreMockTests {
     @Test
     public void testListByConfigurationStore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"xmhhvhgureo\",\"requiredMembers\":[\"obdagxtibqdxb\",\"wakbogqxndl\",\"zgx\",\"uriplbpodxunkb\"],\"requiredZoneNames\":[\"mubyynt\",\"lrb\",\"tkoievseotgq\",\"l\"]},\"id\":\"muwlauwzizxbm\",\"name\":\"gcj\",\"type\":\"fuzmuvpbtt\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"drjf\",\"requiredMembers\":[\"coebjvewzcj\",\"nmwcpmgu\"],\"requiredZoneNames\":[\"raufactkahzova\",\"j\",\"iuxxpshneekulfg\"]},\"id\":\"qubkw\",\"name\":\"lenrd\",\"type\":\"utujba\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListByConfigurationStoreMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
-            .listByConfigurationStore("z", "nsikvmkqzeqqkdl", com.azure.core.util.Context.NONE);
+            .listByConfigurationStore("uwrbehwagoh", "uffkmrqemvvh", com.azure.core.util.Context.NONE);
 
     }
 }

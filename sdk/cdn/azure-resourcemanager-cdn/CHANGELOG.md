@@ -12,6 +12,14 @@
 - Changed `withTypeName(String)` parameter type to corresponding enum type in condition/action parameter classes.
 - Removed `fromInt(int)` method from `PolicySettingsDefaultCustomBlockResponseStatusCode` class. Use `fromValue(Integer)` instead.
 
+## 2.53.8 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
 ## 2.53.7 (2026-03-30)
 
 ### Other Changes

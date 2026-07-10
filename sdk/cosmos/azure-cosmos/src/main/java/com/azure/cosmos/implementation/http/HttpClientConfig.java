@@ -14,8 +14,10 @@ import java.time.Duration;
  * Helper class internally used for instantiating reactor netty http client.
  */
 public class HttpClientConfig {
-    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor =
-        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    }
+
     private final Configs configs;
     private Duration connectionAcquireTimeout = Configs.getConnectionAcquireTimeout();
     private int maxPoolSize = Configs.getDefaultHttpPoolSize();
@@ -199,6 +201,6 @@ public class HttpClientConfig {
             connectionAcquireTimeout,
             gwV2Cto,
             proxy != null,
-            http2ConnectionConfig == null ? null : httpCfgAccessor.toDiagnosticsString(http2ConnectionConfig));
+            http2ConnectionConfig == null ? null : httpCfgAccessor().toDiagnosticsString(http2ConnectionConfig));
     }
 }

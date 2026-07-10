@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class MigrationNameAvailabilityReason extends ExpandableStringEnum<MigrationNameAvailabilityReason> {
     /**
-     * Static value Invalid for MigrationNameAvailabilityReason.
+     * Migration name is invalid.
      */
     public static final MigrationNameAvailabilityReason INVALID = fromString("Invalid");
 
     /**
-     * Static value AlreadyExists for MigrationNameAvailabilityReason.
+     * Migration name already exists.
      */
     public static final MigrationNameAvailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 

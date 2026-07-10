@@ -59,7 +59,7 @@ public class AzureLettucePasswordlessAutoConfiguration {
     }
 
     @Bean(name = "azureLettuceClientConfigurationBuilderCustomizer")
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "azureLettuceClientConfigurationBuilderCustomizer")
     LettuceClientConfigurationBuilderCustomizer azureLettuceClientConfigurationBuilderCustomizer(AzureRedisCredentials azureRedisCredentials) {
         return builder -> builder.redisCredentialsProviderFactory(new RedisCredentialsProviderFactory() {
 

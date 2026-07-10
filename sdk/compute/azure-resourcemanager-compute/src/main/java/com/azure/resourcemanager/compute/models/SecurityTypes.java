@@ -8,10 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
- * The default behavior is: UefiSettings will not be enabled unless this property is set.
+ * Specifies the VM securityType; UefiSettings are enabled only when set to TrustedLaunch or ConfidentialVM, and returns
+ * a Standard value starting API version 2025-11-01.
  */
 public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
+    /**
+     * Indicates a VM without UEFI features such as SecureBoot or vTPM; returned as the default value when securityType
+     * is not specified.
+     */
+    public static final SecurityTypes STANDARD = fromString("Standard");
+
     /**
      * Static value TrustedLaunch for SecurityTypes.
      */

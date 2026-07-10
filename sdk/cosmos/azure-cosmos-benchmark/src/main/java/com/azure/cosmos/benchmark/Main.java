@@ -8,6 +8,8 @@ import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 public class Main {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -23,11 +25,15 @@ public class Main {
                 return;
             }
 
-            // Configuration holds only CLI lifecycle params (cycles, settleTimeMs, etc.).
-            // BenchmarkConfig consumes them and loads all workload config from the JSON file.
-            // BenchmarkOrchestrator handles dispatch for all benchmark types (async, sync,
-            // CTL, encryption, LinkedIn) based on operationType and flags in TenantWorkloadConfig.
-            BenchmarkConfig benchConfig = BenchmarkConfig.fromConfiguration(cfg);
+            // All configuration lives in the JSON file.
+            // Configuration only provides the path to it.
+            File configFile = new File(cfg.getWorkloadConfig());
+            if (!configFile.exists()) {
+                throw new IllegalArgumentException(
+                    "Workload configuration file not found: " + configFile.getAbsolutePath());
+            }
+
+            BenchmarkConfig benchConfig = BenchmarkConfig.fromFile(configFile);
 
             if (benchConfig.getTenantWorkloads().isEmpty()) {
                 throw new IllegalArgumentException(

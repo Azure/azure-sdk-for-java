@@ -46,6 +46,7 @@ public class Configs {
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
+    private static final String BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = "COSMOS.BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
@@ -54,11 +55,17 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Kill-switch to opt out of routing QueryPlan requests through the thin client (Gateway V2).
+    // Defaults to enabled; set to false to force QueryPlan requests back onto Gateway V1.
+    private static final boolean DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED = true;
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED = "COSMOS.THINCLIENT_QUERY_PLAN_ENABLED";
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE = "COSMOS_THINCLIENT_QUERY_PLAN_ENABLED";
+
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
 
-    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Thin client connect/acquire timeout - controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
     // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
     // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
     // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
@@ -117,6 +124,7 @@ public class Configs {
 
     private static final int DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = 10 * 60;
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
+    private static final int DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS = 15;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
     private static final int DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH = 4096; //4KB
@@ -143,6 +151,36 @@ public class Configs {
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS = "COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE = "COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
+
+    // HTTP/2 PING keepalive — keeps connections alive for sparse workloads by preventing
+    // intermediate infrastructure (NAT gateways, firewalls, load balancers) from silently
+    // reaping idle connections. On PING timeout (no ACK within the configured timeout),
+    // the connection is closed — similar to Rust SDK's hyper-based PING behavior.
+    // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
+    private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
+    private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
+    private static final String HTTP2_PING_HEALTH_ENABLED_VARIABLE = "COSMOS_HTTP2_PING_HEALTH_ENABLED";
+    // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. A single missed PING round
+    // (~3s) marks one failure; the connection is closed after HTTP2_PING_FAILURE_THRESHOLD
+    // consecutive failures (see ~15s worst-case detection note below).
+    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 1;
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS = 2;
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_TIMEOUT_IN_SECONDS";
+    // Consecutive PING failures (timeout without ACK) before closing the connection.
+    // Peer HTTP/2 stacks (Hyper / .NET SocketsHttpHandler / Go net/http) typically close
+    // on the first PING-ACK timeout. Java's threshold of 5 is intentionally more tolerant
+    // to absorb transient WAN jitter; with interval=1s and timeout=2s, worst-case
+    // detection = 5*(1+2) = ~15s.
+    // Note: this is NOT the same dimension as Rust SDK's
+    // `http2_consecutive_failure_threshold` (which gates per-HTTP-request shard health,
+    // not per-PING-ACK timeouts).
+    private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 5;
+    private static final String HTTP2_PING_FAILURE_THRESHOLD = "COSMOS.HTTP2_PING_FAILURE_THRESHOLD";
+    private static final String HTTP2_PING_FAILURE_THRESHOLD_VARIABLE = "COSMOS_HTTP2_PING_FAILURE_THRESHOLD";
+
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -185,6 +223,12 @@ public class Configs {
     // whether to use old tracing format instead of semantic profile
     private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
     private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
+
+    // Whether multiple CosmosClient instances configured with the same service
+    // endpoint share a single partition-key-range cache. Enabled by default.
+    private static final String SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED =
+        "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
+    private static final boolean DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED = true;
 
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
@@ -247,6 +291,11 @@ public class Configs {
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE = "COSMOS.MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
     public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
+    // readManyByPartitionKeys: max number of PK values per query per physical partition
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE = "COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final String READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE = "COSMOS_READ_MANY_BY_PK_MAX_BATCH_SIZE";
+    public static final int DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE = 100;
 
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
     public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
@@ -388,6 +437,16 @@ public class Configs {
     private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
+
+    // Config to indicate the SETTINGS_MAX_FRAME_SIZE advertised by the HTTP/2 client to the remote peer.
+    // The value is expressed in kilobytes (KB) and is clamped to [64 KB, 16383 KB] — the lower bound matches
+    // the SDK's historical default so users can only grow the frame size, and the upper bound is the
+    // largest whole-KB value below the HTTP/2 spec max (RFC 7540: 2^24 - 1 bytes).
+    private static final int MIN_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;            // 64 KB
+    private static final int MAX_HTTP2_MAX_FRAME_SIZE_IN_KB = 16_383;        // 16383 KB
+    private static final int DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;        // 64 KB
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE = "COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB";
 
     private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
     private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
@@ -538,6 +597,20 @@ public class Configs {
         return DEFAULT_THINCLIENT_ENABLED;
     }
 
+    public static boolean isThinClientQueryPlanEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_QUERY_PLAN_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED;
+    }
+
     public static boolean isNettyHttpClientMetricsEnabled() {
         return Boolean.parseBoolean(
             System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
@@ -565,6 +638,10 @@ public class Configs {
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
+    }
+
+    public int getBackgroundRefreshLocationJitterMaxInSeconds() {
+        return getJVMConfigAsInt(BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS, DEFAULT_BACKGROUND_REFRESH_LOCATION_JITTER_MAX_IN_SECONDS);
     }
 
     public static int getMaxHttpHeaderSize() {
@@ -678,7 +755,7 @@ public class Configs {
             }
         }
 
-        // Guard against invalid values — timeout must be at least 500ms
+        // Guard against invalid values - timeout must be at least 500ms
         if (value < 500) {
             logger.warn(
                 "Invalid thin client connection timeout: {}ms. Must be >= 500. Falling back to default: {}ms.",
@@ -727,6 +804,71 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static boolean isHttp2PingHealthEnabled() {
+        String configValue = System.getProperty(
+            HTTP2_PING_HEALTH_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_HEALTH_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_HEALTH_ENABLED)));
+        return Boolean.parseBoolean(configValue);
+    }
+
+    public static int getHttp2PingIntervalInSeconds() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_INTERVAL_IN_SECONDS,
+            HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
+    }
+
+    public static int getHttp2PingTimeoutInSeconds() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_TIMEOUT_IN_SECONDS,
+            HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS);
+    }
+
+    public static int getHttp2PingFailureThreshold() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_FAILURE_THRESHOLD,
+            HTTP2_PING_FAILURE_THRESHOLD_VARIABLE,
+            DEFAULT_HTTP2_PING_FAILURE_THRESHOLD);
+    }
+
+    /**
+     * Reads an int system property first, then the env variable, falling back to the supplied default
+     * on either absence or a non-numeric value. Logs WARN on malformed input so an operator typo in a
+     * value like {@code COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS=1s} cannot throw {@link NumberFormatException}
+     * from inside a per-connection reactor-netty {@code doOnConnected} callback and break the channel.
+     */
+    private static int parseIntConfigOrDefault(String systemPropertyKey, String envVariableKey, int defaultValue) {
+        String valueFromSystemProperty = System.getProperty(systemPropertyKey);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    systemPropertyKey);
+            }
+        }
+
+        String valueFromEnvVariable = System.getenv(envVariableKey);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromEnvVariable);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
+                    valueFromEnvVariable,
+                    envVariableKey,
+                    defaultValue);
+            }
+        }
+
+        return defaultValue;
     }
 
     public static Integer getPendingAcquireMaxCount() {
@@ -814,6 +956,46 @@ public class Configs {
         }
 
         return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getReadManyByPkMaxBatchSize() {
+        Integer parsed = parsePositiveInt(System.getProperty(READ_MANY_BY_PK_MAX_BATCH_SIZE), READ_MANY_BY_PK_MAX_BATCH_SIZE);
+        if (parsed != null) {
+            return parsed;
+        }
+
+        parsed = parsePositiveInt(System.getenv(READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE), READ_MANY_BY_PK_MAX_BATCH_SIZE_VARIABLE);
+        if (parsed != null) {
+            return parsed;
+        }
+
+        return DEFAULT_READ_MANY_BY_PK_MAX_BATCH_SIZE;
+    }
+
+    /**
+     * Parses a non-empty string as a positive integer (>= 1). On parse failure or
+     * non-positive result, logs a WARN and returns null so the caller can fall back
+     * to its default. A null/empty input is also treated as "no value".
+     */
+    private static Integer parsePositiveInt(String value, String configName) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        try {
+            int parsed = Integer.parseInt(value);
+            if (parsed < 1) {
+                logger.warn(
+                    "Ignoring invalid value '{}' for config '{}'. Value must be >= 1. Falling back to default.",
+                    value, configName);
+                return null;
+            }
+            return parsed;
+        } catch (NumberFormatException e) {
+            logger.warn(
+                "Ignoring non-numeric value '{}' for config '{}'. Falling back to default.",
+                value, configName);
+            return null;
+        }
     }
 
     public static int getMaxBulkMicroBatchConcurrency() {
@@ -924,6 +1106,12 @@ public class Configs {
         return getJVMConfigAsBoolean(
             USE_LEGACY_TRACING,
             DEFAULT_USE_LEGACY_TRACING);
+    }
+
+    public static boolean isSharedPartitionKeyRangeCacheEnabled() {
+        return getJVMConfigAsBoolean(
+            SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED,
+            DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
@@ -1337,6 +1525,54 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
 
         return Integer.parseInt(http2MaxConcurrentStreams);
+    }
+
+    /**
+     * Returns the HTTP/2 SETTINGS_MAX_FRAME_SIZE to advertise to the remote peer, in bytes.
+     *
+     * The customer-facing configuration is expressed in kilobytes (KB) via system property
+     * {@code COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB} or environment variable
+     * {@code COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB}. Resolution order is system property, then environment
+     * variable, then the SDK default of 64 KB. The configured value is clamped to the inclusive range
+     * [64 KB, 16383 KB]; an unparseable or out-of-range value falls back to the default (or is clamped)
+     * and a warning is logged. The returned value is converted to bytes for downstream Netty
+     * consumption.
+     */
+    public static int getHttp2MaxFrameSizeInBytes() {
+        String configuredValue = System.getProperty(
+            HTTP2_MAX_FRAME_SIZE_IN_KB,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB)));
+
+        int parsedInKb;
+        try {
+            parsedInKb = Integer.parseInt(configuredValue);
+        } catch (NumberFormatException ex) {
+            logger.warn(
+                "Invalid value '{}' for {} / {}; falling back to default {} KB.",
+                configuredValue,
+                HTTP2_MAX_FRAME_SIZE_IN_KB,
+                HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE,
+                DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB);
+            return DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB * 1024;
+        }
+
+        if (parsedInKb < MIN_HTTP2_MAX_FRAME_SIZE_IN_KB || parsedInKb > MAX_HTTP2_MAX_FRAME_SIZE_IN_KB) {
+            int clampedInKb = Math.min(
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                Math.max(MIN_HTTP2_MAX_FRAME_SIZE_IN_KB, parsedInKb));
+            logger.warn(
+                "Configured HTTP/2 max frame size {} KB is outside the allowed range [{}, {}] KB; "
+                    + "clamping to {} KB.",
+                parsedInKb,
+                MIN_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                clampedInKb);
+            return clampedInKb * 1024;
+        }
+
+        return parsedInKb * 1024;
     }
 
     public static boolean isEmulatorServerCertValidationDisabled() {

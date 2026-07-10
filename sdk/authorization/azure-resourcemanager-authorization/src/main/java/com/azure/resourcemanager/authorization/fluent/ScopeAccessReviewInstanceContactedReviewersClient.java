@@ -19,7 +19,7 @@ public interface ScopeAccessReviewInstanceContactedReviewersClient {
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +33,7 @@ public interface ScopeAccessReviewInstanceContactedReviewersClient {
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,7 +47,7 @@ public interface ScopeAccessReviewInstanceContactedReviewersClient {
     /**
      * Get access review instance contacted reviewers.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param scheduleDefinitionId The id of the access review schedule definition.
      * @param id The id of the access review instance.
      * @param context The context to associate with this operation.

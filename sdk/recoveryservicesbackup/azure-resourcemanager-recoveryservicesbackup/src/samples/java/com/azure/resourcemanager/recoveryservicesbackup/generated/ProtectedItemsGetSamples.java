@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectedItemsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Classic Virtual Machine Details.
@@ -25,7 +25,7 @@ public final class ProtectedItemsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/Compute_ProtectedItem_Get.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/Compute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Virtual Machine Details.

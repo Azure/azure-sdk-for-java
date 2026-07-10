@@ -41,6 +41,11 @@ public final class VirtualMachineScaleSetUpdateOSDisk implements JsonSerializabl
     private Integer diskSizeGB;
 
     /*
+     * Specifies the storage fault domain alignment type for the disk.
+     */
+    private StorageFaultDomainAlignmentType storageFaultDomainAlignment;
+
+    /*
      * The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the
      * Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
      */
@@ -156,6 +161,27 @@ public final class VirtualMachineScaleSetUpdateOSDisk implements JsonSerializabl
      */
     public VirtualMachineScaleSetUpdateOSDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @return the storageFaultDomainAlignment value.
+     */
+    public StorageFaultDomainAlignmentType storageFaultDomainAlignment() {
+        return this.storageFaultDomainAlignment;
+    }
+
+    /**
+     * Set the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @param storageFaultDomainAlignment the storageFaultDomainAlignment value to set.
+     * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
+     */
+    public VirtualMachineScaleSetUpdateOSDisk
+        withStorageFaultDomainAlignment(StorageFaultDomainAlignmentType storageFaultDomainAlignment) {
+        this.storageFaultDomainAlignment = storageFaultDomainAlignment;
         return this;
     }
 
@@ -280,6 +306,8 @@ public final class VirtualMachineScaleSetUpdateOSDisk implements JsonSerializabl
         jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
         jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
         jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("storageFaultDomainAlignment",
+            this.storageFaultDomainAlignment == null ? null : this.storageFaultDomainAlignment.toString());
         jsonWriter.writeJsonField("image", this.image);
         jsonWriter.writeArrayField("vhdContainers", this.vhdContainers,
             (writer, element) -> writer.writeString(element));
@@ -314,6 +342,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk implements JsonSerializabl
                     deserializedVirtualMachineScaleSetUpdateOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageFaultDomainAlignment".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.storageFaultDomainAlignment
+                        = StorageFaultDomainAlignmentType.fromString(reader.getString());
                 } else if ("image".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateOSDisk.image = VirtualHardDisk.fromJson(reader);
                 } else if ("vhdContainers".equals(fieldName)) {

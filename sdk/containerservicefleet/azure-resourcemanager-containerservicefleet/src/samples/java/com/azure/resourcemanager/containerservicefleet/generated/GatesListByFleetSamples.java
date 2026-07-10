@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_ListByFleet.json
      */
     /**
      * Sample code: Lists the Gates of a Fleet.

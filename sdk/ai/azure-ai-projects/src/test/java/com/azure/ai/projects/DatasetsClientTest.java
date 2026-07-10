@@ -8,6 +8,7 @@ import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,6 +47,28 @@ public class DatasetsClientTest extends ClientTestBase {
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testCreateDatasetWithFileWithResponse(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws FileNotFoundException, URISyntaxException {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
+
+        String datasetName = "java-test-file-response-" + UUID.randomUUID().toString().substring(0, 8);
+        String datasetVersionString = "1";
+
+        Path filePath = getPath("product_info.md");
+
+        FileDatasetVersion createdDatasetVersion = datasetsClient
+            .createDatasetWithFileWithResponse(datasetName, datasetVersionString, filePath, new RequestOptions())
+            .getValue()
+            .toObject(FileDatasetVersion.class);
+
+        assertFileDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString, null);
+
+        datasetsClient.deleteDatasetVersion(datasetName, datasetVersionString);
+    }
+
+    @LiveOnly
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testCreateDatasetWithFolder(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
         DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
@@ -62,6 +85,40 @@ public class DatasetsClientTest extends ClientTestBase {
         try {
             FolderDatasetVersion createdDatasetVersion
                 = datasetsClient.createDatasetWithFolder(datasetName, datasetVersionString, tempFolder);
+
+            assertDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString);
+
+            datasetsClient.deleteDatasetVersion(datasetName, datasetVersionString);
+        } finally {
+            Files.deleteIfExists(file1);
+            Files.deleteIfExists(file2);
+            Files.deleteIfExists(tempFolder);
+        }
+    }
+
+    @LiveOnly
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testCreateDatasetWithFolderWithResponse(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws IOException {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
+
+        String datasetName = "java-test-folder-response-" + UUID.randomUUID().toString().substring(0, 8);
+        String datasetVersionString = "1";
+
+        Path tempFolder = Files.createTempDirectory("test-folder-dataset");
+        Path file1 = tempFolder.resolve("file1.txt");
+        Path file2 = tempFolder.resolve("file2.txt");
+        Files.write(file1, "Test content 1".getBytes());
+        Files.write(file2, "Test content 2".getBytes());
+
+        try {
+            FolderDatasetVersion createdDatasetVersion
+                = datasetsClient
+                    .createDatasetWithFolderWithResponse(datasetName, datasetVersionString, tempFolder,
+                        new RequestOptions())
+                    .getValue()
+                    .toObject(FolderDatasetVersion.class);
 
             assertDatasetVersion(createdDatasetVersion, datasetName, datasetVersionString);
 

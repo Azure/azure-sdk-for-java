@@ -116,6 +116,7 @@ public interface AsyncDocumentClient {
         private boolean isRegionScopedSessionCapturingEnabled;
         private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
+        private Map<String, String> additionalHeaders;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -288,6 +289,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withAdditionalHeaders(Map<String, String> additionalHeaders) {
+            this.additionalHeaders = additionalHeaders;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -328,7 +334,8 @@ public interface AsyncDocumentClient {
                     defaultCustomSerializer,
                     isRegionScopedSessionCapturingEnabled,
                     operationPolicies,
-                    isPerPartitionAutomaticFailoverEnabled);
+                    isPerPartitionAutomaticFailoverEnabled,
+                    additionalHeaders);
 
             client.init(state, null);
 
@@ -1585,6 +1592,31 @@ public interface AsyncDocumentClient {
         Class<T> klass);
 
     /**
+     * Reads many documents by partition key values.
+     * Unlike {@link #readMany(List, String, QueryFeedOperationState, Class)} this method does not require
+     * item ids - it queries all documents matching the provided partition key values.
+     * Partial hierarchical partition keys are supported and will fan out to multiple physical partitions.
+     *
+     * @param partitionKeys list of partition key values to read documents for
+     * @param customQuery optional custom query (for projections/additional filters) - null means SELECT * FROM c
+     * @param collectionLink link for the documentcollection/container to be queried
+     * @param state the query operation state (may carry a composite continuation token via requestContinuation)
+     * @param maxConcurrentBatchPrefetch the maximum number of per-physical-partition batches whose first
+     *                                   page is prefetched concurrently. Must be &gt;= 1.
+     * @param klass class type
+     * @param <T> the type parameter
+     * @return a Flux with feed response pages of documents
+     */
+    <T> Flux<FeedResponse<T>> readManyByPartitionKeys(
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        String collectionLink,
+        QueryFeedOperationState state,
+        int maxConcurrentBatchPrefetch,
+        int maxBatchSize,
+        Class<T> klass);
+
+    /**
      * Read all documents of a certain logical partition.
      * <p>
      * After subscription the operation will be performed.
@@ -1650,6 +1682,7 @@ public interface AsyncDocumentClient {
      * @param group the throughput control group.
      */
     void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
+
 
     /***
      * Enable server throughput control group.

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,25 +18,24 @@ import java.io.IOException;
 @Immutable
 public class SecurityPerimeterResource extends ProxyResource {
     /*
-     * Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
+    private SystemData systemData;
 
     /*
-     * The name of the resource
-     */
-    private String name;
-
-    /*
-     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The name of the resource.
      */
-    private SecurityPerimeterSystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of SecurityPerimeterResource class.
@@ -44,14 +44,33 @@ public class SecurityPerimeterResource extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource ID for the resource. E.g.
-     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the id value.
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the SecurityPerimeterResource object itself.
+     */
+    SecurityPerimeterResource withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -65,34 +84,13 @@ public class SecurityPerimeterResource extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
-     * "Microsoft.Storage/storageAccounts".
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SecurityPerimeterSystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the SecurityPerimeterResource object itself.
-     */
-    SecurityPerimeterResource withSystemData(SecurityPerimeterSystemData systemData) {
-        this.systemData = systemData;
-        return this;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -101,9 +99,6 @@ public class SecurityPerimeterResource extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (systemData() != null) {
-            systemData().validate();
-        }
     }
 
     /**
@@ -121,6 +116,7 @@ public class SecurityPerimeterResource extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SecurityPerimeterResource if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecurityPerimeterResource.
      */
     public static SecurityPerimeterResource fromJson(JsonReader jsonReader) throws IOException {
@@ -137,7 +133,7 @@ public class SecurityPerimeterResource extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityPerimeterResource.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedSecurityPerimeterResource.systemData = SecurityPerimeterSystemData.fromJson(reader);
+                    deserializedSecurityPerimeterResource.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

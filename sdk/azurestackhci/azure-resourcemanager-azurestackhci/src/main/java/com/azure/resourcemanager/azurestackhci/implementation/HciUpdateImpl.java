@@ -256,6 +256,14 @@ public final class HciUpdateImpl implements HciUpdate, HciUpdate.Definition, Hci
         serviceManager.updates().post(resourceGroupName, clusterName, updateName, context);
     }
 
+    public void prepare() {
+        serviceManager.updates().prepare(resourceGroupName, clusterName, updateName);
+    }
+
+    public void prepare(Context context) {
+        serviceManager.updates().prepare(resourceGroupName, clusterName, updateName, context);
+    }
+
     public HciUpdateImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;

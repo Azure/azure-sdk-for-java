@@ -22,6 +22,12 @@ public final class ZonalPlatformFaultDomainAlignMode extends ExpandableStringEnu
     public static final ZonalPlatformFaultDomainAlignMode UNALIGNED = fromString("Unaligned");
 
     /**
+     * Offload Alignment to VMSS. VMSS aligns disks that support enough Storage Fault Domains, while keeping others
+     * unaligned.
+     */
+    public static final ZonalPlatformFaultDomainAlignMode BEST_EFFORT_ALIGNED = fromString("BestEffortAligned");
+
+    /**
      * Creates a new instance of ZonalPlatformFaultDomainAlignMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

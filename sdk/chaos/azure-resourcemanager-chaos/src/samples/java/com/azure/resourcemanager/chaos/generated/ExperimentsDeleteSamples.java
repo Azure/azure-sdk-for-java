@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ExperimentsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Experiments_Delete.json
      */
     /**
      * Sample code: Delete a Experiment in a resource group.

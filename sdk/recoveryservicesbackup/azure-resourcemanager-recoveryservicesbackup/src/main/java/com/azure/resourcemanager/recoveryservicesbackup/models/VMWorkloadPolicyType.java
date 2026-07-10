@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class VMWorkloadPolicyType extends ExpandableStringEnum<VMWorkloadPolicyType> {
     /**
-     * Static value Invalid for VMWorkloadPolicyType.
+     * Invalid policy type.
      */
     public static final VMWorkloadPolicyType INVALID = fromString("Invalid");
 
     /**
-     * Static value SnapshotV1 for VMWorkloadPolicyType.
+     * Snapshot V1 policy type.
      */
     public static final VMWorkloadPolicyType SNAPSHOT_V1 = fromString("SnapshotV1");
 
     /**
-     * Static value SnapshotV2 for VMWorkloadPolicyType.
+     * Snapshot V2 policy type.
      */
     public static final VMWorkloadPolicyType SNAPSHOT_V2 = fromString("SnapshotV2");
 
     /**
-     * Static value Streaming for VMWorkloadPolicyType.
+     * Streaming policy type.
      */
     public static final VMWorkloadPolicyType STREAMING = fromString("Streaming");
 

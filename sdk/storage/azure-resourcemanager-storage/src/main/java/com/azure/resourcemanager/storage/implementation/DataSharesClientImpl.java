@@ -35,6 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.DataSharesClient;
 import com.azure.resourcemanager.storage.fluent.models.DataShareInner;
 import com.azure.resourcemanager.storage.implementation.models.DataShareListResult;
+import com.azure.resourcemanager.storage.models.DataShareUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -97,7 +98,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("dataShareName") String dataShareName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DataShareInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") DataShareUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -565,7 +566,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String dataShareName, DataShareInner properties) {
+        String dataShareName, DataShareUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -615,7 +616,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String dataShareName, DataShareInner properties, Context context) {
+        String dataShareName, DataShareUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -662,7 +663,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DataShareInner>, DataShareInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String dataShareName, DataShareInner properties) {
+        String accountName, String dataShareName, DataShareUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, dataShareName, properties);
         return this.client.<DataShareInner, DataShareInner>getLroResult(mono, this.client.getHttpPipeline(),
@@ -686,7 +687,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataShareInner>, DataShareInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String dataShareName, DataShareInner properties, Context context) {
+        String accountName, String dataShareName, DataShareUpdate properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, dataShareName, properties, context);
@@ -710,7 +711,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataShareInner>, DataShareInner> beginUpdate(String resourceGroupName,
-        String accountName, String dataShareName, DataShareInner properties) {
+        String accountName, String dataShareName, DataShareUpdate properties) {
         return this.beginUpdateAsync(resourceGroupName, accountName, dataShareName, properties).getSyncPoller();
     }
 
@@ -731,7 +732,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataShareInner>, DataShareInner> beginUpdate(String resourceGroupName,
-        String accountName, String dataShareName, DataShareInner properties, Context context) {
+        String accountName, String dataShareName, DataShareUpdate properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, dataShareName, properties, context)
             .getSyncPoller();
     }
@@ -752,7 +753,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataShareInner> updateAsync(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties) {
+        DataShareUpdate properties) {
         return beginUpdateAsync(resourceGroupName, accountName, dataShareName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -774,7 +775,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataShareInner> updateAsync(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties, Context context) {
+        DataShareUpdate properties, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, dataShareName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -794,7 +795,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataShareInner update(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties) {
+        DataShareUpdate properties) {
         return updateAsync(resourceGroupName, accountName, dataShareName, properties).block();
     }
 
@@ -814,7 +815,7 @@ public final class DataSharesClientImpl implements DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataShareInner update(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties, Context context) {
+        DataShareUpdate properties, Context context) {
         return updateAsync(resourceGroupName, accountName, dataShareName, properties, context).block();
     }
 

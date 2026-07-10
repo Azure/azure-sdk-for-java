@@ -20,9 +20,8 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters);
+    void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters);
 
     /**
      * Prepares source vault for Data Move operation.
@@ -34,9 +33,8 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    OkResponse bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+    void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
         Context context);
 
     /**
@@ -48,9 +46,8 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters);
+    void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters);
 
     /**
      * Triggers Data Move Operation on target vault.
@@ -62,9 +59,8 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    OkResponse bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+    void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
         Context context);
 
     /**

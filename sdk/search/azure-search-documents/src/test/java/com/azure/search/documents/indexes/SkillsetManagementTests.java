@@ -16,7 +16,10 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtractionOptions;
+import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
+import com.azure.search.documents.indexes.models.EntityCategory;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillV3;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
@@ -32,6 +35,7 @@ import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SentimentSkillV3;
+import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 import com.azure.search.documents.indexes.models.SplitSkill;
 import com.azure.search.documents.indexes.models.SplitSkillLanguage;
@@ -66,6 +70,7 @@ import static com.azure.search.documents.TestHelpers.ifMatch;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -87,9 +92,6 @@ public class SkillsetManagementTests extends SearchTestBase {
         // Disable `("$..source")` sanitizer
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3423");
-            // interceptorManager.addSanitizers(new TestProxySanitizer("$..cognitiveServices.key",
-            //     TestProxyUtils.HOST_NAME_REGEX, "REDACTED", TestProxySanitizerType.BODY_KEY));
-
         }
         client = getSearchIndexerClientBuilder(true)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -452,7 +454,6 @@ public class SkillsetManagementTests extends SearchTestBase {
         expectedSkillsets.put(skillset2.getName(), skillset2);
 
         Map<String, SearchIndexerSkillset> actualSkillsets = client.listSkillsets()
-            .getSkillsets()
             .stream()
             .collect(Collectors.toMap(SearchIndexerSkillset::getName, skillset -> skillset));
 
@@ -460,10 +461,7 @@ public class SkillsetManagementTests extends SearchTestBase {
             (expected, actual) -> assertObjectEquals(expected, actual, true));
 
         StepVerifier
-            .create(asyncClient.listSkillsets()
-                .map(result -> result.getSkillsets()
-                    .stream()
-                    .collect(Collectors.toMap(SearchIndexerSkillset::getName, skillset -> skillset))))
+            .create(asyncClient.listSkillsets().collectMap(SearchIndexerSkillset::getName, skillset -> skillset))
             .assertNext(actualSkillsetsAsync -> compareMaps(expectedSkillsets, actualSkillsetsAsync,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
@@ -480,15 +478,17 @@ public class SkillsetManagementTests extends SearchTestBase {
         skillsetsToDelete.add(skillset2.getName());
 
         Set<String> expectedSkillsetNames = new HashSet<>(Arrays.asList(skillset1.getName(), skillset2.getName()));
-        Set<String> actualSkillsetNames = new HashSet<>(client.listSkillsetNames());
+        Set<String> actualSkillsetNames = client.listSkillsetNames().stream().collect(Collectors.toSet());
 
         assertEquals(expectedSkillsetNames.size(), actualSkillsetNames.size());
         assertTrue(actualSkillsetNames.containsAll(expectedSkillsetNames));
 
-        StepVerifier.create(asyncClient.listSkillsetNames().map(HashSet::new)).assertNext(actualSkillsetNamesAsync -> {
-            assertEquals(actualSkillsetNamesAsync.size(), actualSkillsetNames.size());
-            assertTrue(actualSkillsetNamesAsync.containsAll(expectedSkillsetNames));
-        }).verifyComplete();
+        StepVerifier.create(asyncClient.listSkillsetNames().collect(Collectors.toSet()))
+            .assertNext(actualSkillsetNamesAsync -> {
+                assertEquals(actualSkillsetNamesAsync.size(), actualSkillsetNames.size());
+                assertTrue(actualSkillsetNamesAsync.containsAll(expectedSkillsetNames));
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -948,8 +948,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Disabled("Test proxy issues")
     public void contentUnderstandingSkillWorksWithPreviewApiVersion() {
         SearchIndexerClient indexerClient
-            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
-                .buildClient();
+            = getSearchIndexerClientBuilder(true).serviceVersion(SearchServiceVersion.V2026_04_01).buildClient();
 
         SearchIndexerSkillset skillset = createTestSkillsetContentUnderstanding();
 
@@ -979,6 +978,61 @@ public class SkillsetManagementTests extends SearchTestBase {
     //            || ex.getMessage().contains("unsupported")
     //            || ex.getMessage().contains("not supported"));
     //    }
+
+    @Test
+    public void contentUnderstandingSkillWithSemanticChunkingSerializesCorrectly() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.SEMANTIC)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.TOKENS)
+                    .setMaximumLength(500));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"@odata.type\":\"#Microsoft.Skills.Util.ContentUnderstandingSkill\""));
+        assertTrue(json.contains("\"method\":\"semantic\""));
+        assertTrue(json.contains("\"unit\":\"tokens\""));
+        assertTrue(json.contains("\"maximumLength\":500"));
+    }
+
+    @Test
+    public void contentUnderstandingSkillWithFixedSizeMethodSerializesCorrectly() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.FIXED_SIZE)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(2000)
+                    .setOverlapLength(200));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"method\":\"fixedSize\""));
+        assertTrue(json.contains("\"unit\":\"characters\""));
+        assertTrue(json.contains("\"maximumLength\":2000"));
+        assertTrue(json.contains("\"overlapLength\":200"));
+    }
+
+    @Test
+    public void contentUnderstandingSkillSemanticChunkingDoesNotIncludeOverlapLength() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.SEMANTIC)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.TOKENS)
+                    .setMaximumLength(500));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"method\":\"semantic\""));
+        assertTrue(json.contains("\"unit\":\"tokens\""));
+        assertTrue(json.contains("\"maximumLength\":500"));
+        assertFalse(json.contains("\"overlapLength\""));
+    }
 
     private static InputFieldMappingEntry simpleInputFieldMappingEntry(String name, String source) {
         return new InputFieldMappingEntry(name).setSource(source);
@@ -1134,8 +1188,11 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
-        skills.add(new EntityRecognitionSkillV3(inputs, outputs).setCategories(categories)
-            .setDefaultLanguageCode("en")
+        skills.add(new EntityRecognitionSkillV3(inputs, outputs)
+            .setCategories(categories == null
+                ? null
+                : categories.stream().map(EntityCategory::fromString).collect(Collectors.toList()))
+            .setDefaultLanguageCode(EntityRecognitionSkillLanguage.fromString("en"))
             .setMinimumPrecision(0.5)
             .setName("myentity")
             .setDescription("Tested Entity Recognition skill")
@@ -1160,7 +1217,8 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
-        skills.add(new SentimentSkillV3(inputs, outputs).setDefaultLanguageCode(sentimentLanguageCode)
+        skills.add(new SentimentSkillV3(inputs, outputs)
+            .setDefaultLanguageCode(SentimentSkillLanguage.fromString(sentimentLanguageCode))
             .setName("mysentiment")
             .setDescription("Tested Sentiment skill")
             .setContext(CONTEXT_VALUE));

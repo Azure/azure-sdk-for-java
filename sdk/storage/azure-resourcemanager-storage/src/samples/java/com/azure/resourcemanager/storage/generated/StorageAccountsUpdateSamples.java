@@ -56,7 +56,7 @@ import java.util.Map;
  */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateWithImmutabilityPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithImmutabilityPolicy.
@@ -78,7 +78,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -111,7 +111,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdate_placement.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdate_placement.json
      */
     /**
      * Sample code: StorageAccountUpdate_placement.
@@ -152,7 +152,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountEnableSmbOAuth.json
+     * x-ms-original-file: 2026-04-01/StorageAccountEnableSmbOAuth.json
      */
     /**
      * Sample code: StorageAccountEnableSmbOAuth.
@@ -171,7 +171,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateWithDataCollaborationPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateWithDataCollaborationPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithDataCollaborationPolicy.
@@ -191,7 +191,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateDisablePublicNetworkAccess.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountUpdateDisablePublicNetworkAccess.
@@ -229,7 +229,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdate_zones.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdate_zones.json
      */
     /**
      * Sample code: StorageAccountUpdate_zones.
@@ -269,7 +269,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountLeverageIPv6Ability.json
+     * x-ms-original-file: 2026-04-01/StorageAccountLeverageIPv6Ability.json
      */
     /**
      * Sample code: StorageAccountUpdateEnableIpv6Features.
@@ -291,7 +291,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountEnableAD.json
+     * x-ms-original-file: 2026-04-01/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -316,7 +316,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountUpdateAllowedCopyScopeToAAD.
@@ -354,7 +354,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountEnableCMK.json
+     * x-ms-original-file: 2026-04-01/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -377,7 +377,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdate.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -423,7 +423,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateAccessTierToSmart.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateAccessTierToSmart.json
      */
     /**
      * Sample code: StorageAccountUpdateAccessTierToSmart.
@@ -465,7 +465,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.

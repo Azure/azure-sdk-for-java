@@ -100,6 +100,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("x-ms-deleted-vault-id") String xMsDeletedVaultId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BackupVaultResourceInner parameters, Context context);
 
@@ -109,6 +110,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("x-ms-deleted-vault-id") String xMsDeletedVaultId,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BackupVaultResourceInner parameters, Context context);
 
@@ -309,6 +311,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,13 +319,13 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
-        BackupVaultResourceInner parameters) {
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, xMsDeletedVaultId, contentType, accept,
+                parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -332,6 +335,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,12 +343,12 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
-        BackupVaultResourceInner parameters) {
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, xMsDeletedVaultId, contentType, accept,
+            parameters, Context.NONE);
     }
 
     /**
@@ -353,6 +357,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,11 +366,34 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
-        BackupVaultResourceInner parameters, Context context) {
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, xMsDeletedVaultId, contentType, accept,
+            parameters, context);
+    }
+
+    /**
+     * Creates or updates a BackupVault resource belonging to a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the BackupVaultResource.
+     * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup Vault Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, xMsDeletedVaultId);
+        return this.client.<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupVaultResourceInner.class, BackupVaultResourceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -382,11 +410,33 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
+        final String xMsDeletedVaultId = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
+            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, xMsDeletedVaultId);
         return this.client.<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(mono,
             this.client.getHttpPipeline(), BackupVaultResourceInner.class, BackupVaultResourceInner.class,
             this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a BackupVault resource belonging to a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the BackupVaultResource.
+     * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup Vault Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters, xMsDeletedVaultId);
+        return this.client.<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(response,
+            BackupVaultResourceInner.class, BackupVaultResourceInner.class, Context.NONE);
     }
 
     /**
@@ -403,7 +453,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String vaultName, BackupVaultResourceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters);
+        final String xMsDeletedVaultId = null;
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters, xMsDeletedVaultId);
         return this.client.<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(response,
             BackupVaultResourceInner.class, BackupVaultResourceInner.class, Context.NONE);
     }
@@ -414,6 +466,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,10 +475,31 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters, context);
+        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, String xMsDeletedVaultId,
+        Context context) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, vaultName, parameters, xMsDeletedVaultId, context);
         return this.client.<BackupVaultResourceInner, BackupVaultResourceInner>getLroResult(response,
             BackupVaultResourceInner.class, BackupVaultResourceInner.class, context);
+    }
+
+    /**
+     * Creates or updates a BackupVault resource belonging to a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the BackupVaultResource.
+     * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup Vault Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupVaultResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, xMsDeletedVaultId).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -442,7 +516,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupVaultResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
         BackupVaultResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters).last()
+        final String xMsDeletedVaultId = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, xMsDeletedVaultId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -460,7 +535,8 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner createOrUpdate(String resourceGroupName, String vaultName,
         BackupVaultResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, parameters).getFinalResult();
+        final String xMsDeletedVaultId = null;
+        return beginCreateOrUpdate(resourceGroupName, vaultName, parameters, xMsDeletedVaultId).getFinalResult();
     }
 
     /**
@@ -469,6 +545,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the BackupVaultResource.
      * @param parameters Request body for operation.
+     * @param xMsDeletedVaultId The ID of the deleted backup vault to restore from during undelete flow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -477,8 +554,9 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupVaultResourceInner createOrUpdate(String resourceGroupName, String vaultName,
-        BackupVaultResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, vaultName, parameters, context).getFinalResult();
+        BackupVaultResourceInner parameters, String xMsDeletedVaultId, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, vaultName, parameters, xMsDeletedVaultId, context)
+            .getFinalResult();
     }
 
     /**

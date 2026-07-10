@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -26,13 +27,15 @@ class SyncWriteBenchmark extends SyncBenchmark<CosmosItemResponse> {
     @Override
     protected CosmosItemResponse performWorkload(long i) throws Exception {
         String id = uuid + i;
-        CosmosItemResponse<PojoizedJson> response;
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
         if (workloadConfig.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             return cosmosContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
-                workloadConfig.getDocumentDataFieldCount()));
+                workloadConfig.getDocumentDataFieldCount()),
+                options);
         }
 
         // more optimized for write as partition key is already passed as config
@@ -41,6 +44,6 @@ class SyncWriteBenchmark extends SyncBenchmark<CosmosItemResponse> {
             partitionKey,
             workloadConfig.getDocumentDataFieldCount()),
             new PartitionKey(id),
-            null);
+            options);
     }
 }

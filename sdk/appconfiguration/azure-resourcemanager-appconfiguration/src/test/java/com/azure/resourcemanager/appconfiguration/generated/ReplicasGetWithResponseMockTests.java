@@ -21,7 +21,7 @@ public final class ReplicasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpoint\":\"dmhdlxyjr\",\"provisioningState\":\"Failed\"},\"location\":\"afcnih\",\"id\":\"qapnedgfbcv\",\"name\":\"cvqvpkeqdcv\",\"type\":\"rhvoods\"}";
+            = "{\"properties\":{\"endpoint\":\"hvcyyysfg\",\"provisioningState\":\"Failed\"},\"location\":\"ubiipuipwoqonma\",\"id\":\"ekni\",\"name\":\"shqvcimpev\",\"type\":\"gmblrri\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ReplicasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Replica response = manager.replicas()
-            .getWithResponse("hfwdsjnkaljutiis", "acffgdkzzewkfvhq", "railvpnppfuf", com.azure.core.util.Context.NONE)
+            .getWithResponse("sivfomilo", "ggdufiqndieu", "ao", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("afcnih", response.location());
+        Assertions.assertEquals("ubiipuipwoqonma", response.location());
     }
 }

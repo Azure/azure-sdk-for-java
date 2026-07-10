@@ -72,6 +72,7 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
         this.customOptions = new HashMap<>();
     }
 
+    @Override
     public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
@@ -286,6 +287,7 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
         this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.customSerializer = overrideOption(cosmosRequestOptions.getCustomItemSerializer(), this.customSerializer);
     }
 
 }

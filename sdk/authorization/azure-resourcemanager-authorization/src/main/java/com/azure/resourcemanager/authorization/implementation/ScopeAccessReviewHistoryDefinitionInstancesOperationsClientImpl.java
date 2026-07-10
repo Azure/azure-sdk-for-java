@@ -70,7 +70,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessReviewHistoryDefinitionInstanceListResult>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("historyDefinitionId") String historyDefinitionId, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -86,7 +86,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -120,7 +120,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +154,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -170,7 +170,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +188,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,7 +204,7 @@ public final class ScopeAccessReviewHistoryDefinitionInstancesOperationsClientIm
     /**
      * Get access review history definition instances by definition Id.
      * 
-     * @param scope undefined.
+     * @param scope The scope of the resource.
      * @param historyDefinitionId The id of the access review history definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

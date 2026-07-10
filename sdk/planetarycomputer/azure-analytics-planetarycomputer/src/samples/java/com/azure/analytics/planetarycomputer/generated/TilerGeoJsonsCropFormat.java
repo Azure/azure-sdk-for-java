@@ -28,8 +28,7 @@ public class TilerGeoJsonsCropFormat {
             new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3"),
             new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
-                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),
-            null);
+                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()));
         // END:com.azure.analytics.planetarycomputer.generated.data-crop-geo-json.tiler-geo-jsons-crop-format
     }
 

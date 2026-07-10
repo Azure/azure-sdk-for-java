@@ -423,6 +423,17 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
         jsonWriter.writeStringField("reasoning_effort",
             this.reasoningEffort == null ? null : this.reasoningEffort.toString());
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        if (this.interimResponse != null) {
+            jsonWriter.writeFieldName("interim_response");
+            this.interimResponse.writeTo(jsonWriter);
+        }
+        jsonWriter.writeMapField("invoke_input", this.invokeInput, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -484,6 +495,13 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedResponseCreateParams.metadata = metadata;
+                } else if ("interim_response".equals(fieldName)) {
+                    deserializedResponseCreateParams.interimResponse
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("invoke_input".equals(fieldName)) {
+                    Map<String, BinaryData> invokeInput = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedResponseCreateParams.invokeInput = invokeInput;
                 } else {
                     reader.skipChildren();
                 }
@@ -617,6 +635,62 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     @Generated
     public ResponseCreateParams setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /*
+     * Configuration for interim response generation during latency or tool calls.
+     */
+    @Generated
+    private BinaryData interimResponse;
+
+    /**
+     * Get the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @return the interimResponse value.
+     */
+    @Generated
+    public BinaryData getInterimResponse() {
+        return this.interimResponse;
+    }
+
+    /**
+     * Set the interimResponse property: Configuration for interim response generation during latency or tool calls.
+     *
+     * @param interimResponse the interimResponse value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setInterimResponse(BinaryData interimResponse) {
+        this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /*
+     * Input data to invoke the hosted agent. This feature is in preview.
+     */
+    @Generated
+    private Map<String, BinaryData> invokeInput;
+
+    /**
+     * Get the invokeInput property: Input data to invoke the hosted agent. This feature is in preview.
+     *
+     * @return the invokeInput value.
+     */
+    @Generated
+    public Map<String, BinaryData> getInvokeInput() {
+        return this.invokeInput;
+    }
+
+    /**
+     * Set the invokeInput property: Input data to invoke the hosted agent. This feature is in preview.
+     *
+     * @param invokeInput the invokeInput value to set.
+     * @return the ResponseCreateParams object itself.
+     */
+    @Generated
+    public ResponseCreateParams setInvokeInput(Map<String, BinaryData> invokeInput) {
+        this.invokeInput = invokeInput;
         return this;
     }
 }

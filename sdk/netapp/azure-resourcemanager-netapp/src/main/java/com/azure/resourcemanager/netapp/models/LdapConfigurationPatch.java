@@ -44,6 +44,21 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
      */
     private String certificateCNHost;
 
+    /*
+     * The authentication level to use when binding to the LDAP server, defaults to Anonymous.
+     */
+    private BindAuthenticationLevel bindAuthenticationLevel;
+
+    /*
+     * The distinguished name (DN) to bind as when performing LDAP operations.
+     */
+    private String bindDN;
+
+    /*
+     * The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is stored.
+     */
+    private BindPasswordAkvConfigPatch bindPasswordAkvConfig;
+
     /**
      * Creates an instance of LdapConfigurationPatch class.
      */
@@ -155,11 +170,78 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
     }
 
     /**
+     * Get the bindAuthenticationLevel property: The authentication level to use when binding to the LDAP server,
+     * defaults to Anonymous.
+     * 
+     * @return the bindAuthenticationLevel value.
+     */
+    public BindAuthenticationLevel bindAuthenticationLevel() {
+        return this.bindAuthenticationLevel;
+    }
+
+    /**
+     * Set the bindAuthenticationLevel property: The authentication level to use when binding to the LDAP server,
+     * defaults to Anonymous.
+     * 
+     * @param bindAuthenticationLevel the bindAuthenticationLevel value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withBindAuthenticationLevel(BindAuthenticationLevel bindAuthenticationLevel) {
+        this.bindAuthenticationLevel = bindAuthenticationLevel;
+        return this;
+    }
+
+    /**
+     * Get the bindDN property: The distinguished name (DN) to bind as when performing LDAP operations.
+     * 
+     * @return the bindDN value.
+     */
+    public String bindDN() {
+        return this.bindDN;
+    }
+
+    /**
+     * Set the bindDN property: The distinguished name (DN) to bind as when performing LDAP operations.
+     * 
+     * @param bindDN the bindDN value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withBindDN(String bindDN) {
+        this.bindDN = bindDN;
+        return this;
+    }
+
+    /**
+     * Get the bindPasswordAkvConfig property: The Azure Key Vault configuration where the Bind DN (Distinguished Name)
+     * user password is stored.
+     * 
+     * @return the bindPasswordAkvConfig value.
+     */
+    public BindPasswordAkvConfigPatch bindPasswordAkvConfig() {
+        return this.bindPasswordAkvConfig;
+    }
+
+    /**
+     * Set the bindPasswordAkvConfig property: The Azure Key Vault configuration where the Bind DN (Distinguished Name)
+     * user password is stored.
+     * 
+     * @param bindPasswordAkvConfig the bindPasswordAkvConfig value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withBindPasswordAkvConfig(BindPasswordAkvConfigPatch bindPasswordAkvConfig) {
+        this.bindPasswordAkvConfig = bindPasswordAkvConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (bindPasswordAkvConfig() != null) {
+            bindPasswordAkvConfig().validate();
+        }
     }
 
     /**
@@ -173,6 +255,10 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
         jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTLS);
         jsonWriter.writeStringField("serverCACertificate", this.serverCACertificate);
         jsonWriter.writeStringField("certificateCNHost", this.certificateCNHost);
+        jsonWriter.writeStringField("bindAuthenticationLevel",
+            this.bindAuthenticationLevel == null ? null : this.bindAuthenticationLevel.toString());
+        jsonWriter.writeStringField("bindDN", this.bindDN);
+        jsonWriter.writeJsonField("bindPasswordAkvConfig", this.bindPasswordAkvConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -202,6 +288,14 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
                     deserializedLdapConfigurationPatch.serverCACertificate = reader.getString();
                 } else if ("certificateCNHost".equals(fieldName)) {
                     deserializedLdapConfigurationPatch.certificateCNHost = reader.getString();
+                } else if ("bindAuthenticationLevel".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.bindAuthenticationLevel
+                        = BindAuthenticationLevel.fromString(reader.getString());
+                } else if ("bindDN".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.bindDN = reader.getString();
+                } else if ("bindPasswordAkvConfig".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.bindPasswordAkvConfig
+                        = BindPasswordAkvConfigPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

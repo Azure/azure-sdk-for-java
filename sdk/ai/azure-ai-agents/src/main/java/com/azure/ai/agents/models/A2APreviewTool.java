@@ -141,6 +141,7 @@ public final class A2APreviewTool extends Tool {
         jsonWriter.writeStringField("base_url", this.baseUrl);
         jsonWriter.writeStringField("agent_card_path", this.agentCardPath);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
+        jsonWriter.writeBooleanField("send_credentials_for_agent_card", this.sendCredentialsForAgentCard);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,11 +168,47 @@ public final class A2APreviewTool extends Tool {
                     deserializedA2APreviewTool.agentCardPath = reader.getString();
                 } else if ("project_connection_id".equals(fieldName)) {
                     deserializedA2APreviewTool.projectConnectionId = reader.getString();
+                } else if ("send_credentials_for_agent_card".equals(fieldName)) {
+                    deserializedA2APreviewTool.sendCredentialsForAgentCard = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedA2APreviewTool;
         });
+    }
+
+    /*
+     * When `true`, Foundry sends its credentials when fetching the remote
+     * agent's Agent Card. The service defaults to `false` if a value is not
+     * specified by the caller (anonymous fetch).
+     */
+    @Generated
+    private Boolean sendCredentialsForAgentCard;
+
+    /**
+     * Get the sendCredentialsForAgentCard property: When `true`, Foundry sends its credentials when fetching the remote
+     * agent's Agent Card. The service defaults to `false` if a value is not
+     * specified by the caller (anonymous fetch).
+     *
+     * @return the sendCredentialsForAgentCard value.
+     */
+    @Generated
+    public Boolean isSendCredentialsForAgentCard() {
+        return this.sendCredentialsForAgentCard;
+    }
+
+    /**
+     * Set the sendCredentialsForAgentCard property: When `true`, Foundry sends its credentials when fetching the remote
+     * agent's Agent Card. The service defaults to `false` if a value is not
+     * specified by the caller (anonymous fetch).
+     *
+     * @param sendCredentialsForAgentCard the sendCredentialsForAgentCard value to set.
+     * @return the A2APreviewTool object itself.
+     */
+    @Generated
+    public A2APreviewTool setSendCredentialsForAgentCard(Boolean sendCredentialsForAgentCard) {
+        this.sendCredentialsForAgentCard = sendCredentialsForAgentCard;
+        return this;
     }
 }

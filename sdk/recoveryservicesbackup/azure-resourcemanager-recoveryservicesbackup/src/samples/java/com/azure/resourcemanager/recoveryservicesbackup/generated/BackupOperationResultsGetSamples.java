@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupOperationResultsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Common/ProtectedItem_Delete_OperationResult.json
+     * x-ms-original-file: 2026-01-31-preview/Common/ProtectedItem_Delete_OperationResult.json
      */
     /**
      * Sample code: Get Result for Protected Item Delete Operation.

@@ -43,6 +43,11 @@ public final class PerNodeRemoteSupportSession implements JsonSerializable<PerNo
      */
     private AccessLevel accessLevel;
 
+    /*
+     * The location where the session transcript is stored.
+     */
+    private String transcriptLocation;
+
     /**
      * Creates an instance of PerNodeRemoteSupportSession class.
      */
@@ -95,6 +100,15 @@ public final class PerNodeRemoteSupportSession implements JsonSerializable<PerNo
     }
 
     /**
+     * Get the transcriptLocation property: The location where the session transcript is stored.
+     * 
+     * @return the transcriptLocation value.
+     */
+    public String transcriptLocation() {
+        return this.transcriptLocation;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -130,6 +144,8 @@ public final class PerNodeRemoteSupportSession implements JsonSerializable<PerNo
                     deserializedPerNodeRemoteSupportSession.duration = reader.getNullable(JsonReader::getLong);
                 } else if ("accessLevel".equals(fieldName)) {
                     deserializedPerNodeRemoteSupportSession.accessLevel = AccessLevel.fromString(reader.getString());
+                } else if ("transcriptLocation".equals(fieldName)) {
+                    deserializedPerNodeRemoteSupportSession.transcriptLocation = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

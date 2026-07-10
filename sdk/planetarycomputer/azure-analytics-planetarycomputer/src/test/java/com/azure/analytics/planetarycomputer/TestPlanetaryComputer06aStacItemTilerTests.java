@@ -148,7 +148,7 @@ public class TestPlanetaryComputer06aStacItemTilerTests extends PlanetaryCompute
         // This is server behavior - it may return JPEG for performance reasons
         GetPreviewOptions options
             = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
-        BinaryData imageData = dataClient.getPreview(collectionId, itemId, options, "image/png");
+        BinaryData imageData = dataClient.getPreview(collectionId, itemId, options);
 
         byte[] imageBytes = imageData.toBytes();
 

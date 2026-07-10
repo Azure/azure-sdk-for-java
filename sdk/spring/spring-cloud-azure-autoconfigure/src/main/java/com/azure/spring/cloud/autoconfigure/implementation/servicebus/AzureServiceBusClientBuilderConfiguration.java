@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
 
 @Configuration(proxyBeanMethods = false)
 @Import(AzureServiceBusPropertiesConfiguration.class)
@@ -50,7 +51,14 @@ class AzureServiceBusClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    ServiceBusClientBuilder serviceBusClientBuilder(ServiceBusClientBuilderFactory factory) {
+    ServiceBusClientBuilder serviceBusClientBuilder(
+        ServiceBusClientBuilderFactory factory,
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+        if (!StringUtils.hasText(this.serviceBusProperties.getConnectionString())
+            && !StringUtils.hasText(this.serviceBusProperties.getNamespace())
+            && connectionStringProviders.orderedStream().findFirst().isEmpty()) {
+            return new ServiceBusClientBuilder();
+        }
         return factory.build();
     }
 

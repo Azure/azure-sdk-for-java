@@ -10,6 +10,23 @@
 
 ### Other Changes
 
+## 1.4.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Gson from `2.13.1` to `2.14.0`.
+
+## 1.4.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+
 ## 1.4.3 (2026-01-15)
 
 ### Other Changes

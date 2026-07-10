@@ -8,6 +8,7 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfigCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
+import com.azure.resourcemanager.trafficmanager.models.RecordType;
 import java.util.Arrays;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Profile-PATCH-MonitorConfig.json
+     * x-ms-original-file: 2024-04-01-preview/Profile-PATCH-MonitorConfig.json
      */
     /**
      * Sample code: Profile-PATCH-MonitorConfig.
@@ -37,5 +38,20 @@ public final class ProfilesUpdateSamples {
                             new MonitorConfigCustomHeadersItem().withName("header-1").withValue("value-1"),
                             new MonitorConfigCustomHeadersItem().withName("header-2").withValue("value-2")))),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2024-04-01-preview/Profile-PATCH-RecordType.json
+     */
+    /**
+     * Sample code: Profile-PATCH-RecordType.
+     * 
+     * @param manager Entry point to TrafficManager.
+     */
+    public static void profilePATCHRecordType(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
+        manager.serviceClient()
+            .getProfiles()
+            .updateWithResponse("azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192",
+                new ProfileInner().withRecordType(RecordType.CNAME), com.azure.core.util.Context.NONE);
     }
 }

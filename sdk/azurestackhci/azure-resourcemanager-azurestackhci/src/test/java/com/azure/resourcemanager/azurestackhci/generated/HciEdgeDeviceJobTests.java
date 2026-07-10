@@ -14,7 +14,7 @@ public final class HciEdgeDeviceJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceJob model = BinaryData.fromString(
-            "{\"kind\":\"HCI\",\"properties\":{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Validate\",\"provisioningState\":\"DisableInProgress\",\"jobId\":\"db\",\"startTimeUtc\":\"2021-04-02T13:31:14Z\",\"endTimeUtc\":\"2021-12-04T11:59:28Z\",\"status\":\"ValidationInProgress\"},\"id\":\"fukuvsjcswsmystu\",\"name\":\"uqypfcvle\",\"type\":\"chpqbmfpjba\"}")
+            "{\"kind\":\"HCI\",\"properties\":{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Validate\",\"provisioningState\":\"Canceled\",\"jobId\":\"vyl\",\"startTimeUtc\":\"2021-08-24T01:27:04Z\",\"endTimeUtc\":\"2021-01-10T05:31:28Z\",\"status\":\"ValidationInProgress\"},\"id\":\"mncsttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}")
             .toObject(HciEdgeDeviceJob.class);
         Assertions.assertEquals(DeploymentMode.VALIDATE, model.properties().deploymentMode());
     }

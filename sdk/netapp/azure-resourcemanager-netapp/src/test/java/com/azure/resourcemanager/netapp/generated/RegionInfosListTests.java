@@ -13,12 +13,11 @@ public final class RegionInfosListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfosList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T1AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"eb\",\"isAvailable\":true},{\"availabilityZone\":\"bmoichd\",\"isAvailable\":true}]},\"id\":\"pubntnbatz\",\"name\":\"iqsowsaaelc\",\"type\":\"ttcjuhplrvkmjc\"},{\"properties\":{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ggcvk\",\"isAvailable\":true},{\"availabilityZone\":\"zrzbjpsfxs\",\"isAvailable\":true},{\"availabilityZone\":\"lvt\",\"isAvailable\":false},{\"availabilityZone\":\"bwidql\",\"isAvailable\":false}]},\"id\":\"oveofizrvjfnmj\",\"name\":\"vlwyzg\",\"type\":\"blkujrllfojuidjp\"}],\"nextLink\":\"yjucejikzoeo\"}")
+            "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"spodaqax\",\"isAvailable\":false},{\"availabilityZone\":\"etgbebjfulb\",\"isAvailable\":false}]},\"id\":\"h\",\"name\":\"lpnfpubntnb\",\"type\":\"tzviqsowsaaelcat\"}],\"nextLink\":\"ju\"}")
             .toObject(RegionInfosList.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_ACROSS_T2,
-            model.value().get(0).storageToNetworkProximity());
-        Assertions.assertEquals("eb", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertTrue(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
-        Assertions.assertEquals("yjucejikzoeo", model.nextLink());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2, model.value().get(0).storageToNetworkProximity());
+        Assertions.assertEquals("spodaqax", model.value().get(0).availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(model.value().get(0).availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("ju", model.nextLink());
     }
 }

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetCreden
 public final class FleetCredentialResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetCredentialResultsInner model = BinaryData
-            .fromString("{\"kubeconfigs\":[{\"name\":\"dmgloug\"},{\"name\":\"wtmutduq\"},{\"name\":\"pspwgcuertu\"}]}")
-            .toObject(FleetCredentialResultsInner.class);
+        FleetCredentialResultsInner model
+            = BinaryData.fromString("{\"kubeconfigs\":[{\"name\":\"yc\"},{\"name\":\"ewmdw\"}]}")
+                .toObject(FleetCredentialResultsInner.class);
     }
 }

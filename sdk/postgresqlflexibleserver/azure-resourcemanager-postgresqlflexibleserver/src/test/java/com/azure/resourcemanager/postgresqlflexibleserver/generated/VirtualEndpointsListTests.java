@@ -13,10 +13,10 @@ public final class VirtualEndpointsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEndpointsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"saznqntoruds\",\"sahmky\",\"grauwjuetaebur\",\"vdmovsmzlxwabm\"],\"virtualEndpoints\":[\"fkifr\",\"tpuqujmq\"]},\"id\":\"kfbtndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ouicybxarzgszu\",\"oxciqopidoamcio\",\"hkh\",\"zxkhnzbonlwnto\"],\"virtualEndpoints\":[\"kdwbwhkszz\",\"mrv\"]},\"id\":\"ztvbtqgsfr\",\"name\":\"oyzko\",\"type\":\"wtl\"},{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"wqaldsyu\"],\"virtualEndpoints\":[\"merqfobwyznkb\",\"kutwpf\",\"pagmhrskdsnf\",\"sd\"]},\"id\":\"kgtdlmkkze\",\"name\":\"dlhewp\",\"type\":\"sdsttwvog\"}],\"nextLink\":\"bejdcn\"}")
+            "{\"value\":[{\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"q\",\"efkifr\",\"tpuqujmq\",\"gkfbtndoaong\"],\"virtualEndpoints\":[\"ntuji\"]},\"id\":\"jed\",\"name\":\"twwaezkojvdcpzf\",\"type\":\"qouicybxarzgsz\"}],\"nextLink\":\"oxciqopidoamcio\"}")
             .toObject(VirtualEndpointsList.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("saznqntoruds", model.value().get(0).members().get(0));
-        Assertions.assertEquals("bejdcn", model.nextLink());
+        Assertions.assertEquals("q", model.value().get(0).members().get(0));
+        Assertions.assertEquals("oxciqopidoamcio", model.nextLink());
     }
 }

@@ -6,8 +6,14 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.resourcemanager.dataprotection.models.AKSVolumeTypes;
 import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParameters;
+import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParametersForAutoProtection;
 import com.azure.resourcemanager.dataprotection.models.AzureOperationalStoreParameters;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupAutoProtectionRule;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupDatasourceParametersForAutoProtection;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupPatternType;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupRuleBasedAutoProtectionSettings;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupRuleMode;
 import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
@@ -26,7 +32,7 @@ import java.util.Arrays;
  */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
@@ -73,7 +79,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With ADLSBlobBackupDatasourceParameters.
@@ -115,7 +121,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create BackupInstance to perform critical operation With MUA.
@@ -162,8 +168,60 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Create BackupInstance With BlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("blobstorageaccount-blobstorageaccount-2a76f8a-c176-4f7d-819e-95157e2b0071")
+            .withExistingBackupVault("blobrg", "blobvault")
+            .withProperties(new BackupInstance().withFriendlyName("blobstorageaccount\\blobbackupinstance")
+                .withDataSourceInfo(new Datasource()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/blobServices")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("blobstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/blobServices")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("blobstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(
+                        Arrays.asList(new BlobBackupDatasourceParametersForAutoProtection().withAutoProtectionSettings(
+                            new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
+                                .withRules(Arrays.asList(
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("temp-"),
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("test-"))))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
      * x-ms-original-file:
-     * 2025-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+     * 2026-03-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With KubernetesClusterBackupDatasourceParameters.
@@ -212,6 +270,58 @@ public final class BackupInstancesCreateOrUpdateSamples {
                                 .withIncludedResourceTypes(Arrays.asList())
                                 .withExcludedResourceTypes(Arrays.asList("v1/Secret"))
                                 .withLabelSelectors(Arrays.asList())))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Create BackupInstance With ADLSBlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithADLSBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("adlsstorageaccount-adlsstorageaccount-3a76f8a-c176-4f7d-819e-95157e2b0071")
+            .withExistingBackupVault("adlsrg", "adlsvault")
+            .withProperties(new BackupInstance().withFriendlyName("adlsstorageaccount\\adlsbackupinstance")
+                .withDataSourceInfo(new Datasource()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(Arrays
+                        .asList(new AdlsBlobBackupDatasourceParametersForAutoProtection().withAutoProtectionSettings(
+                            new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
+                                .withRules(Arrays.asList(
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("temp-"),
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("test-"))))))))
                 .withObjectType("BackupInstance"))
             .create();
     }

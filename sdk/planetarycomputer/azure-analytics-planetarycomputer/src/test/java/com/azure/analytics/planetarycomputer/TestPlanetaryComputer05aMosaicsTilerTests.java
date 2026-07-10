@@ -181,8 +181,8 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         GetMosaicTileOptions tileOptions = new GetMosaicTileOptions().setAssets(Arrays.asList("image"))
             .setAssetBandIndices("image|1,2,3")
             .setCollection(collectionId);
-        BinaryData imageData = dataClient.getMosaicsTile(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png",
-            tileOptions, "image/png");
+        BinaryData imageData
+            = dataClient.getMosaicsTile(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, 1.0, "png", tileOptions);
 
         // Assert
         byte[] imageBytes = imageData.toBytes();

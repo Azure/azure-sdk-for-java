@@ -243,7 +243,6 @@ class AdministrationModelConverter {
         // properly update fields if it encounters MessageCountDetails in the serialized XML.  Mirrors behaviour in
         // Track 1 library.
         final SubscriptionDescription implementation = EntityHelper.toImplementation(subscription)
-            .setDefaultMessageTimeToLive(null)
             .setMessageCount(null)
             .setCreatedAt(null)
             .setUpdatedAt(null)

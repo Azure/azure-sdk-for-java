@@ -37,6 +37,7 @@ import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SecuritySettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.SkusImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdateRunsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOperationGroupsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOperationsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.UpdatesImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ValidatedSolutionRecipesImpl;
@@ -51,6 +52,7 @@ import com.azure.resourcemanager.azurestackhci.models.Operations;
 import com.azure.resourcemanager.azurestackhci.models.SecuritySettings;
 import com.azure.resourcemanager.azurestackhci.models.Skus;
 import com.azure.resourcemanager.azurestackhci.models.UpdateRuns;
+import com.azure.resourcemanager.azurestackhci.models.UpdateSummariesOperationGroups;
 import com.azure.resourcemanager.azurestackhci.models.UpdateSummariesOperations;
 import com.azure.resourcemanager.azurestackhci.models.Updates;
 import com.azure.resourcemanager.azurestackhci.models.ValidatedSolutionRecipes;
@@ -90,6 +92,8 @@ public final class AzureStackHciManager {
     private UpdateRuns updateRuns;
 
     private Updates updates;
+
+    private UpdateSummariesOperationGroups updateSummariesOperationGroups;
 
     private ValidatedSolutionRecipes validatedSolutionRecipes;
 
@@ -452,6 +456,19 @@ public final class AzureStackHciManager {
             this.updates = new UpdatesImpl(clientObject.getUpdates(), this);
         }
         return updates;
+    }
+
+    /**
+     * Gets the resource collection API of UpdateSummariesOperationGroups.
+     * 
+     * @return Resource collection API of UpdateSummariesOperationGroups.
+     */
+    public UpdateSummariesOperationGroups updateSummariesOperationGroups() {
+        if (this.updateSummariesOperationGroups == null) {
+            this.updateSummariesOperationGroups
+                = new UpdateSummariesOperationGroupsImpl(clientObject.getUpdateSummariesOperationGroups(), this);
+        }
+        return updateSummariesOperationGroups;
     }
 
     /**

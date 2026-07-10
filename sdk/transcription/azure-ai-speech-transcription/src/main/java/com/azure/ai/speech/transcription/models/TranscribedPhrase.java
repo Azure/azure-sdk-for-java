@@ -106,16 +106,6 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
     }
 
     /**
-     * Get the offset property: The start offset of the phrase in milliseconds.
-     *
-     * @return the offset value.
-     */
-    @Generated
-    public int getOffset() {
-        return this.offset;
-    }
-
-    /**
      * Get the duration property: The duration in milliseconds.
      *
      * @return the duration value as Duration.
@@ -233,5 +223,15 @@ public final class TranscribedPhrase implements JsonSerializable<TranscribedPhra
             deserializedTranscribedPhrase.locale = locale;
             return deserializedTranscribedPhrase;
         });
+    }
+
+    /**
+     * Get the offset property: The start offset of the phrase.
+     *
+     * @return the offset value as Duration.
+     */
+    @Generated
+    public Duration getOffset() {
+        return Duration.ofMillis(this.offset);
     }
 }

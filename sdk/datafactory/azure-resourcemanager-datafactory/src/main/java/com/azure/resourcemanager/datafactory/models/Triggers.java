@@ -132,7 +132,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName);
@@ -147,7 +147,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context);
@@ -190,7 +190,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName);
@@ -205,7 +205,7 @@ public interface Triggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return defines the response of a trigger subscription operation.
      */
     TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context);

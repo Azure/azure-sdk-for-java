@@ -10,19 +10,14 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum VoiceLiveServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2025-05-01-preview}.
-     */
-    V2025_05_01_PREVIEW("2025-05-01-preview"),
-
-    /**
      * Service version {@code 2025-10-01}.
      */
     V2025_10_01("2025-10-01"),
 
     /**
-     * Service version {@code 2026-01-01-preview}.
+     * Service version {@code 2026-04-10}.
      */
-    V2026_01_01_PREVIEW("2026-01-01-preview");
+    V2026_04_10("2026-04-10");
 
     private final String version;
 
@@ -44,6 +39,6 @@ public enum VoiceLiveServiceVersion implements ServiceVersion {
      * @return The latest {@link VoiceLiveServiceVersion}.
      */
     public static VoiceLiveServiceVersion getLatest() {
-        return V2026_01_01_PREVIEW;
+        return V2026_04_10;
     }
 }

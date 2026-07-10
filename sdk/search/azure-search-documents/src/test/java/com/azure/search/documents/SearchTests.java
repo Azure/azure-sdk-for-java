@@ -65,6 +65,7 @@ import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsRaw;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Disabled;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -1207,59 +1208,33 @@ public class SearchTests extends SearchTestBase {
     //==Elevated Read Tests==
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void searchWithElevatedReadIncludesHeader() {
-        SearchOptions searchOptions = new SearchOptions().setEnableElevatedRead(true);
-
-        assertTrue(searchOptions.isEnableElevatedRead(), "Elevated read should be enabled");
-
-        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search(searchOptions);
-        assertNotNull(results, "Search with elevated read should work");
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void searchDefaultOmitsHeader() {
-        SearchOptions searchOptions = new SearchOptions();
-
-        assertNull(searchOptions.isEnableElevatedRead(), "Elevated read should be null by default");
-
-        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search(searchOptions);
-        assertNotNull(results, "Default search should work");
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void listDocsWithElevatedReadIncludesHeader() {
-        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions().setEnableElevatedRead(true).setSelect("HotelId", "HotelName");
-
-        SearchPagedIterable results = indexClient.getSearchClient(HOTEL_INDEX_NAME).search(searchOptions);
-
-        assertNotNull(results, "Document listing with elevated read should work");
-        assertTrue(searchOptions.isEnableElevatedRead(), "Elevated read should be enabled");
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void withHeader200CodeparseResponse() {
-        SearchOptions searchOptions = new SearchOptions().setEnableElevatedRead(true);
-
-        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search(searchOptions);
-        assertNotNull(results, "Should parse elevated read response");
-        assertNotNull(results.iterator(), "Should have results");
-
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void withHeaderPlusUserTokenService400() {
-        SearchOptions searchOptions = new SearchOptions().setEnableElevatedRead(true);
-
-        try {
-            SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search(searchOptions);
-            assertNotNull(results, "Search completed (may not throw 400 in test environment)");
-        } catch (HttpResponseException ex) {
-            assertEquals(400, ex.getResponse().getStatusCode());
-            assertTrue(ex.getMessage().contains("elevated read") || ex.getMessage().contains("user token"),
-                "Error should be related to elevated read + user token combination");
-        }
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     //    @Test
@@ -1276,23 +1251,9 @@ public class SearchTests extends SearchTestBase {
     //    }
 
     @Test
+    @Disabled("setEnableElevatedRead removed in 2026-04-01 API version")
     public void currentApiVersionSendsHeaderWhenRequested() {
-        SearchClient currentClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
-            .indexName(HOTEL_INDEX_NAME)
-            .serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
-            .buildClient();
-
-        SearchOptions searchOptions = new SearchOptions().setEnableElevatedRead(true);
-
-        try {
-            SearchPagedIterable results = currentClient.search(searchOptions);
-            assertNotNull(results, "Search with elevated read should work with current API version");
-        } catch (Exception exception) {
-            assertFalse(
-                exception.getMessage().contains("api-version") && exception.getMessage().contains("does not exist"),
-                "Should not be an API version error with current version");
-        }
+        // Disabled: setEnableElevatedRead was removed in the 2026-04-01 API version.
     }
 
     private static List<Map<String, Object>> getSearchResultsSync(SearchPagedIterable results) {

@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AdHocBackupRuleOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdHocBackupRuleOptions model
-            = BinaryData.fromString("{\"ruleName\":\"mi\",\"triggerOption\":{\"retentionTagOverride\":\"thz\"}}")
-                .toObject(AdHocBackupRuleOptions.class);
-        Assertions.assertEquals("mi", model.ruleName());
-        Assertions.assertEquals("thz", model.triggerOption().retentionTagOverride());
+        AdHocBackupRuleOptions model = BinaryData
+            .fromString(
+                "{\"ruleName\":\"njeaseipheofloke\",\"triggerOption\":{\"retentionTagOverride\":\"ienjbdlwtgr\"}}")
+            .toObject(AdHocBackupRuleOptions.class);
+        Assertions.assertEquals("njeaseipheofloke", model.ruleName());
+        Assertions.assertEquals("ienjbdlwtgr", model.triggerOption().retentionTagOverride());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdHocBackupRuleOptions model = new AdHocBackupRuleOptions().withRuleName("mi")
-            .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("thz"));
+        AdHocBackupRuleOptions model = new AdHocBackupRuleOptions().withRuleName("njeaseipheofloke")
+            .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("ienjbdlwtgr"));
         model = BinaryData.fromObject(model).toObject(AdHocBackupRuleOptions.class);
-        Assertions.assertEquals("mi", model.ruleName());
-        Assertions.assertEquals("thz", model.triggerOption().retentionTagOverride());
+        Assertions.assertEquals("njeaseipheofloke", model.ruleName());
+        Assertions.assertEquals("ienjbdlwtgr", model.triggerOption().retentionTagOverride());
     }
 }

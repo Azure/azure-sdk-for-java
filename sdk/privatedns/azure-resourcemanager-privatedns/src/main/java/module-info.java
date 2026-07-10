@@ -13,4 +13,5 @@ module com.azure.resourcemanager.privatedns {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.privatedns.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.privatedns.models to com.azure.core;
+    opens com.azure.resourcemanager.privatedns.implementation.models to com.azure.core;
 }

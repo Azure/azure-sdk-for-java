@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class BackupVaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/GetBackupVault.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/GetBackupVault.json
      */
     /**
      * Sample code: Get BackupVault.
@@ -22,7 +22,7 @@ public final class BackupVaultsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/GetBackupVaultWithMSI.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/GetBackupVaultWithMSI.json
      */
     /**
      * Sample code: Get BackupVault With MSI.
@@ -35,7 +35,7 @@ public final class BackupVaultsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/GetBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/GetBackupVaultWithCMK.json
      */
     /**
      * Sample code: Get BackupVault With CMK.

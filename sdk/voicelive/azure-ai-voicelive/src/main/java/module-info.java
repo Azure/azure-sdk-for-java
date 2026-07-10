@@ -9,6 +9,8 @@ module com.azure.ai.voicelive {
     requires io.netty.buffer;
     requires io.netty.codec.http;
     requires io.netty.resolver;
+    requires io.opentelemetry.api;
+    requires io.opentelemetry.context;
 
     exports com.azure.ai.voicelive;
     exports com.azure.ai.voicelive.models;

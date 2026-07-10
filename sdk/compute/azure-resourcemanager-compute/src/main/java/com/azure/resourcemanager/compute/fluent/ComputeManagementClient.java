@@ -61,6 +61,13 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
 
     /**
+     * Gets the VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetLifeCycleHookEventsClient object.
+     */
+    VirtualMachineScaleSetLifeCycleHookEventsClient getVirtualMachineScaleSetLifeCycleHookEvents();
+
+    /**
      * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
      * 
      * @return the VirtualMachineScaleSetVMExtensionsClient object.
@@ -150,6 +157,13 @@ public interface ComputeManagementClient {
      * @return the CapacityReservationsClient object.
      */
     CapacityReservationsClient getCapacityReservations();
+
+    /**
+     * Gets the InterconnectBlocksClient object to access its operations.
+     * 
+     * @return the InterconnectBlocksClient object.
+     */
+    InterconnectBlocksClient getInterconnectBlocks();
 
     /**
      * Gets the VirtualMachineRunCommandsClient object to access its operations.

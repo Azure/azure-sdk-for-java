@@ -70,6 +70,14 @@ public final class UpdatesImpl implements Updates {
         this.serviceClient().post(resourceGroupName, clusterName, updateName, context);
     }
 
+    public void prepare(String resourceGroupName, String clusterName, String updateName) {
+        this.serviceClient().prepare(resourceGroupName, clusterName, updateName);
+    }
+
+    public void prepare(String resourceGroupName, String clusterName, String updateName, Context context) {
+        this.serviceClient().prepare(resourceGroupName, clusterName, updateName, context);
+    }
+
     public HciUpdate getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

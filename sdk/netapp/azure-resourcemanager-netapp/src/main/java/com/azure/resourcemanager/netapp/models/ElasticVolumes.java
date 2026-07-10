@@ -108,7 +108,7 @@ public interface ElasticVolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Volume resource.
      */
     ElasticVolume revert(String resourceGroupName, String accountName, String poolName, String volumeName,
         ElasticVolumeRevert body);
@@ -125,7 +125,7 @@ public interface ElasticVolumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Volume resource.
      */
     ElasticVolume revert(String resourceGroupName, String accountName, String poolName, String volumeName,
         ElasticVolumeRevert body, Context context);

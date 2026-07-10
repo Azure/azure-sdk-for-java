@@ -3,13 +3,26 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Configuration for Application Insights metrics reporting destination.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AppInsightsReporterConfig {
-    private final String connectionString;
-    private final int stepSeconds;
-    private final String testCategory;
+
+    @JsonProperty("connectionString")
+    private String connectionString;
+
+    @JsonProperty("stepSeconds")
+    private int stepSeconds = 10;
+
+    @JsonProperty("testCategory")
+    private String testCategory;
+
+    /** Jackson deserialization constructor. */
+    public AppInsightsReporterConfig() {}
 
     public AppInsightsReporterConfig(String connectionString, int stepSeconds, String testCategory) {
         this.connectionString = connectionString;

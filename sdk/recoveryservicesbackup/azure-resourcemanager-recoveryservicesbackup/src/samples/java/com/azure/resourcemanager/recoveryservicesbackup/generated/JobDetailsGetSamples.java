@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class JobDetailsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Common/GetJobDetails.json
+     * x-ms-original-file: 2026-01-31-preview/Common/GetJobDetails.json
      */
     /**
      * Sample code: Get Job Details.

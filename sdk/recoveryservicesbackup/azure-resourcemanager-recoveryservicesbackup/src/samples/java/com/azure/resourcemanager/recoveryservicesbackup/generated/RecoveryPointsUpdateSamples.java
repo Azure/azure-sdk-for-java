@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 public final class RecoveryPointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Common/RecoveryPoints_Update.json
+     * x-ms-original-file: 2026-01-31-preview/Common/RecoveryPoints_Update.json
      */
     /**
      * Sample code: Update Azure Vm Recovery Point Details.

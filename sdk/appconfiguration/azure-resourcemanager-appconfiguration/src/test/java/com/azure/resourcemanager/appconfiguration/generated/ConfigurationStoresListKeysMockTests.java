@@ -21,7 +21,7 @@ public final class ConfigurationStoresListKeysMockTests {
     @Test
     public void testListKeys() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"ebwwaloayqc\",\"name\":\"rtzju\",\"value\":\"wyzmhtxon\",\"connectionString\":\"ts\",\"lastModified\":\"2021-04-09T14:39:51Z\",\"readOnly\":false}]}";
+            = "{\"value\":[{\"id\":\"qzudphq\",\"name\":\"vdkfwynwcvtbvk\",\"value\":\"hmtnvy\",\"connectionString\":\"atkzwpcnpw\",\"lastModified\":\"2021-02-07T21:37:46Z\",\"readOnly\":true}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ConfigurationStoresListKeysMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ApiKey> response
-            = manager.configurationStores().listKeys("c", "wxzvlvqhjkb", "gibtnm", com.azure.core.util.Context.NONE);
+        PagedIterable<ApiKey> response = manager.configurationStores()
+            .listKeys("digrjguufzdmsyqt", "ihwhbotzingamvpp", "o", com.azure.core.util.Context.NONE);
 
     }
 }
