@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -266,7 +267,10 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 Optional.ofNullable(currentKeyVaultClient.getAliases()).orElse(Collections.emptyList()));
         } else {
             // If aliases are configured, avoid the list API and only use the configured aliases.
-            aliases = configuredCertificateAliases.stream().sorted().collect(Collectors.toCollection(ArrayList::new));
+            aliases = configuredCertificateAliases.stream()
+                .filter(Objects::nonNull)
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
         }
 
         loadedCertificateAliases.clear();

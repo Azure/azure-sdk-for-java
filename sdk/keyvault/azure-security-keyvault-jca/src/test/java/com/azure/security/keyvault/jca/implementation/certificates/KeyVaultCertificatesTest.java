@@ -13,8 +13,11 @@ import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -165,6 +168,15 @@ public class KeyVaultCertificatesTest {
             = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("configured-alias"));
 
         Assertions.assertEquals(Collections.singletonList("configured-alias"), keyVaultCertificates.getAliases());
+        verify(keyVaultClient, never()).getAliases();
+    }
+
+    @Test
+    public void testConfiguredAliasesIgnoreNullEntries() {
+        Set<String> configuredAliases = new HashSet<>(Arrays.asList("myalias", null));
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, configuredAliases);
+
+        Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
         verify(keyVaultClient, never()).getAliases();
     }
 
