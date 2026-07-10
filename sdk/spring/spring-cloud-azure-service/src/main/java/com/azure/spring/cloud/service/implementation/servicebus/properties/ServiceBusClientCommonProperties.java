@@ -34,10 +34,10 @@ public interface ServiceBusClientCommonProperties extends AzureProperties, Retry
     String getCustomEndpointAddress();
 
     /**
-     * Whether the shared {@code ServiceBusClientBuilder} should inherit the configuration derived from this sub-client's
-     * properties. When {@code null} (the default) it is treated as {@code true}, preserving the existing behavior. Set to
-     * {@code false} to keep configuration already present on the shared builder, for example {@code ClientOptions}
-     * carrying {@code TracingOptions} set through an {@code AzureServiceClientBuilderCustomizer}.
+     * Whether the shared {@code ServiceBusClientBuilder} should inherit the configuration derived from this
+     * sub-client's properties. When {@code null} (the default) it is treated as {@code true}, preserving the existing
+     * behavior. Set to {@code false} to keep configuration already present on the shared builder, for example
+     * {@code ClientOptions} carrying {@code TracingOptions} set through an {@code AzureServiceClientBuilderCustomizer}.
      * @return whether the shared {@code ServiceBusClientBuilder} inherits this sub-client's property configuration.
      */
     Boolean getInheritConfiguration();
