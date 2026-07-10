@@ -291,9 +291,19 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public String refreshAndGetAliasByCertificate(Certificate certificate) {
         refreshCertificates();
 
-        Optional.ofNullable(aliases).orElse(Collections.emptyList()).forEach(this::loadCertificateDetailsIfNeeded);
+        List<String> aliasesSnapshot;
+        synchronized (this) {
+            aliasesSnapshot = new ArrayList<>(Optional.ofNullable(aliases).orElse(Collections.emptyList()));
+        }
 
-        return getCertificates().entrySet()
+        aliasesSnapshot.forEach(this::loadCertificateDetailsIfNeeded);
+
+        Map<String, Certificate> certificatesSnapshot;
+        synchronized (this) {
+            certificatesSnapshot = new HashMap<>(certificates);
+        }
+
+        return certificatesSnapshot.entrySet()
             .stream()
             .filter(entry -> certificate.equals(entry.getValue()))
             .findFirst()
