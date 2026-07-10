@@ -5,22 +5,32 @@
 package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityConfiguration;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityType;
 import org.junit.jupiter.api.Assertions;
 
 public final class ImmutabilitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmutabilitySettings model
-            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
+        ImmutabilitySettings model = BinaryData
+            .fromString(
+                "{\"state\":\"Locked\",\"configuration\":{\"type\":\"AsPerPolicy\",\"durationInDays\":1722437661}}")
+            .toObject(ImmutabilitySettings.class);
+        Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.configuration().type());
+        Assertions.assertEquals(1722437661, model.configuration().durationInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.DISABLED);
+        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)
+            .withConfiguration(new ImmutabilityConfiguration().withType(ImmutabilityType.AS_PER_POLICY)
+                .withDurationInDays(1722437661));
         model = BinaryData.fromObject(model).toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
+        Assertions.assertEquals(ImmutabilityState.LOCKED, model.state());
+        Assertions.assertEquals(ImmutabilityType.AS_PER_POLICY, model.configuration().type());
+        Assertions.assertEquals(1722437661, model.configuration().durationInDays());
     }
 }

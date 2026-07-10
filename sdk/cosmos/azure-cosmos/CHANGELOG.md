@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
 #### Breaking Changes
 
@@ -14,6 +15,7 @@
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 * Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
+* Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM are configured with the same service endpoint. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed. - See [PR 49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
 
 ### 4.81.0 (2026-06-08)
 

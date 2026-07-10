@@ -897,7 +897,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-        assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
+        // With the shared partition-key-range cache, a sibling client/test targeting the same service
+        // endpoint may have already populated this container's routing map. When that happens this client
+        // serves the partition-key-range lookup from the shared cache without issuing a /pkranges network
+        // request, so no PARTITION_KEY_RANGE_LOOK_UP metadata diagnostic is recorded for this operation.
+        // Its presence is therefore not asserted here.
         assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
