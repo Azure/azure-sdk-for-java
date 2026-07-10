@@ -98,6 +98,7 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetConfiguredKeyVaultCertificateAliases() {
+        String originalConfiguredCertificates = System.getProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
         try {
             System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
             KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
@@ -112,7 +113,11 @@ public class KeyVaultKeyStoreUnitTest {
             assertTrue(aliases.contains("cert2"));
             assertTrue(aliases.contains("cert3"));
         } finally {
-            System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            if (originalConfiguredCertificates == null) {
+                System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            } else {
+                System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, originalConfiguredCertificates);
+            }
         }
     }
 

@@ -13,10 +13,8 @@ import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -147,14 +145,6 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testConfiguredAliasesFilterAfterRefresh() {
-        AtomicInteger invocationCount = new AtomicInteger(0);
-        when(keyVaultClient.getAliases()).thenAnswer(invocation -> {
-            if (invocationCount.getAndIncrement() == 0) {
-                return Arrays.asList("myalias", "otheralias");
-            }
-            return Arrays.asList("otheralias", "myalias", "new");
-        });
-
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
 
         Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
@@ -166,6 +156,7 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(refreshedAliases.contains("myalias"));
         Assertions.assertFalse(refreshedAliases.contains("otheralias"));
         Assertions.assertFalse(refreshedAliases.contains("new"));
+        verify(keyVaultClient, never()).getAliases();
     }
 
     @Test
