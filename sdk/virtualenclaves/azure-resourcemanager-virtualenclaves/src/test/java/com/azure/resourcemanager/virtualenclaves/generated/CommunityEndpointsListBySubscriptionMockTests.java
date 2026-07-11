@@ -14,6 +14,7 @@ import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointResource;
 import com.azure.resourcemanager.virtualenclaves.models.DestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,7 @@ public final class CommunityEndpointsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"IPAddress\",\"protocols\":[\"UDP\"],\"transitHubResourceId\":\"bse\",\"endpointRuleName\":\"vcuartrhun\",\"destination\":\"iryky\",\"ports\":\"dzfqivjreuy\"},{\"destinationType\":\"FQDNTag\",\"protocols\":[\"HTTP\",\"TCP\"],\"transitHubResourceId\":\"ltbxoeeonqlnfw\",\"endpointRuleName\":\"ymvqdbpbhfckdvez\",\"destination\":\"cssbzhddu\",\"ports\":\"nqfblhkalehpava\"},{\"destinationType\":\"IPAddress\",\"protocols\":[\"ANY\",\"AH\",\"HTTPS\"],\"transitHubResourceId\":\"gqgdminictteajoh\",\"endpointRuleName\":\"gspnbonhpczykm\",\"destination\":\"p\",\"ports\":\"xqcsehch\"}],\"resourceCollection\":[\"fmpqumqyjg\",\"dzulo\",\"saeuzanhsfnhsenw\"],\"provisioningState\":\"Running\"},\"location\":\"fngq\",\"tags\":{\"rkuorh\":\"idftujwjjufwbe\",\"tiq\":\"ssruqnmdvhazcvj\",\"ukvlb\":\"wbqerzwxiytxtd\"},\"id\":\"ktg\",\"name\":\"styoua\",\"type\":\"bewreswmowegmmut\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"FQDN\",\"protocols\":[\"AH\",\"ICMP\",\"ESP\"],\"transitHubResourceId\":\"icghfl\",\"endpointRuleName\":\"fss\",\"destination\":\"ghsfxrkbhammgmqf\",\"ports\":\"fgvqcpdw\"}],\"resourceCollection\":[\"uxweyslandkd\",\"djhunhghcgawnr\",\"nquoxsotireimse\",\"bfsx\"],\"provisioningState\":\"Running\",\"updateMode\":\"Manual\"},\"location\":\"bvzmmxcjzlquz\",\"tags\":{\"b\":\"kjxebj\",\"v\":\"inzabwmvoglj\",\"ehaqidoyzltgio\":\"pgidnw\"},\"id\":\"qoqpepiaeap\",\"name\":\"sergdtpe\",\"type\":\"nacyheqwb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +35,21 @@ public final class CommunityEndpointsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommunityEndpointResource> response
-            = manager.communityEndpoints().listBySubscription("dbpqvybefgvm", com.azure.core.util.Context.NONE);
+            = manager.communityEndpoints().listBySubscription("mihzbdnpxp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fngq", response.iterator().next().location());
-        Assertions.assertEquals("idftujwjjufwbe", response.iterator().next().tags().get("rkuorh"));
-        Assertions.assertEquals(DestinationType.IPADDRESS,
+        Assertions.assertEquals("bvzmmxcjzlquz", response.iterator().next().location());
+        Assertions.assertEquals("kjxebj", response.iterator().next().tags().get("b"));
+        Assertions.assertEquals(DestinationType.FQDN,
             response.iterator().next().properties().ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.UDP,
+        Assertions.assertEquals(CommunityEndpointProtocol.AH,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("bse",
+        Assertions.assertEquals("icghfl",
             response.iterator().next().properties().ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("vcuartrhun",
+        Assertions.assertEquals("fss",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("iryky", response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("dzfqivjreuy", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("ghsfxrkbhammgmqf",
+            response.iterator().next().properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("fgvqcpdw", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.MANUAL, response.iterator().next().properties().updateMode());
     }
 }

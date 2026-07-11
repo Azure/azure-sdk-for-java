@@ -52,6 +52,11 @@ public final class EnclaveConnectionProperties implements JsonSerializable<Encla
      */
     private List<String> resourceCollection;
 
+    /*
+     * Destination Endpoint supports automatic or manual updates.
+     */
+    private UpdateMode updateMode;
+
     /**
      * Creates an instance of EnclaveConnectionProperties class.
      */
@@ -166,6 +171,15 @@ public final class EnclaveConnectionProperties implements JsonSerializable<Encla
     }
 
     /**
+     * Get the updateMode property: Destination Endpoint supports automatic or manual updates.
+     * 
+     * @return the updateMode value.
+     */
+    public UpdateMode updateMode() {
+        return this.updateMode;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -211,6 +225,8 @@ public final class EnclaveConnectionProperties implements JsonSerializable<Encla
                 } else if ("resourceCollection".equals(fieldName)) {
                     List<String> resourceCollection = reader.readArray(reader1 -> reader1.getString());
                     deserializedEnclaveConnectionProperties.resourceCollection = resourceCollection;
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedEnclaveConnectionProperties.updateMode = UpdateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

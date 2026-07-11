@@ -7,6 +7,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinationRule;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveEndpoints_CreateOrUpdate.
@@ -34,7 +35,8 @@ public final class EnclaveEndpointsCreateOrUpdateSamples {
                 .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
                     .withEndpointRuleName("54CEECEF-2C30-488E-946F-D20F414D99BA")
                     .withDestination("10.0.0.0/24")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .create();
     }
 

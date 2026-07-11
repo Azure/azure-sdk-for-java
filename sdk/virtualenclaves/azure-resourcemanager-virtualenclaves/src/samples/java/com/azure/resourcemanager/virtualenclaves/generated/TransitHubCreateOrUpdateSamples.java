@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.virtualenclaves.generated;
 
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOption;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public final class TransitHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_CreateOrUpdate.json
      */
     /**
      * Sample code: TransitHub_CreateOrUpdate.
@@ -33,7 +34,8 @@ public final class TransitHubCreateOrUpdateSamples {
             .withTags(mapOf("Tag1", "Value1"))
             .withProperties(new TransitHubProperties().withState(TransitHubState.PENDING_APPROVAL)
                 .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-                    .withParams(new TransitOptionParams().withScaleUnits(1L))))
+                    .withParams(new TransitOptionParams().withScaleUnits(1L)))
+                .withSecurityProvider(SecurityProvider.AZURE_FIREWALL))
             .create();
     }
 

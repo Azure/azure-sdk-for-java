@@ -37,6 +37,11 @@ public final class TransitHubProperties implements JsonSerializable<TransitHubPr
      */
     private List<String> resourceCollection;
 
+    /*
+     * Specifies the security provider for the transit hub.
+     */
+    private SecurityProvider securityProvider;
+
     /**
      * Creates an instance of TransitHubProperties class.
      */
@@ -102,6 +107,26 @@ public final class TransitHubProperties implements JsonSerializable<TransitHubPr
     }
 
     /**
+     * Get the securityProvider property: Specifies the security provider for the transit hub.
+     * 
+     * @return the securityProvider value.
+     */
+    public SecurityProvider securityProvider() {
+        return this.securityProvider;
+    }
+
+    /**
+     * Set the securityProvider property: Specifies the security provider for the transit hub.
+     * 
+     * @param securityProvider the securityProvider value to set.
+     * @return the TransitHubProperties object itself.
+     */
+    public TransitHubProperties withSecurityProvider(SecurityProvider securityProvider) {
+        this.securityProvider = securityProvider;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +134,8 @@ public final class TransitHubProperties implements JsonSerializable<TransitHubPr
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeJsonField("transitOption", this.transitOption);
+        jsonWriter.writeStringField("securityProvider",
+            this.securityProvider == null ? null : this.securityProvider.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -137,6 +164,8 @@ public final class TransitHubProperties implements JsonSerializable<TransitHubPr
                 } else if ("resourceCollection".equals(fieldName)) {
                     List<String> resourceCollection = reader.readArray(reader1 -> reader1.getString());
                     deserializedTransitHubProperties.resourceCollection = resourceCollection;
+                } else if ("securityProvider".equals(fieldName)) {
+                    deserializedTransitHubProperties.securityProvider = SecurityProvider.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

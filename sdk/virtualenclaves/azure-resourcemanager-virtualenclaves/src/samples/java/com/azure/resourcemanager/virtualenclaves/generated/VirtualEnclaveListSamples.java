@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class VirtualEnclaveListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_ListBySubscription.json
      */
     /**
      * Sample code: VirtualEnclave_ListBySubscription.

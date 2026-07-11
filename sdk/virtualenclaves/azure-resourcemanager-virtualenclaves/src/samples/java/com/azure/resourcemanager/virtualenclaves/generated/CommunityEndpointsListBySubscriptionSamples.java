@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class CommunityEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: CommunityEndpoints_ListBySubscription.

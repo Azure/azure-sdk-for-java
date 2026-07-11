@@ -22,6 +22,11 @@ public final class EnclaveEndpointPatchProperties implements JsonSerializable<En
      */
     private List<EnclaveEndpointDestinationRule> ruleCollection;
 
+    /*
+     * Whether update mode is automatic or manual.
+     */
+    private UpdateMode updateMode;
+
     /**
      * Creates an instance of EnclaveEndpointPatchProperties class.
      */
@@ -49,6 +54,26 @@ public final class EnclaveEndpointPatchProperties implements JsonSerializable<En
     }
 
     /**
+     * Get the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @return the updateMode value.
+     */
+    public UpdateMode updateMode() {
+        return this.updateMode;
+    }
+
+    /**
+     * Set the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @param updateMode the updateMode value to set.
+     * @return the EnclaveEndpointPatchProperties object itself.
+     */
+    public EnclaveEndpointPatchProperties withUpdateMode(UpdateMode updateMode) {
+        this.updateMode = updateMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -56,6 +81,7 @@ public final class EnclaveEndpointPatchProperties implements JsonSerializable<En
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -80,6 +106,8 @@ public final class EnclaveEndpointPatchProperties implements JsonSerializable<En
                     List<EnclaveEndpointDestinationRule> ruleCollection
                         = reader.readArray(reader1 -> EnclaveEndpointDestinationRule.fromJson(reader1));
                     deserializedEnclaveEndpointPatchProperties.ruleCollection = ruleCollection;
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedEnclaveEndpointPatchProperties.updateMode = UpdateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

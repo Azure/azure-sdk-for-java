@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinationRule;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,32 +16,36 @@ public final class EnclaveEndpointPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveEndpointPatchProperties model = BinaryData.fromString(
-            "{\"ruleCollection\":[{\"protocols\":[\"TCP\",\"UDP\",\"AH\",\"UDP\"],\"endpointRuleName\":\"kx\",\"destination\":\"ehvbbxurip\",\"ports\":\"fnhtbaxkgxyw\"},{\"protocols\":[\"UDP\",\"AH\"],\"endpointRuleName\":\"lyhpluodpvruud\",\"destination\":\"zibt\",\"ports\":\"stgktst\"}]}")
+            "{\"ruleCollection\":[{\"protocols\":[\"ESP\",\"ICMP\",\"TCP\"],\"endpointRuleName\":\"udbxv\",\"destination\":\"htnsi\",\"ports\":\"dhzmmesckdlp\"},{\"protocols\":[\"AH\",\"TCP\",\"UDP\",\"ICMP\"],\"endpointRuleName\":\"ilcfxwmdboxd\",\"destination\":\"sftufqobrjlna\",\"ports\":\"cc\"}],\"updateMode\":\"Automatic\"}")
             .toObject(EnclaveEndpointPatchProperties.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.TCP, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("kx", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ehvbbxurip", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("fnhtbaxkgxyw", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(EnclaveEndpointProtocol.ESP, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("udbxv", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("htnsi", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("dhzmmesckdlp", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnclaveEndpointPatchProperties model = new EnclaveEndpointPatchProperties().withRuleCollection(Arrays.asList(
             new EnclaveEndpointDestinationRule()
-                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP, EnclaveEndpointProtocol.UDP,
-                    EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.UDP))
-                .withEndpointRuleName("kx")
-                .withDestination("ehvbbxurip")
-                .withPorts("fnhtbaxkgxyw"),
+                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ESP, EnclaveEndpointProtocol.ICMP,
+                    EnclaveEndpointProtocol.TCP))
+                .withEndpointRuleName("udbxv")
+                .withDestination("htnsi")
+                .withPorts("dhzmmesckdlp"),
             new EnclaveEndpointDestinationRule()
-                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.AH))
-                .withEndpointRuleName("lyhpluodpvruud")
-                .withDestination("zibt")
-                .withPorts("stgktst")));
+                .withProtocols(Arrays.asList(EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.TCP,
+                    EnclaveEndpointProtocol.UDP, EnclaveEndpointProtocol.ICMP))
+                .withEndpointRuleName("ilcfxwmdboxd")
+                .withDestination("sftufqobrjlna")
+                .withPorts("cc")))
+            .withUpdateMode(UpdateMode.AUTOMATIC);
         model = BinaryData.fromObject(model).toObject(EnclaveEndpointPatchProperties.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.TCP, model.ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("kx", model.ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ehvbbxurip", model.ruleCollection().get(0).destination());
-        Assertions.assertEquals("fnhtbaxkgxyw", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(EnclaveEndpointProtocol.ESP, model.ruleCollection().get(0).protocols().get(0));
+        Assertions.assertEquals("udbxv", model.ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("htnsi", model.ruleCollection().get(0).destination());
+        Assertions.assertEquals("dhzmmesckdlp", model.ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.updateMode());
     }
 }

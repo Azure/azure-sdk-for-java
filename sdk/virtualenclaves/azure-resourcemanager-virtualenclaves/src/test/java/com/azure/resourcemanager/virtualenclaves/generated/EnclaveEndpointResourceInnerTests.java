@@ -9,6 +9,7 @@ import com.azure.resourcemanager.virtualenclaves.fluent.models.EnclaveEndpointRe
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinationRule;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,49 +19,39 @@ public final class EnclaveEndpointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveEndpointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"ESP\",\"TCP\"],\"endpointRuleName\":\"epttwqmsniff\",\"destination\":\"mqnrojlpijnkr\",\"ports\":\"rddh\"},{\"protocols\":[\"ESP\"],\"endpointRuleName\":\"zzronasx\",\"destination\":\"tozqyzhftwesgo\",\"ports\":\"zhonnxkrlgnyhmo\"},{\"protocols\":[\"AH\"],\"endpointRuleName\":\"gthrrghxjbdhq\",\"destination\":\"cx\",\"ports\":\"rpdsof\"},{\"protocols\":[\"TCP\",\"AH\"],\"endpointRuleName\":\"vbuswd\",\"destination\":\"yybyc\",\"ports\":\"nvjsrtkfa\"}],\"resourceCollection\":[\"pqgik\",\"zirtxdyuxzejntps\",\"wgioilqukry\",\"xtqmieoxor\"],\"provisioningState\":\"Creating\"},\"location\":\"hyaomtbghhavgr\",\"tags\":{\"jzhpjbibgjmfx\":\"fo\",\"cluyovwxnbkf\":\"mv\",\"zbomvzzbtdcqvpni\":\"zzxscyhwzdgiruj\"},\"id\":\"ujviylwdshfs\",\"name\":\"n\",\"type\":\"bgye\"}")
+            "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"TCP\",\"AH\"],\"endpointRuleName\":\"obrltt\",\"destination\":\"sjnygqdnfwqzdzgt\",\"ports\":\"axhnfh\"}],\"resourceCollection\":[\"vi\"],\"provisioningState\":\"Accepted\",\"updateMode\":\"Automatic\"},\"location\":\"kxoyzunbixxr\",\"tags\":{\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}")
             .toObject(EnclaveEndpointResourceInner.class);
-        Assertions.assertEquals("hyaomtbghhavgr", model.location());
-        Assertions.assertEquals("fo", model.tags().get("jzhpjbibgjmfx"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
+        Assertions.assertEquals("kxoyzunbixxr", model.location());
+        Assertions.assertEquals("vcpwpgclrc", model.tags().get("vtsoxf"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.TCP,
             model.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("epttwqmsniff", model.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("mqnrojlpijnkr", model.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("rddh", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("obrltt", model.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", model.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("axhnfh", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.properties().updateMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveEndpointResourceInner model = new EnclaveEndpointResourceInner().withLocation("hyaomtbghhavgr")
-            .withTags(mapOf("jzhpjbibgjmfx", "fo", "cluyovwxnbkf", "mv", "zbomvzzbtdcqvpni", "zzxscyhwzdgiruj"))
-            .withProperties(new EnclaveEndpointProperties().withRuleCollection(Arrays.asList(
-                new EnclaveEndpointDestinationRule()
-                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ICMP, EnclaveEndpointProtocol.ESP,
-                        EnclaveEndpointProtocol.TCP))
-                    .withEndpointRuleName("epttwqmsniff")
-                    .withDestination("mqnrojlpijnkr")
-                    .withPorts("rddh"),
-                new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.ESP))
-                    .withEndpointRuleName("zzronasx")
-                    .withDestination("tozqyzhftwesgo")
-                    .withPorts("zhonnxkrlgnyhmo"),
-                new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.AH))
-                    .withEndpointRuleName("gthrrghxjbdhq")
-                    .withDestination("cx")
-                    .withPorts("rpdsof"),
-                new EnclaveEndpointDestinationRule()
-                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP, EnclaveEndpointProtocol.AH))
-                    .withEndpointRuleName("vbuswd")
-                    .withDestination("yybyc")
-                    .withPorts("nvjsrtkfa"))));
+        EnclaveEndpointResourceInner model
+            = new EnclaveEndpointResourceInner().withLocation("kxoyzunbixxr")
+                .withTags(mapOf("vtsoxf", "vcpwpgclrc", "m", "kenx", "ao", "yefrpmpdnqqska"))
+                .withProperties(new EnclaveEndpointProperties()
+                    .withRuleCollection(Arrays.asList(new EnclaveEndpointDestinationRule()
+                        .withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP, EnclaveEndpointProtocol.AH))
+                        .withEndpointRuleName("obrltt")
+                        .withDestination("sjnygqdnfwqzdzgt")
+                        .withPorts("axhnfh")))
+                    .withUpdateMode(UpdateMode.AUTOMATIC));
         model = BinaryData.fromObject(model).toObject(EnclaveEndpointResourceInner.class);
-        Assertions.assertEquals("hyaomtbghhavgr", model.location());
-        Assertions.assertEquals("fo", model.tags().get("jzhpjbibgjmfx"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
+        Assertions.assertEquals("kxoyzunbixxr", model.location());
+        Assertions.assertEquals("vcpwpgclrc", model.tags().get("vtsoxf"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.TCP,
             model.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("epttwqmsniff", model.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("mqnrojlpijnkr", model.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("rddh", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("obrltt", model.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", model.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("axhnfh", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, model.properties().updateMode());
     }
 
     // Use "Map.of" if available

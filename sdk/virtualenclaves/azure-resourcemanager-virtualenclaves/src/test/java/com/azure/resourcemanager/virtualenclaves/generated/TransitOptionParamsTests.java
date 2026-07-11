@@ -12,18 +12,18 @@ public final class TransitOptionParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitOptionParams model
-            = BinaryData.fromString("{\"scaleUnits\":647341680559943074,\"remoteVirtualNetworkId\":\"t\"}")
+            = BinaryData.fromString("{\"scaleUnits\":2575726098394881595,\"remoteVirtualNetworkId\":\"ysuxmprafwgck\"}")
                 .toObject(TransitOptionParams.class);
-        Assertions.assertEquals(647341680559943074L, model.scaleUnits());
-        Assertions.assertEquals("t", model.remoteVirtualNetworkId());
+        Assertions.assertEquals(2575726098394881595L, model.scaleUnits());
+        Assertions.assertEquals("ysuxmprafwgck", model.remoteVirtualNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransitOptionParams model
-            = new TransitOptionParams().withScaleUnits(647341680559943074L).withRemoteVirtualNetworkId("t");
+        TransitOptionParams model = new TransitOptionParams().withScaleUnits(2575726098394881595L)
+            .withRemoteVirtualNetworkId("ysuxmprafwgck");
         model = BinaryData.fromObject(model).toObject(TransitOptionParams.class);
-        Assertions.assertEquals(647341680559943074L, model.scaleUnits());
-        Assertions.assertEquals("t", model.remoteVirtualNetworkId());
+        Assertions.assertEquals(2575726098394881595L, model.scaleUnits());
+        Assertions.assertEquals("ysuxmprafwgck", model.remoteVirtualNetworkId());
     }
 }

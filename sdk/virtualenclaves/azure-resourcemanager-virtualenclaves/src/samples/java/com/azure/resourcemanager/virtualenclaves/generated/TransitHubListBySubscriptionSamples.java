@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class TransitHubListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_ListBySubscription.json
      */
     /**
      * Sample code: TransitHub_ListBySubscription.

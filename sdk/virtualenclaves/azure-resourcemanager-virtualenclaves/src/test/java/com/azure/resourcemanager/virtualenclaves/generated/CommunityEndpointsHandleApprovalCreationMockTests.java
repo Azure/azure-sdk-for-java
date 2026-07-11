@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class CommunityEndpointsHandleApprovalCreationMockTests {
     @Test
     public void testHandleApprovalCreation() throws Exception {
-        String responseStr = "{\"message\":\"ufanray\"}";
+        String responseStr = "{\"message\":\"hddzydisnuepy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class CommunityEndpointsHandleApprovalCreationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.communityEndpoints()
-            .handleApprovalCreation("yxey", "uqi", "ijiitns",
+            .handleApprovalCreation("qq", "cjubkhjozfymcwm", "upyvqyvliq",
                 new ApprovalCallbackRequest()
-                    .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.RESET)
-                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.APPROVED)
-                    .withApprovalCallbackPayload("desygrijwa"),
+                    .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.UPDATE)
+                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.REJECTED)
+                    .withApprovalCallbackPayload("ejbsvsiaies"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ufanray", response.message());
+        Assertions.assertEquals("hddzydisnuepy", response.message());
     }
 }

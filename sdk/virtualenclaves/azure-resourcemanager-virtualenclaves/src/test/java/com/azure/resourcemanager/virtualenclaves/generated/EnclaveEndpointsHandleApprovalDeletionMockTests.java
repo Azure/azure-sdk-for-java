@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class EnclaveEndpointsHandleApprovalDeletionMockTests {
     @Test
     public void testHandleApprovalDeletion() throws Exception {
-        String responseStr = "{\"message\":\"akuejk\"}";
+        String responseStr = "{\"message\":\"inhgre\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,11 @@ public final class EnclaveEndpointsHandleApprovalDeletionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.enclaveEndpoints()
-            .handleApprovalDeletion("caqt", "ltcoqc", "jpds", new ApprovalDeletionCallbackRequest()
-                .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.DELETE),
+            .handleApprovalDeletion(
+                "qpemh", "cgkrepdqhqy", "wqwemvxqabckmze", new ApprovalDeletionCallbackRequest()
+                    .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.DELETE),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("akuejk", response.message());
+        Assertions.assertEquals("inhgre", response.message());
     }
 }

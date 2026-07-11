@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.virtualenclaves.fluent.models.DedicatedHubResourceInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -69,14 +70,29 @@ public final class CommunityProperties implements JsonSerializable<CommunityProp
     private FirewallSKU firewallSku;
 
     /*
-     * Approval requirements for various actions on the community's resources.
+     * Granular approval requirements for various actions on the community's resources.
      */
-    private ApprovalSettings approvalSettings;
+    private ApprovalSettings granularApprovalSettings;
 
     /*
      * Maintenance Mode configuration.
      */
     private MaintenanceModeConfigurationModel maintenanceModeConfiguration;
+
+    /*
+     * DedicatedHub List.
+     */
+    private List<DedicatedHubResourceInner> dedicatedHubList;
+
+    /*
+     * Community Monitoring Settings for diagnostic and virtual network flow logs
+     */
+    private MonitoringSettingsModel monitoringSettings;
+
+    /*
+     * Address spaces list
+     */
+    private List<String> addressSpaces;
 
     /**
      * Creates an instance of CommunityProperties class.
@@ -245,22 +261,24 @@ public final class CommunityProperties implements JsonSerializable<CommunityProp
     }
 
     /**
-     * Get the approvalSettings property: Approval requirements for various actions on the community's resources.
+     * Get the granularApprovalSettings property: Granular approval requirements for various actions on the community's
+     * resources.
      * 
-     * @return the approvalSettings value.
+     * @return the granularApprovalSettings value.
      */
-    public ApprovalSettings approvalSettings() {
-        return this.approvalSettings;
+    public ApprovalSettings granularApprovalSettings() {
+        return this.granularApprovalSettings;
     }
 
     /**
-     * Set the approvalSettings property: Approval requirements for various actions on the community's resources.
+     * Set the granularApprovalSettings property: Granular approval requirements for various actions on the community's
+     * resources.
      * 
-     * @param approvalSettings the approvalSettings value to set.
+     * @param granularApprovalSettings the granularApprovalSettings value to set.
      * @return the CommunityProperties object itself.
      */
-    public CommunityProperties withApprovalSettings(ApprovalSettings approvalSettings) {
-        this.approvalSettings = approvalSettings;
+    public CommunityProperties withGranularApprovalSettings(ApprovalSettings granularApprovalSettings) {
+        this.granularApprovalSettings = granularApprovalSettings;
         return this;
     }
 
@@ -286,6 +304,55 @@ public final class CommunityProperties implements JsonSerializable<CommunityProp
     }
 
     /**
+     * Get the dedicatedHubList property: DedicatedHub List.
+     * 
+     * @return the dedicatedHubList value.
+     */
+    public List<DedicatedHubResourceInner> dedicatedHubList() {
+        return this.dedicatedHubList;
+    }
+
+    /**
+     * Get the monitoringSettings property: Community Monitoring Settings for diagnostic and virtual network flow logs.
+     * 
+     * @return the monitoringSettings value.
+     */
+    public MonitoringSettingsModel monitoringSettings() {
+        return this.monitoringSettings;
+    }
+
+    /**
+     * Set the monitoringSettings property: Community Monitoring Settings for diagnostic and virtual network flow logs.
+     * 
+     * @param monitoringSettings the monitoringSettings value to set.
+     * @return the CommunityProperties object itself.
+     */
+    public CommunityProperties withMonitoringSettings(MonitoringSettingsModel monitoringSettings) {
+        this.monitoringSettings = monitoringSettings;
+        return this;
+    }
+
+    /**
+     * Get the addressSpaces property: Address spaces list.
+     * 
+     * @return the addressSpaces value.
+     */
+    public List<String> addressSpaces() {
+        return this.addressSpaces;
+    }
+
+    /**
+     * Set the addressSpaces property: Address spaces list.
+     * 
+     * @param addressSpaces the addressSpaces value to set.
+     * @return the CommunityProperties object itself.
+     */
+    public CommunityProperties withAddressSpaces(List<String> addressSpaces) {
+        this.addressSpaces = addressSpaces;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -300,8 +367,11 @@ public final class CommunityProperties implements JsonSerializable<CommunityProp
         jsonWriter.writeArrayField("communityRoleAssignments", this.communityRoleAssignments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("firewallSku", this.firewallSku == null ? null : this.firewallSku.toString());
-        jsonWriter.writeJsonField("approvalSettings", this.approvalSettings);
+        jsonWriter.writeJsonField("approvalSettings", this.granularApprovalSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
+        jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeArrayField("addressSpaces", this.addressSpaces,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -350,10 +420,19 @@ public final class CommunityProperties implements JsonSerializable<CommunityProp
                 } else if ("firewallSku".equals(fieldName)) {
                     deserializedCommunityProperties.firewallSku = FirewallSKU.fromString(reader.getString());
                 } else if ("approvalSettings".equals(fieldName)) {
-                    deserializedCommunityProperties.approvalSettings = ApprovalSettings.fromJson(reader);
+                    deserializedCommunityProperties.granularApprovalSettings = ApprovalSettings.fromJson(reader);
                 } else if ("maintenanceModeConfiguration".equals(fieldName)) {
                     deserializedCommunityProperties.maintenanceModeConfiguration
                         = MaintenanceModeConfigurationModel.fromJson(reader);
+                } else if ("dedicatedHubList".equals(fieldName)) {
+                    List<DedicatedHubResourceInner> dedicatedHubList
+                        = reader.readArray(reader1 -> DedicatedHubResourceInner.fromJson(reader1));
+                    deserializedCommunityProperties.dedicatedHubList = dedicatedHubList;
+                } else if ("monitoringSettings".equals(fieldName)) {
+                    deserializedCommunityProperties.monitoringSettings = MonitoringSettingsModel.fromJson(reader);
+                } else if ("addressSpaces".equals(fieldName)) {
+                    List<String> addressSpaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityProperties.addressSpaces = addressSpaces;
                 } else {
                     reader.skipChildren();
                 }

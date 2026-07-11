@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class EnclaveAddressSpacesModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnclaveAddressSpacesModel model = BinaryData
-            .fromString("{\"enclaveAddressSpace\":\"dsfcpkvxodpuoz\",\"managedAddressSpace\":\"zydagfuaxbezyiuo\"}")
-            .toObject(EnclaveAddressSpacesModel.class);
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.enclaveAddressSpace());
-        Assertions.assertEquals("zydagfuaxbezyiuo", model.managedAddressSpace());
+        EnclaveAddressSpacesModel model
+            = BinaryData.fromString("{\"enclaveAddressSpace\":\"kpnpulexxbczwtr\",\"managedAddressSpace\":\"iqzbq\"}")
+                .toObject(EnclaveAddressSpacesModel.class);
+        Assertions.assertEquals("kpnpulexxbczwtr", model.enclaveAddressSpace());
+        Assertions.assertEquals("iqzbq", model.managedAddressSpace());
     }
 }

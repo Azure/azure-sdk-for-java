@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubResource;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
@@ -28,7 +29,7 @@ public final class TransitHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":7437458919363278602,\"remoteVirtualNetworkId\":\"lz\"}},\"resourceCollection\":[\"knyuxgvttxpn\",\"upzaamrdixtre\"]},\"location\":\"dswys\",\"tags\":{\"rpq\":\"uffgllukkutvlx\",\"bhbcdszir\":\"vmblcouqe\",\"t\":\"randoypmb\"},\"id\":\"ormkfqlwxldyk\",\"name\":\"lsygaol\",\"type\":\"jpnnbmjksibjgsj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":2544439438941624393,\"remoteVirtualNetworkId\":\"zp\"}},\"resourceCollection\":[\"mskxknp\",\"gzigjsugswhgsaod\",\"wwnbafoctohz\",\"aquvwsxbgnvkervq\"],\"securityProvider\":\"AzureFirewall\"},\"location\":\"dhrsxqvzvsp\",\"tags\":{\"fajglzrsubklrxhj\":\"sr\",\"eqq\":\"ltcetjdvqyd\"},\"id\":\"wa\",\"name\":\"uwdxvqzxoebwgj\",\"type\":\"bibanbau\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,22 +39,24 @@ public final class TransitHubsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TransitHubResource response = manager.transitHubs()
-            .define("ufr")
-            .withRegion("rsc")
-            .withExistingCommunity("hulrtywikdmhla", "uflgbhgauacdixm")
-            .withTags(mapOf("jxcjrmmuabwib", "wsdrnpxqwodif"))
+            .define("yszekbhwlka")
+            .withRegion("kpsimsfeypofqp")
+            .withExistingCommunity("scrdp", "bfdyjduss")
+            .withTags(mapOf("rmmttjxop", "yqgs", "htwzmqilr", "gerhsmvg", "fni", "xy", "aedrympmlqoin", "sqywwwmhkru"))
             .withProperties(new TransitHubProperties().withState(TransitHubState.PENDING_UPDATE)
-                .withTransitOption(new TransitOption().withType(TransitOptionType.PEERING)
-                    .withParams(new TransitOptionParams().withScaleUnits(3604541138001569154L)
-                        .withRemoteVirtualNetworkId("oqbvjhvefgwbmqj"))))
+                .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
+                    .withParams(new TransitOptionParams().withScaleUnits(2410155714006502989L)
+                        .withRemoteVirtualNetworkId("ff")))
+                .withSecurityProvider(SecurityProvider.NONE))
             .create();
 
-        Assertions.assertEquals("dswys", response.location());
-        Assertions.assertEquals("uffgllukkutvlx", response.tags().get("rpq"));
+        Assertions.assertEquals("dhrsxqvzvsp", response.location());
+        Assertions.assertEquals("sr", response.tags().get("fajglzrsubklrxhj"));
         Assertions.assertEquals(TransitHubState.PENDING_UPDATE, response.properties().state());
-        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, response.properties().transitOption().type());
-        Assertions.assertEquals(7437458919363278602L, response.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("lz", response.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(TransitOptionType.PEERING, response.properties().transitOption().type());
+        Assertions.assertEquals(2544439438941624393L, response.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("zp", response.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, response.properties().securityProvider());
     }
 
     // Use "Map.of" if available

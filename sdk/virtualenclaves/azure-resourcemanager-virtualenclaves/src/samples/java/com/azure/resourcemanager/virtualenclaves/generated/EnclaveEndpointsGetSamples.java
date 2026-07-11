@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class EnclaveEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_Get.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Get.json
      */
     /**
      * Sample code: EnclaveEndpoints_Get.

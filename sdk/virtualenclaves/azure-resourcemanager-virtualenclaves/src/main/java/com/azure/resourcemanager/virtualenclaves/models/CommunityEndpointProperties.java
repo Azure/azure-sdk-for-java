@@ -32,6 +32,11 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * Whether update mode is automatic or manual.
+     */
+    private UpdateMode updateMode;
+
     /**
      * Creates an instance of CommunityEndpointProperties class.
      */
@@ -77,6 +82,26 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
     }
 
     /**
+     * Get the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @return the updateMode value.
+     */
+    public UpdateMode updateMode() {
+        return this.updateMode;
+    }
+
+    /**
+     * Set the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @param updateMode the updateMode value to set.
+     * @return the CommunityEndpointProperties object itself.
+     */
+    public CommunityEndpointProperties withUpdateMode(UpdateMode updateMode) {
+        this.updateMode = updateMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -84,6 +109,7 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +139,8 @@ public final class CommunityEndpointProperties implements JsonSerializable<Commu
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCommunityEndpointProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedCommunityEndpointProperties.updateMode = UpdateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

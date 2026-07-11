@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class WorkloadListByEnclaveResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_ListByEnclaveResource.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_ListByEnclaveResource.json
      */
     /**
      * Sample code: Workload_ListByEnclaveResource.

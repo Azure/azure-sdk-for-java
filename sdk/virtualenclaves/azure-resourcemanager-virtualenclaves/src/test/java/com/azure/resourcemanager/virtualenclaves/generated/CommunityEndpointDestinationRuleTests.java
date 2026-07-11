@@ -15,32 +15,32 @@ public final class CommunityEndpointDestinationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityEndpointDestinationRule model = BinaryData.fromString(
-            "{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"UDP\",\"UDP\",\"AH\"],\"transitHubResourceId\":\"qzz\",\"endpointRuleName\":\"jvpglydzgk\",\"destination\":\"qeevt\",\"ports\":\"pryu\"}")
+            "{\"destinationType\":\"FQDN\",\"protocols\":[\"UDP\",\"ESP\",\"ICMP\",\"ESP\"],\"transitHubResourceId\":\"foudor\",\"endpointRuleName\":\"gyyprotwy\",\"destination\":\"ndm\",\"ports\":\"hu\"}")
             .toObject(CommunityEndpointDestinationRule.class);
-        Assertions.assertEquals(DestinationType.PRIVATE_NETWORK, model.destinationType());
+        Assertions.assertEquals(DestinationType.FQDN, model.destinationType());
         Assertions.assertEquals(CommunityEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("qzz", model.transitHubResourceId());
-        Assertions.assertEquals("jvpglydzgk", model.endpointRuleName());
-        Assertions.assertEquals("qeevt", model.destination());
-        Assertions.assertEquals("pryu", model.ports());
+        Assertions.assertEquals("foudor", model.transitHubResourceId());
+        Assertions.assertEquals("gyyprotwy", model.endpointRuleName());
+        Assertions.assertEquals("ndm", model.destination());
+        Assertions.assertEquals("hu", model.ports());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunityEndpointDestinationRule model
-            = new CommunityEndpointDestinationRule().withDestinationType(DestinationType.PRIVATE_NETWORK)
-                .withProtocols(Arrays.asList(CommunityEndpointProtocol.UDP, CommunityEndpointProtocol.UDP,
-                    CommunityEndpointProtocol.AH))
-                .withTransitHubResourceId("qzz")
-                .withEndpointRuleName("jvpglydzgk")
-                .withDestination("qeevt")
-                .withPorts("pryu");
+            = new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDN)
+                .withProtocols(Arrays.asList(CommunityEndpointProtocol.UDP, CommunityEndpointProtocol.ESP,
+                    CommunityEndpointProtocol.ICMP, CommunityEndpointProtocol.ESP))
+                .withTransitHubResourceId("foudor")
+                .withEndpointRuleName("gyyprotwy")
+                .withDestination("ndm")
+                .withPorts("hu");
         model = BinaryData.fromObject(model).toObject(CommunityEndpointDestinationRule.class);
-        Assertions.assertEquals(DestinationType.PRIVATE_NETWORK, model.destinationType());
+        Assertions.assertEquals(DestinationType.FQDN, model.destinationType());
         Assertions.assertEquals(CommunityEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("qzz", model.transitHubResourceId());
-        Assertions.assertEquals("jvpglydzgk", model.endpointRuleName());
-        Assertions.assertEquals("qeevt", model.destination());
-        Assertions.assertEquals("pryu", model.ports());
+        Assertions.assertEquals("foudor", model.transitHubResourceId());
+        Assertions.assertEquals("gyyprotwy", model.endpointRuleName());
+        Assertions.assertEquals("ndm", model.destination());
+        Assertions.assertEquals("hu", model.ports());
     }
 }

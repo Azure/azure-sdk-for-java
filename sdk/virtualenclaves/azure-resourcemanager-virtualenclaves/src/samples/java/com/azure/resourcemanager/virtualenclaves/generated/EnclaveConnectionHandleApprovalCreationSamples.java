@@ -13,7 +13,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class EnclaveConnectionHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveConnection_HandleApprovalCreation.

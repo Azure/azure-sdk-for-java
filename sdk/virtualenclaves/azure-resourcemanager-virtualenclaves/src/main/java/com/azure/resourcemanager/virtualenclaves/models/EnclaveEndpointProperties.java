@@ -32,6 +32,11 @@ public final class EnclaveEndpointProperties implements JsonSerializable<Enclave
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * Whether update mode is automatic or manual.
+     */
+    private UpdateMode updateMode;
+
     /**
      * Creates an instance of EnclaveEndpointProperties class.
      */
@@ -77,6 +82,26 @@ public final class EnclaveEndpointProperties implements JsonSerializable<Enclave
     }
 
     /**
+     * Get the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @return the updateMode value.
+     */
+    public UpdateMode updateMode() {
+        return this.updateMode;
+    }
+
+    /**
+     * Set the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @param updateMode the updateMode value to set.
+     * @return the EnclaveEndpointProperties object itself.
+     */
+    public EnclaveEndpointProperties withUpdateMode(UpdateMode updateMode) {
+        this.updateMode = updateMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -84,6 +109,7 @@ public final class EnclaveEndpointProperties implements JsonSerializable<Enclave
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -113,6 +139,8 @@ public final class EnclaveEndpointProperties implements JsonSerializable<Enclave
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedEnclaveEndpointProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedEnclaveEndpointProperties.updateMode = UpdateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

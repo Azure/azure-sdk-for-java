@@ -6,6 +6,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.virtualenclaves.implementation.models.TransitHubResourceListResult;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOptionType;
 import org.junit.jupiter.api.Assertions;
@@ -14,16 +15,17 @@ public final class TransitHubResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitHubResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":4051356742453567951,\"remoteVirtualNetworkId\":\"rqmq\"}},\"resourceCollection\":[\"vriiio\",\"nalghfkvtvsexso\",\"ueluqhhahhxvrhmz\"]},\"location\":\"pjgwwspug\",\"tags\":{\"hqxujxukndxdi\":\"qs\"},\"id\":\"rjguufzdmsyqtf\",\"name\":\"hwhbotzingamv\",\"type\":\"phoszqz\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":6708248733750385169,\"remoteVirtualNetworkId\":\"wcvtbvkayhmtnvyq\"}},\"resourceCollection\":[\"kzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"]},\"location\":\"ygz\",\"tags\":{\"xu\":\"nk\",\"dpsqx\":\"emdwzrmuhapfc\"},\"id\":\"vpsvuoymgcce\",\"name\":\"vezrypqlmfeo\",\"type\":\"erqwkyhkobopg\"},{\"properties\":{\"provisioningState\":\"Creating\",\"state\":\"Active\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":2106784928647085013,\"remoteVirtualNetworkId\":\"kbwcc\"}},\"resourceCollection\":[\"vcdwxlpqekftn\",\"htjsying\",\"fq\"]},\"location\":\"mtdh\",\"tags\":{\"zywkb\":\"vypgikdg\",\"rvqqaatj\":\"rryuzhlhkjo\",\"ioolvrwxkvtkkgll\":\"nrvgoupmfiibfgg\"},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"}],\"nextLink\":\"zfbn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"state\":\"Failed\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":7341482721394376832,\"remoteVirtualNetworkId\":\"aeoisrvh\"}},\"resourceCollection\":[\"r\",\"fukiscvwmzhw\",\"lefaxvxilcbtgn\"],\"securityProvider\":\"AzureFirewall\"},\"location\":\"yqxtjjfzql\",\"tags\":{\"smieknlra\":\"cavodggxdbe\",\"iuagydwqfbylyrfg\":\"iaa\",\"ojocqwogf\":\"agt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"},\"id\":\"own\",\"name\":\"tgkbugrjqctojc\",\"type\":\"isofieypefojyqd\"}],\"nextLink\":\"u\"}")
             .toObject(TransitHubResourceListResult.class);
-        Assertions.assertEquals("pjgwwspug", model.value().get(0).location());
-        Assertions.assertEquals("qs", model.value().get(0).tags().get("hqxujxukndxdi"));
-        Assertions.assertEquals(TransitHubState.APPROVED, model.value().get(0).properties().state());
+        Assertions.assertEquals("yqxtjjfzql", model.value().get(0).location());
+        Assertions.assertEquals("cavodggxdbe", model.value().get(0).tags().get("smieknlra"));
+        Assertions.assertEquals(TransitHubState.FAILED, model.value().get(0).properties().state());
         Assertions.assertEquals(TransitOptionType.GATEWAY, model.value().get(0).properties().transitOption().type());
-        Assertions.assertEquals(4051356742453567951L,
+        Assertions.assertEquals(7341482721394376832L,
             model.value().get(0).properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("rqmq",
+        Assertions.assertEquals("aeoisrvh",
             model.value().get(0).properties().transitOption().params().remoteVirtualNetworkId());
-        Assertions.assertEquals("zfbn", model.nextLink());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL, model.value().get(0).properties().securityProvider());
+        Assertions.assertEquals("u", model.nextLink());
     }
 }

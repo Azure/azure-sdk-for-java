@@ -22,6 +22,11 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
      */
     private List<CommunityEndpointDestinationRule> ruleCollection;
 
+    /*
+     * Whether update mode is automatic or manual.
+     */
+    private UpdateMode updateMode;
+
     /**
      * Creates an instance of CommunityEndpointPatchProperties class.
      */
@@ -49,6 +54,26 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
     }
 
     /**
+     * Get the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @return the updateMode value.
+     */
+    public UpdateMode updateMode() {
+        return this.updateMode;
+    }
+
+    /**
+     * Set the updateMode property: Whether update mode is automatic or manual.
+     * 
+     * @param updateMode the updateMode value to set.
+     * @return the CommunityEndpointPatchProperties object itself.
+     */
+    public CommunityEndpointPatchProperties withUpdateMode(UpdateMode updateMode) {
+        this.updateMode = updateMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -56,6 +81,7 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ruleCollection", this.ruleCollection,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("updateMode", this.updateMode == null ? null : this.updateMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -80,6 +106,8 @@ public final class CommunityEndpointPatchProperties implements JsonSerializable<
                     List<CommunityEndpointDestinationRule> ruleCollection
                         = reader.readArray(reader1 -> CommunityEndpointDestinationRule.fromJson(reader1));
                     deserializedCommunityEndpointPatchProperties.ruleCollection = ruleCollection;
+                } else if ("updateMode".equals(fieldName)) {
+                    deserializedCommunityEndpointPatchProperties.updateMode = UpdateMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

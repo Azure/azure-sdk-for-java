@@ -31,6 +31,15 @@
 - [ListBySubscription](#communityendpoints_listbysubscription)
 - [Update](#communityendpoints_update)
 
+## DedicatedHub
+
+- [CreateOrUpdate](#dedicatedhub_createorupdate)
+- [Delete](#dedicatedhub_delete)
+- [Get](#dedicatedhub_get)
+- [ListByCommunityResource](#dedicatedhub_listbycommunityresource)
+- [ListBySubscription](#dedicatedhub_listbysubscription)
+- [Update](#dedicatedhub_update)
+
 ## EnclaveConnection
 
 - [CreateOrUpdate](#enclaveconnection_createorupdate)
@@ -101,7 +110,7 @@ import java.util.Arrays;
  */
 public final class ApprovalCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_CreateOrUpdate.json
      */
     /**
      * Sample code: Approval_CreateOrUpdate.
@@ -141,7 +150,7 @@ public final class ApprovalCreateOrUpdateSamples {
  */
 public final class ApprovalDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_Delete.json
      */
     /**
      * Sample code: Approval_Delete.
@@ -165,7 +174,7 @@ public final class ApprovalDeleteSamples {
  */
 public final class ApprovalGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_Get.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_Get.json
      */
     /**
      * Sample code: Approval_Get.
@@ -189,7 +198,7 @@ public final class ApprovalGetSamples {
  */
 public final class ApprovalListByParentSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_ListByParent.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_ListByParent.json
      */
     /**
      * Sample code: Approval_ListByParent.
@@ -216,7 +225,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalActionRequestApp
  */
 public final class ApprovalNotifyInitiatorSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_NotifyInitiator.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_NotifyInitiator.json
      */
     /**
      * Sample code: Approval_NotifyInitiator.
@@ -252,7 +261,7 @@ import java.util.Arrays;
  */
 public final class ApprovalUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_Update.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_Update.json
      */
     /**
      * Sample code: Approval_Update.
@@ -298,7 +307,7 @@ import java.util.Arrays;
  */
 public final class CommunityCheckAddressSpaceAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_PostCheckAddressSpaceAvailability.json
+     * x-ms-original-file: 2026-03-01-preview/Community_PostCheckAddressSpaceAvailability.json
      */
     /**
      * Sample code: Community_CheckAddressSpaceAvailability.
@@ -325,6 +334,7 @@ public final class CommunityCheckAddressSpaceAvailabilitySamples {
 
 ```java
 import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettings;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityProperties;
 import com.azure.resourcemanager.virtualenclaves.models.FirewallSKU;
@@ -338,6 +348,9 @@ import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigura
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestination;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringSettingsModel;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
@@ -352,7 +365,7 @@ import java.util.Map;
  */
 public final class CommunityCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/Community_CreateOrUpdate.json
      */
     /**
      * Sample code: Community_CreateOrUpdate.
@@ -366,99 +379,139 @@ public final class CommunityCreateOrUpdateSamples {
             .withRegion("westcentralus")
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("sampletag", "samplevalue"))
-            .withProperties(new CommunityProperties().withAddressSpace("10.0.0.0/24")
-                .withDnsServers(Arrays.asList("azure.net"))
-                .withGovernedServiceList(Arrays.asList(
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
-                        .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
-                .withCommunityRoleAssignments(Arrays.asList(new RoleAssignmentItem()
-                    .withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
-                    .withPrincipals(Arrays.asList(
-                        new Principal().withId("01234567-89ab-ef01-2345-0123456789ab").withType(PrincipalType.GROUP),
-                        new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0").withType(PrincipalType.USER))),
-                    new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
-                        .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
-                            .withType(PrincipalType.USER)))))
-                .withFirewallSku(FirewallSKU.STANDARD)
-                .withApprovalSettings(new ApprovalSettings().withEndpointCreation(ApprovalPolicy.NOT_REQUIRED)
-                    .withEndpointUpdate(ApprovalPolicy.REQUIRED)
-                    .withEndpointDeletion(ApprovalPolicy.NOT_REQUIRED)
-                    .withConnectionCreation(ApprovalPolicy.REQUIRED)
-                    .withConnectionUpdate(ApprovalPolicy.REQUIRED)
-                    .withConnectionDeletion(ApprovalPolicy.NOT_REQUIRED)
-                    .withEnclaveCreation(ApprovalPolicy.NOT_REQUIRED)
-                    .withEnclaveDeletion(ApprovalPolicy.NOT_REQUIRED)
-                    .withMaintenanceMode(ApprovalPolicy.NOT_REQUIRED)
-                    .withServiceCatalogDeployment(ApprovalPolicy.NOT_REQUIRED)
-                    .withNotificationOnApprovalCreation(ApprovalPolicy.NOT_REQUIRED)
-                    .withNotificationOnApprovalAction(ApprovalPolicy.NOT_REQUIRED)
-                    .withNotificationOnApprovalDeletion(ApprovalPolicy.NOT_REQUIRED)
-                    .withMandatoryApprovers(Arrays
-                        .asList(new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000000")))
-                    .withMinimumApproversRequired(0L))
-                .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationModel()
-                    .withMode(MaintenanceModeConfigurationModelMode.OFF)
-                    .withPrincipals(Arrays.asList(
-                        new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER)))
-                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF)))
+            .withProperties(
+                new CommunityProperties().withAddressSpace("")
+                    .withDnsServers(Arrays.asList("azure.net"))
+                    .withGovernedServiceList(
+                        Arrays
+                            .asList(
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
+                                    .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
+                    .withCommunityRoleAssignments(Arrays.asList(
+                        new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
+                            .withPrincipals(Arrays.asList(
+                                new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
+                                    .withType(PrincipalType.GROUP),
+                                new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
+                                    .withType(PrincipalType.USER)))
+                            .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
+                        new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
+                            .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
+                                .withType(PrincipalType.USER)))))
+                    .withFirewallSku(FirewallSKU.STANDARD)
+                    .withGranularApprovalSettings(
+                        new ApprovalSettings()
+                            .withCommunityEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(2)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                            .withEnclaveEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withEnclaveCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
+                            .withConnectionCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
+                            .withConnectionUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
+                                .withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                .withMinimumApproversRequired(2)
+                                .withMandatoryApprovers(Arrays.asList(
+                                    new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000003"),
+                                    new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000004"))))
+                            .withEnclaveMaintenanceMode(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)))
+                    .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationModel()
+                        .withMode(MaintenanceModeConfigurationModelMode.OFF)
+                        .withPrincipals(
+                            Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
+                                .withType(PrincipalType.USER)))
+                        .withJustification(MaintenanceModeConfigurationModelJustification.OFF))
+                    .withMonitoringSettings(new MonitoringSettingsModel().withDiagnosticDestinations(Arrays.asList(
+                        new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE),
+                        new MonitoringDestination()
+                            .withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
+                            .withDiagnosticSettingsName("customName"),
+                        new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                            .withCustomWorkspaceResourceId(
+                                "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                            .withDiagnosticSettingsName("customName"),
+                        new MonitoringDestination()
+                            .withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                            .withCustomWorkspaceResourceId(
+                                "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                            .withDiagnosticSettingsName("customName")))
+                        .withFlowLogDestination(new MonitoringDestination()
+                            .withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                            .withCustomWorkspaceResourceId(
+                                "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                            .withDiagnosticSettingsName("customName")))
+                    .withAddressSpaces(Arrays.asList("10.0.0.0/16", "10.1.0.0/16")))
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
@@ -489,7 +542,7 @@ public final class CommunityCreateOrUpdateSamples {
  */
 public final class CommunityDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/Community_Delete.json
      */
     /**
      * Sample code: Community_Delete.
@@ -510,7 +563,7 @@ public final class CommunityDeleteSamples {
  */
 public final class CommunityGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_Get.json
+     * x-ms-original-file: 2026-03-01-preview/Community_Get.json
      */
     /**
      * Sample code: Community_Get.
@@ -532,7 +585,7 @@ public final class CommunityGetByResourceGroupSamples {
  */
 public final class CommunityListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/Community_ListBySubscription.json
      */
     /**
      * Sample code: Community_ListBySubscription.
@@ -554,7 +607,7 @@ public final class CommunityListSamples {
  */
 public final class CommunityListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/Community_ListByResourceGroup.json
      */
     /**
      * Sample code: Community_ListByResourceGroup.
@@ -571,12 +624,16 @@ public final class CommunityListByResourceGroupSamples {
 ### Community_Update
 
 ```java
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingsPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityResource;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItem;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemEnforcement;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemOption;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemPolicyAction;
+import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
@@ -590,7 +647,7 @@ import java.util.Map;
  */
 public final class CommunityUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_Update.json
+     * x-ms-original-file: 2026-03-01-preview/Community_Update.json
      */
     /**
      * Sample code: Community_Update.
@@ -603,76 +660,109 @@ public final class CommunityUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("sampletag", "samplevalue"))
-            .withProperties(new CommunityPatchProperties().withDnsServers(Arrays.asList("azure.net"))
-                .withGovernedServiceList(Arrays.asList(
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
-                        .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
-                .withCommunityRoleAssignments(Arrays.asList(new RoleAssignmentItem()
-                    .withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
-                    .withPrincipals(Arrays.asList(
-                        new Principal().withId("01234567-89ab-ef01-2345-0123456789ab").withType(PrincipalType.GROUP),
-                        new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0").withType(PrincipalType.USER))),
-                    new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
-                        .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
-                            .withType(PrincipalType.USER))))))
+            .withProperties(
+                new CommunityPatchProperties().withDnsServers(Arrays.asList("azure.net"))
+                    .withGovernedServiceList(
+                        Arrays
+                            .asList(
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
+                                    .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
+                    .withCommunityRoleAssignments(Arrays.asList(
+                        new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
+                            .withPrincipals(Arrays.asList(
+                                new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
+                                    .withType(PrincipalType.GROUP),
+                                new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
+                                    .withType(PrincipalType.USER)))
+                            .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
+                        new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
+                            .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
+                                .withType(PrincipalType.USER)))))
+                    .withGranularApprovalSettings(
+                        new ApprovalSettingsPatchProperties()
+                            .withCommunityEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(2)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                            .withEnclaveEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withEnclaveCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withConnectionCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withConnectionUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
+                            .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
+                                .withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                .withMinimumApproversRequired(2)
+                                .withMandatoryApprovers(Arrays.asList(
+                                    new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000003"),
+                                    new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000004"))))
+                            .withEnclaveMaintenanceMode(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))))
             .apply();
     }
 
@@ -697,6 +787,7 @@ import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointDestina
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.DestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -706,7 +797,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: CommunityEndpoints_CreateOrUpdate.
@@ -726,7 +817,8 @@ public final class CommunityEndpointsCreateOrUpdateSamples {
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
                     .withDestination("foo.example.com")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .create();
     }
 
@@ -752,7 +844,7 @@ public final class CommunityEndpointsCreateOrUpdateSamples {
  */
 public final class CommunityEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_Delete.json
      */
     /**
      * Sample code: CommunityEndpoints_Delete.
@@ -775,7 +867,7 @@ public final class CommunityEndpointsDeleteSamples {
  */
 public final class CommunityEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_Get.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_Get.json
      */
     /**
      * Sample code: CommunityEndpoints_Get.
@@ -802,7 +894,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class CommunityEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalCreation.
@@ -832,7 +924,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalDeletionCallback
  */
 public final class CommunityEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalDeletion.
@@ -858,7 +950,7 @@ public final class CommunityEndpointsHandleApprovalDeletionSamples {
  */
 public final class CommunityEndpointsListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_ListByCommunityResource.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_ListByCommunityResource.json
      */
     /**
      * Sample code: CommunityEndpoints_ListByCommunityResource.
@@ -881,7 +973,7 @@ public final class CommunityEndpointsListByCommunityResourceSamples {
  */
 public final class CommunityEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: CommunityEndpoints_ListBySubscription.
@@ -903,6 +995,7 @@ import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointPatchPr
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpointResource;
 import com.azure.resourcemanager.virtualenclaves.models.DestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -912,7 +1005,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_Update.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_Update.json
      */
     /**
      * Sample code: CommunityEndpoints_Update.
@@ -933,7 +1026,188 @@ public final class CommunityEndpointsUpdateSamples {
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
                     .withDestination("foo.example.com")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DedicatedHub_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.virtualenclaves.models.DedicatedHubProperties;
+import com.azure.resourcemanager.virtualenclaves.models.Designation;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DedicatedHub CreateOrUpdate.
+ */
+public final class DedicatedHubCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: DedicatedHub_CreateOrUpdate.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void
+        dedicatedHubCreateOrUpdate(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        manager.dedicatedHubs()
+            .define("TestDedicatedHub")
+            .withRegion("eastus")
+            .withExistingCommunity("TestResourceGroup", "TestCommunity")
+            .withTags(mapOf("environment", "test", "project", "mission"))
+            .withProperties(new DedicatedHubProperties().withDesignation(Designation.RESERVED))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DedicatedHub_Delete
+
+```java
+/**
+ * Samples for DedicatedHub Delete.
+ */
+public final class DedicatedHubDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_Delete.json
+     */
+    /**
+     * Sample code: DedicatedHub_Delete.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void dedicatedHubDelete(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        manager.dedicatedHubs()
+            .delete("TestResourceGroup", "TestCommunity", "TestDedicatedHub", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DedicatedHub_Get
+
+```java
+/**
+ * Samples for DedicatedHub Get.
+ */
+public final class DedicatedHubGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_Get.json
+     */
+    /**
+     * Sample code: DedicatedHub_Get.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void dedicatedHubGet(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        manager.dedicatedHubs()
+            .getWithResponse("TestResourceGroup", "TestCommunity", "TestDedicatedHub",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DedicatedHub_ListByCommunityResource
+
+```java
+/**
+ * Samples for DedicatedHub ListByCommunityResource.
+ */
+public final class DedicatedHubListByCommunityResourceSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_ListByCommunityResource.json
+     */
+    /**
+     * Sample code: DedicatedHub_ListByCommunityResource.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void
+        dedicatedHubListByCommunityResource(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        manager.dedicatedHubs()
+            .listByCommunityResource("TestResourceGroup", "TestCommunity", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DedicatedHub_ListBySubscription
+
+```java
+/**
+ * Samples for DedicatedHub ListBySubscription.
+ */
+public final class DedicatedHubListBySubscriptionSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_ListBySubscription.json
+     */
+    /**
+     * Sample code: DedicatedHub_ListBySubscription.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void
+        dedicatedHubListBySubscription(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        manager.dedicatedHubs().listBySubscription("TestCommunity1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DedicatedHub_Update
+
+```java
+import com.azure.resourcemanager.virtualenclaves.models.DedicatedHubPatchProperties;
+import com.azure.resourcemanager.virtualenclaves.models.DedicatedHubResource;
+import com.azure.resourcemanager.virtualenclaves.models.Designation;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DedicatedHub Update.
+ */
+public final class DedicatedHubUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_Update.json
+     */
+    /**
+     * Sample code: DedicatedHub_Update.
+     * 
+     * @param manager Entry point to VirtualEnclavesManager.
+     */
+    public static void dedicatedHubUpdate(com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager manager) {
+        DedicatedHubResource resource = manager.dedicatedHubs()
+            .getWithResponse("TestResourceGroup", "TestCommunity", "TestDedicatedHub", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("environment", "production", "project", "mission", "updated", "true"))
+            .withProperties(new DedicatedHubPatchProperties().withDesignation(Designation.POOLED))
             .apply();
     }
 
@@ -963,7 +1237,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveConnection_CreateOrUpdate.
@@ -1009,7 +1283,7 @@ public final class EnclaveConnectionCreateOrUpdateSamples {
  */
 public final class EnclaveConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Delete.json
      */
     /**
      * Sample code: EnclaveConnection_Delete.
@@ -1031,7 +1305,7 @@ public final class EnclaveConnectionDeleteSamples {
  */
 public final class EnclaveConnectionGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_Get.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Get.json
      */
     /**
      * Sample code: EnclaveConnection_Get.
@@ -1057,7 +1331,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class EnclaveConnectionHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveConnection_HandleApprovalCreation.
@@ -1088,7 +1362,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalDeletionCallback
  */
 public final class EnclaveConnectionHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_HandleApprovalDeletion.json
      */
     /**
      * Sample code: EnclaveConnection_HandleApprovalDeletion.
@@ -1113,7 +1387,7 @@ public final class EnclaveConnectionHandleApprovalDeletionSamples {
  */
 public final class EnclaveConnectionListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_ListBySubscription.json
      */
     /**
      * Sample code: EnclaveConnection_ListBySubscription.
@@ -1135,7 +1409,7 @@ public final class EnclaveConnectionListSamples {
  */
 public final class EnclaveConnectionListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_ListByResourceGroup.json
      */
     /**
      * Sample code: EnclaveConnection_ListByResourceGroup.
@@ -1162,7 +1436,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_Update.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_Update.json
      */
     /**
      * Sample code: EnclaveConnection_Update.
@@ -1200,6 +1474,7 @@ public final class EnclaveConnectionUpdateSamples {
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinationRule;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -1209,7 +1484,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveEndpoints_CreateOrUpdate.
@@ -1227,7 +1502,8 @@ public final class EnclaveEndpointsCreateOrUpdateSamples {
                 .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
                     .withEndpointRuleName("54CEECEF-2C30-488E-946F-D20F414D99BA")
                     .withDestination("10.0.0.0/24")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .create();
     }
 
@@ -1253,7 +1529,7 @@ public final class EnclaveEndpointsCreateOrUpdateSamples {
  */
 public final class EnclaveEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Delete.json
      */
     /**
      * Sample code: EnclaveEndpoints_Delete.
@@ -1276,7 +1552,7 @@ public final class EnclaveEndpointsDeleteSamples {
  */
 public final class EnclaveEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_Get.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Get.json
      */
     /**
      * Sample code: EnclaveEndpoints_Get.
@@ -1302,7 +1578,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class EnclaveEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveEndpoints_HandleApprovalCreation.
@@ -1332,7 +1608,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalDeletionCallback
  */
 public final class EnclaveEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: EnclaveEndpoints_HandleApprovalDeletion.
@@ -1358,7 +1634,7 @@ public final class EnclaveEndpointsHandleApprovalDeletionSamples {
  */
 public final class EnclaveEndpointsListByEnclaveResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_ListByEnclaveResource.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_ListByEnclaveResource.json
      */
     /**
      * Sample code: EnclaveEndpoints_ListByEnclaveResource.
@@ -1381,7 +1657,7 @@ public final class EnclaveEndpointsListByEnclaveResourceSamples {
  */
 public final class EnclaveEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: EnclaveEndpoints_ListBySubscription.
@@ -1402,6 +1678,7 @@ import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinati
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointResource;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -1411,7 +1688,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_Update.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Update.json
      */
     /**
      * Sample code: EnclaveEndpoints_Update.
@@ -1429,7 +1706,8 @@ public final class EnclaveEndpointsUpdateSamples {
                 .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
                     .withEndpointRuleName("54CEECEF-2C30-488E-946F-D20F414D99BA")
                     .withDestination("10.0.0.0/24")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .apply();
     }
 
@@ -1455,7 +1733,7 @@ public final class EnclaveEndpointsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -1471,6 +1749,7 @@ public final class OperationsListSamples {
 ### TransitHub_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOption;
@@ -1484,7 +1763,7 @@ import java.util.Map;
  */
 public final class TransitHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_CreateOrUpdate.json
      */
     /**
      * Sample code: TransitHub_CreateOrUpdate.
@@ -1500,7 +1779,8 @@ public final class TransitHubCreateOrUpdateSamples {
             .withTags(mapOf("Tag1", "Value1"))
             .withProperties(new TransitHubProperties().withState(TransitHubState.PENDING_APPROVAL)
                 .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-                    .withParams(new TransitOptionParams().withScaleUnits(1L))))
+                    .withParams(new TransitOptionParams().withScaleUnits(1L)))
+                .withSecurityProvider(SecurityProvider.AZURE_FIREWALL))
             .create();
     }
 
@@ -1526,7 +1806,7 @@ public final class TransitHubCreateOrUpdateSamples {
  */
 public final class TransitHubDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_Delete.json
      */
     /**
      * Sample code: TransitHub_Delete.
@@ -1547,7 +1827,7 @@ public final class TransitHubDeleteSamples {
  */
 public final class TransitHubGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_Get.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_Get.json
      */
     /**
      * Sample code: TransitHub_Get.
@@ -1569,7 +1849,7 @@ public final class TransitHubGetSamples {
  */
 public final class TransitHubListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_ListByCommunityResource.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_ListByCommunityResource.json
      */
     /**
      * Sample code: TransitHub_ListByCommunityResource.
@@ -1591,7 +1871,7 @@ public final class TransitHubListByCommunityResourceSamples {
  */
 public final class TransitHubListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_ListBySubscription.json
      */
     /**
      * Sample code: TransitHub_ListBySubscription.
@@ -1608,6 +1888,7 @@ public final class TransitHubListBySubscriptionSamples {
 ### TransitHub_Update
 
 ```java
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubResource;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
@@ -1622,7 +1903,7 @@ import java.util.Map;
  */
 public final class TransitHubUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/TransitHub_Update.json
+     * x-ms-original-file: 2026-03-01-preview/TransitHub_Update.json
      */
     /**
      * Sample code: TransitHub_Update.
@@ -1637,7 +1918,8 @@ public final class TransitHubUpdateSamples {
             .withTags(mapOf("key4278", "fakeTokenPlaceholder"))
             .withProperties(new TransitHubPatchProperties().withState(TransitHubState.PENDING_APPROVAL)
                 .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-                    .withParams(new TransitOptionParams().withScaleUnits(1L))))
+                    .withParams(new TransitOptionParams().withScaleUnits(1L)))
+                .withSecurityProvider(SecurityProvider.NONE))
             .apply();
     }
 
@@ -1658,6 +1940,8 @@ public final class TransitHubUpdateSamples {
 ### VirtualEnclave_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.DiagnosticDestination;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveDefaultSettingsModel;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveVirtualNetworkModel;
@@ -1666,11 +1950,18 @@ import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigura
 import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigurationModelMode;
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestination;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringSettingsModel;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
+import com.azure.resourcemanager.virtualenclaves.models.RbacInheritanceMode;
+import com.azure.resourcemanager.virtualenclaves.models.ResourceVisibilityMode;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
 import com.azure.resourcemanager.virtualenclaves.models.SubnetConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.UserAssignedIdentity;
+import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclaveApprovalSettings;
 import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclaveProperties;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1681,7 +1972,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualEnclave_CreateOrUpdate.
@@ -1704,19 +1995,23 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                 .withCommunityResourceId(
                     "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
                 .withBastionEnabled(true)
+                .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
+                .withRbacInheritance(RbacInheritanceMode.DISABLED)
                 .withEnclaveRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
                         .withPrincipals(Arrays.asList(
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER),
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
-                                .withType(PrincipalType.USER))),
+                                .withType(PrincipalType.USER)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
                         .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
                             .withType(PrincipalType.USER)))))
                 .withWorkloadRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("d73bb868-a0df-4d4d-bd69-98a00b01fccb")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
-                            .withType(PrincipalType.GROUP))),
+                            .withType(PrincipalType.GROUP)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
@@ -1726,7 +2021,41 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                     .withMode(MaintenanceModeConfigurationModelMode.OFF)
                     .withPrincipals(Arrays.asList(
                         new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER)))
-                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF)))
+                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF))
+                .withDedicatedHubResourceId(
+                    "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestResourceGroup/providers/Microsoft.Mission/communities/TestMyCommunity/dedicatedHubs/TestDedicatedHub")
+                .withApprovalSettings(new VirtualEnclaveApprovalSettings()
+                    .withEnclaveEndpointUpdate(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(1)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                    .withConnectionCreation(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(2)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
+                    .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                        .withMinimumApproversRequired(1))
+                    .withEnclaveMaintenanceMode(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)))
+                .withMonitoringSettings(new MonitoringSettingsModel().withDiagnosticDestinations(Arrays.asList(
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
+                        .withDiagnosticSettingsName("customName"),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName"),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName")))
+                    .withFlowLogDestination(new MonitoringDestination()
+                        .withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName"))))
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
@@ -1757,7 +2086,7 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
  */
 public final class VirtualEnclaveDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_Delete.json
      */
     /**
      * Sample code: VirtualEnclave_Delete.
@@ -1778,7 +2107,7 @@ public final class VirtualEnclaveDeleteSamples {
  */
 public final class VirtualEnclaveGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_Get.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_Get.json
      */
     /**
      * Sample code: VirtualEnclave_Get.
@@ -1804,7 +2133,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class VirtualEnclaveHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_HandleApprovalCreation.json
      */
     /**
      * Sample code: VirtualEnclave_HandleApprovalCreation.
@@ -1835,7 +2164,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalDeletionCallback
  */
 public final class VirtualEnclaveHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_HandleApprovalDeletion.json
      */
     /**
      * Sample code: VirtualEnclave_HandleApprovalDeletion.
@@ -1860,7 +2189,7 @@ public final class VirtualEnclaveHandleApprovalDeletionSamples {
  */
 public final class VirtualEnclaveListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_ListBySubscription.json
      */
     /**
      * Sample code: VirtualEnclave_ListBySubscription.
@@ -1882,7 +2211,7 @@ public final class VirtualEnclaveListSamples {
  */
 public final class VirtualEnclaveListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_ListByResourceGroup.json
      */
     /**
      * Sample code: VirtualEnclave_ListByResourceGroup.
@@ -1899,6 +2228,8 @@ public final class VirtualEnclaveListByResourceGroupSamples {
 ### VirtualEnclave_Update
 
 ```java
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.DiagnosticDestination;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveDefaultSettingsPatchModel;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveResource;
@@ -1906,10 +2237,14 @@ import com.azure.resourcemanager.virtualenclaves.models.EnclaveVirtualNetworkMod
 import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigurationModelJustification;
 import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigurationModelMode;
 import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigurationPatchModel;
+import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
+import com.azure.resourcemanager.virtualenclaves.models.RbacInheritanceMode;
+import com.azure.resourcemanager.virtualenclaves.models.ResourceVisibilityMode;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
 import com.azure.resourcemanager.virtualenclaves.models.SubnetConfiguration;
+import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclaveApprovalSettingsPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclavePatchProperties;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1920,7 +2255,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_Update.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_Update.json
      */
     /**
      * Sample code: VirtualEnclave_Update.
@@ -1940,19 +2275,23 @@ public final class VirtualEnclaveUpdateSamples {
                         Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
                     .withAllowSubnetCommunication(true))
                 .withBastionEnabled(true)
+                .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
+                .withRbacInheritance(RbacInheritanceMode.DISABLED)
                 .withEnclaveRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
                         .withPrincipals(Arrays.asList(
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER),
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
-                                .withType(PrincipalType.USER))),
+                                .withType(PrincipalType.USER)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
                         .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
                             .withType(PrincipalType.USER)))))
                 .withWorkloadRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("d73bb868-a0df-4d4d-bd69-98a00b01fccb")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
-                            .withType(PrincipalType.GROUP))),
+                            .withType(PrincipalType.GROUP)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
@@ -1962,7 +2301,27 @@ public final class VirtualEnclaveUpdateSamples {
                     .withMode(MaintenanceModeConfigurationModelMode.OFF)
                     .withPrincipals(Arrays.asList(
                         new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER)))
-                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF)))
+                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF))
+                .withDedicatedHubResourceId(
+                    "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestResourceGroup/providers/Microsoft.Mission/communities/TestMyCommunity/dedicatedHubs/TestDedicatedHub")
+                .withApprovalSettings(new VirtualEnclaveApprovalSettingsPatchProperties()
+                    .withEnclaveEndpointUpdate(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(2)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                    .withConnectionCreation(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(1)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
+                    .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                        .withMinimumApproversRequired(1))
+                    .withEnclaveMaintenanceMode(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(1)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000003"))))))
             .apply();
     }
 
@@ -1993,7 +2352,7 @@ import java.util.Map;
  */
 public final class WorkloadCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_CreateOrUpdate.json
      */
     /**
      * Sample code: Workload_CreateOrUpdate.
@@ -2033,7 +2392,7 @@ public final class WorkloadCreateOrUpdateSamples {
  */
 public final class WorkloadDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_Delete.json
      */
     /**
      * Sample code: Workload_Delete.
@@ -2054,7 +2413,7 @@ public final class WorkloadDeleteSamples {
  */
 public final class WorkloadGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_Get.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_Get.json
      */
     /**
      * Sample code: Workload_Get.
@@ -2076,7 +2435,7 @@ public final class WorkloadGetSamples {
  */
 public final class WorkloadListByEnclaveResourceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_ListByEnclaveResource.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_ListByEnclaveResource.json
      */
     /**
      * Sample code: Workload_ListByEnclaveResource.
@@ -2098,7 +2457,7 @@ public final class WorkloadListByEnclaveResourceSamples {
  */
 public final class WorkloadListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_ListBySubscription.json
      */
     /**
      * Sample code: Workload_ListBySubscription.
@@ -2126,7 +2485,7 @@ import java.util.Map;
  */
 public final class WorkloadUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Workload_Update.json
+     * x-ms-original-file: 2026-03-01-preview/Workload_Update.json
      */
     /**
      * Sample code: Workload_Update.

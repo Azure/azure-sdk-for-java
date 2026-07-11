@@ -17,27 +17,26 @@ public final class MaintenanceModeConfigurationPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceModeConfigurationPatchModel model = BinaryData.fromString(
-            "{\"mode\":\"On\",\"principals\":[{\"id\":\"kuwbcrnwb\",\"type\":\"User\"},{\"id\":\"hhseyv\",\"type\":\"Group\"},{\"id\":\"srtslhspkdeem\",\"type\":\"ServicePrincipal\"},{\"id\":\"fm\",\"type\":\"ServicePrincipal\"}],\"justification\":\"Networking\"}")
+            "{\"mode\":\"Off\",\"principals\":[{\"id\":\"qtdo\",\"type\":\"ServicePrincipal\"},{\"id\":\"cbxvwvxyslqbh\",\"type\":\"User\"},{\"id\":\"xoblytkbl\",\"type\":\"User\"}],\"justification\":\"Networking\"}")
             .toObject(MaintenanceModeConfigurationPatchModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
-        Assertions.assertEquals("kuwbcrnwb", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.OFF, model.mode());
+        Assertions.assertEquals("qtdo", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
         Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING, model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceModeConfigurationPatchModel model
-            = new MaintenanceModeConfigurationPatchModel().withMode(MaintenanceModeConfigurationModelMode.ON)
-                .withPrincipals(Arrays.asList(new Principal().withId("kuwbcrnwb").withType(PrincipalType.USER),
-                    new Principal().withId("hhseyv").withType(PrincipalType.GROUP),
-                    new Principal().withId("srtslhspkdeem").withType(PrincipalType.SERVICE_PRINCIPAL),
-                    new Principal().withId("fm").withType(PrincipalType.SERVICE_PRINCIPAL)))
+            = new MaintenanceModeConfigurationPatchModel().withMode(MaintenanceModeConfigurationModelMode.OFF)
+                .withPrincipals(Arrays.asList(new Principal().withId("qtdo").withType(PrincipalType.SERVICE_PRINCIPAL),
+                    new Principal().withId("cbxvwvxyslqbh").withType(PrincipalType.USER),
+                    new Principal().withId("xoblytkbl").withType(PrincipalType.USER)))
                 .withJustification(MaintenanceModeConfigurationModelJustification.NETWORKING);
         model = BinaryData.fromObject(model).toObject(MaintenanceModeConfigurationPatchModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
-        Assertions.assertEquals("kuwbcrnwb", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.OFF, model.mode());
+        Assertions.assertEquals("qtdo", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
         Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING, model.justification());
     }
 }

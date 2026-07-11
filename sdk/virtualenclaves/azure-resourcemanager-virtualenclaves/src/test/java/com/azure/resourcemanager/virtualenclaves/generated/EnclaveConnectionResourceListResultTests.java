@@ -12,14 +12,14 @@ public final class EnclaveConnectionResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Disconnected\",\"communityResourceId\":\"p\",\"sourceResourceId\":\"dscwxqupevzhf\",\"sourceCidr\":\"otxhojujby\",\"destinationEndpointId\":\"elmcuvhixbjxyfw\",\"provisioningState\":\"Canceled\",\"resourceCollection\":[\"ool\",\"ttpkiwkkbnujrywv\",\"y\",\"bfpncurdo\"]},\"location\":\"iithtywu\",\"tags\":{\"jchrdgoihxumw\":\"bihwqknfdnt\",\"zj\":\"ton\"},\"id\":\"uu\",\"name\":\"fdlwg\",\"type\":\"ytsbwtovv\"}],\"nextLink\":\"seinqfiuf\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"PendingApproval\",\"communityResourceId\":\"jnjwltlwt\",\"sourceResourceId\":\"j\",\"sourceCidr\":\"ktalhsnvkcdmxz\",\"destinationEndpointId\":\"poaimlnwiaaomyl\",\"provisioningState\":\"Accepted\",\"resourceCollection\":[\"lcsethwwnpj\",\"l\",\"zswpchwa\"],\"updateMode\":\"Automatic\"},\"location\":\"usnfepgfewet\",\"tags\":{\"hdjhlimmbcx\":\"xgncxyk\",\"cporxvxcjz\":\"h\",\"juhdqazkmtgguwpi\":\"qizxfpxtgqscjavf\",\"jcivmmg\":\"r\"},\"id\":\"f\",\"name\":\"fiwrxgkn\",\"type\":\"uvyinzqodfvpgs\"},{\"properties\":{\"state\":\"PendingApproval\",\"communityResourceId\":\"sgbpfgzdjtx\",\"sourceResourceId\":\"zflbqvg\",\"sourceCidr\":\"vl\",\"destinationEndpointId\":\"a\",\"provisioningState\":\"Succeeded\",\"resourceCollection\":[\"rdve\",\"nwsdtutnwlduyc\"],\"updateMode\":\"Manual\"},\"location\":\"yrmewipmvekdx\",\"tags\":{\"xgketwz\":\"qgsjjxun\",\"mhv\":\"hzjhf\"},\"id\":\"muvgp\",\"name\":\"uneqsxvmhf\",\"type\":\"uzjyihsasbhudypo\"}],\"nextLink\":\"uemsly\"}")
             .toObject(EnclaveConnectionResourceListResult.class);
-        Assertions.assertEquals("iithtywu", model.value().get(0).location());
-        Assertions.assertEquals("bihwqknfdnt", model.value().get(0).tags().get("jchrdgoihxumw"));
-        Assertions.assertEquals("p", model.value().get(0).properties().communityResourceId());
-        Assertions.assertEquals("dscwxqupevzhf", model.value().get(0).properties().sourceResourceId());
-        Assertions.assertEquals("otxhojujby", model.value().get(0).properties().sourceCidr());
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.value().get(0).properties().destinationEndpointId());
-        Assertions.assertEquals("seinqfiuf", model.nextLink());
+        Assertions.assertEquals("usnfepgfewet", model.value().get(0).location());
+        Assertions.assertEquals("xgncxyk", model.value().get(0).tags().get("hdjhlimmbcx"));
+        Assertions.assertEquals("jnjwltlwt", model.value().get(0).properties().communityResourceId());
+        Assertions.assertEquals("j", model.value().get(0).properties().sourceResourceId());
+        Assertions.assertEquals("ktalhsnvkcdmxz", model.value().get(0).properties().sourceCidr());
+        Assertions.assertEquals("poaimlnwiaaomyl", model.value().get(0).properties().destinationEndpointId());
+        Assertions.assertEquals("uemsly", model.nextLink());
     }
 }

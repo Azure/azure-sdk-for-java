@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubResource;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOptionType;
@@ -24,7 +25,7 @@ public final class TransitHubsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Failed\",\"transitOption\":{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":8870278689200078350,\"remoteVirtualNetworkId\":\"xigc\"}},\"resourceCollection\":[\"xu\",\"pbezqccydrtceu\",\"d\",\"kkyihzt\"]},\"location\":\"qm\",\"tags\":{\"chillcecf\":\"gwldo\",\"llizs\":\"huwaoaguhic\",\"jvhrweft\":\"ac\",\"aepwamcxtcz\":\"wqejpmvsse\"},\"id\":\"upeuknijduyye\",\"name\":\"pydjfboc\",\"type\":\"v\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"state\":\"Failed\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":8239410931209541214,\"remoteVirtualNetworkId\":\"geafgfosehxlzsxe\"}},\"resourceCollection\":[\"kkwa\"],\"securityProvider\":\"AzureFirewall\"},\"location\":\"yfjlpzeqto\",\"tags\":{\"hamfowgwbtmk\":\"lixlajmllpque\",\"ofqovchiqbplv\":\"kxpkzwaq\",\"ztekxbyjgmsfep\":\"idu\",\"dicxdw\":\"yihpqadagrh\"},\"id\":\"jfowxwy\",\"name\":\"vcxjsgbipcukdvek\",\"type\":\"buhoduchv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +35,18 @@ public final class TransitHubsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TransitHubResource> response
-            = manager.transitHubs().listBySubscription("ecmslclbl", com.azure.core.util.Context.NONE);
+            = manager.transitHubs().listBySubscription("fsyrledjc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qm", response.iterator().next().location());
-        Assertions.assertEquals("gwldo", response.iterator().next().tags().get("chillcecf"));
+        Assertions.assertEquals("yfjlpzeqto", response.iterator().next().location());
+        Assertions.assertEquals("lixlajmllpque", response.iterator().next().tags().get("hamfowgwbtmk"));
         Assertions.assertEquals(TransitHubState.FAILED, response.iterator().next().properties().state());
-        Assertions.assertEquals(TransitOptionType.GATEWAY,
+        Assertions.assertEquals(TransitOptionType.PEERING,
             response.iterator().next().properties().transitOption().type());
-        Assertions.assertEquals(8870278689200078350L,
+        Assertions.assertEquals(8239410931209541214L,
             response.iterator().next().properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("xigc",
+        Assertions.assertEquals("geafgfosehxlzsxe",
             response.iterator().next().properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.AZURE_FIREWALL,
+            response.iterator().next().properties().securityProvider());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class ApprovalListByParentSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_ListByParent.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_ListByParent.json
      */
     /**
      * Sample code: Approval_ListByParent.

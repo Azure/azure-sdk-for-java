@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.virtualenclaves.generated;
 
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.DiagnosticDestination;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveDefaultSettingsModel;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveVirtualNetworkModel;
@@ -12,11 +14,18 @@ import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigura
 import com.azure.resourcemanager.virtualenclaves.models.MaintenanceModeConfigurationModelMode;
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.virtualenclaves.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestination;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringDestinationType;
+import com.azure.resourcemanager.virtualenclaves.models.MonitoringSettingsModel;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
+import com.azure.resourcemanager.virtualenclaves.models.RbacInheritanceMode;
+import com.azure.resourcemanager.virtualenclaves.models.ResourceVisibilityMode;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
 import com.azure.resourcemanager.virtualenclaves.models.SubnetConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.UserAssignedIdentity;
+import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclaveApprovalSettings;
 import com.azure.resourcemanager.virtualenclaves.models.VirtualEnclaveProperties;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +36,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualEnclave_CreateOrUpdate.
@@ -50,19 +59,23 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                 .withCommunityResourceId(
                     "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
                 .withBastionEnabled(true)
+                .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
+                .withRbacInheritance(RbacInheritanceMode.DISABLED)
                 .withEnclaveRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
                         .withPrincipals(Arrays.asList(
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER),
                             new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
-                                .withType(PrincipalType.USER))),
+                                .withType(PrincipalType.USER)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
                         .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
                             .withType(PrincipalType.USER)))))
                 .withWorkloadRoleAssignments(Arrays.asList(
                     new RoleAssignmentItem().withRoleDefinitionId("d73bb868-a0df-4d4d-bd69-98a00b01fccb")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
-                            .withType(PrincipalType.GROUP))),
+                            .withType(PrincipalType.GROUP)))
+                        .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
@@ -72,7 +85,41 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                     .withMode(MaintenanceModeConfigurationModelMode.OFF)
                     .withPrincipals(Arrays.asList(
                         new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9").withType(PrincipalType.USER)))
-                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF)))
+                    .withJustification(MaintenanceModeConfigurationModelJustification.OFF))
+                .withDedicatedHubResourceId(
+                    "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestResourceGroup/providers/Microsoft.Mission/communities/TestMyCommunity/dedicatedHubs/TestDedicatedHub")
+                .withApprovalSettings(new VirtualEnclaveApprovalSettings()
+                    .withEnclaveEndpointUpdate(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(1)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                    .withConnectionCreation(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                            .withMinimumApproversRequired(2)
+                            .withMandatoryApprovers(Arrays.asList(
+                                new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
+                    .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                        .withMinimumApproversRequired(1))
+                    .withEnclaveMaintenanceMode(
+                        new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)))
+                .withMonitoringSettings(new MonitoringSettingsModel().withDiagnosticDestinations(Arrays.asList(
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.ENCLAVE_WORKSPACE)
+                        .withDiagnosticSettingsName("customName"),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName"),
+                    new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName")))
+                    .withFlowLogDestination(new MonitoringDestination()
+                        .withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                        .withCustomWorkspaceResourceId(
+                            "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace")
+                        .withDiagnosticSettingsName("customName"))))
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
