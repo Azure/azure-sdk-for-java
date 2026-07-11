@@ -14,12 +14,13 @@ public final class EntityHistoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityHistoryResponseInner model = BinaryData.fromString(
-            "{\"entityName\":\"thtywub\",\"history\":[{\"previousState\":\"Unknown\",\"newState\":\"Unhealthy\",\"occurredAt\":\"2021-08-12T00:10:56Z\",\"reason\":\"qknfd\"},{\"previousState\":\"Unhealthy\",\"newState\":\"Unhealthy\",\"occurredAt\":\"2021-12-05T16:56:34Z\",\"reason\":\"hrdgoihxumwcto\"}]}")
+            "{\"entityName\":\"cbgoor\",\"history\":[{\"previousState\":\"Deleted\",\"newState\":\"Degraded\",\"occurredAt\":\"2021-10-30T08:46:10Z\",\"reason\":\"fhjxakvvjgs\"}],\"nextMarker\":\"r\"}")
             .toObject(EntityHistoryResponseInner.class);
-        Assertions.assertEquals("thtywub", model.entityName());
-        Assertions.assertEquals(HealthState.UNKNOWN, model.history().get(0).previousState());
-        Assertions.assertEquals(HealthState.UNHEALTHY, model.history().get(0).newState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T00:10:56Z"), model.history().get(0).occurredAt());
-        Assertions.assertEquals("qknfd", model.history().get(0).reason());
+        Assertions.assertEquals("cbgoor", model.entityName());
+        Assertions.assertEquals(HealthState.DELETED, model.history().get(0).previousState());
+        Assertions.assertEquals(HealthState.DEGRADED, model.history().get(0).newState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T08:46:10Z"), model.history().get(0).occurredAt());
+        Assertions.assertEquals("fhjxakvvjgs", model.history().get(0).reason());
+        Assertions.assertEquals("r", model.nextMarker());
     }
 }

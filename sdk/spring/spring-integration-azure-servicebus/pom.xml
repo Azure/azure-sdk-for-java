@@ -67,6 +67,15 @@
       <artifactId>azure-core-serializer-json-jackson</artifactId>
       <version>1.6.5</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
+      <!-- This brings Jackson 2.18 jackson-annotations, which lacks JsonSerializeAs required by
+           tools.jackson.databind 3.x and would win dependency mediation on this module's test classpath.
+           Exclude it so the Jackson 3-compatible jackson-annotations (2.21) from spring-messaging-azure is used. -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>

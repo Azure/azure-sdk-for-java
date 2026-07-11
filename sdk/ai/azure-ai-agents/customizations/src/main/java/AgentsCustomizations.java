@@ -1,3 +1,4 @@
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -27,6 +28,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
@@ -67,6 +69,21 @@ public class AgentsCustomizations extends Customization {
                 }));
     }
 
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+        customization.getPackage("com.azure.ai.agents")
+            .listClasses()
+            .stream()
+            .filter(cc -> cc.getClassName().startsWith("Beta") && cc.getClassName().endsWith("Client"))
+            .forEach(classCustomization -> {
+                String simpleName = classCustomization.getClassName();
+                logger.info("Annotating {} with @Beta", simpleName);
+                classCustomization.customizeAst(ast -> ast.getClassByName(simpleName).ifPresent(clazz -> {
+                    ast.addImport("com.azure.ai.agents.implementation.utils.Beta");
+                    clazz.addAnnotation(betaAnnotation("This class is in preview and may change in future releases."));
+                }));
+            });
+    }
+
     private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
                                     Logger logger) {
         for (String[] entry : betaAnnotations) {
@@ -87,7 +104,7 @@ public class AgentsCustomizations extends Customization {
                 continue;
             }
 
-            classCustomization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
+            classCustomization.customizeAst(ast -> ast.getTypes().stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
@@ -165,6 +182,9 @@ public class AgentsCustomizations extends Customization {
      */
     private List<String[]> loadBetaAnnotations(Logger logger) {
         Path csvPath = locateBetaCsv(logger);
+        if (csvPath == null) {
+            return new ArrayList<>();
+        }
         logger.info("Loading @Beta annotations from {}", csvPath);
 
         List<String> lines;
@@ -224,15 +244,25 @@ public class AgentsCustomizations extends Customization {
 
     /**
      * Resolves the {@code beta-annotations.csv} path. {@code tsp-client update} launches the customization with its
-     * working directory set to the library module, so the file lives at {@code <module>/customizations/...}.
+     * working directory set to the library module (so the file lives at {@code <module>/customizations/...}), while
+     * spec SDK-generation launches from the repo root; both locations are checked. Returns {@code null} (rather than
+     * failing) when the file cannot be found, in which case {@code @Beta} annotations are skipped.
      */
     private Path locateBetaCsv(Logger logger) {
-        Path csvPath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
-        if (!Files.isRegularFile(csvPath)) {
-            logger.error("Could not locate {} at expected path {} (user.dir={})", CSV_FILE_NAME, csvPath,
-                System.getProperty("user.dir"));
-            throw new IllegalStateException("Could not locate " + CSV_FILE_NAME + " at " + csvPath);
+        // tsp-client update launches the customization from the module folder (user.dir = module).
+        Path modulePath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
+        if (Files.isRegularFile(modulePath)) {
+            return modulePath;
         }
-        return csvPath;
+        // spec SDK-generation (spec-gen-sdk) launches from the repo root (user.dir = repo root).
+        Path repoRootPath
+            = Paths.get(System.getProperty("user.dir"), "sdk", "ai", "azure-ai-agents", "customizations", CSV_FILE_NAME)
+                .toAbsolutePath();
+        if (Files.isRegularFile(repoRootPath)) {
+            return repoRootPath;
+        }
+        logger.warn("Could not locate {} at {} or {} (user.dir={}); skipping @Beta annotations.", CSV_FILE_NAME,
+            modulePath, repoRootPath, System.getProperty("user.dir"));
+        return null;
     }
 }

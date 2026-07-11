@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesListEffectiveNetworkSecurityGroupsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceEffectiveNSGList.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceEffectiveNSGList.json
      */
     /**
      * Sample code: List network interface effective network security groups.

@@ -106,6 +106,13 @@ jobs:
           condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
           sbomEnabled: false
 
+        # See eng/common/pipelines/templates/steps/upload-llm-artifacts.yml for corresponding file copy step
+        - output: pipelineArtifact
+          targetPath: '$(Build.ArtifactStagingDirectory)/llm-artifacts'
+          artifactName: "LLM Artifacts - $(System.JobName) - $(System.JobAttempt)"
+          condition: eq(variables['uploadLlmArtifacts'], 'true')
+          sbomEnabled: false
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:

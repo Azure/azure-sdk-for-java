@@ -161,7 +161,9 @@ public class FITests_readManyByPartitionKeysAfterCreation
                 // With batch size 1, readManyByPartitionKeys processes batches sorted by EPK.
                 // Faulting the last feed range ensures the first batches succeed (giving us
                 // pages with continuation tokens) before the faulted partition is reached.
-                List<FeedRange> feedRanges = container.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    container,
+                    "get feed ranges for readManyByPartitionKeys fault injection setup");
                 assertThat(feedRanges).isNotNull();
                 assertThat(feedRanges.size()).isGreaterThanOrEqualTo(1);
                 FeedRange faultedFeedRange = feedRanges.get(feedRanges.size() - 1);

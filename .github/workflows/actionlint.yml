@@ -1,4 +1,4 @@
-name: Actionlint
+name: actionlint
 
 on:
   push:
@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  actionlint:
     runs-on: ubuntu-latest
 
     steps:

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AdminRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerDefaultAdminRuleGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerDefaultAdminRuleGet.json
      */
     /**
      * Sample code: Gets security default admin rule.
@@ -24,7 +24,7 @@ public final class AdminRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerAdminRuleGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerAdminRuleGet.json
      */
     /**
      * Sample code: Gets security admin rule.

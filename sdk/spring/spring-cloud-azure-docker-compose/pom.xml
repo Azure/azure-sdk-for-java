@@ -38,6 +38,8 @@
     <jacoco.skip>true</jacoco.skip>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <surefire.test.groups/>
+    <surefire.excluded.test.groups>docker</surefire.excluded.test.groups>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
@@ -84,9 +86,9 @@
       <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.4</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -189,11 +191,20 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.21.4]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-docker-compose:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.6</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <groups>${surefire.test.groups}</groups>
+          <excludedGroups>${surefire.excluded.test.groups}</excludedGroups>
         </configuration>
       </plugin>
       <plugin>
@@ -278,6 +289,14 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>docker-tests</id>
+      <properties>
+        <parallelizeTests>same_thread</parallelizeTests>
+        <surefire.test.groups>docker</surefire.test.groups>
+        <surefire.excluded.test.groups/>
+      </properties>
+    </profile>
     <!-- Library cannot build for Java 16 and below -->
     <profile>
       <id>below-java-17</id>

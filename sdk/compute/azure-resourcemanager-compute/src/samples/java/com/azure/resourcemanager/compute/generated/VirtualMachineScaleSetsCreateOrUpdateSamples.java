@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradePolicy;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.AutomaticSkuMigrationPolicy;
 import com.azure.resourcemanager.compute.models.AutomaticZoneRebalancingPolicy;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
@@ -33,6 +34,8 @@ import com.azure.resourcemanager.compute.models.ExternalHealthPolicy;
 import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
 import com.azure.resourcemanager.compute.models.HostEndpointSettings;
 import com.azure.resourcemanager.compute.models.ImageReference;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
+import com.azure.resourcemanager.compute.models.InterconnectGroupProfile;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.LifecycleHook;
@@ -117,7 +120,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEmptyDataDisksOnEachVm.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEmptyDataDisksOnEachVm.json
      */
     /**
      * Sample code: Create a scale set with empty data disks on each vm.
@@ -169,7 +172,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAndFullCachingEnabled.json
      */
     /**
@@ -221,7 +224,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUserData.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUserData.json
      */
     /**
      * Sample code: Create a scale set with userData.
@@ -264,7 +267,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromACustomImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromACustomImage.json
      */
     /**
      * Sample code: Create a scale set from a custom image.
@@ -301,7 +304,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.
      * json
      */
     /**
@@ -352,7 +355,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithScaleInPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithScaleInPolicy.json
      */
     /**
      * Sample code: Create a scale set with scaleInPolicy.
@@ -399,7 +402,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProxyAgentSettings.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProxyAgentSettings.json
      */
     /**
      * Sample code: Create a scale set with ProxyAgent Settings of enabled and mode.
@@ -450,7 +453,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVM.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVM.json
      */
     /**
      * Sample code: Create a scale set with SecurityType as ConfidentialVM.
@@ -501,7 +504,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureApplicationGateway.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureApplicationGateway.json
      */
     /**
      * Sample code: Create a scale set with an azure application gateway.
@@ -548,7 +551,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMCreationPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMCreationPolicy.json
      */
     /**
      * Sample code: Create a scale set with Resilient VM Creation enabled.
@@ -593,7 +596,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_Create_CustomImageFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
@@ -631,7 +634,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithZonalPlatformFaultDomainAlignMode.
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithZonalPlatformFaultDomainAlignMode.
      * json
      */
     /**
@@ -682,7 +685,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsTimeBudget.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsTimeBudget.json
      */
     /**
      * Sample code: Create a scale set with extension time budget.
@@ -739,7 +742,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithApplicationProfile.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithApplicationProfile.json
      */
     /**
      * Sample code: Create a scale set with Application Profile.
@@ -794,7 +797,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskEncryptionSetResource.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskEncryptionSetResource.json
      */
     /**
      * Sample code: Create a scale set with DiskEncryptionSet resource in os disk and data disk.
@@ -842,7 +845,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPremiumStorage.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPremiumStorage.json
      */
     /**
      * Sample code: Create a scale set with premium storage.
@@ -884,7 +887,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_Create_FromWithDisableTcpStateTrackingNetworkInterface.json
      */
     /**
@@ -936,7 +939,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithTerminateScheduledEventEnabled.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithTerminateScheduledEventEnabled.json
      */
     /**
      * Sample code: Create a scale set with terminate scheduled events enabled.
@@ -982,7 +985,62 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsSuppressFailuresEnabled.
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticSkuMigrationPolicy.json
+     */
+    /**
+     * Sample code: Create a scale set with automatic SKU migration policy.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        createAScaleSetWithAutomaticSKUMigrationPolicy(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Mix").withCapacity(10L))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                                .withOffer("WindowsServer")
+                                .withSku("2016-Datacenter")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(
+                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
+                                        .withName("{vmss-name}")
+                                        .withSubnet(new ApiEntityReference().withId(
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withEnableIpForwarding(true))))
+                        .withPriority(VirtualMachinePriorityTypes.SPOT)
+                        .withEvictionPolicy(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+                        .withBillingProfile(new BillingProfile().withMaxPrice(-1.0D)))
+                    .withSinglePlacementGroup(false)
+                    .withOrchestrationMode(OrchestrationMode.FLEXIBLE)
+                    .withPriorityMixPolicy(new PriorityMixPolicy().withBaseRegularPriorityCount(4)
+                        .withRegularPriorityPercentageAboveBase(50))
+                    .withSkuProfile(new SkuProfile()
+                        .withVmSizes(Arrays.asList(new SkuProfileVMSize().withName("Standard_D8s_v5"),
+                            new SkuProfileVMSize().withName("Standard_E16s_v5"),
+                            new SkuProfileVMSize().withName("Standard_D2s_v5")))
+                        .withAllocationStrategy(AllocationStrategy.CAPACITY_OPTIMIZED)
+                        .withAutomaticSkuMigrationPolicy(new AutomaticSkuMigrationPolicy().withEnabled(true))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsSuppressFailuresEnabled.
      * json
      */
     /**
@@ -1039,7 +1097,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPasswordAuthentication.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPasswordAuthentication.json
      */
     /**
      * Sample code: Create a scale set with password authentication.
@@ -1083,7 +1141,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskControllerType.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskControllerType.json
      */
     /**
      * Sample code: Create a scale set with Disk Controller Type.
@@ -1138,7 +1196,63 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOperationRecoverySettings.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithInterconnectBlock.json
+     */
+    /**
+     * Sample code: Create or update a scale set with Interconnect Block.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        createOrUpdateAScaleSetWithInterconnectBlock(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Standard_ND128isr_GB300_v6").withTier("Standard").withCapacity(3L))
+                    .withZones(Arrays.asList("1"))
+                    .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder")
+                            .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(false)))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("microsoft-dsvm")
+                                .withOffer("ubuntu-hpc")
+                                .withSku("2404-gb")
+                                .withVersion("latest"))
+                            .withOsDisk(
+                                new VirtualMachineScaleSetOSDisk().withCaching(CachingTypes.READ_WRITE)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                        .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                            .withNetworkInterfaceConfigurations(Arrays
+                                .asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withIpConfigurations(Arrays
+                                        .asList(new VirtualMachineScaleSetIpConfiguration().withName("{vmss-name}")
+                                            .withSubnet(
+                                                new ApiEntityReference().withId(
+                                                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withEnableIpForwarding(true)))
+                            .withInterconnectGroupProfile(new InterconnectGroupProfile()
+                                .withInterconnectGroup(new SubResource().withId(
+                                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"))
+                                .withSubgroups(Arrays.asList(new SubResource().withId(
+                                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0")))))
+                        .withInterconnectBlockProfile(
+                            new InterconnectBlockProfile().withInterconnectBlock(new ApiEntityReference().withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"))))
+                    .withOverprovision(true)
+                    .withHighSpeedInterconnectPlacement(HighSpeedInterconnectPlacement.TRUNK),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOperationRecoverySettings.json
      */
     /**
      * Sample code: Create a scale set with OperationRecoverySettings enabled.
@@ -1187,7 +1301,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromAGeneralizedSharedImage.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromAGeneralizedSharedImage.json
      */
     /**
      * Sample code: Create a scale set from a generalized shared image.
@@ -1224,7 +1338,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxZoneCount.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxZoneCount.json
      */
     /**
      * Sample code: Create a zones-auto scale set with Max Zone Count.
@@ -1271,7 +1385,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithHighSpeedInterconnectPlacement.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithHighSpeedInterconnectPlacement.json
      */
     /**
      * Sample code: Create a virtual machine scale set with high-speed interconnect placement.
@@ -1325,7 +1439,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOSImageScheduledEventEnabled.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOSImageScheduledEventEnabled.json
      */
     /**
      * Sample code: Create a scale set with OS image scheduled events enabled.
@@ -1371,7 +1485,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithFpgaNetworkInterface.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithFpgaNetworkInterface.json
      */
     /**
      * Sample code: Create a scale set with Fpga Network Interfaces.
@@ -1419,7 +1533,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile.json
      */
     /**
      * Sample code: Create a scale set with sku profile.
@@ -1471,7 +1585,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
      */
     /**
@@ -1522,7 +1636,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticZoneRebalancingPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticZoneRebalancingPolicy.json
      */
     /**
      * Sample code: Create a scale set with Automatic Zone Rebalancing enabled.
@@ -1570,7 +1684,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
      */
     /**
      * Sample code: Create a scale set with Service Artifact Reference.
@@ -1613,7 +1727,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
      */
     /**
      * Sample code: Create a scale set with Host Encryption using encryptionAtHost property.
@@ -1661,7 +1775,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithLifecycleHooksProfile.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithLifecycleHooksProfile.json
      */
     /**
      * Sample code: Create a virtual machine scale set with LifecycleHooksProfile.
@@ -1708,7 +1822,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureLoadBalancer.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureLoadBalancer.json
      */
     /**
      * Sample code: Create a scale set with an azure load balancer.
@@ -1761,7 +1875,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProtectedSettingsFromKeyVault.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProtectedSettingsFromKeyVault.json
      */
     /**
      * Sample code: Create a VMSS with an extension with protectedSettingsFromKeyVault.
@@ -1821,7 +1935,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithManagedBootDiagnostics.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithManagedBootDiagnostics.json
      */
     /**
      * Sample code: Create a scale set with managed boot diagnostics.
@@ -1867,7 +1981,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAMarketplaceImagePlan.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAMarketplaceImagePlan.json
      */
     /**
      * Sample code: Create a scale set with a marketplace image plan.
@@ -1913,7 +2027,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiffOsDisk.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiffOsDisk.json
      */
     /**
      * Sample code: Create a scale set with ephemeral os disks.
@@ -1960,7 +2074,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExternalHealthPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExternalHealthPolicy.json
      */
     /**
      * Sample code: Create a scale set with external health policy enabled.
@@ -2014,7 +2128,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMsInDifferentZones.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMsInDifferentZones.json
      */
     /**
      * Sample code: Create a scale set with virtual machines in different zones.
@@ -2068,7 +2182,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithCapacityReservation.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithCapacityReservation.json
      */
     /**
      * Sample code: Create or update a scale set with capacity reservation.
@@ -2115,7 +2229,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMDeletionPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMDeletionPolicy.json
      */
     /**
      * Sample code: Create a scale set with Resilient VM Deletion enabled.
@@ -2161,7 +2275,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSshAuthentication.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSshAuthentication.json
      */
     /**
      * Sample code: Create a scale set with ssh authentication.
@@ -2203,7 +2317,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile_Prioritized.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile_Prioritized.json
      */
     /**
      * Sample code: Create a scale set with sku profile and prioritized allocation strategy.
@@ -2257,7 +2371,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithStorageFaultDomainAlignment.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithStorageFaultDomainAlignment.json
      */
     /**
      * Sample code: Create a scale set containing disks with storage fault domain alignment.
@@ -2308,7 +2422,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMSizeProperties.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMSizeProperties.json
      */
     /**
      * Sample code: Create a scale set with vm size properties.
@@ -2354,7 +2468,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithNetworkInterfaceWithDnsSettings.
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithNetworkInterfaceWithDnsSettings.
      * json
      */
     /**
@@ -2417,7 +2531,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_PlatformImageWithUnmanagedOsDisks.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_PlatformImageWithUnmanagedOsDisks.json
      */
     /**
      * Sample code: Create a platform-image scale set with unmanaged os disks.
@@ -2466,7 +2580,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUefiSettings.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUefiSettings.json
      */
     /**
      * Sample code: Create a scale set with Uefi Settings of secureBoot and vTPM.
@@ -2513,7 +2627,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPriorityMixPolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPriorityMixPolicy.json
      */
     /**
      * Sample code: Create a scale set with priority mix policy.
@@ -2567,7 +2681,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityPostureReference.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityPostureReference.json
      */
     /**
      * Sample code: Create a scale set with Security Posture Reference.
@@ -2610,7 +2724,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticRepairs.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticRepairs.json
      */
     /**
      * Sample code: Create a scale set with automatic repairs enabled.
@@ -2661,7 +2775,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPlacement.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPlacement.json
      */
     /**
      * Sample code: Create a scale set with placement policy 'Auto'.
@@ -2707,7 +2821,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotRestorePolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotRestorePolicy.json
      */
     /**
      * Sample code: Create a scale set with spot restore policy.
@@ -2753,7 +2867,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
      */
     /**
@@ -2805,7 +2919,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxInstancePercentPerZonePolicy.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxInstancePercentPerZonePolicy.json
      */
     /**
      * Sample code: Create a scale set with Max Instance Percent Per Zone Policy enabled.
@@ -2852,7 +2966,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithBootDiagnostics.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithBootDiagnostics.json
      */
     /**
      * Sample code: Create a scale set with boot diagnostics.
@@ -2898,7 +3012,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromASpecializedSharedImage.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromASpecializedSharedImage.json
      */
     /**
      * Sample code: Create a scale set from a specialized shared image.

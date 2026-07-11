@@ -9,18 +9,13 @@ import logging
 import requests
 import tempfile
 import subprocess
-import urllib.parse
 from typing import Optional, Tuple, List, Union
 from datetime import datetime
 
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_files_for_new_lib
-from utils import update_root_pom
-from utils import update_version
 from utils import is_windows
-from utils import set_or_increase_version
 
 os.chdir(pwd)
 
@@ -28,85 +23,6 @@ os.chdir(pwd)
 TSPCONFIG_URL_PATTERN = re.compile(
     r"^https://github.com/(?P<repo>Azure/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
 )
-# Add two more indent for list in yaml dump
-class ListIndentDumper(yaml.SafeDumper):
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super(ListIndentDumper, self).increase_indent(flow, False)
-
-
-def generate(
-    sdk_root: str,
-    service: str,
-    spec_root: str,
-    readme: str,
-    autorest: str,
-    use: str,
-    output_folder: str,
-    module: str,
-    namespace: str,
-    tag: str = None,
-    version: str = None,
-    autorest_options: str = "",
-    premium: bool = False,
-    **kwargs,
-) -> bool:
-    output_dir = os.path.join(
-        sdk_root,
-        "sdk/{0}".format(service),
-        module,
-    )
-
-    require_sdk_integration = not os.path.exists(os.path.join(output_dir, "src"))
-
-    remove_generated_source_code(output_dir, namespace)
-
-    if re.match(r"https?://", spec_root):
-        readme = urllib.parse.urljoin(spec_root, readme)
-    else:
-        readme = os.path.join(spec_root, readme)
-
-    tag_option = "--tag={0}".format(tag) if tag else ""
-    version_option = "--package-version={0}".format(version) if version else ""
-
-    command = (
-        "autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} "
-        "--java.namespace={4} {5}".format(
-            autorest,
-            use,
-            os.path.abspath(sdk_root),
-            os.path.abspath(output_dir),
-            namespace,
-            " ".join(
-                (
-                    tag_option,
-                    version_option,
-                    FLUENTPREMIUM_ARGUMENTS if premium else FLUENTLITE_ARGUMENTS,
-                    autorest_options,
-                    readme,
-                )
-            ),
-        )
-    )
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error("[GENERATE] Code generation failed.")
-        logging.error(
-            "Please first check if the failure happens only to Java automation, or for all SDK automations. "
-            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff. "
-            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
-        )
-        return False
-
-    group = GROUP_ID
-    if require_sdk_integration:
-        update_service_files_for_new_lib(sdk_root, service, group, module)
-        update_root_pom(sdk_root, service)
-    update_version(sdk_root, output_folder)
-
-    return True
-
-
 def remove_generated_source_code(sdk_folder: str, namespace: str):
     main_source_folder = os.path.join(sdk_folder, "src/main/java")
     main_resources_folder = os.path.join(sdk_folder, "src/main/resources")
@@ -291,108 +207,6 @@ def get_version(
                 return version_line
     logging.error("Cannot get version of {0}".format(project))
     return None
-
-
-def valid_service(service: str):
-    return re.sub(r"[^a-z0-9_]", "", service.lower())
-
-
-def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
-    # return comment and api_specs
-
-    with open(api_specs_file, "r", encoding="utf-8") as fin:
-        lines = fin.readlines()
-
-    comment = ""
-
-    for i, line in enumerate(lines):
-        if not line.strip().startswith("#"):
-            comment = "".join(lines[:i])
-            api_specs = yaml.safe_load("".join(lines[i:]))
-            break
-    else:
-        raise Exception("api-specs.yml should has non comment line")
-
-    return comment, api_specs
-
-
-def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
-    with open(api_specs_file, "w", encoding="utf-8") as fout:
-        fout.write(comment)
-        fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
-
-
-def get_and_update_service_from_api_specs(
-    api_specs_file: str,
-    spec: str,
-    service: str = None,
-    suffix: str = None,
-    truncate_service: bool = False,
-):
-    """
-    Updates the API specs file with the provided service name and optional suffix.
-
-    Args:
-        api_specs_file (str): Path to the API specs file.
-        spec (str): The specification key to update in the API specs.
-        service (str, optional): The service name to associate with the spec. If not provided, it will be derived.
-        suffix (str, optional): An optional suffix to add to the spec entry in the API specs file.
-        truncate_service (bool, optional): Whether to truncate the service name to a maximum length of 32 characters.
-
-    Returns:
-        str: The validated and potentially updated service name.
-    """
-    special_spec = {"resources"}
-    if spec in special_spec:
-        if not service:
-            service = spec
-        return valid_service(service)
-
-    comment, api_specs = read_api_specs(api_specs_file)
-
-    api_spec = api_specs.get(spec)
-    if not service:
-        if api_spec:
-            service = api_spec.get("service")
-        if not service:
-            service = spec
-            # remove segment contains ".", e.g. "Microsoft.KubernetesConfiguration", "Astronomer.Astro"
-            service = re.sub(r"/[^/]+(\.[^/]+)+", "", service)
-            # truncate length of service to 32, as this is the maximum length for package name in Java repository
-            if truncate_service:
-                service = valid_service(service)
-                max_length = 32
-                if len(service) > max_length:
-                    logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
-                    service = service[:max_length]
-    service = valid_service(service)
-
-    if service != spec:
-        api_specs[spec] = dict() if not api_spec else api_spec
-        api_specs[spec]["service"] = service
-
-    if suffix:
-        api_specs[spec]["suffix"] = suffix
-
-    write_api_specs(api_specs_file, comment, api_specs)
-
-    return service
-
-
-def get_suffix_from_api_specs(api_specs_file: str, spec: str):
-    comment, api_specs = read_api_specs(api_specs_file)
-
-    api_spec = api_specs.get(spec)
-    if api_spec and api_spec.get("suffix"):
-        return api_spec.get("suffix")
-
-    return None
-
-
-def update_spec(spec: str, subspec: str) -> str:
-    if subspec:
-        spec = spec + subspec
-    return spec
 
 
 def resolve_tspconfig_variables(value: str, config: dict, emitter_name: str) -> Optional[str]:
@@ -710,10 +524,6 @@ def clean_sdk_folder(sdk_root: str, sdk_folder: str) -> bool:
         shutil.rmtree(sdk_path, ignore_errors=True)
         succeeded = True
     return succeeded
-
-
-def is_mgmt_premium(module: str) -> bool:
-    return module in FLUENT_PREMIUM_PACKAGES
 
 
 def copy_file_sync(source: str, target: str) -> None:

@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Common class for authenticating refresh requests.
@@ -37,7 +38,7 @@ public class AppConfigurationEndpoint {
 
     private final JsonNode validationResponse;
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder().build();
 
     /**
      * Base Authentication for refresh endpoints.
@@ -63,7 +64,7 @@ public class AppConfigurationEndpoint {
         if (data != null) {
             JsonNode syncTokenNode = data.findValue(SYNC_TOKEN);
             if (syncTokenNode != null) {
-                sToken = syncTokenNode.asText();
+                sToken = syncTokenNode.asString();
             }
         }
 
@@ -73,7 +74,7 @@ public class AppConfigurationEndpoint {
 
         JsonNode requestSubject = requestBody.findValue(CONFIG_STORE_SUBJECT);
         if (requestSubject != null) {
-            String subject = requestSubject.asText();
+            String subject = requestSubject.asString();
             endpoint = URI.create(subject);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");

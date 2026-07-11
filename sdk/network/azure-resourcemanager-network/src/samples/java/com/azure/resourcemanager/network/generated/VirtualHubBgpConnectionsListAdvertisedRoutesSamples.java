@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubBgpConnectionsListAdvertisedRoutesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualRouterPeerListAdvertisedRoute.json
+     * x-ms-original-file: 2025-07-01/VirtualRouterPeerListAdvertisedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListAdvertisedRoutes.

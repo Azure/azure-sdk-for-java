@@ -18,7 +18,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
  */
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressCreateDns.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -35,7 +35,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressCreateCustomizedValues.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP address allocation method.
@@ -56,7 +56,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressCreateDefaults.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDefaults.json
      */
     /**
      * Sample code: Create public IP address defaults.
@@ -71,7 +71,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**
      * Sample code: Create public IP address DNS with Domain Name Label Scope.
@@ -90,7 +90,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
      */
     /**
      * Sample code: Create public IP address defaults with StandardV2 Sku.

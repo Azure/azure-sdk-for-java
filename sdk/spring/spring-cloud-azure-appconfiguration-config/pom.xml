@@ -76,6 +76,22 @@
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
       <version>7.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <!-- Keep jackson-annotations on the 2.x line because Jackson 3 databind still consumes
+         com.fasterxml.jackson.annotation APIs. Jackson's migration guide explicitly says
+         jackson-annotations stays on the 2.x line in 3.x, and the project README says
+         databind still depends on jackson-annotations:
+         https://github.com/FasterXML/jackson/tree/main/jackson3/MIGRATING_TO_JACKSON_3.md
+         https://github.com/FasterXML/jackson/tree/main/README.md -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.21</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    </dependency>
     <!-- Test Dependencies -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -177,7 +193,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.21]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.21.4]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-actuator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-context:[5.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-context;external_dependency} -->

@@ -27,7 +27,7 @@ public final class AccountsEvaluateDeploymentPoliciesWithResponseMockTests {
     @Test
     public void testEvaluateDeploymentPoliciesWithResponse() throws Exception {
         String responseStr
-            = "{\"results\":{\"hammgmqfmefgv\":{\"evaluationOutcome\":\"Compliant\",\"errorMessage\":\"k\",\"nonCompliantAssignments\":[{\"assignmentId\":\"joezlqxrkdknkobe\",\"policyDefinitionId\":\"mbozom\",\"policySetDefinitionId\":\"amicbigwcdgz\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"uxk\",\"effect\":\"ai\",\"expressionEvaluations\":[{},{}]},{\"assignmentId\":\"m\",\"policyDefinitionId\":\"qjbedpfix\",\"policySetDefinitionId\":\"upmomihzbd\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"kcdpreyxelyi\",\"effect\":\"hflrufssjyghsfx\",\"expressionEvaluations\":[{}]}]},\"wyj\":{\"evaluationOutcome\":\"Compliant\",\"errorMessage\":\"wjgquxweyslandkd\",\"nonCompliantAssignments\":[{\"assignmentId\":\"unhghcgawnr\",\"policyDefinitionId\":\"quox\",\"policySetDefinitionId\":\"tireimse\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"xstcyilbvzm\",\"effect\":\"cjzlquzexokjxebj\",\"expressionEvaluations\":[{},{},{},{}]},{\"assignmentId\":\"n\",\"policyDefinitionId\":\"bwmvogljsvl\",\"policySetDefinitionId\":\"idnwceha\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"yzltgiomqo\",\"effect\":\"epiaeapfsergd\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"nacyheqwb\",\"policyDefinitionId\":\"qncjubkhjozfymcw\",\"policySetDefinitionId\":\"upyvqyvliq\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"ejbsvsiaies\",\"effect\":\"ddzydisnu\",\"expressionEvaluations\":[{},{},{}]}]},\"omzczfkiceevsa\":{\"evaluationOutcome\":\"Error\",\"errorMessage\":\"pxottd\",\"nonCompliantAssignments\":[{\"assignmentId\":\"cqibzj\",\"policyDefinitionId\":\"weebiphryv\",\"policySetDefinitionId\":\"wqwoqsratjhdhzyb\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"hfrzgdkkagvwukhs\",\"effect\":\"mm\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"zhwilzzh\",\"policyDefinitionId\":\"jmriprlkdneyttlr\",\"policySetDefinitionId\":\"ivcbkutpumltwj\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"ynbpvzlqywauy\",\"effect\":\"jckhmocgj\",\"expressionEvaluations\":[{},{},{}]},{\"assignmentId\":\"u\",\"policyDefinitionId\":\"hwvixqqggljkybsj\",\"policySetDefinitionId\":\"lrvtz\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"ctbhpjhxpcvrd\",\"effect\":\"eitaneqadynzjahw\",\"expressionEvaluations\":[{},{},{}]}]}}}";
+            = "{\"results\":{\"yfgwewqkj\":{\"evaluationOutcome\":\"Error\",\"errorMessage\":\"pvckojazbbgs\",\"nonCompliantAssignments\":[{\"assignmentId\":\"subzp\",\"policyDefinitionId\":\"vdylytcovqseusrf\",\"policySetDefinitionId\":\"d\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"nxmlbmuoswk\",\"effect\":\"dihdcyyyzlwhb\",\"expressionEvaluations\":[{},{}]},{\"assignmentId\":\"ufzrfgmdqgnnbzrt\",\"policyDefinitionId\":\"edzuub\",\"policySetDefinitionId\":\"vgjs\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"jjvavdpww\",\"effect\":\"tdp\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"sffofwanmhksca\",\"policyDefinitionId\":\"azcg\",\"policySetDefinitionId\":\"friwgybjp\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"scvgl\",\"effect\":\"x\",\"expressionEvaluations\":[{}]}]},\"pcs\":{\"evaluationOutcome\":\"NonCompliant\",\"errorMessage\":\"wpxsoo\",\"nonCompliantAssignments\":[{\"assignmentId\":\"lcsklt\",\"policyDefinitionId\":\"uugggzlfbgrd\",\"policySetDefinitionId\":\"ubsrtmdylperpilt\",\"evaluationOutcome\":\"Error\",\"nonComplianceReason\":\"czfcmfpfbod\",\"effect\":\"resrgvtshuvft\",\"expressionEvaluations\":[{},{},{},{}]},{\"assignmentId\":\"muqkevzgjypanhx\",\"policyDefinitionId\":\"dxxzetwwzjwotn\",\"policySetDefinitionId\":\"kf\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"rfo\",\"effect\":\"wecr\",\"expressionEvaluations\":[{},{},{}]}]},\"socwiqbuout\":{\"evaluationOutcome\":\"Compliant\",\"errorMessage\":\"ovppqibukklvzrlr\",\"nonCompliantAssignments\":[{\"assignmentId\":\"metjs\",\"policyDefinitionId\":\"ivfqbqnasdsy\",\"policySetDefinitionId\":\"zsieuscplhyvd\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"zkxitd\",\"effect\":\"ezsvkolrupjov\",\"expressionEvaluations\":[{},{},{}]},{\"assignmentId\":\"ayeb\",\"policyDefinitionId\":\"zwzlp\",\"policySetDefinitionId\":\"tzuykykipfsdye\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"cmbezac\",\"effect\":\"ztgaz\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"jga\",\"policyDefinitionId\":\"kctgkp\",\"policySetDefinitionId\":\"kqzkcyzmff\",\"evaluationOutcome\":\"Compliant\",\"nonComplianceReason\":\"fcixrh\",\"effect\":\"qvhoej\",\"expressionEvaluations\":[{}]},{\"assignmentId\":\"tgwrmkahpqha\",\"policyDefinitionId\":\"ntacih\",\"policySetDefinitionId\":\"ogmipnmliqmvl\",\"evaluationOutcome\":\"NonCompliant\",\"nonComplianceReason\":\"eaqgrvgpomxpupd\",\"effect\":\"dfj\",\"expressionEvaluations\":[{},{},{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,63 +38,65 @@ public final class AccountsEvaluateDeploymentPoliciesWithResponseMockTests {
 
         EvaluateDeploymentPoliciesResponse response
             = manager.accounts()
-                .evaluateDeploymentPoliciesWithResponse("wmpinmzv", "kneerzztrknsj",
+                .evaluateDeploymentPoliciesWithResponse("giomqo", "pepiaeapfs",
                     new EvaluateDeploymentPoliciesRequest()
                         .withDeployments(
-                            Arrays.asList(
-                                new EvaluateDeploymentPoliciesDeployment().withName("ugdybnhrxlel")
-                                    .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
-                                        .withModel(new DeploymentModel().withPublisher("hkeizcp")
-                                            .withFormat("tdmiwjekptyca")
-                                            .withName("bjzcqymlcfnzhm")
-                                            .withVersion("urlgwqkpmmzps")
-                                            .withSource("u")
-                                            .withSourceAccount("awi"))
-                                        .withRaiPolicyName("oms")),
-                                new EvaluateDeploymentPoliciesDeployment().withName("vvjhvvlrlohewjj")
-                                    .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties().withModel(
-                                        new DeploymentModel().withPublisher("jnkdflqion")
-                                            .withFormat("aeqkzfzqxjoshoh")
-                                            .withName("tryegpkh")
-                                            .withVersion("mexznlwkb")
-                                            .withSource("kxkhupzerufgj")
-                                            .withSourceAccount("cdr"))
-                                        .withRaiPolicyName("cemftzgyykyalu")),
-                                new EvaluateDeploymentPoliciesDeployment().withName("ekdfqnhttwd")
-                                    .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
-                                        .withModel(new DeploymentModel().withPublisher("rczfjjnnuxxr")
-                                            .withFormat("mhmnulwemp")
-                                            .withName("ifrhjulrsul")
-                                            .withVersion("pflu")
-                                            .withSource("awmhh")
-                                            .withSourceAccount("ot"))
-                                        .withRaiPolicyName("yrgkoekv")),
-                                new EvaluateDeploymentPoliciesDeployment().withName("wxxyxhighctx")
-                                    .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
-                                        .withModel(new DeploymentModel().withPublisher("molpcqyde")
-                                            .withFormat("vskiczd")
-                                            .withName("jei")
-                                            .withVersion("kgqaboo")
-                                            .withSource("bmsgycqsxrmdv")
-                                            .withSourceAccount("uyqaeohpj"))
-                                        .withRaiPolicyName("jkbvhhdaurgho")))),
+                            Arrays
+                                .asList(
+                                    new EvaluateDeploymentPoliciesDeployment().withName("gdtpe")
+                                        .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
+                                            .withModel(new DeploymentModel().withPublisher("acyh")
+                                                .withFormat("wbpqqncjubkhjoz")
+                                                .withName("mcwmbup")
+                                                .withVersion("qyvliqiipsejbsvs")
+                                                .withSource("ieswhddzydisn")
+                                                .withSourceAccount("pywyjlnld"))
+                                            .withRaiPolicyName("ttdiia")),
+                                    new EvaluateDeploymentPoliciesDeployment().withName("cqibzj")
+                                        .withProperties(
+                                            new EvaluateDeploymentPoliciesDeploymentProperties().withModel(
+                                                new DeploymentModel().withPublisher("weebiphryv")
+                                                    .withFormat("wqwoqsratjhdhzyb")
+                                                    .withName("ijh")
+                                                    .withVersion("zgdkkagvwu")
+                                                    .withSource("susmmorfmzhwi")
+                                                    .withSourceAccount("zhnijmr"))
+                                                .withRaiPolicyName("lk")),
+                                    new EvaluateDeploymentPoliciesDeployment().withName("neyttl")
+                                        .withProperties(
+                                            new EvaluateDeploymentPoliciesDeploymentProperties()
+                                                .withModel(new DeploymentModel().withPublisher("xivcbkutpumlt")
+                                                    .withFormat("fluxynbpvz")
+                                                    .withName("ywauyqnjckhm")
+                                                    .withVersion("gjs")
+                                                    .withSource("ouarhwvixqqggljk")
+                                                    .withSourceAccount("sjrclrvtzq"))
+                                                .withRaiPolicyName("ctbhpjhxpcvrd")),
+                                    new EvaluateDeploymentPoliciesDeployment().withName("y")
+                                        .withProperties(new EvaluateDeploymentPoliciesDeploymentProperties()
+                                            .withModel(new DeploymentModel().withPublisher("taneqadynzja")
+                                                .withFormat("riuomzczfkic")
+                                                .withName("vsaaxwsp")
+                                                .withVersion("xikhfj")
+                                                .withSource("bglcxkxgzzromvy")
+                                                .withSourceAccount("sem"))
+                                            .withRaiPolicyName("srfsvpinkzpatqt")))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(PolicyEvaluationOutcome.COMPLIANT,
-            response.results().get("hammgmqfmefgv").evaluationOutcome());
-        Assertions.assertEquals("k", response.results().get("hammgmqfmefgv").errorMessage());
-        Assertions.assertEquals("joezlqxrkdknkobe",
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).assignmentId());
-        Assertions.assertEquals("mbozom",
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).policyDefinitionId());
-        Assertions.assertEquals("amicbigwcdgz",
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).policySetDefinitionId());
+        Assertions.assertEquals(PolicyEvaluationOutcome.ERROR, response.results().get("yfgwewqkj").evaluationOutcome());
+        Assertions.assertEquals("pvckojazbbgs", response.results().get("yfgwewqkj").errorMessage());
+        Assertions.assertEquals("subzp",
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).assignmentId());
+        Assertions.assertEquals("vdylytcovqseusrf",
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).policyDefinitionId());
+        Assertions.assertEquals("d",
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).policySetDefinitionId());
         Assertions.assertEquals(PolicyEvaluationOutcome.NON_COMPLIANT,
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).evaluationOutcome());
-        Assertions.assertEquals("uxk",
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).nonComplianceReason());
-        Assertions.assertEquals("ai",
-            response.results().get("hammgmqfmefgv").nonCompliantAssignments().get(0).effect());
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).evaluationOutcome());
+        Assertions.assertEquals("nxmlbmuoswk",
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).nonComplianceReason());
+        Assertions.assertEquals("dihdcyyyzlwhb",
+            response.results().get("yfgwewqkj").nonCompliantAssignments().get(0).effect());
     }
 }
