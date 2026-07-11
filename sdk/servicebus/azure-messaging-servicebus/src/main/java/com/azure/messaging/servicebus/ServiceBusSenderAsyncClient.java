@@ -935,8 +935,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             final CreateMessageBatchOptions batchOptions
                 = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
             return Flux.fromIterable(messageList)
-                .collect(new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer,
-                    messageSerializer));
+                .collect(
+                    new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
         });
 
         // The raw send pipeline, without span instrumentation. Instrumentation is applied as the
