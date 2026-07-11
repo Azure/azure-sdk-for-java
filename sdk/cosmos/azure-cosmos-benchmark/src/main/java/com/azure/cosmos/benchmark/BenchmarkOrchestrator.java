@@ -139,6 +139,7 @@ public class BenchmarkOrchestrator {
 
                 CsvMetricsReporter csvReporter = null;
                 CosmosMetricsReporter cosmosReporter = null;
+                KustoMetricsReporter kustoReporter = null;
                 MeterRegistry appInsightsRegistry = null;
 
                 try {
@@ -178,6 +179,23 @@ public class BenchmarkOrchestrator {
                                         + "configuration, including the connection string.");
                                 }
                                 break;
+
+                            case KUSTO:
+                                // Dedicated SimpleMeterRegistry carrying the run-level common tags
+                                // (RunId/SdkVersion/ConnectionMode/EndpointFlavor/Phase) so the Kusto
+                                // reporter maps them straight to first-class BenchmarkMetrics columns.
+                                SimpleMeterRegistry kustoSimpleRegistry = new SimpleMeterRegistry();
+                                kustoSimpleRegistry.config().commonTags(benchmarkCommonTags);
+                                cycleRegistry.add(kustoSimpleRegistry);
+                                Set<String> kustoOps = new LinkedHashSet<>();
+                                for (TenantWorkloadConfig t : tenants) {
+                                    kustoOps.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+                                }
+                                kustoReporter = KustoMetricsReporter.create(
+                                    kustoSimpleRegistry, config.getKustoReporterConfig(),
+                                    String.join("+", kustoOps), config.getConcurrency());
+                                kustoReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                                break;
                         }
                     }
 
@@ -207,6 +225,9 @@ public class BenchmarkOrchestrator {
                     if (cosmosReporter != null) {
                         cosmosReporter.stop();
                     }
+                    if (kustoReporter != null) {
+                        kustoReporter.stop();
+                    }
 
                     // 6. Disconnect loggingRegistry before SDK clears the cycle registry
                     cycleRegistry.remove(loggingRegistry);
@@ -229,6 +250,9 @@ public class BenchmarkOrchestrator {
                     }
                     if (cosmosReporter != null) {
                         try { cosmosReporter.stop(); } catch (Exception e) { /* already stopped or best-effort */ }
+                    }
+                    if (kustoReporter != null) {
+                        try { kustoReporter.stop(); } catch (Exception e) { /* already stopped or best-effort */ }
                     }
                     cycleRegistry.remove(loggingRegistry);
                     if (addedToGlobal) {
@@ -359,11 +383,14 @@ public class BenchmarkOrchestrator {
                 tenant.setSuppressCleanup(true);
             }
 
-            // Ensure unique applicationName per tenant
+            // Ensure unique applicationName per tenant.
+            // tenant.getId() is optional in the config, so guard against null to avoid
+            // a NullPointerException on multi-cycle runs (String.contains(null)).
+            String tenantId = tenant.getId() == null ? "0" : tenant.getId();
             if (tenant.getApplicationName() == null || tenant.getApplicationName().isEmpty()) {
-                tenant.setApplicationName("mt-bench-" + tenant.getId());
-            } else if (!tenant.getApplicationName().contains(tenant.getId())) {
-                tenant.setApplicationName(tenant.getApplicationName() + "-" + tenant.getId());
+                tenant.setApplicationName("mt-bench-" + tenantId);
+            } else if (!tenant.getApplicationName().contains(tenantId)) {
+                tenant.setApplicationName(tenant.getApplicationName() + "-" + tenantId);
             }
         }
     }

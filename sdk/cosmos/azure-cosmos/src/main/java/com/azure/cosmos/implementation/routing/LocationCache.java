@@ -137,6 +137,43 @@ public class LocationCache {
         return this.locationInfo.availableReadRegionalRoutingContexts;
     }
 
+    private static boolean collectThinClientEndpointsAllOrNothing(
+        UnmodifiableMap<String, RegionalRoutingContext> byRegion, Set<URI> sink) {
+        if (byRegion == null || byRegion.isEmpty()) {
+            return true;
+        }
+        for (RegionalRoutingContext ctx : byRegion.values()) {
+            if (ctx == null) {
+                continue;
+            }
+            URI thinclientEndpoint = ctx.getThinclientRegionalEndpoint();
+            if (thinclientEndpoint == null) {
+                return false;
+            }
+            sink.add(thinclientEndpoint);
+        }
+        return true;
+    }
+
+    public Set<URI> getThinClientRegionalEndpoints() {
+        Set<URI> endpoints = new HashSet<>();
+        if (!collectThinClientEndpointsAllOrNothing(
+                this.locationInfo.availableReadRegionalRoutingContextsByRegionName, endpoints)) {
+            return Collections.emptySet();
+        }
+        // Also walk write regions: useThinClientStoreModel() routes writes (point ops, batch) through
+        // thin-client too, so a write-only region's thin-client endpoint must be probed as well.
+        // Set semantics dedupe the common case where a region is both readable and writable.
+        if (!collectThinClientEndpointsAllOrNothing(
+                this.locationInfo.availableWriteRegionalRoutingContextsByRegionName, endpoints)) {
+            return Collections.emptySet();
+        }
+        if (endpoints.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(endpoints);
+    }
+
     public List<RegionalRoutingContext> getAvailableWriteRegionalRoutingContexts() {
         return this.locationInfo.availableWriteRegionalRoutingContexts;
     }

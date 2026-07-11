@@ -3084,7 +3084,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -3844,7 +3844,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         }
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -3896,7 +3896,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -5672,7 +5672,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             throw new SkipException("Test only applicable to DIRECT mode");
         }
 
-        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT mode is not supported with thin client");
         }
 

@@ -75,6 +75,42 @@ public final class ClientTelemetryMetrics {
     private static CosmosMeterOptions cpuOptions;
     private static CosmosMeterOptions memoryOptions;
 
+    // Opt-in diagnostic: HTTP/2 connection-distribution metrics (connections-opened counter +
+    // requests-per-connection distribution). OFF by default so it adds zero overhead to normal
+    // clients and latency baselines. Enable with -DCOSMOS.HTTP2_STREAM_METRICS_ENABLED=true (or
+    // env COSMOS_HTTP2_STREAM_METRICS_ENABLED=true) only for dedicated cold-start diagnostic runs.
+    // Read once at class load; the flag is expected to be set before JVM start for a benchmark run.
+    private static final boolean HTTP2_CONNECTION_METRICS_ENABLED = readHttp2ConnectionMetricsEnabled();
+
+    private static boolean readHttp2ConnectionMetricsEnabled() {
+        String value = System.getProperty("COSMOS.HTTP2_STREAM_METRICS_ENABLED");
+        if (value == null || value.isEmpty()) {
+            value = System.getenv("COSMOS_HTTP2_STREAM_METRICS_ENABLED");
+        }
+        return Boolean.parseBoolean(value);
+    }
+
+    // Opt-in HTTP/2 connection-distribution sampler, registered by the transport layer
+    // (ReactorNettyClient) when the diagnostic flag is enabled. Invoked on the CPU/memory-monitor
+    // cadence (~5s) from recordSystemUsage, i.e. WHILE a meter registry is attached during the
+    // workload. This deliberately avoids recording requests-per-connection directly at Netty
+    // connection-close time: close fires asynchronously on the event loop and races the benchmark
+    // orchestrator's per-cycle registry teardown, so close-driven samples land after the registry
+    // is detached and are dropped. Draining on the monitor tick guarantees the sample is recorded
+    // inside a publish window.
+    private static volatile Runnable http2ConnectionSampler;
+
+    /**
+     * Registers the opt-in HTTP/2 connection-distribution sampler invoked on the CPU/memory-monitor
+     * cadence from {@link #recordSystemUsage(float, float)}. Called once by the transport layer when
+     * {@link #isHttp2ConnectionMetricsEnabled()} is true. No-op semantics if never registered.
+     *
+     * @param sampler the sampler to run on each monitor tick while a registry is attached.
+     */
+    public static void registerHttp2ConnectionSampler(Runnable sampler) {
+        http2ConnectionSampler = sampler;
+    }
+
     private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
 
     private static final Object lockObject = new Object();
@@ -114,7 +150,25 @@ public final class ClientTelemetryMetrics {
         float averageSystemCpuUsage,
         float freeMemoryAvailableInMB
     ) {
-        if (compositeRegistry.getRegistries().isEmpty() || cpuOptions == null || memoryOptions == null) {
+        if (compositeRegistry.getRegistries().isEmpty()) {
+            return;
+        }
+
+        // Opt-in HTTP/2 connection-distribution snapshot on the monitor cadence (~5s). Runs while a
+        // registry is attached (inside a publish window), so requests-per-connection samples survive
+        // the orchestrator's per-cycle registry teardown that a close-driven record would race.
+        if (HTTP2_CONNECTION_METRICS_ENABLED) {
+            Runnable sampler = http2ConnectionSampler;
+            if (sampler != null) {
+                try {
+                    sampler.run();
+                } catch (Exception e) {
+                    logger.debug("HTTP/2 connection sampler failed", e);
+                }
+            }
+        }
+
+        if (cpuOptions == null || memoryOptions == null) {
             return;
         }
 
@@ -140,6 +194,68 @@ public final class ClientTelemetryMetrics {
                 .register(compositeRegistry);
             freeMemoryAvailableInMBMeter.record(freeMemoryAvailableInMB);
         }
+    }
+
+    /**
+     * Whether HTTP/2 connection-distribution diagnostic metrics are enabled. Gated by the
+     * {@code COSMOS.HTTP2_STREAM_METRICS_ENABLED} system property (default {@code false}) so the
+     * transport hot path can short-circuit with a single boolean check when disabled.
+     *
+     * @return {@code true} if the opt-in flag was set at startup.
+     */
+    public static boolean isHttp2ConnectionMetricsEnabled() {
+        return HTTP2_CONNECTION_METRICS_ENABLED;
+    }
+
+    /**
+     * Records that a new HTTP/2 parent (TCP) connection was opened. Invoked once per parent
+     * connection from the transport layer. No-op unless the diagnostic flag is enabled and at
+     * least one meter registry is attached. The counter is resolved on the current
+     * {@code compositeRegistry} each call (the registry can be swapped when the last client
+     * detaches) - Micrometer returns the already-registered meter when present, so this stays
+     * cheap at connection granularity.
+     */
+    public static void recordHttp2ConnectionOpened() {
+        if (!HTTP2_CONNECTION_METRICS_ENABLED) {
+            return;
+        }
+        CompositeMeterRegistry registry = compositeRegistry;
+        if (registry.getRegistries().isEmpty()) {
+            return;
+        }
+        Counter
+            .builder("cosmos.client.http2.connectionsOpened")
+            .description("Count of HTTP/2 parent (TCP) connections opened")
+            .register(registry)
+            .increment();
+    }
+
+    /**
+     * Records the number of HTTP/2 streams (approximately one per request) served by a single
+     * parent connection over its lifetime. Invoked from the transport layer's connection sampler on
+     * the CPU/memory-monitor tick (draining connections that have closed since the last tick), NOT
+     * synchronously at connection-close time - close races the orchestrator's per-cycle registry
+     * teardown. No-op unless the diagnostic flag is enabled and at least one meter registry is
+     * attached. Uses a plain distribution summary (no client-side percentile histogram) - App
+     * Insights aggregates {@code Sum}/{@code ItemCount}/{@code Max} server-side, which is what the
+     * cold-start dashboard reads.
+     *
+     * @param streamsServed lifetime stream count for the closed connection.
+     */
+    public static void recordHttp2RequestsPerConnection(long streamsServed) {
+        if (!HTTP2_CONNECTION_METRICS_ENABLED) {
+            return;
+        }
+        CompositeMeterRegistry registry = compositeRegistry;
+        if (registry.getRegistries().isEmpty()) {
+            return;
+        }
+        DistributionSummary
+            .builder("cosmos.client.http2.requestsPerConnection")
+            .description("Number of HTTP/2 streams (~requests) served per parent connection over its lifetime")
+            .publishPercentileHistogram(false)
+            .register(registry)
+            .record((double) streamsServed);
     }
 
     public static void recordOperation(

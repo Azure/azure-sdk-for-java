@@ -173,6 +173,10 @@ public class BenchmarkConfig {
         return orchestrator.metrics.destination != null ? orchestrator.metrics.destination.applicationInsights : null;
     }
 
+    public KustoReporterConfig getKustoReporterConfig() {
+        return orchestrator.metrics.destination != null ? orchestrator.metrics.destination.kusto : null;
+    }
+
     /**
      * Determine the reporting destination from which config is present.
      */
@@ -180,6 +184,7 @@ public class BenchmarkConfig {
         if (getCsvReporterConfig() != null) return ReportingDestination.CSV;
         if (getCosmosReporterConfig() != null) return ReportingDestination.COSMOSDB;
         if (getAppInsightsReporterConfig() != null) return ReportingDestination.APPLICATION_INSIGHTS;
+        if (getKustoReporterConfig() != null) return ReportingDestination.KUSTO;
         return null;
     }
 
@@ -313,5 +318,8 @@ public class BenchmarkConfig {
 
         @JsonProperty("applicationInsights")
         AppInsightsReporterConfig applicationInsights;
+
+        @JsonProperty("kusto")
+        KustoReporterConfig kusto;
     }
 }

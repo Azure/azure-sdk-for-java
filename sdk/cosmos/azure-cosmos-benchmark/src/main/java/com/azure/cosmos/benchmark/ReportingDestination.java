@@ -22,5 +22,11 @@ public enum ReportingDestination {
     /**
      * Send all metrics to Azure Application Insights via AzureMonitorMeterRegistry.
      */
-    APPLICATION_INSIGHTS
+    APPLICATION_INSIGHTS,
+
+    /**
+     * Stream all metrics with full dimensions directly into an Azure Data Explorer (Kusto)
+     * table via the streaming-ingest REST endpoint (bearer auth, no extra Maven dependency).
+     */
+    KUSTO
 }

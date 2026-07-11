@@ -5318,7 +5318,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
         // When thin client + HTTP/2 are enabled, all requests route through the thin client
         // gateway proxy — DIRECT mode is not exercised. Skip DIRECT mode tests.
-        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException(
                 "Skipping DIRECT mode test '" + testCaseId + "' — thin client forces GATEWAY mode");
         }
@@ -5333,7 +5333,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // through the RNTBD-encoded thin client proxy path. Increase e2e timeout to avoid
             // spurious 408 (OperationCancelled) failures with tight timeouts.
             Duration effectiveEndToEndTimeout = endToEndTimeout;
-            if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && endToEndTimeout != null) {
+            if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && endToEndTimeout != null) {
                 effectiveEndToEndTimeout = endToEndTimeout.plusMillis(500);
             }
 
@@ -5475,7 +5475,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
                     // When thin client + HTTP/2 are enabled (fi-thinclient-multi-master / fi-thinclient-multi-region)
                     // and connection mode is GATEWAY, validate that requests targeted the thin client proxy endpoint
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.GATEWAY) {
+                    if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.GATEWAY) {
                         for (CosmosDiagnosticsContext diagnosticsContext : diagnosticsContexts) {
                             assertThinClientEndpointUsed(diagnosticsContext);
                         }

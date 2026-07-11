@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
@@ -14,6 +15,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
+import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import org.reactivestreams.Publisher;
@@ -37,6 +39,10 @@ import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
@@ -51,6 +57,35 @@ public class ReactorNettyClient implements HttpClient {
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
+
+    // Per parent-connection lifetime stream counter, incremented once per child HTTP/2 stream
+    // (~one per request) and read at connection close to record requests-per-connection.
+    // Only mutated when ClientTelemetryMetrics.isHttp2ConnectionMetricsEnabled() is true.
+    private static final AttributeKey<AtomicLong> H2_LIFETIME_STREAM_COUNT =
+        AttributeKey.valueOf("cosmosHttp2LifetimeStreamCount");
+
+    // Opt-in HTTP/2 connection-distribution diagnostics (default OFF). When a parent connection
+    // closes, its final lifetime stream count is ENQUEUED here rather than recorded inline: Netty's
+    // closeFuture fires asynchronously on the event loop and races the benchmark orchestrator's
+    // per-cycle meter-registry teardown, so an inline record lands after the registry is detached
+    // and is dropped. The queue is drained on the CPU/memory-monitor tick (~5s), where a registry is
+    // guaranteed attached, via the sampler registered with ClientTelemetryMetrics.
+    private static final Queue<Long> H2_CLOSED_CONNECTION_STREAM_COUNTS = new ConcurrentLinkedQueue<>();
+    private static final AtomicBoolean H2_SAMPLER_REGISTERED = new AtomicBoolean(false);
+
+    /**
+     * Drains the queue of lifetime stream counts from HTTP/2 parent connections that have closed
+     * since the last invocation, recording each into the requests-per-connection distribution.
+     * Registered once with {@link ClientTelemetryMetrics} and invoked on the CPU/memory-monitor
+     * cadence, i.e. while a meter registry is attached, so samples are not lost to the
+     * connection-close / registry-teardown race.
+     */
+    private static void drainHttp2ClosedConnectionStreamCounts() {
+        Long streamsServed;
+        while ((streamsServed = H2_CLOSED_CONNECTION_STREAM_COUNTS.poll()) != null) {
+            ClientTelemetryMetrics.recordHttp2RequestsPerConnection(streamsServed);
+        }
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
 
@@ -224,6 +259,37 @@ public class ReactorNettyClient implements HttpClient {
                         }
                     }
 
+                    // HTTP/2 connection-distribution diagnostics (opt-in; default OFF). This
+                    // doOnConnected fires on the parent TCP channel at State.CONFIGURED, i.e.
+                    // once per parent connection. Initialize the lifetime stream counter and, on
+                    // first init only, bump the connections-opened counter and register a close
+                    // listener that ENQUEUES the connection's lifetime stream count. The queue is
+                    // drained on the CPU/memory-monitor tick (registry attached) rather than
+                    // recorded inline here, because closeFuture fires asynchronously and races the
+                    // orchestrator's per-cycle registry teardown. The parent is resolved
+                    // defensively to match the PING-install site above.
+                    if (ClientTelemetryMetrics.isHttp2ConnectionMetricsEnabled()) {
+                        // Register the drain sampler exactly once so the monitor tick flushes closed
+                        // connections while a registry is attached.
+                        if (H2_SAMPLER_REGISTERED.compareAndSet(false, true)) {
+                            ClientTelemetryMetrics.registerHttp2ConnectionSampler(
+                                ReactorNettyClient::drainHttp2ClosedConnectionStreamCounts);
+                        }
+                        Channel diagCh = connection.channel();
+                        Channel parentCh = diagCh.parent() != null ? diagCh.parent() : diagCh;
+                        AtomicLong existing =
+                            parentCh.attr(H2_LIFETIME_STREAM_COUNT).setIfAbsent(new AtomicLong(0L));
+                        if (existing == null) {
+                            ClientTelemetryMetrics.recordHttp2ConnectionOpened();
+                            parentCh.closeFuture().addListener(future -> {
+                                AtomicLong lifetimeCount = parentCh.attr(H2_LIFETIME_STREAM_COUNT).get();
+                                if (lifetimeCount != null) {
+                                    H2_CLOSED_CONNECTION_STREAM_COUNTS.offer(lifetimeCount.get());
+                                }
+                            });
+                        }
+                    }
+
                 }))
                 // Install a @Sharable head-of-pipeline rewrap handler on each H2
                 // child-stream pipeline. STREAM_CONFIGURED is the per-child-stream
@@ -253,8 +319,25 @@ public class ReactorNettyClient implements HttpClient {
                 // idempotency guards) is extracted into
                 // installHttp2PingCloseRewrapHandlerIfNeeded so it can be unit-tested
                 // without a live HTTP/2 connection.
-                .observe((connection, state) ->
-                    installHttp2PingCloseRewrapHandlerIfNeeded(connection.channel(), state, http2Cfg));
+                .observe((connection, state) -> {
+                    installHttp2PingCloseRewrapHandlerIfNeeded(connection.channel(), state, http2Cfg);
+
+                    // HTTP/2 connection-distribution diagnostics (opt-in; default OFF).
+                    // STREAM_CONFIGURED fires once per child stream (~one per request); count it
+                    // against its parent connection's lifetime counter. Hot path when enabled is
+                    // a single boolean check, a state comparison, and one AtomicLong increment.
+                    if (ClientTelemetryMetrics.isHttp2ConnectionMetricsEnabled()
+                        && state == HttpClientState.STREAM_CONFIGURED) {
+                        Channel childCh = connection.channel();
+                        Channel parentCh = childCh.parent();
+                        if (parentCh != null) {
+                            AtomicLong lifetimeCount = parentCh.attr(H2_LIFETIME_STREAM_COUNT).get();
+                            if (lifetimeCount != null) {
+                                lifetimeCount.incrementAndGet();
+                            }
+                        }
+                    }
+                });
         }
     }
 

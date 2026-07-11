@@ -12,7 +12,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 
-import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigsTests {
@@ -230,13 +229,30 @@ public class ConfigsTests {
         }
     }
 
-    @Test(groups = { "emulator" })
-    public void thinClientEnabledTest() {
-        assertThat(isThinClientEnabled()).isFalse();
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyDefaultTest() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        try {
+            // Not set -> null, so the probe may run and gates routing.
+            assertThat(Configs.isThinClientEnabled()).isNull();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyOverrideTest() {
+        // Explicitly enabled (true) -> hard opt-in, probe not required.
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(isThinClientEnabled()).isTrue();
+            assertThat(Configs.isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        // Explicitly disabled (false) -> hard opt-out, thin-client off and no probe.
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isFalse();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }

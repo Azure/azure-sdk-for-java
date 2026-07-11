@@ -1,0 +1,26 @@
+{
+  "displayNames": {
+    "-Pthinclient-endpoint-probe": "ThinClientEndpointProbe",
+    "-Pconsistency-overrides": "ConsistencyOverrides",
+    "-Pquery": "Query",
+    "Session": "",
+    "ubuntu": "",
+    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": ""},
+  "include": [
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiMaster_MultiRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pthinclient-endpoint-probe", "-Pquery", "-Pconsistency-overrides" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    }
+  ]
+}
