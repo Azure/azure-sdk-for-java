@@ -291,6 +291,14 @@ public final class Constants {
         }
     }
 
+    public static final class ContentTypeConstants {
+        public static final String APPLICATION_VND_APACHE_ARROW_STREAM = "application/vnd.apache.arrow.stream";
+
+        private ContentTypeConstants() {
+            // Private to prevent construction.
+        }
+    }
+
     /**
      * Defines constants for use with URLs.
      *

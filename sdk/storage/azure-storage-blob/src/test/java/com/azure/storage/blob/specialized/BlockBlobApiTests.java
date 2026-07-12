@@ -549,6 +549,26 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void commitBlockListCrc64() {
+        String blockID = getBlockID();
+        blockBlobClient.stageBlock(blockID, DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        List<String> ids = Collections.singletonList(blockID);
+
+        Response<BlockBlobItem> response
+            = blockBlobClient.commitBlockListWithResponse(ids, null, null, null, null, null, null);
+        HttpHeaders headers = response.getHeaders();
+
+        byte[] expectedCrc64Content = Base64.getDecoder().decode(headers.getValue(X_MS_CONTENT_CRC64));
+
+        assertResponseStatusCode(response, 201);
+        validateBasicHeaders(headers);
+        assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+        TestUtils.assertArraysEqual(expectedCrc64Content, response.getValue().getContentCrc64());
+        assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+    }
+
     @Test
     public void commitBlockListmin() {
         blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
@@ -839,8 +859,28 @@ public class BlockBlobApiTests extends BlobTestBase {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         blockBlobClient.downloadStream(outStream);
         TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+
         validateBasicHeaders(response.getHeaders());
         assertNotNull(response.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+        assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadReturnsCrc64Content() {
+        Response<BlockBlobItem> response = blockBlobClient.uploadWithResponse(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        blockBlobClient.downloadStream(outStream);
+        TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+        byte[] expectedCrc64Content = Base64.getDecoder().decode(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+
+        validateBasicHeaders(response.getHeaders());
+        assertNotNull(response.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+        assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        TestUtils.assertArraysEqual(expectedCrc64Content, response.getValue().getContentCrc64());
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
     }
 
@@ -1505,10 +1545,33 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem);
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
+        assertNotNull(blockBlobItem.getContentMd5());
+        assertNotNull(blockBlobItem.getContentCrc64());
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
         assertEquals("en-GB", destinationProperties.getContentLanguage());
         assertEquals("text", destinationProperties.getContentType());
         assertEquals(AccessTier.COOL, destinationProperties.getAccessTier());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadFromUrlMaxReturnsCrc64() throws NoSuchAlgorithmException {
+        BlobClient sourceBlob
+            = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
+        sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options
+            = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setContentMd5(sourceBlobMD5);
+        Response<BlockBlobItem> response = blockBlobClient.uploadFromUrlWithResponse(options, null, null);
+        String contentCrc64 = response.getHeaders().getValue(X_MS_CONTENT_CRC64);
+        BlockBlobItem blockBlobItem = response.getValue();
+
+        assertNotNull(contentCrc64);
+        assertNotNull(blockBlobItem);
+        TestUtils.assertArraysEqual(Base64.getDecoder().decode(contentCrc64), blockBlobItem.getContentCrc64());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")

@@ -44,8 +44,7 @@ final class MockedChangefeedResources {
     static BlobChangefeedEventData getMockBlobChangefeedEventData() {
         return new InternalBlobChangefeedEventData("PutBlob", "clientRequestId", "requestId", "etag",
             "application/octet-stream", 100L, BlobType.BLOCK_BLOB, 0L, "destinationUrl", "sourceUrl", "", false,
-            "sequencer", OffsetDateTime.of(2020, 4, 4, 6, 30, 0, 0, ZoneOffset.UTC),
-            OffsetDateTime.of(2020, 4, 6, 6, 30, 0, 0, ZoneOffset.UTC), "restoredContainerVersion");
+            "sequencer");
     }
 
     private MockedChangefeedResources() {

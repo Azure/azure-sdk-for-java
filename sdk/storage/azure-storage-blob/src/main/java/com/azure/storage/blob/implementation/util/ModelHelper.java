@@ -47,6 +47,7 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -84,6 +85,14 @@ public final class ModelHelper {
      * Indicates the number of bytes in a page.
      */
     public static final int PAGE_BYTES = 512;
+
+    /**
+     * The format that {@link StorageResponseSerializationFormat#AUTO} currently resolves to on the
+     * wire. Changing this constant is a behavioral change (and should be noted in the CHANGELOG)
+     * but it is not a public API change.
+     */
+    private static final StorageResponseSerializationFormat DEFAULT_SERIALIZATION_FORMAT
+        = StorageResponseSerializationFormat.XML;
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -661,6 +670,22 @@ public final class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new BlobStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+    }
+
+    /**
+     * Resolves a user-supplied {@link StorageResponseSerializationFormat} to the concrete value
+     * to send on the wire. Treats {@code null} and {@link StorageResponseSerializationFormat#AUTO}
+     * identically — both yield {@link #DEFAULT_SERIALIZATION_FORMAT}.
+     *
+     * @param format the format requested by the caller, or {@code null} if unset.
+     * @return the concrete {@link StorageResponseSerializationFormat} to send on the wire.
+     */
+    public static StorageResponseSerializationFormat
+        resolveSerializationFormat(StorageResponseSerializationFormat format) {
+        if (format == null || format == StorageResponseSerializationFormat.AUTO) {
+            return DEFAULT_SERIALIZATION_FORMAT;
+        }
+        return format;
     }
 
     private ModelHelper() {

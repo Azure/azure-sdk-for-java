@@ -8,7 +8,6 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
-import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,9 +29,6 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
     private final String blobUrl;
     private final boolean recursive;
     private final String sequencer;
-    private final OffsetDateTime creationTime;
-    private final OffsetDateTime lastAccessTime;
-    private final String restoredContainerVersion;
 
     /**
      * Constructs a {@link InternalBlobChangefeedEventData}.
@@ -50,14 +46,10 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
      * @param blobUrl The blob url.
      * @param recursive Whether this operation was recursive.
      * @param sequencer The sequencer.
-     * @param creationTime The blob creation time. Schema V6.
-     * @param lastAccessTime The last access time. Schema V7.
-     * @param restoredContainerVersion The restored container version. Schema V8.
      */
     public InternalBlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
         String contentType, Long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
-        String sourceUrl, String blobUrl, boolean recursive, String sequencer, OffsetDateTime creationTime,
-        OffsetDateTime lastAccessTime, String restoredContainerVersion) {
+        String sourceUrl, String blobUrl, boolean recursive, String sequencer) {
         this.api = api;
         this.clientRequestId = clientRequestId;
         this.requestId = requestId;
@@ -71,9 +63,6 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
         this.blobUrl = blobUrl;
         this.recursive = recursive;
         this.sequencer = sequencer;
-        this.creationTime = creationTime;
-        this.lastAccessTime = lastAccessTime;
-        this.restoredContainerVersion = restoredContainerVersion;
     }
 
     static InternalBlobChangefeedEventData fromRecord(Object d) {
@@ -97,9 +86,6 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
         Object blobUrl = data.get("url");
         Object recursive = data.get("recursive");
         Object sequencer = data.get("sequencer");
-        Object createTime = data.get("createTime");
-        Object lastAccessTime = data.get("lastAccessTime");
-        Object restoredContainerVersion = data.get("restoredContainerVersion");
 
         return new InternalBlobChangefeedEventData(ChangefeedTypeValidator.nullOr("api", api, String.class),
             ChangefeedTypeValidator.nullOr("clientRequestId", clientRequestId, String.class),
@@ -115,14 +101,7 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
             ChangefeedTypeValidator.nullOr("sourceUrl", sourceUrl, String.class),
             ChangefeedTypeValidator.nullOr("url", blobUrl, String.class),
             Boolean.TRUE.equals(ChangefeedTypeValidator.nullOr("recursive", recursive, Boolean.class)),
-            ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class),
-            ChangefeedTypeValidator.isNull(createTime)
-                ? null
-                : OffsetDateTime.parse(ChangefeedTypeValidator.nullOr("createTime", createTime, String.class)),
-            ChangefeedTypeValidator.isNull(lastAccessTime)
-                ? null
-                : OffsetDateTime.parse(ChangefeedTypeValidator.nullOr("lastAccessTime", lastAccessTime, String.class)),
-            ChangefeedTypeValidator.nullOr("restoredContainerVersion", restoredContainerVersion, String.class));
+            ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class));
     }
 
     @Override
@@ -191,21 +170,6 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
     }
 
     @Override
-    public OffsetDateTime getCreationTime() {
-        return creationTime;
-    }
-
-    @Override
-    public OffsetDateTime getLastAccessTime() {
-        return lastAccessTime;
-    }
-
-    @Override
-    public String getRestoredContainerVersion() {
-        return restoredContainerVersion;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -226,17 +190,14 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
             && Objects.equals(getSourceUrl(), that.getSourceUrl())
             && Objects.equals(getBlobUrl(), that.getBlobUrl())
             && Objects.equals(isRecursive(), that.isRecursive())
-            && Objects.equals(getSequencer(), that.getSequencer())
-            && Objects.equals(getCreationTime(), that.getCreationTime())
-            && Objects.equals(getLastAccessTime(), that.getLastAccessTime())
-            && Objects.equals(getRestoredContainerVersion(), that.getRestoredContainerVersion());
+            && Objects.equals(getSequencer(), that.getSequencer());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getApi(), getClientRequestId(), getRequestId(), getETag(), getContentType(),
             getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(), getBlobUrl(),
-            isRecursive(), getSequencer(), getCreationTime(), getLastAccessTime(), getRestoredContainerVersion());
+            isRecursive(), getSequencer());
     }
 
     @Override
@@ -245,8 +206,6 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
             + ", requestId='" + requestId + '\'' + ", eTag='" + eTag + '\'' + ", contentType='" + contentType + '\''
             + ", contentLength=" + contentLength + ", blobType=" + blobType + ", contentOffset=" + contentOffset
             + ", destinationUrl='" + destinationUrl + '\'' + ", sourceUrl='" + sourceUrl + '\'' + ", blobUrl='"
-            + blobUrl + '\'' + ", recursive=" + recursive + ", sequencer='" + sequencer + '\'' + ", creationTime="
-            + creationTime + ", lastAccessTime=" + lastAccessTime + ", restoredContainerVersion='"
-            + restoredContainerVersion + '\'' + '}';
+            + blobUrl + '\'' + ", recursive=" + recursive + ", sequencer='" + sequencer + '\'' + '}';
     }
 }

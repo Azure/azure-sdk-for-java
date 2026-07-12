@@ -10,8 +10,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -22,6 +28,8 @@ import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -41,6 +49,7 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
 import java.net.URL;
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2141,5 +2150,337 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
 
         assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowBasic() {
+        // Upload a test blob
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+
+        StepVerifier
+            .create(
+                bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> {
+                assertEquals(blobName, item.getName());
+                assertNotNull(item.getProperties());
+                assertEquals(DATA.getDefaultDataSize(), item.getProperties().getContentLength());
+                assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+                assertNotNull(item.getProperties().getLastModified());
+                assertNotNull(item.getProperties().getETag());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+
+        StepVerifier.create(
+            bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata, null, null, null)
+                .thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> {
+                assertNotNull(item.getMetadata());
+                assertEquals("testvalue", item.getMetadata().get("testkey"));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowPagination() {
+        // Upload 4 blobs
+        Flux<BlockBlobItem> uploads = Flux.range(0, 4)
+            .flatMap(i -> ccAsync.getBlobAsyncClient("blob" + i)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
+
+        Mono<List<BlobItem>> result = uploads.then(ccAsync.listBlobs(options, null).byPage().doOnNext(page -> {
+            assertTrue(page.getValue().size() <= 1);
+        }).flatMap(page -> Flux.fromIterable(page.getValue())).collectList());
+
+        StepVerifier.create(result).assertNext(allBlobs -> assertEquals(4, allBlobs.size())).verifyComplete();
+
+        // Mirror the sync test's secondary assertion: requesting page size 2 yields exactly 2 blobs per page.
+        StepVerifier.create(ccAsync.listBlobs().byPage(2)).thenConsumeWhile(page -> {
+            assertEquals(2, page.getValue().size());
+            return true;
+        }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowNullUseArrowUsesXml() {
+        // Default apacheArrowEnabled is null — should use XML path without error
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options = new ListBlobsOptions();
+        assertNull(options.getStorageResponseSerializationFormat());
+
+        StepVerifier
+            .create(
+                bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> assertEquals(blobName, item.getName()))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowEncryptedBlob() {
+        // Upload a blob with CPK (customer-provided key)
+        String blobName = generateBlobName();
+        CustomerProvidedKey cpk = new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomKey()));
+        BlockBlobAsyncClient cpkClient
+            = ccAsync.getBlobAsyncClient(blobName).getCustomerProvidedKeyAsyncClient(cpk).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+
+        StepVerifier.create(cpkClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .thenMany(ccAsync.listBlobs(options, null))).assertNext(item -> {
+                assertEquals(blobName, item.getName());
+                // CPK blob should have server-encrypted = true
+                assertTrue(item.getProperties().isServerEncrypted());
+                // Metadata should be null (no metadata was set)
+                assertNull(item.getMetadata());
+            }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+
+        Mono<Response<Void>> rehydrate = Mono.empty();
+
+        if (rehydratePriority != null) {
+            rehydrate = bc.setAccessTier(AccessTier.ARCHIVE)
+                .then(bc.setAccessTierWithResponse(
+                    new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority)));
+        }
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+
+        Flux<BlobItem> response = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(rehydrate)
+            .thenMany(ccAsync.listBlobs(options, null));
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowDeserializer() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(ccAsync.getHttpPipeline())
+            .url(ccAsync.getAccountUrl())
+            .version(BlobServiceVersion.getLatest().getVersion())
+            .buildClient();
+
+        List<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono
+            = bc.uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
+                .then(impl.getContainers()
+                    .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null,
+                        null, null, null))
+                .flatMap(response -> {
+                    // Verify Content-Type is Arrow
+                    String contentType = response.getDeserializedHeaders().getContentType();
+                    assertTrue(
+                        StorageImplUtils.hasMatchingHeaderValue(contentType,
+                            Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                        "Expected Arrow content type but got: " + contentType);
+
+                    // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
+                    return FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                        .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
+                });
+
+        StepVerifier.create(testMono).assertNext(result -> {
+            // Verify pagination — single blob, no next page
+            assertNull(result.getNextMarker());
+
+            // Verify we got exactly one blob
+            assertEquals(1, result.getBlobItems().size());
+
+            BlobItemInternal item = result.getBlobItems().get(0);
+
+            // Name
+            assertNotNull(item.getName());
+            assertEquals(blobName, item.getName().getContent());
+
+            // Properties
+            assertNotNull(item.getProperties());
+            assertEquals(7L, (long) item.getProperties().getContentLength());
+            assertEquals("application/octet-stream", item.getProperties().getContentType());
+            assertNotNull(item.getProperties().getETag());
+            assertNotNull(item.getProperties().getLastModified());
+            assertNotNull(item.getProperties().getCreationTime());
+            assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+            assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+            assertTrue(item.getProperties().isAccessTierInferred());
+            assertTrue(item.getProperties().isServerEncrypted());
+            assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
+            assertEquals(LeaseStatusType.UNLOCKED, item.getProperties().getLeaseStatus());
+            assertNotNull(item.getProperties().getContentMd5());
+
+            // Metadata
+            assertNotNull(item.getMetadata());
+            assertEquals("testvalue", item.getMetadata().get("testkey"));
+
+            // Verify ModelHelper can convert to public BlobItem
+            BlobItem publicItem = ModelHelper.populateBlobItem(item);
+            assertEquals(blobName, publicItem.getName());
+            assertEquals(7L, (long) publicItem.getProperties().getContentLength());
+        }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowBasic() {
+        // Upload blobs in a directory structure
+        Flux<BlockBlobItem> uploads = Flux.concat(
+            ccAsync.getBlobAsyncClient("dir/blob1")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()),
+            ccAsync.getBlobAsyncClient("dir/blob2")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()),
+            ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+
+        Mono<List<BlobItem>> items
+            = uploads.then(ccAsync.listBlobsByHierarchy("/", options).collect(Collectors.toList()));
+
+        StepVerifier.create(items).assertNext(list -> {
+            // Root level: one prefix "dir/" and one blob "topblob"
+            assertEquals(2, list.size());
+
+            BlobItem prefixItem = list.stream().filter(BlobItem::isPrefix).findFirst().orElse(null);
+            BlobItem blobItem = list.stream().filter(i -> !i.isPrefix()).findFirst().orElse(null);
+
+            assertNotNull(prefixItem);
+            assertEquals("dir/", prefixItem.getName());
+            assertTrue(prefixItem.isPrefix());
+
+            assertNotNull(blobItem);
+            assertEquals("topblob", blobItem.getName());
+            assertFalse(blobItem.isPrefix());
+            assertNotNull(blobItem.getProperties());
+            assertEquals(DATA.getDefaultDataSize(), blobItem.getProperties().getContentLength());
+            assertEquals(BlobType.BLOCK_BLOB, blobItem.getProperties().getBlobType());
+            assertNotNull(blobItem.getProperties().getLastModified());
+            assertNotNull(blobItem.getProperties().getETag());
+        }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+
+        Mono<?> uploads = ccAsync.getBlobAsyncClient("dir/" + blobName)
+            .getBlockBlobAsyncClient()
+            .uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata, null, null, null)
+            .then(ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setPrefix("dir/")
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+
+        StepVerifier.create(uploads.thenMany(ccAsync.listBlobsByHierarchy("/", options))).assertNext(item -> {
+            assertFalse(item.isPrefix());
+            assertNotNull(item.getMetadata());
+            assertEquals("testvalue", item.getMetadata().get("testkey"));
+        }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowPagination() {
+        // Upload blobs across multiple directories
+        Flux<BlockBlobItem> uploads = Flux.concat(
+            Flux.range(0, 3)
+                .flatMap(i -> ccAsync.getBlobAsyncClient("dir" + i + "/blob")
+                    .getBlockBlobAsyncClient()
+                    .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())),
+            ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
+
+        Mono<List<BlobItem>> result
+            = uploads.then(ccAsync.listBlobsByHierarchy("/", options).byPage().doOnNext(page -> {
+                assertTrue(page.getValue().size() <= 1);
+            }).flatMap(page -> Flux.fromIterable(page.getValue())).collectList());
+
+        // 3 prefixes + 1 blob = 4 items
+        StepVerifier.create(result).assertNext(allItems -> assertEquals(4, allItems.size())).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowWithTags() {
+        // Upload a blob and set tags
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tagkey", "tagvalue");
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveTags(true));
+
+        Mono<?> upload = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(ccAsync.getBlobAsyncClient(blobName).setTags(tags));
+
+        StepVerifier.create(upload.thenMany(ccAsync.listBlobs(options, null))).assertNext(item -> {
+            assertEquals(blobName, item.getName());
+            assertNotNull(item.getTags());
+            assertEquals("tagvalue", item.getTags().get("tagkey"));
+        }).verifyComplete();
     }
 }
