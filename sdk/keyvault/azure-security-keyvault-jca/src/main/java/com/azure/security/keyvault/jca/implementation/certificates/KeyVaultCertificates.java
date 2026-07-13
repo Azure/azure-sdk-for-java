@@ -296,16 +296,23 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                 return;
             }
+        }
 
-            try {
-                Certificate loadedCertificate = currentKeyVaultClient.getCertificate(alias);
+        try {
+            Certificate loadedCertificate = currentKeyVaultClient.getCertificate(alias);
+            synchronized (this) {
+                if (loadedCertificateAliases.contains(alias)
+                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    return;
+                }
+
                 if (loadedCertificate != null) {
                     certificates.put(alias, loadedCertificate);
                     loadedCertificateAliases.add(alias);
                 }
-            } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, exception, () -> "Failed to load certificate for alias: " + alias);
             }
+        } catch (RuntimeException exception) {
+            LOGGER.log(WARNING, exception, () -> "Failed to load certificate for alias: " + alias);
         }
     }
 
@@ -322,16 +329,23 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                 return;
             }
+        }
 
-            try {
-                Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
+        try {
+            Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
+            synchronized (this) {
+                if (loadedCertificateChainAliases.contains(alias)
+                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    return;
+                }
+
                 if (loadedCertificateChain != null && loadedCertificateChain.length > 0) {
                     certificateChains.put(alias, loadedCertificateChain);
                     loadedCertificateChainAliases.add(alias);
                 }
-            } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, exception, () -> "Failed to load certificate chain for alias: " + alias);
             }
+        } catch (RuntimeException exception) {
+            LOGGER.log(WARNING, exception, () -> "Failed to load certificate chain for alias: " + alias);
         }
     }
 
@@ -348,16 +362,23 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                 return;
             }
+        }
 
-            try {
-                Key loadedKey = currentKeyVaultClient.getKey(alias, null);
+        try {
+            Key loadedKey = currentKeyVaultClient.getKey(alias, null);
+            synchronized (this) {
+                if (loadedCertificateKeyAliases.contains(alias)
+                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    return;
+                }
+
                 if (loadedKey != null) {
                     certificateKeys.put(alias, loadedKey);
                     loadedCertificateKeyAliases.add(alias);
                 }
-            } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, exception, () -> "Failed to load certificate key for alias: " + alias);
             }
+        } catch (RuntimeException exception) {
+            LOGGER.log(WARNING, exception, () -> "Failed to load certificate key for alias: " + alias);
         }
     }
 
