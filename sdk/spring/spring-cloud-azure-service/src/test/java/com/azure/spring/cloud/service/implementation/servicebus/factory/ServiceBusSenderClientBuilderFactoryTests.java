@@ -3,11 +3,15 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientTestProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,10 +57,11 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
 
         factory.build();
 
-        org.mockito.InOrder inOrder = org.mockito.Mockito.inOrder(rootBuilder, customizer);
+        InOrder inOrder = Mockito.inOrder(rootBuilder, customizer);
         inOrder.verify(rootBuilder, atLeast(1))
-               .clientOptions(org.mockito.ArgumentMatchers.any(com.azure.core.util.ClientOptions.class));
+               .clientOptions(ArgumentMatchers.any(ClientOptions.class));
         inOrder.verify(customizer, times(1)).customize(rootBuilder);
+    }
 
     @Override
     protected ServiceBusSenderClientTestProperties createMinimalServiceProperties() {
