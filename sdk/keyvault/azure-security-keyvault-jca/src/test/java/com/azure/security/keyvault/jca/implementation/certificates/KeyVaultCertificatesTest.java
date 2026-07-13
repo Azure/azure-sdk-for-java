@@ -52,6 +52,16 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testGetAliasesReturnsSnapshot() {
+        List<String> aliasSnapshot = keyVaultCertificates.getAliases();
+        Assertions.assertTrue(aliasSnapshot.contains("myalias"));
+
+        aliasSnapshot.clear();
+
+        Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
+    }
+
+    @Test
     public void testGetKey() {
         Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
     }
@@ -74,8 +84,44 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testGetCertificatesReturnsSnapshot() {
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
+
+        Map<String, Certificate> certificateSnapshot = keyVaultCertificates.getCertificates();
+        Assertions.assertEquals(certificate, certificateSnapshot.get("myalias"));
+
+        certificateSnapshot.clear();
+
+        Assertions.assertEquals(certificate, keyVaultCertificates.getCertificates().get("myalias"));
+    }
+
+    @Test
     public void testGetCertificateChain() {
         Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+    }
+
+    @Test
+    public void testGetCertificateChainReturnsClone() {
+        Certificate[] firstRead = keyVaultCertificates.getCertificateChain("myalias");
+        Assertions.assertNotNull(firstRead);
+
+        firstRead[0] = null;
+
+        Certificate[] secondRead = keyVaultCertificates.getCertificateChain("myalias");
+        Assertions.assertNotNull(secondRead);
+        Assertions.assertEquals(certificate, secondRead[0]);
+    }
+
+    @Test
+    public void testGetCertificateChainsReturnsSnapshot() {
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+
+        Map<String, Certificate[]> chainSnapshot = keyVaultCertificates.getCertificateChains();
+        Assertions.assertArrayEquals(certificateChain, chainSnapshot.get("myalias"));
+
+        chainSnapshot.clear();
+
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChains().get("myalias"));
     }
 
     @Test

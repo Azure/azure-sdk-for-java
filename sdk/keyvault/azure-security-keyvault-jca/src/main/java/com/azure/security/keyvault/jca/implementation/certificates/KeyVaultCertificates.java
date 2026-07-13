@@ -227,8 +227,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
     @Override
     public List<String> getAliases() {
         refreshCertificatesIfNeeded();
-
-        return aliases;
+        synchronized (this) {
+            return new ArrayList<>(aliases);
+        }
     }
 
     /**
@@ -239,7 +240,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
     @Override
     public Map<String, Certificate> getCertificates() {
         refreshCertificatesIfNeeded();
-        return certificates;
+        synchronized (this) {
+            return new HashMap<>(certificates);
+        }
     }
 
     /**
@@ -249,7 +252,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
     @Override
     public Map<String, Certificate[]> getCertificateChains() {
         refreshCertificatesIfNeeded();
-        return certificateChains;
+        synchronized (this) {
+            return copyCertificateChains(certificateChains);
+        }
     }
 
     /**
@@ -300,8 +305,15 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public Certificate[] getCertificateChain(String alias) {
         loadCertificateChainIfNeeded(alias);
         synchronized (this) {
-            return certificateChains.get(alias);
+            Certificate[] chain = certificateChains.get(alias);
+            return chain == null ? null : chain.clone();
         }
+    }
+
+    private Map<String, Certificate[]> copyCertificateChains(Map<String, Certificate[]> source) {
+        Map<String, Certificate[]> copiedChains = new HashMap<>();
+        source.forEach((alias, chain) -> copiedChains.put(alias, chain == null ? null : chain.clone()));
+        return copiedChains;
     }
 
     private void refreshCertificatesIfNeeded() {

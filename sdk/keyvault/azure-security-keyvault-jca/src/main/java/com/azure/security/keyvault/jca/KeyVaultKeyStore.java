@@ -343,9 +343,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
             keyVaultCertificates.refreshCertificates();
-            return keyVaultCertificates.getCertificateChain(alias);
+            Certificate[] refreshedChain = keyVaultCertificates.getCertificateChain(alias);
+            return refreshedChain == null ? null : refreshedChain.clone();
         }
-        return certificates;
+        return certificates == null ? null : certificates.clone();
     }
 
     /**
