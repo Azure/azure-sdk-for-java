@@ -77,7 +77,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         } else {
             this.serviceBusClientBuilderFactory = new ServiceBusClientBuilderFactory(properties);
             // Remember the customizers instead of adding them to the nested factory, so they are applied to the
-            // underlying ServiceBusClientBuilder exactly once, as the last step in build(). This ensures they win over
+            // underlying ServiceBusClientBuilder as the last step of each build() call. This ensures they win over
             // the property-derived configuration this factory redirects onto the shared builder (for example
             // ClientOptions carrying TracingOptions). See #49742.
             this.serviceBusClientBuilderCustomizers = serviceBusClientBuilderCustomizers;
@@ -102,8 +102,8 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         // underlying ServiceBusClientBuilder from the properties (including the Spring identifier). The customizers are
         // deliberately not applied during that step.
         T builder = super.build();
-        // Apply the ServiceBusClientBuilder customizers exactly once, as the last step, so they take precedence over the
-        // property-derived configuration redirected onto the underlying builder. See #49742.
+        // Apply the ServiceBusClientBuilder customizers as the last step of this build() call,
+        // so they take precedence over the property-derived configuration redirected onto the underlying builder. See #49742.
         if (!isShareServiceBusClientBuilder() && this.serviceBusClientBuilderCustomizers != null) {
             ServiceBusClientBuilder parentServiceBusClientBuilder = getServiceBusClientBuilder();
             this.serviceBusClientBuilderCustomizers.forEach(customizer -> customizer.customize(parentServiceBusClientBuilder));
