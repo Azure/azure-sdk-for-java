@@ -28,7 +28,6 @@ If you are a **consumer** of the SDK looking for usage guidance, start at the [U
 | [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) | `version_client.txt`, dependency tags, incrementing versions |
 | [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md) | Create a new SDK module: dir structure, POM, versioning, CODEOWNERS |
 | [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md) | End-to-end workflow: generate → build → test → release |
-| [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) | OpenAPI 2.0 / Swagger code generation options |
 | [Writing Performance Tests](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-tests.md) | Set up and run `perf-test-core` benchmarks |
 | [JavaDoc & Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md) | Javadoc standards and codesnippet-maven-plugin workflow |
 | [Access Helpers](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/access-helpers.md) | Cross-package internal access without public APIs |

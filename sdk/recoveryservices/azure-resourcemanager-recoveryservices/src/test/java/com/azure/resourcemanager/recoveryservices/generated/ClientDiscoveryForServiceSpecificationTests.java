@@ -12,10 +12,10 @@ public final class ClientDiscoveryForServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryForServiceSpecification model = BinaryData.fromString(
-            "{\"logSpecifications\":[{\"name\":\"zcxtbzsgfyccsn\",\"displayName\":\"mdwzjeiachboo\",\"blobDuration\":\"lnrosfqp\"},{\"name\":\"ehzzvypyqrim\",\"displayName\":\"npvswjdkirso\",\"blobDuration\":\"qxhcrmn\"}]}")
+            "{\"logSpecifications\":[{\"name\":\"maajrmvdjwzrlo\",\"displayName\":\"clwhijcoejctbz\",\"blobDuration\":\"s\"}]}")
             .toObject(ClientDiscoveryForServiceSpecification.class);
-        Assertions.assertEquals("zcxtbzsgfyccsn", model.logSpecifications().get(0).name());
-        Assertions.assertEquals("mdwzjeiachboo", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("lnrosfqp", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("maajrmvdjwzrlo", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("clwhijcoejctbz", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("s", model.logSpecifications().get(0).blobDuration());
     }
 }

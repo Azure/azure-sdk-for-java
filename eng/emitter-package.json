@@ -7,6 +7,7 @@
     "@azure-tools/openai-typespec": "1.20.0",
     "@azure-tools/typespec-autorest": "0.69.1",
     "@azure-tools/typespec-azure-core": "0.69.0",
+    "@azure-tools/typespec-azure-portal-core": "0.69.0",
     "@azure-tools/typespec-azure-resource-manager": "0.69.2",
     "@azure-tools/typespec-azure-rulesets": "0.69.2",
     "@azure-tools/typespec-client-generator-core": "0.69.2",

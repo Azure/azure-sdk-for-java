@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (2026-07-07)
+## 1.0.0-beta.3 (2026-07-12)
 
 - Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,8 +8,8 @@
 
 #### `models.AzureResourceSignal` was modified
 
-* `dimension()` was removed
 * `withDimension(java.lang.String)` was removed
+* `dimension()` was removed
 
 #### `models.ThresholdRuleV2` was modified
 
@@ -18,8 +18,8 @@
 
 #### `models.ResourceMetricSignalDefinitionProperties` was modified
 
-* `dimension()` was removed
 * `withDimension(java.lang.String)` was removed
+* `dimension()` was removed
 
 ### Features Added
 
@@ -55,8 +55,8 @@
 
 #### `models.AzureResourceSignals` was modified
 
-* `resourceHealth()` was added
 * `withResourceHealth(models.AzureResourceHealthSignal)` was added
+* `resourceHealth()` was added
 
 #### `models.SignalOperator` was modified
 
@@ -68,31 +68,31 @@
 
 #### `models.EntityHistoryRequest` was modified
 
-* `withNextMarker(java.lang.String)` was added
 * `top()` was added
 * `withTop(java.lang.Integer)` was added
+* `withNextMarker(java.lang.String)` was added
 * `nextMarker()` was added
 
 #### `models.DiscoveryRuleProperties` was modified
 
-* `addResourceHealthSignal()` was added
 * `withAddResourceHealthSignal(models.ResourceHealthAvailabilityStateSignalBehavior)` was added
+* `addResourceHealthSignal()` was added
 
 #### `models.ThresholdRuleV2` was modified
 
+* `withSensitivity(models.DynamicThresholdSensitivity)` was added
+* `withThreshold(java.lang.Double)` was added
 * `sensitivity()` was added
 * `lookBackWindow()` was added
 * `withLookBackWindow(models.LookBackWindow)` was added
-* `withSensitivity(models.DynamicThresholdSensitivity)` was added
-* `withThreshold(java.lang.Double)` was added
 
 #### `models.Entities` was modified
 
-* `getDataAnnotationsWithResponse(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest,com.azure.core.util.Context)` was added
-* `getSignalRecommendationsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `getDataAnnotations(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest)` was added
 * `getSignalRecommendations(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getSignalRecommendationsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `addDataAnnotation(java.lang.String,java.lang.String,java.lang.String,models.AddDataAnnotationRequest)` was added
+* `getDataAnnotations(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest)` was added
+* `getDataAnnotationsWithResponse(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest,com.azure.core.util.Context)` was added
 * `addDataAnnotationWithResponse(java.lang.String,java.lang.String,java.lang.String,models.AddDataAnnotationRequest,com.azure.core.util.Context)` was added
 
 #### `models.EntityHistoryResponse` was modified
@@ -101,18 +101,18 @@
 
 #### `models.Entity` was modified
 
+* `getSignalRecommendationsWithResponse(com.azure.core.util.Context)` was added
 * `getSignalRecommendations()` was added
-* `getDataAnnotations(models.GetDataAnnotationsRequest)` was added
 * `addDataAnnotation(models.AddDataAnnotationRequest)` was added
 * `addDataAnnotationWithResponse(models.AddDataAnnotationRequest,com.azure.core.util.Context)` was added
-* `getSignalRecommendationsWithResponse(com.azure.core.util.Context)` was added
 * `getDataAnnotationsWithResponse(models.GetDataAnnotationsRequest,com.azure.core.util.Context)` was added
+* `getDataAnnotations(models.GetDataAnnotationsRequest)` was added
 
 #### `models.SignalHistoryRequest` was modified
 
-* `withTop(java.lang.Integer)` was added
-* `withNextMarker(java.lang.String)` was added
 * `nextMarker()` was added
+* `withNextMarker(java.lang.String)` was added
+* `withTop(java.lang.Integer)` was added
 * `top()` was added
 
 #### `models.SignalHistoryResponse` was modified

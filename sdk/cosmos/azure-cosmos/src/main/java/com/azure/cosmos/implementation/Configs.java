@@ -55,6 +55,12 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Kill-switch to opt out of routing QueryPlan requests through the thin client (Gateway V2).
+    // Defaults to enabled; set to false to force QueryPlan requests back onto Gateway V1.
+    private static final boolean DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED = true;
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED = "COSMOS.THINCLIENT_QUERY_PLAN_ENABLED";
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE = "COSMOS_THINCLIENT_QUERY_PLAN_ENABLED";
+
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -217,6 +223,12 @@ public class Configs {
     // whether to use old tracing format instead of semantic profile
     private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
     private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
+
+    // Whether multiple CosmosClient instances configured with the same service
+    // endpoint share a single partition-key-range cache. Enabled by default.
+    private static final String SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED =
+        "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
+    private static final boolean DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED = true;
 
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
@@ -583,6 +595,20 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    public static boolean isThinClientQueryPlanEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_QUERY_PLAN_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED;
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {
@@ -1080,6 +1106,12 @@ public class Configs {
         return getJVMConfigAsBoolean(
             USE_LEGACY_TRACING,
             DEFAULT_USE_LEGACY_TRACING);
+    }
+
+    public static boolean isSharedPartitionKeyRangeCacheEnabled() {
+        return getJVMConfigAsBoolean(
+            SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED,
+            DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
