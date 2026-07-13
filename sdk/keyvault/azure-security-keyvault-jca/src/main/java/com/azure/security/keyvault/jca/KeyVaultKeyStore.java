@@ -58,7 +58,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
-    static final String CONFIGURED_CERTIFICATES_PROPERTY = "azure.keyvault.jca.certificates";
+    static final String CERTIFICATES_FILTER_PATTERNS_PROPERTY = "azure.keyvault.jca.certificates-filter-patterns";
 
     /**
      * Stores the Jre key store certificates.
@@ -150,9 +150,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
-        keyVaultCertificates
-            = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification, getConfiguredKeyVaultCertificateAliases());
+        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
+            managedIdentity, accessToken, disableChallengeResourceVerification, getKeyVaultCertificateFilterPatterns());
         LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
@@ -173,11 +172,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .orElse(0L);
     }
 
-    Set<String> getConfiguredKeyVaultCertificateAliases() {
-        return Optional.ofNullable(System.getProperty(CONFIGURED_CERTIFICATES_PROPERTY))
+    Set<String> getKeyVaultCertificateFilterPatterns() {
+        return Optional.ofNullable(System.getProperty(CERTIFICATES_FILTER_PATTERNS_PROPERTY))
             .map(value -> Stream.of(value.split(","))
                 .map(String::trim)
-                .filter(alias -> !alias.isEmpty())
+                .filter(pattern -> !pattern.isEmpty())
                 .collect(Collectors.toSet()))
             .orElse(Collections.emptySet());
     }

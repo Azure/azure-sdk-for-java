@@ -152,6 +152,33 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testFilterPatternsIncludeRegex() {
+        List<String> aliases = new ArrayList<>();
+        aliases.add("prod-cert");
+        aliases.add("dev-cert");
+        when(keyVaultClient.getAliases()).thenReturn(aliases);
+
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("^prod-.*"));
+
+        Assertions.assertEquals(Collections.singletonList("prod-cert"), keyVaultCertificates.getAliases());
+        verify(keyVaultClient, times(1)).getAliases();
+    }
+
+    @Test
+    public void testFilterPatternsExcludeRegex() {
+        List<String> aliases = new ArrayList<>();
+        aliases.add("prod-active");
+        aliases.add("prod-deprecated");
+        when(keyVaultClient.getAliases()).thenReturn(aliases);
+
+        Set<String> filterPatterns = new HashSet<>(Arrays.asList("^prod-.*", "!^prod-deprecated$"));
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, filterPatterns);
+
+        Assertions.assertEquals(Collections.singletonList("prod-active"), keyVaultCertificates.getAliases());
+        verify(keyVaultClient, times(1)).getAliases();
+    }
+
+    @Test
     public void testConfiguredAliasesFilterAfterRefresh() {
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
 
@@ -164,16 +191,18 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(refreshedAliases.contains("myalias"));
         Assertions.assertFalse(refreshedAliases.contains("otheralias"));
         Assertions.assertFalse(refreshedAliases.contains("new"));
-        verify(keyVaultClient, never()).getAliases();
+        verify(keyVaultClient, times(2)).getAliases();
     }
 
     @Test
-    public void testConfiguredAliasesDoNotCallListApi() {
+    public void testConfiguredAliasesFilterUsesListApi() {
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("configured-alias", "other-alias"));
+
         keyVaultCertificates
             = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("configured-alias"));
 
         Assertions.assertEquals(Collections.singletonList("configured-alias"), keyVaultCertificates.getAliases());
-        verify(keyVaultClient, never()).getAliases();
+        verify(keyVaultClient, times(1)).getAliases();
     }
 
     @Test
@@ -182,7 +211,15 @@ public class KeyVaultCertificatesTest {
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, configuredAliases);
 
         Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
-        verify(keyVaultClient, never()).getAliases();
+        verify(keyVaultClient, times(1)).getAliases();
+    }
+
+    @Test
+    public void testInvalidFilterPatternThrows() {
+        Set<String> filterPatterns = new HashSet<>(Collections.singletonList("[invalid"));
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new KeyVaultCertificates(60_000, keyVaultClient, filterPatterns));
     }
 
     @Test

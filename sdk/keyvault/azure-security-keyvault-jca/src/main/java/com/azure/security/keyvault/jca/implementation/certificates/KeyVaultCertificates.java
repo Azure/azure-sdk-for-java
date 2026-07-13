@@ -19,6 +19,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static java.util.logging.Level.WARNING;
 
@@ -72,7 +74,11 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
-    private final Set<String> configuredCertificateAliases;
+    private final Set<String> certificateFilterPatterns;
+
+    private final List<Pattern> includeAliasPatterns;
+
+    private final List<Pattern> excludeAliasPatterns;
 
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
@@ -82,11 +88,13 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
-        Set<String> configuredCertificateAliases) {
+        Set<String> certificateFilterPatterns) {
 
         this.refreshInterval = refreshInterval;
-        this.configuredCertificateAliases
-            = new HashSet<>(Optional.ofNullable(configuredCertificateAliases).orElse(Collections.emptySet()));
+        this.certificateFilterPatterns
+            = new HashSet<>(Optional.ofNullable(certificateFilterPatterns).orElse(Collections.emptySet()));
+        this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
+        this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
 
         updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
             disableChallengeResourceVerification);
@@ -97,11 +105,57 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient,
-        Set<String> configuredCertificateAliases) {
+        Set<String> certificateFilterPatterns) {
         this.refreshInterval = refreshInterval;
         setKeyVaultClient(keyVaultClient);
-        this.configuredCertificateAliases
-            = new HashSet<>(Optional.ofNullable(configuredCertificateAliases).orElse(Collections.emptySet()));
+        this.certificateFilterPatterns
+            = new HashSet<>(Optional.ofNullable(certificateFilterPatterns).orElse(Collections.emptySet()));
+        this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
+        this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
+    }
+
+    private List<Pattern> getAliasPatterns(Set<String> filterPatterns, boolean excludePatterns) {
+        return Optional.ofNullable(filterPatterns)
+            .orElse(Collections.emptySet())
+            .stream()
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(pattern -> !pattern.isEmpty())
+            .filter(pattern -> pattern.startsWith("!") == excludePatterns)
+            .map(pattern -> {
+                if (excludePatterns) {
+                    return pattern.substring(1);
+                }
+                if (pattern.startsWith("+")) {
+                    return pattern.substring(1);
+                }
+                return pattern;
+            })
+            .filter(pattern -> !pattern.isEmpty())
+            .map(this::compileRegexPattern)
+            .collect(Collectors.toList());
+    }
+
+    private Pattern compileRegexPattern(String regexPattern) {
+        try {
+            return Pattern.compile(regexPattern);
+        } catch (PatternSyntaxException exception) {
+            throw new IllegalArgumentException("Invalid certificate filter regex pattern: " + regexPattern, exception);
+        }
+    }
+
+    private boolean shouldIncludeAlias(String alias) {
+        if (alias == null) {
+            return false;
+        }
+
+        boolean included = includeAliasPatterns.isEmpty()
+            || includeAliasPatterns.stream().anyMatch(pattern -> pattern.matcher(alias).matches());
+        if (!included) {
+            return false;
+        }
+
+        return excludeAliasPatterns.stream().noneMatch(pattern -> pattern.matcher(alias).matches());
     }
 
     private synchronized KeyVaultClient getKeyVaultClient() {
@@ -261,17 +315,13 @@ public final class KeyVaultCertificates implements AzureCertificates {
             return;
         }
 
-        if (configuredCertificateAliases.isEmpty()) {
-            // If aliases are not configured, discover aliases from Key Vault.
-            aliases = new ArrayList<>(
-                Optional.ofNullable(currentKeyVaultClient.getAliases()).orElse(Collections.emptyList()));
-        } else {
-            // If aliases are configured, avoid the list API and only use the configured aliases.
-            aliases = configuredCertificateAliases.stream()
-                .filter(Objects::nonNull)
-                .sorted()
-                .collect(Collectors.toCollection(ArrayList::new));
-        }
+        // Discover aliases from Key Vault and apply include/exclude regex filters.
+        aliases = Optional.ofNullable(currentKeyVaultClient.getAliases())
+            .orElse(Collections.emptyList())
+            .stream()
+            .filter(this::shouldIncludeAlias)
+            .sorted()
+            .collect(Collectors.toCollection(ArrayList::new));
 
         loadedCertificateAliases.clear();
         loadedCertificateChainAliases.clear();

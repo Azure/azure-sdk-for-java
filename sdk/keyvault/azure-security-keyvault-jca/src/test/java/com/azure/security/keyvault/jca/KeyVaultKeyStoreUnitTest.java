@@ -97,26 +97,27 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetConfiguredKeyVaultCertificateAliases() {
-        String originalConfiguredCertificates = System.getProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+    public void testGetKeyVaultCertificateFilterPatterns() {
+        String originalFilterPatterns = System.getProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
         try {
-            System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            System.clearProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
             KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
-            assertTrue(keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases().isEmpty());
+            assertTrue(keyVaultKeyStore.getKeyVaultCertificateFilterPatterns().isEmpty());
 
-            System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, "cert1, cert2 ,, cert3 ");
+            System.setProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY,
+                "^prod-.*,!^prod-deprecated-.*,,myalias");
             keyVaultKeyStore = new KeyVaultKeyStore();
-            Set<String> aliases = keyVaultKeyStore.getConfiguredKeyVaultCertificateAliases();
+            Set<String> patterns = keyVaultKeyStore.getKeyVaultCertificateFilterPatterns();
 
-            assertEquals(3, aliases.size());
-            assertTrue(aliases.contains("cert1"));
-            assertTrue(aliases.contains("cert2"));
-            assertTrue(aliases.contains("cert3"));
+            assertEquals(3, patterns.size());
+            assertTrue(patterns.contains("^prod-.*"));
+            assertTrue(patterns.contains("!^prod-deprecated-.*"));
+            assertTrue(patterns.contains("myalias"));
         } finally {
-            if (originalConfiguredCertificates == null) {
-                System.clearProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY);
+            if (originalFilterPatterns == null) {
+                System.clearProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
             } else {
-                System.setProperty(KeyVaultKeyStore.CONFIGURED_CERTIFICATES_PROPERTY, originalConfiguredCertificates);
+                System.setProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY, originalFilterPatterns);
             }
         }
     }
