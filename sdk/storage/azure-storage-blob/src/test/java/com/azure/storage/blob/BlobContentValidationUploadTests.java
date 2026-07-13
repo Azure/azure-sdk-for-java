@@ -814,7 +814,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadWithProgressAndNonNoneContentValidationThrows(ContentValidationAlgorithm algorithm) {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
@@ -833,7 +833,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadFromFileWithProgressAndNonNoneContentValidationThrows(ContentValidationAlgorithm algorithm)
         throws IOException {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         File tempFile = getRandomFile(TEN_MB);
 
@@ -858,7 +858,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadWithCrc64RoundTripDataIntegrity() {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
         InputStream data = new ByteArrayInputStream(randomData);
@@ -876,7 +876,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadWithStructuredMessageRoundTripDataIntegrity() {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
@@ -895,7 +895,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedWithStructuredMessageRoundTripDataIntegrity() {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
@@ -916,7 +916,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void blockBlobSimpleUploadRoundTripDataIntegrity() {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient blobClient = cc.getBlobClient(generateBlobName());
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
@@ -934,7 +934,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void appendBlockRoundTripDataIntegrity() {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient blobClient = cc.getBlobClient(generateBlobName());
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
@@ -952,7 +952,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadPagesRoundTripDataIntegrity() {
-        BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient blobClient = cc.getBlobClient(generateBlobName());
         PageBlobClient client = blobClient.getPageBlobClient();
         client.create(FOUR_MB_PAGE_ALIGNED);
 
@@ -971,7 +971,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @Test
     public void uploadFromFileRoundTripDataIntegrity() throws IOException {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         File tempFile = File.createTempFile("blob-cv-roundtrip", ".bin");
@@ -1005,7 +1005,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient client = cc.getBlobClient(generateBlobName());
             File sourceFile = getRandomFile(chosenPayloadSizeBytes);
             File outFile = Files.createTempFile("blob-cv-live-par-dl", ".bin").toFile();
             outFile.deleteOnExit();
@@ -1038,7 +1038,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient blobClient = cc.getBlobClient(generateBlobName());
             BlockBlobClient client = blobClient.getBlockBlobClient();
             String blockId = getBlockID();
 
@@ -1075,7 +1075,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 LIVE_RANDOM_SEQUENTIAL_APPEND_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient blobClient = cc.getBlobClient(generateBlobName());
             AppendBlobClient client = blobClient.getAppendBlobClient();
             File sourceFile = getRandomFile(chosenPayloadSizeBytes);
             File outFile = Files.createTempFile("blob-cv-live-append-blocks-dl", ".bin").toFile();
@@ -1126,7 +1126,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient client = cc.getBlobClient(generateBlobName());
             File sourceFile = getRandomFile(chosenPayloadSizeBytes);
             File outFile = Files.createTempFile("blob-cv-live-uploadfromfile-dl", ".bin").toFile();
             outFile.deleteOnExit();
@@ -1156,7 +1156,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient blobClient = cc.getBlobClient(generateBlobName());
             BlockBlobClient client = blobClient.getBlockBlobClient();
 
             // Explicit parallel-transfer tuning (8 MiB blocks × concurrency 8) on the stream ingest path.
@@ -1197,7 +1197,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             LIVE_RANDOM_PARALLEL_PAYLOAD_MAX_BYTES_INCLUSIVE + 1);
         try {
             String prefix = "chosenPayloadSizeBytes=" + chosenPayloadSizeBytes + ". ";
-            BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+            BlobClient blobClient = cc.getBlobClient(generateBlobName());
             BlockBlobClient client = blobClient.getBlockBlobClient();
             File sourceFile = getRandomFile(chosenPayloadSizeBytes);
             File outFile = Files.createTempFile("blob-cv-live-sbc-dl", ".bin").toFile();
@@ -1276,7 +1276,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     private void assertParallelUploadFuzzyRoundTrip(String caseKind, int payloadBytes, long segmentBytes,
         int maxConcurrency) throws IOException {
-        BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+        BlobClient client = cc.getBlobClient(generateBlobName());
 
         ParallelTransferOptions parallelOptions = new ParallelTransferOptions().setBlockSizeLong(segmentBytes)
             .setMaxSingleUploadSizeLong(segmentBytes)

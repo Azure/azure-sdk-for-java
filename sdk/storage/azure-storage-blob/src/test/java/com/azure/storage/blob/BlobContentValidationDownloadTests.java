@@ -44,7 +44,6 @@ import java.io.OutputStream;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
@@ -79,8 +78,6 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MIN_BYTES_EXCLUSIVE = 256L * Constants.MB;
     private static final long LIVE_RANDOM_PARALLEL_DOWNLOAD_PAYLOAD_MAX_BYTES_INCLUSIVE = 500L * Constants.MB;
-
-    private final List<File> createdFiles = new ArrayList<>();
 
     private File createRandomFile(Path tempDir, int size) throws IOException {
         File file = Files.createTempFile(tempDir, "blob-cv-source", ".bin").toFile();
@@ -157,7 +154,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         })
     public void downloadToFileWithResponseContentValidation(int fileSize, @TempDir Path tempDir) throws IOException {
         File file = createRandomFile(tempDir, fileSize);
-        File outFile = tempDir.resolve("download.bin").toFile();
+        File outFile = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.uploadFromFile(file.toPath().toString(), true);
@@ -189,7 +186,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     public void downloadToFileLargeWithResponseContentValidation(int fileSize, @TempDir Path tempDir)
         throws IOException {
         File file = createRandomFile(tempDir, fileSize);
-        File outFile = tempDir.resolve("download.bin").toFile();
+        File outFile = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.uploadFromFile(file.toPath().toString(), true);
@@ -458,10 +455,10 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptionsWithoutContentVal
             = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
 
-        File fileWithContentVal = createRandomFile(tempDir, 10 * Constants.MB);
-        File outFileWithContentVal = tempDir.resolve("withcontentval.bin").toFile();
-        File fileWithoutContentVal = createRandomFile(tempDir, 10 * Constants.MB);
-        File outFileWithoutContentVal = tempDir.resolve("withoutcontentval.bin").toFile();
+        createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
+        createRandomFile(tempDir, 10 * Constants.MB);
+        File outFileWithoutContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
 
         Files.deleteIfExists(outFileWithContentVal.toPath());
         Files.deleteIfExists(outFileWithoutContentVal.toPath());
@@ -555,7 +552,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
     /**
      * Live-only random-size parallel download fuzzy round-trip. Each run draws a per-run payload size in
      * {@code (256 MiB, 500 MiB]} (matches the encoder fuzzy upload range) and exercises both CRC64 and AUTO
-     * content-validation algorithms so the structured-message decoder is tested against payloads whose total size
+     * content-validation algorithms. The structured-message decoder is tested against payloads whose total size
      * varies per run in addition to the random byte contents that the deterministic grids already exercise. Kept
      * separate from the parameterized {@link #fuzzyParallelDownloadLargeMultiPartRoundTrip(int, long, int)} so the
      * deterministic per-grid round-trips and the randomized round-trip don't share work or cost.
@@ -589,10 +586,8 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         if (payloadBytes >= FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
             File sourceFile = getRandomFile(payloadBytes);
             sourceFile.deleteOnExit();
-            createdFiles.add(sourceFile);
             File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl", ".bin").toFile();
             outFile.deleteOnExit();
-            createdFiles.add(outFile);
             Files.deleteIfExists(outFile.toPath());
 
             BlobUploadFromFileOptions uploadOptions
@@ -616,7 +611,6 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
             if (payloadBytes > blockSizeBytes) {
                 File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-mp", ".bin").toFile();
                 outFile.deleteOnExit();
-                createdFiles.add(outFile);
                 Files.deleteIfExists(outFile.toPath());
 
                 BlobDownloadToFileOptions downloadOptions = new BlobDownloadToFileOptions(outFile.toPath().toString())
