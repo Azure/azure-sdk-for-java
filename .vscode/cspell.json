@@ -484,7 +484,8 @@
         "jfinancialjersey",
         "noprompt",
         "PKIX",
-        "trustcacerts"
+        "trustcacerts",
+        "yourregistry"
       ]
     },
     {

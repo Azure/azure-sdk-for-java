@@ -40,7 +40,7 @@ ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
 java -jar "$JAR" deploy \
   --endpoint "$ENDPOINT" \
   --name my-agent \
-  --image myacr.azurecr.io/my-agent:latest \
+  --image yourregistry.azurecr.io/my-agent:latest \
   --size large \
   --model gpt-5.4 \
   --env LOG_LEVEL=debug
@@ -96,7 +96,7 @@ file. The nested `env` block may be a map or a list of `KEY=VALUE` strings. See
 ```yaml
 endpoint: https://<account>.services.ai.azure.com/api/projects/<project>
 name: my-agent
-image: myacr.azurecr.io/my-agent:latest
+image: yourregistry.azurecr.io/my-agent:latest
 size: large
 model: gpt-5.4
 env:

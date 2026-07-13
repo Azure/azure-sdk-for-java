@@ -17,7 +17,7 @@
 #   ./hosted-agent-cli.sh deploy \
 #     --endpoint "https://<account>.services.ai.azure.com/api/projects/<project>" \
 #     --name my-agent \
-#     --image myacr.azurecr.io/my-agent:latest \
+#     --image yourregistry.azurecr.io/my-agent:latest \
 #     --model gpt-5.4 --env LOG_LEVEL=debug
 #
 #   ./hosted-agent-cli.sh status --endpoint "$ENDPOINT" --name my-agent

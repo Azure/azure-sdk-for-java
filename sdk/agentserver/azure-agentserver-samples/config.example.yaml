@@ -12,7 +12,7 @@ endpoint: https://<account>.services.ai.azure.com/api/projects/<project>
 name: my-agent
 
 # deploy-specific
-image: myacr.azurecr.io/my-agent:latest
+image: yourregistry.azurecr.io/my-agent:latest
 # Sandbox size: small (0.5 vCPU/1Gi), medium (1 vCPU/2Gi) or large (2 vCPU/4Gi)
 size: medium
 model: gpt-5.4
