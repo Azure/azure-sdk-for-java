@@ -43,7 +43,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     /**
      * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with the properties and the collection of
-     * @{link ServiceBusClientBuilder} customizers.
+     *  {@link ServiceBusClientBuilder} customizers.
      * @param properties the properties describing the service bus sub client, which could be a sender, a receiver or
      *                   a processor.
      * @param serviceClientBuilderCustomizers the collection of customizers for the service bus client builder.
