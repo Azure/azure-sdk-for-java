@@ -8,6 +8,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -27,12 +30,14 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayout;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
@@ -57,6 +62,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
@@ -77,6 +83,7 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -1764,6 +1771,45 @@ public class BlobClientBase {
             = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, BlobPropertiesConstructorProxy
             .create(new BlobPropertiesInternalGetProperties(response.getDeserializedHeaders())));
+    }
+
+    /**
+     * Returns the blob's layout.
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response emitting all blob layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobLayoutInfo> getLayout(BlobGetLayoutOptions options, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+
+        BiFunction<String, Integer, PagedResponse<BlobLayoutInfo>> pageRetriever = (continuationToken, pageSize) -> {
+            BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
+            BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+                ? new BlobRequestConditions()
+                : finalOptions.getRequestConditions();
+            Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
+
+            Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> operation = () -> this.azureBlobStorage.getBlobs()
+                .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken, finalPageSize,
+                    null, range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey,
+                    finalContext);
+
+            ResponseBase<BlobsGetLayoutHeaders, BlobLayout> response
+                = sendRequest(operation, null, BlobStorageException.class);
+            BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
+            BlobLayout layout = response.getValue();
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                value == null ? Collections.emptyList() : Collections.singletonList(value),
+                layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+        };
+
+        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }
 
     /**

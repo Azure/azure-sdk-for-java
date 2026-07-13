@@ -8,6 +8,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
@@ -30,6 +33,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayout;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
@@ -57,6 +61,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -75,6 +80,7 @@ import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
@@ -1802,6 +1808,43 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.getBlobs()
             .getPropertiesNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null, null,
                 null, null, null, null, null, null, customerProvidedKey, context);
+    }
+
+    /**
+     * Returns the blob's layout.
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @return A reactive response emitting all blob layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BlobLayoutInfo> getLayout(BlobGetLayoutOptions options) {
+        return new PagedFlux<>(pageSize -> withContext(context -> getLayoutSegment(null, options, pageSize, context)),
+            (continuationToken,
+                pageSize) -> withContext(context -> getLayoutSegment(continuationToken, options, pageSize, context)));
+    }
+
+    private Mono<PagedResponse<BlobLayoutInfo>> getLayoutSegment(String marker, BlobGetLayoutOptions options,
+        Integer pageSize, Context context) {
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+        BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
+        BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new BlobRequestConditions()
+            : finalOptions.getRequestConditions();
+        Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.getBlobs()
+            .getLayoutWithResponseAsync(containerName, blobName, snapshot, versionId, marker, finalPageSize, null,
+                range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            .map(response -> {
+                BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
+                BlobLayout layout = response.getValue();
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    value == null ? Collections.emptyList() : Collections.singletonList(value),
+                    layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+            });
     }
 
     /**
