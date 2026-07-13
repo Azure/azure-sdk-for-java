@@ -98,15 +98,17 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     @Override
     public T build() {
-        // super.build() creates the sub-client builder and, in the non-shared path, lazily builds and configures the
-        // underlying ServiceBusClientBuilder from the properties (including the Spring identifier). The customizers are
-        // deliberately not applied during that step.
+        // super.build() creates the sub-client builder and, in the non-shared path, lazily builds and configures
+        // the underlying ServiceBusClientBuilder from the properties (including the Spring identifier).
+        // The customizers are deliberately not applied during that step.
         T builder = super.build();
         // Apply the ServiceBusClientBuilder customizers as the last step of this build() call,
-        // so they take precedence over the property-derived configuration redirected onto the underlying builder. See #49742.
+        // so they take precedence over the property-derived configuration redirected onto the underlying builder.
+        // See #49742.
         if (!isShareServiceBusClientBuilder() && this.serviceBusClientBuilderCustomizers != null) {
             ServiceBusClientBuilder parentServiceBusClientBuilder = getServiceBusClientBuilder();
-            this.serviceBusClientBuilderCustomizers.forEach(customizer -> customizer.customize(parentServiceBusClientBuilder));
+            this.serviceBusClientBuilderCustomizers.forEach(customizer ->
+                customizer.customize(parentServiceBusClientBuilder));
         }
         return builder;
     }
