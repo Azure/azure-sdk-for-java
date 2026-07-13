@@ -351,7 +351,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             Certificate loadedCertificate = currentKeyVaultClient.getCertificate(alias);
             synchronized (this) {
-                if (loadedCertificateAliases.contains(alias)
+                if (currentKeyVaultClient != keyVaultClient
+                    || loadedCertificateAliases.contains(alias)
                     || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                     return;
                 }
@@ -384,7 +385,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
             synchronized (this) {
-                if (loadedCertificateChainAliases.contains(alias)
+                if (currentKeyVaultClient != keyVaultClient
+                    || loadedCertificateChainAliases.contains(alias)
                     || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                     return;
                 }
@@ -417,7 +419,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             Key loadedKey = currentKeyVaultClient.getKey(alias, null);
             synchronized (this) {
-                if (loadedCertificateKeyAliases.contains(alias)
+                if (currentKeyVaultClient != keyVaultClient
+                    || loadedCertificateKeyAliases.contains(alias)
                     || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
                     return;
                 }
