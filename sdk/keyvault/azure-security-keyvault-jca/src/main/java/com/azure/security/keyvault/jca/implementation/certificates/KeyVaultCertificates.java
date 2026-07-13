@@ -126,9 +126,6 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 if (excludePatterns) {
                     return pattern.substring(1);
                 }
-                if (pattern.startsWith("+")) {
-                    return pattern.substring(1);
-                }
                 return pattern;
             })
             .filter(pattern -> !pattern.isEmpty())

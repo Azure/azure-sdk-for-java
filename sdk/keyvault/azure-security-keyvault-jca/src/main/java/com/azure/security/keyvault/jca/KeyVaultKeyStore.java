@@ -154,7 +154,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         keyVaultCertificates
             = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
                 accessToken, disableChallengeResourceVerification, getKeyVaultCertificateAliasFilterPatterns());
-        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
+        LOGGER.log(FINE, () -> String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
