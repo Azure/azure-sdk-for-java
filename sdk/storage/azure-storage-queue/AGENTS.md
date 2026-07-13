@@ -50,7 +50,7 @@ When adding or modifying a sync or async client surface, ensure that **both** sy
 
 ```bash
 # Build this module
-mvn -f sdk/storage/azure-storage-queue/pom.xml -Dgpg.skip clean install
+mvn -f sdk/storage/azure-storage-queue/pom.xml clean install -DskipTests
 
 # Run this module's tests (playback mode)
 mvn -f sdk/storage/azure-storage-queue/pom.xml test
