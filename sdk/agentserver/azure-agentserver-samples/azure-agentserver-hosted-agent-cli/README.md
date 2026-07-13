@@ -91,7 +91,7 @@ Run with no arguments to print JCommander's generated usage for every command an
 Instead of (or in addition to) command-line flags, pass a YAML file with `--config <file>`. The keys mirror
 the option names (without the leading `--`); the sub-command is always given on the command line, not in the
 file. The nested `env` block may be a map or a list of `KEY=VALUE` strings. See
-[`config.example.yaml`](../config.example.yaml) in the samples root.
+[`config.example.yaml`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/config.example.yaml) in the samples root.
 
 ```yaml
 endpoint: https://<account>.services.ai.azure.com/api/projects/<project>
@@ -114,7 +114,7 @@ java -jar "$JAR" deploy --config ../config.example.yaml --size small
 java -jar "$JAR" status --config ../config.example.yaml
 ```
 
-When you launch through [`hosted-agent-cli.sh`](../hosted-agent-cli.sh) in the samples root, this
+When you launch through [`hosted-agent-cli.sh`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/hosted-agent-cli.sh) in the samples root, this
 project's `config.yaml` is picked up automatically — `./hosted-agent-cli.sh deploy` behaves like
 `./hosted-agent-cli.sh deploy --config azure-agentserver-hosted-agent-cli/config.yaml`. Pass an explicit
 `--config <file>` to use a different file.
@@ -129,7 +129,7 @@ project's `config.yaml` is picked up automatically — `./hosted-agent-cli.sh de
   current one.
 - **RBAC.** A hosted agent that calls Azure OpenAI runs under a managed identity that needs the
   `Cognitive Services OpenAI User` role on the AI Services account. See the
-  [`azure-ai-agents-sdk-client-sample`](../azure-ai-agents-sdk-client-sample) for the exact role assignment.
+  [`azure-ai-agents-sdk-client-sample`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-ai-agents-sdk-client-sample) for the exact role assignment.
 - **Deploy-time permission check.** When `--subscription` is supplied, `deploy` verifies (via the Azure
   Resource Manager Java SDKs) that the new agent's managed identity already holds an Azure OpenAI data-plane
   role on the AI Services account. If it does not, it prints the exact `az role assignment create` command to

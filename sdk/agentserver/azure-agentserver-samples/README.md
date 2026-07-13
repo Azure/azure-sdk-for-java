@@ -7,7 +7,7 @@ operating **hosted agents** on Azure AI Foundry (vnext).
 ## Hosted-agent launcher
 
 Two convenience launchers in this directory build (once) and run the
-[hosted-agent deployment CLI](azure-agentserver-hosted-agent-cli/README.md), forwarding
+[hosted-agent deployment CLI](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md), forwarding
 all arguments straight through to the tool:
 
 | Script                 | Shell                                       |
@@ -38,7 +38,7 @@ Both are thin wrappers around the CLI sub-project
 ```
 
 The available commands (see the
-[CLI README](azure-agentserver-hosted-agent-cli/README.md) for full option details):
+[CLI README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) for full option details):
 
 | Command  | Description                                                                       |
 |----------|-----------------------------------------------------------------------------------|
@@ -91,7 +91,7 @@ Run with no command to print the CLI's generated usage for every command and opt
 Instead of (or in addition to) command-line flags, pass a YAML file with
 `--config <file>`. The keys mirror the option names without the leading `--`; the
 sub-command is always given on the command line. See
-[`config.example.yaml`](config.example.yaml) for a fully commented template.
+[`config.example.yaml`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/config.example.yaml) for a fully commented template.
 
 If `azure-agentserver-hosted-agent-cli/config.yaml` exists and no `--config` flag is
 passed, the launchers use it automatically, so:
@@ -122,5 +122,5 @@ SKIP_BUILD=true ./hosted-agent-cli.sh list --endpoint "$ENDPOINT"
 
 ## More
 
-- [Hosted-agent CLI reference](azure-agentserver-hosted-agent-cli/README.md) — full
+- [Hosted-agent CLI reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) — full
   command and option documentation.
