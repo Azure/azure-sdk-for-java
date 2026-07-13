@@ -53,7 +53,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
             BlobLayoutInfo info = r.get(0);
             assertNotNull(info.getETag());
             assertFalse(info.getETag().isEmpty());
-            assertEquals(DATA.getDefaultDataSize(), info.getContentLength());
+            assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
             assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
             assertNotNull(info.getLastModified());
             assertNotNull(info.getCreatedOn());
@@ -123,7 +123,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
                 return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac));
             });
 
-        StepVerifier.create(response).verifyComplete();
+        StepVerifier.create(response.then()).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")

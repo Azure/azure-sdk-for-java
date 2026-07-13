@@ -474,7 +474,12 @@ public final class ModelHelper {
             headers == null ? null : headers.getXMsExpiryTime(), headers == null ? null : headers.isXMsBlobSealed(),
             headers == null ? null : headers.getXMsRehydratePriority(),
             headers == null ? null : headers.getXMsLastAccessTime(), immutabilityPolicy,
-            headers == null ? null : headers.isXMsLegalHold());
+            headers == null ? null : headers.isXMsLegalHold(),
+            headers == null ? null : headers.getXMsBlobContentLength(),
+            headers == null ? null : headers.getXMsBlobContentType(),
+            headers == null ? null : headers.getXMsBlobContentEncoding(),
+            headers == null ? null : headers.getXMsBlobContentMd5(),
+            headers == null ? null : headers.getXMsBlobCreationTime());
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {

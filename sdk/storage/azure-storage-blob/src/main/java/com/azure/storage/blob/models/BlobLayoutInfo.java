@@ -62,6 +62,11 @@ public final class BlobLayoutInfo {
     private final OffsetDateTime lastAccessedTime;
     private final BlobImmutabilityPolicy immutabilityPolicy;
     private final Boolean hasLegalHold;
+    private final Long blobContentLength;
+    private final String blobContentType;
+    private final String blobContentEncoding;
+    private final byte[] blobContentMd5;
+    private final OffsetDateTime blobCreatedOn;
 
     /**
      * Constructs a {@link BlobLayoutInfo}.
@@ -110,6 +115,11 @@ public final class BlobLayoutInfo {
      * @param lastAccessedTime The date and time the blob was read or written to.
      * @param immutabilityPolicy The immutability policy of the blob.
      * @param hasLegalHold Whether the blob has a legal hold.
+     * @param blobContentLength The content length of the blob (distinct from the response body length).
+     * @param blobContentType The content type specified for the blob.
+     * @param blobContentEncoding The content encoding specified for the blob.
+     * @param blobContentMd5 The content MD5 of the blob.
+     * @param blobCreatedOn The creation time of the blob.
      */
     public BlobLayoutInfo(List<BlobLayoutRange> ranges, OffsetDateTime lastModified, OffsetDateTime createdOn,
         Map<String, String> metadata, String objectReplicationDestinationPolicyId,
@@ -122,7 +132,9 @@ public final class BlobLayoutInfo {
         String encryptionKeySha256, String encryptionScope, String accessTier, Boolean accessTierInferred,
         String smartAccessTier, String archiveStatus, OffsetDateTime accessTierChangeTime, String versionId,
         Boolean isCurrentVersion, Long tagCount, OffsetDateTime expiresOn, Boolean isSealed, String rehydratePriority,
-        OffsetDateTime lastAccessedTime, BlobImmutabilityPolicy immutabilityPolicy, Boolean hasLegalHold) {
+        OffsetDateTime lastAccessedTime, BlobImmutabilityPolicy immutabilityPolicy, Boolean hasLegalHold,
+        Long blobContentLength, String blobContentType, String blobContentEncoding, byte[] blobContentMd5,
+        OffsetDateTime blobCreatedOn) {
         this.ranges = ranges == null ? Collections.emptyList() : Collections.unmodifiableList(new ArrayList<>(ranges));
         this.lastModified = lastModified;
         this.createdOn = createdOn;
@@ -170,6 +182,11 @@ public final class BlobLayoutInfo {
         this.lastAccessedTime = lastAccessedTime;
         this.immutabilityPolicy = immutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
+        this.blobContentLength = blobContentLength;
+        this.blobContentType = blobContentType;
+        this.blobContentEncoding = blobContentEncoding;
+        this.blobContentMd5 = CoreUtils.clone(blobContentMd5);
+        this.blobCreatedOn = blobCreatedOn;
     }
 
     /**
@@ -566,5 +583,51 @@ public final class BlobLayoutInfo {
      */
     public Boolean hasLegalHold() {
         return hasLegalHold;
+    }
+
+    /**
+     * Gets the content length of the blob. Distinct from {@link #getContentLength()}, which reflects the length of
+     * the layout response body rather than the blob's actual content length.
+     *
+     * @return The content length of the blob.
+     */
+    public Long getBlobContentLength() {
+        return blobContentLength;
+    }
+
+    /**
+     * Gets the content type specified for the blob.
+     *
+     * @return The content type specified for the blob.
+     */
+    public String getBlobContentType() {
+        return blobContentType;
+    }
+
+    /**
+     * Gets the content encoding specified for the blob.
+     *
+     * @return The content encoding specified for the blob.
+     */
+    public String getBlobContentEncoding() {
+        return blobContentEncoding;
+    }
+
+    /**
+     * Gets the content MD5 of the blob.
+     *
+     * @return The content MD5 of the blob.
+     */
+    public byte[] getBlobContentMd5() {
+        return CoreUtils.clone(blobContentMd5);
+    }
+
+    /**
+     * Gets the creation time of the blob.
+     *
+     * @return The creation time of the blob.
+     */
+    public OffsetDateTime getBlobCreatedOn() {
+        return blobCreatedOn;
     }
 }
