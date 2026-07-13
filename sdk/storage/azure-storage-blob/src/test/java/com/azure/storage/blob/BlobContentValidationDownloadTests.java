@@ -62,6 +62,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class BlobContentValidationDownloadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
+    // Generic "large enough to exercise multi-segment / multi-block content validation" payload. 5 MiB > the fixed
+    // 4 MiB structured-message segment / block size, so it still spans two segments/blocks while keeping the
+    // recordings (and heap/disk/CPU cost) roughly half of the previous 10-16 MiB payloads.
+    private static final int FIVE_MB = 5 * Constants.MB;
     private static final int BLOCK_SIZE = 4 * Constants.MB;
     /**
      * {@link BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases()} starts at ~96 MiB; above this threshold fuzzy
@@ -106,7 +110,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamWithResponseContentValidation() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -126,7 +130,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithResponseContentValidation() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -149,7 +153,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         ints = {
             0, // empty file
             20, // small file
-            16 * 1024 * 1024, // medium file in several chunks
+            FIVE_MB, // medium file spanning multiple blocks
             8 * 1026 * 1024 + 10, // medium file not aligned to block
         })
     public void downloadToFileWithResponseContentValidation(int fileSize, @TempDir Path tempDir) throws IOException {
@@ -210,7 +214,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamDefaultAlgorithmIsNone() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -227,7 +231,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamWithAuto() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -248,7 +252,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithNone() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -270,7 +274,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithAuto() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobClient blobClient = createBlobClientWithRequestSniffer(recordedRequestHeaders);
         blobClient.upload(BinaryData.fromBytes(data));
@@ -442,7 +446,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
     @Test
     public void verifyProgressListenerIsCompatibleWithContentValidation(@TempDir Path tempDir) throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
 
         BlobClient client = cc.getBlobClient(generateBlobName());
         client.upload(BinaryData.fromBytes(data));
@@ -455,9 +459,9 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptionsWithoutContentVal
             = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
 
-        createRandomFile(tempDir, 10 * Constants.MB);
+        createRandomFile(tempDir, FIVE_MB);
         File outFileWithContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
-        createRandomFile(tempDir, 10 * Constants.MB);
+        createRandomFile(tempDir, FIVE_MB);
         File outFileWithoutContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
 
         Files.deleteIfExists(outFileWithContentVal.toPath());
@@ -646,7 +650,7 @@ public class BlobContentValidationDownloadTests extends BlobTestBase {
 
     static Stream<Arguments> channelReadDataSupplier() {
         return Stream.of(Arguments.of(50, 40, Constants.KB), Arguments.of(Constants.KB + 50, 40, Constants.KB),
-            Arguments.of(null, Constants.MB, TEN_MB));
+            Arguments.of(null, Constants.MB, FIVE_MB));
     }
 
 }

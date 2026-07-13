@@ -62,6 +62,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
+    // Generic ">= 4 MiB so the single-shot upload path uses a structured message" payload for the replayable
+    // (non-live) tests. 5 MiB keeps a single Put Blob / Put Block / Append Block request (still above the 4 MiB
+    // structured-message threshold) while roughly halving recording and heap/disk/CPU cost vs the old 10 MiB.
+    private static final int FIVE_MB = 5 * Constants.MB;
     /* single-shot uploads with length < 4MB use CRC64 header; >= 4MB use structured message. */
     private static final int UNDER_4MB = 2 * Constants.MB;
 
@@ -117,11 +121,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(algorithm);
 
@@ -158,11 +162,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
@@ -219,7 +223,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
@@ -235,7 +239,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
@@ -273,7 +277,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options
@@ -289,7 +293,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
@@ -330,13 +334,13 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
             = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        assertNotNull(client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE).getValue().getETag());
+        assertNotNull(client.appendBlockWithResponse(data, FIVE_MB, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
@@ -347,13 +351,13 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
             = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        assertNotNull(client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE).getValue().getETag());
+        assertNotNull(client.appendBlockWithResponse(data, FIVE_MB, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
@@ -448,10 +452,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
-        File tempFile = getRandomFile(TEN_MB);
+        File tempFile = getRandomFile(FIVE_MB);
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setContentValidationAlgorithm(algorithm);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
@@ -482,10 +486,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
-        File tempFile = getRandomFile(TEN_MB);
+        File tempFile = getRandomFile(FIVE_MB);
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
         assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
@@ -524,7 +528,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
 
         try (BlobOutputStream os = client
             .getBlobOutputStream(new AppendBlobOutputStreamOptions().setContentValidationAlgorithm(algorithm))) {
@@ -541,7 +545,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
 
         try (BlobOutputStream os = client.getBlobOutputStream(
             new AppendBlobOutputStreamOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
@@ -578,10 +582,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
 
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setContentValidationAlgorithm(algorithm))) {
             os.write(randomData);
         }
@@ -617,10 +621,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
 
         try (BlobOutputStream os = client.getBlobOutputStream(new BlockBlobOutputStreamOptions()
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE))) {
             os.write(randomData);
         }
@@ -816,11 +820,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     public void uploadWithProgressAndNonNoneContentValidationThrows(ContentValidationAlgorithm algorithm) {
         BlobClient client = cc.getBlobClient(generateBlobName());
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data).setParallelTransferOptions(
-            new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB).setProgressListener(l -> {
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB).setProgressListener(l -> {
             })).setRequestConditions(new BlobRequestConditions()).setContentValidationAlgorithm(algorithm);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -835,11 +839,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         throws IOException {
         BlobClient client = cc.getBlobClient(generateBlobName());
 
-        File tempFile = getRandomFile(TEN_MB);
+        File tempFile = getRandomFile(FIVE_MB);
 
         BlobUploadFromFileOptions options
             = new BlobUploadFromFileOptions(tempFile.getAbsolutePath()).setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB).setProgressListener(l -> {
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB).setProgressListener(l -> {
                 })).setContentValidationAlgorithm(algorithm);
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
@@ -878,11 +882,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     public void uploadWithStructuredMessageRoundTripDataIntegrity() {
         BlobClient client = cc.getBlobClient(generateBlobName());
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
@@ -919,7 +923,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlobClient blobClient = cc.getBlobClient(generateBlobName());
         BlockBlobClient client = blobClient.getBlockBlobClient();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
 
         BlockBlobSimpleUploadOptions options
@@ -938,13 +942,13 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         AppendBlobClient client = blobClient.getAppendBlobClient();
         client.create();
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
             = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE);
+        client.appendBlockWithResponse(data, FIVE_MB, options, null, Context.NONE);
 
         byte[] downloaded = blobClient.downloadContent().toBytes();
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (append block)");
@@ -973,7 +977,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     public void uploadFromFileRoundTripDataIntegrity() throws IOException {
         BlobClient client = cc.getBlobClient(generateBlobName());
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
+        byte[] randomData = getRandomByteArray(FIVE_MB);
         File tempFile = File.createTempFile("blob-cv-roundtrip", ".bin");
         tempFile.deleteOnExit();
         try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFile)) {
@@ -981,7 +985,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) FIVE_MB))
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
         client.uploadFromFileWithResponse(options, null, Context.NONE);

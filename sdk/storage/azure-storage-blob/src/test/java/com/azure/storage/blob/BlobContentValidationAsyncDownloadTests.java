@@ -52,7 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * These tests verify that the pipeline policy correctly decodes structured messages when content validation is enabled.
  */
 public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
-    private static final int TEN_MB = 10 * Constants.MB;
+    // Generic "large enough to exercise multi-segment / multi-block content validation" payload. 5 MiB > the fixed
+    // 4 MiB structured-message segment / block size, so it still spans two segments/blocks while keeping the
+    // recordings (and heap/disk/CPU cost) roughly half of the previous 10-16 MiB payloads.
+    private static final int FIVE_MB = 5 * Constants.MB;
     private static final int BLOCK_SIZE = 4 * Constants.MB;
     /**
      * {@link BlobTestBase#fuzzyParallelDownloadLargeMultiPartCases()} starts at ~96 MiB; above this threshold fuzzy
@@ -97,7 +100,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamWithResponseContentValidation() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -117,7 +120,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithResponseContentValidation() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -142,7 +145,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         ints = {
             0, // empty file
             20, // small file
-            16 * 1024 * 1024, // medium file in several chunks
+            FIVE_MB, // medium file spanning multiple blocks
             8 * 1026 * 1024 + 10, // medium file not aligned to block
         })
     public void downloadToFileWithResponseContentValidation(int fileSize, @TempDir Path tempDir) throws IOException {
@@ -207,7 +210,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamDefaultAlgorithmIsNone() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -244,7 +247,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadStreamWithAuto() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -266,7 +269,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithNone() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -284,7 +287,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void downloadContentWithAuto() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -390,7 +393,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
      */
     @Test
     public void structuredMessageVerifiesDecodedCrc64DownloadStreaming() {
-        byte[] data = getRandomByteArray(TEN_MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
         List<HttpHeaders> recordedRequestHeaders = new CopyOnWriteArrayList<>();
         BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recordedRequestHeaders);
 
@@ -478,7 +481,7 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
     @Test
     public void verifyProgressListenerIsCompatibleWithContentValidation(@TempDir Path tempDir) throws IOException {
-        byte[] data = getRandomByteArray(10 * Constants.MB);
+        byte[] data = getRandomByteArray(FIVE_MB);
 
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(generateBlobName());
 
@@ -490,9 +493,9 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
         ParallelTransferOptions parallelOptionsWithoutContentVal
             = new ParallelTransferOptions().setProgressListener(mockListenerWithoutContentVal);
 
-        createRandomFile(tempDir, 10 * Constants.MB);
+        createRandomFile(tempDir, FIVE_MB);
         File outFileWithContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
-        createRandomFile(tempDir, 10 * Constants.MB);
+        createRandomFile(tempDir, FIVE_MB);
         File outFileWithoutContentVal = tempDir.resolve(generateResourceName(entityNo++) + ".bin").toFile();
 
         Files.deleteIfExists(outFileWithContentVal.toPath());
