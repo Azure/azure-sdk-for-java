@@ -76,8 +76,6 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
-    private final Set<String> certificateFilterPatterns;
-
     private final List<Pattern> includeAliasPatterns;
 
     private final List<Pattern> excludeAliasPatterns;
@@ -93,9 +91,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
         Set<String> certificateFilterPatterns) {
 
         this.refreshInterval = refreshInterval;
-        this.certificateFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
+        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
+        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
+        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
 
         updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
             disableChallengeResourceVerification);
@@ -109,9 +107,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
         Set<String> certificateFilterPatterns) {
         this.refreshInterval = refreshInterval;
         setKeyVaultClient(keyVaultClient);
-        this.certificateFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
+        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
+        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
+        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
     }
 
     private Set<String> normalizeFilterPatterns(Set<String> filterPatterns) {
@@ -147,8 +145,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             return Pattern.compile(regexPattern);
         } catch (PatternSyntaxException exception) {
-            throw new IllegalArgumentException("Invalid regex in system property '"
-                + CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY + "': " + regexPattern, exception);
+            throw new IllegalArgumentException("Invalid certificate alias filter regex pattern: " + regexPattern
+                + ". If configured via system property, check '" + CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY + "'.",
+                exception);
         }
     }
 
