@@ -169,7 +169,7 @@ The server starts on `http://localhost:8088`.
 
 ## Deploying to Azure AI Foundry
 
-The [`azure-agentserver-hosted-agent-cli`](azure-agentserver-samples/azure-agentserver-hosted-agent-cli) sample is a
+The [`azure-agentserver-hosted-agent-cli`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli) sample is a
 compact command-line tool for deploying and managing hosted agents against the vnext Azure AI Foundry experience. It
 wraps the `com.azure:azure-ai-agents` Java SDK directly (no raw REST calls) and provides:
 
@@ -196,7 +196,7 @@ java -jar "$JAR" deploy \
 
 Command-line flags can also be supplied from a YAML config file with `--config <file>`, letting you check a
 per-environment config into source control (or keep it local) instead of retyping flags every run. See the sample's
-[README](azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) for the full command reference,
+[README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) for the full command reference,
 config file format, and the Azure OpenAI permission check/auto-grant.
 
 ## ADC Egress Proxy CA Certificate (hosted runtime)
