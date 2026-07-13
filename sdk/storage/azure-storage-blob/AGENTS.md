@@ -15,6 +15,17 @@ Primary client types include:
 - `BlobClient` / `BlobAsyncClient`
 - `BlockBlobClient`, `AppendBlobClient`, `PageBlobClient`
 
+## Related Modules
+
+The following modules have a direct dependency on `azure-storage-blob` and may be affected by API changes here:
+
+- **`azure-storage-blob-batch`** — uses blob client internals to submit batch requests; changes to request pipeline construction or URL building may require updates here.
+- **`azure-storage-blob-changefeed`** — consumes blob client APIs to read change feed segments stored as blobs; changes to download or listing APIs may require updates here.
+- **`azure-storage-blob-cryptography`** — wraps blob clients to add client-side encryption; changes to upload/download option shapes or client construction patterns are likely to have downstream impact here.
+- **`azure-storage-blob-nio`** — implements `java.nio.file` on top of blob APIs; changes to container/blob read, write, or metadata operations may require updates here.
+
+When modifying a public API in `azure-storage-blob`, check each of these modules for call sites that use the changed API and update them accordingly, or confirm that no change is required.
+
 ## Blob-Specific Rules
 
 ### 1. Preserve Generic vs Specialized Client Boundaries
@@ -49,7 +60,7 @@ Container-level operations should stay on container clients; blob-level operatio
 
 ```bash
 # Build this module
-mvn -f sdk/storage/azure-storage-blob/pom.xml -Dgpg.skip clean install
+mvn -f sdk/storage/azure-storage-blob/pom.xml clean install -DskipTests
 
 # Run this module's tests (playback mode)
 mvn -f sdk/storage/azure-storage-blob/pom.xml test
