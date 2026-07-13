@@ -4,7 +4,7 @@
 
 ### Features Added
 - Added lazy loading for Key Vault certificate details in the JCA keystore. Certificate details are now loaded by alias when requested, avoiding unnecessary reads for unconfigured certificates. ([#49774](https://github.com/Azure/azure-sdk-for-java/pull/49774))
-- Added support for `azure.keyvault.jca.certificates-filter-patterns` to filter Key Vault certificate aliases with include/exclude regex patterns. Include patterns are configured directly and exclude patterns are prefixed with `!`. ([#39487](https://github.com/Azure/azure-sdk-for-java/issues/39487))
+- Added support for `azure.keyvault.jca.certificate-alias-filter-patterns` to filter Key Vault certificate aliases with include/exclude regex patterns. Include patterns are configured directly and exclude patterns are prefixed with `!`. ([#39487](https://github.com/Azure/azure-sdk-for-java/issues/39487))
 
 ### Breaking Changes
 

@@ -58,7 +58,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
-    static final String CERTIFICATES_FILTER_PATTERNS_PROPERTY = "azure.keyvault.jca.certificates-filter-patterns";
+    static final String CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-patterns";
 
     /**
      * Stores the Jre key store certificates.
@@ -150,8 +151,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
-            managedIdentity, accessToken, disableChallengeResourceVerification, getKeyVaultCertificateFilterPatterns());
+        keyVaultCertificates
+            = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+                accessToken, disableChallengeResourceVerification, getKeyVaultCertificateAliasFilterPatterns());
         LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
@@ -172,8 +174,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .orElse(0L);
     }
 
-    Set<String> getKeyVaultCertificateFilterPatterns() {
-        return Optional.ofNullable(System.getProperty(CERTIFICATES_FILTER_PATTERNS_PROPERTY))
+    Set<String> getKeyVaultCertificateAliasFilterPatterns() {
+        return Optional.ofNullable(System.getProperty(CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY))
             .map(value -> Stream.of(value.split(","))
                 .map(String::trim)
                 .filter(pattern -> !pattern.isEmpty())

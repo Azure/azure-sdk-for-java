@@ -97,17 +97,17 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testGetKeyVaultCertificateFilterPatterns() {
-        String originalFilterPatterns = System.getProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
+    public void testGetKeyVaultCertificateAliasFilterPatterns() {
+        String originalFilterPatterns = System.getProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY);
         try {
-            System.clearProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
+            System.clearProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY);
             KeyVaultKeyStore keyVaultKeyStore = new KeyVaultKeyStore();
-            assertTrue(keyVaultKeyStore.getKeyVaultCertificateFilterPatterns().isEmpty());
+            assertTrue(keyVaultKeyStore.getKeyVaultCertificateAliasFilterPatterns().isEmpty());
 
-            System.setProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY,
+            System.setProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY,
                 "^prod-.*,!^prod-deprecated-.*,,myalias");
             keyVaultKeyStore = new KeyVaultKeyStore();
-            Set<String> patterns = keyVaultKeyStore.getKeyVaultCertificateFilterPatterns();
+            Set<String> patterns = keyVaultKeyStore.getKeyVaultCertificateAliasFilterPatterns();
 
             assertEquals(3, patterns.size());
             assertTrue(patterns.contains("^prod-.*"));
@@ -115,9 +115,9 @@ public class KeyVaultKeyStoreUnitTest {
             assertTrue(patterns.contains("myalias"));
         } finally {
             if (originalFilterPatterns == null) {
-                System.clearProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY);
+                System.clearProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY);
             } else {
-                System.setProperty(KeyVaultKeyStore.CERTIFICATES_FILTER_PATTERNS_PROPERTY, originalFilterPatterns);
+                System.setProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY, originalFilterPatterns);
             }
         }
     }
