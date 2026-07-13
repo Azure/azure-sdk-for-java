@@ -333,7 +333,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (certificatesSource instanceof KeyVaultCertificates) {
                 certificates = ((KeyVaultCertificates) certificatesSource).getCertificateChain(alias);
             } else {
-                certificates = certificatesSource.getCertificateChains().get(alias);
+                Certificate[] certificateChain = certificatesSource.getCertificateChains().get(alias);
+                certificates = certificateChain == null ? null : certificateChain.clone();
             }
 
             if (certificates != null) {
@@ -343,10 +344,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
             keyVaultCertificates.refreshCertificates();
-            Certificate[] refreshedChain = keyVaultCertificates.getCertificateChain(alias);
-            return refreshedChain == null ? null : refreshedChain.clone();
+            return keyVaultCertificates.getCertificateChain(alias);
         }
-        return certificates == null ? null : certificates.clone();
+        return certificates;
     }
 
     /**
