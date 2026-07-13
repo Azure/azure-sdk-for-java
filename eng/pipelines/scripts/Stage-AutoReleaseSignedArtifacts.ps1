@@ -11,8 +11,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$engDirectory = Resolve-Path (Join-Path $PSScriptRoot ".." "..")
-. (Join-Path $engDirectory "scripts" "MavenPackaging.ps1")
+# MavenPackaging.ps1 (Get-MavenPackageDetails, etc.) lives in eng/scripts/, while this script is in
+# eng/pipelines/scripts/ -- go up two levels to the eng/ root, then into scripts/.
+. (Join-Path $PSScriptRoot ".." ".." "scripts" "MavenPackaging.ps1")
 
 $SourceDirectory = Resolve-Path $SourceDirectory
 $TargetDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($TargetDirectory)
@@ -53,17 +54,23 @@ foreach ($packageDetail in $packagesToStage) {
 }
 
 $sourcePackageInfoDirectory = Join-Path $SourceDirectory "PackageInfo"
-if (Test-Path $sourcePackageInfoDirectory) {
-  $targetPackageInfoDirectory = New-Item -Type Directory -Path $TargetDirectory -Name "PackageInfo" -Force
+$targetPackageInfoDirectory = New-Item -Type Directory -Path $TargetDirectory -Name "PackageInfo" -Force
 
-  foreach ($artifact in $artifacts) {
-    $packageInfoFile = Join-Path $sourcePackageInfoDirectory "$($artifact.name).json"
-    if (Test-Path $packageInfoFile) {
-      Copy-Item -Path $packageInfoFile -Destination $targetPackageInfoDirectory
-    } else {
-      Write-Host "PackageInfo file '$packageInfoFile' was not found."
-    }
+$missingPackageInfo = @()
+foreach ($artifact in $artifacts) {
+  $packageInfoFile = Join-Path $sourcePackageInfoDirectory "$($artifact.name).json"
+  if (Test-Path $packageInfoFile) {
+    Copy-Item -Path $packageInfoFile -Destination $targetPackageInfoDirectory
+  } else {
+    $missingPackageInfo += $artifact.name
   }
+}
+
+# Downstream release steps (API review creation, release-completion marking, changelog verification)
+# require a PackageInfo file per released package. Fail fast with an actionable list here rather than
+# letting one of those later steps fail with a less obvious error.
+if ($missingPackageInfo.Count -gt 0) {
+  throw "Missing PackageInfo JSON under '$sourcePackageInfoDirectory' for: $($missingPackageInfo -join ', ')."
 }
 
 Write-Host "Auto-release signed artifacts staged at '$TargetDirectory'."
