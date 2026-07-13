@@ -15,7 +15,7 @@ Primary client types include:
 - `DataLakeFileClient` / `DataLakeFileAsyncClient`
 - `DataLakeDirectoryClient` / `DataLakeDirectoryAsyncClient`
 
-This module targets hierarchical namespace (HNS)-enabled accounts and uses the `dfs.core.windows.net` endpoint shape.
+This package uses both the DFS endpoint and the Blob endpoint; the SDK routes certain operations to the Blob endpoint when supported for compatibility/performance, so endpoint selection should follow existing client behavior rather than assuming DFS-only paths.
 
 ## Data Lake-Specific Rules
 
