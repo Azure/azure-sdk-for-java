@@ -29,6 +29,8 @@ import static java.util.logging.Level.WARNING;
  */
 public final class KeyVaultCertificates implements AzureCertificates {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificates.class.getName());
+    private static final String CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-patterns";
 
     /**
      * Stores the list of aliases.
@@ -91,8 +93,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         Set<String> certificateFilterPatterns) {
 
         this.refreshInterval = refreshInterval;
-        this.certificateFilterPatterns
-            = new HashSet<>(Optional.ofNullable(certificateFilterPatterns).orElse(Collections.emptySet()));
+        this.certificateFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
         this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
         this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
 
@@ -108,10 +109,19 @@ public final class KeyVaultCertificates implements AzureCertificates {
         Set<String> certificateFilterPatterns) {
         this.refreshInterval = refreshInterval;
         setKeyVaultClient(keyVaultClient);
-        this.certificateFilterPatterns
-            = new HashSet<>(Optional.ofNullable(certificateFilterPatterns).orElse(Collections.emptySet()));
+        this.certificateFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
         this.includeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, false);
         this.excludeAliasPatterns = getAliasPatterns(this.certificateFilterPatterns, true);
+    }
+
+    private Set<String> normalizeFilterPatterns(Set<String> filterPatterns) {
+        return Optional.ofNullable(filterPatterns)
+            .orElse(Collections.emptySet())
+            .stream()
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(pattern -> !pattern.isEmpty())
+            .collect(Collectors.toCollection(HashSet::new));
     }
 
     private List<Pattern> getAliasPatterns(Set<String> filterPatterns, boolean excludePatterns) {
@@ -137,7 +147,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             return Pattern.compile(regexPattern);
         } catch (PatternSyntaxException exception) {
-            throw new IllegalArgumentException("Invalid certificate filter regex pattern: " + regexPattern, exception);
+            throw new IllegalArgumentException("Invalid regex in system property '"
+                + CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY + "': " + regexPattern, exception);
         }
     }
 
