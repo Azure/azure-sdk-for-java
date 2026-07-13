@@ -169,14 +169,35 @@ The server starts on `http://localhost:8088`.
 
 ## Deploying to Azure AI Foundry
 
-Refer to the `deploy.sh` script in the echo-sample for an example of registering a agent server with Azure AI Foundry
-using `az rest`:
+The [`azure-agentserver-hosted-agent-cli`](azure-agentserver-samples/azure-agentserver-hosted-agent-cli) sample is a
+compact command-line tool for deploying and managing hosted agents against the vnext Azure AI Foundry experience. It
+wraps the `com.azure:azure-ai-agents` Java SDK directly (no raw REST calls) and provides:
+
+* `deploy` — push a container image as a new hosted-agent version and wait until it is `ACTIVE`.
+* `status` / `list` — inspect an agent's versions, or list every hosted agent in the project.
+* `delete` — remove all versions of an agent and the agent itself.
+* `logs` — stream a live console session, or dump Application Insights history for the agent and exit.
+* A proactive, deploy-time check (with an optional auto-grant) that the agent's managed identity holds the
+  Azure OpenAI role it needs, so missing permissions are caught immediately instead of as a runtime 401/403.
+
+Build it once with `./mvnw -q package -DskipTests -pl azure-agentserver-samples/azure-agentserver-hosted-agent-cli -am`,
+then deploy your agent's container image:
 
 ```bash
-cd agent-servers-samples/echo-sample
-# Edit deploy.sh to set your FOUNDRY_ACCOUNT, PROJECT, IMAGE, etc.
-./deploy.sh
+JAR=azure-agentserver-samples/azure-agentserver-hosted-agent-cli/target/azure-agentserver-hosted-agent-cli-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+
+java -jar "$JAR" deploy \
+  --endpoint "https://<account>.services.ai.azure.com/api/projects/<project>" \
+  --name my-agent \
+  --image myacr.azurecr.io/my-agent:latest \
+  --size large \
+  --model gpt-5.4
 ```
+
+Command-line flags can also be supplied from a YAML config file with `--config <file>`, letting you check a
+per-environment config into source control (or keep it local) instead of retyping flags every run. See the sample's
+[README](azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) for the full command reference,
+config file format, and the Azure OpenAI permission check/auto-grant.
 
 ## ADC Egress Proxy CA Certificate (hosted runtime)
 

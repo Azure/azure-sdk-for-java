@@ -80,7 +80,7 @@ public class ResponsesResource {
      * Create a streaming model response (SSE).
      */
     @POST
-    @Produces(MediaType.SERVER_SENT_EVENTS)
+    @Produces({ MediaType.SERVER_SENT_EVENTS, MediaType.APPLICATION_JSON })
     @Path("/streaming")
     public void createStreamingResponse(
         @Context SseEventSink eventSink,
@@ -181,7 +181,7 @@ public class ResponsesResource {
      */
     @GET
     @Path("/{response_id}/stream")
-    @Produces(MediaType.SERVER_SENT_EVENTS)
+    @Produces({ MediaType.SERVER_SENT_EVENTS, MediaType.APPLICATION_JSON })
     public void getResponseStream(
         @PathParam("response_id") String responseId,
         @QueryParam("starting_after") Integer startingAfter,

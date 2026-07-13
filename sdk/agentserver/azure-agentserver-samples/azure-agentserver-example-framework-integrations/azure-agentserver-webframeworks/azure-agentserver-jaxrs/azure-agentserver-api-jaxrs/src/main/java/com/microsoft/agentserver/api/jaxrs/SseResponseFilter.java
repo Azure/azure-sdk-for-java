@@ -28,7 +28,17 @@ public class SseResponseFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         MediaType mediaType = responseContext.getMediaType();
-        if (mediaType != null && MediaType.SERVER_SENT_EVENTS_TYPE.isCompatible(mediaType)) {
+        boolean isSse = mediaType != null && MediaType.SERVER_SENT_EVENTS_TYPE.isCompatible(mediaType);
+
+        // The RoutingFilter reroutes stream requests to SSE sub-resources that @Produces both
+        // text/event-stream and application/json (so a client sending Accept: application/json does not
+        // 406). When negotiation then picks application/json for a successful stream, the flag tells us the
+        // response is still SSE. Error responses (4xx/5xx) from these endpoints are JSON, so only coerce
+        // successful responses — otherwise we'd force text/event-stream onto a JSON error body.
+        boolean sseRouted = Boolean.TRUE.equals(requestContext.getProperty(RoutingFilter.SSE_ROUTED_PROPERTY))
+            && responseContext.getStatus() >= 200 && responseContext.getStatus() < 300;
+
+        if (isSse || sseRouted) {
             // Per the SSE Response Headers contract, declare an explicit charset.
             responseContext.getHeaders().putSingle("Content-Type", "text/event-stream; charset=utf-8");
             responseContext.getHeaders().putSingle("X-Accel-Buffering", "no");

@@ -73,7 +73,8 @@ public class ResponsesController {
     /**
      * Create a streaming model response (SSE).
      */
-    @PostMapping(path = "/streaming", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(path = "/streaming",
+        produces = { MediaType.TEXT_EVENT_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public SseEmitter createStreamingResponse(
         @RequestBody AgentServerCreateResponse createResponse,
         HttpServletRequest httpRequest,
@@ -170,7 +171,8 @@ public class ResponsesController {
      * so both endpoints share identical SSE framing semantics (no {@code id:}
      * line, no {@code [DONE]} sentinel).
      */
-    @GetMapping(path = "/{responseId}/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/{responseId}/stream",
+        produces = { MediaType.TEXT_EVENT_STREAM_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public SseEmitter getResponseStream(
         @PathVariable("responseId") String responseId,
         @RequestParam(value = "starting_after", required = false) Integer startingAfter)

@@ -561,6 +561,26 @@ class JerseyServerIntegrationTest {
                     "SSE stream must NOT emit an `id:` line. Offending line: " + line);
             }
         }
+
+        @Test
+        @DisplayName("Streaming request with a non-SSE Accept header still negotiates to SSE (no 406)")
+        void streamingIgnoresClientAcceptHeader() throws Exception {
+            // The Azure AI Foundry orchestrator routes a stream request but may send Accept: application/json.
+            // The RoutingFilter reroutes to the streaming endpoint, whose @Produces includes application/json
+            // (in addition to text/event-stream) so JAX-RS content negotiation succeeds instead of 406-ing.
+            // The response is still emitted as SSE because the method writes via SseEventSink.
+            TestResponse response = post("/responses",
+                "{\"input\": \"stream please\", \"model\": \"test-model\", \"stream\": true}",
+                Map.of("Accept", "application/json"));
+
+            assertEquals(200, response.statusCode(),
+                "Streaming request must not 406 on a non-SSE Accept header. Body:\n" + response.body());
+
+            String contentType = String.join(",", response.headers()
+                .getOrDefault("Content-Type", List.of()));
+            assertTrue(contentType.contains("text/event-stream"),
+                "Content-Type should be text/event-stream, was: " + contentType);
+        }
     }
 
     // ══════════════════════════════════════════════════════════════

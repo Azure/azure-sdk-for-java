@@ -31,6 +31,7 @@
     <module>azure-agentserver-samples/financial-agent/azure-agentserver-langchain4j-financial-sample</module>
     <module>azure-agentserver-samples/financial-agent/azure-agentserver-langchain4j-financial-jersey-sample</module>
     <module>azure-agentserver-samples/azure-ai-agents-sdk-client-sample</module>
+    <module>azure-agentserver-samples/azure-agentserver-hosted-agent-cli</module>
 
     <module>azure-agentserver-samples/azure-agentserver-doc-samples</module>
   </modules>

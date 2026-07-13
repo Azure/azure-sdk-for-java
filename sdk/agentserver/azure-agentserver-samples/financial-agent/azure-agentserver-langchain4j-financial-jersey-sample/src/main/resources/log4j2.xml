@@ -12,7 +12,13 @@
   </Appenders>
 
   <Loggers>
-    <Root level="debug">
+    <!-- Silence verbose HTTP connection-pool / wire traces from Reactor Netty and the Azure SDK HTTP pipeline. -->
+    <Logger name="reactor.netty" level="warn"/>
+    <Logger name="io.netty" level="warn"/>
+    <Logger name="com.azure.core.http" level="warn"/>
+    <Logger name="com.azure.core.util.logging" level="warn"/>
+
+    <Root level="info">
       <AppenderRef ref="Console"/>
       <AppenderRef ref="MAIN"/>
     </Root>

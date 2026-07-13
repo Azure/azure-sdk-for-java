@@ -34,6 +34,17 @@ public class RoutingFilter implements ContainerRequestFilter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
+     * Request property set when this filter reroutes a request to one of the SSE streaming sub-resources.
+     * <p>
+     * Because the streaming methods {@code @Produces} both {@code text/event-stream} and {@code application/json}
+     * (so that a client sending {@code Accept: application/json} does not fail method selection with
+     * {@code 406 Not Acceptable}), JAX-RS content negotiation may pick {@code application/json} as the response
+     * media type. {@link SseResponseFilter} reads this flag to force the {@code text/event-stream} content-type
+     * on the outgoing response, without the routing filter having to mutate the client's {@code Accept} header.
+     */
+    static final String SSE_ROUTED_PROPERTY = "com.microsoft.agentserver.api.jaxrs.sseRouted";
+
+    /**
      * Maximum request body size (in bytes) the routing filter will buffer to inspect
      * the {@code "stream"} flag. Requests exceeding this limit are rejected with
      * HTTP 413 to prevent out-of-memory conditions.
@@ -55,6 +66,7 @@ public class RoutingFilter implements ContainerRequestFilter {
                     .build();
                 LOGGER.debug("Routing filter: GET stream replay → {}", newUri);
                 requestContext.setRequestUri(newUri);
+                requestContext.setProperty(SSE_ROUTED_PROPERTY, Boolean.TRUE);
             }
             return;
         }
@@ -95,6 +107,7 @@ public class RoutingFilter implements ContainerRequestFilter {
                 requestContext.setRequestUri(requestContext.getUriInfo().getBaseUriBuilder()
                     .path("responses/streaming")
                     .build());
+                requestContext.setProperty(SSE_ROUTED_PROPERTY, Boolean.TRUE);
             }
         } catch (IOException e) {
             LOGGER.warn("Failed to parse request body as JSON for stream routing detection");
