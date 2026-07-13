@@ -20,6 +20,22 @@ The `sdk/storage` directory contains Java client libraries for Azure Storage ser
 | `azure-storage-common` | Shared primitives used by all storage libraries |
 | `azure-storage-internal-avro` | Internal Avro support (not public API) |
 
+The following directories exist in `sdk/storage` but are **not shipped client libraries** and should not be modified as part of SDK feature or API work:
+
+- `azure-storage-blob-stress`, `azure-storage-file-datalake-stress`, `azure-storage-file-share-stress`, `azure-storage-stress` — internal stress test harnesses
+- `azure-storage-perf` — internal performance benchmarks
+
+Each stress/perf package exercises its respective shipped library's public APIs. If you change a public API in a shipped module, check whether the corresponding stress or perf package calls that API and update it accordingly — or confirm no change is required.
+
+| Shipped module | Stress/perf packages to check |
+|---|---|
+| `azure-storage-blob` | `azure-storage-blob-stress`, `azure-storage-perf` |
+| `azure-storage-file-datalake` | `azure-storage-file-datalake-stress`, `azure-storage-perf` |
+| `azure-storage-file-share` | `azure-storage-file-share-stress`, `azure-storage-perf` |
+| `azure-storage-queue` | `azure-storage-perf` |
+| `azure-storage-common` | all stress and perf packages (shared primitives) |
+| `azure-resourcemanager-storage` | Azure Storage resource management (control plane) — separate from the data plane libraries in this subtree |
+
 Service-level AGENTS files under each package directory define additional module-specific semantics.
 
 ## Shared Rules for AI Agents
@@ -38,6 +54,8 @@ Before assuming `src/main/java/**/models/` is generated, check the file header; 
 
 If a bug exists in generated code, the fix must be made upstream (in the TypeSpec/OpenAPI spec or the AutoRest/TypeSpec-Java emitter configuration), not in the generated file itself.
 
+Each module's codegen configuration is documented in its swagger/README.md (e.g. azure-storage-blob/swagger/README.md). Refer to this file to understand the spec source, AutoRest configuration, and how to trigger regeneration. (This reference will need to be updated when the TypeSpec implementation is released and replaces the swagger-based pipeline.)
+
 ### 2. Preserve Cross-Service API Consistency
 
 Storage services share common concepts (authentication, retry, error handling, pipeline configuration, SAS tokens, etc.).
@@ -53,10 +71,10 @@ When adding or modifying APIs:
 
 Before introducing new abstractions, check for established storage patterns:
 
-- **Retry**: `RequestRetryOptions` / `RequestRetryPolicy` from `azure-storage-common`
-- **Parallel transfer**: `ParallelTransferOptions`
-- **Paging**: `PagedIterable` / `PagedFlux` from `azure-core`
-- **Async clients**: mirror sync APIs with Reactor (`Mono`, `Flux`)
+- **Retry**: `com.azure.storage.common.policy.RequestRetryOptions` / `com.azure.storage.common.policy.RequestRetryPolicy` from `azure-storage-common`
+- **Parallel transfer**: `com.azure.storage.common.ParallelTransferOptions`
+- **Paging**: `com.azure.core.http.rest.PagedIterable` / `com.azure.core.http.rest.PagedFlux` from `azure-core`
+- **Async clients**: mirror sync APIs with Reactor (`reactor.core.publisher.Mono`, `reactor.core.publisher.Flux`)
 - **Client builders**: follow existing `*ClientBuilder` patterns and storage utility conventions
 
 Prefer extending existing patterns over introducing new helper layers.
@@ -84,6 +102,8 @@ Do not assume uniform behavior across services.
 
 ## Build and Test
 
+-When adding or modifying a sync or async client surface, ensure that **both** sync and async test coverage exist for the changed behaviour. Sync and async paths are separate code paths and should not share a single test to cover both — changes to one can silently break the other without a dedicated test catching it.
+
 ```bash
 # Build all storage modules
 mvn -f sdk/storage/pom.xml clean install -DskipTests
@@ -97,5 +117,6 @@ AZURE_TEST_MODE=LIVE mvn -f sdk/storage/azure-storage-blob/pom.xml test
 # Start Azurite (local storage emulator) for tests
 npx azurite
 ```
+In CI, Azurite is installed and started via [`sdk/storage/tests-install-azurite.yml`](../tests-install-azurite.yml) — do not attempt to replicate that setup manually. If tests require Azurite and are failing locally, ensure Azurite is running before invoking Maven.
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) in this directory for detailed storage-specific contribution guidance, including how to provision test resources and record/playback test sessions.
