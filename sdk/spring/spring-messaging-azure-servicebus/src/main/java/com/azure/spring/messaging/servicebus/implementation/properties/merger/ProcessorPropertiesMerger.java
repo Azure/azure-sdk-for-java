@@ -47,7 +47,6 @@ public class ProcessorPropertiesMerger implements PropertiesMerger<ProcessorProp
         propertyMapper.from(source.getMaxConcurrentSessions()).to(target::setMaxConcurrentSessions);
         propertyMapper.from(source.getMaxConcurrentCalls()).to(target::setMaxConcurrentCalls);
         propertyMapper.from(source.getCustomEndpointAddress()).to(target::setCustomEndpointAddress);
-        propertyMapper.from(source.getInheritConfiguration()).to(target::setInheritConfiguration);
 
         propertyMapper.from(source.getSessionEnabled()).to(target::setSessionEnabled);
         propertyMapper.from(source.getSessionIdleTimeout()).to(target::setSessionIdleTimeout);

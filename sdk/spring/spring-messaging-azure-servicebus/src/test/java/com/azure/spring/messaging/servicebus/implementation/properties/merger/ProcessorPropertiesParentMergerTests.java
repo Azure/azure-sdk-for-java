@@ -14,7 +14,6 @@ import java.time.Duration;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProcessorPropertiesParentMergerTests {
@@ -81,20 +80,6 @@ public class ProcessorPropertiesParentMergerTests {
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP, result.getClient().getTransportType());
-    }
-
-    @Test
-    void inheritConfigurationShouldFollowParentChildPrecedence() {
-        NamespaceProperties parent = new NamespaceProperties();
-        parent.setInheritConfiguration(true);
-
-        // Parent value is used when the child does not set it.
-        assertTrue(merger.merge(new ProcessorProperties(), parent).getInheritConfiguration());
-
-        // Child value takes precedence over the parent value.
-        ProcessorProperties child = new ProcessorProperties();
-        child.setInheritConfiguration(false);
-        assertFalse(merger.merge(child, parent).getInheritConfiguration());
     }
 
 }

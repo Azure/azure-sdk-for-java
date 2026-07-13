@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConsumerPropertiesParentMergerTests {
@@ -74,19 +73,5 @@ public class ConsumerPropertiesParentMergerTests {
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP, result.getClient().getTransportType());
-    }
-
-    @Test
-    void inheritConfigurationShouldFollowParentChildPrecedence() {
-        NamespaceProperties parent = new NamespaceProperties();
-        parent.setInheritConfiguration(true);
-
-        // Parent value is used when the child does not set it.
-        assertTrue(merger.merge(new ConsumerProperties(), parent).getInheritConfiguration());
-
-        // Child value takes precedence over the parent value.
-        ConsumerProperties child = new ConsumerProperties();
-        child.setInheritConfiguration(false);
-        assertFalse(merger.merge(child, parent).getInheritConfiguration());
     }
 }

@@ -10,7 +10,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - Added `AzureServiceBusJmsConnectionFactoryFactory` to allow applications to customize how `ServiceBusJmsConnectionFactory` instances are created, including support for custom subclasses ([#49676](https://github.com/Azure/azure-sdk-for-java/pull/49676)).
 - Added support for constructing `AadB2cAuthorizationRequestResolver` with a custom `authorizationRequestBaseUri`, aligning Azure AD B2C authorization request resolution with the configurability already available for AAD. ([#49674](https://github.com/Azure/azure-sdk-for-java/pull/49674))
-- Added a new Service Bus `inherit-configuration` property (`spring.cloud.azure.servicebus[.producer|.consumer|.processor].inherit-configuration`). It defaults to `null` (treated as `true`), preserving the existing behavior. Set it to `false` to prevent the producer, consumer or processor sub-client builder from overwriting configuration already set on the shared `ServiceBusClientBuilder` (for example the `ClientOptions` carrying `TracingOptions` set through an `AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>`) ([#49742](https://github.com/Azure/azure-sdk-for-java/issues/49742)).
 
 #### Breaking Changes
 
@@ -25,6 +24,14 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Other Changes
 
 - Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Bugs Fixed
+
+- Fixed the Service Bus producer, consumer and processor sub-client builders overwriting configuration already set on the underlying `ServiceBusClientBuilder` through an `AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>` (for example the `ClientOptions` carrying `TracingOptions`). The customizers are now applied to the underlying builder as the last step, so their configuration is preserved ([#49742](https://github.com/Azure/azure-sdk-for-java/issues/49742)).
 
 ### Spring Messaging Azure
 
