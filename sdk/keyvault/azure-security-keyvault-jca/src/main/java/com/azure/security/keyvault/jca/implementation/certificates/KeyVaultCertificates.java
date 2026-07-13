@@ -318,40 +318,48 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void refreshCertificatesIfNeeded() {
         if (certificatesNeedRefresh()) { // Avoid acquiring the lock as much as possible.
-            synchronized (this) {
-                if (certificatesNeedRefresh()) { // After obtaining the lock, avoid doing too many operations.
-                    refreshCertificates();
-                }
-            }
+            refreshCertificates(false);
         }
     }
 
     /**
      * Refresh aliases and invalidate cached certificate details.
      */
-    public synchronized void refreshCertificates() {
+    public void refreshCertificates() {
+        refreshCertificates(true);
+    }
+
+    private void refreshCertificates(boolean forceRefresh) {
         KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
         if (currentKeyVaultClient == null) {
             clearCachedState();
             return;
         }
 
-        // Discover aliases from Key Vault and apply include/exclude regex filters.
-        aliases = Optional.ofNullable(currentKeyVaultClient.getAliases())
+        List<String> refreshedAliases = Optional.ofNullable(currentKeyVaultClient.getAliases())
             .orElse(Collections.emptyList())
             .stream()
             .filter(this::shouldIncludeAlias)
             .sorted()
             .collect(Collectors.toCollection(ArrayList::new));
 
-        loadedCertificateAliases.clear();
-        loadedCertificateChainAliases.clear();
-        loadedCertificateKeyAliases.clear();
-        certificateKeys.clear();
-        certificates.clear();
-        certificateChains.clear();
+        synchronized (this) {
+            if (currentKeyVaultClient != keyVaultClient || (!forceRefresh && !certificatesNeedRefresh())) {
+                return;
+            }
 
-        lastRefreshTime = new Date();
+            // Discover aliases from Key Vault and apply include/exclude regex filters.
+            aliases = refreshedAliases;
+
+            loadedCertificateAliases.clear();
+            loadedCertificateChainAliases.clear();
+            loadedCertificateKeyAliases.clear();
+            certificateKeys.clear();
+            certificates.clear();
+            certificateChains.clear();
+
+            lastRefreshTime = new Date();
+        }
     }
 
     private void loadCertificateIfNeeded(String alias) {
@@ -363,8 +371,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         }
 
         synchronized (this) {
-            if (loadedCertificateAliases.contains(alias)
-                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+            if (loadedCertificateAliases.contains(alias) || !aliases.contains(alias)) {
                 return;
             }
         }
@@ -374,7 +381,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             synchronized (this) {
                 if (currentKeyVaultClient != keyVaultClient
                     || loadedCertificateAliases.contains(alias)
-                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    || !aliases.contains(alias)) {
                     return;
                 }
 
@@ -397,8 +404,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         }
 
         synchronized (this) {
-            if (loadedCertificateChainAliases.contains(alias)
-                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+            if (loadedCertificateChainAliases.contains(alias) || !aliases.contains(alias)) {
                 return;
             }
         }
@@ -408,7 +414,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             synchronized (this) {
                 if (currentKeyVaultClient != keyVaultClient
                     || loadedCertificateChainAliases.contains(alias)
-                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    || !aliases.contains(alias)) {
                     return;
                 }
 
@@ -431,8 +437,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         }
 
         synchronized (this) {
-            if (loadedCertificateKeyAliases.contains(alias)
-                || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+            if (loadedCertificateKeyAliases.contains(alias) || !aliases.contains(alias)) {
                 return;
             }
         }
@@ -442,7 +447,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             synchronized (this) {
                 if (currentKeyVaultClient != keyVaultClient
                     || loadedCertificateKeyAliases.contains(alias)
-                    || !Optional.ofNullable(aliases).orElse(Collections.emptyList()).contains(alias)) {
+                    || !aliases.contains(alias)) {
                     return;
                 }
 
@@ -472,7 +477,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
         List<String> aliasesSnapshot;
         synchronized (this) {
-            aliasesSnapshot = new ArrayList<>(Optional.ofNullable(aliases).orElse(Collections.emptyList()));
+            aliasesSnapshot = new ArrayList<>(aliases);
         }
 
         aliasesSnapshot.forEach(this::loadCertificateIfNeeded);
