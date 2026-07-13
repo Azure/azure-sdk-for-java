@@ -65,7 +65,7 @@ public interface Machine {
      * 
      * @return the identity value.
      */
-    Identity identity();
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
@@ -152,6 +152,14 @@ public interface Machine {
      * @return the licenseProfile value.
      */
     LicenseProfileMachineInstanceView licenseProfile();
+
+    /**
+     * Gets the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    MachineStatusReason statusReason();
 
     /**
      * Gets the provisioningState property: The provisioning state, which only appears in the response.
@@ -477,7 +485,7 @@ public interface Machine {
              * @param identity Identity for the resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(Identity identity);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -784,7 +792,7 @@ public interface Machine {
              * @param identity Identity for the resource.
              * @return the next definition stage.
              */
-            Update withIdentity(Identity identity);
+            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**

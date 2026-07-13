@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
 public final class NetworkSecurityPerimeterConfigurationsReconcileForPrivateLinkScopeSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
+     * 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
      */
     /**
      * Sample code: Reconciles the network security perimeter configuration of the private link scope.
