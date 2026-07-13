@@ -11,7 +11,7 @@ public final class StorageTierCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTierCapability model = BinaryData
-            .fromString("{\"name\":\"wytpzdmovz\",\"iops\":408345247,\"status\":\"Available\",\"reason\":\"zqadf\"}")
+            .fromString("{\"name\":\"vwrdnhfukuvsj\",\"iops\":1255351304,\"status\":\"Visible\",\"reason\":\"stul\"}")
             .toObject(StorageTierCapability.class);
     }
 }

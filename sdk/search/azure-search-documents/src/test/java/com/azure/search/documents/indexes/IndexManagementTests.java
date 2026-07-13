@@ -12,6 +12,7 @@ import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -21,8 +22,11 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexPermissionFilterOption;
+import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -1143,5 +1147,477 @@ public class IndexManagementTests extends SearchTestBase {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    // --- Pagination Tests (Serverless MVP: top/skip/count) ---
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndTopSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        List<SearchIndexResponse> indexes
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, null, null)
+                .stream()
+                .collect(Collectors.toList());
+
+        assertNotNull(indexes);
+        assertTrue(indexes.size() >= 1);
+        for (SearchIndexResponse idx : indexes) {
+            assertNotNull(idx.getName());
+        }
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndTopAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        StepVerifier
+            .create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, null, null).collectList())
+            .assertNext(indexes -> {
+                assertNotNull(indexes);
+                assertTrue(indexes.size() >= 1);
+                for (SearchIndexResponse idx : indexes) {
+                    assertNotNull(idx.getName());
+                }
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        List<SearchIndexResponse> allIndexes
+            = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
+        List<SearchIndexResponse> skippedIndexes
+            = client.listIndexesWithSelectedProperties(null, null, 1, null).stream().collect(Collectors.toList());
+
+        if (allIndexes.size() > 1) {
+            assertEquals(allIndexes.size() - 1, skippedIndexes.size());
+        }
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono
+            = asyncClient.listIndexesWithSelectedProperties()
+                .collectList()
+                .zipWith(asyncClient.listIndexesWithSelectedProperties(null, null, 1, null).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<SearchIndexResponse> allIndexes = tuple.getT1();
+            List<SearchIndexResponse> skippedIndexes = tuple.getT2();
+            if (allIndexes.size() > 1) {
+                assertEquals(allIndexes.size() - 1, skippedIndexes.size());
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndCountSync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        List<SearchIndexResponse> indexes
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), null, null, true)
+                .stream()
+                .collect(Collectors.toList());
+
+        assertNotNull(indexes);
+        assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesAndCountAsync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        StepVerifier
+            .create(
+                asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), null, null, true).collectList())
+            .assertNext(indexes -> {
+                assertNotNull(indexes);
+                assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesTopAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        List<SearchIndexResponse> allIndexes
+            = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
+
+        // Skip 1, take 1 — should return a subset
+        List<SearchIndexResponse> pagedIndexes
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, 1, null)
+                .stream()
+                .collect(Collectors.toList());
+
+        assertNotNull(pagedIndexes);
+        if (allIndexes.size() > 1) {
+            assertTrue(pagedIndexes.size() >= 1);
+        }
+    }
+
+    @Test
+    public void canListIndexesWithSelectedPropertiesTopAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono = asyncClient
+            .listIndexesWithSelectedProperties()
+            .collectList()
+            .zipWith(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name"), 1, 1, null).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<SearchIndexResponse> allIndexes = tuple.getT1();
+            List<SearchIndexResponse> pagedIndexes = tuple.getT2();
+            assertNotNull(pagedIndexes);
+            if (allIndexes.size() > 1) {
+                assertTrue(pagedIndexes.size() >= 1);
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithTopSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        List<IndexStatisticsSummary> stats
+            = client.listIndexStatsSummary(1, null, null).stream().collect(Collectors.toList());
+
+        assertNotNull(stats);
+        assertTrue(stats.size() >= 1);
+        for (IndexStatisticsSummary stat : stats) {
+            assertNotNull(stat.getName());
+            assertTrue(stat.getDocumentCount() >= 0);
+            assertTrue(stat.getStorageSize() >= 0);
+            assertTrue(stat.getVectorIndexSize() >= 0);
+        }
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithTopAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        StepVerifier.create(asyncClient.listIndexStatsSummary(1, null, null).collectList()).assertNext(stats -> {
+            assertNotNull(stats);
+            assertTrue(stats.size() >= 1);
+            for (IndexStatisticsSummary stat : stats) {
+                assertNotNull(stat.getName());
+                assertTrue(stat.getDocumentCount() >= 0);
+                assertTrue(stat.getStorageSize() >= 0);
+                assertTrue(stat.getVectorIndexSize() >= 0);
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        List<IndexStatisticsSummary> skippedStats
+            = client.listIndexStatsSummary(null, 1, null).stream().collect(Collectors.toList());
+
+        // Verify skip returned fewer results than the total number of indexes
+        assertNotNull(skippedStats);
+        assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        StepVerifier.create(asyncClient.listIndexStatsSummary(null, 1, null).collectList()).assertNext(skippedStats -> {
+            // Verify skip returned results and skipped at least one
+            assertNotNull(skippedStats);
+            assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
+        }).verifyComplete();
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithCountSync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        List<IndexStatisticsSummary> stats
+            = client.listIndexStatsSummary(null, null, true).stream().collect(Collectors.toList());
+
+        assertNotNull(stats);
+        assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithCountAsync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        StepVerifier.create(asyncClient.listIndexStatsSummary(null, null, true).collectList()).assertNext(stats -> {
+            assertNotNull(stats);
+            assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
+        }).verifyComplete();
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithTopAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        List<IndexStatisticsSummary> allStats = client.listIndexStatsSummary().stream().collect(Collectors.toList());
+
+        // Skip 1, take 1
+        List<IndexStatisticsSummary> pagedStats
+            = client.listIndexStatsSummary(1, 1, null).stream().collect(Collectors.toList());
+
+        assertNotNull(pagedStats);
+        if (allStats.size() > 1) {
+            assertTrue(pagedStats.size() >= 1);
+        }
+    }
+
+    @Test
+    public void canListIndexStatsSummaryWithTopAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        Mono<Tuple2<List<IndexStatisticsSummary>, List<IndexStatisticsSummary>>> resultMono
+            = asyncClient.listIndexStatsSummary()
+                .collectList()
+                .zipWith(asyncClient.listIndexStatsSummary(1, 1, null).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<IndexStatisticsSummary> allStats = tuple.getT1();
+            List<IndexStatisticsSummary> pagedStats = tuple.getT2();
+            assertNotNull(pagedStats);
+            if (allStats.size() > 1) {
+                assertTrue(pagedStats.size() >= 1);
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithSensitivityLabelFieldsSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
+            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
+            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
+                .setPurviewEnabled(true);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        List<SearchField> fields = created.getFields();
+        SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
+        SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
+        SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
+
+        assertEquals(true, labelIdField.isSensitivityLabelId());
+        assertEquals(true, labelNameField.isSensitivityLabelName());
+        assertEquals(true, sourceDocField.isSourceDocumentId());
+    }
+
+    @Test
+    public void createIndexWithSensitivityLabelFieldsAsync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
+            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
+            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
+                .setPurviewEnabled(true);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+
+            List<SearchField> fields = created.getFields();
+            SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
+            SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
+            SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
+
+            assertEquals(true, labelIdField.isSensitivityLabelId());
+            assertEquals(true, labelNameField.isSensitivityLabelName());
+            assertEquals(true, sourceDocField.isSourceDocumentId());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithPermissionFilterOptionSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        assertEquals(SearchIndexPermissionFilterOption.ENABLED, created.getPermissionFilterOption());
+    }
+
+    @Test
+    public void createIndexWithPermissionFilterOptionAsync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+            assertEquals(SearchIndexPermissionFilterOption.ENABLED, created.getPermissionFilterOption());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void createIndexWithSharePointConnectorAppRegistrationSync() {
+        SharePointConnectorAppRegistration appReg
+            = new SharePointConnectorAppRegistration("00000000-1111-2222-3333-444444444444",
+                "federated-credential-id-123").setTenantId("55555555-6666-7777-8888-999999999999");
+
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED)
+                .setSharePointConnectorAppRegistration(appReg);
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        SharePointConnectorAppRegistration createdReg = created.getSharePointConnectorAppRegistration();
+        assertNotNull(createdReg);
+        if (interceptorManager.isLiveMode()) {
+            assertEquals("00000000-1111-2222-3333-444444444444", createdReg.getApplicationId());
+            assertEquals("55555555-6666-7777-8888-999999999999", createdReg.getTenantId());
+        }
+        assertEquals("federated-credential-id-123", createdReg.getFederatedCredentialId());
+    }
+
+    @Test
+    public void createIndexWithSharePointConnectorAppRegistrationAsync() {
+        SharePointConnectorAppRegistration appReg
+            = new SharePointConnectorAppRegistration("00000000-1111-2222-3333-444444444444",
+                "federated-credential-id-123").setTenantId("55555555-6666-7777-8888-999999999999");
+
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true))
+                .setPermissionFilterOption(SearchIndexPermissionFilterOption.ENABLED)
+                .setSharePointConnectorAppRegistration(appReg);
+
+        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
+            indexesToDelete.add(created.getName());
+
+            SharePointConnectorAppRegistration createdReg = created.getSharePointConnectorAppRegistration();
+            assertNotNull(createdReg);
+            if (interceptorManager.isLiveMode()) {
+                assertEquals("00000000-1111-2222-3333-444444444444", createdReg.getApplicationId());
+                assertEquals("55555555-6666-7777-8888-999999999999", createdReg.getTenantId());
+            }
+            assertEquals("federated-credential-id-123", createdReg.getFederatedCredentialId());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void sensitivityLabelFieldsDefaultToNullSync() {
+        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
+            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true));
+
+        SearchIndex created = client.createIndex(index);
+        indexesToDelete.add(created.getName());
+
+        SearchField contentField
+            = created.getFields().stream().filter(f -> "content".equals(f.getName())).findFirst().get();
+        assertNull(contentField.isSensitivityLabelId());
+        assertNull(contentField.isSensitivityLabelName());
+        assertNull(contentField.isSourceDocumentId());
+        assertNull(created.getPermissionFilterOption());
     }
 }

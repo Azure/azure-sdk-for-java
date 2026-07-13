@@ -8,18 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if storage autogrow is supported in this location. 'Enabled' means storage autogrow is supported.
- * 'Disabled' stands for storage autogrow is not supported. Will be deprecated in the future. Look to Supported Features
- * for 'StorageAutoGrowth'.
+ * Indicates if storage autogrow is supported in this location. Will be deprecated in the future. Look to Supported
+ * Features for 'StorageAutoGrowth'.
  */
 public final class StorageAutoGrowthSupport extends ExpandableStringEnum<StorageAutoGrowthSupport> {
     /**
-     * Static value Enabled for StorageAutoGrowthSupport.
+     * Storage autogrow is supported.
      */
     public static final StorageAutoGrowthSupport ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for StorageAutoGrowthSupport.
+     * Storage autogrow is not supported.
      */
     public static final StorageAutoGrowthSupport DISABLED = fromString("Disabled");
 

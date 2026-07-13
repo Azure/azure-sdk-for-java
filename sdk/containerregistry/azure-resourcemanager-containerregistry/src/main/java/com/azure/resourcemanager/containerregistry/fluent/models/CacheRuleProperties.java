@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerregistry.models.AdditionalAuthenticationProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -23,6 +24,11 @@ public final class CacheRuleProperties implements JsonSerializable<CacheRuleProp
      * The ARM resource ID of the credential store which is associated with the cache rule.
      */
     private String credentialSetResourceId;
+
+    /*
+     * Authentication configuration used by the cache rule to access the upstream source repository.
+     */
+    private AdditionalAuthenticationProperties additionalAuthenticationProperties;
 
     /*
      * Source repository pulled from upstream.
@@ -70,6 +76,29 @@ public final class CacheRuleProperties implements JsonSerializable<CacheRuleProp
      */
     public CacheRuleProperties withCredentialSetResourceId(String credentialSetResourceId) {
         this.credentialSetResourceId = credentialSetResourceId;
+        return this;
+    }
+
+    /**
+     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @return the additionalAuthenticationProperties value.
+     */
+    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+        return this.additionalAuthenticationProperties;
+    }
+
+    /**
+     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
+     * @return the CacheRuleProperties object itself.
+     */
+    public CacheRuleProperties
+        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+        this.additionalAuthenticationProperties = additionalAuthenticationProperties;
         return this;
     }
 
@@ -139,6 +168,9 @@ public final class CacheRuleProperties implements JsonSerializable<CacheRuleProp
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (additionalAuthenticationProperties() != null) {
+            additionalAuthenticationProperties().validate();
+        }
     }
 
     /**
@@ -148,6 +180,7 @@ public final class CacheRuleProperties implements JsonSerializable<CacheRuleProp
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("credentialSetResourceId", this.credentialSetResourceId);
+        jsonWriter.writeJsonField("additionalAuthenticationProperties", this.additionalAuthenticationProperties);
         jsonWriter.writeStringField("sourceRepository", this.sourceRepository);
         jsonWriter.writeStringField("targetRepository", this.targetRepository);
         return jsonWriter.writeEndObject();
@@ -170,6 +203,9 @@ public final class CacheRuleProperties implements JsonSerializable<CacheRuleProp
 
                 if ("credentialSetResourceId".equals(fieldName)) {
                     deserializedCacheRuleProperties.credentialSetResourceId = reader.getString();
+                } else if ("additionalAuthenticationProperties".equals(fieldName)) {
+                    deserializedCacheRuleProperties.additionalAuthenticationProperties
+                        = AdditionalAuthenticationProperties.fromJson(reader);
                 } else if ("sourceRepository".equals(fieldName)) {
                     deserializedCacheRuleProperties.sourceRepository = reader.getString();
                 } else if ("targetRepository".equals(fieldName)) {

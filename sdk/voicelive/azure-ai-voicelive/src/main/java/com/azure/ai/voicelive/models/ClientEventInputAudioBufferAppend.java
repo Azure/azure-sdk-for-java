@@ -23,7 +23,7 @@ import java.io.IOException;
  * not send a confirmation response to this event.
  */
 @Fluent
-public final class ClientEventInputAudioBufferAppend extends ClientEvent {
+public final class ClientEventInputAudioBufferAppend extends SessionClientEvent {
 
     /*
      * The type of event.

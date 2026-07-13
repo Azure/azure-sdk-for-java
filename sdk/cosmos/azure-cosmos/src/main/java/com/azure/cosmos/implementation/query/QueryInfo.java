@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.Strings;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -166,10 +167,23 @@ public final class QueryInfo extends JsonSerializable {
         return this.nonStreamingOrderBy;
     }
 
-    public Map<String, AggregateOperator> getGroupByAliasToAggregateType(){
-            Map<String, AggregateOperator>  groupByAliasToAggregateMap;
-            groupByAliasToAggregateMap = super.getMap("groupByAliasToAggregateType");
-            return groupByAliasToAggregateMap;
+    public Map<String, AggregateOperator> getGroupByAliasToAggregateType() {
+        Map<String, Object> rawMap = super.getMap("groupByAliasToAggregateType");
+        if (rawMap == null) {
+            return null;
+        }
+
+        Map<String, AggregateOperator> groupByAliasToAggregateMap = new HashMap<>(rawMap.size());
+        rawMap.forEach((key, value) -> {
+            if (value == null || (value instanceof String && ((String) value).isEmpty())) {
+                groupByAliasToAggregateMap.put(key, null);
+            } else if (value instanceof AggregateOperator) {
+                groupByAliasToAggregateMap.put(key, (AggregateOperator) value);
+            } else {
+                groupByAliasToAggregateMap.put(key, AggregateOperator.valueOf(String.valueOf(value)));
+            }
+        });
+        return groupByAliasToAggregateMap;
     }
 
     public List<String> getGroupByAliases() {
@@ -267,4 +281,3 @@ public final class QueryInfo extends JsonSerializable {
         return super.hashCode();
     }
 }
-

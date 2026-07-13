@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
  */
 public final class EncryptionScopesPutSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+     * x-ms-original-file: 2026-04-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
      */
     /**
      * Sample code: StorageAccountPutEncryptionScopeWithInfrastructureEncryption.
@@ -27,7 +27,7 @@ public final class EncryptionScopesPutSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountPutEncryptionScope.json
+     * x-ms-original-file: 2026-04-01/StorageAccountPutEncryptionScope.json
      */
     /**
      * Sample code: StorageAccountPutEncryptionScope.

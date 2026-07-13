@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/OperationsList.json
+     * x-ms-original-file: 2026-04-01-preview/OperationsList.json
      */
     /**
      * Sample code: List all available REST API operations.

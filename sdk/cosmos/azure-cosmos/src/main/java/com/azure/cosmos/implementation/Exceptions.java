@@ -94,6 +94,10 @@ public class Exceptions {
             return true;
         }
 
+        if (statusCode == HttpConstants.StatusCodes.RETRY_WITH) {
+            return true;
+        }
+
         return false;
     }
 }

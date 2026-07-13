@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMaintenanceWindowRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,12 @@ public final class ManagedApplyMaintenanceWindowsPostWithResponsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.managedApplyMaintenanceWindows().postWithResponse("p", "opv", com.azure.core.util.Context.NONE);
+        manager.managedApplyMaintenanceWindows()
+            .postWithResponse("t", "vzbglbyvi",
+                new ApplyMaintenanceWindowRequest().withStartDateTime("ctbrxkjzwrgxffm")
+                    .withDuration("kwfbkgo")
+                    .withTimeZone("wopdbydpiz"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

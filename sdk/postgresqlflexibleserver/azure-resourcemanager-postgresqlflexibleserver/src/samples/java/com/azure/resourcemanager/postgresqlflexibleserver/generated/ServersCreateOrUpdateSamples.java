@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public final class ServersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateReviveDropped.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateReviveDropped.json
      */
     /**
      * Sample code: Create a new server using a backup of a server that was deleted or dropped recently.
@@ -57,7 +57,7 @@ public final class ServersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-01-preview/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
+     * 2026-04-01-preview/ServersCreateInMicrosoftOwnedVirtualNetworkWithZoneRedundantHighAvailability.json
      */
     /**
      * Sample code: Create a new server in Microsoft owned virtual network with zone redundant high availability.
@@ -88,7 +88,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Create a new server using a restore of a geographically redundant backup of an existing server, with
@@ -123,7 +123,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Create a new server with data encryption based on customer managed key.
@@ -165,7 +165,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateGeoRestoreWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: Create a new server using a restore of a geographically redundant backup of an existing server, with
@@ -200,7 +200,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateReplica.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateReplica.json
      */
     /**
      * Sample code: Create a read replica of an existing server.
@@ -224,13 +224,12 @@ public final class ServersCreateOrUpdateSamples {
                 .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .withSourceServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/examplesourceserver")
-            .withPointInTimeUtc(OffsetDateTime.parse("2025-06-01T18:35:22.123456Z"))
             .withCreateMode(CreateMode.REPLICA)
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateInYourOwnVirtualNetworkWithSameZoneHighAvailability.json
      */
     /**
      * Sample code: Create a new server in your own virtual network with same zone high availability.
@@ -264,7 +263,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersClusterCreate.json
+     * x-ms-original-file: 2026-04-01-preview/ServersClusterCreate.json
      */
     /**
      * Sample code: Create a new elastic cluster.
@@ -294,7 +293,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreatePointInTimeRestore.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a new server using a point in time restore of a backup of an existing server.
@@ -316,7 +315,7 @@ public final class ServersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-01-preview/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
+     * 2026-04-01-preview/ServersCreateWithMicrosoftEntraEnabledInYourOwnVirtualNetworkWithoutHighAvailability.json
      */
     /**
      * Sample code: Create a new server with Microsoft Entra authentication enabled in your own virtual network and
@@ -355,7 +354,7 @@ public final class ServersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/ServersCreateWithDataEncryptionEnabledAutoUpdate.json
      */
     /**
      * Sample code: Create a new server with data encryption based on customer managed key with automatic key version

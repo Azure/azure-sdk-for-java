@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateEndpointsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateEndpointListAll.json
+     * x-ms-original-file: 2025-07-01/PrivateEndpointListAll.json
      */
     /**
      * Sample code: List all private endpoints.

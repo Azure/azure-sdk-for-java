@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DdosFrontendIpConfigurationSettings;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -321,6 +322,29 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @return the ddosSettings value.
+     */
+    public DdosFrontendIpConfigurationSettings ddosSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().ddosSettings();
+    }
+
+    /**
+     * Set the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @param ddosSettings the ddosSettings value to set.
+     * @return the FrontendIpConfigurationInner object itself.
+     */
+    public FrontendIpConfigurationInner withDdosSettings(DdosFrontendIpConfigurationSettings ddosSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withDdosSettings(ddosSettings);
+        return this;
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_Get.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.

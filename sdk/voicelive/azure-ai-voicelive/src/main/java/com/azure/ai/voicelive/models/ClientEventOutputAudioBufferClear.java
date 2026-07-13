@@ -14,7 +14,7 @@ import java.io.IOException;
  * Client request to clear the avatar output buffer.
  */
 @Fluent
-public final class ClientEventOutputAudioBufferClear extends ClientEvent {
+public final class ClientEventOutputAudioBufferClear extends SessionClientEvent {
 
     /*
      * The type of event.

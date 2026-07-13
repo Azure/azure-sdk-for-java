@@ -30,6 +30,7 @@ import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -37,6 +38,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.stores.AppConfigurationSecretClientManager;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
@@ -85,6 +87,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
 
         MockitoAnnotations.openMocks(this);
+
+        when(replicaClientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,

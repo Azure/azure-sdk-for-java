@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,9 +32,18 @@ class EventContextTest {
     @Mock
     private EventData eventData;
 
+    private AutoCloseable mocksCloseable;
+
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void afterEach() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**

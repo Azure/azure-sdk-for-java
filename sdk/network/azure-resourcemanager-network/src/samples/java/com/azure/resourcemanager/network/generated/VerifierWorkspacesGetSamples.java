@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VerifierWorkspacesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VerifierWorkspaceGet.json
+     * x-ms-original-file: 2025-07-01/VerifierWorkspaceGet.json
      */
     /**
      * Sample code: VerifierWorkspaceGet.

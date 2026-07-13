@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerregistry.models.PackageSourceType;
  */
 public final class ArchivesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ArchiveCreate.json
+     * x-ms-original-file: 2026-03-01-preview/ArchiveCreate.json
      */
     /**
      * Sample code: ArchiveCreate.

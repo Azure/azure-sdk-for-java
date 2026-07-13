@@ -58,6 +58,20 @@ public final class LlmInputHelper {
 
     private static final Pattern PAGE_BREAK_PATTERN = Pattern.compile("\\n*<!-- PageBreak -->\\n*");
 
+    // Marker emitted by toLlmInput at each page boundary. Future Content Understanding
+    // service versions emit this same marker directly in the returned markdown (per
+    // ContentUnderstanding-Docs#249). When the helper sees any occurrence of this
+    // prefix in the input markdown it treats the service as having already paginated
+    // the content and skips its own injection to avoid duplicate markers.
+    private static final String INPUT_PAGE_MARKER_PREFIX = "<!-- InputPageNumber:";
+
+    // Message prefixes the Content Understanding service has been observed to emit
+    // into the warnings collection that are *not* real Responsible-AI warnings (they
+    // are internal telemetry counters). The helper drops any warning whose message
+    // starts with one of these prefixes before rendering the rai_warnings: block, so
+    // the noise never reaches the LLM.
+    private static final String[] TELEMETRY_MESSAGE_PREFIXES = { "LLMStats:" };
+
     // YAML quoting patterns
     private static final Pattern YAML_SPECIAL_START = Pattern.compile("^[-?:,\\[\\]{}#&*!|>'\"%@`]");
     private static final Pattern YAML_SPECIAL_INSIDE = Pattern.compile("[:#] |[\\n\\r]");
@@ -84,8 +98,18 @@ public final class LlmInputHelper {
      * and any caller-supplied metadata entries.
      *
      * <p>The markdown body contains the extracted text with page-break markers
-     * ({@code <!-- page N -->}) inserted at page boundaries so downstream consumers
-     * can locate content by page number.
+     * ({@code <!-- InputPageNumber: N -->}) inserted at page boundaries so downstream
+     * consumers can locate content by page number. {@code N} is the <strong>original
+     * 1-based page number from the source document</strong> (i.e., the page index in
+     * the analyzed PDF), not a counter that restarts at 1 for each call. This matters
+     * when the analyze request specifies a {@link com.azure.ai.contentunderstanding.models.ContentRange}
+     * (e.g., {@code "2-3,5"}): the markers in the output will read
+     * {@code InputPageNumber: 2}, {@code 3}, {@code 5} &mdash; not {@code 1},
+     * {@code 2}, {@code 3}. Downstream consumers (RAG indexers, page-citation prompts)
+     * can rely on the marker value to cite the correct source page even when only a
+     * subset of pages was analyzed. If the service markdown already contains
+     * {@code <!-- InputPageNumber:} markers, the helper passes them through unchanged
+     * to avoid duplicates.
      *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
      * @return a formatted string with YAML front matter followed by markdown content.
@@ -498,6 +522,9 @@ public final class LlmInputHelper {
     // -----------------------------------------------------------------------
 
     private static String addPageMarkers(RenderableContent content, String markdown) {
+        if (hasInputPageMarker(markdown)) {
+            return markdown;
+        }
         if (content.pages != null && !content.pages.isEmpty()) {
             String result = pageMarkersFromSpans(markdown, content.pages);
             // Identity check: if spans were found, result differs from input
@@ -506,6 +533,10 @@ public final class LlmInputHelper {
             }
         }
         return pageMarkersFromBreaks(markdown, content);
+    }
+
+    private static boolean hasInputPageMarker(String markdown) {
+        return markdown != null && markdown.contains(INPUT_PAGE_MARKER_PREFIX);
     }
 
     private static String pageMarkersFromSpans(String markdown, List<DocumentPage> pages) {
@@ -539,7 +570,7 @@ public final class LlmInputHelper {
             if (adj > prev) {
                 sb.append(cleaned, prev, adj);
             }
-            sb.append("<!-- page ").append(marker[1]).append(" -->\n\n");
+            sb.append(INPUT_PAGE_MARKER_PREFIX).append(' ').append(marker[1]).append(" -->\n\n");
             prev = adj;
         }
         if (prev < cleaned.length()) {
@@ -565,7 +596,7 @@ public final class LlmInputHelper {
         for (int i = 0; i < chunks.length; i++) {
             String text = chunks[i].trim();
             if (!text.isEmpty()) {
-                parts.add("<!-- page " + (startPage + i) + " -->\n\n" + text);
+                parts.add(INPUT_PAGE_MARKER_PREFIX + " " + (startPage + i) + " -->\n\n" + text);
             }
         }
         return String.join("\n\n", parts);
@@ -646,18 +677,40 @@ public final class LlmInputHelper {
             if (w == null) {
                 continue;
             }
+            String message = w.getMessage();
+            // Skip internal service telemetry strings (e.g. "LLMStats: ...") that
+            // occasionally leak into the warnings collection. These are not
+            // Responsible-AI warnings and would otherwise be rendered into the
+            // LLM-facing rai_warnings: block.
+            if (message != null && isTelemetryMessage(message)) {
+                continue;
+            }
             Map<String, String> entry = new LinkedHashMap<>();
             if (w.getCode() != null && !w.getCode().isEmpty()) {
                 entry.put("code", w.getCode());
             }
-            if (w.getMessage() != null && !w.getMessage().isEmpty()) {
-                entry.put("message", w.getMessage());
+            if (message != null && !message.isEmpty()) {
+                entry.put("message", message);
             }
             if (!entry.isEmpty()) {
                 items.add(entry);
             }
         }
         return items;
+    }
+
+    private static boolean isTelemetryMessage(String message) {
+        // Strip leading whitespace (case-sensitive prefix match).
+        int i = 0;
+        while (i < message.length() && (message.charAt(i) == ' ' || message.charAt(i) == '\t')) {
+            i++;
+        }
+        for (String prefix : TELEMETRY_MESSAGE_PREFIXES) {
+            if (message.regionMatches(false, i, prefix, 0, prefix.length())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // -----------------------------------------------------------------------

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class UpdateRunsListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_ListByFleet.json
      */
     /**
      * Sample code: Lists the UpdateRun resources by fleet.

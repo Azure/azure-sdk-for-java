@@ -136,6 +136,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedSearchIndexerStatus.status = IndexerStatus.fromString(reader.getString());
+                } else if ("runtime".equals(fieldName)) {
+                    deserializedSearchIndexerStatus.runtime = IndexerRuntime.fromJson(reader);
                 } else if ("executionHistory".equals(fieldName)) {
                     List<IndexerExecutionResult> executionHistory
                         = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
@@ -144,11 +146,46 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.limits = SearchIndexerLimits.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     deserializedSearchIndexerStatus.lastResult = IndexerExecutionResult.fromJson(reader);
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSearchIndexerStatus.currentState = IndexerCurrentState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedSearchIndexerStatus;
         });
+    }
+
+    /*
+     * Snapshot of the indexer's cumulative runtime consumption for the service over the current UTC period.
+     */
+    @Generated
+    private IndexerRuntime runtime;
+
+    /*
+     * All of the state that defines and dictates the indexer's current execution.
+     */
+    @Generated
+    private IndexerCurrentState currentState;
+
+    /**
+     * Get the runtime property: Snapshot of the indexer's cumulative runtime consumption for the service over the
+     * current UTC period.
+     *
+     * @return the runtime value.
+     */
+    @Generated
+    public IndexerRuntime getRuntime() {
+        return this.runtime;
+    }
+
+    /**
+     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
+     *
+     * @return the currentState value.
+     */
+    @Generated
+    public IndexerCurrentState getCurrentState() {
+        return this.currentState;
     }
 }

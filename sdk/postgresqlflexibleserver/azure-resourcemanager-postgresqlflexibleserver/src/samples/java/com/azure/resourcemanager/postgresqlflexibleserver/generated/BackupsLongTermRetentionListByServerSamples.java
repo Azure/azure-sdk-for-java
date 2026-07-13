@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class BackupsLongTermRetentionListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupsLongTermRetentionListByServer.json
+     * x-ms-original-file: 2026-04-01-preview/BackupsLongTermRetentionListByServer.json
      */
     /**
      * Sample code: List the results of the long term retention backup operations for a server.

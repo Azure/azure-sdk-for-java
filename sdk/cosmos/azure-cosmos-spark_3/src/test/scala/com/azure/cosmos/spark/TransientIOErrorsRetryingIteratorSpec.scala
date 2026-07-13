@@ -4,6 +4,9 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.SparkRowItem
+import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedStateV1}
+import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRangeEpkImpl}
+import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
 
 import java.time.Duration
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
@@ -178,6 +182,151 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     iterator.close()
 
     factoryCallCount.get shouldEqual 1
+  }
+
+  "Bounded change feed read" should "throw IllegalStateException when paginator stops before reaching endLsn" in {
+    val containerRid = "testContainerRid"
+    val midLsn = 15L
+    val boundLsn = 20L
+    val continuationToken = buildChangeFeedStateJson(containerRid, midLsn)
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => buildSinglePageFluxWithContinuation(continuationToken),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    val ex = intercept[IllegalStateException] {
+      iterator.count(_ => true)
+    }
+    ex.getMessage should include (s"endLsn=$boundLsn")
+    ex.getMessage should include (s"continuation=$midLsn")
+      .or(include(s"LSN in latest continuation=$midLsn"))
+  }
+
+  "Bounded change feed read" should "complete normally when continuation has reached endLsn" in {
+    val containerRid = "testContainerRid"
+    val boundLsn = 20L
+    val continuationToken = buildChangeFeedStateJson(containerRid, boundLsn)
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => buildSinglePageFluxWithContinuation(continuationToken),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // Drain the iterator - should not throw
+    noException should be thrownBy iterator.count(_ => true)
+  }
+
+  "Bounded change feed read" should "throw IllegalStateException when no continuation is produced" in {
+    val boundLsn = 20L
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.empty[FeedResponse[SparkRowItem]]()),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    val ex = intercept[IllegalStateException] {
+      iterator.count(_ => true)
+    }
+    ex.getMessage should include (s"endLsn=$boundLsn")
+    ex.getMessage should include ("no continuation was produced")
+  }
+
+  private def buildChangeFeedStateJson(containerRid: String, lsn: Long): String = {
+    val fullRange = FeedRangeEpkImpl.forFullRange()
+    val continuation = FeedRangeContinuation.create(
+      containerRid,
+      fullRange,
+      Collections.singletonList(
+        new CompositeContinuationToken("\"" + lsn + "\"", fullRange.getRange)))
+    new ChangeFeedStateV1(
+      containerRid,
+      fullRange,
+      ChangeFeedMode.INCREMENTAL,
+      ChangeFeedStartFromInternal.createFromBeginning(),
+      continuation).toString
+  }
+
+  private def buildSinglePageFluxWithContinuation(continuationToken: String) = {
+    val response = ModelBridgeInternal.createFeedResponse(
+      Collections.emptyList[SparkRowItem](),
+      new ConcurrentHashMap[String, String]())
+    ModelBridgeInternal.setFeedResponseContinuationToken(continuationToken, response)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.fromArray(Array(response)))
+  }
+
+  "TransientIOErrors" should "drain long runs of empty pages without hitting the end-to-end timeout" in {
+    // Regression test for the empty-page drain scenario: when the SDK is configured with
+    // emptyPagesAllowed=true the iterator must surface many consecutive empty
+    // pages without busy-waiting beyond the per-page end-to-end timeout. Even
+    // with hundreds of empty pages followed by real data, the iterator should
+    // return all real rows.
+    val emptyLeadingPages = 200
+    val realPages = 5
+    val totalPages = emptyLeadingPages + realPages
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => generateMockedCosmosPagedFluxWithEmptyPrefix(
+        continuationToken, totalPages, emptyLeadingPages),
+      pageSize,
+      1,
+      None,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // 2 producers (Left/Right) each emit realPages * pageSize rows
+    iterator.count(_ => true) shouldEqual (realPages * pageSize * 2)
+  }
+
+  private def generateMockedCosmosPagedFluxWithEmptyPrefix
+  (
+    continuationToken: String,
+    initialPageCount: Int,
+    leadingEmptyPageCount: Int
+  ) = {
+
+    val leftProducer = generateFeedResponseFluxWithEmptyPrefix(
+      "Left", initialPageCount, leadingEmptyPageCount, Option.apply(continuationToken))
+    val rightProducer = generateFeedResponseFluxWithEmptyPrefix(
+      "Right", initialPageCount, leadingEmptyPageCount, Option.apply(continuationToken))
+    val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
+    val mergedFlux = Flux.mergeSequential(toBeMerged, 1, 2)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
+  }
+
+  private def generateFeedResponseFluxWithEmptyPrefix
+  (
+    prefix: String,
+    pageCount: Int,
+    leadingEmptyPageCount: Int,
+    requestContinuationToken: Option[String]
+  ): Flux[FeedResponse[SparkRowItem]] = {
+
+    // generateFeedResponse uses documentStartIndex=-1 as the "emit an empty page" sentinel.
+    val emptyPageSentinel = -1
+    val firstDataPageStartIndex = 1
+
+    val responses = Array.range(1, pageCount + 1)
+      .map(i => generateFeedResponse(
+        prefix,
+        i,
+        if (i <= leadingEmptyPageCount) emptyPageSentinel else firstDataPageStartIndex))
+      .filter(response => requestContinuationToken.isEmpty ||
+        requestContinuationToken.get < response.getContinuationToken)
+
+    Flux.fromArray(responses)
   }
 
   private val objectMapper = new ObjectMapper

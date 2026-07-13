@@ -14,7 +14,7 @@ import java.io.IOException;
  * Cancels an in-progress input audio turn.
  */
 @Fluent
-public final class ClientEventInputAudioTurnCancel extends ClientEvent {
+public final class ClientEventInputAudioTurnCancel extends SessionClientEvent {
 
     /*
      * The type of event.

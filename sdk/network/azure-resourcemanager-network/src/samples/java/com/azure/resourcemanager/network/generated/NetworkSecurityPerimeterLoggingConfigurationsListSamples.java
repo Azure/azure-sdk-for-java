@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterLoggingConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLoggingConfigurationList.json
+     * x-ms-original-file: 2025-07-01/NspLoggingConfigurationList.json
      */
     /**
      * Sample code: NspLoggingConfigurationList.

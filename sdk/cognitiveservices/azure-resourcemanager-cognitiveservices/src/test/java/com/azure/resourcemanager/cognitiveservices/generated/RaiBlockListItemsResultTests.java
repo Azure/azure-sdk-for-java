@@ -12,11 +12,11 @@ public final class RaiBlockListItemsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListItemsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"vtvudutncormr\",\"value\":[{\"properties\":{\"pattern\":\"cofudflvkgjub\",\"isRegex\":true},\"etag\":\"nqvsaznqnto\",\"tags\":{\"uwjuetaeburuvdmo\":\"sgsahmkycgr\"},\"id\":\"mz\",\"name\":\"xwabmqoe\",\"type\":\"kif\"},{\"properties\":{\"pattern\":\"puqujmqlgkfbtn\",\"isRegex\":false},\"etag\":\"n\",\"tags\":{\"ujitcjedftww\":\"cn\",\"foqouicybx\":\"ezkojvdcp\"},\"id\":\"zg\",\"name\":\"zuf\",\"type\":\"x\"},{\"properties\":{\"pattern\":\"opidoamciodh\",\"isRegex\":true},\"etag\":\"xkhnzbonlwnto\",\"tags\":{\"mrv\":\"kdwbwhkszz\",\"owtlmnguxawqald\":\"xztvbtqgsfraoyzk\"},\"id\":\"uuximerq\",\"name\":\"obwyznkb\",\"type\":\"kutwpf\"},{\"properties\":{\"pattern\":\"gmhrskdsnfdsdoak\",\"isRegex\":true},\"etag\":\"mkkzevdlhe\",\"tags\":{\"bbejdcngqqm\":\"sdsttwvog\",\"wr\":\"akufgmjz\"},\"id\":\"rtwaenuuzko\",\"name\":\"bminrfdwoyuhhzi\",\"type\":\"iefozbhdmsml\"}]}")
+            "{\"nextLink\":\"bzevwrd\",\"value\":[{\"properties\":{\"pattern\":\"uvsj\",\"isRegex\":true},\"etag\":\"myst\",\"tags\":{\"er\":\"qypfcv\",\"bm\":\"hp\",\"sspuunnoxyhkx\":\"pjbabwidfc\"},\"id\":\"ddrihpf\",\"name\":\"oqcaaewdaomdj\",\"type\":\"l\"},{\"properties\":{\"pattern\":\"xkzb\",\"isRegex\":false},\"etag\":\"eivsiykzkdnc\",\"tags\":{\"pgogtqxepny\":\"onbzoggculapzwy\",\"uajlyj\":\"b\",\"uxrkjp\":\"lvofqzhvfcibyfmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"id\":\"kambtrnegvmnvuqe\",\"name\":\"vldspa\",\"type\":\"tjb\"},{\"properties\":{\"pattern\":\"mflvest\",\"isRegex\":false},\"etag\":\"rriloz\",\"tags\":{\"iycslevuf\":\"ewchpxlktwku\",\"tqedcgzulwm\":\"ztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\"},\"id\":\"oepry\",\"name\":\"t\",\"type\":\"wytpzdmovz\"},{\"properties\":{\"pattern\":\"aawzqadfl\",\"isRegex\":false},\"etag\":\"iglaecx\",\"tags\":{\"mlqtmldgxob\":\"icokpv\"},\"id\":\"rclnpkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"}]}")
             .toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("vtvudutncormr", model.nextLink());
-        Assertions.assertEquals("cofudflvkgjub", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("bzevwrd", model.nextLink());
+        Assertions.assertEquals("uvsj", model.value().get(0).properties().pattern());
         Assertions.assertTrue(model.value().get(0).properties().isRegex());
-        Assertions.assertEquals("sgsahmkycgr", model.value().get(0).tags().get("uwjuetaeburuvdmo"));
+        Assertions.assertEquals("qypfcv", model.value().get(0).tags().get("er"));
     }
 }

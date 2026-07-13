@@ -12,14 +12,15 @@ public final class RaiToolLabelResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiToolLabelResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ox\",\"value\":[{\"properties\":{\"toolConnectionName\":\"ufhyaomtbgh\",\"accountScope\":{\"labelValues\":{\"fo\":\"rvk\"}},\"projectScopes\":[{\"project\":\"hpjbib\",\"labelValues\":{\"nbkfezzxscy\":\"mfxumvfcluyovw\",\"vzzbtdcq\":\"wzdgirujbzbo\"}}]},\"etag\":\"niyujv\",\"tags\":{\"ssnrbgye\":\"wdsh\"},\"id\":\"ymsgaojfmwnc\",\"name\":\"tmr\",\"type\":\"hirctymoxoftpipi\"},{\"properties\":{\"toolConnectionName\":\"czuhxacpqjlihh\",\"accountScope\":{\"labelValues\":{\"ucvpamrs\":\"skasdvlmfwdgzxu\",\"risjnhnytxifqjz\":\"euzvx\",\"lw\":\"xmrhu\",\"woqhihe\":\"cesutrgjupauut\"}},\"projectScopes\":[{\"project\":\"w\",\"labelValues\":{\"cypsxjv\":\"nfqn\",\"zjxvydfcea\":\"oimwkslirc\",\"gdyftumrtwna\":\"vlhv\"}}]},\"etag\":\"slbi\",\"tags\":{\"qphchqnrnrpxehuw\":\"jgcyztsfmznba\",\"bydvkhbejdz\":\"ykqgaifmvik\"},\"id\":\"cvdsrhnj\",\"name\":\"volvtn\",\"type\":\"v\"},{\"properties\":{\"toolConnectionName\":\"zgemjdftuljlt\",\"accountScope\":{\"labelValues\":{\"o\":\"amtmcz\",\"ssxmojms\":\"ejwcwwqiok\"}},\"projectScopes\":[{\"project\":\"jpr\",\"labelValues\":{\"zheydbsdshmk\":\"wcfzqljyxgt\"}},{\"project\":\"maehvbbxurip\",\"labelValues\":{\"ckpyklyhplu\":\"fnhtbaxkgxyw\",\"gzibthostgktstv\":\"dpvruud\",\"odqkdlwwqfb\":\"xeclzedqbcvhzlhp\",\"lmbtxhwgfwsrt\":\"mlkxtrqjfs\"}}]},\"etag\":\"coezbrhubskh\",\"tags\":{\"kkqfqjbvle\":\"goo\"},\"id\":\"fmluiqtqzfavyvn\",\"name\":\"qybaryeua\",\"type\":\"jkqa\"}]}")
+            "{\"nextLink\":\"nsiru\",\"value\":[{\"properties\":{\"toolConnectionName\":\"mes\",\"accountScope\":{\"labelValues\":{\"boxdfgsftufq\":\"pagzrcxfailcfxwm\",\"zvytnrzvuljraaer\":\"brjlnacgcckknhxk\"}},\"projectScopes\":[{\"project\":\"kqg\",\"labelValues\":{\"vbroylaxxu\":\"kjq\",\"sfjbjsvg\":\"cdisd\",\"lxgccknfnwmbtm\":\"rwhryvycytd\",\"hchrphkmcrjdqn\":\"pdvjdhttzaefedx\"}},{\"project\":\"dfzpbgtgkylkdg\",\"labelValues\":{\"wxezwzhok\":\"jeuut\",\"ehgpp\":\"bwnhhtql\"}},{\"project\":\"pifhpfeoajvgcxtx\",\"labelValues\":{\"tugsresmkssjh\":\"sheafid\",\"egprhptil\":\"iftxfkf\",\"qtgdqohmcwsl\":\"ucb\",\"tpwb\":\"riz\"}}]},\"etag\":\"lllibph\",\"tags\":{\"kan\":\"mizak\",\"zhajoylhjlmuo\":\"jpdn\",\"eecjmeis\":\"xprimrsop\"},\"id\":\"tvasy\",\"name\":\"wxdzaumweoohgu\",\"type\":\"fuzboyjathwtzolb\"}]}")
             .toObject(RaiToolLabelResult.class);
-        Assertions.assertEquals("ox", model.nextLink());
-        Assertions.assertEquals("ufhyaomtbgh", model.value().get(0).properties().toolConnectionName());
-        Assertions.assertEquals("rvk", model.value().get(0).properties().accountScope().labelValues().get("fo"));
-        Assertions.assertEquals("hpjbib", model.value().get(0).properties().projectScopes().get(0).project());
-        Assertions.assertEquals("mfxumvfcluyovw",
-            model.value().get(0).properties().projectScopes().get(0).labelValues().get("nbkfezzxscy"));
-        Assertions.assertEquals("wdsh", model.value().get(0).tags().get("ssnrbgye"));
+        Assertions.assertEquals("nsiru", model.nextLink());
+        Assertions.assertEquals("mes", model.value().get(0).properties().toolConnectionName());
+        Assertions.assertEquals("pagzrcxfailcfxwm",
+            model.value().get(0).properties().accountScope().labelValues().get("boxdfgsftufq"));
+        Assertions.assertEquals("kqg", model.value().get(0).properties().projectScopes().get(0).project());
+        Assertions.assertEquals("kjq",
+            model.value().get(0).properties().projectScopes().get(0).labelValues().get("vbroylaxxu"));
+        Assertions.assertEquals("mizak", model.value().get(0).tags().get("kan"));
     }
 }

@@ -140,6 +140,9 @@ class TenantDefaultConfig {
     @JsonProperty("preferredRegionsList")
     protected String preferredRegionsList;
 
+    @JsonProperty("excludedRegionsList")
+    protected String excludedRegionsList;
+
     @JsonProperty("manageDatabase")
     protected Boolean manageDatabase;
 
@@ -233,6 +236,13 @@ class TenantDefaultConfig {
         return regions;
     }
 
+    public List<String> getExcludedRegionsList() {
+        if (excludedRegionsList == null || excludedRegionsList.isEmpty()) return null;
+        List<String> regions = new ArrayList<>();
+        for (String r : excludedRegionsList.split(",")) { regions.add(r.trim()); }
+        return regions;
+    }
+
     public boolean shouldManageDatabase() { return manageDatabase != null ? manageDatabase : false; }
     public String getApplicationName() { return applicationName != null ? applicationName : ""; }
     public boolean isManagedIdentityRequired() { return isManagedIdentityRequired != null && isManagedIdentityRequired; }
@@ -278,6 +288,7 @@ class TenantDefaultConfig {
         if (http2Enabled != null && tenant.http2Enabled == null) tenant.http2Enabled = http2Enabled;
         if (http2MaxConcurrentStreams != null && tenant.http2MaxConcurrentStreams == null) tenant.http2MaxConcurrentStreams = http2MaxConcurrentStreams;
         if (preferredRegionsList != null && tenant.preferredRegionsList == null) tenant.preferredRegionsList = preferredRegionsList;
+        if (excludedRegionsList != null && tenant.excludedRegionsList == null) tenant.excludedRegionsList = excludedRegionsList;
         if (manageDatabase != null && tenant.manageDatabase == null) tenant.manageDatabase = manageDatabase;
         if (isManagedIdentityRequired != null && tenant.isManagedIdentityRequired == null) tenant.isManagedIdentityRequired = isManagedIdentityRequired;
         if (applicationName != null && tenant.applicationName == null) tenant.applicationName = applicationName;

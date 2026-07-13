@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class JWTAuthenticatorsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/JWTAuthenticators_List.json
+     * x-ms-original-file: 2026-04-02-preview/JWTAuthenticators_List.json
      */
     /**
      * Sample code: List JWT authenticators by Managed Cluster.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class PipelineRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PipelineRunDelete.json
+     * x-ms-original-file: 2026-03-01-preview/PipelineRunDelete.json
      */
     /**
      * Sample code: PipelineRunDelete.

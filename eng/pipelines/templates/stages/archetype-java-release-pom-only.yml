@@ -96,6 +96,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
           - deployment: PublishESRPPackage
             displayName: "Publish to Maven Central via ESRP"

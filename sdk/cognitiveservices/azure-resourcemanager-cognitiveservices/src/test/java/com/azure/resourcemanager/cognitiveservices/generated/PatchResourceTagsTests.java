@@ -14,17 +14,18 @@ public final class PatchResourceTagsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchResourceTags model = BinaryData
-            .fromString("{\"tags\":{\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"}}")
+            .fromString(
+                "{\"tags\":{\"rpqlp\":\"yuq\",\"auvfbtkuwhhmhyk\":\"wcciuqgbdbu\",\"hkoymkcdyhbp\":\"joxafnndlpi\"}}")
             .toObject(PatchResourceTags.class);
-        Assertions.assertEquals("zxuutkncwscwsvl", model.tags().get("otogtwrupqs"));
+        Assertions.assertEquals("yuq", model.tags().get("rpqlp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchResourceTags model = new PatchResourceTags()
-            .withTags(mapOf("otogtwrupqs", "zxuutkncwscwsvl", "cykvceo", "vnm", "vnotyfjfcnj", "eil"));
+            .withTags(mapOf("rpqlp", "yuq", "auvfbtkuwhhmhyk", "wcciuqgbdbu", "hkoymkcdyhbp", "joxafnndlpi"));
         model = BinaryData.fromObject(model).toObject(PatchResourceTags.class);
-        Assertions.assertEquals("zxuutkncwscwsvl", model.tags().get("otogtwrupqs"));
+        Assertions.assertEquals("yuq", model.tags().get("rpqlp"));
     }
 
     // Use "Map.of" if available

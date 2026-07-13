@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when a web search call has completed.
  */
 @Immutable
-public final class ServerEventResponseWebSearchCallCompleted extends SessionUpdate {
+public final class ServerEventResponseWebSearchCallCompleted extends SessionServerEvent {
 
     /*
      * The type of event.

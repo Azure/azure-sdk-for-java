@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ApplicationGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayUpdateTags.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayUpdateTags.json
      */
     /**
      * Sample code: Update Application Gateway tags.

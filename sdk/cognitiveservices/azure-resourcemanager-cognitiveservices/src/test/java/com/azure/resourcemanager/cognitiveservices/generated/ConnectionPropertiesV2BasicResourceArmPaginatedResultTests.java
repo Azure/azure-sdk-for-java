@@ -16,19 +16,19 @@ public final class ConnectionPropertiesV2BasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"uiiznktwfansnvpd\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Redis\",\"createdByWorkspaceArmId\":\"stbz\",\"error\":\"iwbuqny\",\"expiryTime\":\"2021-03-05T05:44:37Z\",\"group\":\"Azure\",\"isSharedToAll\":false,\"metadata\":{\"cez\":\"crpfbcunez\",\"sihclafzvaylp\":\"lfwyfwlwxjwetn\",\"qkc\":\"rsqqwztcm\"},\"peRequirement\":\"Required\",\"peStatus\":\"Active\",\"sharedUserList\":[\"ewzjkjexfd\"],\"target\":\"vhpsylkkshkbffmb\",\"useWorkspaceManagedIdentity\":false},\"id\":\"rgywwp\",\"name\":\"jx\",\"type\":\"nptfujgi\"}]}")
+            "{\"nextLink\":\"twvc\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Spark\",\"createdByWorkspaceArmId\":\"cvejyfdvlvhbwrn\",\"error\":\"tgddpqthehnmnaoy\",\"expiryTime\":\"2021-10-27T17:47:39Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"droznn\":\"ankltytm\",\"csgguxhemlw\":\"drlktg\",\"kklelssxblycs\":\"waeeczgfb\",\"plpvm\":\"zujksrlsmdes\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"idyvteow\",\"vgp\"],\"target\":\"deugf\",\"useWorkspaceManagedIdentity\":false},\"id\":\"c\",\"name\":\"axwk\",\"type\":\"fykhvuhxepmru\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"OpenAI\",\"createdByWorkspaceArmId\":\"baobn\",\"error\":\"ujdjltymkmvg\",\"expiryTime\":\"2021-05-16T09:26:28Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"j\":\"pphkixkykxds\",\"kkflrmymyincqlhr\":\"emmucfxh\"},\"peRequirement\":\"Required\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"iiovgqcgxu\",\"gqkctotiowlxte\",\"dptjgwdtgukranb\",\"wphqlkccuzgygqw\"],\"target\":\"oiulwgniipr\",\"useWorkspaceManagedIdentity\":true},\"id\":\"w\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}]}")
             .toObject(ConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals("uiiznktwfansnvpd", model.nextLink());
-        Assertions.assertEquals(ConnectionCategory.REDIS, model.value().get(0).properties().category());
-        Assertions.assertEquals("iwbuqny", model.value().get(0).properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T05:44:37Z"),
+        Assertions.assertEquals("twvc", model.nextLink());
+        Assertions.assertEquals(ConnectionCategory.SPARK, model.value().get(0).properties().category());
+        Assertions.assertEquals("tgddpqthehnmnaoy", model.value().get(0).properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T17:47:39Z"),
             model.value().get(0).properties().expiryTime());
-        Assertions.assertFalse(model.value().get(0).properties().isSharedToAll());
-        Assertions.assertEquals("crpfbcunez", model.value().get(0).properties().metadata().get("cez"));
-        Assertions.assertEquals(ManagedPERequirement.REQUIRED, model.value().get(0).properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.value().get(0).properties().peStatus());
-        Assertions.assertEquals("ewzjkjexfd", model.value().get(0).properties().sharedUserList().get(0));
-        Assertions.assertEquals("vhpsylkkshkbffmb", model.value().get(0).properties().target());
+        Assertions.assertTrue(model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("ankltytm", model.value().get(0).properties().metadata().get("droznn"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.value().get(0).properties().peRequirement());
+        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.value().get(0).properties().peStatus());
+        Assertions.assertEquals("idyvteow", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("deugf", model.value().get(0).properties().target());
         Assertions.assertFalse(model.value().get(0).properties().useWorkspaceManagedIdentity());
     }
 }

@@ -104,7 +104,7 @@ public final class BackupsLongTermRetentionResponseInner
     }
 
     /**
-     * Get the percentComplete property: PercentageCompleted.
+     * Get the percentComplete property: Percentage completed.
      * 
      * @return the percentComplete value.
      */
@@ -113,7 +113,7 @@ public final class BackupsLongTermRetentionResponseInner
     }
 
     /**
-     * Get the errorCode property: The error code.
+     * Get the errorCode property: Error code.
      * 
      * @return the errorCode value.
      */
@@ -122,7 +122,7 @@ public final class BackupsLongTermRetentionResponseInner
     }
 
     /**
-     * Get the errorMessage property: The error message.
+     * Get the errorMessage property: Error message.
      * 
      * @return the errorMessage value.
      */

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetMembersGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Get.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Get.json
      */
     /**
      * Sample code: Gets a FleetMember resource.
@@ -18,6 +18,6 @@ public final class FleetMembersGetSamples {
      */
     public static void
         getsAFleetMemberResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().getWithResponse("rgfleets", "fleet1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().getWithResponse("rgfleets", "fleet1", "member1", com.azure.core.util.Context.NONE);
     }
 }

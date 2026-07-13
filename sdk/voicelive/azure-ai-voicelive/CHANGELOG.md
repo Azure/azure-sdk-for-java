@@ -1,8 +1,71 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.1 (2026-06-02)
+
+### Features Added
+
+- **WebRTC SDP negotiation** for browser/native WebRTC clients:
+  - New `ClientEventRtcCallSdpCreate` (`rtc.call.sdp.create`) to send an SDP offer with an optional initial `VoiceLiveSessionOptions`
+  - New `ServerEventRtcCallSdpCreated` (`rtc.call.sdp.created`) carrying the SDP answer and `rtcCallId`
+  - New `ServerEventRtcCallError` (`rtc.call.error`) with structured `RtcCallErrorDetails` (type/code/message) and originating operation
+- **Streaming input text** into a conversation item:
+  - New `ClientEventInputTextDelta` (`input_text.delta`) and `ClientEventInputTextDone` (`input_text.done`), each with optional `contentIndex`
+- **Output audio buffer playback lifecycle**:
+  - New `ServerEventOutputAudioBufferStarted` (`output_audio_buffer.started`) and `ServerEventOutputAudioBufferStopped` (`output_audio_buffer.stopped`), each exposing `responseId`
+- **Smart audio-based end-of-turn detection**: new `SmartEndOfTurnDetection` (`smart_end_of_turn_detection`) `EouDetection` variant with `thresholdLevel` and `timeoutMs`; new `EouDetectionModel.SMART_END_OF_TURN_DETECTION` value
+- **Echo cancellation reference source**: `AudioEchoCancellation` is now `@Fluent` and exposes `referenceSource` (new `EchoCancellationReferenceSource` enum with `SERVER` / `CLIENT`) and `channels` for stereo input where channel 1 is the client-supplied echo reference
+- **Azure realtime native voices**: new `AzureRealtimeNativeVoice` (type `azure-realtime-native`) and `AzureRealtimeNativeVoiceName` expandable enum (`AARTI`, `ANDREW`, `AVA`, `DENISE`, `DIYA`, `ELSA`, `FLORIAN`, `FRANCISCA`, `MEERA`, `XIAOXIAO`, `YUNXI`, `XIMENA`) for use with the `azure-realtime` model
+- **Parallel tool calls**: `VoiceLiveSessionOptions.setParallelToolCalls(Boolean)` / `isParallelToolCalls()` (and matching getter on `VoiceLiveSessionResponse`) to control whether the model may invoke tools in parallel
+- **Hosted agent invocation passthrough**:
+  - `ResponseCreateParams.setInvokeInput(Map<String, BinaryData>)` to attach input data for a hosted agent invocation on a single response request (preview)
+  - New `ServerEventResponseInvocationDelta` (`response.invocation.delta`) passes through non-speech SSE events from the hosted agent
+
+### Other Changes
+
+- Regenerated against `2026-06-01-preview` VoiceLive TypeSpec. The default service API version used by `VoiceLiveClientBuilder` is unchanged (`V2026_04_10`, GA).
+
+## 1.0.0 (2026-06-01)
 
 This is the first General Availability (GA) release of the Azure VoiceLive client library for Java.
+
+### Breaking Changes
+
+- Narrowed `VoiceLiveAsyncClient` session startup to three overloads:
+  - `startSession()`
+  - `startSession(String, VoiceLiveRequestOptions)`
+  - `startSession(AgentSessionConfig, VoiceLiveRequestOptions)`
+- Renamed token-count accessors on token statistic models (JSON wire format unchanged):
+  - `CachedTokenDetails.getTextTokens()` / `getAudioTokens()` / `getImageTokens()` → `getTextTokenCount()` / `getAudioTokenCount()` / `getImageTokenCount()`
+  - `InputTokenDetails.getCachedTokens()` / `getTextTokens()` / `getAudioTokens()` / `getImageTokens()` → `getCachedTokenCount()` / `getTextTokenCount()` / `getAudioTokenCount()` / `getImageTokenCount()`
+  - `OutputTokenDetails.getTextTokens()` / `getAudioTokens()` / `getReasoningTokens()` → `getTextTokenCount()` / `getAudioTokenCount()` / `getReasoningTokenCount()`
+  - `ResponseTokenStatistics.getTotalTokens()` / `getInputTokens()` / `getOutputTokens()` → `getTotalTokenCount()` / `getInputTokenCount()` / `getOutputTokenCount()`
+- `RequestImageContentPart` URL accessor renamed and JSON field changed:
+  - `getUrl()` / `setUrl(String)` → `getImageUrl()` / `setImageUrl(String)`
+  - JSON property `url` → `image_url`
+- Renamed base event types for client↔server symmetry:
+  - `ClientEvent` (base for outbound events) → `SessionClientEvent`
+  - `SessionUpdate` (base for inbound events) → `SessionServerEvent`
+  - `VoiceLiveSessionAsyncClient.receiveEvents()` now returns `Flux<SessionServerEvent>`
+  - `VoiceLiveSessionAsyncClient.sendEvent(...)` now accepts `SessionClientEvent`
+- Renamed MCP-related model types to Pascal case (`MCP*` → `Mcp*`): `McpApprovalType`, `McpServer`, `McpTool`, `McpApprovalResponseRequestItem`, `ResponseMcpApprovalRequestItem`, `ResponseMcpApprovalResponseItem`, `ResponseMcpCallItem`, `ResponseMcpListToolItem`.
+- `VoiceLiveSessionAsyncClient.truncateConversation(String, int, int)` now accepts a `java.time.Duration` for the audio-end position instead of raw milliseconds. The two-argument overload (`itemId`, `contentIndex`) is preserved and defaults to `Duration.ZERO`.
+- Removed `sendInputAudio(byte[])`; use `sendInputAudio(BinaryData)` (wrap raw bytes with `BinaryData.fromBytes(...)`).
+- `AgentSessionConfig.toQueryParameters()` is no longer part of the public API; the conversion is handled internally by `VoiceLiveAsyncClient`.
+- `VoiceLiveSessionOptions.setAnimation(...)` renamed to `setAnimationOptions(...)`.
+- `AnimationOptions.setOutputs(...)` / `getOutputs()` renamed to `setOutputTypes(...)` / `getOutputTypes()`.
+- `LogProbProperties.getLogprob()` renamed to `getLogProb()`.
+- `SessionUpdateConversationItemInputAudioTranscriptionCompleted.getLogprobs()` renamed to `getLogProbs()`.
+- Removed preview service versions from `VoiceLiveServiceVersion`; only GA versions remain (`V2025_10_01`, `V2026_04_10`). The latest version is now `V2026_04_10`.
 
 ### Features Added
 
@@ -18,19 +81,20 @@ This is the first General Availability (GA) release of the Azure VoiceLive clien
 - **Transcription enhancements**:
   - New transcription models on `AudioInputTranscriptionOptionsModel`: `GPT_4O_TRANSCRIBE_DIARIZE`, `MAI_TRANSCRIBE_1`
   - New `TranscriptionPhrase` and `TranscriptionWord` types with timing/confidence information
-  - `SessionUpdateConversationItemInputAudioTranscriptionCompleted` now exposes `getLogprobs()` and `getPhrases()`
+  - `SessionUpdateConversationItemInputAudioTranscriptionCompleted` now exposes `getLogProbs()` and `getPhrases()`
   - New `ServerEventResponseAudioTranscriptAnnotationAdded` event
 - **Session include options and metadata**:
   - New `SessionIncludeOption` expandable enum for opting into additional response payloads (e.g. logprobs, phrases, file-search results)
   - `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse` now expose `include` (`List<SessionIncludeOption>`) and `metadata` (`Map<String,String>`, up to 16 entries)
 - **Personal voice models**: added `PersonalVoiceModels.DRAGON_HDOMNI_LATEST_NEURAL` and `MAI_VOICE_1`
-- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokens()` exposes reasoning token counts
+- **Reasoning token usage**: `OutputTokenDetails.getReasoningTokenCount()` exposes reasoning token counts
 - **Interim response on response.create**: `ResponseCreateParams.setInterimResponse(BinaryData)` lets callers attach interim response config to a single response request
+- Restored no-arg `VoiceLiveAsyncClient.startSession()` overload (uses the deployment's default model).
 - Significantly improved Javadoc for `ServerVadTurnDetection`, `AzureCustomVoice`, `AzurePersonalVoice`, `AzureStandardVoice`, `AzureSemanticVadTurnDetection*`, and other model types
 
 ### Other Changes
 
-- Updated default service API version to track the latest TypeSpec spec.
+- Updated default service API version to `2026-04-10` (GA).
 
 ## 1.0.0-beta.6 (2026-05-01)
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Fleet resources in a resource group.

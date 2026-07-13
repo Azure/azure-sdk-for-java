@@ -61,4 +61,10 @@ public final class AgentEndpointAuthorizationSchemeType
     public static Collection<AgentEndpointAuthorizationSchemeType> values() {
         return values(AgentEndpointAuthorizationSchemeType.class);
     }
+
+    /**
+     * Static value BotServiceTenant for AgentEndpointAuthorizationSchemeType.
+     */
+    @Generated
+    public static final AgentEndpointAuthorizationSchemeType BOT_SERVICE_TENANT = fromString("BotServiceTenant");
 }

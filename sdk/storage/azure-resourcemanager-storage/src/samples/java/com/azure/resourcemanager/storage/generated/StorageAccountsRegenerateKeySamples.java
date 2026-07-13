@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParam
  */
 public final class StorageAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountRegenerateKey.json
+     * x-ms-original-file: 2026-04-01/StorageAccountRegenerateKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKey.
@@ -27,7 +27,7 @@ public final class StorageAccountsRegenerateKeySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountRegenerateKerbKey.json
+     * x-ms-original-file: 2026-04-01/StorageAccountRegenerateKerbKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKerbKey.

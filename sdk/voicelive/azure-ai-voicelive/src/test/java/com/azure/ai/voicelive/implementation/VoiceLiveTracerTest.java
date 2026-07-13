@@ -11,7 +11,7 @@ import com.azure.ai.voicelive.models.ClientEventInputAudioBufferAppend;
 import com.azure.ai.voicelive.models.ClientEventResponseCancel;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.FunctionCallOutputItem;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
@@ -115,7 +115,7 @@ class VoiceLiveTracerTest {
 
         String json = "{\"type\":\"session.created\",\"event_id\":\"event1\","
             + "\"session\":{\"id\":\"session123\",\"model\":\"gpt-4o\"}}";
-        SessionUpdate update = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(json));
+        SessionServerEvent update = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(json));
         voiceLiveTracer.traceRecv(update, json);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -176,7 +176,8 @@ class VoiceLiveTracerTest {
         Thread.sleep(10);
         String audioJson = "{\"type\":\"response.audio.delta\",\"response_id\":\"r1\","
             + "\"item_id\":\"i1\",\"output_index\":0,\"content_index\":0,\"delta\":\"AQID\"}";
-        SessionUpdate audioDelta = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(audioJson));
+        SessionServerEvent audioDelta
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(audioJson));
         voiceLiveTracer.traceRecv(audioDelta, audioJson);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -199,7 +200,8 @@ class VoiceLiveTracerTest {
         // Receive audio delta (base64 "AQIDBA==" = 4 bytes)
         String audioJson = "{\"type\":\"response.audio.delta\",\"response_id\":\"r1\","
             + "\"item_id\":\"i1\",\"output_index\":0,\"content_index\":0,\"delta\":\"AQIDBA==\"}";
-        SessionUpdate audioDelta = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(audioJson));
+        SessionServerEvent audioDelta
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(audioJson));
         voiceLiveTracer.traceRecv(audioDelta, audioJson);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -217,7 +219,8 @@ class VoiceLiveTracerTest {
 
         String doneJson = "{\"type\":\"response.done\",\"event_id\":\"event1\","
             + "\"response\":{\"id\":\"response1\",\"status\":\"completed\",\"output\":[]}}";
-        SessionUpdate responseDone = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
+        SessionServerEvent responseDone
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
         voiceLiveTracer.traceRecv(responseDone, doneJson);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -236,7 +239,8 @@ class VoiceLiveTracerTest {
             + "\"usage\":{\"total_tokens\":150,\"input_tokens\":100,\"output_tokens\":50,"
             + "\"input_token_details\":{\"cached_tokens\":0,\"text_tokens\":50,\"audio_tokens\":50},"
             + "\"output_token_details\":{\"text_tokens\":25,\"audio_tokens\":25}}}}";
-        SessionUpdate responseDone = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
+        SessionServerEvent responseDone
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
         voiceLiveTracer.traceRecv(responseDone, doneJson);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -254,7 +258,8 @@ class VoiceLiveTracerTest {
 
         String errorJson = "{\"type\":\"error\",\"event_id\":\"event1\","
             + "\"error\":{\"type\":\"server_error\",\"code\":\"500\",\"message\":\"Internal error\"}}";
-        SessionUpdate errorUpdate = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(errorJson));
+        SessionServerEvent errorUpdate
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(errorJson));
         voiceLiveTracer.traceRecv(errorUpdate, errorJson);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -294,7 +299,7 @@ class VoiceLiveTracerTest {
 
         String json = "{\"type\":\"session.created\",\"event_id\":\"event1\","
             + "\"session\":{\"id\":\"session456\",\"model\":\"gpt-4o\"}}";
-        SessionUpdate update = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(json));
+        SessionServerEvent update = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(json));
         voiceLiveTracer.traceRecv(update, json);
 
         voiceLiveTracer.endConnectSpan(null);
@@ -329,7 +334,7 @@ class VoiceLiveTracerTest {
         // Recv
         String json = "{\"type\":\"session.created\",\"event_id\":\"event1\","
             + "\"session\":{\"id\":\"session123\",\"model\":\"gpt-4o\"}}";
-        SessionUpdate update = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(json));
+        SessionServerEvent update = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(json));
         voiceLiveTracer.traceRecv(update, json);
 
         // Close
@@ -390,7 +395,8 @@ class VoiceLiveTracerTest {
         String doneJson = "{\"type\":\"response.done\",\"event_id\":\"event1\","
             + "\"response\":{\"id\":\"response1\",\"conversation_id\":\"conversation1\","
             + "\"status\":\"completed\",\"output\":[]}}";
-        SessionUpdate responseDone = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
+        SessionServerEvent responseDone
+            = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(doneJson));
         voiceLiveTracer.traceRecv(responseDone, doneJson);
         voiceLiveTracer.endConnectSpan(null);
 
@@ -456,7 +462,7 @@ class VoiceLiveTracerTest {
         String json = "{\"type\":\"session.created\",\"event_id\":\"event1\",\"session\":{"
             + "\"id\":\"session123\",\"input_audio_sampling_rate\":24000,"
             + "\"agent\":{\"agent_id\":\"agent123\",\"thread_id\":\"thread456\"}}}";
-        SessionUpdate update = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(json));
+        SessionServerEvent update = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(json));
         voiceLiveTracer.traceRecv(update, json);
         voiceLiveTracer.endConnectSpan(null);
 
@@ -493,7 +499,7 @@ class VoiceLiveTracerTest {
 
         String json = "{\"type\":\"session.created\",\"event_id\":\"event1\","
             + "\"session\":{\"id\":\"session789\",\"model\":\"gpt-4o\"," + "\"input_audio_sampling_rate\":24000}}";
-        SessionUpdate update = SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(json));
+        SessionServerEvent update = SessionServerEvent.fromJson(com.azure.json.JsonProviders.createReader(json));
         voiceLiveTracer.traceRecv(update, json);
         voiceLiveTracer.endConnectSpan(null);
 

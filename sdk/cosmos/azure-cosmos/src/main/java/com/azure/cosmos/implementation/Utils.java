@@ -442,6 +442,32 @@ public class Utils {
         }
     }
 
+    public static boolean isConsistencyLevelUpgrade(ConsistencyLevel backendConsistency,
+                                                    ConsistencyLevel desiredConsistency) {
+        if (backendConsistency == null || desiredConsistency == null) {
+            return false;
+        }
+
+        return getConsistencyLevelRank(desiredConsistency) > getConsistencyLevelRank(backendConsistency);
+    }
+
+    private static int getConsistencyLevelRank(ConsistencyLevel consistencyLevel) {
+        switch (consistencyLevel) {
+            case STRONG:
+                return 5;
+            case BOUNDED_STALENESS:
+                return 4;
+            case SESSION:
+                return 3;
+            case CONSISTENT_PREFIX:
+                return 2;
+            case EVENTUAL:
+                return 1;
+            default:
+                throw new IllegalArgumentException("consistencyLevel");
+        }
+    }
+
     public static String getUserAgent() {
         return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.getSdkVersion());
     }
@@ -572,6 +598,33 @@ public class Utils {
         map.put(k1,  v1);
         map = Collections.unmodifiableMap(map);
         return map;
+    }
+
+    // Runtime classes produced by the immutable factory methods above. Captured once at
+    // class-init time so that callers can perform an O(1) reference-equality check to
+    // decide whether they need a defensive mutable copy, without resorting to
+    // exception-driven probing on the hot path.
+    private static final Class<?> UNMODIFIABLE_MAP_CLASS =
+        Collections.unmodifiableMap(new HashMap<>()).getClass();
+    private static final Class<?> EMPTY_MAP_CLASS = Collections.emptyMap().getClass();
+
+    /**
+     * Returns {@code true} if {@code map} is one of the immutable map shapes produced by
+     * the factory methods in this class ({@link #immutableMapOf(Object, Object)}) or by
+     * {@link Collections#emptyMap()}. The check is a single reference comparison and is
+     * safe to call from hot paths.
+     * <p>
+     * Note: this is intentionally narrow - it only recognizes the wrappers the Cosmos
+     * pipeline actually emits. It does not attempt to recognize every possible JDK or
+     * third-party immutable map (e.g. {@code Map.of(...)}, Guava {@code ImmutableMap}).
+     * Add new sentinels here if a new immutable producer is introduced.
+     */
+    public static boolean isImmutableMap(Map<?, ?> map) {
+        if (map == null) {
+            return false;
+        }
+        Class<?> clazz = map.getClass();
+        return clazz == UNMODIFIABLE_MAP_CLASS || clazz == EMPTY_MAP_CLASS;
     }
 
     public static <V> V firstOrDefault(List<V> list) {

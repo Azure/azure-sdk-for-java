@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationTy
  */
 public final class VirtualNetworkGatewaysInvokePrepareMigrationSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayPrepareMigration.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayPrepareMigration.json
      */
     /**
      * Sample code: VirtualNetworkGatewayPrepareMigration.

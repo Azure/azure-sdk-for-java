@@ -23,7 +23,7 @@ public final class CommitmentTiersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"s\",\"skuName\":\"ydw\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"uhhqldrdymnswxie\",\"tier\":\"wqnghxnimvyuj\",\"maxCount\":743891586,\"quota\":{\"quantity\":97698113602571846,\"unit\":\"ypu\"},\"cost\":{\"commitmentMeterId\":\"ylquevqmvyumgm\",\"overageMeterId\":\"ebsnz\"}}]}";
+            = "{\"value\":[{\"kind\":\"qxqkv\",\"skuName\":\"mjhymudjma\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"ebhsermclyqw\",\"tier\":\"hyqkaaptbssvkbcb\",\"maxCount\":1798263571,\"quota\":{\"quantity\":577834154400477682,\"unit\":\"cuhp\"},\"cost\":{\"commitmentMeterId\":\"bnsshvq\",\"overageMeterId\":\"szbeuybutcdzjf\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class CommitmentTiersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommitmentTier> response
-            = manager.commitmentTiers().list("zrqnjxm", com.azure.core.util.Context.NONE);
+            = manager.commitmentTiers().list("pzheahu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("s", response.iterator().next().kind());
-        Assertions.assertEquals("ydw", response.iterator().next().skuName());
-        Assertions.assertEquals(HostingModel.PROVISIONED_WEB, response.iterator().next().hostingModel());
-        Assertions.assertEquals("uhhqldrdymnswxie", response.iterator().next().planType());
-        Assertions.assertEquals("wqnghxnimvyuj", response.iterator().next().tier());
-        Assertions.assertEquals(743891586, response.iterator().next().maxCount());
-        Assertions.assertEquals(97698113602571846L, response.iterator().next().quota().quantity());
-        Assertions.assertEquals("ypu", response.iterator().next().quota().unit());
-        Assertions.assertEquals("ylquevqmvyumgm", response.iterator().next().cost().commitmentMeterId());
-        Assertions.assertEquals("ebsnz", response.iterator().next().cost().overageMeterId());
+        Assertions.assertEquals("qxqkv", response.iterator().next().kind());
+        Assertions.assertEquals("mjhymudjma", response.iterator().next().skuName());
+        Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, response.iterator().next().hostingModel());
+        Assertions.assertEquals("ebhsermclyqw", response.iterator().next().planType());
+        Assertions.assertEquals("hyqkaaptbssvkbcb", response.iterator().next().tier());
+        Assertions.assertEquals(1798263571, response.iterator().next().maxCount());
+        Assertions.assertEquals(577834154400477682L, response.iterator().next().quota().quantity());
+        Assertions.assertEquals("cuhp", response.iterator().next().quota().unit());
+        Assertions.assertEquals("bnsshvq", response.iterator().next().cost().commitmentMeterId());
+        Assertions.assertEquals("szbeuybutcdzjf", response.iterator().next().cost().overageMeterId());
     }
 }

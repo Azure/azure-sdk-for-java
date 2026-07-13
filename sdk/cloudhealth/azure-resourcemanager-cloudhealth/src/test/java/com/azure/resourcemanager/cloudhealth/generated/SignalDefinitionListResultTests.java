@@ -6,39 +6,38 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.SignalDefinitionListResult;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 
 public final class SignalDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalDefinitionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"mdectehfiqscjey\",\"refreshInterval\":\"PT30M\",\"labels\":{\"gm\":\"rkgqhcjrefo\",\"yyvxyqjpkcattpn\":\"qsl\",\"v\":\"jcrcczsqpjhvmda\",\"q\":\"ysou\"},\"dataUnit\":\"a\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":74.55696647155128,\"dynamicThresholdDirection\":\"GreaterOrLowerThan\",\"trainingStartTime\":\"2021-05-02T19:00:13Z\"},\"degradedRule\":{\"operator\":\"LowerOrEquals\",\"threshold\":\"ltrpmopj\"},\"unhealthyRule\":{\"operator\":\"Equals\",\"threshold\":\"atuokthfuiu\"}},\"deletionDate\":\"2021-05-15T07:44:06Z\"},\"id\":\"fcp\",\"name\":\"vxodpu\",\"type\":\"zmyzydagf\"},{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"zyiuokk\",\"refreshInterval\":\"PT1M\",\"labels\":{\"ywqsmbsurexim\":\"xw\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\",\"oczvy\":\"b\"},\"dataUnit\":\"qrvkdv\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":19.527100203245883,\"dynamicThresholdDirection\":\"GreaterOrLowerThan\",\"trainingStartTime\":\"2021-05-18T15:53:17Z\"},\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"watkpnpulexxb\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"truwiqzb\"}},\"deletionDate\":\"2021-02-10T16:58:51Z\"},\"id\":\"ovm\",\"name\":\"okacspk\",\"type\":\"lhzdobp\"}],\"nextLink\":\"mflbv\"}")
+            "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Creating\",\"displayName\":\"pfhyhl\",\"refreshInterval\":\"PT5M\",\"tags\":{\"odsfcpkvxodpuozm\":\"pjmcmatuokthfuiu\",\"ktwh\":\"zydagfuaxbezyiuo\",\"o\":\"dxwzywqsmbsurexi\",\"fksymddystki\":\"yocf\"},\"dataUnit\":\"xhqyudxorrqnb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":75.2718552732174,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":74.84185804290516,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT5M\"}}},\"id\":\"mvvd\",\"name\":\"watkpnpulexxb\",\"type\":\"zwtruwiqzbqjvsov\"}],\"nextLink\":\"okacspk\"}")
             .toObject(SignalDefinitionListResult.class);
-        Assertions.assertEquals("mdectehfiqscjey", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT30M, model.value().get(0).properties().refreshInterval());
-        Assertions.assertEquals("rkgqhcjrefo", model.value().get(0).properties().labels().get("gm"));
-        Assertions.assertEquals("a", model.value().get(0).properties().dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.value().get(0).properties().evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(74.55696647155128,
-            model.value().get(0).properties().evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_OR_LOWER_THAN,
-            model.value().get(0).properties().evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T19:00:13Z"),
-            model.value().get(0).properties().evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_OR_EQUALS,
+        Assertions.assertEquals("pfhyhl", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT5M, model.value().get(0).properties().refreshInterval());
+        Assertions.assertEquals("pjmcmatuokthfuiu", model.value().get(0).properties().tags().get("odsfcpkvxodpuozm"));
+        Assertions.assertEquals("xhqyudxorrqnb", model.value().get(0).properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             model.value().get(0).properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("ltrpmopj",
+        Assertions.assertEquals(75.2718552732174D,
             model.value().get(0).properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.EQUALS,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+            model.value().get(0).properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT30M,
+            model.value().get(0).properties().evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             model.value().get(0).properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("atuokthfuiu",
+        Assertions.assertEquals(74.84185804290516D,
             model.value().get(0).properties().evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("mflbv", model.nextLink());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            model.value().get(0).properties().evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M,
+            model.value().get(0).properties().evaluationRules().unhealthyRule().lookBackWindow());
+        Assertions.assertEquals("okacspk", model.nextLink());
     }
 }

@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 
 /**
  * Discovery rule properties.
@@ -27,12 +25,6 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
      * Display name
      */
     private String displayName;
-
-    /*
-     * Azure Resource Graph query text in KQL syntax. The query must return at least a column named 'id' which contains
-     * the resource ID of the discovered resources.
-     */
-    private String resourceGraphQuery;
 
     /*
      * Reference to the name of the authentication setting which is used for querying Azure Resource Graph. The same
@@ -52,19 +44,22 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
     private DiscoveryRuleRecommendedSignalsBehavior addRecommendedSignals;
 
     /*
-     * Date when the discovery rule was (soft-)deleted.
+     * Specification of the discovery rule defining how entities are discovered.
      */
-    private OffsetDateTime deletionDate;
+    private DiscoveryRuleSpecification specification;
 
     /*
-     * Error message if the last discovery operation failed.
+     * Whether to automatically add a signal for the Azure resource's availability state from Azure Resource Health to
+     * the discovered entities. Defaults to `Enabled`: discovery rules updated via this API version without setting this
+     * field will begin emitting a Resource Health availability signal. Pass `Disabled` to preserve
+     * pre-`2026-05-01-preview` behavior.
      */
-    private String errorMessage;
+    private ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal;
 
     /*
-     * Number of discovered entities in the last discovery operation.
+     * Error details if the last discovery operation failed.
      */
-    private Integer numberOfDiscoveredEntities;
+    private DiscoveryError error;
 
     /*
      * Name of the entity which represents the discovery rule. Note: It might take a few minutes after creating the
@@ -104,28 +99,6 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
      */
     public DiscoveryRuleProperties withDisplayName(String displayName) {
         this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the resourceGraphQuery property: Azure Resource Graph query text in KQL syntax. The query must return at
-     * least a column named 'id' which contains the resource ID of the discovered resources.
-     * 
-     * @return the resourceGraphQuery value.
-     */
-    public String resourceGraphQuery() {
-        return this.resourceGraphQuery;
-    }
-
-    /**
-     * Set the resourceGraphQuery property: Azure Resource Graph query text in KQL syntax. The query must return at
-     * least a column named 'id' which contains the resource ID of the discovered resources.
-     * 
-     * @param resourceGraphQuery the resourceGraphQuery value to set.
-     * @return the DiscoveryRuleProperties object itself.
-     */
-    public DiscoveryRuleProperties withResourceGraphQuery(String resourceGraphQuery) {
-        this.resourceGraphQuery = resourceGraphQuery;
         return this;
     }
 
@@ -196,30 +169,59 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
     }
 
     /**
-     * Get the deletionDate property: Date when the discovery rule was (soft-)deleted.
+     * Get the specification property: Specification of the discovery rule defining how entities are discovered.
      * 
-     * @return the deletionDate value.
+     * @return the specification value.
      */
-    public OffsetDateTime deletionDate() {
-        return this.deletionDate;
+    public DiscoveryRuleSpecification specification() {
+        return this.specification;
     }
 
     /**
-     * Get the errorMessage property: Error message if the last discovery operation failed.
+     * Set the specification property: Specification of the discovery rule defining how entities are discovered.
      * 
-     * @return the errorMessage value.
+     * @param specification the specification value to set.
+     * @return the DiscoveryRuleProperties object itself.
      */
-    public String errorMessage() {
-        return this.errorMessage;
+    public DiscoveryRuleProperties withSpecification(DiscoveryRuleSpecification specification) {
+        this.specification = specification;
+        return this;
     }
 
     /**
-     * Get the numberOfDiscoveredEntities property: Number of discovered entities in the last discovery operation.
+     * Get the addResourceHealthSignal property: Whether to automatically add a signal for the Azure resource's
+     * availability state from Azure Resource Health to the discovered entities. Defaults to `Enabled`: discovery rules
+     * updated via this API version without setting this field will begin emitting a Resource Health availability
+     * signal. Pass `Disabled` to preserve pre-`2026-05-01-preview` behavior.
      * 
-     * @return the numberOfDiscoveredEntities value.
+     * @return the addResourceHealthSignal value.
      */
-    public Integer numberOfDiscoveredEntities() {
-        return this.numberOfDiscoveredEntities;
+    public ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal() {
+        return this.addResourceHealthSignal;
+    }
+
+    /**
+     * Set the addResourceHealthSignal property: Whether to automatically add a signal for the Azure resource's
+     * availability state from Azure Resource Health to the discovered entities. Defaults to `Enabled`: discovery rules
+     * updated via this API version without setting this field will begin emitting a Resource Health availability
+     * signal. Pass `Disabled` to preserve pre-`2026-05-01-preview` behavior.
+     * 
+     * @param addResourceHealthSignal the addResourceHealthSignal value to set.
+     * @return the DiscoveryRuleProperties object itself.
+     */
+    public DiscoveryRuleProperties
+        withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal) {
+        this.addResourceHealthSignal = addResourceHealthSignal;
+        return this;
+    }
+
+    /**
+     * Get the error property: Error details if the last discovery operation failed.
+     * 
+     * @return the error value.
+     */
+    public DiscoveryError error() {
+        return this.error;
     }
 
     /**
@@ -238,13 +240,15 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceGraphQuery", this.resourceGraphQuery);
         jsonWriter.writeStringField("authenticationSetting", this.authenticationSetting);
         jsonWriter.writeStringField("discoverRelationships",
             this.discoverRelationships == null ? null : this.discoverRelationships.toString());
         jsonWriter.writeStringField("addRecommendedSignals",
             this.addRecommendedSignals == null ? null : this.addRecommendedSignals.toString());
+        jsonWriter.writeJsonField("specification", this.specification);
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("addResourceHealthSignal",
+            this.addResourceHealthSignal == null ? null : this.addResourceHealthSignal.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -264,9 +268,7 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceGraphQuery".equals(fieldName)) {
-                    deserializedDiscoveryRuleProperties.resourceGraphQuery = reader.getString();
-                } else if ("authenticationSetting".equals(fieldName)) {
+                if ("authenticationSetting".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.authenticationSetting = reader.getString();
                 } else if ("discoverRelationships".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.discoverRelationships
@@ -274,6 +276,8 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                 } else if ("addRecommendedSignals".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.addRecommendedSignals
                         = DiscoveryRuleRecommendedSignalsBehavior.fromString(reader.getString());
+                } else if ("specification".equals(fieldName)) {
+                    deserializedDiscoveryRuleProperties.specification = DiscoveryRuleSpecification.fromJson(reader);
                 } else if ("entityName".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.entityName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
@@ -281,14 +285,11 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                         = HealthModelProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.displayName = reader.getString();
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedDiscoveryRuleProperties.deletionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("errorMessage".equals(fieldName)) {
-                    deserializedDiscoveryRuleProperties.errorMessage = reader.getString();
-                } else if ("numberOfDiscoveredEntities".equals(fieldName)) {
-                    deserializedDiscoveryRuleProperties.numberOfDiscoveredEntities
-                        = reader.getNullable(JsonReader::getInt);
+                } else if ("addResourceHealthSignal".equals(fieldName)) {
+                    deserializedDiscoveryRuleProperties.addResourceHealthSignal
+                        = ResourceHealthAvailabilityStateSignalBehavior.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedDiscoveryRuleProperties.error = DiscoveryError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

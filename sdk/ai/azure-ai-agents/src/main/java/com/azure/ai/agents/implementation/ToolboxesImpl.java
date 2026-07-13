@@ -80,49 +80,47 @@ public final class ToolboxesImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AgentsClientToolboxes")
     public interface ToolboxesService {
-        @Post("/toolboxes/{toolbox_name}/versions")
+        @Post("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createToolboxVersion(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createToolboxVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createToolboxVersionRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Post("/toolboxes/{toolbox_name}/versions")
+        @Post("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createToolboxVersionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createToolboxVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createToolboxVersionRequest, RequestOptions requestOptions,
+            Context context);
 
-        @Get("/toolboxes/{toolbox_name}")
+        @Get("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getToolbox(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Mono<Response<BinaryData>> getToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/toolboxes/{toolbox_name}")
+        @Get("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getToolboxSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Response<BinaryData> getToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -133,8 +131,8 @@ public final class ToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listToolboxes(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes")
         @ExpectedResponses({ 200 })
@@ -143,122 +141,116 @@ public final class ToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listToolboxesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/toolboxes/{toolbox_name}/versions")
+        @Get("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listToolboxVersions(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/toolboxes/{toolbox_name}/versions")
+        @Get("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listToolboxVersionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/toolboxes/{toolbox_name}/versions/{version}")
+        @Get("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getToolboxVersion(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/toolboxes/{toolbox_name}/versions/{version}")
+        @Get("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getToolboxVersionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Patch("/toolboxes/{toolbox_name}")
+        @Patch("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateToolbox(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Mono<Response<BinaryData>> updateToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
             RequestOptions requestOptions, Context context);
 
-        @Patch("/toolboxes/{toolbox_name}")
+        @Patch("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateToolboxSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Response<BinaryData> updateToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/toolboxes/{toolbox_name}")
+        @Delete("/toolboxes/{name}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteToolbox(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Mono<Response<Void>> deleteToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
-        @Delete("/toolboxes/{toolbox_name}")
+        @Delete("/toolboxes/{name}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteToolboxSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @HeaderParam("Foundry-Features") String foundryFeatures,
+        Response<Void> deleteToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
-        @Delete("/toolboxes/{toolbox_name}/versions/{version}")
+        @Delete("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteToolboxVersion(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("version") String version,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
-        @Delete("/toolboxes/{toolbox_name}/versions/{version}")
+        @Delete("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteToolboxVersionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("toolbox_name") String toolboxName, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+        Response<Void> deleteToolboxVersionSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
+            @PathParam("version") String version, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     * 
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -270,7 +262,20 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -297,7 +302,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -309,7 +327,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -319,18 +337,19 @@ public final class ToolboxesImpl {
      * @return a specific version of a toolbox along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createToolboxVersionWithResponseAsync(String toolboxName,
+    public Mono<Response<BinaryData>> createToolboxVersionWithResponseAsync(String name,
         BinaryData createToolboxVersionRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createToolboxVersion(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept,
-            createToolboxVersionRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createToolboxVersion(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createToolboxVersionRequest,
+            requestOptions, context));
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     * 
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -342,7 +361,20 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -369,7 +401,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -381,7 +426,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -391,18 +436,19 @@ public final class ToolboxesImpl {
      * @return a specific version of a toolbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createToolboxVersionWithResponse(String toolboxName,
-        BinaryData createToolboxVersionRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
+    public Response<BinaryData> createToolboxVersionWithResponse(String name, BinaryData createToolboxVersionRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createToolboxVersionSync(this.client.getEndpoint(), toolboxName, foundryFeatures,
+        return service.createToolboxVersionSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, createToolboxVersionRequest,
             requestOptions, Context.NONE);
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     * 
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -415,7 +461,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to retrieve.
+     * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,15 +471,16 @@ public final class ToolboxesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getToolboxWithResponseAsync(String toolboxName, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
+    public Mono<Response<BinaryData>> getToolboxWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getToolbox(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getToolbox(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     * 
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -446,7 +493,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to retrieve.
+     * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -455,15 +502,16 @@ public final class ToolboxesImpl {
      * @return a toolbox that stores reusable tool definitions for agents along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getToolboxWithResponse(String toolboxName, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
+    public Response<BinaryData> getToolboxWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getToolboxSync(this.client.getEndpoint(), toolboxName, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -506,17 +554,18 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listToolboxesSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listToolboxes(this.client.getEndpoint(), foundryFeatures,
+            .withContext(context -> service.listToolboxes(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -562,7 +611,9 @@ public final class ToolboxesImpl {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -604,16 +655,17 @@ public final class ToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listToolboxesSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listToolboxesSync(this.client.getEndpoint(), foundryFeatures,
+        Response<BinaryData> res = service.listToolboxesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -659,7 +711,9 @@ public final class ToolboxesImpl {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -695,7 +749,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -707,7 +774,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to list versions for.
+     * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -717,19 +784,20 @@ public final class ToolboxesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listToolboxVersionsSinglePageAsync(String toolboxName,
+    private Mono<PagedResponse<BinaryData>> listToolboxVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listToolboxVersions(this.client.getEndpoint(), toolboxName, foundryFeatures,
+            .withContext(context -> service.listToolboxVersions(this.client.getEndpoint(), name,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -765,7 +833,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -777,7 +858,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to list versions for.
+     * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -786,12 +867,14 @@ public final class ToolboxesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listToolboxVersionsAsync(String toolboxName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listToolboxVersionsSinglePageAsync(toolboxName, requestOptions));
+    public PagedFlux<BinaryData> listToolboxVersionsAsync(String name, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listToolboxVersionsSinglePageAsync(name, requestOptions));
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -827,7 +910,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -839,7 +935,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to list versions for.
+     * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -848,17 +944,18 @@ public final class ToolboxesImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listToolboxVersionsSinglePage(String toolboxName, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
+    private PagedResponse<BinaryData> listToolboxVersionsSinglePage(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listToolboxVersionsSync(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listToolboxVersionsSync(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -894,7 +991,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -906,7 +1016,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to list versions for.
+     * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -915,12 +1025,14 @@ public final class ToolboxesImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listToolboxVersions(String toolboxName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listToolboxVersionsSinglePage(toolboxName, requestOptions));
+    public PagedIterable<BinaryData> listToolboxVersions(String name, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listToolboxVersionsSinglePage(name, requestOptions));
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     * 
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -936,7 +1048,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -948,7 +1073,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox.
+     * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -958,16 +1083,17 @@ public final class ToolboxesImpl {
      * @return a specific version of a toolbox along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getToolboxVersionWithResponseAsync(String toolboxName, String version,
+    public Mono<Response<BinaryData>> getToolboxVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getToolboxVersion(this.client.getEndpoint(), toolboxName,
-            version, foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getToolboxVersion(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     * 
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -983,7 +1109,20 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -995,7 +1134,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox.
+     * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1005,16 +1144,17 @@ public final class ToolboxesImpl {
      * @return a specific version of a toolbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getToolboxVersionWithResponse(String toolboxName, String version,
+    public Response<BinaryData> getToolboxVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        return service.getToolboxVersionSync(this.client.getEndpoint(), toolboxName, version, foundryFeatures,
+        return service.getToolboxVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     * 
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1037,7 +1177,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to update.
+     * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1048,18 +1188,19 @@ public final class ToolboxesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateToolboxWithResponseAsync(String toolboxName,
-        BinaryData updateToolboxRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
+    public Mono<Response<BinaryData>> updateToolboxWithResponseAsync(String name, BinaryData updateToolboxRequest,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateToolbox(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateToolbox(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest, requestOptions,
+            context));
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     * 
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1082,7 +1223,7 @@ public final class ToolboxesImpl {
      * }
      * </pre>
      * 
-     * @param toolboxName The name of the toolbox to update.
+     * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1092,20 +1233,20 @@ public final class ToolboxesImpl {
      * @return a toolbox that stores reusable tool definitions for agents along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest,
+    public Response<BinaryData> updateToolboxWithResponse(String name, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateToolboxSync(this.client.getEndpoint(), toolboxName, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest, requestOptions,
-            Context.NONE);
+        return service.updateToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            contentType, accept, updateToolboxRequest, requestOptions, Context.NONE);
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
      * 
-     * @param toolboxName The name of the toolbox to delete.
+     * Removes the specified toolbox along with all of its versions.
+     * 
+     * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1114,16 +1255,17 @@ public final class ToolboxesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteToolboxWithResponseAsync(String toolboxName, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return FluxUtil.withContext(context -> service.deleteToolbox(this.client.getEndpoint(), toolboxName,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), requestOptions, context));
+    public Mono<Response<Void>> deleteToolboxWithResponseAsync(String name, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteToolbox(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
      * 
-     * @param toolboxName The name of the toolbox to delete.
+     * Removes the specified toolbox along with all of its versions.
+     * 
+     * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1132,16 +1274,17 @@ public final class ToolboxesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteToolboxWithResponse(String toolboxName, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return service.deleteToolboxSync(this.client.getEndpoint(), toolboxName, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    public Response<Void> deleteToolboxWithResponse(String name, RequestOptions requestOptions) {
+        return service.deleteToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            requestOptions, Context.NONE);
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
      * 
-     * @param toolboxName The name of the toolbox.
+     * Removes the specified version of a toolbox.
+     * 
+     * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1151,17 +1294,18 @@ public final class ToolboxesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteToolboxVersionWithResponseAsync(String toolboxName, String version,
+    public Mono<Response<Void>> deleteToolboxVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return FluxUtil.withContext(context -> service.deleteToolboxVersion(this.client.getEndpoint(), toolboxName,
-            version, foundryFeatures, this.client.getServiceVersion().getVersion(), requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteToolboxVersion(this.client.getEndpoint(), name, version,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
      * 
-     * @param toolboxName The name of the toolbox.
+     * Removes the specified version of a toolbox.
+     * 
+     * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1171,10 +1315,8 @@ public final class ToolboxesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteToolboxVersionWithResponse(String toolboxName, String version,
-        RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return service.deleteToolboxVersionSync(this.client.getEndpoint(), toolboxName, version, foundryFeatures,
+    public Response<Void> deleteToolboxVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return service.deleteToolboxVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
