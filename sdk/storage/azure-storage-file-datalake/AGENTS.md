@@ -38,7 +38,7 @@ Endpoint and URL handling must preserve Data Lake `dfs.core.windows.net` endpoin
 
 ## Data Lake Service Semantics
 
-- Requires hierarchical namespace (HNS)-enabled accounts; this library does not support HNS-disabled accounts.
+- Requires hierarchical namespace (HNS)-enabled accounts; this library is designed for and is only fully supported for HNS-enabled accounts.
 - Supports POSIX-like access control semantics on files and directories.
 - Rename is a primary, first-class operation — not a copy-then-delete convenience alias.
 - File and directory are distinct client types with different operations; do not treat them as interchangeable.
@@ -48,7 +48,7 @@ Endpoint and URL handling must preserve Data Lake `dfs.core.windows.net` endpoin
 
 ```bash
 # Build this module
-mvn -f sdk/storage/azure-storage-file-datalake/pom.xml -Dgpg.skip clean install
+mvn -f sdk/storage/azure-storage-file-datalake/pom.xml clean install -DskipTests
 
 # Run this module's tests (playback mode)
 mvn -f sdk/storage/azure-storage-file-datalake/pom.xml test
