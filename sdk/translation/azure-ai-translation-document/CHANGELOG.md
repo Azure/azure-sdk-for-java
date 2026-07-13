@@ -19,6 +19,8 @@
 ### Breaking Changes
 
 - Replaced the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience overload `translate(String, DocumentTranslateContent, String, String, Boolean)` with `translate(String, DocumentTranslateContent, String, String, String, Boolean, Boolean)`, adding the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively). Existing callers of the previous overload must update their call sites to the new signature.
+- Made the `type` parameter required on `getSupportedFormats`, matching the service contract. Removed the no-argument `getSupportedFormats()` overload from `DocumentTranslationClient` and `DocumentTranslationAsyncClient`; callers must now pass a `FileFormatType` (for example, `getSupportedFormats(FileFormatType.DOCUMENT)`).
+- Changed the underlying values of `FileFormatType.DOCUMENT` and `FileFormatType.GLOSSARY` from `document`/`glossary` to `Document`/`Glossary` to match the service. The enum constant names are unchanged.
 
 ## 1.0.8 (2026-05-05)
 

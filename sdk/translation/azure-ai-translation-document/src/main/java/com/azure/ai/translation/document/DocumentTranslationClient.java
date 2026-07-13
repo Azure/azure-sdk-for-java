@@ -602,59 +602,6 @@ public final class DocumentTranslationClient {
     }
 
     /**
-     * Returns a list of supported document formats
-     *
-     * The list of supported formats supported by the Document Translation
-     * service.
-     * The list includes the common file extension, as well as the
-     * content-type if using the upload API.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
-     * "document", "glossary".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             format: String (Required)
-     *             fileExtensions (Required): [
-     *                 String (Required)
-     *             ]
-     *             contentTypes (Required): [
-     *                 String (Required)
-     *             ]
-     *             defaultVersion: String (Optional)
-     *             versions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             type: String(document/glossary) (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of supported file formats along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSupportedFormatsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSupportedFormatsWithResponse(requestOptions);
-    }
-
-    /**
      * Submit a document translation request to the Document Translation service
      *
      * Use this API to submit a bulk (batch) translation request to the Document
@@ -1086,10 +1033,7 @@ public final class DocumentTranslationClient {
     public List<FileFormat> getSupportedFormats(FileFormatType type) {
         // Custom convenience method for getSupportedFormatsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (type != null) {
-            requestOptions.addQueryParam("type", type.toString(), false);
-        }
-        return getSupportedFormatsWithResponse(requestOptions).getValue()
+        return getSupportedFormatsWithResponse(type.toString(), requestOptions).getValue()
             .toObject(SupportedFileFormats.class)
             .getValue();
     }
@@ -1101,20 +1045,42 @@ public final class DocumentTranslationClient {
      * service.
      * The list includes the common file extension, as well as the
      * content-type if using the upload API.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             format: String (Required)
+     *             fileExtensions (Required): [
+     *                 String (Required)
+     *             ]
+     *             contentTypes (Required): [
+     *                 String (Required)
+     *             ]
+     *             defaultVersion: String (Optional)
+     *             versions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             type: String(Document/Glossary) (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
      *
+     * @param type the type of format like document or glossary . Allowed values: "Document", "Glossary".
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of supported file formats.
+     * @return list of supported file formats along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<FileFormat> getSupportedFormats() {
-        // Custom convenience method for getSupportedFormatsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSupportedFormatsWithResponse(requestOptions).getValue()
-            .toObject(SupportedFileFormats.class)
-            .getValue();
+    public Response<BinaryData> getSupportedFormatsWithResponse(String type, RequestOptions requestOptions) {
+        return this.serviceClient.getSupportedFormatsWithResponse(type, requestOptions);
     }
 }
