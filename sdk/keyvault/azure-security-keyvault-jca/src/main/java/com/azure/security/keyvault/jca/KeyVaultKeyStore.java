@@ -304,7 +304,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             List<String> aliasList = getAllAliases();
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
-                if (certificate.equals(cert)) {
+                if (certificate != null && certificate.equals(cert)) {
                     alias = candidateAlias;
                     break;
                 }

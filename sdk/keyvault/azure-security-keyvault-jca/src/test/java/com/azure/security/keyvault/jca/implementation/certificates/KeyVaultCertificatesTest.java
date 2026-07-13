@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +54,18 @@ public class KeyVaultCertificatesTest {
     @Test
     public void testGetKey() {
         Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
+    }
+
+    @Test
+    public void testGetCertificateKeysReturnsSnapshot() {
+        Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
+
+        Map<String, Key> keySnapshot = keyVaultCertificates.getCertificateKeys();
+        Assertions.assertEquals(key, keySnapshot.get("myalias"));
+
+        keySnapshot.clear();
+
+        Assertions.assertEquals(key, keyVaultCertificates.getCertificateKeys().get("myalias"));
     }
 
     @Test

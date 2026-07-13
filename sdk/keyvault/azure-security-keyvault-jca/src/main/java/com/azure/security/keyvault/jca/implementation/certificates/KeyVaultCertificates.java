@@ -260,7 +260,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
     @Override
     public Map<String, Key> getCertificateKeys() {
         refreshCertificatesIfNeeded();
-        return certificateKeys;
+        synchronized (this) {
+            return new HashMap<>(certificateKeys);
+        }
     }
 
     /**
