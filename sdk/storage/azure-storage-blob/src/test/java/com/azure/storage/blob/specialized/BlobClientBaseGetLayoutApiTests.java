@@ -56,7 +56,7 @@ public class BlobClientBaseGetLayoutApiTests extends BlobTestBase {
 
         assertNotNull(info.getETag());
         assertFalse(info.getETag().isEmpty());
-        assertEquals(DATA.getDefaultDataSize(), info.getContentLength());
+        assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
         assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
         assertNotNull(info.getLastModified());
         assertNotNull(info.getCreatedOn());
