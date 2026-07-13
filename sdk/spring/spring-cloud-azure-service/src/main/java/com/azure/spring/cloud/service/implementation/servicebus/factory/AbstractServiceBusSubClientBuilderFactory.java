@@ -105,8 +105,8 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         // Apply the ServiceBusClientBuilder customizers exactly once, as the last step, so they take precedence over the
         // property-derived configuration redirected onto the underlying builder. See #49742.
         if (!isShareServiceBusClientBuilder() && this.serviceBusClientBuilderCustomizers != null) {
-            this.serviceBusClientBuilderCustomizers.forEach(
-                customizer -> customizer.customize(getServiceBusClientBuilder()));
+            ServiceBusClientBuilder serviceBusClientBuilder = getServiceBusClientBuilder();
+            this.serviceBusClientBuilderCustomizers.forEach(customizer -> customizer.customize(serviceBusClientBuilder));
         }
         return builder;
     }

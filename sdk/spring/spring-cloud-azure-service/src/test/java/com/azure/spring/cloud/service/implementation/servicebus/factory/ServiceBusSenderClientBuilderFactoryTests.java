@@ -53,11 +53,10 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
 
         factory.build();
 
-        // B-refined: in the non-shared path the ServiceBusClientBuilder customizer is applied to the underlying builder
-        // exactly once, as the last step of build(), so it wins over the property-derived configuration and is not
-        // overwritten. See #49742.
-        verify(customizer, times(1)).customize(rootBuilder);
-    }
+        org.mockito.InOrder inOrder = org.mockito.Mockito.inOrder(rootBuilder, customizer);
+        inOrder.verify(rootBuilder, atLeast(1))
+               .clientOptions(org.mockito.ArgumentMatchers.any(com.azure.core.util.ClientOptions.class));
+        inOrder.verify(customizer, times(1)).customize(rootBuilder);
 
     @Override
     protected ServiceBusSenderClientTestProperties createMinimalServiceProperties() {
