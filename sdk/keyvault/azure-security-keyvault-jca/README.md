@@ -141,7 +141,7 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
 * `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
-* `azure.keyvault.jca.certificate-alias-filter-patterns`: Comma-separated Key Vault alias regex filters. Use include regexes directly and exclude regexes with a `!` prefix. An alias is loaded only if it matches at least one include regex (or if no include regex is configured) and matches no exclude regex. If this property is not configured, all discovered Key Vault aliases are eligible for lazy loading. Example: `^prod-.*,!^prod-deprecated$,!.*-old$`.
+* `azure.keyvault.jca.certificate-alias-filter-patterns`: Comma-separated Key Vault alias regex filters. Use include regexes directly and exclude regexes with a `!` prefix. An alias is loaded only if it matches at least one include regex (or if no include regex is configured) and matches no exclude regex. Example: `^prod-.*,!^prod-deprecated$,!.*-old$`. If this property is not configured, all discovered Key Vault aliases are eligible for lazy loading.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
 You can configure these properties using:
