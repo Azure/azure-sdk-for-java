@@ -41,6 +41,11 @@ Do not flatten type-specific semantics onto generic `BlobClient` APIs unless tha
 
 For upload/download and conditional operations, align with existing blob patterns and avoid introducing alternate option shapes for established workflows.
 
+Note that `azure-storage-blob` contains its own `com.azure.storage.blob.models.ParallelTransferOptions` 
+alongside the shared `com.azure.storage.common.ParallelTransferOptions`. Prefer the blob-specific one 
+(`com.azure.storage.blob.models.ParallelTransferOptions`) for blob upload/download APIs; the common one 
+is used in cross-service contexts (e.g. Data Lake's `ReadToFileOptions`). Do not conflate the two.
+
 ### 3. Respect Container vs Blob Responsibility
 
 Container-level operations should stay on container clients; blob-level operations should stay on blob clients.
