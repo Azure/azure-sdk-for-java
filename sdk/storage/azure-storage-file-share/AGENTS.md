@@ -15,6 +15,8 @@ Primary client types include:
 - `ShareDirectoryClient` / `ShareDirectoryAsyncClient`
 - `ShareFileClient` / `ShareFileAsyncClient`
 
+-Azure Files supports both SMB and NFS protocols; feature support, permission models, and API behavior differ between them. Do not treat file-share APIs as protocol-agnostic — verify whether a given operation or option applies to SMB, NFS, or both.
+
 ## File Share-Specific Rules
 
 ### 1. Preserve Service/Share/Directory/File Boundaries
@@ -43,7 +45,7 @@ Snapshot operations belong to share semantics and should remain modeled at share
 
 ```bash
 # Build this module
-mvn -f sdk/storage/azure-storage-file-share/pom.xml -Dgpg.skip clean install
+mvn -f sdk/storage/azure-storage-file-share/pom.xml clean install -DskipTests
 
 # Run this module's tests (playback mode)
 mvn -f sdk/storage/azure-storage-file-share/pom.xml test
