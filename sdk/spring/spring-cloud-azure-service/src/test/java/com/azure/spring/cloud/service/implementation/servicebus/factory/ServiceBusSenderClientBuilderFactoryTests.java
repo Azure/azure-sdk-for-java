@@ -61,7 +61,8 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         inOrder.verify(rootBuilder, atLeast(1))
                .clientOptions(ArgumentMatchers.any(ClientOptions.class));
         inOrder.verify(customizer, times(1)).customize(rootBuilder);
-    }
+        inOrder.verify(rootBuilder, Mockito.never())
+               .clientOptions(ArgumentMatchers.any(ClientOptions.class));
 
     @Override
     protected ServiceBusSenderClientTestProperties createMinimalServiceProperties() {
