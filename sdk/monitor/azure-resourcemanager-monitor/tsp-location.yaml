@@ -1,0 +1,6 @@
+directory: specification/monitor/resource-manager/Microsoft.Insights/Insights
+commit: 96e4f097838ef71da98a710fb3c3b794ce25fde0
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
+
+emitterPackageJsonPath: eng\emitter-package.json
