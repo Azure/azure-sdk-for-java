@@ -25,6 +25,7 @@ public class BlobDownloadToFileOptions {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
+    private boolean enableDataLocality;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -163,6 +164,34 @@ public class BlobDownloadToFileOptions {
      */
     public BlobDownloadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
+        return this;
+    }
+
+    /**
+     * Gets whether locality-aware routing is enabled for this download.
+     * <p>
+     * When enabled, the blob's layout is fetched (see {@code getLayout}) and cached, and each range download is
+     * routed to the optimal endpoint for the chunk being read. This is a performance optimization only &mdash; the
+     * bytes returned are identical to a non-locality-aware download. Default is {@code false}.
+     *
+     * @return Whether locality-aware routing is enabled for this download.
+     */
+    public boolean isEnableDataLocality() {
+        return enableDataLocality;
+    }
+
+    /**
+     * Sets whether locality-aware routing is enabled for this download.
+     * <p>
+     * When enabled, the blob's layout is fetched (see {@code getLayout}) and cached, and each range download is
+     * routed to the optimal endpoint for the chunk being read. This is a performance optimization only &mdash; the
+     * bytes returned are identical to a non-locality-aware download. Default is {@code false}.
+     *
+     * @param enableDataLocality Whether locality-aware routing is enabled for this download.
+     * @return The updated options.
+     */
+    public BlobDownloadToFileOptions setEnableDataLocality(boolean enableDataLocality) {
+        this.enableDataLocality = enableDataLocality;
         return this;
     }
 }
