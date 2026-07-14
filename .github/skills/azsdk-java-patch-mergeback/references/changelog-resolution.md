@@ -9,7 +9,7 @@ merge-back must restore `main`'s content **and** insert the patch entry.
 Produce, from top to bottom:
 
 1. **The `## X.Y.Z (Unreleased)` section exactly as it is on `main`** — including
-   any unreleased entries already present there. Do not add, edit, or remove
+   any unreleased entries already present there. Do not add to, edit, or remove
    unreleased content.
 2. **The patch entry from `RELEASE_BRANCH`**, i.e. the `## X.Y.Z (PATCH_DATE)`
    section (e.g. `## 12.33.3 (2026-07-01)`). This is the *only* content taken
