@@ -42,9 +42,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
-    /**
-     * Creates an instance of QueueMetrics class.
-     */
     @Generated
     public QueueMetrics() {
     }
@@ -81,12 +78,6 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
         return this.enabled;
     }
 
-    /**
-     * Set the enabled property: Whether it is enabled.
-     *
-     * @param enabled the enabled value to set.
-     * @return the QueueMetrics object itself.
-     */
     @Generated
     public QueueMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;

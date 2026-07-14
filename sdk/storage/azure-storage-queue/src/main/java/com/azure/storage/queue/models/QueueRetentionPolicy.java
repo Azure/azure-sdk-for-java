@@ -30,9 +30,6 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     @Generated
     private Integer days;
 
-    /**
-     * Creates an instance of QueueRetentionPolicy class.
-     */
     @Generated
     public QueueRetentionPolicy() {
     }
@@ -47,12 +44,6 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
         return this.enabled;
     }
 
-    /**
-     * Set the enabled property: Whether to enable the retention policy.
-     *
-     * @param enabled the enabled value to set.
-     * @return the QueueRetentionPolicy object itself.
-     */
     @Generated
     public QueueRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;

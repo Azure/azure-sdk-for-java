@@ -52,9 +52,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     @Generated
     private DateTimeRfc1123 timeNextVisible;
 
-    /**
-     * Creates an instance of SendMessageResult class.
-     */
     @Generated
     public SendMessageResult() {
     }
@@ -69,12 +66,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.messageId;
     }
 
-    /**
-     * Set the messageId property: The ID of the message.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SendMessageResult object itself.
-     */
     @Generated
     public SendMessageResult setMessageId(String messageId) {
         this.messageId = messageId;
@@ -94,12 +85,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.insertionTime.getDateTime();
     }
 
-    /**
-     * Set the insertionTime property: The time the message was inserted into the queue.
-     *
-     * @param insertionTime the insertionTime value to set.
-     * @return the SendMessageResult object itself.
-     */
     @Generated
     public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
@@ -123,12 +108,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.expirationTime.getDateTime();
     }
 
-    /**
-     * Set the expirationTime property: The time that the message will expire and be automatically deleted.
-     *
-     * @param expirationTime the expirationTime value to set.
-     * @return the SendMessageResult object itself.
-     */
     @Generated
     public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
@@ -150,13 +129,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.popReceipt;
     }
 
-    /**
-     * Set the popReceipt property: An opaque value required to delete the message. If deletion fails using this
-     * PopReceipt then the message has been dequeued by another client.
-     *
-     * @param popReceipt the popReceipt value to set.
-     * @return the SendMessageResult object itself.
-     */
     @Generated
     public SendMessageResult setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
@@ -176,12 +148,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.timeNextVisible.getDateTime();
     }
 
-    /**
-     * Set the timeNextVisible property: The time that the message will again become visible in the queue.
-     *
-     * @param timeNextVisible the timeNextVisible value to set.
-     * @return the SendMessageResult object itself.
-     */
     @Generated
     public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
@@ -271,16 +237,18 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
                     reader.skipElement();
                 }
             }
-            SendMessageResult deserializedSendMessageResult = new SendMessageResult();
-            deserializedSendMessageResult.messageId = messageId;
-            deserializedSendMessageResult.insertionTime
-                = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
-            deserializedSendMessageResult.expirationTime
-                = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
-            deserializedSendMessageResult.popReceipt = popReceipt;
-            deserializedSendMessageResult.timeNextVisible
-                = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
-            return deserializedSendMessageResult;
+            {
+                SendMessageResult deserializedSendMessageResult = new SendMessageResult();
+                deserializedSendMessageResult.messageId = messageId;
+                deserializedSendMessageResult.insertionTime
+                    = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
+                deserializedSendMessageResult.expirationTime
+                    = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
+                deserializedSendMessageResult.popReceipt = popReceipt;
+                deserializedSendMessageResult.timeNextVisible
+                    = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
+                return deserializedSendMessageResult;
+            }
         });
     }
 }

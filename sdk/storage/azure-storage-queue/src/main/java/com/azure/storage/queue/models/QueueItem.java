@@ -32,9 +32,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     @Generated
     private Map<String, String> metadata;
 
-    /**
-     * Creates an instance of QueueItem class.
-     */
     @Generated
     public QueueItem() {
     }
@@ -49,12 +46,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
         return this.name;
     }
 
-    /**
-     * Set the name property: The name of the queue.
-     *
-     * @param name the name value to set.
-     * @return the QueueItem object itself.
-     */
     @Generated
     public QueueItem setName(String name) {
         this.name = name;
@@ -71,12 +62,6 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
         return this.metadata;
     }
 
-    /**
-     * Set the metadata property: The metadata of the queue.
-     *
-     * @param metadata the metadata value to set.
-     * @return the QueueItem object itself.
-     */
     @Generated
     public QueueItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;

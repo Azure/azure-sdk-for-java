@@ -30,9 +30,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     @Generated
     private QueueAccessPolicy accessPolicy;
 
-    /**
-     * Creates an instance of QueueSignedIdentifier class.
-     */
     @Generated
     public QueueSignedIdentifier() {
     }
@@ -47,12 +44,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
         return this.id;
     }
 
-    /**
-     * Set the id property: The unique ID for the signed identifier.
-     *
-     * @param id the id value to set.
-     * @return the QueueSignedIdentifier object itself.
-     */
     @Generated
     public QueueSignedIdentifier setId(String id) {
         this.id = id;
@@ -69,12 +60,6 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
         return this.accessPolicy;
     }
 
-    /**
-     * Set the accessPolicy property: The access policy for the signed identifier.
-     *
-     * @param accessPolicy the accessPolicy value to set.
-     * @return the QueueSignedIdentifier object itself.
-     */
     @Generated
     public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
@@ -139,10 +124,12 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
                     reader.skipElement();
                 }
             }
-            QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
-            deserializedQueueSignedIdentifier.id = id;
-            deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
-            return deserializedQueueSignedIdentifier;
+            {
+                QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
+                deserializedQueueSignedIdentifier.id = id;
+                deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
+                return deserializedQueueSignedIdentifier;
+            }
         });
     }
 }

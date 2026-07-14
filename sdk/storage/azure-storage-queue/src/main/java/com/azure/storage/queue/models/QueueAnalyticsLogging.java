@@ -48,9 +48,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
-    /**
-     * Creates an instance of QueueAnalyticsLogging class.
-     */
     @Generated
     public QueueAnalyticsLogging() {
     }
@@ -65,12 +62,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.version;
     }
 
-    /**
-     * Set the version property: The version of the logging properties.
-     *
-     * @param version the version value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
     @Generated
     public QueueAnalyticsLogging setVersion(String version) {
         this.version = version;
@@ -87,12 +78,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.delete;
     }
 
-    /**
-     * Set the delete property: Whether delete operation is logged.
-     *
-     * @param delete the delete value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
     @Generated
     public QueueAnalyticsLogging setDelete(boolean delete) {
         this.delete = delete;
@@ -109,12 +94,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.read;
     }
 
-    /**
-     * Set the read property: Whether read operation is logged.
-     *
-     * @param read the read value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
     @Generated
     public QueueAnalyticsLogging setRead(boolean read) {
         this.read = read;
@@ -131,12 +110,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.write;
     }
 
-    /**
-     * Set the write property: Whether write operation is logged.
-     *
-     * @param write the write value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
     @Generated
     public QueueAnalyticsLogging setWrite(boolean write) {
         this.write = write;
@@ -153,12 +126,6 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.retentionPolicy;
     }
 
-    /**
-     * Set the retentionPolicy property: The retention policy of the logs.
-     *
-     * @param retentionPolicy the retentionPolicy value to set.
-     * @return the QueueAnalyticsLogging object itself.
-     */
     @Generated
     public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
@@ -235,13 +202,15 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
                     reader.skipElement();
                 }
             }
-            QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
-            deserializedQueueAnalyticsLogging.version = version;
-            deserializedQueueAnalyticsLogging.delete = delete;
-            deserializedQueueAnalyticsLogging.read = read;
-            deserializedQueueAnalyticsLogging.write = write;
-            deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
-            return deserializedQueueAnalyticsLogging;
+            {
+                QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
+                deserializedQueueAnalyticsLogging.version = version;
+                deserializedQueueAnalyticsLogging.delete = delete;
+                deserializedQueueAnalyticsLogging.read = read;
+                deserializedQueueAnalyticsLogging.write = write;
+                deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
+                return deserializedQueueAnalyticsLogging;
+            }
         });
     }
 }

@@ -51,9 +51,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     @Generated
     private String value;
 
-    /**
-     * Creates an instance of UserDelegationKey class.
-     */
     @Generated
     public UserDelegationKey() {
     }
@@ -68,12 +65,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedStart;
     }
 
-    /**
-     * Set the signedStart property: The date-time the key is active.
-     *
-     * @param signedStart the signedStart value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedStart(OffsetDateTime signedStart) {
         this.signedStart = signedStart;
@@ -90,12 +81,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedExpiry;
     }
 
-    /**
-     * Set the signedExpiry property: The date-time the key expires.
-     *
-     * @param signedExpiry the signedExpiry value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedExpiry(OffsetDateTime signedExpiry) {
         this.signedExpiry = signedExpiry;
@@ -112,12 +97,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedService;
     }
 
-    /**
-     * Set the signedService property: The service that created the key.
-     *
-     * @param signedService the signedService value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedService(String signedService) {
         this.signedService = signedService;
@@ -134,12 +113,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedVersion;
     }
 
-    /**
-     * Set the signedVersion property: The service version used when creating the key.
-     *
-     * @param signedVersion the signedVersion value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedVersion(String signedVersion) {
         this.signedVersion = signedVersion;
@@ -156,12 +129,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.value;
     }
 
-    /**
-     * Set the value property: The key as a base64 string.
-     *
-     * @param value the value value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setValue(String value) {
         this.value = value;
@@ -295,12 +262,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedObjectId;
     }
 
-    /**
-     * Set the signedObjectId property: The Entra ID object ID in GUID format.
-     *
-     * @param signedObjectId the signedObjectId value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedObjectId(String signedObjectId) {
         this.signedObjectId = signedObjectId;
@@ -317,12 +278,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedTenantId;
     }
 
-    /**
-     * Set the signedTenantId property: The Entra ID tenant ID in GUID format.
-     *
-     * @param signedTenantId the signedTenantId value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedTenantId(String signedTenantId) {
         this.signedTenantId = signedTenantId;
@@ -340,13 +295,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedDelegatedUserTenantId;
     }
 
-    /**
-     * Set the signedDelegatedUserTenantId property: The delegated user tenant ID in Entra ID. Return if
-     * DelegatedUserTid is specified.
-     *
-     * @param signedDelegatedUserTenantId the signedDelegatedUserTenantId value to set.
-     * @return the UserDelegationKey object itself.
-     */
     @Generated
     public UserDelegationKey setSignedDelegatedUserTenantId(String signedDelegatedUserTenantId) {
         this.signedDelegatedUserTenantId = signedDelegatedUserTenantId;

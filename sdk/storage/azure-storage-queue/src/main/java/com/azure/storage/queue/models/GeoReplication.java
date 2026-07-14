@@ -35,9 +35,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     @Generated
     private DateTimeRfc1123 lastSyncTime;
 
-    /**
-     * Creates an instance of GeoReplication class.
-     */
     @Generated
     public GeoReplication() {
     }
@@ -52,12 +49,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
         return this.status;
     }
 
-    /**
-     * Set the status property: The status of the secondary location.
-     *
-     * @param status the status value to set.
-     * @return the GeoReplication object itself.
-     */
     @Generated
     public GeoReplication setStatus(GeoReplicationStatus status) {
         this.status = status;
@@ -80,15 +71,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
         return this.lastSyncTime.getDateTime();
     }
 
-    /**
-     * Set the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
-     * guaranteed to be available
-     * for read operations at the secondary. Primary writes after this point in time may or may not be available
-     * for reads.
-     *
-     * @param lastSyncTime the lastSyncTime value to set.
-     * @return the GeoReplication object itself.
-     */
     @Generated
     public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
         if (lastSyncTime == null) {
@@ -160,10 +142,13 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
                     reader.skipElement();
                 }
             }
-            GeoReplication deserializedGeoReplication = new GeoReplication();
-            deserializedGeoReplication.status = status;
-            deserializedGeoReplication.lastSyncTime = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
-            return deserializedGeoReplication;
+            {
+                GeoReplication deserializedGeoReplication = new GeoReplication();
+                deserializedGeoReplication.status = status;
+                deserializedGeoReplication.lastSyncTime
+                    = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
+                return deserializedGeoReplication;
+            }
         });
     }
 }
