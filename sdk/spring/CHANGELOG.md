@@ -22,6 +22,14 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Other Changes
 
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Bugs Fixed
+
+- Fixed the Service Bus producer, consumer and processor sub-client builders overwriting configuration already set on the underlying `ServiceBusClientBuilder` through an `AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>` (for example the `ClientOptions` carrying `TracingOptions`). The customizers are now applied to the underlying builder as the last step, so their configuration is preserved ([#49742](https://github.com/Azure/azure-sdk-for-java/issues/49742)).
+
 ### Spring Cloud Azure Stream Binder Service Bus
 
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
