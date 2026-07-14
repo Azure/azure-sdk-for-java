@@ -6,6 +6,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -26,6 +27,7 @@ import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -57,6 +59,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
@@ -149,6 +152,118 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @AfterEach
     public void cleanup() {
         createdFiles.forEach(File::delete);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayout() {
+        StepVerifier.create(fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .thenMany(fc.getLayout(null))
+            .collectList()).assertNext(r -> {
+                assertFalse(r.isEmpty());
+                DataLakeFileLayoutInfo info = r.get(0);
+                assertNotNull(info.getETag());
+                assertFalse(info.getETag().isEmpty());
+                assertEquals(DATA.getDefaultDataSizeLong(), info.getFileSize());
+                assertNotNull(info.getLastModified());
+                assertNotNull(info.getCreationTime());
+                assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
+                assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+            }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutEmptyFile() {
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createFile(generatePathName())
+            .flatMapMany(emptyFile -> emptyFile.getLayout(null))
+            .then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutRange() {
+        StepVerifier.create(fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .thenMany(fc.getLayout(new DataLakeFileGetLayoutOptions().setRange(new FileRange(0, (long) Constants.KB))))
+            .then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutPageSize() {
+        StepVerifier.create(fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .thenMany(fc.getLayout(null).byPage(1))
+            .collectList()).assertNext(r -> {
+                assertFalse(r.isEmpty());
+                r.forEach(page -> assertTrue(page.getValue().size() <= 1));
+            }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutContinuationToken() {
+        Flux<PagedResponse<DataLakeFileLayoutInfo>> response = fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .thenMany(fc.getLayout(null).byPage(1))
+            .next()
+            .flatMapMany(r -> fc.getLayout(null).byPage(r.getContinuationToken()));
+
+        StepVerifier.create(response.then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Flux<DataLakeFileLayoutInfo> response = fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .then(Mono.zip(setupPathLeaseCondition(fc, leaseID), setupPathMatchCondition(fc, match),
+                DataLakeTestBase::convertNulls))
+            .flatMapMany(conditions -> {
+                DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+
+                return fc.getLayout(new DataLakeFileGetLayoutOptions().setRequestConditions(drc));
+            });
+
+        StepVerifier.create(response.then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Mono<Long> response = fc.append(DATA.getDefaultBinaryData(), 0)
+            .then(fc.flush(DATA.getDefaultDataSizeLong(), true))
+            .then(Mono.zip(setupPathLeaseCondition(fc, leaseID), setupPathMatchCondition(fc, noneMatch),
+                DataLakeTestBase::convertNulls))
+            .flatMap(conditions -> {
+                DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(match)
+                    .setIfNoneMatch(conditions.get(1))
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+
+                return fc.getLayout(new DataLakeFileGetLayoutOptions().setRequestConditions(drc)).count();
+            });
+
+        StepVerifier.create(response).verifyError(DataLakeStorageException.class);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutError() {
+        DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+
+        StepVerifier.create(fileClient.getLayout(null)).verifyError(DataLakeStorageException.class);
     }
 
     @Test

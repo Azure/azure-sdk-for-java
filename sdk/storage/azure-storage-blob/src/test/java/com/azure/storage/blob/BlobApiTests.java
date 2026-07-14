@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -32,6 +33,7 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -55,7 +57,9 @@ import com.azure.storage.blob.models.SyncCopyStatusType;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
@@ -114,12 +118,14 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -144,6 +150,226 @@ public class BlobApiTests extends BlobTestBase {
     @AfterEach
     public void cleanup() {
         createdFiles.forEach(File::delete);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayout() {
+        Iterator<BlobLayoutInfo> iterator = bc.getLayout(null, Context.NONE).iterator();
+
+        assertTrue(iterator.hasNext());
+        BlobLayoutInfo info = iterator.next();
+
+        assertNotNull(info.getETag());
+        assertFalse(info.getETag().isEmpty());
+        assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
+        assertNotNull(info.getLastModified());
+        assertNotNull(info.getCreatedOn());
+        assertTrue(info.isServerEncrypted());
+        assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
+        assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutEmptyBlob() {
+        BlobClient emptyBlob = cc.getBlobClient(generateBlobName());
+        emptyBlob.getBlockBlobClient().commitBlockList(new ArrayList<>());
+
+        assertDoesNotThrow(() -> emptyBlob.getLayout(null, Context.NONE).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutRange() {
+        bc.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
+
+        assertDoesNotThrow(
+            () -> bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB)), Context.NONE)
+                .stream()
+                .count());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutPageSize() {
+        Iterator<PagedResponse<BlobLayoutInfo>> iterator
+            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        int pageCount = 0;
+
+        while (iterator.hasNext()) {
+            PagedResponse<BlobLayoutInfo> page = iterator.next();
+            assertTrue(page.getValue().size() <= 1);
+            pageCount++;
+        }
+
+        assertTrue(pageCount > 0);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutContinuationToken() {
+        Iterator<PagedResponse<BlobLayoutInfo>> iterator
+            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        String token = iterator.next().getContinuationToken();
+
+        assertDoesNotThrow(() -> bc.getLayout(null, Context.NONE).iterableByPage(token).iterator().hasNext());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t);
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertDoesNotThrow(
+            () -> bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac), Context.NONE).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutError() {
+        BlobClient blobClient = cc.getBlobClient(generateBlobName());
+
+        assertThrows(BlobStorageException.class, () -> blobClient.getLayout(null, Context.NONE).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void downloadToFileWithDataLocalityEnabledSingleChunk() throws IOException {
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        assertDoesNotThrow(() -> bc.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true), null, null));
+
+        assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(outFile.toPath()), StandardCharsets.UTF_8));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void downloadToFileWithDataLocalityEnabledMultipleChunks() throws IOException {
+        File file = getRandomFile(16 * Constants.KB);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        bc.uploadFromFile(file.toPath().toString(), true);
+
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        // Force a small block size so the download spans several chunks, exercising the per-chunk
+        // layout-cache-resolution wrapper (chunk 0 is a no-op passthrough; chunks 1+ go through the
+        // locality-aware download function).
+        assertDoesNotThrow(() -> bc.downloadToFileWithResponse(
+            new BlobDownloadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true)
+                .setParallelTransferOptions(
+                    new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) (2 * Constants.KB))),
+            null, null));
+
+        assertTrue(compareFiles(file, outFile, 0, 16 * Constants.KB));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void downloadToFileWithDataLocalityDisabledIsUnaffected() throws IOException {
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        // Default (enableDataLocality unset / false) behavior must be identical to before this feature existed.
+        assertDoesNotThrow(() -> bc
+            .downloadToFileWithResponse(new BlobDownloadToFileOptions(outFile.toPath().toString()), null, null));
+
+        assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(outFile.toPath()), StandardCharsets.UTF_8));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void downloadToFileWithDataLocalityEnabledReturnsProperties() throws IOException {
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        BlobProperties properties = bc
+            .downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true), null, null)
+            .getValue();
+
+        assertEquals(DATA.getDefaultDataSize(), properties.getBlobSize());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void openInputStreamWithDataLocalityEnabled() throws IOException {
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setEnableDataLocality(true);
+
+        byte[] readBytes;
+        try (InputStream is = bc.openInputStream(options, null)) {
+            readBytes = readAllBytes(is);
+        }
+
+        assertArrayEquals(DATA.getDefaultBytes(), readBytes);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void openInputStreamWithDataLocalityEnabledPartialRange() throws IOException {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        bc.upload(new ByteArrayInputStream(content), content.length, true);
+
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setEnableDataLocality(true)
+            .setBlockSize(2 * Constants.KB)
+            .setRange(new BlobRange(Constants.KB, (long) (4 * Constants.KB)));
+
+        byte[] readBytes;
+        try (InputStream is = bc.openInputStream(options, null)) {
+            readBytes = readAllBytes(is);
+        }
+
+        byte[] expected = new byte[4 * Constants.KB];
+        System.arraycopy(content, Constants.KB, expected, 0, expected.length);
+        assertArrayEquals(expected, readBytes);
+    }
+
+    private static byte[] readAllBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[512];
+        int read;
+        while ((read = is.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+        return out.toByteArray();
     }
 
     @Test
