@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesMigrateTableToAutoscaleSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBTableMigrateToAutoscale.json
+     * x-ms-original-file: 2026-03-15/CosmosDBTableMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBTableMigrateToAutoscale.

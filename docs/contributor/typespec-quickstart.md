@@ -1,7 +1,7 @@
 # TypeSpec Java Quickstart
 
 
-This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification. For OpenAPI 2.0 specs, see [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md).
+This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification.
 
 ---
 
@@ -211,7 +211,6 @@ Key steps:
 
 ## See Also
 
-- [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) — for OpenAPI 2.0 specs
 - [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md)
 - [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 - [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)

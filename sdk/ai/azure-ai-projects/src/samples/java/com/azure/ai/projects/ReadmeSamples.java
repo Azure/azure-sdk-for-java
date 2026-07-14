@@ -24,7 +24,7 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.clientInitialization
         AIProjectClientBuilder builder = new AIProjectClientBuilder()
-            .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
+            .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
         // Beta* clients automatically opt in to their preview service area.

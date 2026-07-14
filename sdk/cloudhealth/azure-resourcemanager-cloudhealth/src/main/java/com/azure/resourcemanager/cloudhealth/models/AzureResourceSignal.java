@@ -41,11 +41,6 @@ public final class AzureResourceSignal extends SignalInstanceProperties {
     private MetricAggregationType aggregationType;
 
     /*
-     * Optional: Dimension to split by
-     */
-    private String dimension;
-
-    /*
      * Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
      */
     private String dimensionFilter;
@@ -163,26 +158,6 @@ public final class AzureResourceSignal extends SignalInstanceProperties {
      */
     public AzureResourceSignal withAggregationType(MetricAggregationType aggregationType) {
         this.aggregationType = aggregationType;
-        return this;
-    }
-
-    /**
-     * Get the dimension property: Optional: Dimension to split by.
-     * 
-     * @return the dimension value.
-     */
-    public String dimension() {
-        return this.dimension;
-    }
-
-    /**
-     * Set the dimension property: Optional: Dimension to split by.
-     * 
-     * @param dimension the dimension value to set.
-     * @return the AzureResourceSignal object itself.
-     */
-    public AzureResourceSignal withDimension(String dimension) {
-        this.dimension = dimension;
         return this;
     }
 
@@ -320,7 +295,6 @@ public final class AzureResourceSignal extends SignalInstanceProperties {
         jsonWriter.writeStringField("timeGrain", this.timeGrain);
         jsonWriter.writeStringField("aggregationType",
             this.aggregationType == null ? null : this.aggregationType.toString());
-        jsonWriter.writeStringField("dimension", this.dimension);
         jsonWriter.writeStringField("dimensionFilter", this.dimensionFilter);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("refreshInterval",
@@ -363,8 +337,6 @@ public final class AzureResourceSignal extends SignalInstanceProperties {
                 } else if ("aggregationType".equals(fieldName)) {
                     deserializedAzureResourceSignal.aggregationType
                         = MetricAggregationType.fromString(reader.getString());
-                } else if ("dimension".equals(fieldName)) {
-                    deserializedAzureResourceSignal.dimension = reader.getString();
                 } else if ("dimensionFilter".equals(fieldName)) {
                     deserializedAzureResourceSignal.dimensionFilter = reader.getString();
                 } else if ("displayName".equals(fieldName)) {
