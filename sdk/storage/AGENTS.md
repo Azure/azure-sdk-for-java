@@ -117,6 +117,6 @@ AZURE_TEST_MODE=LIVE mvn -f sdk/storage/azure-storage-blob/pom.xml test
 # Start Azurite (local storage emulator) for tests
 npx azurite
 ```
-In CI, Azurite is installed and started via [`sdk/storage/tests-install-azurite.yml`](../tests-install-azurite.yml) — do not attempt to replicate that setup manually. If tests require Azurite and are failing locally, ensure Azurite is running before invoking Maven.
+In CI, Azurite is installed and started via [`sdk/storage/tests-install-azurite.yml`](./tests-install-azurite.yml) — do not attempt to replicate that setup manually. If tests require Azurite and are failing locally, ensure Azurite is running before invoking Maven.
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) in this directory for detailed storage-specific contribution guidance, including how to provision test resources and record/playback test sessions.
