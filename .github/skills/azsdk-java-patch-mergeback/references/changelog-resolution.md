@@ -19,6 +19,8 @@ Produce, from top to bottom:
 
 Concretely: take the `main` version of the file and **insert the release
 branch's `PATCH_DATE` entry immediately below the `(Unreleased)` section.**
+The only exception is if there is a beta-release entry on `main` that is newer than the patch entry, 
+in which case the patch entry should be inserted **after** the beta entry.
 Nothing else changes.
 
 ## Rules
