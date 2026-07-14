@@ -115,6 +115,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -195,6 +196,31 @@ public class FileApiTest extends DataLakeTestBase {
                 .count());
     }
 
+    // Mirrors .NET's GetLayoutAsync_ReturnsRangesAndEndpoints (Azure/azure-sdk-for-net#57554). Java's
+    // DataLakeFileLayoutRange already resolves the endpoint index eagerly, so this asserts directly on
+    // (range, endpoint) pairs rather than cross-referencing a separate raw endpoint-index table.
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutReturnsRangesAndEndpoints() {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        fc.append(BinaryData.fromBytes(content), 0);
+        fc.flush(content.length, true);
+
+        List<com.azure.storage.file.datalake.models.DataLakeFileLayoutRange> ranges
+            = fc.getLayout(null).stream().flatMap(info -> info.getRanges().stream()).collect(Collectors.toList());
+
+        assertFalse(ranges.isEmpty());
+        assertEquals(0, ranges.get(0).getRange().getOffset());
+        long coveredEnd = 0;
+        for (com.azure.storage.file.datalake.models.DataLakeFileLayoutRange range : ranges) {
+            assertEquals(coveredEnd, range.getRange().getOffset(), "Ranges should be contiguous with no gaps");
+            coveredEnd += range.getRange().getLength();
+            assertNotNull(range.getEndpoint());
+            assertFalse(range.getEndpoint().isEmpty());
+        }
+        assertEquals(content.length, coveredEnd);
+    }
+
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutPageSize() {
@@ -269,6 +295,26 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(generatePathName());
 
         assertThrows(DataLakeStorageException.class, () -> fileClient.getLayout(null).stream().count());
+    }
+
+    // Mirrors .NET's GetLayoutAsync_FileSAS (Azure/azure-sdk-for-net#57554): verifies getLayout works when
+    // authenticated via a file-system-scoped SAS token rather than a shared key/AAD credential.
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutFileSAS() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+        String sas = dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        DataLakeFileClient sasClient
+            = getFileClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath());
+
+        Iterator<DataLakeFileLayoutInfo> iterator = sasClient.getLayout(null).iterator();
+
+        assertTrue(iterator.hasNext());
+        assertNotNull(iterator.next().getETag());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
