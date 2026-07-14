@@ -3,12 +3,16 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
+import com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -38,6 +42,11 @@ public final class BlobInputStream extends StorageInputStream {
     private final Context context;
 
     /**
+     * Layout cache used to route range downloads to their optimal endpoints.
+     */
+    private final AutoRefreshingCache<BlobLayoutCacheValue> layoutCache;
+
+    /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
@@ -49,12 +58,14 @@ public final class BlobInputStream extends StorageInputStream {
      * @param initialBuffer The result of the initial download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
+     * @param blobProperties The blob properties fetched by the initial download.
      * @param context The {@link Context}
+     * @param layoutCache Cache containing layout ranges used for data locality routing.
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(BlobClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
-        ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context)
-        throws BlobStorageException {
+        ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context,
+        AutoRefreshingCache<BlobLayoutCacheValue> layoutCache) throws BlobStorageException {
 
         super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context),
             initialBuffer);
@@ -63,6 +74,7 @@ public final class BlobInputStream extends StorageInputStream {
         this.accessCondition = accessCondition;
         this.properties = blobProperties;
         this.context = context;
+        this.layoutCache = layoutCache;
     }
 
     /**
@@ -75,9 +87,18 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
+            Context callContext = this.context;
+            if (layoutCache != null) {
+                BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
+                String endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
+                if (endpoint != null) {
+                    callContext = this.context.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint);
+                }
+            }
+
             ByteBuffer currentBuffer = this.blobClient
                 .downloadContentWithResponse(null, accessCondition, new BlobRange(offset, (long) readLength), false,
-                    null, context)
+                    null, callContext)
                 .getValue()
                 .toByteBuffer();
 

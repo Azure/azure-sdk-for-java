@@ -45,6 +45,7 @@ import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
@@ -75,6 +76,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.DownloadHint;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
@@ -93,6 +95,7 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -515,6 +518,7 @@ public class BlobClientBase {
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+        boolean enableDataLocality = options.isEnableDataLocality();
 
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
@@ -566,8 +570,30 @@ public class BlobClientBase {
                             new IllegalArgumentException("Concurrency control type not " + "supported."));
                 }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
-                    initialBuffer, requestConditions, properties, contextFinal));
+                BlobClientBase finalClient = client;
+                AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
+                if (enableDataLocality
+                    && DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
+                    BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
+                    layoutCache
+                        = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
+                            @Override
+                            public Mono<BlobLayoutCacheValue> createAsync() {
+                                return finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
+                                    contextFinal);
+                            }
+
+                            @Override
+                            public BlobLayoutCacheValue createSync() {
+                                return finalClient.client
+                                    .fetchLayoutCacheValueAsync(layoutRange, requestConditions, contextFinal)
+                                    .block();
+                            }
+                        });
+                }
+
+                return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
+                    initialBuffer, requestConditions, properties, contextFinal, layoutCache));
             })
             .block();
     }
