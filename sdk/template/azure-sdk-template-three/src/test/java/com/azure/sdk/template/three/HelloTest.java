@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-// This is a simple unit test for the Hello class, verifying that the getMessage method returns "hello".
 public class HelloTest {
     @Test
     public void testMessage() {
