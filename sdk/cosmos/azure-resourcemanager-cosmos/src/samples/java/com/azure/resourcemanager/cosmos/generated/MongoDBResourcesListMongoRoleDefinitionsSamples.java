@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesListMongoRoleDefinitionsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBRoleDefinitionList.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBRoleDefinitionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionList.

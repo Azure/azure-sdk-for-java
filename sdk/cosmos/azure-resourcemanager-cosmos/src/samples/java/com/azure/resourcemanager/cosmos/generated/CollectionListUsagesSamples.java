@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CollectionListUsagesSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCollectionGetUsages.json
+     * x-ms-original-file: 2026-03-15/CosmosDBCollectionGetUsages.json
      */
     /**
      * Sample code: CosmosDBCollectionGetUsages.
@@ -19,7 +19,7 @@ public final class CollectionListUsagesSamples {
     public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getCollections()
-            .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "$filter=name.value eq 'Storage'",
+            .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "name.value eq 'Storage'",
                 com.azure.core.util.Context.NONE);
     }
 }

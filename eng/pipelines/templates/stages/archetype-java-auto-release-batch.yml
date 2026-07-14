@@ -1,0 +1,515 @@
+parameters:
+  - name: DependsOn
+    type: object
+    default:
+      - AutoReleasePrepare
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: PublicPublishEnvironment
+    type: string
+    default: 'package-publish'
+  - name: PublicFeedUrl
+    type: string
+    default: 'maven.org'
+
+stages:
+  # Mirrors archetype-java-release-batch.yml for the post-merge auto-release scenario.
+  # The manual release template uses compile-time parameters.Artifacts loops, while this
+  # template uses runtime AutoReleaseArtifactsJson so only packages changed by the
+  # labeled merged PR are released after the shared Signing stage has completed.
+  - stage: JavaAutoRelease
+    displayName: Java auto-release
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: >-
+      and(
+        succeeded(),
+        ne(variables['SetDevVersion'], 'true'),
+        ne(variables['Skip.Release'], 'true'),
+        ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'),
+        eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.HasAutoReleaseArtifacts'], 'true')
+      )
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+      - name: AutoReleaseArtifactsJson
+        value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseArtifactsJson'] ]
+    jobs:
+      - job: PrepareAutoReleasePackages
+        displayName: Prepare auto-release packages
+        pool:
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - checkout: self
+            path: azure-sdk-for-java
+          - checkout: azure-sdk-build-tools
+            path: azure-sdk-build-tools
+
+          - download: current
+            displayName: 'Download Artifact: packages-signed'
+            artifact: packages-signed
+
+          - task: PowerShell@2
+            displayName: Filter signed packages for auto-release
+            inputs:
+              pwsh: true
+              filePath: $(Pipeline.Workspace)/azure-sdk-for-java/eng/pipelines/scripts/Stage-AutoReleaseSignedArtifacts.ps1
+              arguments: >
+                -SourceDirectory "$(Pipeline.Workspace)/packages-signed"
+                -TargetDirectory "$(Pipeline.Workspace)/packages-signed-auto-release"
+                -ArtifactsJson '$(AutoReleaseArtifactsJson)'
+
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+          - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
+            parameters:
+              ArtifactDirectory: $(Pipeline.Workspace)/packages-signed-auto-release
+              OutputDirectory: $(Pipeline.Workspace)/packages-esrp-gpg-signed-auto-release
+              FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened-auto-release
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactPath: '$(Pipeline.Workspace)/packages-signed-auto-release'
+              ArtifactName: 'packages-signed-auto-release'
+
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactPath: '$(Pipeline.Workspace)/packages-esrp-flattened-auto-release'
+              ArtifactName: 'packages-esrp-flattened-auto-release'
+
+      - job: VerifyReleaseVersion
+        displayName: Verify auto-release versions
+        dependsOn: PrepareAutoReleasePackages
+        condition: ne(variables['Skip.VersionVerification'], 'true')
+        pool:
+          name: $(LINUXPOOL)
+          image: $(LINUXVMIMAGE)
+          os: linux
+        steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - 'sdk/${{ parameters.ServiceDirectory }}'
+                - '**/*.xml'
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
+
+          - download: current
+            displayName: 'Download Artifact: packages-signed-auto-release'
+            artifact: packages-signed-auto-release
+
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(PythonVersion)'
+            inputs:
+              versionSpec: $(PythonVersion)
+
+          - pwsh: |
+              $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+              $artifacts | Format-Table -Property groupId, name | Out-String | Write-Host
+              python --version
+              foreach ($artifact in $artifacts) {
+                python eng/versioning/set_versions.py --verify-version --artifact-id $artifact.name --group-id $artifact.groupId
+              }
+            displayName: Verify artifact versions for auto-release
+
+          - pwsh: |
+              $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json | Where-Object { -not $_.uberJar }
+              $artifacts | Format-Table -Property groupId, name | Out-String | Write-Host
+              foreach ($artifact in $artifacts) {
+                $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $artifact.groupId $artifact.name $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+              }
+            displayName: Verify no unreleased dependencies or beta dependencies for GA libraries
+
+          - ${{ if ne(parameters.SDKType, 'data') }}:
+            - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+              parameters:
+                PackagePropertiesFolder: $(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo
+                ForRelease: true
+
+          - pwsh: |
+              $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+              foreach ($artifact in $artifacts) {
+                Write-Host "Verifying REST API spec location for $($artifact.name)."
+                eng/common/scripts/Verify-RestApiSpecLocation.ps1 `
+                  -ServiceDirectory "${{ parameters.ServiceDirectory }}" `
+                  -PackageName $artifact.name `
+                  -ArtifactLocation "$(Pipeline.Workspace)/packages-signed-auto-release"
+              }
+            displayName: Verify REST API spec locations
+            env:
+              GH_TOKEN: $(azuresdk-github-pat)
+            condition: and(succeededOrFailed(), ne(variables['Skip.Verify-RestApiSpecLocation'], 'true'))
+
+          - task: PowerShell@2
+            displayName: Verify auto-release set
+            inputs:
+              pwsh: true
+              filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
+              arguments: >
+                -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+                -ArtifactsList ('$(AutoReleaseArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
+
+      - job: TagRepository
+        displayName: Create auto-release tags
+        condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
+        dependsOn: VerifyReleaseVersion
+        pool:
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          - template: /eng/common/pipelines/templates/steps/retain-run.yml
+          - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+            parameters:
+              TokenOwners:
+                - $(Build.Repository.Name)
+
+          - download: current
+            displayName: 'Download Artifact: packages-signed-auto-release'
+            artifact: packages-signed-auto-release
+
+          - pwsh: |
+              $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+              foreach ($artifact in $artifacts) {
+                $artifactLocation = "$(Pipeline.Workspace)/packages-signed-auto-release/$($artifact.groupId)/$($artifact.name)"
+                Write-Host "Creating release tag for $($artifact.groupId):$($artifact.name)."
+                eng/common/scripts/create-tags-and-git-release.ps1 `
+                  -artifactLocation $artifactLocation `
+                  -packageRepository Maven `
+                  -releaseSha $(Build.SourceVersion) `
+                  -repoId $(Build.Repository.Name)
+              }
+            displayName: Verify package tags and create GitHub releases
+            env:
+              GH_TOKEN: $(GH_TOKEN)
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+      - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+        - deployment: PublishESRPPackage
+          displayName: Publish auto-release packages to Maven Central via ESRP
+          condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+          timeoutInMinutes: 120
+          environment: ${{ parameters.PublicPublishEnvironment }}
+          dependsOn: TagRepository
+          templateContext:
+            type: releaseJob
+            isProduction: true
+            inputs:
+              - input: pipelineArtifact
+                artifactName: 'packages-esrp-flattened-auto-release'
+                targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened-auto-release'
+          pool:
+            name: azsdk-pool
+            image: windows-2022
+            os: windows
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
+                    parameters:
+                      FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened-auto-release
+
+      - job: PublishDevFeedPackage
+        displayName: Publish auto-release packages to Java Dev feed
+        condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+        timeoutInMinutes: 120
+        ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+          dependsOn: PublishESRPPackage
+        ${{ else }}:
+          dependsOn: TagRepository
+        pool:
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - checkout: azure-sdk-build-tools
+            path: azure-sdk-build-tools
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipCheckoutNone: true
+              Repositories:
+                - Name: Azure/azure-sdk-for-java
+                  Commitish: $(Build.SourceVersion)
+                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - download: current
+            displayName: 'Download Artifact: packages-signed-auto-release'
+            artifact: packages-signed-auto-release
+
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+          - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+
+          - ${{ if ne(parameters.PublicFeedUrl, 'maven.org') }}:
+            - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
+              parameters:
+                ArtifactDirectory: $(Pipeline.Workspace)/packages-signed-auto-release
+                RepositoryUrl: ${{ parameters.PublicFeedUrl }}
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
+            parameters:
+              ArtifactDirectory: $(Pipeline.Workspace)/packages-signed-auto-release
+              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactName: packages-javadevfeed-auto-release-$(System.JobAttempt)
+              ArtifactPath: $(Pipeline.Workspace)/packages-signed-auto-release
+
+          - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+            parameters:
+              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - task: AzureCLI@2
+            displayName: Create and validate API reviews
+            condition: >-
+              and(
+                succeededOrFailed(),
+                not(
+                  and(
+                    eq(variables['Skip.CreateApiReview'], 'true'),
+                    in(
+                      lower(variables['Build.RequestedForEmail']),
+                      'bebroder@microsoft.com',
+                      'mharder@microsoft.com',
+                      'djurek@microsoft.com',
+                      'chononiw@microsoft.com',
+                      'raychen@microsoft.com',
+                      'trpresco@microsoft.com',
+                      'prmarott@microsoft.com'
+                    )
+                  )
+                )
+              )
+            inputs:
+              azureSubscription: 'APIView prod deployment'
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+                $artifactList = @($artifacts | Select-Object Name)
+                $packageInfoFiles = @($artifacts | ForEach-Object { "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($_.name).json" })
+                $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Create-APIReview.ps1 `
+                  -PackageInfoFiles $packageInfoFiles `
+                  -ArtifactList $artifactList `
+                  -ArtifactPath '$(Pipeline.Workspace)/packages-signed-auto-release' `
+                  -ArtifactName packages-signed-auto-release `
+                  -SourceBranch '$(Build.SourceBranchName)' `
+                  -DefaultBranch '$(DefaultBranch)' `
+                  -ConfigFileDir '$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo' `
+                  -BuildId '$(Build.BuildId)' `
+                  -RepoName '$(Build.Repository.Name)' `
+                  -MarkPackageAsShipped $true
+
+          - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
+            parameters:
+              SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
+
+          - task: AzureCLI@2
+            displayName: Mark auto-release packages as released
+            continueOnError: true
+            condition: and(succeeded(), ne(variables['Skip.MarkReleaseCompletion'], 'true'))
+            inputs:
+              azureSubscription: opensource-api-connection
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+                foreach ($artifact in $artifacts) {
+                  $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1 `
+                    -PackageInfoFilePath "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($artifact.name).json" `
+                    -AzsdkExePath '$(AZSDK)'
+                }
+              workingDirectory: $(Pipeline.Workspace)
+
+      - job: UpdatePackageVersion
+        displayName: Update auto-release package versions
+        condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+        dependsOn: PublishDevFeedPackage
+        pool:
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - download: none
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - '${{ parameters.ServiceDirectory }}'
+                - '**/*.xml'
+                - '**/*.md'
+                - '!sdk/**/test-recordings'
+                - '!sdk/**/session-records'
+
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(PythonVersion)'
+            inputs:
+              versionSpec: $(PythonVersion)
+
+          - pwsh: |
+              $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+              $artifacts | Format-Table -Property groupId, name | Out-String | Write-Host
+              python --version
+              foreach ($artifact in $artifacts) {
+                python eng/versioning/set_versions.py --increment-version --artifact-id $artifact.name --group-id $artifact.groupId
+              }
+            displayName: Increment auto-release package versions
+
+          - script: |
+              python --version
+              python eng/versioning/update_versions.py --auto-version-increment --skip-readme
+            displayName: Update pom files for incremented versions
+
+          - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+            parameters:
+              PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-auto-release-$(Build.BuildId)
+              CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} auto-releases"
+              PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} auto-releases"
+              CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+              AuthToken: ''
+
+      - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
+        - job: PublishDocsMs
+          displayName: Docs.MS auto-release
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+          dependsOn: PublishDevFeedPackage
+          pool:
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
+            os: linux
+          steps:
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                Paths:
+                  - sdk/${{ parameters.ServiceDirectory }}/**/*.md
+                  - '!**/pom*.xml'
+
+            - download: current
+              displayName: 'Download Artifact: packages-signed-auto-release'
+              artifact: packages-signed-auto-release
+
+            - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+            - task: MavenAuthenticate@0
+              displayName: 'Maven Authenticate'
+              inputs:
+                artifactsFeeds: 'azure-sdk-for-java'
+
+            - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
+            - template: /eng/common/pipelines/templates/steps/enable-long-path-support.yml
+
+            - pwsh: |
+                Write-Host "##vso[task.setvariable variable=DocRepoLocation]$(System.DefaultWorkingDirectory)/doc"
+              displayName: Set $(DocRepoLocation)
+
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                SkipCheckoutNone: true
+                Repositories:
+                  - Name: $(DocRepoOwner)/$(DocRepoName)
+                    WorkingDirectory: $(DocRepoLocation)
+                Paths:
+                  - docs-ref-services/
+                  - metadata/
+
+            - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+              parameters:
+                WorkingDirectory: $(DocRepoLocation)
+                DefaultBranchVariableName: TargetBranchName
+
+            - pwsh: |
+                $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+                $packageInfoLocations = @(
+                  $artifacts |
+                    Where-Object { -not ($_.PSObject.Properties.Name -contains 'skipPublishDocMs' -and "$($_.skipPublishDocMs)".ToLowerInvariant() -eq 'true') } |
+                    ForEach-Object { "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($_.name).json" }
+                )
+
+                if ($packageInfoLocations.Count -eq 0) {
+                  Write-Host "No auto-release packages require Docs.MS metadata updates."
+                  return
+                }
+
+                eng/common/scripts/Update-DocsMsMetadata.ps1 `
+                  -PackageInfoJsonLocations $packageInfoLocations `
+                  -DocRepoLocation "$(DocRepoLocation)" `
+                  -Language 'java' `
+                  -RepoId '$(Build.Repository.Name)'
+              displayName: Apply documentation updates
+
+            - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+              parameters:
+                TokenOwners:
+                  - $(DocRepoOwner)
+                ScriptDirectory: eng/common/scripts
+
+            - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+              parameters:
+                BaseRepoBranch: $(TargetBranchName)
+                BaseRepoOwner: $(DocRepoOwner)
+                CommitMsg: "Update docs metadata"
+                TargetRepoName: $(DocRepoName)
+                TargetRepoOwner: $(DocRepoOwner)
+                WorkingDirectory: $(DocRepoLocation)
+                ScriptDirectory: $(System.DefaultWorkingDirectory)/eng/common/scripts
+                AuthToken: $(GH_TOKEN)
+
+        - job: PublishDocs
+          displayName: Publish auto-release docs to GitHubIO Blob Storage
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+          dependsOn: PublishDevFeedPackage
+          pool:
+            name: $(WINDOWSPOOL)
+            image: $(WINDOWSVMIMAGE)
+            os: windows
+          steps:
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+
+            - download: current
+              displayName: 'Download Artifact: packages-signed-auto-release'
+              artifact: packages-signed-auto-release
+
+            - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+
+            - task: AzurePowerShell@5
+              displayName: Copy auto-release package docs from signed artifacts to blob storage
+              inputs:
+                azureSubscription: 'Azure SDK Artifacts'
+                ScriptType: 'InlineScript'
+                azurePowerShellVersion: latestVersion
+                pwsh: true
+                Inline: |
+                  $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+                  foreach ($artifact in $artifacts) {
+                    if ($artifact.PSObject.Properties.Name -contains 'skipPublishDocGithubIo' -and "$($artifact.skipPublishDocGithubIo)".ToLowerInvariant() -eq 'true') {
+                      Write-Host "Skipping GitHubIO docs for $($artifact.name)."
+                      continue
+                    }
+
+                    # Mirrors publish-blobs.yml: upload docs from the signed package artifact directory.
+                    $artifactLocation = "$(Pipeline.Workspace)/packages-signed-auto-release/$($artifact.groupId)/$($artifact.name)"
+                    Get-ChildItem -Recurse $artifactLocation
+                    eng/common/scripts/copy-docs-to-blobstorage.ps1 `
+                      -DocLocation $artifactLocation `
+                      -BlobAccountName "https://azuresdkdocs.blob.core.windows.net" `
+                      -PublicArtifactLocation $artifactLocation `
+                      -RepoReplaceRegex "(https://github.com/$(Build.Repository.Name)/(?:blob|tree)/)$(DefaultBranch)"
+                  }
+              env:
+                AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
+                SYSTEM_ACCESSTOKEN: $(System.AccessToken)

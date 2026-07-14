@@ -288,6 +288,14 @@ public class KeyVaultClient {
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
                     String alias = getCertificateNameFromCertificateItemId(id);
+
+                    // Skip certificates that are explicitly disabled in Key Vault. Attempting to load a disabled
+                    // certificate's key/secret later would fail with an HTTP 403 and break keystore initialization.
+                    if (!certificateItem.isEnabled()) {
+                        LOGGER.log(WARNING, "Skipping disabled certificate with alias: {0}", alias);
+                        continue;
+                    }
+
                     result.add(alias);
                 }
             } else {
