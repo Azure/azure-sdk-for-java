@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
@@ -34,6 +35,7 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -123,6 +125,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -189,6 +192,59 @@ public class BlobApiTests extends BlobTestBase {
             () -> bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB)), Context.NONE)
                 .stream()
                 .count());
+    }
+
+    // Mirrors .NET's GetLayoutAsync_Ranged_ValidatesRange: verifies the ranges returned are scoped to the
+    // requested range (rather than merely not throwing) and that every range resolves to a non-empty endpoint.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutRangeValidatesRange() {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        bc.upload(new ByteArrayInputStream(content), content.length, true);
+
+        long rangeOffset = 2 * Constants.KB;
+        long rangeCount = content.length - rangeOffset;
+        List<BlobLayoutRange> ranges
+            = bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(rangeOffset, rangeCount)), Context.NONE)
+                .stream()
+                .flatMap(info -> info.getRanges().stream())
+                .collect(Collectors.toList());
+
+        assertFalse(ranges.isEmpty());
+        assertEquals(rangeOffset, ranges.get(0).getRange().getOffset());
+        HttpRange lastRange = ranges.get(ranges.size() - 1).getRange();
+        assertEquals(rangeOffset + rangeCount, lastRange.getOffset() + lastRange.getLength());
+        ranges.forEach(range -> {
+            assertNotNull(range.getEndpoint());
+            assertFalse(range.getEndpoint().isEmpty());
+        });
+    }
+
+    // Mirrors .NET's GetLayoutAsync_ReturnsRangesAndEndpoints. Java's BlobLayoutRange already resolves the
+    // endpoint index eagerly (see BlobLayoutInfo/BlobLayoutRange javadoc), so unlike the .NET assertions this
+    // verifies contiguous, fully-resolved (range, endpoint) pairs directly rather than cross-referencing a
+    // separate raw endpoint-index table.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutReturnsRangesAndEndpoints() {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        bc.upload(new ByteArrayInputStream(content), content.length, true);
+
+        List<BlobLayoutRange> ranges = bc.getLayout(null, Context.NONE)
+            .stream()
+            .flatMap(info -> info.getRanges().stream())
+            .collect(Collectors.toList());
+
+        assertFalse(ranges.isEmpty());
+        assertEquals(0, ranges.get(0).getRange().getOffset());
+        long coveredEnd = 0;
+        for (BlobLayoutRange range : ranges) {
+            assertEquals(coveredEnd, range.getRange().getOffset(), "Ranges should be contiguous with no gaps");
+            coveredEnd += range.getRange().getLength();
+            assertNotNull(range.getEndpoint());
+            assertFalse(range.getEndpoint().isEmpty());
+        }
+        assertEquals(content.length, coveredEnd);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
@@ -260,6 +316,21 @@ public class BlobApiTests extends BlobTestBase {
         BlobClient blobClient = cc.getBlobClient(generateBlobName());
 
         assertThrows(BlobStorageException.class, () -> blobClient.getLayout(null, Context.NONE).stream().count());
+    }
+
+    // Mirrors .NET's GetLayoutAsync_BlobSAS (Azure/azure-sdk-for-net#57554): verifies getLayout works when
+    // authenticated via a blob-scoped SAS token rather than a shared key/AAD credential.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutBlobSAS() {
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
+            new BlobSasPermission().setReadPermission(true)));
+        BlobClient sasBlobClient = getBlobClient(bc.getBlobUrl(), sas);
+
+        Iterator<BlobLayoutInfo> iterator = sasBlobClient.getLayout(null, Context.NONE).iterator();
+
+        assertTrue(iterator.hasNext());
+        assertNotNull(iterator.next().getETag());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")

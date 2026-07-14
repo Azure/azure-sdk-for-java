@@ -290,6 +290,19 @@ public class CPKNTests extends BlobTestBase {
         Assertions.assertEquals(scope1, cpknBlockBlob.getProperties().getEncryptionScope());
     }
 
+    // Mirrors .NET's GetLayoutAsync_EncryptionScope (Azure/azure-sdk-for-net#57554).
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutWithEncryptionScope() {
+        cpknBlockBlob.upload(DATA.getDefaultBinaryData());
+
+        Iterator<com.azure.storage.blob.models.BlobLayoutInfo> iterator
+            = cpknBlockBlob.getLayout(null, com.azure.core.util.Context.NONE).iterator();
+
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals(scope1, iterator.next().getEncryptionScope());
+    }
+
     @Test
     public void serviceClientBuilderCheck() {
         Assertions.assertThrows(IllegalArgumentException.class,
