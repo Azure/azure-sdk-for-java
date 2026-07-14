@@ -43,9 +43,8 @@ public class AppendBlockWithCRC64 extends BlobScenarioBase<StorageStressOptions>
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             AppendBlobClient appendBlobClient = syncClient.getAppendBlobClient();
-            appendBlobClient.appendBlockWithResponse(
-                new AppendBlobAppendBlockOptions(inputStream, options.getSize())
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+            appendBlobClient.appendBlockWithResponse(inputStream, options.getSize(),
+                new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -56,9 +55,8 @@ public class AppendBlockWithCRC64 extends BlobScenarioBase<StorageStressOptions>
         AppendBlobAsyncClient appendBlobAsyncClient = asyncClient.getAppendBlobAsyncClient();
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
             .convertStreamToByteBuffer();
-        return appendBlobAsyncClient.appendBlockWithResponse(
-                new AppendBlobAppendBlockOptions(byteBufferFlux, options.getSize())
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
+        return appendBlobAsyncClient.appendBlockWithResponse(byteBufferFlux, options.getSize(),
+                new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

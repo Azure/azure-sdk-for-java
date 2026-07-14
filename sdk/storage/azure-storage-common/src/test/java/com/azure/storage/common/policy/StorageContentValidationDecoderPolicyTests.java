@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link StorageContentValidationDecoderPolicy} together with {@link StructuredMessageEncoder} /
+ * Tests {@link StorageContentValidationDecodingPolicy} together with {@link StructuredMessageEncoder} /
  * wire-format payloads so the reactive decode path matches what the blob download pipeline uses.
  */
 public class StorageContentValidationDecoderPolicyTests {
@@ -68,7 +68,7 @@ public class StorageContentValidationDecoderPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
             context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
             return next.process();
-        }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
+        }, new StorageContentValidationDecodingPolicy()).httpClient(httpClient).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
         try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
@@ -99,7 +99,7 @@ public class StorageContentValidationDecoderPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
             context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
             return next.process();
-        }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
+        }, new StorageContentValidationDecodingPolicy()).httpClient(httpClient).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
         try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
@@ -123,7 +123,7 @@ public class StorageContentValidationDecoderPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies((context, next) -> {
             context.setData(StructuredMessageConstants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
             return next.process();
-        }, new StorageContentValidationDecoderPolicy()).httpClient(httpClient).build();
+        }, new StorageContentValidationDecodingPolicy()).httpClient(httpClient).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://example.blob.core.windows.net/c/b");
         try (HttpResponse response = pipeline.send(request, Context.NONE).block()) {
@@ -147,7 +147,7 @@ public class StorageContentValidationDecoderPolicyTests {
         HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(encodedLen));
         HttpClient httpClient = request -> Mono.just(new MockHttpResponse(request, 200, responseHeaders, encoded));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecoderPolicy())
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new StorageContentValidationDecodingPolicy())
             .httpClient(httpClient)
             .build();
 

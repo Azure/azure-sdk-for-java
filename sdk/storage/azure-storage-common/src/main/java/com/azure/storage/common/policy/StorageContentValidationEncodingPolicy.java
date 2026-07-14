@@ -31,15 +31,15 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
 
 /**
- * StorageContentValidationPolicy is a policy that applies content validation to the request body.
+ * StorageContentValidationEncodingPolicy is a policy that applies content validation to the request body.
  */
-public class StorageContentValidationPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationPolicy.class);
+public class StorageContentValidationEncodingPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationEncodingPolicy.class);
 
     /**
-     * Creates a new instance of {@link StorageContentValidationPolicy}.
+     * Creates a new instance of {@link StorageContentValidationEncodingPolicy}.
      */
-    public StorageContentValidationPolicy() {
+    public StorageContentValidationEncodingPolicy() {
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
@@ -196,10 +197,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            AppendBlobAppendBlockOptions opts = new AppendBlobAppendBlockOptions(blockData, writeLength)
-                .setRequestConditions(appendBlobRequestConditions)
-                .setContentValidationAlgorithm(contentValidationAlgorithm);
-            return client.appendBlockWithResponse(opts)
+            AppendBlobAppendBlockOptions opts
+                = new AppendBlobAppendBlockOptions().setRequestConditions(appendBlobRequestConditions)
+                    .setContentValidationAlgorithm(contentValidationAlgorithm);
+            return client.appendBlockWithResponse(blockData, writeLength, opts)
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
@@ -367,7 +368,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client
                 .uploadPagesWithResponseInternal(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData,
-                    null, pageBlobRequestConditions, contentValidationAlgorithm, com.azure.core.util.Context.NONE)
+                    new PageBlobUploadPagesOptions().setRequestConditions(pageBlobRequestConditions)
+                        .setContentValidationAlgorithm(contentValidationAlgorithm),
+                    Context.NONE)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
