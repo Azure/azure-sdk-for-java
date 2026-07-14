@@ -270,8 +270,8 @@ response.waitForCompletion();
 Let's retrieve specific update metadata:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
-SyncPoller<BinaryData, Void> response = client.beginDeleteUpdate(updateProvider, updateName, updateVersion,
-    new RequestOptions());
+SyncPoller<BinaryData, BinaryData> response = client.beginDeleteUpdate(updateProvider, updateName,
+    updateVersion, new RequestOptions());
 response.waitForCompletion();
 ```
 
