@@ -87,8 +87,10 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withSsh(sshPublicKey())
             .withNewDataDisk(100, 0, CachingTypes.READ_ONLY)
             .withNewDataDisk(100, 1, CachingTypes.NONE)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
             .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .create();
 
         Assertions.assertTrue(vm.isManagedDiskEnabled());
@@ -101,7 +103,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String dataDiskId1 = vmDataDisk1.id();
         final String dataDiskId2 = vmDataDisk2.id();
 
-        // Generalize and delete the VM, keeping its managed OS and data disks (detach by default)
+        // Generalize and delete the VM, keeping its managed OS and data disks (delete options explicitly set to DETACH)
         //
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
         deprovisionAgentInLinuxVM(vm);

@@ -490,13 +490,14 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withSsh(sshPublicKey())
             .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .create();
 
         Assertions.assertTrue(baseVm.isManagedDiskEnabled());
         String osDiskId = baseVm.osDiskId();
         Assertions.assertNotNull(osDiskId);
 
-        // Delete the virtual machine, keeping its managed OS disk (detach by default)
+        // Delete the virtual machine, keeping its managed OS disk (OS disk delete option is explicitly set to DETACH)
         //
         computeManager.virtualMachines().deleteById(baseVm.id());
 
