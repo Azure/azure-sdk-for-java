@@ -427,7 +427,7 @@ public final class DataCollectionRuleAssociationsClientImpl
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @param body The payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +464,7 @@ public final class DataCollectionRuleAssociationsClientImpl
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @param body The payload.
      * @param context The context to associate with this operation.
@@ -502,7 +502,7 @@ public final class DataCollectionRuleAssociationsClientImpl
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -520,7 +520,7 @@ public final class DataCollectionRuleAssociationsClientImpl
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @param body The payload.
      * @param context The context to associate with this operation.
@@ -538,7 +538,7 @@ public final class DataCollectionRuleAssociationsClientImpl
     /**
      * Creates or updates an association.
      * 
-     * @param resourceUri The identifier of the resource.
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param associationName The name of the association. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

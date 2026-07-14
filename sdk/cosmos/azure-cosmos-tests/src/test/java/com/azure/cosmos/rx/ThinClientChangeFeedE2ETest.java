@@ -30,7 +30,7 @@ public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientIncrementalChangeFeed() {
         String pkValue = UUID.randomUUID().toString();
         ObjectNode doc1 = createTestDocument(UUID.randomUUID().toString(), pkValue);
@@ -62,7 +62,7 @@ public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientChangeFeedFullRange() {
         // Insert docs across two different partition keys so the full-range feed spans multiple partitions.
         String pk1 = "cfFullRange1_" + UUID.randomUUID().toString().substring(0, 8);
@@ -89,7 +89,7 @@ public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientChangeFeedPartitionKey() {
         String pkValue = "cfPk_" + UUID.randomUUID().toString().substring(0, 8);
         container.createItem(createTestDocument(UUID.randomUUID().toString(), pkValue)).block();
