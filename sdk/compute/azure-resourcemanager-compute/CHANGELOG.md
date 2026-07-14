@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Deprecated unmanaged disk related methods on `VirtualMachine`, `VirtualMachineScaleSet` and `VirtualMachineScaleSetVM`, as unmanaged disks are being retired by Azure. Use managed disks instead.
+
 ## 2.58.0 (2026-06-17)
 
 ### Features Added
