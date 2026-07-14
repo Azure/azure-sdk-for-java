@@ -655,6 +655,16 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         CosmosAsyncClient testClient = null;
         FaultInjectionRule pkRangesOwnerResourceNotExistsRule = null;
 
+        // The partition-key-range (routing map) cache is shared across clients targeting the same
+        // service endpoint. Without disabling sharing, this client could reuse a routing map already
+        // populated by another client - e.g. a previous data-provider iteration targeting the same
+        // account and container - and therefore skip the METADATA_REQUEST_PARTITION_KEY_RANGES this
+        // test injects a fault on, leaving the rule's hit count at 0. Disable sharing for this client
+        // so it always issues its own partition-key-range metadata request.
+        String originalSharedPkRangeCacheSetting =
+            System.getProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+        System.setProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", "false");
+
         try {
             testClient = getClientBuilder()
                 .contentResponseOnWriteEnabled(true)
@@ -697,6 +707,12 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             fail("CreateItem should have succeeded by retrying partition key range metadata in another region. "
                 + cosmosException.getDiagnostics());
         } finally {
+            if (originalSharedPkRangeCacheSetting == null) {
+                System.clearProperty("COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED");
+            } else {
+                System.setProperty(
+                    "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED", originalSharedPkRangeCacheSetting);
+            }
             if (pkRangesOwnerResourceNotExistsRule != null) {
                 pkRangesOwnerResourceNotExistsRule.disable();
             }

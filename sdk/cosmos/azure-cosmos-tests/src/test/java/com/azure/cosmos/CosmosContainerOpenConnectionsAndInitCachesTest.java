@@ -145,7 +145,9 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(provider.count()).isEqualTo(0);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
-        assertThat(routingMap.size()).isEqualTo(0);
+        // The partition-key-range (routing map) cache is shared across clients targeting the same
+        // service endpoint, so its size reflects every container routed to in this JVM. Assert on this
+        // container's own entry (populated by openConnectionsAndInitCaches) instead of the total size.
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
         // Calling it twice to make sure no side effect of second time no-op call
@@ -158,7 +160,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         }
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
-        assertThat(routingMap.size()).isEqualTo(1);
+        String collectionRid = asyncContainer.read().block().getProperties().getResourceId();
+        assertThat(routingMap).containsKey(collectionRid);
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isTrue();
 
         GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
@@ -229,11 +232,12 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncClient.getDocClientWrapper();
 
-        ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
         ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
-        assertThat(routingMap.size()).isEqualTo(0);
+        // The routing-map (partition-key-range) cache is shared per service endpoint; gateway-mode
+        // openConnectionsAndInitCaches does not populate it, but a sibling direct-mode test may have,
+        // so the shared routing map's size is not asserted here.
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
         // Verifying no error when initializeContainer called on gateway mode
@@ -247,7 +251,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         }
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
-        assertThat(routingMap.size()).isEqualTo(0);
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isTrue();
     }
 
