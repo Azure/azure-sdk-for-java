@@ -16,7 +16,8 @@ import java.util.List;
  * The vm extension instance view.
  */
 @Immutable
-public final class VMExtensionInstanceView implements JsonSerializable<VMExtensionInstanceView> {
+public final class VirtualMachineExtensionInstanceView
+    implements JsonSerializable<VirtualMachineExtensionInstanceView> {
 
     /*
      * The name of the vm extension instance view.
@@ -37,10 +38,10 @@ public final class VMExtensionInstanceView implements JsonSerializable<VMExtensi
     private List<InstanceViewStatus> subStatuses;
 
     /**
-     * Creates an instance of VMExtensionInstanceView class.
+     * Creates an instance of VirtualMachineExtensionInstanceView class.
      */
     @Generated
-    private VMExtensionInstanceView() {
+    private VirtualMachineExtensionInstanceView() {
     }
 
     /**
@@ -87,35 +88,36 @@ public final class VMExtensionInstanceView implements JsonSerializable<VMExtensi
     }
 
     /**
-     * Reads an instance of VMExtensionInstanceView from the JsonReader.
+     * Reads an instance of VirtualMachineExtensionInstanceView from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VMExtensionInstanceView if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VMExtensionInstanceView.
+     * @return An instance of VirtualMachineExtensionInstanceView if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineExtensionInstanceView.
      */
     @Generated
-    public static VMExtensionInstanceView fromJson(JsonReader jsonReader) throws IOException {
+    public static VirtualMachineExtensionInstanceView fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VMExtensionInstanceView deserializedVMExtensionInstanceView = new VMExtensionInstanceView();
+            VirtualMachineExtensionInstanceView deserializedVirtualMachineExtensionInstanceView
+                = new VirtualMachineExtensionInstanceView();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    deserializedVMExtensionInstanceView.name = reader.getString();
+                    deserializedVirtualMachineExtensionInstanceView.name = reader.getString();
                 } else if ("statuses".equals(fieldName)) {
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
-                    deserializedVMExtensionInstanceView.statuses = statuses;
+                    deserializedVirtualMachineExtensionInstanceView.statuses = statuses;
                 } else if ("subStatuses".equals(fieldName)) {
                     List<InstanceViewStatus> subStatuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
-                    deserializedVMExtensionInstanceView.subStatuses = subStatuses;
+                    deserializedVirtualMachineExtensionInstanceView.subStatuses = subStatuses;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedVMExtensionInstanceView;
+            return deserializedVirtualMachineExtensionInstanceView;
         });
     }
 }

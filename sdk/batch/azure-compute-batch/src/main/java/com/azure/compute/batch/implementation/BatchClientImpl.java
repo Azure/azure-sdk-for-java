@@ -985,7 +985,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String username, RequestOptions requestOptions,
             Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
@@ -993,7 +993,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String username, RequestOptions requestOptions,
             Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
@@ -1002,7 +1002,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> replaceNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName,
+            @PathParam("userName") String username,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -1012,7 +1012,7 @@ public final class BatchClientImpl {
         Response<Void> replaceNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName,
+            @PathParam("userName") String username,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -26038,16 +26038,16 @@ public final class BatchClientImpl {
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> deleteNodeUserWithResponseAsync(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteNodeUser(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, userName, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, username, requestOptions, context));
     }
 
     /**
@@ -26069,16 +26069,16 @@ public final class BatchClientImpl {
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
         return service.deleteNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            userName, requestOptions, Context.NONE);
+            username, requestOptions, Context.NONE);
     }
 
     /**
@@ -26111,19 +26111,19 @@ public final class BatchClientImpl {
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String username,
         BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         return FluxUtil
             .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, userName, parameters, requestOptions, context));
+                contentType, poolId, nodeId, username, parameters, requestOptions, context));
     }
 
     /**
@@ -26156,18 +26156,18 @@ public final class BatchClientImpl {
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String username,
         BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, userName, parameters, requestOptions, Context.NONE);
+            poolId, nodeId, username, parameters, requestOptions, Context.NONE);
     }
 
     /**

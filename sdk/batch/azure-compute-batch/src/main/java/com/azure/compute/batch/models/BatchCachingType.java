@@ -10,54 +10,54 @@ import java.util.Collection;
 /**
  * CachingType enums.
  */
-public final class CachingType extends ExpandableStringEnum<CachingType> {
+public final class BatchCachingType extends ExpandableStringEnum<BatchCachingType> {
 
     /**
      * The caching mode for the disk is not enabled.
      */
     @Generated
-    public static final CachingType NONE = fromString("none");
+    public static final BatchCachingType NONE = fromString("none");
 
     /**
      * The caching mode for the disk is read only.
      */
     @Generated
-    public static final CachingType READ_ONLY = fromString("readonly");
+    public static final BatchCachingType READ_ONLY = fromString("readonly");
 
     /**
      * The caching mode for the disk is read and write.
      */
     @Generated
-    public static final CachingType READ_WRITE = fromString("readwrite");
+    public static final BatchCachingType READ_WRITE = fromString("readwrite");
 
     /**
-     * Creates a new instance of CachingType value.
+     * Creates a new instance of BatchCachingType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public CachingType() {
+    public BatchCachingType() {
     }
 
     /**
-     * Creates or finds a CachingType from its string representation.
+     * Creates or finds a BatchCachingType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding CachingType.
+     * @return the corresponding BatchCachingType.
      */
     @Generated
-    public static CachingType fromString(String name) {
-        return fromString(name, CachingType.class);
+    public static BatchCachingType fromString(String name) {
+        return fromString(name, BatchCachingType.class);
     }
 
     /**
-     * Gets known CachingType values.
+     * Gets known BatchCachingType values.
      *
-     * @return known CachingType values.
+     * @return known BatchCachingType values.
      */
     @Generated
-    public static Collection<CachingType> values() {
-        return values(CachingType.class);
+    public static Collection<BatchCachingType> values() {
+        return values(BatchCachingType.class);
     }
 }

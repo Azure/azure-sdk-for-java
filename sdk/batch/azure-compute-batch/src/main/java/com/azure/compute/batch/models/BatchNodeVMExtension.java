@@ -33,7 +33,7 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
      * The vm extension instance view.
      */
     @Generated
-    private VMExtensionInstanceView instanceView;
+    private VirtualMachineExtensionInstanceView instanceView;
 
     /**
      * Creates an instance of BatchNodeVMExtension class.
@@ -68,7 +68,7 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
      * @return the instanceView value.
      */
     @Generated
-    public VMExtensionInstanceView getInstanceView() {
+    public VirtualMachineExtensionInstanceView getInstanceView() {
         return this.instanceView;
     }
 
@@ -105,7 +105,8 @@ public final class BatchNodeVMExtension implements JsonSerializable<BatchNodeVME
                 } else if ("vmExtension".equals(fieldName)) {
                     deserializedBatchNodeVMExtension.vmExtension = VMExtension.fromJson(reader);
                 } else if ("instanceView".equals(fieldName)) {
-                    deserializedBatchNodeVMExtension.instanceView = VMExtensionInstanceView.fromJson(reader);
+                    deserializedBatchNodeVMExtension.instanceView
+                        = VirtualMachineExtensionInstanceView.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

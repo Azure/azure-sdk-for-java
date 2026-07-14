@@ -25,35 +25,35 @@ public final class BatchNodeSchedulingEnableOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Long timeOut;
+    private Long timeout;
 
     /**
-     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @return the timeOut value.
+     * @return the timeout value.
      */
     @Generated
-    public Duration getTimeOut() {
-        if (this.timeOut == null) {
+    public Duration getTimeout() {
+        if (this.timeout == null) {
             return null;
         }
-        return Duration.ofSeconds(this.timeOut);
+        return Duration.ofSeconds(this.timeout);
     }
 
     /**
-     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOut the timeOut value to set.
+     * @param timeout the timeout value to set.
      * @return the BatchNodeSchedulingEnableOptions object itself.
      */
     @Generated
-    public BatchNodeSchedulingEnableOptions setTimeOut(Duration timeOut) {
-        if (timeOut == null) {
-            this.timeOut = null;
+    public BatchNodeSchedulingEnableOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
         } else {
-            this.timeOut = timeOut.getSeconds();
+            this.timeout = timeout.getSeconds();
         }
         return this;
     }

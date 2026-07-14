@@ -30,14 +30,6 @@ public final class BatchPoolUsageMetricsListOptions {
     private OffsetDateTime startTime;
 
     /*
-     * The latest time from which to include metrics. This must be at least two hours
-     * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.
-     */
-    @Generated
-    private OffsetDateTime endtime;
-
-    /*
      * An OData $filter clause. For more information on constructing this filter, see
      * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      */
@@ -102,32 +94,6 @@ public final class BatchPoolUsageMetricsListOptions {
     }
 
     /**
-     * Get the endtime property: The latest time from which to include metrics. This must be at least two hours
-     * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.
-     *
-     * @return the endtime value.
-     */
-    @Generated
-    public OffsetDateTime getEndtime() {
-        return this.endtime;
-    }
-
-    /**
-     * Set the endtime property: The latest time from which to include metrics. This must be at least two hours
-     * before the current time. If not specified this defaults to the end time of the
-     * last aggregation interval currently available.
-     *
-     * @param endtime the endtime value to set.
-     * @return the BatchPoolUsageMetricsListOptions object itself.
-     */
-    @Generated
-    public BatchPoolUsageMetricsListOptions setEndtime(OffsetDateTime endtime) {
-        this.endtime = endtime;
-        return this;
-    }
-
-    /**
      * Get the filter property: An OData $filter clause. For more information on constructing this filter, see
      * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
      *
@@ -156,36 +122,70 @@ public final class BatchPoolUsageMetricsListOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Long timeOut;
+    private Long timeout;
 
-    /**
-     * Get the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
-     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOut value.
+    /*
+     * The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.
      */
     @Generated
-    public Duration getTimeOut() {
-        if (this.timeOut == null) {
+    private OffsetDateTime endTime;
+
+    /**
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
             return null;
         }
-        return Duration.ofSeconds(this.timeOut);
+        return Duration.ofSeconds(this.timeout);
     }
 
     /**
-     * Set the timeOut property: The maximum time that the server can spend processing the request, in seconds. The
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
      * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOut the timeOut value to set.
+     * @param timeout the timeout value to set.
      * @return the BatchPoolUsageMetricsListOptions object itself.
      */
     @Generated
-    public BatchPoolUsageMetricsListOptions setTimeOut(Duration timeOut) {
-        if (timeOut == null) {
-            this.timeOut = null;
+    public BatchPoolUsageMetricsListOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
         } else {
-            this.timeOut = timeOut.getSeconds();
+            this.timeout = timeout.getSeconds();
         }
+        return this;
+    }
+
+    /**
+     * Get the endTime property: The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.
+     *
+     * @return the endTime value.
+     */
+    @Generated
+    public OffsetDateTime getEndTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Set the endTime property: The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.
+     *
+     * @param endTime the endTime value to set.
+     * @return the BatchPoolUsageMetricsListOptions object itself.
+     */
+    @Generated
+    public BatchPoolUsageMetricsListOptions setEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
         return this;
     }
 }

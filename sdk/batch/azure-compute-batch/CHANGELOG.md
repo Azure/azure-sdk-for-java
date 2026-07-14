@@ -5,7 +5,7 @@
 ### Breaking Changes
 
 - Name changes for timeout methods:
-  - `getTimeOutInSeconds()` -> `getTimeOut()`
+  - `getTimeOutInSeconds()` -> `getTimeout()`
 
 - Model suffix name change:
   - `BatchAffinityInfo` -> `BatchAffinityDetails`
