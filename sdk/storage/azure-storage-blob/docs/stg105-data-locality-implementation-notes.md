@@ -234,6 +234,133 @@ additive:
    generated-vs-hand-written classification the rest of this feature went
    through).
 
+## Step 12 — Final reconciliation against the .NET PR
+
+Performed a fresh, whole-feature comparison against .NET PR
+Azure/azure-sdk-for-net#57554's full changed-file list (69 files,
+re-fetched via `gh pr diff 57554 --repo Azure/azure-sdk-for-net --name-only`
+independent of earlier planning notes). Outcome, by category:
+
+**Covered (Java equivalent confirmed present and wired):**
+- Core wiring: `BlobBaseClient.cs`/`BlobClientOptions.cs` (adds
+  `DataLocalityPolicy` to the pipeline) → `BlobClientBase.java` /
+  `BlobAsyncClientBase.java` / `BuilderHelper.java`
+  (`policies.add(new DataLocalityPolicy())`), proven end-to-end by
+  `BlobDataLocalityWiringTests.java`.
+- `Shared/AutoRefreshingCache.cs` → `AutoRefreshingCache.java`, with its own
+  unit test class `AutoRefreshingCacheTest.java` (mirrors .NET's
+  `AutoRefreshingCacheTests.cs`).
+- `Shared/DataLocalityPolicy.cs` → `DataLocalityPolicy.java` (see
+  architectural note below on the split with the cache).
+- All `Models/BlobLayout*`/`BlobGetLayoutOptions`/`BlobLayoutInfo`
+  generated + hand-written models → `BlobLayoutInfo.java`,
+  `BlobLayoutRange.java`, `BlobGetLayoutOptions.java`, `DownloadHint.java`
+  (both generated and hand-written variants).
+- `Models/BlobDownloadOptions.cs`/`BlobDownloadToOptions.cs`/
+  `BlobOpenReadOptions.cs` (`EnableDataLocality`) →
+  `BlobDownloadToFileOptions.java`/`BlobInputStreamOptions.java`
+  (`enableDataLocality`, confirmed wired).
+- DataLake side: `DataLakeFileClient.cs`,
+  `Models/DataLakeFileGetLayoutOptions.cs`,
+  `Models/DataLakeFileLayoutEndpoints*`/`DataLakeFileLayoutRanges*` →
+  `DataLakeFileClient.java`/`DataLakeFileAsyncClient.java`,
+  `DataLakeFileGetLayoutOptions.java`,
+  `DataLakeFileLayoutInfo.java`/`DataLakeFileLayoutRange.java` (consolidated,
+  matching the Blob-side pattern). `Models/DataLakeFileReadToOptions.cs`/
+  `DataLakeOpenReadOptions.cs` → `ReadToFileOptions.java`/
+  `DataLakeFileInputStreamOptions.java` (`enableDataLocality`, confirmed
+  wired).
+- `DataLakeExtensions.cs` → `Transforms.java`.
+- Tests: `tests/BlobBaseClientTests.cs`, `tests/OpenReadDataLocalityTests.cs`
+  → `BlobApiTests.java`/`BlobAsyncApiTests.java`.
+  `tests/PartitionedDownloaderTests.cs` (Moq wiring tests) →
+  `BlobDataLocalityWiringTests.java`. `tests/FileClientTests.cs` →
+  `FileApiTest.java`/`FileAsyncApiTests.java`.
+
+**Legitimate architectural/idiomatic differences (not gaps):**
+- `Shared/IExpiringValue.cs` has no direct Java interface counterpart:
+  Java's `AutoRefreshingCache<T>` takes a
+  `Function<T, OffsetDateTime> expirationExtractor` constructor argument
+  instead of requiring `T` to implement an interface — an idiomatic
+  functional-parameter substitute for the same contract.
+- `Models/BlobLayoutSegment.cs`/`BlobLayoutSegmentCacheValue.cs` have no
+  standalone Java class: the per-blob layout cache and TTL/refresh logic
+  live inline in `BlobClientBase`/`BlobAsyncClientBase` via the generic
+  `AutoRefreshingCache<T>`, rather than a dedicated cache-value struct.
+- `Models/GetLayoutAsyncCollection.cs` has no Java counterpart: Java uses
+  `azure-core`'s built-in `PagedFlux`/`PagedIterable` for `getLayout`'s
+  paging instead of a bespoke per-feature async collection type.
+- `Models/BlobsModelFactory.cs`/`DataLakeModelFactory.cs` additions have no
+  Java counterpart: the Java Storage SDK has no "public model factory for
+  test mocking" pattern anywhere in the module (a pre-existing, module-wide
+  ecosystem difference from .NET, not something introduced or missed by
+  this feature).
+- `DataLakeClientOptions.cs` explicitly adds `DataLocalityPolicy` to its own
+  pipeline in .NET; Java's DataLake builders do **not** separately register
+  the policy. Confirmed **not** a gap: every DataLake operation that needs
+  locality-aware routing (`getLayout`, `readToFile`, `openInputStream`)
+  proxies to an internal `BlockBlobClient`/`BlockBlobAsyncClient` (see
+  `DataLakeFileClient.getLayout`/`readToFileWithResponse`/`openInputStream`),
+  whose pipeline already has `DataLocalityPolicy` registered via
+  `BuilderHelper`. This mirrors .NET's own documented behavior ("This method
+  currently proxies the Blob service getLayout API").
+- `api/*.cs` (API-surface snapshot files), `*.csproj` (project files),
+  `autorest.md` (swagger codegen config), and each module's `assets.json`
+  are .NET/tooling-specific and have no meaningful Java counterpart to
+  reconcile against individually (Java's own versioning, checkstyle/revapi,
+  and `assets.json` files serve the equivalent purposes and are tracked
+  separately).
+
+**Confirmed gap, intentionally deferred (not silently missed):**
+- `Models/BlobDownloadOptions.cs`/`DataLakeFileReadOptions.cs` add a manual
+  `LayoutEndpoint` escape-hatch property (letting a caller bypass automatic
+  caching/resolution and specify their own layout endpoint for a single,
+  non-chunked download). Java does not expose an equivalent property on a
+  download-options object, because Java has no `BlobDownloadOptions`-style
+  bundle for its plain (non-parallel) download methods in the first place.
+  The equivalent capability **does exist** in Java, just via the public
+  `DataLocalityPolicy.LAYOUT_ENDPOINT_KEY` `Context` key (documented in
+  `DataLocalityPolicy.java`'s Javadoc: `context.addData(DataLocalityPolicy
+  .LAYOUT_ENDPOINT_KEY, endpoint)`), which any Java storage call already
+  accepts via its `Context` parameter. This is functionally equivalent but
+  less discoverable than a dedicated options-object property — flagged here
+  for manual review, not silently treated as full parity.
+
+No other gaps were found in this pass. This reconciliation confirms the
+findings already listed under "Outstanding items" above (unmerged spec
+dependency, environment's non-implementation of real Layout partitioning,
+Data Lake's proxy-based `getLayout`) remain the complete list of open items;
+no additional missed files or behaviors were discovered.
+
+**Autorest regeneration verification.** Re-ran `autorest` against
+`sdk/storage/azure-storage-blob/swagger/README.md`
+(`npx autorest --version=3.9.7 --use=@autorest/java@4.1.63 README.md`,
+161 files generated) to check for accidental hand-edits to generated code
+or generated files that were deleted/restructured:
+- The fully-generated `implementation/` package (raw REST client + internal
+  models, e.g. `BlobsGetLayoutHeaders.java`, `BlobLayout.java`,
+  `BlobLayoutEndpoints*.java`, `BlobLayoutRanges*.java`) came back
+  byte-identical to what's already committed (verified with
+  `git diff --ignore-space-at-eol -w`, which showed zero real diff beyond
+  CRLF/LF line-ending noise from the generator's LF output vs this repo's
+  CRLF line endings) — confirms nothing in the generated layer was
+  accidentally hand-modified this session, and no generated file was
+  deleted or restructured by this feature's changes.
+- The public `models` package (the `custom-types`-promoted classes) also
+  regenerated identically, **except** for `BlobDownloadHeaders.java` and
+  `DownloadHint.java`, which retained a stale, broken `{@link ...getLayout
+  (BlobGetLayoutOptions)}` Javadoc reference (missing the `Context`
+  parameter, which previously broke `mvn javadoc:javadoc`). This confirms
+  these two files are promoted-once-then-hand-maintained (autorest does not
+  overwrite them on subsequent regenerations), so the Javadoc fix applied
+  in this pass (adding the `Context` parameter to the `@link`) is a
+  legitimate, permanent hand-edit — not something that will be silently
+  reverted by a future regeneration.
+- Data Lake has no `swagger/` folder at all, consistent with the
+  already-documented finding that its `getLayout` is a hand-written proxy
+  over the Blob client rather than a generated REST operation — there is
+  nothing to regenerate/verify there.
+
 ## Commits on this branch
 
 ```

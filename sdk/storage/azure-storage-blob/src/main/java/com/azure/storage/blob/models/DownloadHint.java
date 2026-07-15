@@ -13,9 +13,9 @@ import java.util.Collection;
 public final class DownloadHint extends ExpandableStringEnum<DownloadHint> {
     /**
      * Indicates that the client should call
-     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(BlobGetLayoutOptions)} (or the async
-     * equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal endpoint for
-     * each range.
+     * {@link com.azure.storage.blob.specialized.BlobClientBase#getLayout(com.azure.storage.blob.options.BlobGetLayoutOptions, com.azure.core.util.Context)}
+     * (or the async equivalent) to obtain the blob's layout and route subsequent range downloads to the optimal
+     * endpoint for each range.
      */
     public static final DownloadHint LAYOUT = fromString("layout");
 

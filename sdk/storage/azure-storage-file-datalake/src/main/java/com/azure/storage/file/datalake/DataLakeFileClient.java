@@ -1100,7 +1100,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call. To
+     * manually route this single read to a specific locality-aware endpoint (bypassing the automatic
+     * caching/resolution used by {@code enableDataLocality} on the chunked read APIs), add
+     * {@link com.azure.storage.common.policy.DataLocalityPolicy#LAYOUT_ENDPOINT_KEY} to this context with the
+     * endpoint value obtained from {@link #getLayout(DataLakeFileGetLayoutOptions)}.
      *
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.

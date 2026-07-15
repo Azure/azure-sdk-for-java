@@ -1283,7 +1283,11 @@ public class BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call. To
+     * manually route this single download to a specific locality-aware endpoint (bypassing the automatic
+     * caching/resolution used by {@code enableDataLocality} on the chunked download APIs), add
+     * {@link com.azure.storage.common.policy.DataLocalityPolicy#LAYOUT_ENDPOINT_KEY} to this context with the
+     * endpoint value obtained from {@link #getLayout(BlobGetLayoutOptions, Context)}.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
