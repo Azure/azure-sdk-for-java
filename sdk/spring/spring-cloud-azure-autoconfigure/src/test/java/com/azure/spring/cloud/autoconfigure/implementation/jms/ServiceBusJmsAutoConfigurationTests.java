@@ -528,6 +528,38 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
+    void listenerContainerUsesDedicatedServiceBusConnectionFactoryWhenPoolEnabledAndCacheDisabled(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true",
+                "spring.jms.cache.enabled=false"
+            )
+            .run(context -> {
+                JmsPoolConnectionFactory senderBean = context.getBean(JmsPoolConnectionFactory.class);
+                DefaultJmsListenerContainerFactory queueFactory = context.getBean(
+                    "jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultJmsListenerContainerFactory topicFactory = context.getBean(
+                    "topicJmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+
+                DefaultMessageListenerContainer queueContainer =
+                    queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+                DefaultMessageListenerContainer topicContainer =
+                    topicFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+
+                assertThat(queueContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean);
+                assertThat(topicContainer.getConnectionFactory())
+                    .isInstanceOf(ServiceBusJmsConnectionFactory.class)
+                    .isNotSameAs(senderBean)
+                    .isSameAs(queueContainer.getConnectionFactory());
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"standard", "premium"})
     void listenerContainerUsesDedicatedServiceBusConnectionFactoryWhenPoolDisabled(String pricingTier) {
         this.contextRunner
             .withPropertyValues(

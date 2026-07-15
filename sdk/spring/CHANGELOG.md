@@ -318,7 +318,7 @@ The ConnectionFactory type is determined by the following configuration properti
 | not set                              | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
 | true                                 | not set                    | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
 | true                                 | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
-| true                                 | false                      | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+| true                                 | false                      | JmsPoolConnectionFactory       | ServiceBusJmsConnectionFactory |
 | false                                | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
 | false                                | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
 | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
@@ -382,7 +382,7 @@ The ConnectionFactory type is determined by the following configuration properti
   | not set                              | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
   | true                                 | not set                    | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
   | true                                 | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
-  | true                                 | false                      | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+  | true                                 | false                      | JmsPoolConnectionFactory       | ServiceBusJmsConnectionFactory |
   | false                                | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
   | false                                | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
   | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
