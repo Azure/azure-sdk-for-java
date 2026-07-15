@@ -35,39 +35,11 @@ import java.util.Optional;
 
 /**
  * TypeSpec customization for azure-storage-queue.
- *
- * <p>Two responsibilities, replacing what the AutoRest setup did via {@code swagger/README.md}
- * directives plus the old {@code QueueStorageCustomization} post-processor:</p>
- *
- * <ol>
- *   <li><b>Remove the generated public client surface.</b> typespec-java emits a public
- *       convenience client/builder per operation group (QueueClient, QueueAsyncClient,
- *       ServiceClient, MessagesClient, MessageIdsClient, AzureQueueStorageBuilder, ...) plus a
- *       QueuesServiceVersion. The shipped library hand-writes that surface
- *       (QueueClient/QueueAsyncClient/QueueServiceClient/QueueServiceAsyncClient/builders/
- *       QueueServiceVersion in {@code com.azure.storage.queue}). We drop the codegen copies so the
- *       hand-written versions are not overwritten by {@code tsp-client update}. The generated
- *       implementation layer ({@code com.azure.storage.queue.implementation.AzureQueueStorageImpl}
- *       and the *Impl operation groups) is preserved and used by the hand-written clients. No impl
- *       rename is needed because Q1 ({@code @@clientName(Storage.Queues,"AzureQueueStorage","java")})
- *       already keeps the impl named AzureQueueStorageImpl, which the hand-written layer references.</li>
- *
- *   <li><b>Map the internal exception type.</b> Wrap every impl proxy method so
- *       {@code QueueStorageExceptionInternal} is mapped to the public {@code QueueStorageException}
- *       (async: {@code .onErrorMap(QueueStorageExceptionInternal.class,
- *       ModelHelper::mapToQueueStorageException)}; sync: try/catch rethrowing
- *       {@code ModelHelper.mapToQueueStorageException(e)}). Ported verbatim from the AutoRest
- *       {@code QueueStorageCustomization}.</li>
- * </ol>
  */
 public class QueueStorageCustomizations extends Customization {
 
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/storage/queue/";
 
-    // Generated public client surface to drop so the hand-written equivalents survive regeneration.
-    // QueueClient / QueueAsyncClient collide by name with the hand-written clients (the emitter
-    // would otherwise overwrite them); the rest are net-new generated clients/builders/version that
-    // the hand-written convenience layer replaces.
     private static final String[] FILES_TO_REMOVE = new String[] {
         "QueueClient.java",
         "QueueAsyncClient.java",
@@ -81,8 +53,6 @@ public class QueueStorageCustomizations extends Customization {
         "QueuesServiceVersion.java"
     };
 
-    // Public models the emitter renders immutable (required-args or private constructor, final fields, no setters)
-    // that the shipped library exposes as @Fluent (no-arg constructor + setters). See restoreFluentModels.
     private static final List<String> FLUENT_MODELS = Arrays.asList(
         "QueueRetentionPolicy", "QueueMetrics", "QueueCorsRule", "QueueAnalyticsLogging", "QueueSignedIdentifier",
         "GeoReplication", "QueueItem", "QueueServiceStatistics", "SendMessageResult", "UserDelegationKey");
@@ -99,16 +69,6 @@ public class QueueStorageCustomizations extends Customization {
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.queue.implementation"), logger);
     }
 
-    // AccessPolicy.start/expiry are utcDateTime in the spec but carry @encode("rfc3339-fixed-width") (a non-standard
-    // encoding present so the Rust emitter forces exactly 7 fractional-second digits). The typespec-java emitter does
-    // not recognize that encoding and degrades the two properties to String, whereas the same emitter correctly emits
-    // OffsetDateTime for a plain utcDateTime (see KeyInfo.expiry). The shipped public model
-    // com.azure.storage.queue.models.QueueAccessPolicy exposes OffsetDateTime getStartsOn()/getExpiresOn() (and .NET's
-    // migration keeps DateTimeOffset), and the hand-written setAccessPolicy path relies on OffsetDateTime (it truncates
-    // to seconds before serializing). Restore the OffsetDateTime type using the exact serialization the emitter already
-    // produces for utcDateTime (ISO_OFFSET_DATE_TIME on write, CoreUtils.parseBestOffsetDateTime on read); the second
-    // truncation in the hand-written layer means no fractional-second precision is emitted, so the fixed-width concern
-    // that motivated the encode does not arise on the Java write path.
     private static void restoreAccessPolicyDateTimeType(Editor editor, Logger logger) {
         String path = "src/main/java/com/azure/storage/queue/models/QueueAccessPolicy.java";
         String content = editor.getContents().get(path);
@@ -148,18 +108,6 @@ public class QueueStorageCustomizations extends Customization {
         logger.info("Restored OffsetDateTime type for QueueAccessPolicy startsOn/expiresOn.");
     }
 
-    // The typespec-java emitter makes every model that has a required spec property immutable: input models
-    // (required @@usage) get a public required-args constructor + final fields + no setters, and output-only
-    // models get a private constructor + final fields + no setters (@Immutable). The shipped Storage public
-    // models are uniformly @Fluent (no-arg constructor + fluent setters); all four hand-written clients, the
-    // SAS helpers, the samples and the recorded tests build against that fluent shape, and .NET's migration
-    // keeps the same mutable models. Restore the fluent shape so the migration stays 100% source-compatible
-    // (no revapi break). The transform per model is uniform: swap @Immutable -> @Fluent, drop `final` from the
-    // instance fields, replace the generated constructor with a public no-arg constructor, add a fluent setter
-    // for every property that lost one, and rewrite fromXml to build via the no-arg constructor + field
-    // assignment. DateTimeRfc1123 backing fields (GeoReplication.lastSyncTime, SendMessageResult.*Time) keep
-    // their OffsetDateTime public accessors, reusing the exact OffsetDateTime<->DateTimeRfc1123 conversion the
-    // emitter already generates on those fields.
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.storage.queue.models");
         for (String className : FLUENT_MODELS) {
@@ -179,27 +127,22 @@ public class QueueStorageCustomizations extends Customization {
     private static void makeModelFluent(ClassOrInterfaceDeclaration clazz, Logger logger) {
         String className = clazz.getNameAsString();
 
-        // @Immutable -> @Fluent (QueueRetentionPolicy/QueueMetrics are already @Fluent).
         clazz.getAnnotationByName("Immutable").ifPresent(a -> a.remove());
         if (!clazz.isAnnotationPresent("Fluent")) {
             clazz.addMarkerAnnotation("Fluent");
         }
 
-        // Drop `final` from the instance fields so they can be set after construction.
         clazz.getFields().forEach(field -> {
             if (!field.isStatic()) {
                 field.setFinal(false);
             }
         });
 
-        // Replace the generated constructor(s) with a single public no-arg constructor.
         new ArrayList<>(clazz.getConstructors()).forEach(ConstructorDeclaration::remove);
         ConstructorDeclaration ctor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
         ctor.addMarkerAnnotation("Generated");
         ctor.setBody(new BlockStmt());
 
-        // Add a fluent setter for every property that lost one. The setter's parameter type mirrors the
-        // property's public accessor return type (which differs from the backing field for DateTimeRfc1123).
         for (FieldDeclaration field : clazz.getFields()) {
             if (field.isStatic()) {
                 continue;
@@ -210,7 +153,6 @@ public class QueueStorageCustomizations extends Customization {
                 continue;
             }
             String fieldType = field.getElementType().asString();
-            // Clone so the parameter does not steal the accessor/field's live Type node from the AST.
             Type accessorType = accessorReturnType(clazz, fieldName).orElse(field.getElementType()).clone();
             String body;
             if ("DateTimeRfc1123".equals(fieldType) && "OffsetDateTime".equals(accessorType.asString())) {
@@ -226,10 +168,6 @@ public class QueueStorageCustomizations extends Customization {
             setter.setBody(StaticJavaParser.parseBlock(body));
         }
 
-        // Rewrite fromXml: the emitter builds the instance with the (now removed) generated constructor, e.g.
-        // `return new X(a, b);` or `X d = new X(a); d.opt = opt;`. Rebuild via the no-arg constructor and assign
-        // each former constructor argument to its field (converting OffsetDateTime -> DateTimeRfc1123 where the
-        // backing field requires it), matching how the emitter already assigns the optional fields.
         clazz.findAll(ObjectCreationExpr.class).stream()
             .filter(oce -> oce.getType().getNameAsString().equals(className) && !oce.getArguments().isEmpty())
             .forEach(oce -> rewriteFromXmlConstruction(clazz, oce));
@@ -272,8 +210,6 @@ public class QueueStorageCustomizations extends Customization {
         }
     }
 
-    // Assignment for a former constructor argument (local var name == field name). OffsetDateTime locals feeding
-    // a DateTimeRfc1123 field are converted, mirroring the emitter's own constructor logic for those fields.
     private static String fieldAssignment(ClassOrInterfaceDeclaration clazz, String localName, String fieldName) {
         boolean rfc1123 = clazz.getFieldByName(fieldName)
             .map(f -> "DateTimeRfc1123".equals(f.getElementType().asString())).orElse(false);
@@ -313,16 +249,6 @@ public class QueueStorageCustomizations extends Customization {
         return Optional.empty();
     }
 
-    // The emitter models "List Queues" with @list + a body-sourced @continuationToken (NextMarker), but the
-    // typespec-java protocol paging path (see ServicesImpl.getQueuesSinglePage[Async]) discards that marker
-    // (continuation token hard-coded to null) and JSON-parses the XML body, so it cannot drive the hand-written
-    // PagedFlux/PagedIterable<QueueItem> continuation loop. Until the emitter honors body @continuationToken (tracked
-    // against @azure-tools/typespec-java; Go's azqueue and .NET's Azure.Storage.Queues both preserve NextMarker from
-    // the same spec), expose a raw single-response accessor over the existing proxy call so the hand-written service
-    // clients can deserialize ListQueuesSegmentResponse (getQueueItems + getNextMarker) themselves. This mirrors the
-    // shape .NET's generator emits by default (GetQueuesSegment). The two injected methods are intentionally left
-    // without exception mapping here so updateImplToMapInternalException wraps them identically to every other
-    // WithResponse accessor. The accessor lives in the non-exported implementation package, so it is not public API.
     private static void exposeRawListQueuesResponse(PackageCustomization implPackage, Logger logger) {
         if (implPackage.getClass("ServicesImpl") == null) {
             logger.info("ServicesImpl not present; skipping raw list-queues accessor injection.");
@@ -347,11 +273,6 @@ public class QueueStorageCustomizations extends Customization {
         }));
     }
 
-    // The emitter derives the service-version enum name from the "Queues" service namespace, emitting
-    // QueuesServiceVersion (and referencing it from every impl proxy). The hand-written public layer
-    // (builders/clients) uses the shipped QueueServiceVersion. We drop the generated QueuesServiceVersion.java
-    // (in FILES_TO_REMOVE) and rewrite the impl references to the hand-written QueueServiceVersion, mirroring
-    // the service-version retarget AppConfiguration does in its customization.
     private static void retargetServiceVersionReferences(Editor editor, Logger logger) {
         String implDir = "src/main/java/com/azure/storage/queue/implementation/";
         for (String fileName : new String[] {
@@ -362,17 +283,12 @@ public class QueueStorageCustomizations extends Customization {
             if (content == null || !content.contains("QueuesServiceVersion")) {
                 continue;
             }
-            // Rewrite both the import (com.azure.storage.queue.QueuesServiceVersion) and every bare reference.
             String updated = content.replace("QueuesServiceVersion", "QueueServiceVersion");
             editor.replaceFile(path, updated);
             logger.info("Retargeted QueuesServiceVersion -> QueueServiceVersion in {}.", fileName);
         }
     }
 
-    // The emitter emits a generic module-info.java that drops the Storage-specific module directives
-    // (requires transitive com.azure.storage.common, exports com.azure.storage.queue.sas,
-    // opens com.azure.storage.queue.implementation). The shipped module-info is hand-written and is the
-    // authoritative superset, so drop the generated copy to avoid overwriting it.
     private static void preserveHandwrittenModuleInfo(Editor editor, Logger logger) {
         String path = "src/main/java/module-info.java";
         if (editor.getContents().containsKey(path)) {
@@ -395,24 +311,7 @@ public class QueueStorageCustomizations extends Customization {
         }
     }
 
-    /**
-     * Customizes the implementation classes that will perform calls to the service. The following logic is used:
-     * <p>
-     * - Check for the return of the method not equaling to PagedFlux, PagedIterable, PollerFlux, or SyncPoller. Those
-     * types wrap other APIs and those APIs being update is the correct change.
-     * - For asynchronous methods, add a call to
-     * {@code .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)} to handle
-     * mapping QueueStorageExceptionInternal to QueueStorageException.
-     * - For synchronous methods, wrap the return statement in a try-catch block that catches
-     * QueueStorageExceptionInternal and rethrows {@code ModelHelper.mapToQueueStorageException(e)}. Or, for void
-     * methods wrap the last statement.
-     *
-     * @param implPackage The implementation package.
-     */
     private static void updateImplToMapInternalException(PackageCustomization implPackage, Logger logger) {
-        // The operation-group set depends on the @@clientLocation split in client.tsp. Guard each
-        // class so the customization is robust whether the impl is the 4-group AutoRest topology
-        // (MessageIds/Messages/Queues/Services) or a reduced set.
         List<String> implsToUpdate = Arrays.asList("MessageIdsImpl", "MessagesImpl", "QueuesImpl", "ServicesImpl");
         for (String implToUpdate : implsToUpdate) {
             if (implPackage.getClass(implToUpdate) == null) {
@@ -423,24 +322,11 @@ public class QueueStorageCustomizations extends Customization {
                 ast.addImport("com.azure.storage.queue.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.queue.models.QueueStorageException");
                 ast.addImport("com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal");
-                // The emitter annotates the @ServiceInterface methods with a default
-                // @UnexpectedResponseExceptionType(HttpResponseException.class) plus per-status-code entries mapping
-                // 401/404/409 to generic azure-core exceptions (ClientAuthenticationException, ResourceNotFoundException,
-                // ResourceModifiedException). AutoRest emitted only the single default. Two problems with the per-code
-                // entries: (1) their getValue() returns Object, so azure-core cannot deserialize the XML error body via
-                // azure-xml and falls back to Jackson; (2) they would surface a non-QueueStorageException type to callers
-                // for those status codes, breaking public behavior. Remove every per-code entry (any
-                // @UnexpectedResponseExceptionType carrying a 'code' member) so all unexpected responses route through
-                // the single default, matching AutoRest.
                 ast.findAll(NormalAnnotationExpr.class).stream()
                     .filter(anno -> anno.getNameAsString().equals("UnexpectedResponseExceptionType")
                         && anno.getPairs().stream().anyMatch(p -> p.getNameAsString().equals("code")))
                     .collect(java.util.stream.Collectors.toList())
                     .forEach(Node::remove);
-                // Retarget the remaining default annotation to the internal exception type so the pipeline throws
-                // QueueStorageExceptionInternal (a subtype of HttpResponseException), which the error mapping below maps
-                // to the public QueueStorageException. The durable fix is the tspconfig 'default-http-exception-type'
-                // option; this keeps the customization self-sufficient regardless of that setting.
                 ast.findAll(SingleMemberAnnotationExpr.class).forEach(anno -> {
                     if (anno.getNameAsString().equals("UnexpectedResponseExceptionType")
                         && "HttpResponseException.class".equals(anno.getMemberValue().toString())) {
