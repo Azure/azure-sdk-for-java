@@ -127,7 +127,6 @@ public final class QueueClient {
      * @return the URL of the storage queue.
      */
     public String getQueueUrl() {
-        // The implementation's base URL is already queue-qualified (endpoint + "/" + queueName), so it is the queue URL.
         return azureQueueStorage.getUrl();
     }
 

@@ -143,9 +143,6 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        // The service-level implementation's base URL is the account endpoint. A queue client addresses a specific
-        // queue, so build a new implementation whose base URL is queue-qualified (endpoint + "/" + queueName),
-        // matching the per-queue endpoint semantics of the generated protocol layer.
         AzureQueueStorageImpl queueStorage = new AzureQueueStorageImpl(this.azureQueueStorage.getHttpPipeline(),
             this.azureQueueStorage.getSerializerAdapter(), this.azureQueueStorage.getUrl() + "/" + queueName,
             this.azureQueueStorage.getServiceVersion());

@@ -135,7 +135,6 @@ public final class QueueAsyncClient {
      * @return the URL of the storage queue
      */
     public String getQueueUrl() {
-        // The implementation's base URL is already queue-qualified (endpoint + "/" + queueName), so it is the queue URL.
         return client.getUrl();
     }
 
@@ -959,9 +958,6 @@ public final class QueueAsyncClient {
             return withContext(context -> Mono.fromCallable(() -> ModelHelper.encodeMessage(message, messageEncoding))
                 .flatMap(messageText -> {
                     QueueMessage queueMessage = new QueueMessage(messageText);
-                    // Protocol mapping (see MessagesImpl.enqueueWithResponseAsync Javadoc): the message body is the
-                    // XML-serialized QueueMessage; visibility timeout and time-to-live are the "visibilitytimeout" and
-                    // "messagettl" query parameters; the response body is a QueueMessagesList of SendMessageResult.
                     RequestOptions requestOptions = ModelHelper.requestOptions(context);
                     ModelHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
                     ModelHelper.addOptionalQueryParam(requestOptions, "messagettl", timeToLiveInSeconds);

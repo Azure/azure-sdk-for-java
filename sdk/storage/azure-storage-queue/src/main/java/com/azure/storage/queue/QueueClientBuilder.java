@@ -721,10 +721,6 @@ public final class QueueClientBuilder
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
                 perRetryPolicies, configuration, audience, LOGGER);
 
-        // The generated protocol implementation addresses every queue-scoped operation relative to the base URL
-        // (for example @Put("/"), @Get("?comp=metadata"), @Get("/messages")) with no queueName parameter. The queue
-        // name is therefore carried in the implementation's base URL rather than passed per call, matching the
-        // per-queue endpoint semantics of the TypeSpec-generated client.
         return new AzureQueueStorageImpl(pipeline, endpoint + "/" + queueName, version);
     }
 

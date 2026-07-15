@@ -237,9 +237,6 @@ public class ModelHelper {
         addOptionalQueryParam(requestOptions, "prefix", prefix);
         addOptionalQueryParam(requestOptions, "marker", marker);
         addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        // The AutoRest client serialized 'include' unconditionally (as a CSV collection query parameter), emitting an
-        // empty 'include=' when no include options were requested. Preserve that wire shape so the request matches the
-        // service contract (and recordings); an empty value is a no-op for the service.
         requestOptions.addQueryParam("include",
             (include == null || include.isEmpty()) ? "" : String.join(",", include));
         return requestOptions;
