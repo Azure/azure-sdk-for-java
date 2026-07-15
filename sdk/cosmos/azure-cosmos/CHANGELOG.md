@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added opt-in Cosmos Binary encoding for Direct-mode item create, read, replace, upsert, delete, query, change feed, transactional batch, and bulk operations. Enable with `AZURE_COSMOS_BINARY_ENCODING_ENABLED=true` or `-Dazure.cosmos.binaryEncodingEnabled=true`. Native binary item fields avoid JSON base64 expansion; batch and bulk requests use the service's RecordIO/HybridRow wire format.
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
