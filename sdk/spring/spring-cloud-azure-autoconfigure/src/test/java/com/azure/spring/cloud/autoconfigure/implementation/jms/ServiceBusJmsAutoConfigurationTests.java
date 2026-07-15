@@ -538,6 +538,7 @@ class ServiceBusJmsAutoConfigurationTests {
             )
             .run(context -> {
                 JmsPoolConnectionFactory senderBean = context.getBean(JmsPoolConnectionFactory.class);
+                ConnectionFactory pooledTarget = senderBean.getConnectionFactory();
                 DefaultJmsListenerContainerFactory queueFactory = context.getBean(
                     "jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
                 DefaultJmsListenerContainerFactory topicFactory = context.getBean(
@@ -550,10 +551,10 @@ class ServiceBusJmsAutoConfigurationTests {
 
                 assertThat(queueContainer.getConnectionFactory())
                     .isInstanceOf(ServiceBusJmsConnectionFactory.class)
-                    .isNotSameAs(senderBean);
+                    .isNotSameAs(pooledTarget);
                 assertThat(topicContainer.getConnectionFactory())
                     .isInstanceOf(ServiceBusJmsConnectionFactory.class)
-                    .isNotSameAs(senderBean)
+                    .isNotSameAs(pooledTarget)
                     .isSameAs(queueContainer.getConnectionFactory());
             });
     }
