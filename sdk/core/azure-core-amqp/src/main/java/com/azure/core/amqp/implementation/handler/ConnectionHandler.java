@@ -360,10 +360,7 @@ public class ConnectionHandler extends Handler {
         if (error == null || error.getCondition() == null) {
             onNext(connection.getRemoteState());
         } else {
-            final Throwable exception
-                = ExceptionUtil.toException(error.getCondition().toString(), error.getDescription(), getErrorContext());
-
-            onError(exception);
+            onError(toException(error));
         }
     }
 
@@ -400,10 +397,12 @@ public class ConnectionHandler extends Handler {
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one
-        final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
-            condition.getDescription(), getErrorContext());
+        onError(toException(condition));
+    }
 
-        onError(exception);
+    private Throwable toException(ErrorCondition condition) {
+        return ExceptionUtil.toException(condition.getCondition().toString(), condition.getDescription(),
+            getErrorContext());
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
