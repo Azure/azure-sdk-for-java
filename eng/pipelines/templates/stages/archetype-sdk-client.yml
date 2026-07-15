@@ -191,7 +191,7 @@ extends:
               PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
               PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
 
-      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.SourceBranch'], 'refs/heads/test_auto_release'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
           - template: /eng/common/pipelines/templates/stages/archetype-auto-release-prepare.yml
             parameters:
               DependsOn:
