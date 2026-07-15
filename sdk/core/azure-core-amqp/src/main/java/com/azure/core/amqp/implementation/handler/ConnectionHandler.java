@@ -396,7 +396,7 @@ public class ConnectionHandler extends Handler {
                 .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
-        // if the remote-peer abruptly closes the connection without issuing close frame issue one
+        // If the remote peer closes with an error condition, propagate it to subscribers.
         onError(toException(condition));
     }
 
