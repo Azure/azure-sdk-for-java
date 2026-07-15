@@ -3,6 +3,12 @@
 ## 12.36.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for service version 2027-03-07.
+- Added data locality support: `BlobClientBase`/`BlobAsyncClientBase.getLayout` returns a blob's layout (byte-range
+  to endpoint mapping), and a new `enableDataLocality` option on `BlobDownloadToFileOptions`/`BlobInputStreamOptions`
+  opts `downloadToFileWithResponse`/`openInputStream` into routing range downloads to the optimal endpoint for the
+  chunk being read, based on the blob's layout. This is a performance optimization only; the bytes returned are
+  identical whether or not it is enabled, and it is a no-op unless the service indicates a layout is available.
 
 ### Breaking Changes
 
