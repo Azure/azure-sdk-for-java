@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class GalleryInVMAccessControlProfileVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Create.json
+     * x-ms-original-file: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Create.json
      */
     /**
      * Sample code: Create or update a Gallery InVMAccessControlProfile Version.

@@ -1,16 +1,30 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.59.0 (2026-07-15)
 
 ### Features Added
 
-### Breaking Changes
+* `models.ImmutabilityPolicyLockData` was added
 
-### Bugs Fixed
+* `models.ImmutabilityPolicyData` was added
 
-### Other Changes
+* `models.ImmutabilityPolicyType` was added
 
-* Deprecated unmanaged disk related methods on `VirtualMachine`, `VirtualMachineScaleSet` and `VirtualMachineScaleSetVM`, as unmanaged disks are being retired by Azure. Use managed disks instead.
+* `models.ConfidentialVMVersion` was added
+
+* `models.ImmutabilityPolicy` was added
+
+#### `models.RollingUpgradeStatusCode` was modified
+
+* `ROLLING_BACK` was added
+
+#### `models.DiskSecurityProfile` was modified
+
+* `confidentialVMVersion()` was added
+
+#### `models.UpgradeState` was modified
+
+* `ROLLING_BACK` was added
 
 ## 2.58.0 (2026-06-17)
 
