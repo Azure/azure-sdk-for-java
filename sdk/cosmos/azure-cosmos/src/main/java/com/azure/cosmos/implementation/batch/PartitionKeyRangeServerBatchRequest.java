@@ -53,6 +53,18 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         final int maxOperationCount,
         final CosmosItemSerializer clientItemSerializer) {
 
+        return createBatchRequest(
+            partitionKeyRangeId, operations, maxBodyLength, maxOperationCount, clientItemSerializer, false);
+    }
+
+    static ServerOperationBatchRequest createBatchRequest(
+        final String partitionKeyRangeId,
+        final List<CosmosItemOperation> operations,
+        final int maxBodyLength,
+        final int maxOperationCount,
+        final CosmosItemSerializer clientItemSerializer,
+        final boolean hybridRow) {
+
         final PartitionKeyRangeServerBatchRequest request = new PartitionKeyRangeServerBatchRequest(
             partitionKeyRangeId,
             maxBodyLength,
@@ -61,7 +73,8 @@ public final class PartitionKeyRangeServerBatchRequest extends ServerBatchReques
         request.setAtomicBatch(false);
         request.setShouldContinueOnError(true);
 
-        List<CosmosItemOperation> pendingOperations = request.createBodyOfBatchRequest(operations, clientItemSerializer);
+        List<CosmosItemOperation> pendingOperations = request.createBodyOfBatchRequest(
+            operations, clientItemSerializer, hybridRow);
 
         return new ServerOperationBatchRequest(request, pendingOperations);
     }

@@ -217,6 +217,10 @@ public class StoreResponse {
         return this.responsePayload.getResponsePayloadSize();
     }
 
+    public byte[] getResponseBodyAsBytes() {
+        return this.responsePayload == null ? null : this.responsePayload.getRawPayload();
+    }
+
     public long getLSN() {
         String lsnString = this.getHeaderValue(WFConstants.BackendHeaders.LSN);
         if (StringUtils.isNotEmpty(lsnString)) {

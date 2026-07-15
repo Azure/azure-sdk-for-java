@@ -121,6 +121,10 @@ public class RxDocumentServiceResponse {
         return this.storeResponse.getResponseBodyAsJson();
     }
 
+    public byte[] getResponseBodyAsBytes() {
+        return this.storeResponse.getResponseBodyAsBytes();
+    }
+
     public RequestTimeline getGatewayHttpRequestTimeline() {
         return gatewayHttpRequestTimeline;
     }

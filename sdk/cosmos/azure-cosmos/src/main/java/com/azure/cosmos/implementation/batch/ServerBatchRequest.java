@@ -7,9 +7,12 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.batch.hybridrow.HybridRowBatchCodec;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -24,6 +27,8 @@ public abstract class ServerBatchRequest {
     private final int maxOperationCount;
 
     private String requestBody;
+    private byte[] hybridRowRequestBody;
+    private boolean hybridRow;
     private List<CosmosItemOperation> operations;
     private boolean isAtomicBatch = false;
     private boolean shouldContinueOnError = false;
@@ -41,10 +46,9 @@ public abstract class ServerBatchRequest {
 
     /**
      * Adds as many operations as possible from the given list of operations.
-     * TODO(rakkuma): Similarly for hybrid row, request needs to be parsed to create a request body in any form.
-     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
      *
-     * Operations are added in order while ensuring the request body never exceeds {@link #maxBodyLength}.
+     * Operations are added in order while ensuring the encoded request body never exceeds
+     * {@link #maxBodyLength}.
      *
      * @param operations operations to be added; read-only.
      *
@@ -52,22 +56,33 @@ public abstract class ServerBatchRequest {
      */
     final List<CosmosItemOperation> createBodyOfBatchRequest(
         final List<CosmosItemOperation> operations,
-        final CosmosItemSerializer effectiveItemSerializer) {
+        final CosmosItemSerializer effectiveItemSerializer,
+        final boolean hybridRow) {
 
         checkNotNull(operations, "expected non-null operations");
 
-        int totalSerializedLength = 0;
+        int totalSerializedLength = hybridRow ? 10 : 0;
         int totalOperationCount = 0;
+        List<byte[]> hybridRowOperations = hybridRow ? new ArrayList<>() : null;
 
-        final ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
+        final ArrayNode arrayNode = hybridRow ? null : Utils.getSimpleObjectMapper().createArrayNode();
 
         for(CosmosItemOperation operation : operations) {
             JsonSerializable operationJsonSerializable;
             int operationSerializedLength;
+            byte[] hybridRowOperation = null;
 
             if (operation instanceof CosmosItemOperationBase) {
-                operationJsonSerializable = ((CosmosItemOperationBase) operation).getSerializedOperation(effectiveItemSerializer);
-                operationSerializedLength = ((CosmosItemOperationBase) operation).getSerializedLength(effectiveItemSerializer);
+                if (hybridRow) {
+                    operationJsonSerializable = null;
+                    hybridRowOperation = HybridRowBatchMapper.encodeOperation(operation, effectiveItemSerializer);
+                    operationSerializedLength = hybridRowOperation.length + 13;
+                } else {
+                    operationJsonSerializable =
+                        ((CosmosItemOperationBase) operation).getSerializedOperation(effectiveItemSerializer);
+                    operationSerializedLength = ((CosmosItemOperationBase) operation)
+                        .getSerializedLength(effectiveItemSerializer);
+                }
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
@@ -81,21 +96,32 @@ public abstract class ServerBatchRequest {
             totalSerializedLength += operationSerializedLength;
             totalOperationCount++;
 
-            arrayNode.add(operationJsonSerializable.getPropertyBag());
+            if (hybridRow) {
+                hybridRowOperations.add(hybridRowOperation);
+            } else {
+                arrayNode.add(operationJsonSerializable.getPropertyBag());
+            }
         }
 
-        // TODO(rakkuma): This should change to byte array later as optimisation.
+        // TODO(rakkuma): The JSON path should change to byte array later as optimisation.
         // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
-        this.requestBody = arrayNode.toString();
+        this.requestBody = hybridRow ? null : arrayNode.toString();
 
         this.operations = operations.subList(0, totalOperationCount);
+        this.hybridRow = hybridRow;
+        if (hybridRow) {
+            this.hybridRowRequestBody = HybridRowBatchCodec.encodeRecordIo(hybridRowOperations);
+        }
         return operations.subList(totalOperationCount, operations.size());
     }
 
-    public final String getRequestBody() {
-        checkState(this.requestBody != null, "expected non-null body");
-
-        return this.requestBody;
+    public final byte[] getRequestBody() {
+        if (hybridRow) {
+            checkState(this.hybridRowRequestBody != null, "expected non-null HybridRow body");
+            return this.hybridRowRequestBody.clone();
+        }
+        checkState(this.requestBody != null, "expected non-null JSON body");
+        return this.requestBody.getBytes(StandardCharsets.UTF_8);
     }
 
     /**

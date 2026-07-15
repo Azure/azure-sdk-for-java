@@ -84,6 +84,22 @@ public final class RntbdConstants {
         }
     }
 
+    public enum RntbdSupportedSerializationFormats {
+
+        JsonText((byte) 0x01),
+        CosmosBinary((byte) 0x02);
+
+        private final byte id;
+
+        RntbdSupportedSerializationFormats(final byte id) {
+            this.id = id;
+        }
+
+        public byte id() {
+            return this.id;
+        }
+    }
+
     @SuppressWarnings("UnstableApiUsage")
     enum RntbdContextHeader implements RntbdHeader {
 
@@ -619,6 +635,7 @@ public final class RntbdConstants {
         SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false),
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
+        SupportedSerializationFormats((short) 0x00C4, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),

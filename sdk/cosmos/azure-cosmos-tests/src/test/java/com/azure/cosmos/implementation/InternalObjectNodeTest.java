@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.TestPojo;
+import com.azure.cosmos.implementation.json.CosmosBinaryJacksonCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
@@ -39,6 +40,20 @@ public class InternalObjectNodeTest {
         byte[] blob =  blob = new byte[buffer.remaining()];
         buffer.get(blob);
         validateTrackingId(blob, expectedTrackingId);
+    }
+
+    @Test(groups = {"unit"})
+    public void preSerializedJsonIsConvertedWhenBinaryEncodingIsEnabled() throws IOException {
+        byte[] json = "{\"id\":\"binary\",\"payload\":\"value\"}"
+            .getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        ByteBuffer buffer = InternalObjectNode.serializeJsonToByteBuffer(
+            json, CosmosItemSerializer.DEFAULT_SERIALIZER, null, false, true);
+        byte[] encoded = new byte[buffer.remaining()];
+        buffer.get(encoded);
+
+        assertThat(CosmosBinaryJacksonCodec.isBinaryFormat(encoded)).isTrue();
+        assertThat(CosmosBinaryJacksonCodec.decode(encoded).path("id").textValue()).isEqualTo("binary");
     }
 
     @Test(groups = {"unit"})

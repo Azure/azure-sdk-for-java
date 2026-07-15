@@ -43,14 +43,16 @@ final class BulkExecutorUtil {
         List<CosmosItemOperation> operations,
         String partitionKeyRangeId,
         int maxMicroBatchPayloadSizeInBytes,
-        CosmosItemSerializer clientItemSerializer) {
+        CosmosItemSerializer clientItemSerializer,
+        boolean hybridRow) {
 
         return PartitionKeyRangeServerBatchRequest.createBatchRequest(
             partitionKeyRangeId,
             operations,
             maxMicroBatchPayloadSizeInBytes,
             Math.min(operations.size(), BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST),
-            clientItemSerializer);
+            clientItemSerializer,
+            hybridRow);
     }
 
     static void setRetryPolicyForBulk(

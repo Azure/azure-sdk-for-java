@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosAdditionalHeaderName;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.json.CosmosBinaryJacksonCodec;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -737,17 +738,27 @@ public class Utils {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static ByteBuffer serializeJsonToByteBuffer(
         CosmosItemSerializer serializer,
         Object object,
         Consumer<Map<String, Object>> onAfterSerialization,
         boolean isIdValidationEnabled) {
 
+        return serializeJsonToByteBuffer(
+            serializer, object, onAfterSerialization, isIdValidationEnabled, false);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer serializer,
+        Object object,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled,
+        boolean binaryEncodingEnabled) {
+
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
 
         try {
-            ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
                 : ensureItemSerializerAccessor().serializeSafe(serializer, object);
@@ -771,8 +782,13 @@ public class Utils {
                 jsonNode = mapper.convertValue(jsonTreeMap, JsonNode.class);
             }
 
-            mapper.writeValue(byteBufferOutputStream, jsonNode);
-            return byteBufferOutputStream.asByteBuffer();
+            if (binaryEncodingEnabled) {
+                return ByteBuffer.wrap(CosmosBinaryJacksonCodec.encode(jsonNode));
+            }
+
+            ByteBufferOutputStream outputStream = new ByteBufferOutputStream(ONE_KB);
+            mapper.writeValue(outputStream, jsonNode);
+            return outputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);

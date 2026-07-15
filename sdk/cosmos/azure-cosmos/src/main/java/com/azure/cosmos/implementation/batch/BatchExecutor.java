@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.BinaryEncodingHelper;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -53,10 +54,14 @@ public final class BatchExecutor {
         List<CosmosItemOperation> operations = this.cosmosBatch.getOperations();
         checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
+        AsyncDocumentClient documentClient = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
+        boolean hybridRow = BinaryEncodingHelper.canUseBinaryBatch(
+            documentClient.getConnectionPolicy().getConnectionMode());
         final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createBatchRequest(
             this.cosmosBatch.getPartitionKeyValue(),
             operations,
-            this.effectiveItemSerializer);
+            this.effectiveItemSerializer,
+            hybridRow);
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
 

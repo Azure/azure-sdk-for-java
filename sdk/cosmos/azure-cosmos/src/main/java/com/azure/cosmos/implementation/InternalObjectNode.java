@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.json.CosmosBinaryJacksonCodec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -114,6 +115,17 @@ public class InternalObjectNode extends Resource {
         String trackingId,
         boolean isIdValidationEnabled) {
 
+        return serializeJsonToByteBuffer(
+            cosmosItem, itemSerializer, trackingId, isIdValidationEnabled, false);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(
+        Object cosmosItem,
+        CosmosItemSerializer itemSerializer,
+        String trackingId,
+        boolean isIdValidationEnabled,
+        boolean binaryEncodingEnabled) {
+
         checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
         if (cosmosItem instanceof InternalObjectNode) {
             InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
@@ -121,37 +133,49 @@ public class InternalObjectNode extends Resource {
             if (trackingId != null) {
                 onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return internalObjectNode.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
+            return internalObjectNode.serializeJsonToByteBuffer(
+                itemSerializer, onAfterSerialization, isIdValidationEnabled, binaryEncodingEnabled);
         } else if (cosmosItem instanceof Document) {
             Document doc = (Document) cosmosItem;
             Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
                 onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return doc.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
+            return doc.serializeJsonToByteBuffer(
+                itemSerializer, onAfterSerialization, isIdValidationEnabled, binaryEncodingEnabled);
         } else if (cosmosItem instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode)cosmosItem;
             Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
                 onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled));
+            return new InternalObjectNode(objectNode).serializeJsonToByteBuffer(
+                itemSerializer, onAfterSerialization, isIdValidationEnabled, binaryEncodingEnabled);
         } else if (cosmosItem instanceof byte[]) {
             if (trackingId != null) {
                 InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
                 return internalObjectNode.serializeJsonToByteBuffer(
                     itemSerializer,
                     (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId),
-                    isIdValidationEnabled);
+                    isIdValidationEnabled,
+                    binaryEncodingEnabled);
             }
-            return ByteBuffer.wrap((byte[]) cosmosItem);
+            byte[] serializedItem = (byte[]) cosmosItem;
+            if (!binaryEncodingEnabled
+                || CosmosBinaryJacksonCodec.isBinaryFormat(serializedItem)) {
+                return ByteBuffer.wrap(serializedItem);
+            }
+            InternalObjectNode internalObjectNode = new InternalObjectNode(serializedItem);
+            return internalObjectNode.serializeJsonToByteBuffer(
+                itemSerializer, null, isIdValidationEnabled, true);
         } else {
             Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
                 onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
 
-            return Utils.serializeJsonToByteBuffer(itemSerializer, cosmosItem, onAfterSerialization, isIdValidationEnabled);
+            return Utils.serializeJsonToByteBuffer(
+                itemSerializer, cosmosItem, onAfterSerialization, isIdValidationEnabled, binaryEncodingEnabled);
         }
     }
 
