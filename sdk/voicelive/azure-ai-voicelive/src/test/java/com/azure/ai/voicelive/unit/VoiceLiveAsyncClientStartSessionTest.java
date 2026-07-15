@@ -39,7 +39,7 @@ class VoiceLiveAsyncClientStartSessionTest {
     @Test
     void testStartSessionWithValidOptions() {
         // Arrange
-        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
+        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-realtime");
 
         // Act & Assert
         // Note: This test might need to be adjusted based on actual implementation
@@ -67,7 +67,7 @@ class VoiceLiveAsyncClientStartSessionTest {
     @Test
     void testStartSessionWithModelString() {
         // Arrange
-        String model = "gpt-4o-realtime-preview";
+        String model = "gpt-realtime";
 
         // Act & Assert
         assertDoesNotThrow(() -> {
@@ -83,7 +83,7 @@ class VoiceLiveAsyncClientStartSessionTest {
 
     @Test
     void testStartSessionWithModelAndRequestOptions() {
-        String model = "gpt-4o-realtime-preview";
+        String model = "gpt-realtime";
         VoiceLiveRequestOptions requestOptions = new VoiceLiveRequestOptions();
 
         assertDoesNotThrow(() -> {
@@ -117,12 +117,12 @@ class VoiceLiveAsyncClientStartSessionTest {
 
         // Test startSession with model string
         assertDoesNotThrow(() -> {
-            Mono<VoiceLiveSessionAsyncClient> result = client.startSession("gpt-4o-realtime-preview", null);
+            Mono<VoiceLiveSessionAsyncClient> result = client.startSession("gpt-realtime", null);
             assertNotNull(result);
         });
 
         // Test startSession with session options
-        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
+        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-realtime");
         assertDoesNotThrow(() -> {
             Mono<VoiceLiveSessionAsyncClient> result = client.startSession(sessionOptions.getModel(), null);
             assertNotNull(result);
@@ -135,7 +135,7 @@ class VoiceLiveAsyncClientStartSessionTest {
     @Test
     void testReturnTypeOptimization() {
         // Test that connect methods return the session for direct use
-        String model = "gpt-4o-realtime-preview";
+        String model = "gpt-realtime";
 
         assertDoesNotThrow(() -> {
             Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(model, null);

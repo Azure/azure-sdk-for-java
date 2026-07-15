@@ -113,6 +113,28 @@ stages:
             inputs:
               versionSpec: $(PythonVersion)
 
+          # For the test pipeline scenario (azure-sdk-template) the build stage stamped the signed
+          # artifact with a build-unique version via set-test-pipeline-version.yml. Re-apply that here
+          # so the source version_client.txt matches the built/signed artifact, keeping verify-version
+          # and tag creation consistent and avoiding collisions with prior test releases. Unlike the
+          # manual release template this cannot reuse set-test-pipeline-version.yml (which requires a
+          # compile-time Artifacts object); the auto-release set is resolved at runtime, so we drive
+          # SetTestPipelineVersion.ps1 directly from AutoReleaseArtifactsJson.
+          - ${{ if eq(parameters.TestPipeline, true) }}:
+            - pwsh: |
+                $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json |
+                  Where-Object { $_.name -like '*azure-sdk-template*' }
+                if (-not $artifacts) {
+                  Write-Host "No azure-sdk-template artifacts in auto-release set; skipping test pipeline version."
+                  return
+                }
+                eng/common/scripts/SetTestPipelineVersion.ps1 `
+                  -BuildID '$(Build.BuildId)' `
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+                  -Artifacts @($artifacts)
+              displayName: Prep template pipeline for auto-release
+              condition: and(succeeded(), ne(variables['Skip.SetTestPipelineVersion'], 'true'))
+
           - pwsh: |
               $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
               $artifacts | Format-Table -Property groupId, name | Out-String | Write-Host
