@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityGroupCreateWithRule.json
+     * x-ms-original-file: 2025-07-01/NetworkSecurityGroupCreateWithRule.json
      */
     /**
      * Sample code: Create network security group with rule.
@@ -41,7 +41,7 @@ public final class NetworkSecurityGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityGroupCreate.json
+     * x-ms-original-file: 2025-07-01/NetworkSecurityGroupCreate.json
      */
     /**
      * Sample code: Create network security group.

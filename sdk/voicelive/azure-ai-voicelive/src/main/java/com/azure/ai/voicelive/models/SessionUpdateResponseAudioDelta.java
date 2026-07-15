@@ -15,7 +15,7 @@ import java.io.IOException;
  * Returned when the model-generated audio is updated.
  */
 @Immutable
-public final class SessionUpdateResponseAudioDelta extends SessionUpdate {
+public final class SessionUpdateResponseAudioDelta extends SessionServerEvent {
 
     /*
      * The type of event.

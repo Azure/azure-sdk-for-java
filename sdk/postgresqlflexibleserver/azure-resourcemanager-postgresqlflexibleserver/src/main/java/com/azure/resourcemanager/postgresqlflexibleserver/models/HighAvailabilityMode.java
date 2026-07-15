@@ -8,21 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Modes of high availability supported for this compute.
+ * Mode of high availability supported for this compute.
  */
 public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailabilityMode> {
     /**
-     * Static value Disabled for HighAvailabilityMode.
+     * High availability is disabled for the server.
      */
     public static final HighAvailabilityMode DISABLED = fromString("Disabled");
 
     /**
-     * Static value ZoneRedundant for HighAvailabilityMode.
+     * High availability is enabled for the server, with standby server in a different availability zone than that of
+     * the primary.
      */
     public static final HighAvailabilityMode ZONE_REDUNDANT = fromString("ZoneRedundant");
 
     /**
-     * Static value SameZone for HighAvailabilityMode.
+     * High availability is enabled for the server, with standby server in the same availability zone as the primary.
      */
     public static final HighAvailabilityMode SAME_ZONE = fromString("SameZone");
 

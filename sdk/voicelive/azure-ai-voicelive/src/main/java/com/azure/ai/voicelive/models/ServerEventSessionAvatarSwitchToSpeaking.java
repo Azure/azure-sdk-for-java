@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when the avatar switches to speaking state.
  */
 @Immutable
-public final class ServerEventSessionAvatarSwitchToSpeaking extends SessionUpdate {
+public final class ServerEventSessionAvatarSwitchToSpeaking extends SessionServerEvent {
 
     /*
      * The type of event.

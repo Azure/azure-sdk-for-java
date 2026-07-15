@@ -121,6 +121,21 @@ public final class OpenAIJsonHelper {
     }
 
     /**
+     * Converts a list of OpenAI SDK types to a list of BinaryData objects.
+     *
+     * @param <S> The source OpenAI SDK type.
+     * @param openAIObjects The list of OpenAI SDK objects to convert.
+     *
+     * @return The equivalent list of BinaryData objects, or null if the input is null.
+     */
+    public static <S> List<BinaryData> toBinaryDataList(List<S> openAIObjects) {
+        if (openAIObjects == null) {
+            return null;
+        }
+        return openAIObjects.stream().map(obj -> toBinaryData(obj)).collect(Collectors.toList());
+    }
+
+    /**
      * Deserializes {@link BinaryData} to an openai-java type using the openai-java ObjectMapper.
      *
      * @param data the BinaryData containing JSON.

@@ -16,7 +16,7 @@ import java.io.IOException;
  * include all output Items in the Response but will omit the raw audio data.
  */
 @Immutable
-public final class SessionUpdateResponseDone extends SessionUpdate {
+public final class SessionUpdateResponseDone extends SessionServerEvent {
 
     /*
      * The type of event.

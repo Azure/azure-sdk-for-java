@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesGetCloudServicePublicIpAddressSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CloudServicePublicIpGet.json
+     * x-ms-original-file: 2025-07-01/CloudServicePublicIpGet.json
      */
     /**
      * Sample code: GetVMSSPublicIP.

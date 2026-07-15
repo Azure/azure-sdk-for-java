@@ -34,7 +34,7 @@ public final class KnowledgeBaseMessageTextContent extends KnowledgeBaseMessageC
      * @param text the text value to set.
      */
     @Generated
-    private KnowledgeBaseMessageTextContent(String text) {
+    public KnowledgeBaseMessageTextContent(String text) {
         this.text = text;
     }
 

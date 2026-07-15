@@ -24,7 +24,7 @@ public final class GatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"vfycxzb\",\"gateType\":\"Approval\",\"target\":{\"id\":\"oowvrv\",\"updateRunProperties\":{\"name\":\"gjqppy\",\"stage\":\"tronzmyhgfi\",\"group\":\"sxkm\",\"timing\":\"After\"}},\"state\":\"Pending\"},\"eTag\":\"krrjrea\",\"id\":\"tsgumhj\",\"name\":\"lik\",\"type\":\"xwslolbqpv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"qukrydxt\",\"gateType\":\"Approval\",\"target\":{\"id\":\"ieoxorggufhyaomt\",\"updateRunProperties\":{\"name\":\"hhavgrvkffovjz\",\"stage\":\"jbibg\",\"group\":\"fxumv\",\"timing\":\"After\"}},\"state\":\"Completed\"},\"eTag\":\"yo\",\"id\":\"xnbkfezzxscyhwzd\",\"name\":\"irujbz\",\"type\":\"omvzzbtd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class GatesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gate response = manager.gates()
-            .getWithResponse("hbpnaixexccbd", "eaxhcexdrrvqahqk", "htpwij", com.azure.core.util.Context.NONE)
+            .getWithResponse("jsrtk", "awnopqgikyzirtxd", "uxzejntpsew", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vfycxzb", response.displayName());
+        Assertions.assertEquals("qukrydxt", response.displayName());
         Assertions.assertEquals(GateType.APPROVAL, response.gateType());
-        Assertions.assertEquals("oowvrv", response.target().id());
+        Assertions.assertEquals("ieoxorggufhyaomt", response.target().id());
         Assertions.assertEquals(Timing.AFTER, response.target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, response.state());
+        Assertions.assertEquals(GateState.COMPLETED, response.state());
     }
 }

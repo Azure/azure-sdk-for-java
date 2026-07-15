@@ -13,6 +13,7 @@ import com.azure.resourcemanager.computelimit.fluent.FeaturesClient;
 import com.azure.resourcemanager.computelimit.fluent.models.FeatureInner;
 import com.azure.resourcemanager.computelimit.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.computelimit.models.Feature;
+import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
 import com.azure.resourcemanager.computelimit.models.Features;
 import com.azure.resourcemanager.computelimit.models.OperationStatusResult;
 
@@ -63,8 +64,9 @@ public final class FeaturesImpl implements Features {
         }
     }
 
-    public OperationStatusResult enable(String location, String featureName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().enable(location, featureName, context);
+    public OperationStatusResult enable(String location, String featureName, FeatureEnableRequest body,
+        Context context) {
+        OperationStatusResultInner inner = this.serviceClient().enable(location, featureName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class NetworkWatchersSetFlowLogConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherFlowLogConfigure.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherFlowLogConfigure.json
      */
     /**
      * Sample code: Configure flow log.

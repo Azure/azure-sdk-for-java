@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class StaticMembersGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerStaticMemberGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerStaticMemberGet.json
      */
     /**
      * Sample code: StaticMembersGet.

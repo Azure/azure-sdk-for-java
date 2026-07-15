@@ -13,7 +13,7 @@ import com.azure.ai.voicelive.models.OpenAIVoice;
 import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.UserMessageItem;
@@ -142,7 +142,7 @@ public final class AudioPlaybackSample {
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
         // Open a WebSocket session against the realtime model.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             // Configure the session (voice, modalities, audio formats, instructions).
             .flatMap(session -> {
                 ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
@@ -313,7 +313,7 @@ public final class AudioPlaybackSample {
      * @param audioQueue Queue to receive audio data
      * @param completionLatch Latch to release when the response is complete or fails
      */
-    private static void handleEvent(SessionUpdate event, BlockingQueue<byte[]> audioQueue,
+    private static void handleEvent(SessionServerEvent event, BlockingQueue<byte[]> audioQueue,
         CountDownLatch completionLatch) {
         ServerEventType eventType = event.getType();
 

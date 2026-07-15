@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class StorageTaskAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
      */
     /**
      * Sample code: PutStorageTaskAssignment.
@@ -46,7 +46,7 @@ public final class StorageTaskAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
      */
     /**
      * Sample code: PutStorageTaskAssignmentMockRun.
@@ -72,7 +72,7 @@ public final class StorageTaskAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
      */
     /**
      * Sample code: PutStorageTaskAssignmentRequiredProperties.

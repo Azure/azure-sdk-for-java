@@ -13,17 +13,17 @@ public final class CapabilityHostResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityHostResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"bmpxdlvykfrexc\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"jksghudg\",\"hxogjggsvoujkxi\",\"dafhr\",\"mdyomkxfbvfbh\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"hpwpgddeimawzovg\",\"provisioningState\":\"Canceled\",\"storageConnections\":[\"ikjcjcazt\"],\"threadStorageConnections\":[\"nsq\",\"wxwcomli\",\"ytwvczcswkacve\"],\"vectorStoreConnections\":[\"dvlvhbwrnfxtgdd\"],\"enablePublicHostingEnvironment\":false,\"description\":\"ehnmnaoyankco\",\"tags\":{\"drlktg\":\"wankltytmhdroznn\",\"waeeczgfb\":\"csgguxhemlw\",\"zujksrlsmdes\":\"kklelssxblycs\"}},\"id\":\"lpvmjcdoewbidy\",\"name\":\"t\",\"type\":\"owx\"},{\"properties\":{\"aiServicesConnections\":[\"iudeu\",\"fsxzecp\",\"xw\",\"ufykhvuhxepmru\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"baobn\",\"provisioningState\":\"Deleting\",\"storageConnections\":[\"jltymkmvguihy\",\"arts\"],\"threadStorageConnections\":[\"kixkykxdssjpemm\",\"cfxhikkflrmy\",\"yincql\"],\"vectorStoreConnections\":[\"s\"],\"enablePublicHostingEnvironment\":false,\"description\":\"iiiovgqcgxuugq\",\"tags\":{\"tjgwdtguk\":\"otiowlxteqd\",\"gygqwah\":\"anblwphqlkccu\",\"gniiprglvaw\":\"iul\",\"pmcubkmifoxxkub\":\"wzdufypivlsbb\"}},\"id\":\"havpmhbrbqgvg\",\"name\":\"vpbbt\",\"type\":\"efjokn\"}]}")
+            "{\"nextLink\":\"tgdstyouambe\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"moweg\",\"mut\",\"yxey\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"gijiitnspxlzd\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"ijwai\",\"fanraybfu\"],\"threadStorageConnections\":[\"rojsydg\",\"h\",\"dkygywezski\"],\"vectorStoreConnections\":[\"f\",\"gzmxieqv\",\"smaklixqcahy\",\"xalybxawoijpo\"],\"enablePublicHostingEnvironment\":true,\"description\":\"xpkk\",\"tags\":{\"emehllizh\":\"jodqhykincn\",\"adppyibn\":\"eumoqod\"}},\"id\":\"ladywrxwhyd\",\"name\":\"luvvad\",\"type\":\"wzsnuy\"}]}")
             .toObject(CapabilityHostResourceArmPaginatedResult.class);
-        Assertions.assertEquals("bmpxdlvykfrexc", model.nextLink());
-        Assertions.assertEquals("ehnmnaoyankco", model.value().get(0).properties().description());
-        Assertions.assertEquals("wankltytmhdroznn", model.value().get(0).properties().tags().get("drlktg"));
-        Assertions.assertEquals("jksghudg", model.value().get(0).properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("tgdstyouambe", model.nextLink());
+        Assertions.assertEquals("xpkk", model.value().get(0).properties().description());
+        Assertions.assertEquals("jodqhykincn", model.value().get(0).properties().tags().get("emehllizh"));
+        Assertions.assertEquals("moweg", model.value().get(0).properties().aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, model.value().get(0).properties().capabilityHostKind());
-        Assertions.assertEquals("hpwpgddeimawzovg", model.value().get(0).properties().customerSubnet());
-        Assertions.assertEquals("ikjcjcazt", model.value().get(0).properties().storageConnections().get(0));
-        Assertions.assertEquals("nsq", model.value().get(0).properties().threadStorageConnections().get(0));
-        Assertions.assertEquals("dvlvhbwrnfxtgdd", model.value().get(0).properties().vectorStoreConnections().get(0));
-        Assertions.assertFalse(model.value().get(0).properties().enablePublicHostingEnvironment());
+        Assertions.assertEquals("gijiitnspxlzd", model.value().get(0).properties().customerSubnet());
+        Assertions.assertEquals("ijwai", model.value().get(0).properties().storageConnections().get(0));
+        Assertions.assertEquals("rojsydg", model.value().get(0).properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("f", model.value().get(0).properties().vectorStoreConnections().get(0));
+        Assertions.assertTrue(model.value().get(0).properties().enablePublicHostingEnvironment());
     }
 }

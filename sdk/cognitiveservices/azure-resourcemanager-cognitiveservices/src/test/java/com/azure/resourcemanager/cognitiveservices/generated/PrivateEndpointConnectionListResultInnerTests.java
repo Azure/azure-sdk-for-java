@@ -13,15 +13,15 @@ public final class PrivateEndpointConnectionListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"flz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"zpuzycisp\",\"actionsRequired\":\"zahmgkbrpyydhibn\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"ik\",\"drgvtqagn\"]},\"etag\":\"ynhijggme\",\"location\":\"siarbutrcvpn\",\"id\":\"zmhjrunmp\",\"name\":\"ttdbhrbnl\",\"type\":\"nkxmyskpbhenbtk\"}]}")
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"bpodxunkbebxm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ntwlrbqtkoie\",\"actionsRequired\":\"eotg\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"muwlauwzizxbm\",\"gcj\",\"fuzmuvpbtt\"]},\"etag\":\"morppxebmnzbtbh\",\"location\":\"glkfg\",\"id\":\"dneu\",\"name\":\"lfphsdyhtozfikd\",\"type\":\"wwquuvxzxclvithh\"}]}")
             .toObject(PrivateEndpointConnectionListResultInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("zpuzycisp",
+        Assertions.assertEquals("ntwlrbqtkoie",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zahmgkbrpyydhibn",
+        Assertions.assertEquals("eotg",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("ik", model.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("siarbutrcvpn", model.value().get(0).location());
+        Assertions.assertEquals("muwlauwzizxbm", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("glkfg", model.value().get(0).location());
     }
 }

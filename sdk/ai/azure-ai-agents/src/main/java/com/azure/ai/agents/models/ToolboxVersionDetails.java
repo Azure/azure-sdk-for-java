@@ -67,7 +67,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      * The list of tools contained in this toolbox version.
      */
     @Generated
-    private final List<Tool> tools;
+    private final List<ToolboxTool> tools;
 
     /*
      * Policy configuration for the toolbox version.
@@ -87,7 +87,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      */
     @Generated
     private ToolboxVersionDetails(Map<String, String> metadata, String id, String name, String version,
-        OffsetDateTime createdAt, List<Tool> tools) {
+        OffsetDateTime createdAt, List<ToolboxTool> tools) {
         this.metadata = metadata;
         this.id = id;
         this.name = name;
@@ -172,7 +172,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
      * @return the tools value.
      */
     @Generated
-    public List<Tool> getTools() {
+    public List<ToolboxTool> getTools() {
         return this.tools;
     }
 
@@ -200,6 +200,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("policies", this.policies);
         return jsonWriter.writeEndObject();
     }
@@ -221,8 +222,9 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
             String name = null;
             String version = null;
             OffsetDateTime createdAt = null;
-            List<Tool> tools = null;
+            List<ToolboxTool> tools = null;
             String description = null;
+            List<ToolboxSkill> skills = null;
             ToolboxPolicies policies = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -238,9 +240,11 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
+                    tools = reader.readArray(reader1 -> ToolboxTool.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> ToolboxSkill.fromJson(reader1));
                 } else if ("policies".equals(fieldName)) {
                     policies = ToolboxPolicies.fromJson(reader);
                 } else {
@@ -250,8 +254,25 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
             ToolboxVersionDetails deserializedToolboxVersionDetails
                 = new ToolboxVersionDetails(metadata, id, name, version, createdAt, tools);
             deserializedToolboxVersionDetails.description = description;
+            deserializedToolboxVersionDetails.skills = skills;
             deserializedToolboxVersionDetails.policies = policies;
             return deserializedToolboxVersionDetails;
         });
+    }
+
+    /*
+     * The list of skill sources included in this toolbox version.
+     */
+    @Generated
+    private List<ToolboxSkill> skills;
+
+    /**
+     * Get the skills property: The list of skill sources included in this toolbox version.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<ToolboxSkill> getSkills() {
+        return this.skills;
     }
 }

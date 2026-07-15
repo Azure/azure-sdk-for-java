@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class LogicalReplicationOnSourceServer extends ExpandableStringEnum<LogicalReplicationOnSourceServer> {
     /**
-     * Static value True for LogicalReplicationOnSourceServer.
+     * Logical replication will be set up on the source server.
      */
     public static final LogicalReplicationOnSourceServer TRUE = fromString("True");
 
     /**
-     * Static value False for LogicalReplicationOnSourceServer.
+     * Logical replication will not be set up on the source server.
      */
     public static final LogicalReplicationOnSourceServer FALSE = fromString("False");
 

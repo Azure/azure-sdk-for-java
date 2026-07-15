@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Migratio
  */
 public final class MigrationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCheckNameAvailability.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCheckNameAvailability.json
      */
     /**
      * Sample code: Check the validity and availability of the given name, to assign it to a new migration.

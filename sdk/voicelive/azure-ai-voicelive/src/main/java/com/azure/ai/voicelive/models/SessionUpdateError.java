@@ -16,7 +16,7 @@ import java.io.IOException;
  * recommend to implementors to monitor and log error messages by default.
  */
 @Immutable
-public final class SessionUpdateError extends SessionUpdate {
+public final class SessionUpdateError extends SessionServerEvent {
 
     /*
      * The type of event.

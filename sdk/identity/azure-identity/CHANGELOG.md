@@ -14,6 +14,15 @@
 
 - Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
 
+## 1.18.4 (2026-06-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
 ## 1.18.3 (2026-04-30)
 
 ### Other Changes

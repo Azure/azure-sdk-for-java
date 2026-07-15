@@ -20,7 +20,7 @@ public final class MicrosoftFabricPreviewTool extends Tool {
      * The type property.
      */
     @Generated
-    private ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
+    private ToolType type = ToolType.FABRIC_DATA_AGENT_PREVIEW;
 
     /*
      * The fabric data agent tool parameters.
@@ -84,7 +84,7 @@ public final class MicrosoftFabricPreviewTool extends Tool {
     public static MicrosoftFabricPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FabricDataAgentToolParameters fabricDataAgentPreview = null;
-            ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
+            ToolType type = ToolType.FABRIC_DATA_AGENT_PREVIEW;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

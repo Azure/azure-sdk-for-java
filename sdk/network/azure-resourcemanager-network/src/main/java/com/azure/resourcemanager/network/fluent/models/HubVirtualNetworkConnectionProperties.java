@@ -36,6 +36,11 @@ public final class HubVirtualNetworkConnectionProperties
     private Boolean allowRemoteVnetToUseHubVnetGateways;
 
     /*
+     * The resource id of the ConnectionPolicy associated with this HubVirtualNetworkConnection.
+     */
+    private SubResource connectionPolicy;
+
+    /*
      * Enable internet security.
      */
     private Boolean enableInternetSecurity;
@@ -118,6 +123,28 @@ public final class HubVirtualNetworkConnectionProperties
     }
 
     /**
+     * Get the connectionPolicy property: The resource id of the ConnectionPolicy associated with this
+     * HubVirtualNetworkConnection.
+     * 
+     * @return the connectionPolicy value.
+     */
+    public SubResource connectionPolicy() {
+        return this.connectionPolicy;
+    }
+
+    /**
+     * Set the connectionPolicy property: The resource id of the ConnectionPolicy associated with this
+     * HubVirtualNetworkConnection.
+     * 
+     * @param connectionPolicy the connectionPolicy value to set.
+     * @return the HubVirtualNetworkConnectionProperties object itself.
+     */
+    public HubVirtualNetworkConnectionProperties withConnectionPolicy(SubResource connectionPolicy) {
+        this.connectionPolicy = connectionPolicy;
+        return this;
+    }
+
+    /**
      * Get the enableInternetSecurity property: Enable internet security.
      * 
      * @return the enableInternetSecurity value.
@@ -188,6 +215,7 @@ public final class HubVirtualNetworkConnectionProperties
         jsonWriter.writeJsonField("remoteVirtualNetwork", this.remoteVirtualNetwork);
         jsonWriter.writeBooleanField("allowHubToRemoteVnetTransit", this.allowHubToRemoteVnetTransit);
         jsonWriter.writeBooleanField("allowRemoteVnetToUseHubVnetGateways", this.allowRemoteVnetToUseHubVnetGateways);
+        jsonWriter.writeJsonField("connectionPolicy", this.connectionPolicy);
         jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
         jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
         return jsonWriter.writeEndObject();
@@ -218,6 +246,8 @@ public final class HubVirtualNetworkConnectionProperties
                 } else if ("allowRemoteVnetToUseHubVnetGateways".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.allowRemoteVnetToUseHubVnetGateways
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("connectionPolicy".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.connectionPolicy = SubResource.fromJson(reader);
                 } else if ("enableInternetSecurity".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.enableInternetSecurity
                         = reader.getNullable(JsonReader::getBoolean);

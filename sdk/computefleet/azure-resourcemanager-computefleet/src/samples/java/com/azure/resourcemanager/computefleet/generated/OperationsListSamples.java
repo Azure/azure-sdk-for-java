@@ -9,14 +9,26 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-04-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Operations_List_MinimumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void operationsList(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void operationsListMinimumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-01-preview/Operations_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ComputeFleetManager.
+     */
+    public static void operationsListMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"roqksmfxm\"},\"etag\":\"prstvkitbfj\",\"tags\":{\"rqxw\":\"otnplfacqocc\",\"a\":\"tjtdrhutfd\",\"eh\":\"txop\"},\"id\":\"dkmdzgsszx\",\"name\":\"ctkbbxuha\",\"type\":\"lsi\"}";
+            = "{\"properties\":{\"description\":\"d\"},\"etag\":\"idt\",\"tags\":{\"yznm\":\"m\",\"oxuwhttnzqsaqm\":\"gcdogcvucgy\",\"dzzmssgpgv\":\"bgszplusdek\",\"squnycwztlv\":\"kyejidbdq\"},\"id\":\"snmr\",\"name\":\"kyjtrepw\",\"type\":\"wfkcauxuvavcpf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklistItems()
-            .batchAddWithResponse("oxudnmckap", "hknqiijge", "cdgmoqu",
-                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("hkkyowltjouw")
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("x").withIsRegex(true))),
+            .batchAddWithResponse("zjgcfjfx", "bwjjirmuydgf", "tmdofgeoag",
+                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("ftnxodwxmdajwiy")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("sevmdmzenlrstg").withIsRegex(false))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("roqksmfxm", response.properties().description());
-        Assertions.assertEquals("otnplfacqocc", response.tags().get("rqxw"));
+        Assertions.assertEquals("d", response.properties().description());
+        Assertions.assertEquals("m", response.tags().get("yznm"));
     }
 }

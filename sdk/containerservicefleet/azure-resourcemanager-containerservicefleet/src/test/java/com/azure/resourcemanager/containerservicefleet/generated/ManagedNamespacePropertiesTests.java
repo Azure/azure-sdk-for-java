@@ -17,39 +17,39 @@ public final class ManagedNamespacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNamespaceProperties model = BinaryData.fromString(
-            "{\"labels\":{\"njeaseipheofloke\":\"hcbonqvpkvlr\",\"enjbdlwtgrhp\":\"y\",\"umasxazjpq\":\"jp\",\"ualhbxxhejj\":\"e\"},\"annotations\":{\"mcy\":\"dudgwdslfhot\"},\"defaultResourceQuota\":{\"cpuRequest\":\"lbjnpgacftadehx\",\"cpuLimit\":\"tyfsoppusuesn\",\"memoryRequest\":\"dejbavo\",\"memoryLimit\":\"zdmohctbqvu\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowAll\",\"egress\":\"DenyAll\"}}")
+            "{\"labels\":{\"uokktwhrdxwz\":\"bezy\",\"xim\":\"wqsmbsur\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\"},\"annotations\":{\"fqrvkdvjsllrmvvd\":\"oczvy\",\"zwtruwiqzbqjvsov\":\"watkpnpulexxb\",\"hzdobpxjmflbvvnc\":\"yokacspkw\",\"rsa\":\"rkcciwwzjuqk\"},\"defaultResourceQuota\":{\"cpuRequest\":\"ku\",\"cpuLimit\":\"oskg\",\"memoryRequest\":\"auu\",\"memoryLimit\":\"jmvxie\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowAll\",\"egress\":\"AllowAll\"}}")
             .toObject(ManagedNamespaceProperties.class);
-        Assertions.assertEquals("hcbonqvpkvlr", model.labels().get("njeaseipheofloke"));
-        Assertions.assertEquals("dudgwdslfhot", model.annotations().get("mcy"));
-        Assertions.assertEquals("lbjnpgacftadehx", model.defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("tyfsoppusuesn", model.defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("dejbavo", model.defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("zdmohctbqvu", model.defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals("bezy", model.labels().get("uokktwhrdxwz"));
+        Assertions.assertEquals("oczvy", model.annotations().get("fqrvkdvjsllrmvvd"));
+        Assertions.assertEquals("ku", model.defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("oskg", model.defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("auu", model.defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("jmvxie", model.defaultResourceQuota().memoryLimit());
         Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.defaultNetworkPolicy().ingress());
-        Assertions.assertEquals(PolicyRule.DENY_ALL, model.defaultNetworkPolicy().egress());
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.defaultNetworkPolicy().egress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedNamespaceProperties model = new ManagedNamespaceProperties()
-            .withLabels(
-                mapOf("njeaseipheofloke", "hcbonqvpkvlr", "enjbdlwtgrhp", "y", "umasxazjpq", "jp", "ualhbxxhejj", "e"))
-            .withAnnotations(mapOf("mcy", "dudgwdslfhot"))
-            .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("lbjnpgacftadehx")
-                .withCpuLimit("tyfsoppusuesn")
-                .withMemoryRequest("dejbavo")
-                .withMemoryLimit("zdmohctbqvu"))
+            .withLabels(mapOf("uokktwhrdxwz", "bezy", "xim", "wqsmbsur", "stkiiuxhqyud", "ryocfsfksymdd", "rq", "o"))
+            .withAnnotations(mapOf("fqrvkdvjsllrmvvd", "oczvy", "zwtruwiqzbqjvsov", "watkpnpulexxb", "hzdobpxjmflbvvnc",
+                "yokacspkw", "rsa", "rkcciwwzjuqk"))
+            .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("ku")
+                .withCpuLimit("oskg")
+                .withMemoryRequest("auu")
+                .withMemoryLimit("jmvxie"))
             .withDefaultNetworkPolicy(
-                new NetworkPolicy().withIngress(PolicyRule.ALLOW_ALL).withEgress(PolicyRule.DENY_ALL));
+                new NetworkPolicy().withIngress(PolicyRule.ALLOW_ALL).withEgress(PolicyRule.ALLOW_ALL));
         model = BinaryData.fromObject(model).toObject(ManagedNamespaceProperties.class);
-        Assertions.assertEquals("hcbonqvpkvlr", model.labels().get("njeaseipheofloke"));
-        Assertions.assertEquals("dudgwdslfhot", model.annotations().get("mcy"));
-        Assertions.assertEquals("lbjnpgacftadehx", model.defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("tyfsoppusuesn", model.defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("dejbavo", model.defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("zdmohctbqvu", model.defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals("bezy", model.labels().get("uokktwhrdxwz"));
+        Assertions.assertEquals("oczvy", model.annotations().get("fqrvkdvjsllrmvvd"));
+        Assertions.assertEquals("ku", model.defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("oskg", model.defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("auu", model.defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("jmvxie", model.defaultResourceQuota().memoryLimit());
         Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.defaultNetworkPolicy().ingress());
-        Assertions.assertEquals(PolicyRule.DENY_ALL, model.defaultNetworkPolicy().egress());
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.defaultNetworkPolicy().egress());
     }
 
     // Use "Map.of" if available

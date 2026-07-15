@@ -5,8 +5,8 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.McpTool;
-import com.azure.ai.agents.models.Tool;
+import com.azure.ai.agents.models.McpToolboxTool;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -41,11 +41,11 @@ public class GetToolboxVersion {
         System.out.println("Description: " + toolboxVersion.getDescription());
         System.out.println("Created At: " + toolboxVersion.getCreatedAt());
         System.out.println("Tools:");
-        for (Tool tool : toolboxVersion.getTools()) {
-            if (tool instanceof McpTool) {
-                McpTool mcpTool = (McpTool) tool;
+        for (ToolboxTool tool : toolboxVersion.getTools()) {
+            if (tool instanceof McpToolboxTool) {
+                McpToolboxTool mcpTool = (McpToolboxTool) tool;
                 System.out.println("  - MCP '" + mcpTool.getServerLabel()
-                        + "' require_approval: " + mcpTool.getRequireApprovalAsString());
+                        + "' require_approval: " + mcpTool.getRequireApproval());
             }
         }
     }

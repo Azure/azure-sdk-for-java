@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnLinkConnectionsGetDefaultSharedKeySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnSiteLinkConnectionDefaultSharedKeyGet.json
+     * x-ms-original-file: 2025-07-01/VpnSiteLinkConnectionDefaultSharedKeyGet.json
      */
     /**
      * Sample code: VpnSiteLinkConnectionDefaultSharedKeyGet.

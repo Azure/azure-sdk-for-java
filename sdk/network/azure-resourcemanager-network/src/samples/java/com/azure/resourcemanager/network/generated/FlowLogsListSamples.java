@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FlowLogsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherFlowLogList.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherFlowLogList.json
      */
     /**
      * Sample code: List connection monitors.

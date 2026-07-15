@@ -60,4 +60,10 @@ public final class AgentKind extends ExpandableStringEnum<AgentKind> {
     public static Collection<AgentKind> values() {
         return values(AgentKind.class);
     }
+
+    /**
+     * Static value external for AgentKind.
+     */
+    @Generated
+    public static final AgentKind EXTERNAL = fromString("external");
 }

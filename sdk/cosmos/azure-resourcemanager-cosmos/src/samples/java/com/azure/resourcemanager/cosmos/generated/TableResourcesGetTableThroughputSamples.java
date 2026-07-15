@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesGetTableThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBTableThroughputGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBTableThroughputGet.json
      */
     /**
      * Sample code: CosmosDBTableThroughputGet.

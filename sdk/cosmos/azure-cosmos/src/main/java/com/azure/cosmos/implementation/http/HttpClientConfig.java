@@ -190,7 +190,7 @@ public class HttpClientConfig {
     }
 
     public String toDiagnosticsString() {
-        String gwV2Cto = Configs.isThinClientEnabled()
+        String gwV2Cto = !Boolean.FALSE.equals(Configs.isThinClientEnabled())
             ? Duration.ofMillis(this.thinClientConnectTimeoutMs).toString()
             : "n/a";
 

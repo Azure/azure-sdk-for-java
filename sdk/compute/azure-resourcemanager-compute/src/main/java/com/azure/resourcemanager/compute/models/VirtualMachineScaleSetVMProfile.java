@@ -94,6 +94,11 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     private CapacityReservationProfile capacityReservation;
 
     /*
+     * Specifies the Interconnect Block related details of a Scale Set. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectBlockProfile interconnectBlockProfile;
+
+    /*
      * Specifies the gallery applications that should be made available to the VM/VMSS
      */
     private ApplicationProfile applicationProfile;
@@ -427,6 +432,29 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
     }
 
     /**
+     * Get the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set.
+     * Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.interconnectBlockProfile;
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set.
+     * Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile
+        withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        this.interconnectBlockProfile = interconnectBlockProfile;
+        return this;
+    }
+
+    /**
      * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
      * 
@@ -562,6 +590,9 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
         if (capacityReservation() != null) {
             capacityReservation().validate();
         }
+        if (interconnectBlockProfile() != null) {
+            interconnectBlockProfile().validate();
+        }
         if (applicationProfile() != null) {
             applicationProfile().validate();
         }
@@ -596,6 +627,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
         jsonWriter.writeJsonField("scheduledEventsProfile", this.scheduledEventsProfile);
         jsonWriter.writeStringField("userData", this.userData);
         jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
+        jsonWriter.writeJsonField("interconnectBlockProfile", this.interconnectBlockProfile);
         jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
         jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
         jsonWriter.writeJsonField("serviceArtifactReference", this.serviceArtifactReference);
@@ -654,6 +686,9 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
                 } else if ("capacityReservation".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMProfile.capacityReservation
                         = CapacityReservationProfile.fromJson(reader);
+                } else if ("interconnectBlockProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMProfile.interconnectBlockProfile
+                        = InterconnectBlockProfile.fromJson(reader);
                 } else if ("applicationProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMProfile.applicationProfile
                         = ApplicationProfile.fromJson(reader);

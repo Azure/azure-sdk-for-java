@@ -20,7 +20,7 @@ public interface NetAppResourceUsagesClient {
      * 
      * Get current subscription usages.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -36,7 +36,7 @@ public interface NetAppResourceUsagesClient {
      * 
      * Get current subscription usages.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

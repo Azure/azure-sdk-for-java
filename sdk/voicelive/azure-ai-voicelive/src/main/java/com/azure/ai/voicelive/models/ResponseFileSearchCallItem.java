@@ -24,12 +24,6 @@ public final class ResponseFileSearchCallItem extends SessionResponseItem {
     private ItemType type = ItemType.FILE_SEARCH_CALL;
 
     /*
-     * The unique ID of the file search tool call.
-     */
-    @Generated
-    private String id;
-
-    /*
      * The queries used for the file search.
      */
     @Generated
@@ -69,17 +63,6 @@ public final class ResponseFileSearchCallItem extends SessionResponseItem {
     }
 
     /**
-     * Get the id property: The unique ID of the file search tool call.
-     *
-     * @return the id value.
-     */
-    @Generated
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    /**
      * Get the queries property: The queries used for the file search.
      *
      * @return the queries value.
@@ -116,10 +99,10 @@ public final class ResponseFileSearchCallItem extends SessionResponseItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("object", getObject() == null ? null : getObject().toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -137,23 +120,23 @@ public final class ResponseFileSearchCallItem extends SessionResponseItem {
     @Generated
     public static ResponseFileSearchCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             ResponseItemObject object = null;
             ResponseFileSearchCallItemStatus status = null;
             ItemType type = ItemType.FILE_SEARCH_CALL;
-            String id = null;
             List<String> queries = null;
             List<FileSearchResult> results = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("object".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("object".equals(fieldName)) {
                     object = ResponseItemObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = ResponseFileSearchCallItemStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = ItemType.fromString(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("results".equals(fieldName)) {
@@ -163,9 +146,9 @@ public final class ResponseFileSearchCallItem extends SessionResponseItem {
                 }
             }
             ResponseFileSearchCallItem deserializedResponseFileSearchCallItem = new ResponseFileSearchCallItem(status);
+            deserializedResponseFileSearchCallItem.setId(id);
             deserializedResponseFileSearchCallItem.setObject(object);
             deserializedResponseFileSearchCallItem.type = type;
-            deserializedResponseFileSearchCallItem.id = id;
             deserializedResponseFileSearchCallItem.queries = queries;
             deserializedResponseFileSearchCallItem.results = results;
             return deserializedResponseFileSearchCallItem;

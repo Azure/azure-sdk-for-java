@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class IpAllocationsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpAllocationUpdateTags.json
+     * x-ms-original-file: 2025-07-01/IpAllocationUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tags.

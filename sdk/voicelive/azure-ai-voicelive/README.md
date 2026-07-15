@@ -100,7 +100,7 @@ Represents an active WebSocket connection for bidirectional streaming communicat
 ### VoiceLiveSessionOptions
 
 Configuration options for customizing session behavior:
-- **Model selection**: Specify the AI model (e.g., "gpt-4o-realtime-preview")
+- **Model selection**: Specify the AI model (e.g., "gpt-realtime")
 - **Voice settings**: Choose from OpenAI voices (Alloy, Ash, Ballad, Coral, Echo, Sage, Shimmer, Verse) or Azure voices
 - **Modalities**: Configure text and/or audio interaction modes
 - **Turn detection**: Server-side voice activity detection with configurable thresholds
@@ -193,13 +193,23 @@ For easier learning, explore these focused samples in order:
 > ```
 > These samples use `javax.sound.sampled` for audio I/O.
 
+### Session startup overloads
+
+`VoiceLiveAsyncClient` exposes three session-start overloads:
+
+- `startSession()`
+- `startSession(String model, VoiceLiveRequestOptions options)`
+- `startSession(AgentSessionConfig agentConfig, VoiceLiveRequestOptions options)`
+
+Pass `null` for `VoiceLiveRequestOptions` in the samples below when you do not need to provide one.
+
 ### Simple voice assistant
 
 Create a basic voice assistant session:
 
 ```java com.azure.ai.voicelive.simple.session
-// Start session with default options
-client.startSession("gpt-realtime")
+// Start session with a specific model; pass null when no VoiceLiveRequestOptions value is needed
+client.startSession("gpt-realtime", null)
     .flatMap(session -> {
         System.out.println("Session started");
 
@@ -243,8 +253,8 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInputAudioTranscription(transcription)
     .setTurnDetection(turnDetection);
 
-// Start session with options
-client.startSession("gpt-realtime")
+// Start session and then send session configuration
+client.startSession("gpt-realtime", null)
     .flatMap(session -> {
         // Send session configuration
         ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(options);
@@ -370,7 +380,7 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
 // 3. Handle function call events
-client.startSession("gpt-realtime")
+client.startSession("gpt-realtime", null)
     .flatMap(session -> {
         return session.receiveEvents()
             .doOnNext(event -> {
@@ -422,8 +432,8 @@ Use [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) servers to 
 
 ```java com.azure.ai.voicelive.mcp
 // Configure MCP servers as tools
-MCPServer mcpServer = new MCPServer("deepwiki", "https://mcp.deepwiki.com/mcp")
-    .setRequireApproval(BinaryData.fromObject(MCPApprovalType.ALWAYS));
+McpServer mcpServer = new McpServer("deepwiki", "https://mcp.deepwiki.com/mcp")
+    .setRequireApproval(BinaryData.fromObject(McpApprovalType.ALWAYS));
 
 VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setTools(Arrays.asList(mcpServer))
@@ -436,10 +446,10 @@ session.receiveEvents()
             SessionUpdateResponseOutputItemDone itemDone = (SessionUpdateResponseOutputItemDone) event;
             SessionResponseItem item = itemDone.getItem();
 
-            if (item instanceof ResponseMCPApprovalRequestItem) {
+            if (item instanceof ResponseMcpApprovalRequestItem) {
                 // Approve the tool call
-                ResponseMCPApprovalRequestItem approvalRequest = (ResponseMCPApprovalRequestItem) item;
-                MCPApprovalResponseRequestItem approval = new MCPApprovalResponseRequestItem(
+                ResponseMcpApprovalRequestItem approvalRequest = (ResponseMcpApprovalRequestItem) item;
+                McpApprovalResponseRequestItem approval = new McpApprovalResponseRequestItem(
                     approvalRequest.getId(), true);
                 ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
                     .setItem(approval);
@@ -464,13 +474,13 @@ Connect directly to an Azure AI Foundry agent using `AgentSessionConfig`. The ag
 AgentSessionConfig agentConfig = new AgentSessionConfig("my-agent", "my-project")
     .setAgentVersion("1.0");
 
-// Start session with agent config (uses DefaultAzureCredential)
+// Start session with agent config; pass null when no VoiceLiveRequestOptions value is needed
 VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
     .endpoint(endpoint)
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 
-client.startSession(agentConfig)
+client.startSession(agentConfig, null)
     .flatMap(session -> {
         return session.receiveEvents()
             .doOnNext(event -> handleEvent(event))
@@ -515,7 +525,7 @@ OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 When tracing is active, the following span hierarchy is emitted for each voice session:
 
 ```
-connect gpt-4o-realtime-preview        ← session lifetime span
+connect gpt-realtime                    ← session lifetime span
 ├── send session.update                 ← one span per sent event
 ├── send input_audio_buffer.append
 ├── send response.create
@@ -596,8 +606,8 @@ VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
     .setInputAudioTranscription(transcriptionOptions)
     .setTurnDetection(turnDetection);
 
-// Start session and handle events
-client.startSession("gpt-4o-realtime-preview")
+// Start session (null VoiceLiveRequestOptions), then handle events
+client.startSession("gpt-realtime", null)
     .flatMap(session -> {
         // Subscribe to receive server events
         session.receiveEvents()

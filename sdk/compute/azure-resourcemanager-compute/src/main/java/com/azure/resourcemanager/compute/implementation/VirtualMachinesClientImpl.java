@@ -407,7 +407,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -448,7 +448,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -548,7 +548,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -598,7 +598,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -876,7 +876,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -925,7 +925,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1181,7 +1181,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, forceDeletion, context))
@@ -1218,7 +1218,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vmName, forceDeletion, context);
@@ -1431,7 +1431,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1473,7 +1473,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1612,7 +1612,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1650,7 +1650,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1787,7 +1787,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.assessPatches(this.client.getEndpoint(), apiVersion,
@@ -1825,7 +1825,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.assessPatches(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2005,7 +2005,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2050,7 +2050,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2243,7 +2243,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2289,7 +2289,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2485,7 +2485,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.convertToManagedDisks(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -2522,7 +2522,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.convertToManagedDisks(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -2699,7 +2699,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, hibernate, forceDeallocate, context))
@@ -2738,10 +2738,86 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, hibernate, forceDeallocate, context);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName,
+        Boolean hibernate, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-03-01";
+        final Boolean forceDeallocate = null;
+        context = this.client.mergeContext(context);
+        return service.deallocate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, vmName, hibernate, forceDeallocate, context);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName,
+        Boolean hibernate) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-03-01";
+        final Boolean forceDeallocate = null;
+        return FluxUtil
+            .withContext(context -> service.deallocate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, vmName, hibernate, forceDeallocate, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2817,6 +2893,49 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
+        Boolean hibernate, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deallocateWithResponseAsync(resourceGroupName, vmName, hibernate, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName,
+        Boolean hibernate) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, vmName, hibernate);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2848,6 +2967,25 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         Boolean hibernate, Boolean forceDeallocate, Context context) {
         return this.beginDeallocateAsync(resourceGroupName, vmName, hibernate, forceDeallocate, context)
             .getSyncPoller();
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName,
+        Boolean hibernate, Context context) {
+        return this.beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).getSyncPoller();
     }
 
     /**
@@ -2916,6 +3054,43 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2944,6 +3119,23 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
     public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Boolean forceDeallocate,
         Context context) {
         deallocateAsync(resourceGroupName, vmName, hibernate, forceDeallocate, context).block();
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        deallocateAsync(resourceGroupName, vmName, hibernate, context).block();
     }
 
     /**
@@ -2977,7 +3169,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.generalize(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -3016,7 +3208,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.generalize(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -3115,7 +3307,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3162,7 +3354,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -3356,7 +3548,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.instanceView(this.client.getEndpoint(), apiVersion,
@@ -3394,7 +3586,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.instanceView(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3477,7 +3669,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -3513,7 +3705,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -3681,7 +3873,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.powerOff(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, skipShutdown, context))
@@ -3720,7 +3912,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, skipShutdown, context);
@@ -3945,7 +4137,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.reapply(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -3981,7 +4173,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.reapply(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -4143,7 +4335,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -4179,7 +4371,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -4350,7 +4542,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, parameters, context))
@@ -4394,7 +4586,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, parameters, context);
@@ -4646,7 +4838,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -4682,7 +4874,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -4849,7 +5041,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveBootDiagnosticsData(this.client.getEndpoint(), apiVersion,
@@ -4891,7 +5083,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveBootDiagnosticsData(this.client.getEndpoint(), apiVersion,
@@ -4981,7 +5173,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.simulateEviction(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -5017,7 +5209,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.simulateEviction(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, context);
@@ -5095,7 +5287,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, context))
@@ -5131,7 +5323,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vmName, context);
@@ -5295,7 +5487,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableSizes(this.client.getEndpoint(), apiVersion,
@@ -5335,7 +5527,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5445,7 +5637,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -5489,7 +5681,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -5677,7 +5869,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.migrateToVMScaleSet(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmName, parameters, context))
@@ -5717,7 +5909,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.migrateToVMScaleSet(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmName, parameters, context);
@@ -5927,7 +6119,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), apiVersion,
@@ -5961,7 +6153,7 @@ public final class VirtualMachinesClientImpl implements InnerSupportsGet<Virtual
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

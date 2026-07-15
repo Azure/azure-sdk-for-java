@@ -172,7 +172,7 @@ public final class ComputeFleetManagementClientImpl implements ComputeFleetManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-01-preview";
+        this.apiVersion = "2026-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
     }
@@ -288,7 +288,7 @@ public final class ComputeFleetManagementClientImpl implements ComputeFleetManag
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

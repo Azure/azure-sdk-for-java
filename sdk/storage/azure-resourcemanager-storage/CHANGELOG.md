@@ -1,6 +1,6 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
+## 2.58.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.57.0 (2026-06-01)
+
+### Features Added
+
+* `models.AdvancedPlatformMetricsFilterType` was added
+
+* `models.AdvancedPlatformMetricsRuleConfig` was added
+
+* `models.MetricsEmitted` was added
+
+* `models.AdvancedPlatformMetricsRuleType` was added
+
+* `models.AdvancedPlatformMetricsRuleProperties` was added
+
+#### `models.FileShareLimits` was modified
+
+* `guardrailIOScalar()` was added
+* `guardrailBandwidthScalar()` was added
 
 ## 2.56.0 (2026-05-07)
 

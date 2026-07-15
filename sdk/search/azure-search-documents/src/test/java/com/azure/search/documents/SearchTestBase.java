@@ -103,6 +103,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String RESOURCE_GROUP
         = Configuration.getGlobalConfiguration().get("SEARCH_RESOURCE_GROUP", "resource-group");
 
+    protected static final String FABRIC_WORKSPACE_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_WORKSPACE_ID", "<FABRIC_WORKSPACE_ID>");
+    protected static final String FABRIC_ONTOLOGY_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_ONTOLOGY_ID", "<FABRIC_ONTOLOGY_ID>");
+    protected static final String FABRIC_DATA_AGENT_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_DATA_AGENT_ID", "<FABRIC_DATA_AGENT_ID>");
+
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";

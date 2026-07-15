@@ -22,7 +22,7 @@ public final class AuthenticationSettingsListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"cyajguqf\"},\"id\":\"ygz\",\"name\":\"vdnkfxusem\",\"type\":\"wzrmuh\"}]}";
+            = "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"fxapjwogqqnobpu\"},\"id\":\"dabtqwp\",\"name\":\"yawbzasqbu\",\"type\":\"ljgkyex\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AuthenticationSettingsListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AuthenticationSetting> response = manager.authenticationSettings()
-            .listByHealthModel("tnvyqiatkzwp", "npwzcjaes", com.azure.core.util.Context.NONE);
+            .listByHealthModel("wjwiuub", "efqsfapaqtferrqw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cyajguqf", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("fxapjwogqqnobpu", response.iterator().next().properties().displayName());
     }
 }

@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupsLongTermRetentionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupsLongTermRetentionRequest model = BinaryData.fromString(
-            "{\"targetDetails\":{\"sasUriList\":[\"mozuxylfsb\",\"kadpysown\"]},\"backupSettings\":{\"backupName\":\"tgkbugrjqctojc\"}}")
+        BackupsLongTermRetentionRequest model = BinaryData
+            .fromString(
+                "{\"targetDetails\":{\"sasUriList\":[\"poekrsgsgb\"]},\"backupSettings\":{\"backupName\":\"huzqgn\"}}")
             .toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("tgkbugrjqctojc", model.backupSettings().backupName());
-        Assertions.assertEquals("mozuxylfsb", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("huzqgn", model.backupSettings().backupName());
+        Assertions.assertEquals("poekrsgsgb", model.targetDetails().sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupsLongTermRetentionRequest model = new BackupsLongTermRetentionRequest()
-            .withBackupSettings(new BackupSettings().withBackupName("tgkbugrjqctojc"))
-            .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("mozuxylfsb", "kadpysown")));
+        BackupsLongTermRetentionRequest model
+            = new BackupsLongTermRetentionRequest().withBackupSettings(new BackupSettings().withBackupName("huzqgn"))
+                .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("poekrsgsgb")));
         model = BinaryData.fromObject(model).toObject(BackupsLongTermRetentionRequest.class);
-        Assertions.assertEquals("tgkbugrjqctojc", model.backupSettings().backupName());
-        Assertions.assertEquals("mozuxylfsb", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("huzqgn", model.backupSettings().backupName());
+        Assertions.assertEquals("poekrsgsgb", model.targetDetails().sasUriList().get(0));
     }
 }

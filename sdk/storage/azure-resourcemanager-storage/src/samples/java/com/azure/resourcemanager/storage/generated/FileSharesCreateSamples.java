@@ -14,7 +14,7 @@ import com.azure.resourcemanager.storage.models.ShareAccessTier;
  */
 public final class FileSharesCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesPut_ProvisionedV2.json
+     * x-ms-original-file: 2026-04-01/FileSharesPut_ProvisionedV2.json
      */
     /**
      * Sample code: PutSharesProvisionedV2.
@@ -30,7 +30,7 @@ public final class FileSharesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesPut_AccessTier.json
+     * x-ms-original-file: 2026-04-01/FileSharesPut_AccessTier.json
      */
     /**
      * Sample code: PutShares with Access Tier.
@@ -45,7 +45,7 @@ public final class FileSharesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesPut_NFS.json
+     * x-ms-original-file: 2026-04-01/FileSharesPut_NFS.json
      */
     /**
      * Sample code: Create NFS Shares.
@@ -61,7 +61,7 @@ public final class FileSharesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesPut_PaidBursting.json
+     * x-ms-original-file: 2026-04-01/FileSharesPut_PaidBursting.json
      */
     /**
      * Sample code: PutShares with Paid Bursting.
@@ -80,7 +80,7 @@ public final class FileSharesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesPut.json
+     * x-ms-original-file: 2026-04-01/FileSharesPut.json
      */
     /**
      * Sample code: PutShares.

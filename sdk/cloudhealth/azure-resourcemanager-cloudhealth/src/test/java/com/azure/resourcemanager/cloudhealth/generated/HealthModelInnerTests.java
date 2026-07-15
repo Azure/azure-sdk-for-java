@@ -6,11 +6,9 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.fluent.models.HealthModelInner;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
 import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,39 +18,25 @@ public final class HealthModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"dataplaneEndpoint\":\"jbpzvgnwzsymg\",\"provisioningState\":\"Deleting\",\"discovery\":{\"scope\":\"cyzkohdbihanuf\",\"addRecommendedSignals\":\"Disabled\",\"identity\":\"bj\"}},\"identity\":{\"principalId\":\"git\",\"tenantId\":\"qhabifpikxwcz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"iwbybrkxvdumjg\":{\"principalId\":\"pqxu\",\"clientId\":\"vyq\"},\"cnyejhkryhtnapcz\":{\"principalId\":\"fwvuk\",\"clientId\":\"audccsnhs\"},\"nchgej\":{\"principalId\":\"okjye\",\"clientId\":\"kvnipjoxz\"},\"wyahuxinpmqnja\":{\"principalId\":\"odmailzyd\",\"clientId\":\"o\"}}},\"location\":\"ixjsprozvcputeg\",\"tags\":{\"u\":\"mfdatscmdvpj\",\"kjozkrwfnd\":\"suuv\",\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"id\":\"gexpaojakhmsbz\",\"name\":\"hcrzevd\",\"type\":\"hlxaolthqtr\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"zvgnwzs\",\"tenantId\":\"glzufc\",\"type\":\"None\",\"userAssignedIdentities\":{\"ithxqhabifpi\":{\"principalId\":\"dbihanufhfcbj\",\"clientId\":\"a\"},\"ivyqniwbybrkxvd\":{\"principalId\":\"wczbys\",\"clientId\":\"pqxu\"},\"yejhk\":{\"principalId\":\"jgrtfwvukxga\",\"clientId\":\"ccsnhsjc\"}}},\"location\":\"htnapczwlokjyem\",\"tags\":{\"joxzjnchgejspodm\":\"ni\",\"h\":\"ilzyd\"},\"id\":\"jwyahuxinpmqnja\",\"name\":\"wixjsprozvcp\",\"type\":\"tegjvwmf\"}")
             .toObject(HealthModelInner.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.location());
-        Assertions.assertEquals("mfdatscmdvpj", model.tags().get("u"));
-        Assertions.assertEquals("cyzkohdbihanuf", model.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
-            model.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("bj", model.properties().discovery().identity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("htnapczwlokjyem", model.location());
+        Assertions.assertEquals("ni", model.tags().get("joxzjnchgejspodm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthModelInner model
-            = new HealthModelInner().withLocation("ixjsprozvcputeg")
-                .withTags(mapOf("u", "mfdatscmdvpj", "kjozkrwfnd", "suuv", "vwryoqpso", "odjpslwejd", "yffdfdos",
-                    "cctazakljlahbc"))
-                .withProperties(
-                    new HealthModelProperties().withDiscovery(new ModelDiscoverySettings().withScope("cyzkohdbihanuf")
-                        .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED)
-                        .withIdentity("bj")))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("iwbybrkxvdumjg", new UserAssignedIdentity(), "cnyejhkryhtnapcz",
-                        new UserAssignedIdentity(), "nchgej", new UserAssignedIdentity(), "wyahuxinpmqnja",
-                        new UserAssignedIdentity())));
+        HealthModelInner model = new HealthModelInner().withLocation("htnapczwlokjyem")
+            .withTags(mapOf("joxzjnchgejspodm", "ni", "h", "ilzyd"))
+            .withProperties(new HealthModelProperties())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("ithxqhabifpi", new UserAssignedIdentity(), "ivyqniwbybrkxvd",
+                    new UserAssignedIdentity(), "yejhk", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(HealthModelInner.class);
-        Assertions.assertEquals("ixjsprozvcputeg", model.location());
-        Assertions.assertEquals("mfdatscmdvpj", model.tags().get("u"));
-        Assertions.assertEquals("cyzkohdbihanuf", model.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
-            model.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("bj", model.properties().discovery().identity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("htnapczwlokjyem", model.location());
+        Assertions.assertEquals("ni", model.tags().get("joxzjnchgejspodm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     // Use "Map.of" if available

@@ -18,15 +18,10 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.implementation.models.CheckKeyValuesHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
-import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
@@ -64,7 +59,8 @@ public class Utility {
             .setEtag(setting.getETag())
             .setLastModified(setting.getLastModified())
             .setLocked(setting.isReadOnly())
-            .setTags(setting.getTags());
+            .setTags(setting.getTags())
+            .setDescription(setting.getDescription());
     }
 
     // SettingFields[] to List<SettingFields>
@@ -116,23 +112,16 @@ public class Utility {
     }
 
     public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient,
         Context context) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.updateSnapshotWithResponse(snapshotName, new SnapshotUpdateParameters().setStatus(status),
-                ifMatch, null, context);
-        return new SimpleResponse<>(response, response.getValue());
+        return ImplBridge.updateSnapshotWithResponse(serviceClient, snapshotName, status, ifMatch, context);
     }
 
     public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
-        MatchConditions matchConditions, ConfigurationSnapshotStatus status, AzureAppConfigurationImpl serviceClient) {
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status, ConfigurationClientImpl serviceClient) {
         final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        return serviceClient
-            .updateSnapshotWithResponseAsync(snapshotName, new SnapshotUpdateParameters().setStatus(status), ifMatch,
-                null)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        return ImplBridge.updateSnapshotWithResponseAsync(serviceClient, snapshotName, status, ifMatch, Context.NONE);
     }
 
     // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"
@@ -215,8 +204,7 @@ public class Utility {
     }
 
     // Convert a HEAD response to a PagedResponse with empty items.
-    public static PagedResponse<ConfigurationSetting>
-        toHeadPagedResponse(ResponseBase<CheckKeyValuesHeaders, Void> response) {
+    public static PagedResponse<ConfigurationSetting> toHeadPagedResponse(Response<Void> response) {
         String continuationToken = parseNextLink(response.getHeaders().getValue(HttpHeaderName.LINK));
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             Collections.emptyList(), continuationToken, null);

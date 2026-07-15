@@ -19,12 +19,6 @@ import java.util.List;
 public final class IceServer implements JsonSerializable<IceServer> {
 
     /*
-     * List of ICE server URLs (e.g., TURN or STUN endpoints).
-     */
-    @Generated
-    private final List<String> uris;
-
-    /*
      * Optional username used for authentication with the ICE server.
      */
     @Generated
@@ -39,21 +33,11 @@ public final class IceServer implements JsonSerializable<IceServer> {
     /**
      * Creates an instance of IceServer class.
      *
-     * @param uris the uris value to set.
+     * @param urls the urls value to set.
      */
     @Generated
-    public IceServer(List<String> uris) {
-        this.uris = uris;
-    }
-
-    /**
-     * Get the uris property: List of ICE server URLs (e.g., TURN or STUN endpoints).
-     *
-     * @return the uris value.
-     */
-    @Generated
-    public List<String> getUris() {
-        return this.uris;
+    public IceServer(List<String> urls) {
+        this.urls = urls;
     }
 
     /**
@@ -107,7 +91,7 @@ public final class IceServer implements JsonSerializable<IceServer> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("urls", this.uris, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("urls", this.urls, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("username", this.username);
         jsonWriter.writeStringField("credential", this.credential);
         return jsonWriter.writeEndObject();
@@ -125,14 +109,14 @@ public final class IceServer implements JsonSerializable<IceServer> {
     @Generated
     public static IceServer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> uris = null;
+            List<String> urls = null;
             String username = null;
             String credential = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("urls".equals(fieldName)) {
-                    uris = reader.readArray(reader1 -> reader1.getString());
+                    urls = reader.readArray(reader1 -> reader1.getString());
                 } else if ("username".equals(fieldName)) {
                     username = reader.getString();
                 } else if ("credential".equals(fieldName)) {
@@ -141,10 +125,26 @@ public final class IceServer implements JsonSerializable<IceServer> {
                     reader.skipChildren();
                 }
             }
-            IceServer deserializedIceServer = new IceServer(uris);
+            IceServer deserializedIceServer = new IceServer(urls);
             deserializedIceServer.username = username;
             deserializedIceServer.credential = credential;
             return deserializedIceServer;
         });
+    }
+
+    /*
+     * List of ICE server URLs (e.g., TURN or STUN endpoints).
+     */
+    @Generated
+    private final List<String> urls;
+
+    /**
+     * Get the urls property: List of ICE server URLs (e.g., TURN or STUN endpoints).
+     *
+     * @return the urls value.
+     */
+    @Generated
+    public List<String> getUrls() {
+        return this.urls;
     }
 }

@@ -8,17 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if this location is restricted. 'Enabled' means location is restricted. 'Disabled' stands for location is
- * not restricted. Will be deprecated in the future. Look to Supported Features for 'Restricted'.
+ * Indicates if this location is restricted. Will be deprecated in the future. Look to Supported Features for
+ * 'Restricted'.
  */
 public final class LocationRestricted extends ExpandableStringEnum<LocationRestricted> {
     /**
-     * Static value Enabled for LocationRestricted.
+     * Location is restricted.
      */
     public static final LocationRestricted ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for LocationRestricted.
+     * Location is not restricted.
      */
     public static final LocationRestricted DISABLED = fromString("Disabled");
 

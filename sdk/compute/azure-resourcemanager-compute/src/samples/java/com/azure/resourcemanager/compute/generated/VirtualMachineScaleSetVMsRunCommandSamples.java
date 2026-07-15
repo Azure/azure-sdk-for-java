@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineScaleSetVMsRunCommandSamples {
     /*
-     * x-ms-original-file: 2025-11-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
+     * x-ms-original-file: 2026-03-01/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_RunCommand.

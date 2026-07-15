@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-04-01/StorageAccountListPrivateEndpointConnections.json
      */
     /**
      * Sample code: StorageAccountListPrivateEndpointConnections.

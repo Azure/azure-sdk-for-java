@@ -9,38 +9,43 @@ import com.azure.resourcemanager.cloudhealth.fluent.models.DiscoveryRuleInner;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleSpecification;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import org.junit.jupiter.api.Assertions;
 
 public final class DiscoveryRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"nqxwbp\",\"resourceGraphQuery\":\"kulpiujwaasi\",\"authenticationSetting\":\"qiiobyuqer\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"deletionDate\":\"2021-08-06T10:56:27Z\",\"errorMessage\":\"cciuqgbdbutau\",\"numberOfDiscoveredEntities\":1736041382,\"entityName\":\"tkuwhhmhykojo\"},\"id\":\"fnndl\",\"name\":\"ichkoymkcdyhb\",\"type\":\"kkpwdreqnovvq\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"avft\",\"authenticationSetting\":\"uhdqazk\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"pijrajcivmmghf\",\"context\":[\"wrxgkneuvy\",\"nzqodfvpg\"]},\"entityName\":\"hoxgsgbpf\"},\"id\":\"djtxvzflbq\",\"name\":\"gaqvlgafcqusrd\",\"type\":\"etnwsdtutnw\"}")
             .toObject(DiscoveryRuleInner.class);
-        Assertions.assertEquals("nqxwbp", model.properties().displayName());
-        Assertions.assertEquals("kulpiujwaasi", model.properties().resourceGraphQuery());
-        Assertions.assertEquals("qiiobyuqer", model.properties().authenticationSetting());
+        Assertions.assertEquals("avft", model.properties().displayName());
+        Assertions.assertEquals("uhdqazk", model.properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             model.properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
             model.properties().addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            model.properties().addResourceHealthSignal());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveryRuleInner model
-            = new DiscoveryRuleInner().withProperties(new DiscoveryRuleProperties().withDisplayName("nqxwbp")
-                .withResourceGraphQuery("kulpiujwaasi")
-                .withAuthenticationSetting("qiiobyuqer")
+            = new DiscoveryRuleInner().withProperties(new DiscoveryRuleProperties().withDisplayName("avft")
+                .withAuthenticationSetting("uhdqazk")
                 .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED)
-                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED));
+                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
+                .withSpecification(new DiscoveryRuleSpecification())
+                .withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior.ENABLED));
         model = BinaryData.fromObject(model).toObject(DiscoveryRuleInner.class);
-        Assertions.assertEquals("nqxwbp", model.properties().displayName());
-        Assertions.assertEquals("kulpiujwaasi", model.properties().resourceGraphQuery());
-        Assertions.assertEquals("qiiobyuqer", model.properties().authenticationSetting());
+        Assertions.assertEquals("avft", model.properties().displayName());
+        Assertions.assertEquals("uhdqazk", model.properties().authenticationSetting());
         Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             model.properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
             model.properties().addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            model.properties().addResourceHealthSignal());
     }
 }

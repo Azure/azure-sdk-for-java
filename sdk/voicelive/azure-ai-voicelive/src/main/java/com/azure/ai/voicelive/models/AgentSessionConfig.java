@@ -5,8 +5,6 @@ package com.azure.ai.voicelive.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,7 +20,7 @@ import java.util.Objects;
  *     .setAgentVersion("1.0")
  *     .setConversationId("conv-123");
  *
- * client.startSession(config).subscribe(session -> {
+ * client.startSession(config, null).subscribe(session -> {
  *     // Use the session
  * });
  * }</pre>
@@ -168,34 +166,5 @@ public final class AgentSessionConfig {
     public AgentSessionConfig setFoundryResourceOverride(String foundryResourceOverride) {
         this.foundryResourceOverride = foundryResourceOverride;
         return this;
-    }
-
-    /**
-     * Converts this configuration to query parameters for the WebSocket connection.
-     *
-     * @return A map of query parameter names to values.
-     */
-    public Map<String, String> toQueryParameters() {
-        Map<String, String> params = new LinkedHashMap<>();
-
-        // Required parameters
-        params.put("agent-name", agentName);
-        params.put("agent-project-name", projectName);
-
-        // Optional parameters
-        if (agentVersion != null && !agentVersion.isEmpty()) {
-            params.put("agent-version", agentVersion);
-        }
-        if (conversationId != null && !conversationId.isEmpty()) {
-            params.put("conversation-id", conversationId);
-        }
-        if (authenticationIdentityClientId != null && !authenticationIdentityClientId.isEmpty()) {
-            params.put("agent-authentication-identity-client-id", authenticationIdentityClientId);
-        }
-        if (foundryResourceOverride != null && !foundryResourceOverride.isEmpty()) {
-            params.put("foundry-resource-override", foundryResourceOverride);
-        }
-
-        return params;
     }
 }

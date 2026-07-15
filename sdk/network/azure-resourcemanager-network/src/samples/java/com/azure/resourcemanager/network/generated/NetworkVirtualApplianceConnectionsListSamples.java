@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualApplianceConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkVirtualApplianceConnectionList.json
+     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceConnectionList.json
      */
     /**
      * Sample code: NetworkVirtualApplianceConnectionList.

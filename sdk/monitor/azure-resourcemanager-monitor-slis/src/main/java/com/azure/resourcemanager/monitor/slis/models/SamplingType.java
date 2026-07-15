@@ -12,24 +12,29 @@ import java.util.Collection;
  */
 public final class SamplingType extends ExpandableStringEnum<SamplingType> {
     /**
-     * Maximum value.
-     */
-    public static final SamplingType MAX = fromString("max");
-
-    /**
-     * Minimum value.
-     */
-    public static final SamplingType MIN = fromString("min");
-
-    /**
      * Average value.
      */
-    public static final SamplingType AVG = fromString("avg");
+    public static final SamplingType AVERAGE = fromString("Average");
 
     /**
      * Summation.
      */
-    public static final SamplingType SUM = fromString("sum");
+    public static final SamplingType SUM = fromString("Sum");
+
+    /**
+     * Count of occurrences.
+     */
+    public static final SamplingType COUNT = fromString("Count");
+
+    /**
+     * Minimum value.
+     */
+    public static final SamplingType MIN = fromString("Min");
+
+    /**
+     * Maximum value.
+     */
+    public static final SamplingType MAX = fromString("Max");
 
     /**
      * Creates a new instance of SamplingType value.

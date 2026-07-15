@@ -207,10 +207,26 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
                     return SearchIndexKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("indexedSharePoint".equals(discriminatorValue)) {
+                    return IndexedSharePointKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("indexedOneLake".equals(discriminatorValue)) {
                     return IndexedOneLakeKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("indexedSql".equals(discriminatorValue)) {
+                    return IndexedSqlKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("file".equals(discriminatorValue)) {
+                    return FileKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return WebKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("remoteSharePoint".equals(discriminatorValue)) {
+                    return RemoteSharePointKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("workIQ".equals(discriminatorValue)) {
+                    return WorkIQKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("mcpServer".equals(discriminatorValue)) {
+                    return McpServerKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("fabricDataAgent".equals(discriminatorValue)) {
+                    return FabricDataAgentKnowledgeSource.fromJson(readerToUse.reset());
+                } else if ("fabricOntology".equals(discriminatorValue)) {
+                    return FabricOntologyKnowledgeSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
