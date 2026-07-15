@@ -357,10 +357,13 @@ public class ConnectionHandler extends Handler {
         final ErrorCondition error = connection.getRemoteCondition();
 
         logErrorCondition("onConnectionRemoteClose", connection, error);
-        if (error == null) {
+        if (error == null || error.getCondition() == null) {
             onNext(connection.getRemoteState());
         } else {
-            notifyErrorContext(connection, error);
+            final Throwable exception
+                = ExceptionUtil.toException(error.getCondition().toString(), error.getDescription(), getErrorContext());
+
+            onError(exception);
         }
     }
 

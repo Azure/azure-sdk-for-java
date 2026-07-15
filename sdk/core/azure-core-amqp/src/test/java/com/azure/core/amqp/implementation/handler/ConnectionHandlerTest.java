@@ -6,6 +6,8 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
@@ -239,6 +241,47 @@ public class ConnectionHandlerTest {
             assertEquals(expected, actual);
         });
         assertTrue(actualProperties.isEmpty());
+    }
+
+    @Test
+    void onConnectionRemoteCloseWithoutErrorSignalsClosed() {
+        // Arrange
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.CLOSED);
+
+        final Event event = mock(Event.class);
+        when(event.getConnection()).thenReturn(connection);
+
+        // Act & Assert
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onConnectionRemoteClose(event))
+            .expectNext(EndpointState.CLOSED)
+            .then(handler::close)
+            .verifyComplete();
+    }
+
+    @Test
+    void onConnectionRemoteCloseWithErrorSignalsError() {
+        // Arrange
+        final ErrorCondition errorCondition
+            = new ErrorCondition(AmqpErrorCode.CONNECTION_FORCED, "Connection idle timeout.");
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.CLOSED);
+        when(connection.getRemoteCondition()).thenReturn(errorCondition);
+
+        final Event event = mock(Event.class);
+        when(event.getConnection()).thenReturn(connection);
+
+        // Act & Assert
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onConnectionRemoteClose(event))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertEquals(AmqpErrorCondition.CONNECTION_FORCED, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
     }
 
     @Test
