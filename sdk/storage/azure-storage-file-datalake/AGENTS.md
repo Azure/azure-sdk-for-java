@@ -32,9 +32,11 @@ Do not flatten them into a single generic path abstraction.
 
 Rename/move and ACL/permission behavior are core Data Lake semantics. Keep those flows explicit and aligned with existing options/models.
 
-### 3. Respect DFS Endpoint Semantics
+### 3. Prefer Blob Endpoint When Applicable; Use DFS for Data Lake-Specific Operations
 
-Endpoint and URL handling must preserve Data Lake `dfs.core.windows.net` endpoint and path hierarchy expectations, not blob-specific URL logic.
+For azure-storage-file-datalake, prefer Blob endpoint-backed operations where supported by existing SDK patterns, and use DFS endpoint handling for Data Lake-specific operations. Preserve Data Lake hierarchical namespace (HNS) behavioral expectations across both paths, and do not introduce new endpoint-selection logic that diverges from established client behavior.
+
+Endpoint and URL handling must preserve Data Lake path hierarchy semantics and follow existing SDK routing behavior across both dfs.core.windows.net and blob.core.windows.net endpoints. Do not assume DFS-only URL logic; use the same endpoint-selection patterns already used by the client/operation.
 
 ## Data Lake Service Semantics
 
