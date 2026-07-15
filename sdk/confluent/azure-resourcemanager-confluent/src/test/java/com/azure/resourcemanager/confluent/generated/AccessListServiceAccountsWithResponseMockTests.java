@@ -24,7 +24,7 @@ public final class AccessListServiceAccountsWithResponseMockTests {
     @Test
     public void testListServiceAccountsWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"bsoqeqala\",\"metadata\":{\"first\":\"agunbtgfebw\",\"last\":\"bmhyreeudz\",\"prev\":\"vbpdqmjxlyyzglgo\",\"next\":\"tlmj\",\"total_size\":1206140205},\"data\":[{\"kind\":\"tob\",\"id\":\"kjeytunl\",\"metadata\":{\"self\":\"kwr\",\"resource_name\":\"nkqbhsyrq\",\"created_at\":\"jqhden\",\"updated_at\":\"ulkpakd\",\"deleted_at\":\"fmjnnawtqa\"},\"display_name\":\"xuckpggqoweyir\",\"description\":\"lisn\"}]}";
+            = "{\"kind\":\"wrtmjfjmy\",\"metadata\":{\"first\":\"lzhcoxovnekh\",\"last\":\"lusfnrdtjxtxrdcq\",\"prev\":\"vidttgepuslvyjt\",\"next\":\"uwkasiz\",\"total_size\":1521127384},\"data\":[{\"kind\":\"ghtuqfecjxey\",\"id\":\"uhxu\",\"metadata\":{\"self\":\"uewmrswnjlxuzrhw\",\"resource_name\":\"sxjb\",\"created_at\":\"ehgpdohzjqatu\",\"updated_at\":\"igebxncnwfepb\",\"deleted_at\":\"gfmx\"},\"display_name\":\"cgbjbgdlfgt\",\"description\":\"snaquf\"},{\"kind\":\"bctqhamzjrwd\",\"id\":\"zeqyjleziun\",\"metadata\":{\"self\":\"fza\",\"resource_name\":\"kwcegyamlbn\",\"created_at\":\"qa\",\"updated_at\":\"jvpilguooqja\",\"deleted_at\":\"d\"},\"display_name\":\"gueiookjbsahrtdt\",\"description\":\"elqacslmot\"},{\"kind\":\"bnfxofvc\",\"id\":\"gdirazf\",\"metadata\":{\"self\":\"jwabmd\",\"resource_name\":\"tmvcop\",\"created_at\":\"c\",\"updated_at\":\"urbuhhlkyqltq\",\"deleted_at\":\"ogtu\"},\"display_name\":\"ffdjktsysidfvclg\",\"description\":\"n\"},{\"kind\":\"ijtk\",\"id\":\"sqo\",\"metadata\":{\"self\":\"ikayiansharuj\",\"resource_name\":\"iqxf\",\"created_at\":\"j\",\"updated_at\":\"tvwkpqhjpenu\",\"deleted_at\":\"bqeqqekewvnqvcd\"},\"display_name\":\"uaucmf\",\"description\":\"wnlaxpu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,27 +34,26 @@ public final class AccessListServiceAccountsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessListServiceAccountsSuccessResponse response = manager.access()
-            .listServiceAccountsWithResponse("ky", "cxcjxgry",
-                new ListAccessRequestModel().withSearchFilters(mapOf("noxuztrksx", "pcycilrmcaykg", "jtwkjaos",
-                    "pndfcpfnznt", "smgbzahgxqdl", "xuzvoamktcqi", "rltzkatbhjmz", "rtltla")),
+            .listServiceAccountsWithResponse("p", "ons",
+                new ListAccessRequestModel().withSearchFilters(mapOf("jinnix", "wpng")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bsoqeqala", response.kind());
-        Assertions.assertEquals("agunbtgfebw", response.metadata().first());
-        Assertions.assertEquals("bmhyreeudz", response.metadata().last());
-        Assertions.assertEquals("vbpdqmjxlyyzglgo", response.metadata().prev());
-        Assertions.assertEquals("tlmj", response.metadata().next());
-        Assertions.assertEquals(1206140205, response.metadata().totalSize());
-        Assertions.assertEquals("tob", response.data().get(0).kind());
-        Assertions.assertEquals("kjeytunl", response.data().get(0).id());
-        Assertions.assertEquals("kwr", response.data().get(0).metadata().self());
-        Assertions.assertEquals("nkqbhsyrq", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("jqhden", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("ulkpakd", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("fmjnnawtqa", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("xuckpggqoweyir", response.data().get(0).displayName());
-        Assertions.assertEquals("lisn", response.data().get(0).description());
+        Assertions.assertEquals("wrtmjfjmy", response.kind());
+        Assertions.assertEquals("lzhcoxovnekh", response.metadata().first());
+        Assertions.assertEquals("lusfnrdtjxtxrdcq", response.metadata().last());
+        Assertions.assertEquals("vidttgepuslvyjt", response.metadata().prev());
+        Assertions.assertEquals("uwkasiz", response.metadata().next());
+        Assertions.assertEquals(1521127384, response.metadata().totalSize());
+        Assertions.assertEquals("ghtuqfecjxey", response.data().get(0).kind());
+        Assertions.assertEquals("uhxu", response.data().get(0).id());
+        Assertions.assertEquals("uewmrswnjlxuzrhw", response.data().get(0).metadata().self());
+        Assertions.assertEquals("sxjb", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("ehgpdohzjqatu", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("igebxncnwfepb", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("gfmx", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("cgbjbgdlfgt", response.data().get(0).displayName());
+        Assertions.assertEquals("snaquf", response.data().get(0).description());
     }
 
     // Use "Map.of" if available
