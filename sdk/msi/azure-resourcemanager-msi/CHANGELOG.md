@@ -2,6 +2,10 @@
 
 ## 2.54.0 (2026-07-16)
 
+### Features Added
+
+- Supported configuring `IsolationScope` on `Identity` via the fluent `withIsolationScope(IsolationScope)` method in create and update flows.
+
 ### Breaking Changes
 
 #### `models.UserAssignedIdentitiesListResult` was removed
