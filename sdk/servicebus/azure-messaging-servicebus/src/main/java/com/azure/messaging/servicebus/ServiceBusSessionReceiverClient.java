@@ -157,10 +157,11 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      *
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws IllegalStateException if no session becomes available within the operation timeout (derived from
-     *      the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}); this is retriable.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if no session becomes available within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example an authorization or
+     *      connection error surfaced by the underlying asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
@@ -188,8 +189,12 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws ServiceBusException if the lock cannot be acquired.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if the session is not acquired within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example the session is already
+     *      locked by another client, or an authorization or connection error surfaced by the underlying
+     *      asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {

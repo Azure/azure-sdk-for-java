@@ -100,9 +100,10 @@ final class ServiceBusSessionAcquirer {
         // https://github.com/Azure/azure-sdk-for-java/issues/49093
         this.clientSideTimeout = tryTimeout.multipliedBy(2);
         // Backoff between session-acquire retries to avoid a tight, CPU-burning retry loop when acquire
-        // attempts fail fast (e.g., the broker repeatedly detaches the accept link quickly). A zero
-        // delay was previously used only to hop off the QPid thread; the non-zero backoff below keeps
-        // that thread hop while preventing the busy loop. https://github.com/Azure/azure-sdk-for-java/issues/49093
+        // attempts fail fast (e.g., the broker repeatedly detaches the accept link quickly). The previous
+        // Mono.delay(Duration.ZERO) ignored the configured retry delay and always spun; this honors the
+        // customer's configured AmqpRetryOptions delay, falling back to 100ms only when no usable delay
+        // (null/zero/negative) is configured. https://github.com/Azure/azure-sdk-for-java/issues/49093
         final Duration configuredDelay = connectionCacheWrapper.getRetryOptions().getDelay();
         this.retryBackoff = (configuredDelay == null || configuredDelay.isZero() || configuredDelay.isNegative())
             ? Duration.ofMillis(100)
