@@ -21,7 +21,7 @@
 
 package com.azure.storage.blob.implementation.util.apachearrow;
 
-import com.google.flatbuffers.Struct;
+import com.azure.storage.blob.implementation.util.flatbuffers.Struct;
 
 import java.nio.ByteBuffer;
 

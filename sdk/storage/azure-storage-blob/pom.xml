@@ -59,9 +59,9 @@
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
-    <!-- Exclude vendored Apache Arrow code from linting checks -->
-    <checkstyle.excludes>**/implementation/util/apachearrow/**/*.java</checkstyle.excludes>
-    <spotbugs.excludes>**/implementation/util/apachearrow/**/*.java</spotbugs.excludes>
+    <!-- Exclude vendored Apache Arrow and FlatBuffers code from linting checks. -->
+    <checkstyle.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</checkstyle.excludes>
+    <spotbugs.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</spotbugs.excludes>
 
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
@@ -143,21 +143,20 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Arrow dependency -->
-    <!-- The internal ListBlobs Arrow reader decodes the IPC stream using vendored FlatBuffer metadata accessors
-         (com.azure.storage.blob.implementation.util.apachearrow) backed by flatbuffers-java, so flatbuffers-java is the
-         sole dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a dependency:
-         it ships Java 11 bytecode and would break the Java 8 baseline build. The reader's behavior is validated against
-         committed golden base64 fixtures (src/test/resources/arrow) rather than the official arrow-vector writer, so no
-         Apache Arrow test dependency is required. -->
-    <dependency>
-      <groupId>com.google.flatbuffers</groupId>
-      <artifactId>flatbuffers-java</artifactId>
-      <version>24.3.25</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
-    </dependency>
+    <!-- The internal ListBlobs Arrow reader uses vendored Arrow metadata accessors and the minimal FlatBuffers runtime
+         sources required by those accessors. The arrow-format artifact ships Java 11 bytecode, while this library has a
+         Java 8 baseline. Keeping both source sets internal also avoids modifying the release JAR through shading, which
+         would remove its explicit Java module descriptor.
+
+         When the Java 8 baseline is retired, additional options become available:
+         - The add-reads compiler option may provide compile-time access to an unnamed implementation dependency.
+         - A post-shade descriptor tool could rebuild module-info.class.
+         - A multi-release JAR or separate internal Azure module could isolate the dependency.
+         These options are not automatic replacements for vendoring. In particular, add-reads does not repair the
+         explicit descriptor removed by shading. Any future packaging approach must preserve Blob's module-info.class
+         and transitive Java module dependency graph, and must be validated by compiling installed downstream modules. -->
 
   </dependencies>
-
   <profiles>
     <profile>
       <id>inject-sas-service-version</id>
@@ -201,12 +200,14 @@
       </build>
     </profile>
 
-    <!-- This profile is used to generate a sources JAR with arrow-format shaded into com.azure.storage.blob.implementation.util.apachearrow. -->
-    <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded Apache Arrow code needs to be updated. -->
+    <!-- This profile generates a sources JAR with Arrow and its matching FlatBuffers runtime relocated into the
+         internal packages where their curated source subsets are vendored. -->
+    <!-- DO NOT run this profile with release. It is only a local source-refresh tool and must never rewrite the
+         shipping azure-storage-blob JAR. -->
     <!-- -->
-    <!-- To update the shaded Apache Arrow code, run Maven build with '-Dshade-apache-arrow-format' included in the command. -->
-    <!-- In the target folder, extract the sources JAR. The path com/azure/storage/blob/implementation/util/apachearrow will contain the relocated Apache Arrow source code. -->
-    <!-- Copy this code into the com.azure.storage.blob.implementation.util.apachearrow package in azure-storage-blob and overwrite the existing files. -->
+    <!-- To update the vendored sources, run Maven with '-Dshade-apache-arrow-format', extract the attached sources
+         JAR, and review the relocated apachearrow and flatbuffers packages. Copy only the source files used by the
+         internal reader, preserve their notices, and rerun the Arrow fixture and installed-consumer checks. -->
     <profile>
       <id>shade-apache-arrow-format</id>
       <activation>
@@ -220,6 +221,12 @@
           <groupId>org.apache.arrow</groupId>
           <artifactId>arrow-format</artifactId>
           <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
+        </dependency>
+        <!-- Must match arrow-format's dep.fbs.version. dependencyConvergence below rejects version drift. -->
+        <dependency>
+          <groupId>com.google.flatbuffers</groupId>
+          <artifactId>flatbuffers-java</artifactId>
+          <version>25.2.10</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
         </dependency>
       </dependencies>
 
@@ -250,6 +257,7 @@
               <artifactSet>
                 <includes>
                   <include>org.apache.arrow:arrow-format</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
+                  <include>com.google.flatbuffers:flatbuffers-java</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
                 </includes>
               </artifactSet>
 
@@ -257,6 +265,10 @@
                 <relocation>
                   <pattern>org.apache.arrow.flatbuf</pattern>
                   <shadedPattern>com.azure.storage.blob.implementation.util.apachearrow</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.flatbuffers</pattern>
+                  <shadedPattern>com.azure.storage.blob.implementation.util.flatbuffers</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
@@ -268,9 +280,15 @@
             <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
             <configuration>
               <rules>
+                <dependencyConvergence>
+                  <includes>
+                    <include>com.google.flatbuffers:flatbuffers-java</include>
+                  </includes>
+                </dependencyConvergence>
                 <bannedDependencies>
                   <includes>
                     <include>org.apache.arrow:arrow-format:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
+                    <include>com.google.flatbuffers:flatbuffers-java:[25.2.10]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>
