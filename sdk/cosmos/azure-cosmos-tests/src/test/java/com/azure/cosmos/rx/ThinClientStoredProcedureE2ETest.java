@@ -29,7 +29,7 @@ public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientStoredProcedure() {
         String sprocId = "createDocSproc_" + UUID.randomUUID();
         String pkValue = UUID.randomUUID().toString();
@@ -76,7 +76,7 @@ public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
         assertThat(readResponse.getItem().get(ID_FIELD).asText()).isEqualTo(docId);
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testStoredProcedureExecutionWithoutPartitionKeyThrows() {
         String sprocId = "noPartitionKeySproc_" + UUID.randomUUID();
 
@@ -95,7 +95,7 @@ public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientStoredProcedureWithPartitionKeyNone() {
         String sprocId = "pkNoneSproc_" + UUID.randomUUID();
 

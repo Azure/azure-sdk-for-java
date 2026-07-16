@@ -19,12 +19,18 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
+
+    // Latches the one-time COSMOS.THINCLIENT_ENABLED misconfiguration warning. isThinClientEnabled()
+    // is on hot paths (e.g. HttpClientConfig.toDiagnosticsString()), so warning on every call would
+    // spam the log for the client lifetime; the value is effectively static, so warn once.
+    private static final AtomicBoolean thinClientEnabledMisconfigWarned = new AtomicBoolean(false);
 
     /**
      * Integer value specifying the speculation type
@@ -51,7 +57,8 @@ public class Configs {
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
-    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    // Tri-state default: null means the customer has neither opted in nor opted out of thin-client.
+    private static final Boolean DEFAULT_THINCLIENT_ENABLED = null;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
@@ -583,18 +590,61 @@ public class Configs {
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
-    public static boolean isThinClientEnabled() {
+    /**
+     * Reads the raw thin-client enablement configuration from the
+     * {@code COSMOS.THINCLIENT_ENABLED} system property or {@code COSMOS_THINCLIENT_ENABLED}
+     * environment variable as a <em>nullable</em> {@link Boolean}. The {@code null} vs
+     * non-{@code null} distinction is what differentiates an explicit setting (enablement or
+     * disablement) from no setting at all — a plain {@code boolean} cannot express it.
+     *
+     * <p>A customer can configure thin-client three ways:
+     * <ul>
+     *   <li>{@code Boolean.TRUE}  — explicitly enabled. Hard opt-in: thin-client is used and the
+     *       connectivity probe is skipped (routing goes to the thin-client endpoints directly).</li>
+     *   <li>{@code Boolean.FALSE} — explicitly disabled. Hard opt-out: thin-client is not used and
+     *       no probe runs.</li>
+     *   <li>{@code null}          — not set: neither opt-in nor opt-out
+     *       ({@link #DEFAULT_THINCLIENT_ENABLED}). Thin-client is <em>eligible</em> but not routed
+     *       by default — the connectivity probe gates routing and traffic is sent to Gateway V2
+     *       only on an affirmative probe verdict (provided GATEWAY mode + HTTP/2 are in effect);
+     *       otherwise it stays on Gateway V1.</li>
+     * </ul>
+     */
+    public static Boolean isThinClientEnabled() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.parseBoolean(valueFromSystemProperty);
+            return parseTriStateThinClientEnabled(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.parseBoolean(valueFromEnvVariable);
+            return parseTriStateThinClientEnabled(valueFromEnvVariable);
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    /**
+     * Parses a raw {@code COSMOS.THINCLIENT_ENABLED} value into the tri-state {@link Boolean}
+     * contract using an explicit whitelist. Only {@code "true"}/{@code "false"} (case-insensitive)
+     * are honored as explicit opt-in / opt-out. Any other value (e.g. {@code "1"}, {@code "yes"},
+     * {@code "on"}, a typo) is treated as unset ({@code null} — probe-gated) rather than silently
+     * collapsing to a hard opt-out, which {@link Boolean#parseBoolean(String)} would do for every
+     * non-"true" string. A warning is logged so the misconfiguration is diagnosable instead of the
+     * customer silently getting thin-client disabled for the client lifetime.
+     */
+    private static Boolean parseTriStateThinClientEnabled(String value) {
+        if ("true".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        }
+        if ("false".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        }
+        if (thinClientEnabledMisconfigWarned.compareAndSet(false, true)) {
+            logger.warn("Invalid COSMOS.THINCLIENT_ENABLED value '{}'; treating as unset (probe-gated). "
+                + "Only 'true' or 'false' are recognized.", value);
+        }
+        return null;
     }
 
     public static boolean isThinClientQueryPlanEnabled() {
