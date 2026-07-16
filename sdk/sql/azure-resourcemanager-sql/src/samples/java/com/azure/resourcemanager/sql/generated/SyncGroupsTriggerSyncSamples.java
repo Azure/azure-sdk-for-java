@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsTriggerSyncSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupTriggerSync.json
+     * x-ms-original-file: 2025-01-01/SyncGroupTriggerSync.json
      */
     /**
      * Sample code: Trigger a sync group synchronization.

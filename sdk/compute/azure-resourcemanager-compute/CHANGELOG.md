@@ -1,14 +1,34 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.59.0 (2026-07-15)
 
 ### Features Added
 
-### Breaking Changes
+* `models.ImmutabilityPolicyLockData` was added
 
-### Bugs Fixed
+* `models.ImmutabilityPolicyData` was added
+
+* `models.ImmutabilityPolicyType` was added
+
+* `models.ConfidentialVMVersion` was added
+
+* `models.ImmutabilityPolicy` was added
+
+#### `models.RollingUpgradeStatusCode` was modified
+
+* `ROLLING_BACK` was added
+
+#### `models.DiskSecurityProfile` was modified
+
+* `confidentialVMVersion()` was added
+
+#### `models.UpgradeState` was modified
+
+* `ROLLING_BACK` was added
 
 ### Other Changes
+
+- Updated `DiskRP api-version` to `2026-03-02`.
 
 ## 2.58.2 (2026-07-07)
 

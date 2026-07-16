@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sql.models.DataSyncParticipantIdentity;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
@@ -26,11 +25,6 @@ public final class SyncMemberInner extends ProxyResource {
      * Resource properties.
      */
     private SyncMemberProperties innerProperties;
-
-    /*
-     * Sync member authentication information.
-     */
-    private DataSyncParticipantIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -65,26 +59,6 @@ public final class SyncMemberInner extends ProxyResource {
      */
     private SyncMemberProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the identity property: Sync member authentication information.
-     * 
-     * @return the identity value.
-     */
-    public DataSyncParticipantIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Sync member authentication information.
-     * 
-     * @param identity the identity value to set.
-     * @return the SyncMemberInner object itself.
-     */
-    public SyncMemberInner withIdentity(DataSyncParticipantIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
@@ -386,9 +360,6 @@ public final class SyncMemberInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (identity() != null) {
-            identity().validate();
-        }
     }
 
     /**
@@ -398,7 +369,6 @@ public final class SyncMemberInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -426,8 +396,6 @@ public final class SyncMemberInner extends ProxyResource {
                     deserializedSyncMemberInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedSyncMemberInner.innerProperties = SyncMemberProperties.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    deserializedSyncMemberInner.identity = DataSyncParticipantIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSyncMemberInner.systemData = SystemData.fromJson(reader);
                 } else {

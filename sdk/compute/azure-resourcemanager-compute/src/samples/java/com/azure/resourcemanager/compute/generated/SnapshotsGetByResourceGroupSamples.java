@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
      */
     /**
      * Sample code: Get information about an incremental snapshot.
@@ -25,7 +25,23 @@ public final class SnapshotsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_Get.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Get_WithConfidentialVMVersion.json
+     */
+    /**
+     * Sample code: Get information about a ConfidentialVM snapshot with confidentialVMVersion.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getInformationAboutAConfidentialVMSnapshotWithConfidentialVMVersion(
+        com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getSnapshots()
+            .getByResourceGroupWithResponse("myResourceGroup", "myConfidentialSnapshot",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_Get.json
      */
     /**
      * Sample code: Get information about a snapshot.
