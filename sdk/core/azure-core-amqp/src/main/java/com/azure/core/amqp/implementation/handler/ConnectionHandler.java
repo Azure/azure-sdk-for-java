@@ -391,9 +391,15 @@ public class ConnectionHandler extends Handler {
             return;
         }
 
-        if (condition == null || condition.getCondition() == null) {
+        if (condition == null) {
             onError(logger
                 .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition.")));
+            return;
+        }
+
+        if (condition.getCondition() == null) {
+            onError(logger.logExceptionAsError(
+                new IllegalStateException("notifyErrorContext ErrorCondition does not have a condition symbol.")));
             return;
         }
 

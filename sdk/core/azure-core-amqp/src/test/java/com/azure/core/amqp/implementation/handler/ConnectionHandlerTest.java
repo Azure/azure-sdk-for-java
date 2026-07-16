@@ -304,7 +304,7 @@ public class ConnectionHandlerTest {
             .then(() -> handler.onTransportClosed(event))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof IllegalStateException);
-                assertEquals("notifyErrorContext does not have an ErrorCondition.", error.getMessage());
+                assertEquals("notifyErrorContext ErrorCondition does not have a condition symbol.", error.getMessage());
             })
             .verify();
     }
