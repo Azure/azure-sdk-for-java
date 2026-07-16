@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (2026-07-15)
+## 1.3.0-beta.2 (2026-07-16)
 
 - Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package api-version 2026-06-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -40,23 +40,23 @@
 
 #### `ConfluentManager` was modified
 
-* `networkGatewayResources()` was added
 * `accessPointResources()` was added
+* `networkGatewayResources()` was added
 
 #### `models.Organizations` was modified
 
-* `activateResource(models.ActivateSaaSParameterRequest)` was added
 * `activateResource(models.ActivateSaaSParameterRequest,com.azure.core.util.Context)` was added
-* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
 * `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
 * `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
+* `activateResource(models.ActivateSaaSParameterRequest)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
 * `latestLinkedSaaSWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.OrganizationResource` was modified
 
-* `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
-* `latestLinkedSaaS()` was added
 * `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
+* `latestLinkedSaaS()` was added
+* `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
 * `linkSaaS(models.SaaSData)` was added
 
 ## 1.3.0-beta.1 (2026-02-10)
