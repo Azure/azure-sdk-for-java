@@ -538,7 +538,7 @@ class ServiceBusJmsAutoConfigurationTests {
             )
             .run(context -> {
                 JmsPoolConnectionFactory senderBean = context.getBean(JmsPoolConnectionFactory.class);
-                ConnectionFactory pooledTarget = senderBean.getConnectionFactory();
+                Object pooledTarget = senderBean.getConnectionFactory();
                 DefaultJmsListenerContainerFactory queueFactory = context.getBean(
                     "jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
                 DefaultJmsListenerContainerFactory topicFactory = context.getBean(
