@@ -619,7 +619,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+    @BeforeSuite(groups = {"thinclient", "thinclientEndpointProbe", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SHARED_SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
@@ -670,7 +670,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return collection;
     }
 
-    @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
+    @AfterSuite(groups = {"thinclient", "thinclientEndpointProbe", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
         "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {

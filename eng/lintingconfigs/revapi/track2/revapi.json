@@ -1840,6 +1840,25 @@
           "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, values() return type changed."
         },
         {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.CategoryType.*"
+          },
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum; enum-specific methods removed. Matches swagger x-ms-enum modelAsString:true intent."
+        },
+        {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.monitor.models.CategoryType::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.monitor.models.CategoryType::<init>()",
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum, constructor visibility increased."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.monitor.models.CategoryType[] com.azure.resourcemanager.monitor.models.CategoryType::values()",
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum, values() return type changed."
+        },
+        {
           "ignore": true,
           "code": "java.field.enumConstantOrderChanged",
           "old": "field com.azure.search.documents.SearchServiceVersion.V2026_04_01",

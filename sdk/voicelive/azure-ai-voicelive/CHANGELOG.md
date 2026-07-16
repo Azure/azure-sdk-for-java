@@ -1,14 +1,27 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- **Streaming input text** into a conversation item:
+  - New `ClientEventInputTextDelta` (`input_text.delta`) and `ClientEventInputTextDone` (`input_text.done`), each with optional `contentIndex`
+  - New `ClientEventType.INPUT_TEXT_DELTA` and `ClientEventType.INPUT_TEXT_DONE` values
+- **Echo cancellation reference source**: `AudioEchoCancellation` is now `@Fluent` and exposes `referenceSource` (new `EchoCancellationReferenceSource` enum with `SERVER` / `CLIENT`) and `channels` for stereo input where channel 1 is the client-supplied echo reference
+- **Azure realtime native voices**: new `AzureRealtimeNativeVoice` (type `azure-realtime-native`) and `AzureRealtimeNativeVoiceName` expandable enum (`AARTI`, `ANDREW`, `AVA`, `DENISE`, `DIYA`, `ELSA`, `FLORIAN`, `FRANCISCA`, `MEERA`, `XIAOXIAO`, `YUNXI`, `XIMENA`) for use with the `azure-realtime` model
+- **Parallel tool calls**: `VoiceLiveSessionOptions.setParallelToolCalls(Boolean)` / `isParallelToolCalls()` (and matching accessors on `VoiceLiveSessionResponse`) to control whether the model may invoke tools in parallel
+- **Hosted agent invocation passthrough**:
+  - `ResponseCreateParams.setInvokeInput(Map<String, BinaryData>)` / `getInvokeInput()` to attach input data for a hosted agent invocation on a single response request
+  - New `ServerEventResponseInvocationDelta` (`response.invocation.delta`) and `ServerEventType.RESPONSE_INVOCATION_DELTA` pass through non-speech SSE events from the hosted agent
+- **Session expiration**: `VoiceLiveSessionResponse.getExpiresAt()` / `setExpiresAt(OffsetDateTime)` expose the server-assigned session expiration time (serialized on the wire as seconds since epoch)
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated against the `2026-07-15` (GA) VoiceLive TypeSpec.
+- Added service API version `V2026_07_15` and made it the default used by `VoiceLiveClientBuilder`. `VoiceLiveServiceVersion.getLatest()` now returns `V2026_07_15`. The previous default `V2026_04_10` remains available for callers that pin to it.
+- The following APIs introduced in `1.1.0-beta.1` are not part of this GA release: WebRTC SDP negotiation (`ClientEventRtcCallSdpCreate`, `ServerEventRtcCallSdpCreated`, `ServerEventRtcCallError`, `RtcCallErrorDetails`, and the `rtc.call.*` event-type values), output audio buffer playback lifecycle events (`ServerEventOutputAudioBufferStarted`, `ServerEventOutputAudioBufferStopped`, and the `output_audio_buffer.started` / `output_audio_buffer.stopped` `ServerEventType` values), and smart audio-based end-of-turn detection (`SmartEndOfTurnDetection` and the `EouDetectionModel.SMART_END_OF_TURN_DETECTION` value).
 
 ## 1.1.0-beta.1 (2026-06-02)
 
