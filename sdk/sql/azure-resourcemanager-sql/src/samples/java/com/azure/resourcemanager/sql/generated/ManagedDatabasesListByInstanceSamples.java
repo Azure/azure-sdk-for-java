@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabasesListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseListByManagedInstance.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseListByManagedInstance.json
      */
     /**
      * Sample code: List databases by managed instances.

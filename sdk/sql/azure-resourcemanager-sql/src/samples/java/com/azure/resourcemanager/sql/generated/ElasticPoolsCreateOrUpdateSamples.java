@@ -15,7 +15,7 @@ import com.azure.resourcemanager.sql.models.Sku;
  */
 public final class ElasticPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateElasticPoolWithAvailabilityZone.json
+     * x-ms-original-file: 2025-01-01/CreateElasticPoolWithAvailabilityZone.json
      */
     /**
      * Sample code: Create or Update an elastic pool with Availability Zone.
@@ -37,7 +37,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateOrUpdateServerlessProperties.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateOrUpdateServerlessProperties.json
      */
     /**
      * Sample code: Create or Update an elastic pool with serverless properties.
@@ -60,7 +60,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateOrUpdateMax.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateOrUpdateMax.json
      */
     /**
      * Sample code: Create or update elastic pool with all parameter.
@@ -80,7 +80,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
+     * x-ms-original-file: 2025-01-01/HyperscaleElasticPoolCreateOrUpdateSetHighAvailabilityReplicaCount.json
      */
     /**
      * Sample code: Create or update Hyperscale elastic pool with high availability replica count parameter.
@@ -99,7 +99,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateWithDefaultPreferredEnclaveType.json
      */
     /**
      * Sample code: Create or update elastic pool with preferred enclave type parameter as Default.
@@ -118,7 +118,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateOrUpdateSetMaintenanceConfiguration.json
      */
     /**
      * Sample code: Create or update elastic pool with maintenance configuration parameter.
@@ -137,7 +137,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateOrUpdateMin.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateOrUpdateMin.json
      */
     /**
      * Sample code: Create or update elastic pool with minimum parameters.
@@ -153,7 +153,7 @@ public final class ElasticPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ElasticPoolCreateWithVBSPreferredEnclaveType.json
+     * x-ms-original-file: 2025-01-01/ElasticPoolCreateWithVBSPreferredEnclaveType.json
      */
     /**
      * Sample code: Create or update elastic pool with preferred enclave type parameter as VBS.

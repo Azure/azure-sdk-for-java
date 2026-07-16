@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.AdministratorName;
  */
 public final class ManagedInstanceAdministratorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdministratorDelete.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdministratorDelete.json
      */
     /**
      * Sample code: Delete administrator of managed instance.
