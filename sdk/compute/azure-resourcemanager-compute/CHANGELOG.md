@@ -26,6 +26,10 @@
 
 * `ROLLING_BACK` was added
 
+### Other Changes
+
+- Updated `DiskRP api-version` to `2026-03-02`.
+
 ## 2.58.2 (2026-07-07)
 
 ### Other Changes
