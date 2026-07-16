@@ -18,6 +18,10 @@
 * `withDescription(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 
+### Other Changes
+
+- Updated `api-version` to `2024-11-30`.
+
 ## 2.53.9 (2026-07-01)
 
 ### Other Changes
