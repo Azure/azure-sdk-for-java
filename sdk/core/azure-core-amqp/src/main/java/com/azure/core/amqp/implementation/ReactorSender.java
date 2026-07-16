@@ -406,12 +406,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                             + "Using default link size: {}.", MAX_MESSAGE_LENGTH_BYTES);
                         linkSize = MAX_MESSAGE_LENGTH_BYTES;
                     } else {
-                        final long remoteValue = remoteMaxMessageSize.longValue();
-                        // An unsigned long above Long.MAX_VALUE is negative here; clamp anything above
-                        // Integer.MAX_VALUE so the int-sized encode buffer arithmetic cannot overflow.
-                        linkSize = (remoteValue < 0 || remoteValue > Integer.MAX_VALUE)
-                            ? Integer.MAX_VALUE
-                            : (int) remoteValue;
+                        linkSize = clampToInt(remoteMaxMessageSize);
                     }
 
                     return linkSize;
@@ -443,8 +438,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         && remoteProperties.containsKey(AmqpConstants.MAX_MESSAGE_BATCH_SIZE)) {
                         final Object value = remoteProperties.get(AmqpConstants.MAX_MESSAGE_BATCH_SIZE);
                         // The AMQP property may arrive as UnsignedLong, UnsignedInteger, Long, or Integer.
-                        // intValue() is consistent with getLinkSize() — values > Integer.MAX_VALUE (impossible
-                        // for batch sizes) would overflow to negative and trigger the fallback below.
+                        // Values > Integer.MAX_VALUE (impossible for batch sizes) overflow intValue() to
+                        // negative and trigger the fallback below.
                         if (value instanceof Number) {
                             maxBatchSize = ((Number) value).intValue();
                         }
@@ -460,13 +455,26 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                                 + "falling back to max-message-size: {}.",
                             AmqpConstants.MAX_MESSAGE_BATCH_SIZE, remoteMaxMessageSize);
                         if (remoteMaxMessageSize != null) {
-                            maxBatchSize = remoteMaxMessageSize.intValue();
+                            maxBatchSize = clampToInt(remoteMaxMessageSize);
                         }
                     }
 
                     return maxBatchSize;
                 }));
         }
+    }
+
+    /**
+     * Converts the remote peer's max-message-size to an int, saturating at {@link Integer#MAX_VALUE}. An unsigned
+     * long above {@link Long#MAX_VALUE} reads as a negative long; peers may advertise such values to signal an
+     * effectively unlimited link.
+     *
+     * @param remoteMaxMessageSize the remote max-message-size, not null.
+     * @return the value as an int, or {@link Integer#MAX_VALUE} if it does not fit in an int.
+     */
+    private static int clampToInt(UnsignedLong remoteMaxMessageSize) {
+        final long value = remoteMaxMessageSize.longValue();
+        return (value < 0 || value > Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) value;
     }
 
     @Override

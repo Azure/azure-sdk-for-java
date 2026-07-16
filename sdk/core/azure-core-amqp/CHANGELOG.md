@@ -12,7 +12,8 @@
   which failed every send with "Size of the payload exceeded maximum message size: 0 kb" against brokers that
   do not advertise the field (for example ActiveMQ Artemis). Per AMQP 1.0 section 2.7.3, an absent or zero
   value means the peer imposes no limit; the link now falls back to a 256 KB default in that case. Remote
-  values larger than `Integer.MAX_VALUE` are now clamped instead of overflowing the link size.
+  values larger than `Integer.MAX_VALUE` are now clamped instead of overflowing the link size and the
+  max-message-size fallback of the batch size.
   ([#49847](https://github.com/Azure/azure-sdk-for-java/issues/49847))
 
 ### Other Changes

@@ -251,6 +251,12 @@ public class ReactorSenderTest {
             .expectNext(Integer.MAX_VALUE)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
+
+        // The max-message-size fallback in getMaxBatchSize applies the same clamping.
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(Integer.MAX_VALUE)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
