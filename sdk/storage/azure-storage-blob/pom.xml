@@ -146,15 +146,15 @@
     <!-- The internal ListBlobs Arrow reader uses vendored Arrow metadata accessors and the minimal FlatBuffers runtime
          sources required by those accessors. The arrow-format artifact ships Java 11 bytecode, while this library has a
          Java 8 baseline. Keeping both source sets internal also avoids modifying the release JAR through shading, which
-         would remove its explicit JPMS descriptor.
+         would remove its explicit Java module descriptor.
 
          When the Java 8 baseline is retired, additional options become available:
          - The add-reads compiler option may provide compile-time access to an unnamed implementation dependency.
-         - A post-shade module descriptor tool, such as Moditect, could rebuild module-info.class.
+         - A post-shade descriptor tool could rebuild module-info.class.
          - A multi-release JAR or separate internal Azure module could isolate the dependency.
          These options are not automatic replacements for vendoring. In particular, add-reads does not repair the
          explicit descriptor removed by shading. Any future packaging approach must preserve Blob's module-info.class
-         and transitive JPMS dependency graph, and must be validated by compiling installed downstream modules. -->
+         and transitive Java module dependency graph, and must be validated by compiling installed downstream modules. -->
 
   </dependencies>
   <profiles>
