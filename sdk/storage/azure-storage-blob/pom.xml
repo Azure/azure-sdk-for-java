@@ -201,10 +201,30 @@
                 <filter>
                   <artifact>com.google.flatbuffers:flatbuffers-java</artifact>
                   <excludes>
+                    <!-- Metadata -->
                     <exclude>META-INF/MANIFEST.MF</exclude>
                     <exclude>META-INF/LICENSE</exclude>
                     <exclude>META-INF/NOTICE</exclude>
                     <exclude>module-info.class</exclude>
+                    <!-- FlatBufferBuilder: for writing FlatBuffers — we only read -->
+                    <exclude>com/google/flatbuffers/FlatBufferBuilder.class</exclude>
+                    <exclude>com/google/flatbuffers/FlatBufferBuilder$*.class</exclude>
+                    <!-- FlexBuffers: a separate flexible encoding format we do not use -->
+                    <exclude>com/google/flatbuffers/FlexBuffers.class</exclude>
+                    <exclude>com/google/flatbuffers/FlexBuffers$*.class</exclude>
+                    <exclude>com/google/flatbuffers/FlexBuffersBuilder.class</exclude>
+                    <exclude>com/google/flatbuffers/FlexBuffersBuilder$*.class</exclude>
+                    <!-- Typed vector accessors: none are referenced by the Arrow accessor classes -->
+                    <exclude>com/google/flatbuffers/BooleanVector.class</exclude>
+                    <exclude>com/google/flatbuffers/DoubleVector.class</exclude>
+                    <exclude>com/google/flatbuffers/FloatVector.class</exclude>
+                    <exclude>com/google/flatbuffers/IntVector.class</exclude>
+                    <exclude>com/google/flatbuffers/LongVector.class</exclude>
+                    <exclude>com/google/flatbuffers/ShortVector.class</exclude>
+                    <exclude>com/google/flatbuffers/StringVector.class</exclude>
+                    <exclude>com/google/flatbuffers/UnionVector.class</exclude>
+                    <!-- FlatBuffers schema reflection: not used for Arrow IPC parsing -->
+                    <exclude>com/google/flatbuffers/reflection/**</exclude>
                   </excludes>
                 </filter>
               </filters>
