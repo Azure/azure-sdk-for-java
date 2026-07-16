@@ -40,24 +40,24 @@
 
 #### `ConfluentManager` was modified
 
-* `accessPointResources()` was added
 * `networkGatewayResources()` was added
+* `accessPointResources()` was added
 
 #### `models.Organizations` was modified
 
-* `activateResource(models.ActivateSaaSParameterRequest,com.azure.core.util.Context)` was added
-* `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
-* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
 * `activateResource(models.ActivateSaaSParameterRequest)` was added
 * `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
+* `activateResource(models.ActivateSaaSParameterRequest,com.azure.core.util.Context)` was added
 * `latestLinkedSaaSWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
 
 #### `models.OrganizationResource` was modified
 
-* `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
 * `latestLinkedSaaS()` was added
 * `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
 * `linkSaaS(models.SaaSData)` was added
+* `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
 
 ## 1.3.0-beta.1 (2026-02-10)
 
