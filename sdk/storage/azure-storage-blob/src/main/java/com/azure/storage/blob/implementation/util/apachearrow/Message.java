@@ -21,7 +21,7 @@
 
 package com.azure.storage.blob.implementation.util.apachearrow;
 
-import com.google.flatbuffers.Table;
+import com.azure.storage.blob.implementation.util.flatbuffers.Table;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

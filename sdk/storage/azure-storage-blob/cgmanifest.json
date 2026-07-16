@@ -12,6 +12,17 @@
           "version": "19.0.0"
         }
       }
+    },
+    {
+      "developmentDependency": false,
+      "component": {
+        "type": "maven",
+        "maven": {
+          "groupId": "com.google.flatbuffers",
+          "artifactId": "flatbuffers-java",
+          "version": "25.2.10"
+        }
+      }
     }
   ]
 }
