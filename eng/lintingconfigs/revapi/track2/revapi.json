@@ -864,6 +864,24 @@
           "justification": "Enum constant order change is not a breaking change."
         },
         {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.compute\\.models\\.RollingUpgradeStatusCode\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.compute\\.models\\.UpgradeState\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
