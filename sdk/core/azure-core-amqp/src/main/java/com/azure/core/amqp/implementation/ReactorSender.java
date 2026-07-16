@@ -67,6 +67,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+import static com.azure.core.amqp.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -397,11 +398,20 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     activeTimeoutMessage)
                 .then(Mono.fromCallable(() -> {
                     final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
-                    if (remoteMaxMessageSize != null) {
-                        linkSize = remoteMaxMessageSize.intValue();
+                    if (remoteMaxMessageSize == null || remoteMaxMessageSize.longValue() == 0) {
+                        // Per AMQP 1.0 section 2.7.3, an absent or zero max-message-size on the remote ATTACH
+                        // means the peer imposes no message size limit. Fall back to a bounded client-side
+                        // default rather than treating it as a zero-byte limit that fails every send.
+                        logger.info("Remote peer did not advertise a max-message-size on link attach. "
+                            + "Using default link size: {}.", MAX_MESSAGE_LENGTH_BYTES);
+                        linkSize = MAX_MESSAGE_LENGTH_BYTES;
                     } else {
-                        logger.warning("Could not get the getRemoteMaxMessageSize. Returning current link size: {}",
-                            linkSize);
+                        final long remoteValue = remoteMaxMessageSize.longValue();
+                        // An unsigned long above Long.MAX_VALUE is negative here; clamp anything above
+                        // Integer.MAX_VALUE so the int-sized encode buffer arithmetic cannot overflow.
+                        linkSize = (remoteValue < 0 || remoteValue > Integer.MAX_VALUE)
+                            ? Integer.MAX_VALUE
+                            : (int) remoteValue;
                     }
 
                     return linkSize;
