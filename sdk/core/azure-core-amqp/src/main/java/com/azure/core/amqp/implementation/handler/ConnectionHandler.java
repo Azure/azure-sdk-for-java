@@ -391,9 +391,10 @@ public class ConnectionHandler extends Handler {
             return;
         }
 
-        if (condition == null) {
-            throw logger
-                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+        if (condition == null || condition.getCondition() == null) {
+            onError(logger
+                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition.")));
+            return;
         }
 
         // If the remote peer closes with an error condition, propagate it to subscribers.

@@ -27,6 +27,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
+import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -280,6 +281,30 @@ public class ConnectionHandlerTest {
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(AmqpErrorCondition.CONNECTION_FORCED, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
+    }
+
+    @Test
+    void onTransportClosedWithoutErrorConditionSignalsClearError() {
+        // Arrange
+        final Connection connection = mock(Connection.class);
+        when(connection.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        final Transport transport = mock(Transport.class);
+        when(transport.getCondition()).thenReturn(new ErrorCondition(null, ""));
+
+        final Event event = mock(Event.class);
+        when(event.getConnection()).thenReturn(connection);
+        when(event.getTransport()).thenReturn(transport);
+
+        // Act & Assert
+        StepVerifier.create(handler.getEndpointStates())
+            .expectNext(EndpointState.UNINITIALIZED)
+            .then(() -> handler.onTransportClosed(event))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof IllegalStateException);
+                assertEquals("notifyErrorContext does not have an ErrorCondition.", error.getMessage());
             })
             .verify();
     }
