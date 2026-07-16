@@ -137,6 +137,16 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         Assertions.assertNotNull(identity);
         Assertions.assertEquals(IsolationScope.REGIONAL, identity.isolationScope());
 
+        // Update the isolation scope to None and ensure it round-trips.
+        identity = identity.update().withIsolationScope(IsolationScope.NONE).apply();
+
+        Assertions.assertEquals(IsolationScope.NONE, identity.isolationScope());
+
+        identity = msiManager.identities().getById(identity.id());
+
+        Assertions.assertNotNull(identity);
+        Assertions.assertEquals(IsolationScope.NONE, identity.isolationScope());
+
         msiManager.identities().deleteById(identity.id());
     }
 
