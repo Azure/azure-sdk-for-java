@@ -47,7 +47,9 @@ public interface Identity
      *
      * @return the isolation scope of the identity
      */
-    IsolationScope isolationScope();
+    default IsolationScope isolationScope() {
+        throw new UnsupportedOperationException("[isolationScope] is not supported in " + getClass());
+    }
 
     /**
      * Container interface for all the definitions related to identity.
@@ -154,7 +156,9 @@ public interface Identity
              * @param isolationScope the isolation scope of the identity
              * @return the next stage of the definition
              */
-            WithCreate withIsolationScope(IsolationScope isolationScope);
+            default WithCreate withIsolationScope(IsolationScope isolationScope) {
+                throw new UnsupportedOperationException("[withIsolationScope] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -270,7 +274,9 @@ public interface Identity
              * @param isolationScope the isolation scope of the identity
              * @return the next stage of the update
              */
-            Update withIsolationScope(IsolationScope isolationScope);
+            default Update withIsolationScope(IsolationScope isolationScope) {
+                throw new UnsupportedOperationException("[withIsolationScope] is not supported in " + getClass());
+            }
         }
     }
 
