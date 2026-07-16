@@ -5,7 +5,7 @@ module com.azure.storage.blob {
     requires transitive com.azure.storage.common;
 
     requires com.azure.storage.internal.avro;
-    requires flatbuffers.java;
+    requires static flatbuffers.java; // shaded into this jar at package phase; only needed for compilation
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;

@@ -158,6 +158,68 @@
 
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <!-- Apache Arrow format parsing. flatbuffers-java is the sole (compile-scoped) dependency used by
+                   azure-storage-blob's vendored Arrow FlatBuffer accessors -->
+              <includes>
+                <include>com.google.flatbuffers:flatbuffers-java:[24.3.25]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>shade-flatbuffers</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <!-- Bundle and relocate flatbuffers-java so it does not appear as a transitive dependency
+                   for consumers. The apachearrow bytecode references are rewritten automatically by shade. -->
+              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <artifactSet>
+                <includes>
+                  <include>com.google.flatbuffers:flatbuffers-java</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+                </includes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>com.google.flatbuffers:flatbuffers-java</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>META-INF/LICENSE</exclude>
+                    <exclude>META-INF/NOTICE</exclude>
+                    <exclude>module-info.class</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <relocations>
+                <relocation>
+                  <pattern>com.google.flatbuffers</pattern>
+                  <shadedPattern>com.azure.storage.blob.implementation.util.flatbuffers</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
   <profiles>
     <profile>
       <id>inject-sas-service-version</id>
