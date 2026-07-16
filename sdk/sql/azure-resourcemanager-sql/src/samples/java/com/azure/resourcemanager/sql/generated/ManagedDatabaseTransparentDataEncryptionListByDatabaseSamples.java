@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseTransparentDataEncryptionListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedTransparentDataEncryptionList.json
+     * x-ms-original-file: 2025-01-01/ManagedTransparentDataEncryptionList.json
      */
     /**
      * Sample code: Get a list of the database's transparent data encryptions.

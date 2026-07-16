@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
  */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateNumber.json
+     * x-ms-original-file: 2025-01-01/DataMaskingRuleCreateOrUpdateNumber.json
      */
     /**
      * Sample code: Create/Update data masking rule for numbers.
@@ -36,7 +36,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateText.json
+     * x-ms-original-file: 2025-01-01/DataMaskingRuleCreateOrUpdateText.json
      */
     /**
      * Sample code: Create/Update data masking rule for text.
@@ -59,7 +59,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateDefaultMin.json
+     * x-ms-original-file: 2025-01-01/DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
      * Sample code: Create/Update data masking rule for default min.
@@ -80,7 +80,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingRuleCreateOrUpdateDefaultMax.json
+     * x-ms-original-file: 2025-01-01/DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
      * Sample code: Create/Update data masking rule for default max.

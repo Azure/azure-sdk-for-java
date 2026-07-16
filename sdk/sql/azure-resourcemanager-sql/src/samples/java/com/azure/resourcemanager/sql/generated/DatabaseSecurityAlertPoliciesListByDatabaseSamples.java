@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseSecurityAlertPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseSecurityAlertListByDatabase.json
+     * x-ms-original-file: 2025-01-01/DatabaseSecurityAlertListByDatabase.json
      */
     /**
      * Sample code: Get the database's threat detection policies.

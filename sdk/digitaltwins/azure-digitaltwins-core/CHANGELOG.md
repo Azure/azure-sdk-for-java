@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 1.5.7 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.4` to version `1.6.5`.
+
+
 ## 1.5.6 (2026-05-05)
 
 ### Other Changes
