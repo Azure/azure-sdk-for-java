@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesRefreshStatusSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceRefreshExternalGovernanceStatus.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceRefreshExternalGovernanceStatus.json
      */
     /**
      * Sample code: Refresh external governance enablement status.

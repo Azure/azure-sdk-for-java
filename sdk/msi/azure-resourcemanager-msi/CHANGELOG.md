@@ -1,14 +1,30 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
+## 2.54.0 (2026-07-16)
 
 ### Features Added
 
+- Supported configuring `IsolationScope` on `Identity` via the fluent `withIsolationScope(IsolationScope)` method in create and update flows.
+
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UserAssignedIdentitiesListResult` was removed
+
+#### `models.FederatedIdentityCredentialsListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 
 ### Other Changes
+
+- Updated `api-version` to `2024-11-30`.
 
 ## 2.53.9 (2026-07-01)
 
