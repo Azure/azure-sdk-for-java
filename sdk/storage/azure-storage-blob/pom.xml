@@ -160,6 +160,31 @@
 
   <build>
     <plugins>
+      <!-- flatbuffers-java is shaded into this jar at the package phase (see maven-shade-plugin below).
+           The source code uses com.google.flatbuffers.* directly, and the shade plugin relocates those
+           references to the vendored package at byte-code level. Because the shade plugin removes
+           flatbuffers-java from the published (dependency-reduced) POM, we must NOT declare
+           "requires flatbuffers.java" in module-info.java — that would prevent downstream modules from
+           resolving com.azure.storage.blob when flatbuffers is absent from their module path.
+           Instead, we allow the compiler to read flatbuffers via `add-reads` flag so the source compiles
+           while the published module descriptor stays clean. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <configuration>
+              <compilerArgs combine.children="append">
+                <!-- Allow compile-time access to classpath dependencies from this named module without
+                     encoding an extra requires clause in module-info.java. -->
+                <arg>--add-reads</arg>
+                <arg>com.azure.storage.blob=ALL-UNNAMED</arg>
+              </compilerArgs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -234,6 +259,14 @@
                   <shadedPattern>com.azure.storage.blob.implementation.util.flatbuffers</shadedPattern>
                 </relocation>
               </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <!-- Shade removes module-info.class; keep the stable module name for downstream JPMS builds. -->
+                    <Automatic-Module-Name>com.azure.storage.blob</Automatic-Module-Name>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
             </configuration>
           </execution>
         </executions>
