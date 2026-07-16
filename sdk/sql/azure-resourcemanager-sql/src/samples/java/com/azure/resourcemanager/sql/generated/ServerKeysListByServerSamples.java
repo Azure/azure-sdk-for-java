@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerKeysListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyList.json
+     * x-ms-original-file: 2025-01-01/ServerKeyList.json
      */
     /**
      * Sample code: List the server keys by server.
