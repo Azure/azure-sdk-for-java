@@ -96,9 +96,10 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureFirewallName") String azureFirewallName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") AzureFirewallInner parameters,
-            Context context);
+            @PathParam("azureFirewallName") String azureFirewallName,
+            @QueryParam("createAfcControlPlane") Boolean createAfcControlPlane,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AzureFirewallInner parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}")
         @ExpectedResponses({ 200, 202 })
@@ -211,7 +212,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -249,7 +250,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -310,6 +311,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,7 +319,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String azureFirewallName, AzureFirewallInner parameters) {
+        String azureFirewallName, AzureFirewallInner parameters, Boolean createAfcControlPlane) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -339,13 +341,13 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, azureFirewallName, contentType, accept, parameters,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, azureFirewallName, createAfcControlPlane,
+                contentType, accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -355,6 +357,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -363,7 +366,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String azureFirewallName, AzureFirewallInner parameters, Context context) {
+        String azureFirewallName, AzureFirewallInner parameters, Boolean createAfcControlPlane, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -385,12 +388,34 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, azureFirewallName, contentType, accept, parameters, context);
+            resourceGroupName, azureFirewallName, createAfcControlPlane, contentType, accept, parameters, context);
+    }
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters,
+        Boolean createAfcControlPlane) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane);
+        return this.client.<AzureFirewallInner, AzureFirewallInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AzureFirewallInner.class, AzureFirewallInner.class, this.client.getContext());
     }
 
     /**
@@ -407,8 +432,9 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
+        final Boolean createAfcControlPlane = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters);
+            = createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane);
         return this.client.<AzureFirewallInner, AzureFirewallInner>getLroResult(mono, this.client.getHttpPipeline(),
             AzureFirewallInner.class, AzureFirewallInner.class, this.client.getContext());
     }
@@ -419,6 +445,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -427,10 +454,11 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
+        String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters,
+        Boolean createAfcControlPlane, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, azureFirewallName,
+            parameters, createAfcControlPlane, context);
         return this.client.<AzureFirewallInner, AzureFirewallInner>getLroResult(mono, this.client.getHttpPipeline(),
             AzureFirewallInner.class, AzureFirewallInner.class, context);
     }
@@ -449,7 +477,9 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(String resourceGroupName,
         String azureFirewallName, AzureFirewallInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
+        final Boolean createAfcControlPlane = null;
+        return this.beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane)
+            .getSyncPoller();
     }
 
     /**
@@ -458,6 +488,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -466,8 +497,29 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(String resourceGroupName,
-        String azureFirewallName, AzureFirewallInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
+        String azureFirewallName, AzureFirewallInner parameters, Boolean createAfcControlPlane, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the specified Azure Firewall.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AzureFirewallInner> createOrUpdateAsync(String resourceGroupName, String azureFirewallName,
+        AzureFirewallInner parameters, Boolean createAfcControlPlane) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -484,7 +536,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> createOrUpdateAsync(String resourceGroupName, String azureFirewallName,
         AzureFirewallInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).last()
+        final Boolean createAfcControlPlane = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -494,6 +547,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -502,9 +556,9 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureFirewallInner> createOrUpdateAsync(String resourceGroupName, String azureFirewallName,
-        AzureFirewallInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        AzureFirewallInner parameters, Boolean createAfcControlPlane, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -521,7 +575,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureFirewallInner createOrUpdate(String resourceGroupName, String azureFirewallName,
         AzureFirewallInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).block();
+        final Boolean createAfcControlPlane = null;
+        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane).block();
     }
 
     /**
@@ -530,6 +585,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param azureFirewallName The name of the Azure Firewall.
      * @param parameters Parameters supplied to the create or update Azure Firewall operation.
+     * @param createAfcControlPlane When set to true, creates an AFC control plane for the Azure Firewall.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -538,8 +594,9 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureFirewallInner createOrUpdate(String resourceGroupName, String azureFirewallName,
-        AzureFirewallInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).block();
+        AzureFirewallInner parameters, Boolean createAfcControlPlane, Context context) {
+        return createOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, createAfcControlPlane, context)
+            .block();
     }
 
     /**
@@ -577,7 +634,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -623,7 +680,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -808,7 +865,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, azureFirewallName, context))
@@ -845,7 +902,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             azureFirewallName, context);
@@ -1006,7 +1063,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1042,7 +1099,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1130,7 +1187,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1160,7 +1217,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1251,7 +1308,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLearnedPrefixes(this.client.getEndpoint(), apiVersion,
@@ -1290,7 +1347,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono
                 .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listLearnedPrefixes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1471,7 +1528,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(
@@ -1516,7 +1573,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.packetCapture(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1706,7 +1763,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1753,7 +1810,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);

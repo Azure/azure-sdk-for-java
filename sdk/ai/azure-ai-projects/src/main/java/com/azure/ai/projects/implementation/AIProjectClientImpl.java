@@ -81,6 +81,132 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The BetaModelsImpl object to access its operations.
+     */
+    private final BetaModelsImpl betaModels;
+
+    /**
+     * Gets the BetaModelsImpl object to access its operations.
+     * 
+     * @return the BetaModelsImpl object.
+     */
+    public BetaModelsImpl getBetaModels() {
+        return this.betaModels;
+    }
+
+    /**
+     * The BetaRedTeamsImpl object to access its operations.
+     */
+    private final BetaRedTeamsImpl betaRedTeams;
+
+    /**
+     * Gets the BetaRedTeamsImpl object to access its operations.
+     * 
+     * @return the BetaRedTeamsImpl object.
+     */
+    public BetaRedTeamsImpl getBetaRedTeams() {
+        return this.betaRedTeams;
+    }
+
+    /**
+     * The BetaEvaluationTaxonomiesImpl object to access its operations.
+     */
+    private final BetaEvaluationTaxonomiesImpl betaEvaluationTaxonomies;
+
+    /**
+     * Gets the BetaEvaluationTaxonomiesImpl object to access its operations.
+     * 
+     * @return the BetaEvaluationTaxonomiesImpl object.
+     */
+    public BetaEvaluationTaxonomiesImpl getBetaEvaluationTaxonomies() {
+        return this.betaEvaluationTaxonomies;
+    }
+
+    /**
+     * The BetaEvaluatorsImpl object to access its operations.
+     */
+    private final BetaEvaluatorsImpl betaEvaluators;
+
+    /**
+     * Gets the BetaEvaluatorsImpl object to access its operations.
+     * 
+     * @return the BetaEvaluatorsImpl object.
+     */
+    public BetaEvaluatorsImpl getBetaEvaluators() {
+        return this.betaEvaluators;
+    }
+
+    /**
+     * The BetaInsightsImpl object to access its operations.
+     */
+    private final BetaInsightsImpl betaInsights;
+
+    /**
+     * Gets the BetaInsightsImpl object to access its operations.
+     * 
+     * @return the BetaInsightsImpl object.
+     */
+    public BetaInsightsImpl getBetaInsights() {
+        return this.betaInsights;
+    }
+
+    /**
+     * The BetaSchedulesImpl object to access its operations.
+     */
+    private final BetaSchedulesImpl betaSchedules;
+
+    /**
+     * Gets the BetaSchedulesImpl object to access its operations.
+     * 
+     * @return the BetaSchedulesImpl object.
+     */
+    public BetaSchedulesImpl getBetaSchedules() {
+        return this.betaSchedules;
+    }
+
+    /**
+     * The BetaRoutinesImpl object to access its operations.
+     */
+    private final BetaRoutinesImpl betaRoutines;
+
+    /**
+     * Gets the BetaRoutinesImpl object to access its operations.
+     * 
+     * @return the BetaRoutinesImpl object.
+     */
+    public BetaRoutinesImpl getBetaRoutines() {
+        return this.betaRoutines;
+    }
+
+    /**
+     * The BetaSkillsImpl object to access its operations.
+     */
+    private final BetaSkillsImpl betaSkills;
+
+    /**
+     * Gets the BetaSkillsImpl object to access its operations.
+     * 
+     * @return the BetaSkillsImpl object.
+     */
+    public BetaSkillsImpl getBetaSkills() {
+        return this.betaSkills;
+    }
+
+    /**
+     * The BetaDatasetsImpl object to access its operations.
+     */
+    private final BetaDatasetsImpl betaDatasets;
+
+    /**
+     * Gets the BetaDatasetsImpl object to access its operations.
+     * 
+     * @return the BetaDatasetsImpl object.
+     */
+    public BetaDatasetsImpl getBetaDatasets() {
+        return this.betaDatasets;
+    }
+
+    /**
      * The ConnectionsImpl object to access its operations.
      */
     private final ConnectionsImpl connections;
@@ -123,20 +249,6 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The ModelsImpl object to access its operations.
-     */
-    private final ModelsImpl models;
-
-    /**
-     * Gets the ModelsImpl object to access its operations.
-     * 
-     * @return the ModelsImpl object.
-     */
-    public ModelsImpl getModels() {
-        return this.models;
-    }
-
-    /**
      * The DeploymentsImpl object to access its operations.
      */
     private final DeploymentsImpl deployments;
@@ -151,20 +263,6 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The RedTeamsImpl object to access its operations.
-     */
-    private final RedTeamsImpl redTeams;
-
-    /**
-     * Gets the RedTeamsImpl object to access its operations.
-     * 
-     * @return the RedTeamsImpl object.
-     */
-    public RedTeamsImpl getRedTeams() {
-        return this.redTeams;
-    }
-
-    /**
      * The EvaluationRulesImpl object to access its operations.
      */
     private final EvaluationRulesImpl evaluationRules;
@@ -176,104 +274,6 @@ public final class AIProjectClientImpl {
      */
     public EvaluationRulesImpl getEvaluationRules() {
         return this.evaluationRules;
-    }
-
-    /**
-     * The EvaluationTaxonomiesImpl object to access its operations.
-     */
-    private final EvaluationTaxonomiesImpl evaluationTaxonomies;
-
-    /**
-     * Gets the EvaluationTaxonomiesImpl object to access its operations.
-     * 
-     * @return the EvaluationTaxonomiesImpl object.
-     */
-    public EvaluationTaxonomiesImpl getEvaluationTaxonomies() {
-        return this.evaluationTaxonomies;
-    }
-
-    /**
-     * The EvaluatorsImpl object to access its operations.
-     */
-    private final EvaluatorsImpl evaluators;
-
-    /**
-     * Gets the EvaluatorsImpl object to access its operations.
-     * 
-     * @return the EvaluatorsImpl object.
-     */
-    public EvaluatorsImpl getEvaluators() {
-        return this.evaluators;
-    }
-
-    /**
-     * The InsightsImpl object to access its operations.
-     */
-    private final InsightsImpl insights;
-
-    /**
-     * Gets the InsightsImpl object to access its operations.
-     * 
-     * @return the InsightsImpl object.
-     */
-    public InsightsImpl getInsights() {
-        return this.insights;
-    }
-
-    /**
-     * The SchedulesImpl object to access its operations.
-     */
-    private final SchedulesImpl schedules;
-
-    /**
-     * Gets the SchedulesImpl object to access its operations.
-     * 
-     * @return the SchedulesImpl object.
-     */
-    public SchedulesImpl getSchedules() {
-        return this.schedules;
-    }
-
-    /**
-     * The RoutinesImpl object to access its operations.
-     */
-    private final RoutinesImpl routines;
-
-    /**
-     * Gets the RoutinesImpl object to access its operations.
-     * 
-     * @return the RoutinesImpl object.
-     */
-    public RoutinesImpl getRoutines() {
-        return this.routines;
-    }
-
-    /**
-     * The SkillsImpl object to access its operations.
-     */
-    private final SkillsImpl skills;
-
-    /**
-     * Gets the SkillsImpl object to access its operations.
-     * 
-     * @return the SkillsImpl object.
-     */
-    public SkillsImpl getSkills() {
-        return this.skills;
-    }
-
-    /**
-     * The DataGenerationJobsImpl object to access its operations.
-     */
-    private final DataGenerationJobsImpl dataGenerationJobs;
-
-    /**
-     * Gets the DataGenerationJobsImpl object to access its operations.
-     * 
-     * @return the DataGenerationJobsImpl object.
-     */
-    public DataGenerationJobsImpl getDataGenerationJobs() {
-        return this.dataGenerationJobs;
     }
 
     /**
@@ -324,19 +324,19 @@ public final class AIProjectClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.betaModels = new BetaModelsImpl(this);
+        this.betaRedTeams = new BetaRedTeamsImpl(this);
+        this.betaEvaluationTaxonomies = new BetaEvaluationTaxonomiesImpl(this);
+        this.betaEvaluators = new BetaEvaluatorsImpl(this);
+        this.betaInsights = new BetaInsightsImpl(this);
+        this.betaSchedules = new BetaSchedulesImpl(this);
+        this.betaRoutines = new BetaRoutinesImpl(this);
+        this.betaSkills = new BetaSkillsImpl(this);
+        this.betaDatasets = new BetaDatasetsImpl(this);
         this.connections = new ConnectionsImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.models = new ModelsImpl(this);
         this.deployments = new DeploymentsImpl(this);
-        this.redTeams = new RedTeamsImpl(this);
         this.evaluationRules = new EvaluationRulesImpl(this);
-        this.evaluationTaxonomies = new EvaluationTaxonomiesImpl(this);
-        this.evaluators = new EvaluatorsImpl(this);
-        this.insights = new InsightsImpl(this);
-        this.schedules = new SchedulesImpl(this);
-        this.routines = new RoutinesImpl(this);
-        this.skills = new SkillsImpl(this);
-        this.dataGenerationJobs = new DataGenerationJobsImpl(this);
     }
 }

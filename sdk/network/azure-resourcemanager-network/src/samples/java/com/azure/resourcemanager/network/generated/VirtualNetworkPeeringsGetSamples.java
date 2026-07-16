@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkPeeringsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringGet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
@@ -23,7 +23,7 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Get peering with remote virtual network encryption.
@@ -38,7 +38,7 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkSubnetPeeringGet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkSubnetPeeringGet.json
      */
     /**
      * Sample code: Get subnet peering.
@@ -52,7 +52,7 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkV6SubnetPeeringGet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkV6SubnetPeeringGet.json
      */
     /**
      * Sample code: Get V6 subnet peering.

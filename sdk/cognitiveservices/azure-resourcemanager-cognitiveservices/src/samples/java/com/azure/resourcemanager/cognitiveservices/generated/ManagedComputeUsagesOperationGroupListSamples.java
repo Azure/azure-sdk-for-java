@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ManagedComputeUsagesOperationGroupListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListManagedComputeUsages.json
+     * x-ms-original-file: 2026-05-15-preview/ListManagedComputeUsages.json
      */
     /**
      * Sample code: List Managed Compute Usages.

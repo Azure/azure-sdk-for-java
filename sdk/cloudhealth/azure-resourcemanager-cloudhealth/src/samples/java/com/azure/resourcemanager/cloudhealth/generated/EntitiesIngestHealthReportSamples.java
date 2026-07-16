@@ -15,7 +15,7 @@ import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
  */
 public final class EntitiesIngestHealthReportSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Entities_IngestHealthReport.json
+     * x-ms-original-file: 2026-05-01-preview/Entities_IngestHealthReport.json
      */
     /**
      * Sample code: Entities_IngestHealthReport.
@@ -24,17 +24,17 @@ public final class EntitiesIngestHealthReportSamples {
      */
     public static void entitiesIngestHealthReport(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .ingestHealthReportWithResponse("rgopenapi", "myHealthModel", "entity1",
-                new HealthReportRequest().withSignalName("uniqueSignalName1")
-                    .withHealthState(HealthState.DEGRADED)
-                    .withValue(85.5D)
+            .ingestHealthReportWithResponse("online-store-rg", "online-store", "orders-api",
+                new HealthReportRequest().withSignalName("error-rate")
+                    .withHealthState(HealthState.UNHEALTHY)
+                    .withValue(6.5D)
                     .withEvaluationRules(new HealthReportEvaluationRule()
                         .withDegradedRule(
-                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0))
+                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(1.0D))
                         .withUnhealthyRule(
-                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(90.0)))
+                            new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(5.0D)))
                     .withExpiresInMinutes(60)
-                    .withAdditionalContext("CPU usage elevated due to batch processing job"),
+                    .withAdditionalContext("Elevated 5xx error rate during the checkout traffic spike."),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsSetLegalHoldImmutabilitySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
+     * x-ms-original-file: 2025-01-01/SetLegalHoldImmutabilityLongTermRetentionBackup.json
      */
     /**
      * Sample code: Set legal hold immutability of the long term retention backup.

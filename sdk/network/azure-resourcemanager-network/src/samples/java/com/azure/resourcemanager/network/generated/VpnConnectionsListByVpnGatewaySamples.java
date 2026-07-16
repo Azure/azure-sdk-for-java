@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnConnectionsListByVpnGatewaySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnConnectionList.json
+     * x-ms-original-file: 2025-07-01/VpnConnectionList.json
      */
     /**
      * Sample code: VpnConnectionList.

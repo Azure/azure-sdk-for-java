@@ -442,6 +442,32 @@ public class Utils {
         }
     }
 
+    public static boolean isConsistencyLevelUpgrade(ConsistencyLevel backendConsistency,
+                                                    ConsistencyLevel desiredConsistency) {
+        if (backendConsistency == null || desiredConsistency == null) {
+            return false;
+        }
+
+        return getConsistencyLevelRank(desiredConsistency) > getConsistencyLevelRank(backendConsistency);
+    }
+
+    private static int getConsistencyLevelRank(ConsistencyLevel consistencyLevel) {
+        switch (consistencyLevel) {
+            case STRONG:
+                return 5;
+            case BOUNDED_STALENESS:
+                return 4;
+            case SESSION:
+                return 3;
+            case CONSISTENT_PREFIX:
+                return 2;
+            case EVENTUAL:
+                return 1;
+            default:
+                throw new IllegalArgumentException("consistencyLevel");
+        }
+    }
+
     public static String getUserAgent() {
         return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.getSdkVersion());
     }

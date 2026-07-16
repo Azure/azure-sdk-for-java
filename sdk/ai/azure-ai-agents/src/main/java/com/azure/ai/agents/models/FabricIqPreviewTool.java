@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * A FabricIQ server-side tool.
@@ -47,26 +46,6 @@ public final class FabricIqPreviewTool extends Tool {
      */
     @Generated
     private BinaryData requireApproval;
-
-    /*
-     * Optional user-defined name for this tool or configuration.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Optional user-defined description for this tool or configuration.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Creates an instance of FabricIqPreviewTool class.
@@ -224,76 +203,6 @@ public final class FabricIqPreviewTool extends Tool {
     }
 
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @param name the name value to set.
-     * @return the FabricIqPreviewTool object itself.
-     */
-    @Generated
-    public FabricIqPreviewTool setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @param description the description value to set.
-     * @return the FabricIqPreviewTool object itself.
-     */
-    @Generated
-    public FabricIqPreviewTool setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the FabricIqPreviewTool object itself.
-     */
-    @Generated
-    public FabricIqPreviewTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -308,9 +217,6 @@ public final class FabricIqPreviewTool extends Tool {
             jsonWriter.writeFieldName("require_approval");
             this.requireApproval.writeTo(jsonWriter);
         }
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -331,9 +237,6 @@ public final class FabricIqPreviewTool extends Tool {
             String serverLabel = null;
             String serverUrl = null;
             BinaryData requireApproval = null;
-            String name = null;
-            String description = null;
-            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -348,12 +251,6 @@ public final class FabricIqPreviewTool extends Tool {
                 } else if ("require_approval".equals(fieldName)) {
                     requireApproval
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -363,9 +260,6 @@ public final class FabricIqPreviewTool extends Tool {
             deserializedFabricIqPreviewTool.serverLabel = serverLabel;
             deserializedFabricIqPreviewTool.serverUrl = serverUrl;
             deserializedFabricIqPreviewTool.requireApproval = requireApproval;
-            deserializedFabricIqPreviewTool.name = name;
-            deserializedFabricIqPreviewTool.description = description;
-            deserializedFabricIqPreviewTool.toolConfigs = toolConfigs;
             return deserializedFabricIqPreviewTool;
         });
     }

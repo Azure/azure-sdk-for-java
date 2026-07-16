@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ReserveCloudServicePublicIpAddre
  */
 public final class PublicIpAddressesReserveCloudServicePublicIpAddressSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressReserve.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressReserve.json
      */
     /**
      * Sample code: Reserve public IP address.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesGetCassandraRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleDefinitionGet.json
+     * x-ms-original-file: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleDefinitionGet.json
      */
     /**
      * Sample code: CosmosDBCassandraRoleDefinitionGet.

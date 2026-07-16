@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkConnectionGatewayReference;
@@ -147,6 +148,11 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
      * must be enabled.
      */
     private Boolean enablePrivateLinkFastPath;
+
+    /*
+     * The routing configuration indicating the associated and propagated route tables for this connection.
+     */
+    private RoutingConfiguration routingConfiguration;
 
     /**
      * Creates an instance of VirtualNetworkGatewayConnectionListEntityPropertiesFormat class.
@@ -366,6 +372,16 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
     }
 
     /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -401,6 +417,9 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
         if (trafficSelectorPolicies() != null) {
             trafficSelectorPolicies().forEach(e -> e.validate());
         }
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
+        }
     }
 
     private static final ClientLogger LOGGER
@@ -434,6 +453,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("expressRouteGatewayBypass", this.expressRouteGatewayBypass);
         jsonWriter.writeBooleanField("enablePrivateLinkFastPath", this.enablePrivateLinkFastPath);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -531,6 +551,9 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
                 } else if ("enablePrivateLinkFastPath".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.enablePrivateLinkFastPath
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.routingConfiguration
+                        = RoutingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

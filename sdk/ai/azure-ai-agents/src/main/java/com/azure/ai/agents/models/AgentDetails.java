@@ -95,6 +95,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
+            AgentState state = null;
             AgentDetailsVersions versions = null;
             AgentEndpointConfig agentEndpoint = null;
             AgentIdentity instanceIdentity = null;
@@ -108,6 +109,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    state = AgentState.fromString(reader.getString());
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
                 } else if ("agent_endpoint".equals(fieldName)) {
@@ -125,6 +128,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                 }
             }
             AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
+            deserializedAgentDetails.state = state;
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
             deserializedAgentDetails.instanceIdentity = instanceIdentity;
             deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
@@ -242,5 +246,22 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Generated
     public AgentIdentity getBlueprintIdentity() {
         return this.blueprintIdentity;
+    }
+
+    /*
+     * The operational state of the agent. Controls whether the agent endpoint accepts or rejects requests.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The operational state of the agent. Controls whether the agent endpoint accepts or
+     * rejects requests.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
     }
 }

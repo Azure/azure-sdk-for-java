@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VpnConnectionsStopPacketCaptureSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnConnectionStopPacketCapture.json
+     * x-ms-original-file: 2025-07-01/VpnConnectionStopPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn connection without filter.

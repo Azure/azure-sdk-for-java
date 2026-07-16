@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.msi.models.ClaimsMatchingExpression;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,12 +35,6 @@ public final class FederatedIdentityCredentialProperties
      * The list of audiences that can appear in the issued token.
      */
     private List<String> audiences;
-
-    /*
-     * Object for defining the allowed identifiers of external identities. Either 'subject' or
-     * 'claimsMatchingExpression' must be defined, but not both. Introduced in 2025-01-31-preview.
-     */
-    private ClaimsMatchingExpression claimsMatchingExpression;
 
     /**
      * Creates an instance of FederatedIdentityCredentialProperties class.
@@ -110,29 +103,6 @@ public final class FederatedIdentityCredentialProperties
     }
 
     /**
-     * Get the claimsMatchingExpression property: Object for defining the allowed identifiers of external identities.
-     * Either 'subject' or 'claimsMatchingExpression' must be defined, but not both. Introduced in 2025-01-31-preview.
-     * 
-     * @return the claimsMatchingExpression value.
-     */
-    public ClaimsMatchingExpression claimsMatchingExpression() {
-        return this.claimsMatchingExpression;
-    }
-
-    /**
-     * Set the claimsMatchingExpression property: Object for defining the allowed identifiers of external identities.
-     * Either 'subject' or 'claimsMatchingExpression' must be defined, but not both. Introduced in 2025-01-31-preview.
-     * 
-     * @param claimsMatchingExpression the claimsMatchingExpression value to set.
-     * @return the FederatedIdentityCredentialProperties object itself.
-     */
-    public FederatedIdentityCredentialProperties
-        withClaimsMatchingExpression(ClaimsMatchingExpression claimsMatchingExpression) {
-        this.claimsMatchingExpression = claimsMatchingExpression;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,13 +113,15 @@ public final class FederatedIdentityCredentialProperties
                 .log(new IllegalArgumentException(
                     "Missing required property issuer in model FederatedIdentityCredentialProperties"));
         }
+        if (subject() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subject in model FederatedIdentityCredentialProperties"));
+        }
         if (audiences() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property audiences in model FederatedIdentityCredentialProperties"));
-        }
-        if (claimsMatchingExpression() != null) {
-            claimsMatchingExpression().validate();
         }
     }
 
@@ -162,9 +134,8 @@ public final class FederatedIdentityCredentialProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("issuer", this.issuer);
-        jsonWriter.writeArrayField("audiences", this.audiences, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("subject", this.subject);
-        jsonWriter.writeJsonField("claimsMatchingExpression", this.claimsMatchingExpression);
+        jsonWriter.writeArrayField("audiences", this.audiences, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -187,14 +158,11 @@ public final class FederatedIdentityCredentialProperties
 
                 if ("issuer".equals(fieldName)) {
                     deserializedFederatedIdentityCredentialProperties.issuer = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedFederatedIdentityCredentialProperties.subject = reader.getString();
                 } else if ("audiences".equals(fieldName)) {
                     List<String> audiences = reader.readArray(reader1 -> reader1.getString());
                     deserializedFederatedIdentityCredentialProperties.audiences = audiences;
-                } else if ("subject".equals(fieldName)) {
-                    deserializedFederatedIdentityCredentialProperties.subject = reader.getString();
-                } else if ("claimsMatchingExpression".equals(fieldName)) {
-                    deserializedFederatedIdentityCredentialProperties.claimsMatchingExpression
-                        = ClaimsMatchingExpression.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

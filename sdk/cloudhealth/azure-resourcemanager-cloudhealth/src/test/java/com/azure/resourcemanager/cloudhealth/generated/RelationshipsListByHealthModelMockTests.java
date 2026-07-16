@@ -22,7 +22,7 @@ public final class RelationshipsListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"bevwqqxeys\",\"parentEntityName\":\"onqzinkfkbgbzbow\",\"childEntityName\":\"eqocljmygvk\",\"tags\":{\"fezrx\":\"jjeokbz\",\"q\":\"czurtlei\"},\"discoveredBy\":\"kwv\"},\"id\":\"nzvdfbzdixzmq\",\"name\":\"noda\",\"type\":\"opqhewjptmc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ct\",\"parentEntityName\":\"xxdtddmflh\",\"childEntityName\":\"ytxzvtznapxbanno\",\"tags\":{\"ytprwnwvroev\":\"xc\",\"rrrouuxvnsa\":\"tlyo\"},\"discoveredBy\":\"crymodizrxklobd\"},\"id\":\"azpmkmlmv\",\"name\":\"vfxzopjh\",\"type\":\"zxlioh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class RelationshipsListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Relationship> response = manager.relationships()
-            .listByHealthModel("sdtmcdzs", "fcohdxbzlmcmu", OffsetDateTime.parse("2021-09-10T02:23:12Z"),
+            .listByHealthModel("ngnbdxxew", "ninvudbchaqdt", OffsetDateTime.parse("2021-06-19T09:08:45Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bevwqqxeys", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("onqzinkfkbgbzbow", response.iterator().next().properties().parentEntityName());
-        Assertions.assertEquals("eqocljmygvk", response.iterator().next().properties().childEntityName());
-        Assertions.assertEquals("jjeokbz", response.iterator().next().properties().tags().get("fezrx"));
+        Assertions.assertEquals("ct", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("xxdtddmflh", response.iterator().next().properties().parentEntityName());
+        Assertions.assertEquals("ytxzvtznapxbanno", response.iterator().next().properties().childEntityName());
+        Assertions.assertEquals("xc", response.iterator().next().properties().tags().get("ytprwnwvroev"));
     }
 }

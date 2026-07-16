@@ -7,10 +7,10 @@ import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
 import com.azure.ai.agents.models.ToolboxSkill;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -53,7 +53,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -65,7 +67,15 @@ public final class ToolboxesAsyncClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -97,7 +107,15 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -132,7 +150,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     *
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -161,7 +181,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -208,7 +230,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -244,7 +268,15 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -276,7 +308,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     *
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -292,7 +326,15 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -326,7 +368,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     *
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -367,7 +411,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     *
+     * Removes the specified toolbox along with all of its versions.
      *
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -384,7 +430,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     *
+     * Removes the specified version of a toolbox.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
@@ -403,7 +451,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
@@ -422,7 +472,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools, String description,
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<ToolboxTool> tools, String description,
         Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -438,7 +488,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
@@ -452,7 +504,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<Tool> tools) {
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<ToolboxTool> tools) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
@@ -463,7 +515,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     *
+     * Retrieves the specified toolbox and its current configuration.
      *
      * @param name The name of the toolbox to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +538,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -537,7 +593,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -567,7 +625,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      *
      * @param name The name of the toolbox to list versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -623,7 +683,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      *
      * @param name The name of the toolbox to list versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,7 +718,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     *
+     * Retrieves the specified version of a toolbox by name and version identifier.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
@@ -678,7 +742,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     *
+     * Updates the toolbox's default version pointer to the specified version.
      *
      * @param name The name of the toolbox to update.
      * @param defaultVersion The version identifier that the toolbox should point to. When set, the toolbox's default
@@ -703,7 +769,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     *
+     * Removes the specified toolbox along with all of its versions.
      *
      * @param name The name of the toolbox to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,7 +791,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     *
+     * Removes the specified version of a toolbox.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AgentApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/AgentApplication/createOrUpdate.json
+     * x-ms-original-file: 2026-05-15-preview/AgentApplication/createOrUpdate.json
      */
     /**
      * Sample code: Create or Update Account Agent Application.

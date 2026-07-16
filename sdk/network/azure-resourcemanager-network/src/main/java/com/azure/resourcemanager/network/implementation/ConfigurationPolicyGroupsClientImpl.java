@@ -160,7 +160,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -206,7 +206,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -320,7 +320,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -376,7 +376,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -625,7 +625,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -670,7 +670,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vpnServerConfigurationName, configurationPolicyGroupName, context);
@@ -874,7 +874,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVpnServerConfiguration(this.client.getEndpoint(), apiVersion,
@@ -916,7 +916,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computelimit.models.GuestSubscriptionProperties
  */
 public final class GuestSubscriptionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/GuestSubscriptions_Create.json
+     * x-ms-original-file: 2026-07-01/GuestSubscriptions_Create.json
      */
     /**
      * Sample code: Create a guest subscription.

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersListAvailableProvidersSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherAvailableProvidersListGet.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherAvailableProvidersListGet.json
      */
     /**
      * Sample code: Get Available Providers List.

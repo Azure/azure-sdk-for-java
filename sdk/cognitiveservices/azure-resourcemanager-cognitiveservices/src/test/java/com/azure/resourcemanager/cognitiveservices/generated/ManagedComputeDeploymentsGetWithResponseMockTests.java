@@ -23,7 +23,7 @@ public final class ManagedComputeDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"model\":\"ykkbxktxbbwl\",\"deploymentTemplate\":\"wzoknvu\",\"acceleratorType\":\"d\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"computeId\":\"q\",\"priority\":\"lgzubak\",\"acceleratorsPerInstance\":106468803,\"totalAccelerators\":998776187,\"provisioningState\":\"Failed\",\"provisioningDetails\":{\"message\":\"nsffetp\",\"lastOperationTimestamp\":\"2021-01-02T07:57:26Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"ewzlscgsmepnqv\",\"swagger\":\"voh\",\"messagesApiScoringPath\":\"thhx\"}},\"sku\":{\"name\":\"ev\",\"tier\":\"Basic\",\"size\":\"epfhgannvwx\",\"family\":\"p\",\"capacity\":1911283414},\"etag\":\"ohxvzgaybvrhhoga\",\"id\":\"xnwfmzvzt\",\"name\":\"uebpamq\",\"type\":\"fcssanybzzghvd\"}";
+            = "{\"properties\":{\"model\":\"zscueza\",\"deploymentTemplate\":\"vdfwgqjhewcffrx\",\"acceleratorType\":\"ezkhzp\",\"versionUpgradeOption\":\"NoAutoUpgrade\",\"capabilities\":{\"syzaivnp\":\"senerr\",\"kplujyduon\":\"jnp\"},\"computeId\":\"awsaoplvvmnbkx\",\"priority\":\"rsbbd\",\"acceleratorsPerInstance\":461401130,\"totalAccelerators\":1224304593,\"provisioningState\":\"Deleting\",\"provisioningDetails\":{\"message\":\"lxqk\",\"lastOperationTimestamp\":\"2021-05-16T12:51:46Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"zvcgrdspz\",\"swagger\":\"fkq\",\"messagesApiScoringPath\":\"uhvz\"}},\"sku\":{\"name\":\"brouszxac\",\"tier\":\"Enterprise\",\"size\":\"okgoojjf\",\"family\":\"tubcmu\",\"capacity\":882961343},\"etag\":\"tzvxxvsb\",\"id\":\"ufkr\",\"name\":\"nkcnihkswxmfurq\",\"type\":\"wmwwpntumota\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,20 @@ public final class ManagedComputeDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedComputeDeployment response = manager.managedComputeDeployments()
-            .getWithResponse("wdizc", "jixiujzkc", "exgkrsw", com.azure.core.util.Context.NONE)
+            .getWithResponse("wgr", "ub", "udhvos", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ykkbxktxbbwl", response.properties().model());
-        Assertions.assertEquals("wzoknvu", response.properties().deploymentTemplate());
-        Assertions.assertEquals("d", response.properties().acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
+        Assertions.assertEquals("zscueza", response.properties().model());
+        Assertions.assertEquals("vdfwgqjhewcffrx", response.properties().deploymentTemplate());
+        Assertions.assertEquals("ezkhzp", response.properties().acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE,
             response.properties().versionUpgradeOption());
-        Assertions.assertEquals("q", response.properties().computeId());
-        Assertions.assertEquals("lgzubak", response.properties().priority());
-        Assertions.assertEquals("ev", response.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals("epfhgannvwx", response.sku().size());
-        Assertions.assertEquals("p", response.sku().family());
-        Assertions.assertEquals(1911283414, response.sku().capacity());
+        Assertions.assertEquals("awsaoplvvmnbkx", response.properties().computeId());
+        Assertions.assertEquals("rsbbd", response.properties().priority());
+        Assertions.assertEquals("brouszxac", response.sku().name());
+        Assertions.assertEquals(SkuTier.ENTERPRISE, response.sku().tier());
+        Assertions.assertEquals("okgoojjf", response.sku().size());
+        Assertions.assertEquals("tubcmu", response.sku().family());
+        Assertions.assertEquals(882961343, response.sku().capacity());
     }
 }

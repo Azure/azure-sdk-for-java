@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterAccessRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspAccessRuleGet.json
+     * x-ms-original-file: 2025-07-01/NspAccessRuleGet.json
      */
     /**
      * Sample code: NspAccessRuleGet.

@@ -7,7 +7,6 @@ import com.azure.ai.projects.models.ApiError;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
 import com.azure.ai.projects.models.DatasetVersion;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -35,25 +34,19 @@ import java.util.function.Supplier;
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
+        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
-            dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
-                .take(5)
-                .doOnNext(job -> {
-                    Assertions.assertNotNull(job);
-                    Assertions.assertNotNull(job.getId());
-                })
-                .then())
-            .verifyComplete();
+            dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
+                Assertions.assertNotNull(job);
+                Assertions.assertNotNull(job.getId());
+            }).then()).verifyComplete();
     }
 
     @Timeout(value = 20, unit = TimeUnit.MINUTES)
@@ -61,9 +54,9 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobWithEvaluationAsyncSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = projectClientBuilder.buildDataGenerationJobsAsyncClient();
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
+            = projectClientBuilder.beta().buildBetaDatasetsAsyncClient();
         DatasetsAsyncClient datasetsAsyncClient = projectClientBuilder.buildDatasetsAsyncClient();
         OpenAIClientAsync openAIAsyncClient = projectClientBuilder.buildOpenAIAsyncClient();
 
@@ -72,7 +65,7 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
 
         Mono<Void> scenario = dataGenerationJobsAsyncClient
             .createGenerationJob(DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-                DATA_GENERATION_PREVIEW, testResourceNamer.randomUuid())
+                testResourceNamer.randomUuid())
             .flatMap(job -> waitForDataGenerationJob(dataGenerationJobsAsyncClient, job.getId(), 5, 180)
                 .flatMap(completedJob -> {
                     if (!JobStatus.SUCCEEDED.equals(completedJob.getStatus())) {
@@ -86,8 +79,7 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
                         = DataGenerationJobWithEvaluationSample.findDatasetOutput(completedJob);
                     return datasetsAsyncClient.getDatasetVersion(output.getName(), output.getVersion())
                         .flatMap(dataset -> runEvaluation(openAIAsyncClient, dataset, modelName))
-                        .then(dataGenerationJobsAsyncClient.deleteGenerationJob(completedJob.getId(),
-                            DATA_GENERATION_PREVIEW));
+                        .then(dataGenerationJobsAsyncClient.deleteGenerationJob(completedJob.getId()));
                 }));
 
         StepVerifier.create(scenario).verifyComplete();
@@ -131,16 +123,15 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         });
     }
 
-    private Mono<DataGenerationJob> waitForDataGenerationJob(
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient, String jobId, int pollIntervalSeconds,
-        int maxAttempts) {
+    private Mono<DataGenerationJob> waitForDataGenerationJob(BetaDatasetsAsyncClient dataGenerationJobsAsyncClient,
+        String jobId, int pollIntervalSeconds, int maxAttempts) {
         return pollDataGenerationJob(dataGenerationJobsAsyncClient, jobId, pollIntervalSeconds, maxAttempts, 0);
     }
 
-    private Mono<DataGenerationJob> pollDataGenerationJob(DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient,
+    private Mono<DataGenerationJob> pollDataGenerationJob(BetaDatasetsAsyncClient dataGenerationJobsAsyncClient,
         String jobId, int pollIntervalSeconds, int maxAttempts, int attempts) {
         return sleepBeforePolling(pollIntervalSeconds, attempts)
-            .then(dataGenerationJobsAsyncClient.getGenerationJob(jobId, DATA_GENERATION_PREVIEW))
+            .then(dataGenerationJobsAsyncClient.getGenerationJob(jobId))
             .flatMap(job -> DataGenerationJobWithEvaluationSample.isTerminalStatus(job.getStatus())
                 || attempts >= maxAttempts
                     ? Mono.just(job)

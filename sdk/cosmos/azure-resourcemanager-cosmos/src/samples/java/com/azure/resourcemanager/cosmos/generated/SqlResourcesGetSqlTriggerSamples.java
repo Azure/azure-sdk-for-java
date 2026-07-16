@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlTriggerSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlTriggerGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlTriggerGet.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerGet.

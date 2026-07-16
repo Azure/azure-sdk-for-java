@@ -159,6 +159,13 @@ public interface ComputeManagementClient {
     CapacityReservationsClient getCapacityReservations();
 
     /**
+     * Gets the InterconnectBlocksClient object to access its operations.
+     * 
+     * @return the InterconnectBlocksClient object.
+     */
+    InterconnectBlocksClient getInterconnectBlocks();
+
+    /**
      * Gets the VirtualMachineRunCommandsClient object to access its operations.
      * 
      * @return the VirtualMachineRunCommandsClient object.
@@ -304,6 +311,20 @@ public interface ComputeManagementClient {
      * @return the CommunityGalleryImageVersionsClient object.
      */
     CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
+
+    /**
+     * Gets the SharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the SharedGalleryInvitesClient object.
+     */
+    SharedGalleryInvitesClient getSharedGalleryInvites();
+
+    /**
+     * Gets the TenantLevelSharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the TenantLevelSharedGalleryInvitesClient object.
+     */
+    TenantLevelSharedGalleryInvitesClient getTenantLevelSharedGalleryInvites();
 
     /**
      * Gets the ResourceSkusClient object to access its operations.

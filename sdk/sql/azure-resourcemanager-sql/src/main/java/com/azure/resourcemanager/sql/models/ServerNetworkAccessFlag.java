@@ -23,6 +23,11 @@ public final class ServerNetworkAccessFlag extends ExpandableStringEnum<ServerNe
     public static final ServerNetworkAccessFlag DISABLED = fromString("Disabled");
 
     /**
+     * SecuredByPerimeter.
+     */
+    public static final ServerNetworkAccessFlag SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
      * Creates a new instance of ServerNetworkAccessFlag value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.VerifierWorkspaceProperties;
  */
 public final class VerifierWorkspacesCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VerifierWorkspacePut.json
+     * x-ms-original-file: 2025-07-01/VerifierWorkspacePut.json
      */
     /**
      * Sample code: VerifierWorkspaceCreate.

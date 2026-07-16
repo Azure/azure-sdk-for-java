@@ -23,6 +23,11 @@ public final class DdosSettings implements JsonSerializable<DdosSettings> {
     private DdosSettingsProtectionMode protectionMode;
 
     /*
+     * The DDoS custom policy associated with the public IP.
+     */
+    private SubResource ddosCustomPolicy;
+
+    /*
      * The DDoS protection plan associated with the public IP. Can only be set if ProtectionMode is Enabled
      */
     private SubResource ddosProtectionPlan;
@@ -50,6 +55,26 @@ public final class DdosSettings implements JsonSerializable<DdosSettings> {
      */
     public DdosSettings withProtectionMode(DdosSettingsProtectionMode protectionMode) {
         this.protectionMode = protectionMode;
+        return this;
+    }
+
+    /**
+     * Get the ddosCustomPolicy property: The DDoS custom policy associated with the public IP.
+     * 
+     * @return the ddosCustomPolicy value.
+     */
+    public SubResource ddosCustomPolicy() {
+        return this.ddosCustomPolicy;
+    }
+
+    /**
+     * Set the ddosCustomPolicy property: The DDoS custom policy associated with the public IP.
+     * 
+     * @param ddosCustomPolicy the ddosCustomPolicy value to set.
+     * @return the DdosSettings object itself.
+     */
+    public DdosSettings withDdosCustomPolicy(SubResource ddosCustomPolicy) {
+        this.ddosCustomPolicy = ddosCustomPolicy;
         return this;
     }
 
@@ -91,6 +116,7 @@ public final class DdosSettings implements JsonSerializable<DdosSettings> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("protectionMode",
             this.protectionMode == null ? null : this.protectionMode.toString());
+        jsonWriter.writeJsonField("ddosCustomPolicy", this.ddosCustomPolicy);
         jsonWriter.writeJsonField("ddosProtectionPlan", this.ddosProtectionPlan);
         return jsonWriter.writeEndObject();
     }
@@ -112,6 +138,8 @@ public final class DdosSettings implements JsonSerializable<DdosSettings> {
 
                 if ("protectionMode".equals(fieldName)) {
                     deserializedDdosSettings.protectionMode = DdosSettingsProtectionMode.fromString(reader.getString());
+                } else if ("ddosCustomPolicy".equals(fieldName)) {
+                    deserializedDdosSettings.ddosCustomPolicy = SubResource.fromJson(reader);
                 } else if ("ddosProtectionPlan".equals(fieldName)) {
                     deserializedDdosSettings.ddosProtectionPlan = SubResource.fromJson(reader);
                 } else {

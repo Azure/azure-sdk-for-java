@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubscriptionNetworkManagerConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectionSubscriptionDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerConnectionSubscriptionDelete.json
      */
     /**
      * Sample code: Delete Subscription Network Manager Connection.

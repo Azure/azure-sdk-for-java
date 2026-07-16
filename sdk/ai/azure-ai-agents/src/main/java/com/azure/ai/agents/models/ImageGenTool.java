@@ -39,8 +39,13 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolQuality quality;
 
     /*
-     * The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`, arbitrary resolutions are
+     * supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both be divisible by 16 and
+     * the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are experimental, and the
+     * maximum supported resolution is `3840x2160`. The requested size must also satisfy the model's current pixel and
+     * edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
+     * `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of `256x256`, `512x512`, or
+     * `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      */
     @Generated
     private ImageGenToolSize size;
@@ -149,8 +154,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Get the size property: The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`,
+     * arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both
+     * be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
+     * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
+     * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
+     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @return the size value.
      */
@@ -160,8 +170,13 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the size property: The size of the generated image. One of `1024x1024`, `1024x1536`,
-     * `1536x1024`, or `auto`. Default: `auto`.
+     * Set the size property: The size of the generated images. For `gpt-image-2` and `gpt-image-2-2026-04-21`,
+     * arbitrary resolutions are supported as `WIDTHxHEIGHT` strings, for example `1536x864`. Width and height must both
+     * be divisible by 16 and the requested aspect ratio must be between 1:3 and 3:1. Resolutions above `2560x1440` are
+     * experimental, and the maximum supported resolution is `3840x2160`. The requested size must also satisfy the
+     * model's current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and `1024x1536` are supported
+     * by the GPT image models; `auto` is supported for models that allow automatic sizing. For `dall-e-2`, use one of
+     * `256x256`, `512x512`, or `1024x1024`. For `dall-e-3`, use one of `1024x1024`, `1792x1024`, or `1024x1792`.
      *
      * @param size the size value to set.
      * @return the ImageGenTool object itself.
@@ -449,19 +464,25 @@ public final class ImageGenTool extends Tool {
     }
 
     /*
-     * Optional user-defined name for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String name;
 
     /*
-     * Optional user-defined description for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String description;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the name value.
      */
@@ -471,7 +492,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param name the name value to set.
      * @return the ImageGenTool object itself.
@@ -483,7 +504,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the description value.
      */
@@ -493,7 +514,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param description the description value to set.
      * @return the ImageGenTool object itself.
@@ -504,18 +525,8 @@ public final class ImageGenTool extends Tool {
         return this;
     }
 
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
     /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the toolConfigs value.
      */
@@ -525,9 +536,7 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param toolConfigs the toolConfigs value to set.
      * @return the ImageGenTool object itself.

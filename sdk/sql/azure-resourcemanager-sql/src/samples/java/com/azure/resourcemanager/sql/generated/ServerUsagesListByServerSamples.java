@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerUsagesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerUsageList.json
+     * x-ms-original-file: 2025-01-01/ServerUsageList.json
      */
     /**
      * Sample code: List servers usages.

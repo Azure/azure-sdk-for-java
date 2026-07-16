@@ -159,6 +159,31 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
+     * Get the connectionPolicy property: The resource id of the ConnectionPolicy associated with this
+     * HubVirtualNetworkConnection.
+     * 
+     * @return the connectionPolicy value.
+     */
+    public SubResource connectionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectionPolicy();
+    }
+
+    /**
+     * Set the connectionPolicy property: The resource id of the ConnectionPolicy associated with this
+     * HubVirtualNetworkConnection.
+     * 
+     * @param connectionPolicy the connectionPolicy value to set.
+     * @return the HubVirtualNetworkConnectionInner object itself.
+     */
+    public HubVirtualNetworkConnectionInner withConnectionPolicy(SubResource connectionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withConnectionPolicy(connectionPolicy);
+        return this;
+    }
+
+    /**
      * Get the enableInternetSecurity property: Enable internet security.
      * 
      * @return the enableInternetSecurity value.
