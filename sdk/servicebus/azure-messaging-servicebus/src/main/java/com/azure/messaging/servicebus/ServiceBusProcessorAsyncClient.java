@@ -219,6 +219,12 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} no settlement is required. Callers should
      * avoid invoking {@code close()} on latency-sensitive threads.</p>
      *
+     * <p><strong>RECEIVE_AND_DELETE and shutdown:</strong> the broker removes
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} messages on delivery, and the receiver keeps
+     * delivering while the drain waits. Under sustained traffic the in-flight set may not reach zero before the drain
+     * timeout; handlers still running when it elapses are cancelled and those messages are lost (they cannot be
+     * redelivered). A future revision may decouple handler execution from the receiver subscription to bound this.</p>
+     *
      * <p>Do not call {@code close()} (or {@link #stop()}) from within a message or error handler: the call blocks
      * until in-flight handlers drain, so invoking it from a handler that has not yet returned would deadlock. Schedule
      * shutdown from a separate controlling thread.</p>
