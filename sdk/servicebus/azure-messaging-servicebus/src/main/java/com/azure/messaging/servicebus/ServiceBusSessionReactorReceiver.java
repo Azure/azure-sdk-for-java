@@ -64,8 +64,10 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
      * @return A Mono that completes with the session state, or an empty Mono if there is no state set for the session.
      */
     Mono<byte[]> getSessionState() {
-        return tracer.traceMono("ServiceBus.getSessionState",
-            sessionManagement.flatMap(mgmt -> mgmt.getSessionState(sessionId, getLinkName())));
+        return tracer
+            .traceMono("ServiceBus.getSessionState",
+                sessionManagement.flatMap(mgmt -> mgmt.getSessionState(sessionId, getLinkName())))
+            .onErrorMap(ServiceBusSessionReactorReceiver::mapSessionStateError);
     }
 
     /**
@@ -75,8 +77,20 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
      * @return A Mono that completes when the session state is set.
      */
     Mono<Void> setSessionState(byte[] sessionState) {
-        return tracer.traceMono("ServiceBus.setSessionState",
-            sessionManagement.flatMap(mgmt -> mgmt.setSessionState(sessionId, sessionState, getLinkName())));
+        return tracer
+            .traceMono("ServiceBus.setSessionState",
+                sessionManagement.flatMap(mgmt -> mgmt.setSessionState(sessionId, sessionState, getLinkName())))
+            .onErrorMap(ServiceBusSessionReactorReceiver::mapSessionStateError);
+    }
+
+    // Mirror ServiceBusReceiverAsyncClient's session-state error handling: surface a ServiceBusException to the
+    // ServiceBusReceivedMessageContext caller (its Javadoc documents ServiceBusException), rather than a raw
+    // AmqpException from the management link.
+    private static Throwable mapSessionStateError(Throwable throwable) {
+        if (throwable instanceof ServiceBusException) {
+            return throwable;
+        }
+        return new ServiceBusException(throwable, ServiceBusErrorSource.RECEIVE);
     }
 
     @Override
