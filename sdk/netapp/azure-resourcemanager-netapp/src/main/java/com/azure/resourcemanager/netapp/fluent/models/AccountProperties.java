@@ -11,8 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
-import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
@@ -31,11 +29,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * Active Directories
      */
     private List<ActiveDirectory> activeDirectories;
-
-    /*
-     * Entra ID configuration for the account.
-     */
-    private EntraIdConfig entraIdConfig;
 
     /*
      * Encryption settings
@@ -57,11 +50,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      * MultiAD Status for the account
      */
     private MultiAdStatus multiAdStatus;
-
-    /*
-     * LDAP Configuration for the account.
-     */
-    private LdapConfiguration ldapConfiguration;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -95,26 +83,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     public AccountProperties withActiveDirectories(List<ActiveDirectory> activeDirectories) {
         this.activeDirectories = activeDirectories;
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfig entraIdConfig() {
-        return this.entraIdConfig;
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        this.entraIdConfig = entraIdConfig;
         return this;
     }
 
@@ -180,26 +148,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the ldapConfiguration property: LDAP Configuration for the account.
-     * 
-     * @return the ldapConfiguration value.
-     */
-    public LdapConfiguration ldapConfiguration() {
-        return this.ldapConfiguration;
-    }
-
-    /**
-     * Set the ldapConfiguration property: LDAP Configuration for the account.
-     * 
-     * @param ldapConfiguration the ldapConfiguration value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withLdapConfiguration(LdapConfiguration ldapConfiguration) {
-        this.ldapConfiguration = ldapConfiguration;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -208,14 +156,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         if (activeDirectories() != null) {
             activeDirectories().forEach(e -> e.validate());
         }
-        if (entraIdConfig() != null) {
-            entraIdConfig().validate();
-        }
         if (encryption() != null) {
             encryption().validate();
-        }
-        if (ldapConfiguration() != null) {
-            ldapConfiguration().validate();
         }
     }
 
@@ -227,10 +169,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("activeDirectories", this.activeDirectories,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
-        jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -255,8 +195,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<ActiveDirectory> activeDirectories
                         = reader.readArray(reader1 -> ActiveDirectory.fromJson(reader1));
                     deserializedAccountProperties.activeDirectories = activeDirectories;
-                } else if ("entraIdConfig".equals(fieldName)) {
-                    deserializedAccountProperties.entraIdConfig = EntraIdConfig.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedAccountProperties.encryption = AccountEncryption.fromJson(reader);
                 } else if ("disableShowmount".equals(fieldName)) {
@@ -265,8 +203,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.nfsV4IdDomain = reader.getString();
                 } else if ("multiAdStatus".equals(fieldName)) {
                     deserializedAccountProperties.multiAdStatus = MultiAdStatus.fromString(reader.getString());
-                } else if ("ldapConfiguration".equals(fieldName)) {
-                    deserializedAccountProperties.ldapConfiguration = LdapConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
