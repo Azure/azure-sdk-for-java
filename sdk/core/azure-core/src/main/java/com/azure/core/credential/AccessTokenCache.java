@@ -157,8 +157,8 @@ public final class AccessTokenCache {
         return () -> {
             try {
                 if (tokenRequestContext == null) {
-                    return Mono.error(LOGGER.logExceptionAsError(
-                        new IllegalArgumentException("'tokenRequestContext' cannot be null.")));
+                    return Mono.error(LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("'tokenRequestContext' cannot be null.")));
                 }
 
                 AccessTokenCacheInfo cache = this.cacheInfo.get();
@@ -237,8 +237,7 @@ public final class AccessTokenCache {
         boolean refreshOnContextChange) {
         return () -> {
             if (tokenRequestContext == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("'tokenRequestContext' cannot be null."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tokenRequestContext' cannot be null."));
             }
             AccessTokenCacheInfo cache = this.cacheInfo.get();
             AccessToken cachedToken = cache.getCachedAccessToken();
