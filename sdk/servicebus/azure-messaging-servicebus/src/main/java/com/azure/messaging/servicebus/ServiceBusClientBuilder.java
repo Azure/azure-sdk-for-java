@@ -2932,7 +2932,7 @@ public final class ServiceBusClientBuilder
 
     /**
      * Builder for creating {@link ServiceBusProcessorAsyncClient} to process messages with reactive, non-blocking
-     * message handlers from a non session-enabled Service Bus entity.
+     * message handlers from a non-session-enabled Service Bus entity.
      *
      * @see ServiceBusProcessorAsyncClient
      */
