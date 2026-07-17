@@ -291,7 +291,7 @@ public final class AccessTokenCache {
                 } else {
                     return fallback;
                 }
-            } catch (Throwable error) {
+            } catch (RuntimeException error) {
                 buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now).log("Failed to acquire a new access token.",
                     error);
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
@@ -300,7 +300,7 @@ public final class AccessTokenCache {
                 if (fallback != null) {
                     return fallback;
                 }
-                throw LOGGER.logThrowableAsError(error);
+                throw LOGGER.logExceptionAsError(error);
             }
         };
     }
