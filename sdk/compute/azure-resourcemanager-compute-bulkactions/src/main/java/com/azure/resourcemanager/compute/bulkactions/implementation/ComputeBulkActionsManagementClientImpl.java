@@ -27,6 +27,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.LaunchBulkInstancesOperationsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
 import java.io.IOException;
@@ -156,6 +157,20 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
     }
 
     /**
+     * The LaunchBulkInstancesOperationsClient object to access its operations.
+     */
+    private final LaunchBulkInstancesOperationsClient launchBulkInstancesOperations;
+
+    /**
+     * Gets the LaunchBulkInstancesOperationsClient object to access its operations.
+     * 
+     * @return the LaunchBulkInstancesOperationsClient object.
+     */
+    public LaunchBulkInstancesOperationsClient getLaunchBulkInstancesOperations() {
+        return this.launchBulkInstancesOperations;
+    }
+
+    /**
      * Initializes an instance of ComputeBulkActionsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -172,9 +187,10 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-06";
+        this.apiVersion = "2026-07-06-preview";
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineBulkOperations = new VirtualMachineBulkOperationsClientImpl(this);
+        this.launchBulkInstancesOperations = new LaunchBulkInstancesOperationsClientImpl(this);
     }
 
     /**

@@ -26,8 +26,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
 import com.azure.resourcemanager.compute.bulkactions.implementation.ComputeBulkActionsManagementClientBuilder;
+import com.azure.resourcemanager.compute.bulkactions.implementation.LaunchBulkInstancesOperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.VirtualMachineBulkOperationsImpl;
+import com.azure.resourcemanager.compute.bulkactions.models.LaunchBulkInstancesOperations;
 import com.azure.resourcemanager.compute.bulkactions.models.Operations;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineBulkOperations;
 import java.time.Duration;
@@ -45,6 +47,8 @@ public final class ComputeBulkActionsManager {
     private Operations operations;
 
     private VirtualMachineBulkOperations virtualMachineBulkOperations;
+
+    private LaunchBulkInstancesOperations launchBulkInstancesOperations;
 
     private final ComputeBulkActionsManagementClient clientObject;
 
@@ -284,6 +288,20 @@ public final class ComputeBulkActionsManager {
                 = new VirtualMachineBulkOperationsImpl(clientObject.getVirtualMachineBulkOperations(), this);
         }
         return virtualMachineBulkOperations;
+    }
+
+    /**
+     * Gets the resource collection API of LaunchBulkInstancesOperations. It manages
+     * LocationBasedLaunchBulkInstancesOperation.
+     * 
+     * @return Resource collection API of LaunchBulkInstancesOperations.
+     */
+    public LaunchBulkInstancesOperations launchBulkInstancesOperations() {
+        if (this.launchBulkInstancesOperations == null) {
+            this.launchBulkInstancesOperations
+                = new LaunchBulkInstancesOperationsImpl(clientObject.getLaunchBulkInstancesOperations(), this);
+        }
+        return launchBulkInstancesOperations;
     }
 
     /**

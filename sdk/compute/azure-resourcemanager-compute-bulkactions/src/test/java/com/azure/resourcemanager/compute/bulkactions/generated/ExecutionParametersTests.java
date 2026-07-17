@@ -14,22 +14,24 @@ public final class ExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionParameters model = BinaryData.fromString(
-            "{\"retryPolicy\":{\"retryCount\":1575612003,\"retryWindowInMinutes\":761383043,\"onFailureAction\":\"Delete\"}}")
+            "{\"retryPolicy\":{\"retryCount\":1384277756,\"retryWindowInMinutes\":196107786,\"onFailureAction\":\"Create\"},\"verifyVmAgentHealth\":true}")
             .toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1575612003, model.retryPolicy().retryCount());
-        Assertions.assertEquals(761383043, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1384277756, model.retryPolicy().retryCount());
+        Assertions.assertEquals(196107786, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionParameters model
-            = new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1575612003)
-                .withRetryWindowInMinutes(761383043)
-                .withOnFailureAction(ResourceOperationType.DELETE));
+            = new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1384277756)
+                .withRetryWindowInMinutes(196107786)
+                .withOnFailureAction(ResourceOperationType.CREATE)).withVerifyVmAgentHealth(true);
         model = BinaryData.fromObject(model).toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1575612003, model.retryPolicy().retryCount());
-        Assertions.assertEquals(761383043, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1384277756, model.retryPolicy().retryCount());
+        Assertions.assertEquals(196107786, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,13 +19,16 @@ public final class ExecuteDeleteContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeleteContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":419560742,\"retryWindowInMinutes\":2045160621,\"onFailureAction\":\"Start\"}},\"resources\":{\"ids\":[\"odepoogin\",\"vamih\"]},\"forceDeletion\":true}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1744996179,\"retryWindowInMinutes\":299078768,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true},\"resources\":{\"ids\":[\"nc\",\"cpecfvmmcoofs\",\"lzevgbmqjqab\",\"y\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"vkwlzuvccfwnf\",\"resourceContext\":\"bacfionlebxetq\"},{\"resourceId\":\"tzxdpnqbqqwx\",\"resourceContext\":\"jfeallnwsub\"},{\"resourceId\":\"snjampmng\",\"resourceContext\":\"zscxaqwo\"},{\"resourceId\":\"chcbonqvpkvlrxnj\",\"resourceContext\":\"ase\"}]},\"forceDeletion\":true}")
             .toObject(ExecuteDeleteContent.class);
-        Assertions.assertEquals(419560742, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(2045160621, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(1744996179, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(299078768, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ResourceOperationType.START,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("odepoogin", model.resources().ids().get(0));
+        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("nc", model.resources().ids().get(0));
+        Assertions.assertEquals("vkwlzuvccfwnf", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("bacfionlebxetq", model.resourcesWithContext().resources().get(0).resourceContext());
         Assertions.assertTrue(model.forceDeletion());
     }
 
@@ -31,17 +36,25 @@ public final class ExecuteDeleteContentTests {
     public void testSerialize() throws Exception {
         ExecuteDeleteContent model = new ExecuteDeleteContent()
             .withExecutionParameters(
-                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(419560742)
-                    .withRetryWindowInMinutes(2045160621)
-                    .withOnFailureAction(ResourceOperationType.START)))
-            .withResources(new Resources().withIds(Arrays.asList("odepoogin", "vamih")))
+                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1744996179)
+                    .withRetryWindowInMinutes(299078768)
+                    .withOnFailureAction(ResourceOperationType.START)).withVerifyVmAgentHealth(true))
+            .withResources(new Resources().withIds(Arrays.asList("nc", "cpecfvmmcoofs", "lzevgbmqjqab", "y")))
+            .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
+                new ResourceWithContext().withResourceId("vkwlzuvccfwnf").withResourceContext("bacfionlebxetq"),
+                new ResourceWithContext().withResourceId("tzxdpnqbqqwx").withResourceContext("jfeallnwsub"),
+                new ResourceWithContext().withResourceId("snjampmng").withResourceContext("zscxaqwo"),
+                new ResourceWithContext().withResourceId("chcbonqvpkvlrxnj").withResourceContext("ase"))))
             .withForceDeletion(true);
         model = BinaryData.fromObject(model).toObject(ExecuteDeleteContent.class);
-        Assertions.assertEquals(419560742, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(2045160621, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(1744996179, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(299078768, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals(ResourceOperationType.START,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("odepoogin", model.resources().ids().get(0));
+        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("nc", model.resources().ids().get(0));
+        Assertions.assertEquals("vkwlzuvccfwnf", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("bacfionlebxetq", model.resourcesWithContext().resources().get(0).resourceContext());
         Assertions.assertTrue(model.forceDeletion());
     }
 }
