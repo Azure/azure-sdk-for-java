@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StrataCloudManagerInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StrataCloudManagerInfo model = BinaryData.fromString("{\"folderName\":\"cdisd\",\"hubUrl\":\"fj\"}")
+        StrataCloudManagerInfo model = BinaryData.fromString("{\"folderName\":\"tvasy\",\"hubUrl\":\"xdza\"}")
             .toObject(StrataCloudManagerInfo.class);
-        Assertions.assertEquals("cdisd", model.folderName());
-        Assertions.assertEquals("fj", model.hubUrl());
+        Assertions.assertEquals("tvasy", model.folderName());
+        Assertions.assertEquals("xdza", model.hubUrl());
     }
 }

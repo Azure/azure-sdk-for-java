@@ -12,12 +12,12 @@ public final class FqdnListLocalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnListLocalRulestackResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"fcdis\",\"fqdnList\":[\"rnxzh\",\"zexrxzbujrt\"],\"etag\":\"qvwre\",\"auditComment\":\"h\",\"provisioningState\":\"Deleting\"},\"id\":\"zonzlrpiqywnc\",\"name\":\"jtszcof\",\"type\":\"zehtdhgb\"},{\"properties\":{\"description\":\"vreljea\",\"fqdnList\":[\"rvzmlovuana\",\"hcxlpm\",\"erbdk\",\"lvidizozs\"],\"etag\":\"ccxjm\",\"auditComment\":\"fdgnwncypuuwwlt\",\"provisioningState\":\"Accepted\"},\"id\":\"ctzenkeifzzhmkd\",\"name\":\"svflyhbxcudch\",\"type\":\"gsrboldforobw\"},{\"properties\":{\"description\":\"vizbfhfo\",\"fqdnList\":[\"acqpbtuodxesza\",\"belawumuaslzkwr\",\"woycqucwyha\",\"nomdrkywuhpsv\"],\"etag\":\"urut\",\"auditComment\":\"exxwlalniexzsrz\",\"provisioningState\":\"Updating\"},\"id\":\"q\",\"name\":\"yb\",\"type\":\"wwpgdakchzyvlixq\"}],\"nextLink\":\"kcxk\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"slzojh\",\"fqdnList\":[\"tfnmdx\",\"tngfdgugeyzihgr\",\"yui\"],\"etag\":\"bsnmfpph\",\"auditComment\":\"eevy\",\"provisioningState\":\"Deleting\"},\"id\":\"gzfc\",\"name\":\"bgomfgbegl\",\"type\":\"gleohi\"},{\"properties\":{\"description\":\"tnluankrr\",\"fqdnList\":[\"eeebtijvacv\",\"mq\",\"bqqxlaj\",\"nw\"],\"etag\":\"cevehjkuyxoafg\",\"auditComment\":\"qltfaey\",\"provisioningState\":\"Deleted\"},\"id\":\"fgvxirpghriypoqe\",\"name\":\"hlqhykprlpy\",\"type\":\"nuciqdsmexiit\"},{\"properties\":{\"description\":\"uxtyasiibmi\",\"fqdnList\":[\"nnust\"],\"etag\":\"ljhnmgixhcmav\",\"auditComment\":\"foudor\",\"provisioningState\":\"Failed\"},\"id\":\"yprotwyp\",\"name\":\"ndm\",\"type\":\"xhugcm\"},{\"properties\":{\"description\":\"avlg\",\"fqdnList\":[\"bmftpmdt\"],\"etag\":\"jltfvnzcyjtotpv\",\"auditComment\":\"vpbdbzqgq\",\"provisioningState\":\"Creating\"},\"id\":\"dsvqwt\",\"name\":\"mkyi\",\"type\":\"cysihs\"}],\"nextLink\":\"cw\"}")
             .toObject(FqdnListLocalRulestackResourceListResult.class);
-        Assertions.assertEquals("fcdis", model.value().get(0).description());
-        Assertions.assertEquals("rnxzh", model.value().get(0).fqdnList().get(0));
-        Assertions.assertEquals("qvwre", model.value().get(0).etag());
-        Assertions.assertEquals("h", model.value().get(0).auditComment());
-        Assertions.assertEquals("kcxk", model.nextLink());
+        Assertions.assertEquals("slzojh", model.value().get(0).description());
+        Assertions.assertEquals("tfnmdx", model.value().get(0).fqdnList().get(0));
+        Assertions.assertEquals("bsnmfpph", model.value().get(0).etag());
+        Assertions.assertEquals("eevy", model.value().get(0).auditComment());
+        Assertions.assertEquals("cw", model.nextLink());
     }
 }

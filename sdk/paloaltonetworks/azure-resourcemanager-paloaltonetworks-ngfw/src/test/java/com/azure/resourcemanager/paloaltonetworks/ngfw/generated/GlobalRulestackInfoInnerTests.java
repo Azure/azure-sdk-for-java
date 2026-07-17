@@ -12,7 +12,7 @@ public final class GlobalRulestackInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalRulestackInfoInner model
-            = BinaryData.fromString("{\"azureId\":\"y\"}").toObject(GlobalRulestackInfoInner.class);
-        Assertions.assertEquals("y", model.azureId());
+            = BinaryData.fromString("{\"azureId\":\"k\"}").toObject(GlobalRulestackInfoInner.class);
+        Assertions.assertEquals("k", model.azureId());
     }
 }

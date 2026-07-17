@@ -12,36 +12,36 @@ public final class SecurityServicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityServices model = BinaryData.fromString(
-            "{\"vulnerabilityProfile\":\"fxqeof\",\"antiSpywareProfile\":\"e\",\"antiVirusProfile\":\"hqjbasvmsmj\",\"urlFilteringProfile\":\"lngsntnbybkzgcwr\",\"fileBlockingProfile\":\"lxxwrljdouskc\",\"dnsSubscription\":\"kocrcjdkwtnhx\",\"outboundUnTrustCertificate\":\"jbiksqrglssai\",\"outboundTrustCertificate\":\"p\"}")
+            "{\"vulnerabilityProfile\":\"cpc\",\"antiSpywareProfile\":\"hurzafblj\",\"antiVirusProfile\":\"pbtoqcjmkl\",\"urlFilteringProfile\":\"vbqid\",\"fileBlockingProfile\":\"ajzyul\",\"dnsSubscription\":\"u\",\"outboundUnTrustCertificate\":\"krlkhbzhfepg\",\"outboundTrustCertificate\":\"qex\"}")
             .toObject(SecurityServices.class);
-        Assertions.assertEquals("fxqeof", model.vulnerabilityProfile());
-        Assertions.assertEquals("e", model.antiSpywareProfile());
-        Assertions.assertEquals("hqjbasvmsmj", model.antiVirusProfile());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.urlFilteringProfile());
-        Assertions.assertEquals("lxxwrljdouskc", model.fileBlockingProfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dnsSubscription());
-        Assertions.assertEquals("jbiksqrglssai", model.outboundUnTrustCertificate());
-        Assertions.assertEquals("p", model.outboundTrustCertificate());
+        Assertions.assertEquals("cpc", model.vulnerabilityProfile());
+        Assertions.assertEquals("hurzafblj", model.antiSpywareProfile());
+        Assertions.assertEquals("pbtoqcjmkl", model.antiVirusProfile());
+        Assertions.assertEquals("vbqid", model.urlFilteringProfile());
+        Assertions.assertEquals("ajzyul", model.fileBlockingProfile());
+        Assertions.assertEquals("u", model.dnsSubscription());
+        Assertions.assertEquals("krlkhbzhfepg", model.outboundUnTrustCertificate());
+        Assertions.assertEquals("qex", model.outboundTrustCertificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityServices model = new SecurityServices().withVulnerabilityProfile("fxqeof")
-            .withAntiSpywareProfile("e")
-            .withAntiVirusProfile("hqjbasvmsmj")
-            .withUrlFilteringProfile("lngsntnbybkzgcwr")
-            .withFileBlockingProfile("lxxwrljdouskc")
-            .withDnsSubscription("kocrcjdkwtnhx")
-            .withOutboundUnTrustCertificate("jbiksqrglssai")
-            .withOutboundTrustCertificate("p");
+        SecurityServices model = new SecurityServices().withVulnerabilityProfile("cpc")
+            .withAntiSpywareProfile("hurzafblj")
+            .withAntiVirusProfile("pbtoqcjmkl")
+            .withUrlFilteringProfile("vbqid")
+            .withFileBlockingProfile("ajzyul")
+            .withDnsSubscription("u")
+            .withOutboundUnTrustCertificate("krlkhbzhfepg")
+            .withOutboundTrustCertificate("qex");
         model = BinaryData.fromObject(model).toObject(SecurityServices.class);
-        Assertions.assertEquals("fxqeof", model.vulnerabilityProfile());
-        Assertions.assertEquals("e", model.antiSpywareProfile());
-        Assertions.assertEquals("hqjbasvmsmj", model.antiVirusProfile());
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.urlFilteringProfile());
-        Assertions.assertEquals("lxxwrljdouskc", model.fileBlockingProfile());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.dnsSubscription());
-        Assertions.assertEquals("jbiksqrglssai", model.outboundUnTrustCertificate());
-        Assertions.assertEquals("p", model.outboundTrustCertificate());
+        Assertions.assertEquals("cpc", model.vulnerabilityProfile());
+        Assertions.assertEquals("hurzafblj", model.antiSpywareProfile());
+        Assertions.assertEquals("pbtoqcjmkl", model.antiVirusProfile());
+        Assertions.assertEquals("vbqid", model.urlFilteringProfile());
+        Assertions.assertEquals("ajzyul", model.fileBlockingProfile());
+        Assertions.assertEquals("u", model.dnsSubscription());
+        Assertions.assertEquals("krlkhbzhfepg", model.outboundUnTrustCertificate());
+        Assertions.assertEquals("qex", model.outboundTrustCertificate());
     }
 }

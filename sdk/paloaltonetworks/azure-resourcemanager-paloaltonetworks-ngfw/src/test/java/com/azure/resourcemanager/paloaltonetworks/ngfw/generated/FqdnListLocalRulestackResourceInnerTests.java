@@ -13,25 +13,25 @@ public final class FqdnListLocalRulestackResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnListLocalRulestackResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"udqmeqwigpibudq\",\"fqdnList\":[\"xebeybpmz\"],\"etag\":\"rtffyaqitmh\",\"auditComment\":\"ioqaqhvs\",\"provisioningState\":\"Updating\"},\"id\":\"qyrxp\",\"name\":\"lcgqlsismj\",\"type\":\"frddgamquhiosrsj\"}")
+            "{\"properties\":{\"description\":\"wcyyufmhruncu\",\"fqdnList\":[\"qspkcdqzhlctd\",\"unqndyfpchrqb\",\"jjrcgegydc\",\"boxjumvq\"],\"etag\":\"lihrraiouaubr\",\"auditComment\":\"loqxfuojrngif\",\"provisioningState\":\"Deleted\"},\"id\":\"asccbiui\",\"name\":\"zdlyjdfqw\",\"type\":\"kyoqufdv\"}")
             .toObject(FqdnListLocalRulestackResourceInner.class);
-        Assertions.assertEquals("udqmeqwigpibudq", model.description());
-        Assertions.assertEquals("xebeybpmz", model.fqdnList().get(0));
-        Assertions.assertEquals("rtffyaqitmh", model.etag());
-        Assertions.assertEquals("ioqaqhvs", model.auditComment());
+        Assertions.assertEquals("wcyyufmhruncu", model.description());
+        Assertions.assertEquals("qspkcdqzhlctd", model.fqdnList().get(0));
+        Assertions.assertEquals("lihrraiouaubr", model.etag());
+        Assertions.assertEquals("loqxfuojrngif", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FqdnListLocalRulestackResourceInner model
-            = new FqdnListLocalRulestackResourceInner().withDescription("udqmeqwigpibudq")
-                .withFqdnList(Arrays.asList("xebeybpmz"))
-                .withEtag("rtffyaqitmh")
-                .withAuditComment("ioqaqhvs");
+            = new FqdnListLocalRulestackResourceInner().withDescription("wcyyufmhruncu")
+                .withFqdnList(Arrays.asList("qspkcdqzhlctd", "unqndyfpchrqb", "jjrcgegydc", "boxjumvq"))
+                .withEtag("lihrraiouaubr")
+                .withAuditComment("loqxfuojrngif");
         model = BinaryData.fromObject(model).toObject(FqdnListLocalRulestackResourceInner.class);
-        Assertions.assertEquals("udqmeqwigpibudq", model.description());
-        Assertions.assertEquals("xebeybpmz", model.fqdnList().get(0));
-        Assertions.assertEquals("rtffyaqitmh", model.etag());
-        Assertions.assertEquals("ioqaqhvs", model.auditComment());
+        Assertions.assertEquals("wcyyufmhruncu", model.description());
+        Assertions.assertEquals("qspkcdqzhlctd", model.fqdnList().get(0));
+        Assertions.assertEquals("lihrraiouaubr", model.etag());
+        Assertions.assertEquals("loqxfuojrngif", model.auditComment());
     }
 }

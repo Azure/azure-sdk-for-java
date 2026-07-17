@@ -12,12 +12,12 @@ public final class PrefixListResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrefixListResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"fusfzsvtuikzhajq\",\"prefixList\":[\"cfhmlrqryxyn\",\"nzrdpsovwxz\",\"ptgoeiybbabp\"],\"etag\":\"vf\",\"auditComment\":\"kvntjlrigjkskyri\",\"provisioningState\":\"Deleting\"},\"id\":\"idsxwaabzmifry\",\"name\":\"znmmaxrizkzobgo\",\"type\":\"xlhslnel\"},{\"properties\":{\"description\":\"eixynllxecwcroj\",\"prefixList\":[\"slhcawjutifd\",\"fmvigorqjbttzh\"],\"etag\":\"glka\",\"auditComment\":\"onqjujeickpzvcpo\",\"provisioningState\":\"Accepted\"},\"id\":\"lnwcltyjed\",\"name\":\"xxmlfmkqscazua\",\"type\":\"xtzx\"},{\"properties\":{\"description\":\"amwabzxrvxcushsp\",\"prefixList\":[\"ivmxyasfl\",\"gsgzwywakoihk\",\"smjblmljhlnym\",\"otqyry\"],\"etag\":\"cbm\",\"auditComment\":\"vxmvw\",\"provisioningState\":\"Deleted\"},\"id\":\"yxonsupe\",\"name\":\"jlzqnhc\",\"type\":\"sqltnzo\"},{\"properties\":{\"description\":\"gsxgnxfyqon\",\"prefixList\":[\"qoxwd\"],\"etag\":\"dbxiqx\",\"auditComment\":\"iqbi\",\"provisioningState\":\"NotSpecified\"},\"id\":\"wwinhehf\",\"name\":\"pofvwb\",\"type\":\"blembnkbwvqvxkd\"}],\"nextLink\":\"qihebw\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"kiwbuqnyoph\",\"prefixList\":[\"yls\"],\"etag\":\"rpfbcunezz\",\"auditComment\":\"zelfwyfwl\",\"provisioningState\":\"NotSpecified\"},\"id\":\"etnpsihcl\",\"name\":\"fzvaylptr\",\"type\":\"qqwzt\"}],\"nextLink\":\"w\"}")
             .toObject(PrefixListResourceListResult.class);
-        Assertions.assertEquals("fusfzsvtuikzhajq", model.value().get(0).description());
-        Assertions.assertEquals("cfhmlrqryxyn", model.value().get(0).prefixList().get(0));
-        Assertions.assertEquals("vf", model.value().get(0).etag());
-        Assertions.assertEquals("kvntjlrigjkskyri", model.value().get(0).auditComment());
-        Assertions.assertEquals("qihebw", model.nextLink());
+        Assertions.assertEquals("kiwbuqnyoph", model.value().get(0).description());
+        Assertions.assertEquals("yls", model.value().get(0).prefixList().get(0));
+        Assertions.assertEquals("rpfbcunezz", model.value().get(0).etag());
+        Assertions.assertEquals("zelfwyfwl", model.value().get(0).auditComment());
+        Assertions.assertEquals("w", model.nextLink());
     }
 }

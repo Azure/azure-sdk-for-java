@@ -21,7 +21,7 @@ public final class PostRulesResetCountersWithResponseMockTests {
     @Test
     public void testResetCountersWithResponse() throws Exception {
         String responseStr
-            = "{\"priority\":\"nbwzohmnrxxbso\",\"ruleStackName\":\"linhmdptysprqs\",\"ruleListName\":\"zxojpslsv\",\"firewallName\":\"pli\",\"ruleName\":\"iqwoyxqvapcoh\"}";
+            = "{\"priority\":\"ulrtywikdmh\",\"ruleStackName\":\"kuflgbh\",\"ruleListName\":\"uacdixmxuf\",\"firewallName\":\"ryjqgdkf\",\"ruleName\":\"zoeo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class PostRulesResetCountersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RuleCounterReset response = manager.postRules()
-            .resetCountersWithResponse("seqchkrt", "zrazisgyk", "uem", com.azure.core.util.Context.NONE)
+            .resetCountersWithResponse("upeuknijduyye", "pydjfboc", "v", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("linhmdptysprqs", response.ruleStackName());
-        Assertions.assertEquals("zxojpslsv", response.ruleListName());
-        Assertions.assertEquals("pli", response.firewallName());
-        Assertions.assertEquals("iqwoyxqvapcoh", response.ruleName());
+        Assertions.assertEquals("kuflgbh", response.ruleStackName());
+        Assertions.assertEquals("uacdixmxuf", response.ruleListName());
+        Assertions.assertEquals("ryjqgdkf", response.firewallName());
+        Assertions.assertEquals("zoeo", response.ruleName());
     }
 }

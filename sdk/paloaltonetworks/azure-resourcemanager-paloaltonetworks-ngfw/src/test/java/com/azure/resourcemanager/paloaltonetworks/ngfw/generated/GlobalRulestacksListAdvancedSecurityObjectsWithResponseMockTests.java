@@ -22,7 +22,7 @@ public final class GlobalRulestacksListAdvancedSecurityObjectsWithResponseMockTe
     @Test
     public void testListAdvancedSecurityObjectsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"lbnseqac\",\"entry\":[{\"name\":\"vpilg\",\"description\":\"oq\"},{\"name\":\"agmdit\",\"description\":\"eiookjbsah\"},{\"name\":\"tdtpdelqacslmo\",\"description\":\"ebnfxofvc\"}]},\"nextLink\":\"gdirazf\"}";
+            = "{\"value\":{\"type\":\"oqhnlb\",\"entry\":[{\"name\":\"bldxeaclgscho\",\"description\":\"mkrsrrmoucsofl\"},{\"name\":\"puviyfcaabe\",\"description\":\"hbhlvbm\"},{\"name\":\"uqibsxtkcu\",\"description\":\"b\"},{\"name\":\"farfs\",\"description\":\"wlkjxn\"}]},\"nextLink\":\"vwgf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class GlobalRulestacksListAdvancedSecurityObjectsWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdvSecurityObjectListResponse response = manager.globalRulestacks()
-            .listAdvancedSecurityObjectsWithResponse("jleziunjx", AdvSecurityObjectTypeEnum.URL_CUSTOM, "zantkwceg",
-                1902347173, com.azure.core.util.Context.NONE)
+            .listAdvancedSecurityObjectsWithResponse("cpugm", AdvSecurityObjectTypeEnum.FEEDS, "qepvufhbzeh",
+                1840957180, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lbnseqac", response.value().type());
-        Assertions.assertEquals("vpilg", response.value().entry().get(0).name());
-        Assertions.assertEquals("oq", response.value().entry().get(0).description());
-        Assertions.assertEquals("gdirazf", response.nextLink());
+        Assertions.assertEquals("oqhnlb", response.value().type());
+        Assertions.assertEquals("bldxeaclgscho", response.value().entry().get(0).name());
+        Assertions.assertEquals("mkrsrrmoucsofl", response.value().entry().get(0).description());
+        Assertions.assertEquals("vwgf", response.nextLink());
     }
 }

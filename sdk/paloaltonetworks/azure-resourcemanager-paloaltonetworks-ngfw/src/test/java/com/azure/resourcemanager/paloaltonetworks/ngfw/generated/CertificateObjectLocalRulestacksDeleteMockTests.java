@@ -27,8 +27,7 @@ public final class CertificateObjectLocalRulestacksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.certificateObjectLocalRulestacks()
-            .delete("vzilmhiv", "kwwwnckn", "zdajlskzptjxu", com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks().delete("gazlsvbz", "cpuo", "e", com.azure.core.util.Context.NONE);
 
     }
 }

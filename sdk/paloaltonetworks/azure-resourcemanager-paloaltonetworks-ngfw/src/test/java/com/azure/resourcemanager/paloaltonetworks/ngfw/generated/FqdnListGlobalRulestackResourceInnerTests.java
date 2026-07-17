@@ -13,24 +13,25 @@ public final class FqdnListGlobalRulestackResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnListGlobalRulestackResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"jn\",\"fqdnList\":[\"ckhsmtxpsieb\",\"fhvpesaps\",\"rdqmhjjdhtldwkyz\"],\"etag\":\"utknc\",\"auditComment\":\"cwsvlxotog\",\"provisioningState\":\"Updating\"},\"id\":\"pqsxvnmicy\",\"name\":\"vce\",\"type\":\"vei\"}")
+            "{\"properties\":{\"description\":\"lmoyrx\",\"fqdnList\":[\"fudwpznt\",\"hdzhlrqj\",\"hckfrlhrx\",\"bkyvp\"],\"etag\":\"anuzbpzkafkuw\",\"auditComment\":\"rnwb\",\"provisioningState\":\"Succeeded\"},\"id\":\"seyvj\",\"name\":\"srtslhspkdeem\",\"type\":\"ofmxagkvtmelmqkr\"}")
             .toObject(FqdnListGlobalRulestackResourceInner.class);
-        Assertions.assertEquals("jn", model.description());
-        Assertions.assertEquals("ckhsmtxpsieb", model.fqdnList().get(0));
-        Assertions.assertEquals("utknc", model.etag());
-        Assertions.assertEquals("cwsvlxotog", model.auditComment());
+        Assertions.assertEquals("lmoyrx", model.description());
+        Assertions.assertEquals("fudwpznt", model.fqdnList().get(0));
+        Assertions.assertEquals("anuzbpzkafkuw", model.etag());
+        Assertions.assertEquals("rnwb", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnListGlobalRulestackResourceInner model = new FqdnListGlobalRulestackResourceInner().withDescription("jn")
-            .withFqdnList(Arrays.asList("ckhsmtxpsieb", "fhvpesaps", "rdqmhjjdhtldwkyz"))
-            .withEtag("utknc")
-            .withAuditComment("cwsvlxotog");
+        FqdnListGlobalRulestackResourceInner model
+            = new FqdnListGlobalRulestackResourceInner().withDescription("lmoyrx")
+                .withFqdnList(Arrays.asList("fudwpznt", "hdzhlrqj", "hckfrlhrx", "bkyvp"))
+                .withEtag("anuzbpzkafkuw")
+                .withAuditComment("rnwb");
         model = BinaryData.fromObject(model).toObject(FqdnListGlobalRulestackResourceInner.class);
-        Assertions.assertEquals("jn", model.description());
-        Assertions.assertEquals("ckhsmtxpsieb", model.fqdnList().get(0));
-        Assertions.assertEquals("utknc", model.etag());
-        Assertions.assertEquals("cwsvlxotog", model.auditComment());
+        Assertions.assertEquals("lmoyrx", model.description());
+        Assertions.assertEquals("fudwpznt", model.fqdnList().get(0));
+        Assertions.assertEquals("anuzbpzkafkuw", model.etag());
+        Assertions.assertEquals("rnwb", model.auditComment());
     }
 }

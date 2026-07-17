@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CertificateObjectGlobalRulestacksClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CertificateObjectLocalRulestacksClient;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.CustomCaptureConfigurationsFirewallResourcesClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FirewallStatusClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FirewallsClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.FqdnListGlobalRulestacksClient;
@@ -153,6 +154,20 @@ public final class PaloAltoNetworksNgfwManagementClientImpl implements PaloAltoN
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The CustomCaptureConfigurationsFirewallResourcesClient object to access its operations.
+     */
+    private final CustomCaptureConfigurationsFirewallResourcesClient customCaptureConfigurationsFirewallResources;
+
+    /**
+     * Gets the CustomCaptureConfigurationsFirewallResourcesClient object to access its operations.
+     * 
+     * @return the CustomCaptureConfigurationsFirewallResourcesClient object.
+     */
+    public CustomCaptureConfigurationsFirewallResourcesClient getCustomCaptureConfigurationsFirewallResources() {
+        return this.customCaptureConfigurationsFirewallResources;
     }
 
     /**
@@ -382,8 +397,10 @@ public final class PaloAltoNetworksNgfwManagementClientImpl implements PaloAltoN
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-08";
+        this.apiVersion = "2026-05-11-preview";
         this.operations = new OperationsClientImpl(this);
+        this.customCaptureConfigurationsFirewallResources
+            = new CustomCaptureConfigurationsFirewallResourcesClientImpl(this);
         this.globalRulestacks = new GlobalRulestacksClientImpl(this);
         this.certificateObjectGlobalRulestacks = new CertificateObjectGlobalRulestacksClientImpl(this);
         this.fqdnListGlobalRulestacks = new FqdnListGlobalRulestacksClientImpl(this);

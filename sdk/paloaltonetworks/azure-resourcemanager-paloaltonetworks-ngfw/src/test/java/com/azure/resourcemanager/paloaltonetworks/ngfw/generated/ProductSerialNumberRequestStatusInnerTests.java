@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductSerialNumberRequestStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductSerialNumberRequestStatusInner model = BinaryData.fromString("{\"status\":\"swbzuwfmdurage\"}")
-            .toObject(ProductSerialNumberRequestStatusInner.class);
-        Assertions.assertEquals("swbzuwfmdurage", model.status());
+        ProductSerialNumberRequestStatusInner model
+            = BinaryData.fromString("{\"status\":\"kchcxwa\"}").toObject(ProductSerialNumberRequestStatusInner.class);
+        Assertions.assertEquals("kchcxwa", model.status());
     }
 }

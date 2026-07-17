@@ -27,7 +27,7 @@ public final class FqdnListGlobalRulestacksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.fqdnListGlobalRulestacks().delete("mykyujxsglhs", "rryejylmbkzudnig", com.azure.core.util.Context.NONE);
+        manager.fqdnListGlobalRulestacks().delete("roznnhdrlktgj", "sggux", com.azure.core.util.Context.NONE);
 
     }
 }

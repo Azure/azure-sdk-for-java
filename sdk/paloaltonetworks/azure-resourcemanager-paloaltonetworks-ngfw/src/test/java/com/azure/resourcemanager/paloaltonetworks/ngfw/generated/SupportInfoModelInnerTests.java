@@ -14,22 +14,22 @@ public final class SupportInfoModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportInfoModelInner model = BinaryData.fromString(
-            "{\"productSku\":\"jdmspofapvuhryln\",\"productSerial\":\"frzgbzjed\",\"accountRegistrationStatus\":\"Not Registered\",\"accountId\":\"vnlvxbcuiiznktwf\",\"freeTrial\":\"Disabled\",\"freeTrialDaysLeft\":206149919,\"freeTrialCreditLeft\":2089270983,\"helpURL\":\"bmikost\",\"supportURL\":\"bkiw\",\"registerURL\":\"qnyophzfyls\",\"hubUrl\":\"rpfbcunezz\",\"credits\":12099501,\"monthlyCreditLeft\":1368017233,\"startDateForCredits\":\"w\",\"endDateForCredits\":\"wl\"}")
+            "{\"productSku\":\"jrgywwpgjxsn\",\"productSerial\":\"fujg\",\"accountRegistrationStatus\":\"Registered\",\"accountId\":\"aoepttaqutdew\",\"freeTrial\":\"Enabled\",\"freeTrialDaysLeft\":43018208,\"freeTrialCreditLeft\":827241082,\"helpURL\":\"unzzjgehk\",\"supportURL\":\"imrt\",\"registerURL\":\"okffqyinljqepqwh\",\"hubUrl\":\"monstshiyxgve\",\"credits\":1153037194,\"monthlyCreditLeft\":341924514,\"startDateForCredits\":\"ccbi\",\"endDateForCredits\":\"svu\"}")
             .toObject(SupportInfoModelInner.class);
-        Assertions.assertEquals("jdmspofapvuhryln", model.productSku());
-        Assertions.assertEquals("frzgbzjed", model.productSerial());
-        Assertions.assertEquals(RegistrationStatus.NOT_REGISTERED, model.accountRegistrationStatus());
-        Assertions.assertEquals("vnlvxbcuiiznktwf", model.accountId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.freeTrial());
-        Assertions.assertEquals(206149919, model.freeTrialDaysLeft());
-        Assertions.assertEquals(2089270983, model.freeTrialCreditLeft());
-        Assertions.assertEquals("bmikost", model.helpUrl());
-        Assertions.assertEquals("bkiw", model.supportUrl());
-        Assertions.assertEquals("qnyophzfyls", model.registerUrl());
-        Assertions.assertEquals("rpfbcunezz", model.hubUrl());
-        Assertions.assertEquals(12099501, model.credits());
-        Assertions.assertEquals(1368017233, model.monthlyCreditLeft());
-        Assertions.assertEquals("w", model.startDateForCredits());
-        Assertions.assertEquals("wl", model.endDateForCredits());
+        Assertions.assertEquals("jrgywwpgjxsn", model.productSku());
+        Assertions.assertEquals("fujg", model.productSerial());
+        Assertions.assertEquals(RegistrationStatus.REGISTERED, model.accountRegistrationStatus());
+        Assertions.assertEquals("aoepttaqutdew", model.accountId());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.freeTrial());
+        Assertions.assertEquals(43018208, model.freeTrialDaysLeft());
+        Assertions.assertEquals(827241082, model.freeTrialCreditLeft());
+        Assertions.assertEquals("unzzjgehk", model.helpUrl());
+        Assertions.assertEquals("imrt", model.supportUrl());
+        Assertions.assertEquals("okffqyinljqepqwh", model.registerUrl());
+        Assertions.assertEquals("monstshiyxgve", model.hubUrl());
+        Assertions.assertEquals(1153037194, model.credits());
+        Assertions.assertEquals(341924514, model.monthlyCreditLeft());
+        Assertions.assertEquals("ccbi", model.startDateForCredits());
+        Assertions.assertEquals("svu", model.endDateForCredits());
     }
 }

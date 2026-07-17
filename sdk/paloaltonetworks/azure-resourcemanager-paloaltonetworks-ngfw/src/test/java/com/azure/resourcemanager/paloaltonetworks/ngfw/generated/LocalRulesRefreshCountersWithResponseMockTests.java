@@ -28,8 +28,7 @@ public final class LocalRulesRefreshCountersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.localRules()
-            .refreshCountersWithResponse("eoagsqta", "dusr", "xxfavsqwudohzilf", "nl",
-                com.azure.core.util.Context.NONE);
+            .refreshCountersWithResponse("yowmndcovdw", "qauxzan", "mk", "fruwkud", com.azure.core.util.Context.NONE);
 
     }
 }

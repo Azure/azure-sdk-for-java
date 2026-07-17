@@ -16,26 +16,26 @@ public final class AzureResourceManagerManagedIdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceManagerManagedIdentityProperties model = BinaryData.fromString(
-            "{\"tenantId\":\"nzl\",\"principalId\":\"fmppe\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vndhkrwpdapp\":{\"clientId\":\"xsabkyqdu\",\"principalId\":\"itcjczdz\"},\"je\":{\"clientId\":\"bdkvwrwjf\",\"principalId\":\"snhu\"}}}")
+            "{\"tenantId\":\"ocxscpaierhhbcs\",\"principalId\":\"ummajtjaod\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"po\":{\"clientId\":\"dxkqpx\",\"principalId\":\"ajionpimexgstxg\"},\"qsqsy\":{\"clientId\":\"maajrmvdjwzrlo\",\"principalId\":\"clwhijcoejctbz\"}}}")
             .toObject(AzureResourceManagerManagedIdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_AND_USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xsabkyqdu", model.userAssignedIdentities().get("vndhkrwpdapp").clientId());
-        Assertions.assertEquals("itcjczdz", model.userAssignedIdentities().get("vndhkrwpdapp").principalId());
+        Assertions.assertEquals("dxkqpx", model.userAssignedIdentities().get("po").clientId());
+        Assertions.assertEquals("ajionpimexgstxg", model.userAssignedIdentities().get("po").principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResourceManagerManagedIdentityProperties model
             = new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.SYSTEM_AND_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("vndhkrwpdapp",
-                    new AzureResourceManagerUserAssignedIdentity().withClientId("xsabkyqdu")
-                        .withPrincipalId("itcjczdz"),
-                    "je",
-                    new AzureResourceManagerUserAssignedIdentity().withClientId("bdkvwrwjf").withPrincipalId("snhu")));
+                .withUserAssignedIdentities(mapOf("po",
+                    new AzureResourceManagerUserAssignedIdentity().withClientId("dxkqpx")
+                        .withPrincipalId("ajionpimexgstxg"),
+                    "qsqsy", new AzureResourceManagerUserAssignedIdentity().withClientId("maajrmvdjwzrlo")
+                        .withPrincipalId("clwhijcoejctbz")));
         model = BinaryData.fromObject(model).toObject(AzureResourceManagerManagedIdentityProperties.class);
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_AND_USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xsabkyqdu", model.userAssignedIdentities().get("vndhkrwpdapp").clientId());
-        Assertions.assertEquals("itcjczdz", model.userAssignedIdentities().get("vndhkrwpdapp").principalId());
+        Assertions.assertEquals("dxkqpx", model.userAssignedIdentities().get("po").clientId());
+        Assertions.assertEquals("ajionpimexgstxg", model.userAssignedIdentities().get("po").principalId());
     }
 
     // Use "Map.of" if available

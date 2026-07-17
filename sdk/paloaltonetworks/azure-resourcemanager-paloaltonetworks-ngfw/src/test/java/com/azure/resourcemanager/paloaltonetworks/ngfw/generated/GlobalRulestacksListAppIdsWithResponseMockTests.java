@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono;
 public final class GlobalRulestacksListAppIdsWithResponseMockTests {
     @Test
     public void testListAppIdsWithResponse() throws Exception {
-        String responseStr
-            = "{\"value\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"],\"nextLink\":\"iqxf\"}";
+        String responseStr = "{\"value\":[\"esyds\"],\"nextLink\":\"efoh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +30,11 @@ public final class GlobalRulestacksListAppIdsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListAppIdResponse response = manager.globalRulestacks()
-            .listAppIdsWithResponse("xejw", "bmdujtmvcopexc", "jurbuhhlkyqltqsr", "gtuwkff", 369277903,
+            .listAppIdsWithResponse("tmhqykiz", "d", "saoafcluqvox", "ycjimryvwgcwwpbm", 798475182,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tsysi", response.value().get(0));
-        Assertions.assertEquals("iqxf", response.nextLink());
+        Assertions.assertEquals("esyds", response.value().get(0));
+        Assertions.assertEquals("efoh", response.nextLink());
     }
 }

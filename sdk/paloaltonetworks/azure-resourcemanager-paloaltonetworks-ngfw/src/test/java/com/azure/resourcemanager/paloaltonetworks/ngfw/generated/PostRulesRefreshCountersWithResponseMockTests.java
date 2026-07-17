@@ -28,7 +28,7 @@ public final class PostRulesRefreshCountersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.postRules()
-            .refreshCountersWithResponse("wzkjopwbeonrlkw", "dqybx", "eakxcptsoqfyi", com.azure.core.util.Context.NONE);
+            .refreshCountersWithResponse("rweft", "wqejpmvsse", "aepwamcxtcz", com.azure.core.util.Context.NONE);
 
     }
 }

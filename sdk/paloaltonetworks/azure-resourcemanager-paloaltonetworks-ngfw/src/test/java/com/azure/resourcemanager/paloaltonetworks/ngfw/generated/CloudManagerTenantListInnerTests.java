@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CloudManagerTenantListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudManagerTenantListInner model = BinaryData.fromString("{\"value\":[\"zvcjfelisdjubggb\",\"igkxkbsazga\"]}")
-            .toObject(CloudManagerTenantListInner.class);
-        Assertions.assertEquals("zvcjfelisdjubggb", model.value().get(0));
+        CloudManagerTenantListInner model
+            = BinaryData.fromString("{\"value\":[\"ewzjkjexfd\"]}").toObject(CloudManagerTenantListInner.class);
+        Assertions.assertEquals("ewzjkjexfd", model.value().get(0));
     }
 }

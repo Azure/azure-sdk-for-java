@@ -12,21 +12,21 @@ public final class MetricsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsObject model = BinaryData.fromString(
-            "{\"applicationInsightsResourceId\":\"ojbmxv\",\"applicationInsightsConnectionString\":\"vrefdeesv\",\"panEtag\":\"uij\",\"provisioningState\":\"Failed\"}")
+            "{\"applicationInsightsResourceId\":\"mes\",\"applicationInsightsConnectionString\":\"kdlpa\",\"panEtag\":\"rcxfailcfxwmdb\",\"provisioningState\":\"Canceled\"}")
             .toObject(MetricsObject.class);
-        Assertions.assertEquals("ojbmxv", model.applicationInsightsResourceId());
-        Assertions.assertEquals("vrefdeesv", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("uij", model.panEtag());
+        Assertions.assertEquals("mes", model.applicationInsightsResourceId());
+        Assertions.assertEquals("kdlpa", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("rcxfailcfxwmdb", model.panEtag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsObject model = new MetricsObject().withApplicationInsightsResourceId("ojbmxv")
-            .withApplicationInsightsConnectionString("vrefdeesv")
-            .withPanEtag("uij");
+        MetricsObject model = new MetricsObject().withApplicationInsightsResourceId("mes")
+            .withApplicationInsightsConnectionString("kdlpa")
+            .withPanEtag("rcxfailcfxwmdb");
         model = BinaryData.fromObject(model).toObject(MetricsObject.class);
-        Assertions.assertEquals("ojbmxv", model.applicationInsightsResourceId());
-        Assertions.assertEquals("vrefdeesv", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("uij", model.panEtag());
+        Assertions.assertEquals("mes", model.applicationInsightsResourceId());
+        Assertions.assertEquals("kdlpa", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("rcxfailcfxwmdb", model.panEtag());
     }
 }

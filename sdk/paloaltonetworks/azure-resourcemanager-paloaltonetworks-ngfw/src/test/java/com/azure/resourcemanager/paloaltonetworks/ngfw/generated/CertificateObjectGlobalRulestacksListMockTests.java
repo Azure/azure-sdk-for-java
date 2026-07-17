@@ -23,7 +23,7 @@ public final class CertificateObjectGlobalRulestacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"weyoxoy\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"phaimmoi\",\"description\":\"qboshbra\",\"etag\":\"pyyrmfs\",\"provisioningState\":\"Creating\"},\"id\":\"vbopfppdbwnu\",\"name\":\"gahxkumasjcaa\",\"type\":\"fdmmcpug\"}]}";
+            = "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"xybafiqgea\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"gjekglklby\",\"description\":\"idwcwvmzegjon\",\"etag\":\"jirwgdnqzbrfk\",\"provisioningState\":\"Deleted\"},\"id\":\"zmtksjci\",\"name\":\"digsxcdgl\",\"type\":\"plkeuachtomflryt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class CertificateObjectGlobalRulestacksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CertificateObjectGlobalRulestackResource> response
-            = manager.certificateObjectGlobalRulestacks().list("fmuvapckccr", com.azure.core.util.Context.NONE);
+            = manager.certificateObjectGlobalRulestacks().list("n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("weyoxoy", response.iterator().next().certificateSignerResourceId());
+        Assertions.assertEquals("xybafiqgea", response.iterator().next().certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.FALSE, response.iterator().next().certificateSelfSigned());
-        Assertions.assertEquals("phaimmoi", response.iterator().next().auditComment());
-        Assertions.assertEquals("qboshbra", response.iterator().next().description());
-        Assertions.assertEquals("pyyrmfs", response.iterator().next().etag());
+        Assertions.assertEquals("gjekglklby", response.iterator().next().auditComment());
+        Assertions.assertEquals("idwcwvmzegjon", response.iterator().next().description());
+        Assertions.assertEquals("jirwgdnqzbrfk", response.iterator().next().etag());
     }
 }

@@ -23,7 +23,7 @@ public final class PrefixListGlobalRulestacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"antuygdhgaqipirp\",\"prefixList\":[\"rqofulopmjnlexwh\"],\"etag\":\"jpib\",\"auditComment\":\"phuuuerctato\",\"provisioningState\":\"Succeeded\"},\"id\":\"qpbrlc\",\"name\":\"rduczkgofxyfs\",\"type\":\"uc\"}";
+            = "{\"properties\":{\"description\":\"bjgsjjxxahmrn\",\"prefixList\":[\"zyqegxyiv\",\"inbmh\"],\"etag\":\"jijkgqxnhmbke\",\"auditComment\":\"jauj\",\"provisioningState\":\"Succeeded\"},\"id\":\"nggiycwkdtaa\",\"name\":\"xw\",\"type\":\"ekaum\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class PrefixListGlobalRulestacksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks()
-            .createOrUpdate("ajqfutlx", "oqza",
-                new PrefixListGlobalRulestackResourceInner().withDescription("nwqrjzfrgqh")
-                    .withPrefixList(Arrays.asList("hcmbuocnjrohmbp", "ryxameblydyvkfkm"))
-                    .withEtag("cxneh")
-                    .withAuditComment("mtodl"),
+            .createOrUpdate("lz", "zjknyuxg",
+                new PrefixListGlobalRulestackResourceInner().withDescription("txpnrupza")
+                    .withPrefixList(Arrays.asList("rdixt", "ekidswyskb", "uffgllukkutvlx"))
+                    .withEtag("pqhvmblcouqehbhb")
+                    .withAuditComment("sziryrandoyp"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("antuygdhgaqipirp", response.description());
-        Assertions.assertEquals("rqofulopmjnlexwh", response.prefixList().get(0));
-        Assertions.assertEquals("jpib", response.etag());
-        Assertions.assertEquals("phuuuerctato", response.auditComment());
+        Assertions.assertEquals("bjgsjjxxahmrn", response.description());
+        Assertions.assertEquals("zyqegxyiv", response.prefixList().get(0));
+        Assertions.assertEquals("jijkgqxnhmbke", response.etag());
+        Assertions.assertEquals("jauj", response.auditComment());
     }
 }

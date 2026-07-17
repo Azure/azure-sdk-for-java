@@ -22,7 +22,7 @@ public final class LocalRulestacksListAdvancedSecurityObjectsWithResponseMockTes
     @Test
     public void testListAdvancedSecurityObjectsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"wypusuvjsl\",\"entry\":[{\"name\":\"wci\",\"description\":\"jsllfryvd\"}]},\"nextLink\":\"x\"}";
+            = "{\"value\":{\"type\":\"yzm\",\"entry\":[{\"name\":\"kzexnx\",\"description\":\"ckywymxga\"}]},\"nextLink\":\"jkdtfoh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class LocalRulestacksListAdvancedSecurityObjectsWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdvSecurityObjectListResponse response = manager.localRulestacks()
-            .listAdvancedSecurityObjectsWithResponse("jwpindedvabbxbh", "edeilb", AdvSecurityObjectTypeEnum.URL_CUSTOM,
-                "wfcfxzirzz", 1264754105, com.azure.core.util.Context.NONE)
+            .listAdvancedSecurityObjectsWithResponse("t", "nx", AdvSecurityObjectTypeEnum.URL_CUSTOM, "qytl", 340383183,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wypusuvjsl", response.value().type());
-        Assertions.assertEquals("wci", response.value().entry().get(0).name());
-        Assertions.assertEquals("jsllfryvd", response.value().entry().get(0).description());
-        Assertions.assertEquals("x", response.nextLink());
+        Assertions.assertEquals("yzm", response.value().type());
+        Assertions.assertEquals("kzexnx", response.value().entry().get(0).name());
+        Assertions.assertEquals("ckywymxga", response.value().entry().get(0).description());
+        Assertions.assertEquals("jkdtfoh", response.nextLink());
     }
 }

@@ -22,7 +22,7 @@ public final class GlobalRulestacksListSecurityServicesWithResponseMockTests {
     @Test
     public void testListSecurityServicesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"hjnhgwydyynfsvk\",\"entry\":[{\"name\":\"bvqt\",\"description\":\"arfdlpukhpyrnei\"}]},\"nextLink\":\"cpeogkhnmgbrou\"}";
+            = "{\"value\":{\"type\":\"ipietgbe\",\"entry\":[{\"name\":\"fulbmoichdl\",\"description\":\"fpubntnbatz\"},{\"name\":\"iqsowsaaelc\",\"description\":\"tc\"},{\"name\":\"uhplrvkmjcwmjv\",\"description\":\"fggc\"}]},\"nextLink\":\"yylizrz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class GlobalRulestacksListSecurityServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityServicesResponse response = manager.globalRulestacks()
-            .listSecurityServicesWithResponse("ckzmkwklsnox", SecurityServicesTypeEnum.FILE_BLOCKING, "mqeq",
-                1409659836, com.azure.core.util.Context.NONE)
+            .listSecurityServicesWithResponse("kwpzdqtvh", SecurityServicesTypeEnum.ANTI_SPYWARE, "podaq", 574197780,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hjnhgwydyynfsvk", response.value().type());
-        Assertions.assertEquals("bvqt", response.value().entry().get(0).name());
-        Assertions.assertEquals("arfdlpukhpyrnei", response.value().entry().get(0).description());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.nextLink());
+        Assertions.assertEquals("ipietgbe", response.value().type());
+        Assertions.assertEquals("fulbmoichdl", response.value().entry().get(0).name());
+        Assertions.assertEquals("fpubntnbatz", response.value().entry().get(0).description());
+        Assertions.assertEquals("yylizrz", response.nextLink());
     }
 }

@@ -22,7 +22,7 @@ public final class FirewallStatusListByFirewallsMockTests {
     @Test
     public void testListByFirewalls() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"INITIALIZING\",\"healthReason\":\"cwjjxsgmbawvif\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Succeeded\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"wkloozr\",\"hubUrl\":\"xvcmufunlcp\"}},\"id\":\"vir\",\"name\":\"eyngjg\",\"type\":\"rquv\"}]}";
+            = "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"INITIALIZING\",\"healthReason\":\"q\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Deleted\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"j\",\"hubUrl\":\"ggjh\"}},\"id\":\"bxrqrkijp\",\"name\":\"uqlsdx\",\"type\":\"qztvx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FirewallStatusListByFirewallsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FirewallStatusResource> response
-            = manager.firewallStatus().listByFirewalls("bzbcyksiv", "fogdrtbfcm", com.azure.core.util.Context.NONE);
+        PagedIterable<FirewallStatusResource> response = manager.firewallStatus()
+            .listByFirewalls("fbcpaqktkrumzu", "dkyzbfvxov", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wkloozr", response.iterator().next().strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("xvcmufunlcp", response.iterator().next().strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("j", response.iterator().next().strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("ggjh", response.iterator().next().strataCloudManagerInfo().hubUrl());
     }
 }

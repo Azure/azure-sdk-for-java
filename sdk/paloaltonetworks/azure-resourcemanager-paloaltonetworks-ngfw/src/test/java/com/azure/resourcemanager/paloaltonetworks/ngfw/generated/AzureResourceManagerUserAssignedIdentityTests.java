@@ -12,18 +12,18 @@ public final class AzureResourceManagerUserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceManagerUserAssignedIdentity model
-            = BinaryData.fromString("{\"clientId\":\"mrldhu\",\"principalId\":\"zzd\"}")
+            = BinaryData.fromString("{\"clientId\":\"kbfkg\",\"principalId\":\"dkexxppofm\"}")
                 .toObject(AzureResourceManagerUserAssignedIdentity.class);
-        Assertions.assertEquals("mrldhu", model.clientId());
-        Assertions.assertEquals("zzd", model.principalId());
+        Assertions.assertEquals("kbfkg", model.clientId());
+        Assertions.assertEquals("dkexxppofm", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResourceManagerUserAssignedIdentity model
-            = new AzureResourceManagerUserAssignedIdentity().withClientId("mrldhu").withPrincipalId("zzd");
+            = new AzureResourceManagerUserAssignedIdentity().withClientId("kbfkg").withPrincipalId("dkexxppofm");
         model = BinaryData.fromObject(model).toObject(AzureResourceManagerUserAssignedIdentity.class);
-        Assertions.assertEquals("mrldhu", model.clientId());
-        Assertions.assertEquals("zzd", model.principalId());
+        Assertions.assertEquals("kbfkg", model.clientId());
+        Assertions.assertEquals("dkexxppofm", model.principalId());
     }
 }

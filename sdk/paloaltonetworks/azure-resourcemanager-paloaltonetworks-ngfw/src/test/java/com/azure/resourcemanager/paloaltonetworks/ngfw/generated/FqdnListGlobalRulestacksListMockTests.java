@@ -22,7 +22,7 @@ public final class FqdnListGlobalRulestacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"lpxuzzjgnrefq\",\"fqdnList\":[\"qotoihiqakydiwfb\"],\"etag\":\"wpzdqtvhcspo\",\"auditComment\":\"qaxsipietgbebjf\",\"provisioningState\":\"NotSpecified\"},\"id\":\"oichdlpnfpubnt\",\"name\":\"batzviqsows\",\"type\":\"aelcat\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"waeeczgfb\",\"fqdnList\":[\"klelssxb\",\"ycsxzu\",\"ksrl\",\"mdesqp\"],\"etag\":\"vmjcdoewb\",\"auditComment\":\"yvteowxvgpiudeu\",\"provisioningState\":\"Accepted\"},\"id\":\"zec\",\"name\":\"axwk\",\"type\":\"fykhvuhxepmru\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class FqdnListGlobalRulestacksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FqdnListGlobalRulestackResource> response
-            = manager.fqdnListGlobalRulestacks().list("fihotj", com.azure.core.util.Context.NONE);
+            = manager.fqdnListGlobalRulestacks().list("eml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lpxuzzjgnrefq", response.iterator().next().description());
-        Assertions.assertEquals("qotoihiqakydiwfb", response.iterator().next().fqdnList().get(0));
-        Assertions.assertEquals("wpzdqtvhcspo", response.iterator().next().etag());
-        Assertions.assertEquals("qaxsipietgbebjf", response.iterator().next().auditComment());
+        Assertions.assertEquals("waeeczgfb", response.iterator().next().description());
+        Assertions.assertEquals("klelssxb", response.iterator().next().fqdnList().get(0));
+        Assertions.assertEquals("vmjcdoewb", response.iterator().next().etag());
+        Assertions.assertEquals("yvteowxvgpiudeu", response.iterator().next().auditComment());
     }
 }

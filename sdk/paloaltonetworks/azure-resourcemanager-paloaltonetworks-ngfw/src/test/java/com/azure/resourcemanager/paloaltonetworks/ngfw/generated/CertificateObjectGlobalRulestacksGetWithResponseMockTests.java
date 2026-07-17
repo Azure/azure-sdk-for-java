@@ -22,7 +22,7 @@ public final class CertificateObjectGlobalRulestacksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"certificateSignerResourceId\":\"ehtuevrhr\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"oogwxhnsduugwb\",\"description\":\"e\",\"etag\":\"fqkfuarenl\",\"provisioningState\":\"Canceled\"},\"id\":\"klnvnafvvkyfede\",\"name\":\"jboslcqxypok\",\"type\":\"hminqcymczngnbdx\"}";
+            = "{\"properties\":{\"certificateSignerResourceId\":\"idqlvhu\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"eofiz\",\"description\":\"jfnmjmvlwyz\",\"etag\":\"blkujrllfojuidjp\",\"provisioningState\":\"Succeeded\"},\"id\":\"ucejikzoeovvtz\",\"name\":\"je\",\"type\":\"jklntikyj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class CertificateObjectGlobalRulestacksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateObjectGlobalRulestackResource response = manager.certificateObjectGlobalRulestacks()
-            .getWithResponse("pfpazjzoywjxhpdu", "ontacnpq", com.azure.core.util.Context.NONE)
+            .getWithResponse("tl", "tmvag", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ehtuevrhr", response.certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());
-        Assertions.assertEquals("oogwxhnsduugwb", response.auditComment());
-        Assertions.assertEquals("e", response.description());
-        Assertions.assertEquals("fqkfuarenl", response.etag());
+        Assertions.assertEquals("idqlvhu", response.certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.FALSE, response.certificateSelfSigned());
+        Assertions.assertEquals("eofiz", response.auditComment());
+        Assertions.assertEquals("jfnmjmvlwyz", response.description());
+        Assertions.assertEquals("blkujrllfojuidjp", response.etag());
     }
 }

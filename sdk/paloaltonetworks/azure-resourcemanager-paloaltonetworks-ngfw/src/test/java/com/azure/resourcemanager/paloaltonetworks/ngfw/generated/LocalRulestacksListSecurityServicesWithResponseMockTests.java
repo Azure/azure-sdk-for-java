@@ -22,7 +22,7 @@ public final class LocalRulestacksListSecurityServicesWithResponseMockTests {
     @Test
     public void testListSecurityServicesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":{\"type\":\"eof\",\"entry\":[{\"name\":\"fnnxrkad\",\"description\":\"ynnfmuiii\"},{\"name\":\"ipfohykfkx\",\"description\":\"cbrwjiutgnjizbe\"}]},\"nextLink\":\"oiymrvzbjuyrsrzi\"}";
+            = "{\"value\":{\"type\":\"mdwmf\",\"entry\":[{\"name\":\"pycvjqdvdwkqpldr\",\"description\":\"fgnaavuagnteta\"},{\"name\":\"utnpdctuhspfefyi\",\"description\":\"uyeuyl\"},{\"name\":\"phm\",\"description\":\"bkcgsuthhllnm\"},{\"name\":\"y\",\"description\":\"fxexlfciatxtjrr\"}]},\"nextLink\":\"mdskjhhxdlajfoxc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class LocalRulestacksListSecurityServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityServicesResponse response = manager.localRulestacks()
-            .listSecurityServicesWithResponse("jjzakzwjiqullqx", "dmvr", SecurityServicesTypeEnum.FILE_BLOCKING,
-                "mqerndb", 1077842907, com.azure.core.util.Context.NONE)
+            .listSecurityServicesWithResponse("nvwjhrsidqpxl", "tpakf", SecurityServicesTypeEnum.ANTI_VIRUS,
+                "gatwmykyu", 1790797931, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eof", response.value().type());
-        Assertions.assertEquals("fnnxrkad", response.value().entry().get(0).name());
-        Assertions.assertEquals("ynnfmuiii", response.value().entry().get(0).description());
-        Assertions.assertEquals("oiymrvzbjuyrsrzi", response.nextLink());
+        Assertions.assertEquals("mdwmf", response.value().type());
+        Assertions.assertEquals("pycvjqdvdwkqpldr", response.value().entry().get(0).name());
+        Assertions.assertEquals("fgnaavuagnteta", response.value().entry().get(0).description());
+        Assertions.assertEquals("mdskjhhxdlajfoxc", response.nextLink());
     }
 }

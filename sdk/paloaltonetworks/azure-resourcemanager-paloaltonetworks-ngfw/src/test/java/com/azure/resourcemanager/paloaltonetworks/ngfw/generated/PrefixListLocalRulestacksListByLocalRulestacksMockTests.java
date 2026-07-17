@@ -22,7 +22,7 @@ public final class PrefixListLocalRulestacksListByLocalRulestacksMockTests {
     @Test
     public void testListByLocalRulestacks() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"zgbsqgpewqcfutmd\",\"prefixList\":[\"ozglq\",\"bknlzcl\",\"tzeyowmndcovd\"],\"etag\":\"qauxzan\",\"auditComment\":\"kvfruwkudr\",\"provisioningState\":\"Canceled\"},\"id\":\"txudqyeme\",\"name\":\"unaucm\",\"type\":\"irtneemmjau\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"hpojxl\",\"prefixList\":[\"z\",\"xpgfq\",\"wzpwiibel\"],\"etag\":\"erwk\",\"auditComment\":\"pjxljtxb\",\"provisioningState\":\"Accepted\"},\"id\":\"bxxn\",\"name\":\"uisdzhgbdgz\",\"type\":\"agsecnadbuw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class PrefixListLocalRulestacksListByLocalRulestacksMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrefixListResource> response
-            = manager.prefixListLocalRulestacks().listByLocalRulestacks("fop", "z", com.azure.core.util.Context.NONE);
+        PagedIterable<PrefixListResource> response = manager.prefixListLocalRulestacks()
+            .listByLocalRulestacks("msvuvdjkqxetq", "mlivrjjxnwx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zgbsqgpewqcfutmd", response.iterator().next().description());
-        Assertions.assertEquals("ozglq", response.iterator().next().prefixList().get(0));
-        Assertions.assertEquals("qauxzan", response.iterator().next().etag());
-        Assertions.assertEquals("kvfruwkudr", response.iterator().next().auditComment());
+        Assertions.assertEquals("hpojxl", response.iterator().next().description());
+        Assertions.assertEquals("z", response.iterator().next().prefixList().get(0));
+        Assertions.assertEquals("erwk", response.iterator().next().etag());
+        Assertions.assertEquals("pjxljtxb", response.iterator().next().auditComment());
     }
 }

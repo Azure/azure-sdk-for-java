@@ -23,7 +23,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListSupportInfoWithRespons
     @Test
     public void testListSupportInfoWithResponse() throws Exception {
         String responseStr
-            = "{\"productSku\":\"mfaewzgi\",\"productSerial\":\"jpxpqhttqhnmhkre\",\"accountRegistrationStatus\":\"Not Registered\",\"accountId\":\"uxh\",\"freeTrial\":\"Disabled\",\"freeTrialDaysLeft\":355331537,\"freeTrialCreditLeft\":981218662,\"helpURL\":\"spiny\",\"supportURL\":\"qgwokmikp\",\"registerURL\":\"fbmjxuvji\",\"hubUrl\":\"dvhaxdvw\",\"credits\":1625333661,\"monthlyCreditLeft\":2097746238,\"startDateForCredits\":\"hthdklmvetatlakf\",\"endDateForCredits\":\"ixwgiksbbvtooxrp\"}";
+            = "{\"productSku\":\"pyrowtj\",\"productSerial\":\"ztfwfqchvcz\",\"accountRegistrationStatus\":\"Registered\",\"accountId\":\"nctagfyvrtpqpem\",\"freeTrial\":\"Disabled\",\"freeTrialDaysLeft\":1613445485,\"freeTrialCreditLeft\":434892547,\"helpURL\":\"dqhqyhwqwemv\",\"supportURL\":\"abckmzeoxinhgre\",\"registerURL\":\"twhlpuzjpce\",\"hubUrl\":\"nzangprbfaxy\",\"credits\":861726554,\"monthlyCreditLeft\":40470018,\"startDateForCredits\":\"phmsexroq\",\"endDateForCredits\":\"dktxfv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,20 @@ public final class PaloAltoNetworksCloudngfwOperationsListSupportInfoWithRespons
             .listSupportInfoWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mfaewzgi", response.productSku());
-        Assertions.assertEquals("jpxpqhttqhnmhkre", response.productSerial());
-        Assertions.assertEquals(RegistrationStatus.NOT_REGISTERED, response.accountRegistrationStatus());
-        Assertions.assertEquals("uxh", response.accountId());
+        Assertions.assertEquals("pyrowtj", response.productSku());
+        Assertions.assertEquals("ztfwfqchvcz", response.productSerial());
+        Assertions.assertEquals(RegistrationStatus.REGISTERED, response.accountRegistrationStatus());
+        Assertions.assertEquals("nctagfyvrtpqpem", response.accountId());
         Assertions.assertEquals(EnableStatus.DISABLED, response.freeTrial());
-        Assertions.assertEquals(355331537, response.freeTrialDaysLeft());
-        Assertions.assertEquals(981218662, response.freeTrialCreditLeft());
-        Assertions.assertEquals("spiny", response.helpUrl());
-        Assertions.assertEquals("qgwokmikp", response.supportUrl());
-        Assertions.assertEquals("fbmjxuvji", response.registerUrl());
-        Assertions.assertEquals("dvhaxdvw", response.hubUrl());
-        Assertions.assertEquals(1625333661, response.credits());
-        Assertions.assertEquals(2097746238, response.monthlyCreditLeft());
-        Assertions.assertEquals("hthdklmvetatlakf", response.startDateForCredits());
-        Assertions.assertEquals("ixwgiksbbvtooxrp", response.endDateForCredits());
+        Assertions.assertEquals(1613445485, response.freeTrialDaysLeft());
+        Assertions.assertEquals(434892547, response.freeTrialCreditLeft());
+        Assertions.assertEquals("dqhqyhwqwemv", response.helpUrl());
+        Assertions.assertEquals("abckmzeoxinhgre", response.supportUrl());
+        Assertions.assertEquals("twhlpuzjpce", response.registerUrl());
+        Assertions.assertEquals("nzangprbfaxy", response.hubUrl());
+        Assertions.assertEquals(861726554, response.credits());
+        Assertions.assertEquals(40470018, response.monthlyCreditLeft());
+        Assertions.assertEquals("phmsexroq", response.startDateForCredits());
+        Assertions.assertEquals("dktxfv", response.endDateForCredits());
     }
 }

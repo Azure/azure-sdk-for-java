@@ -27,8 +27,7 @@ public final class PrefixListLocalRulestacksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.prefixListLocalRulestacks()
-            .delete("zjwhsetwwjwz", "qseuzuukykcyqhy", "qzzdcykeyste", com.azure.core.util.Context.NONE);
+        manager.prefixListLocalRulestacks().delete("a", "iwkkvya", "xkvvcs", com.azure.core.util.Context.NONE);
 
     }
 }

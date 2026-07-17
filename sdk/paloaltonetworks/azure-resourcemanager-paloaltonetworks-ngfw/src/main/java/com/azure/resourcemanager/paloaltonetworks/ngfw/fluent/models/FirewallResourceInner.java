@@ -176,6 +176,29 @@ public final class FirewallResourceInner extends Resource {
     }
 
     /**
+     * Get the firewallSku property: Firewall SKU type, Default will be STANDARD.
+     * 
+     * @return the firewallSku value.
+     */
+    public String firewallSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallSku();
+    }
+
+    /**
+     * Set the firewallSku property: Firewall SKU type, Default will be STANDARD.
+     * 
+     * @param firewallSku the firewallSku value to set.
+     * @return the FirewallResourceInner object itself.
+     */
+    public FirewallResourceInner withFirewallSku(String firewallSku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallDeploymentProperties();
+        }
+        this.innerProperties().withFirewallSku(firewallSku);
+        return this;
+    }
+
+    /**
      * Get the networkProfile property: Network settings.
      * 
      * @return the networkProfile value.

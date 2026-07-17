@@ -21,7 +21,7 @@ public final class GlobalRulestacksListPredefinedUrlCategoriesWithResponseMockTe
     @Test
     public void testListPredefinedUrlCategoriesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"action\":\"lwntsjgqrs\",\"name\":\"y\"},{\"action\":\"ruuuybnch\",\"name\":\"szizoyuelyetndnb\"},{\"action\":\"qyggagfl\",\"name\":\"lgmtrwahzjmucf\"}],\"nextLink\":\"yrplrohkpigqfus\"}";
+            = "{\"value\":[{\"action\":\"kyujxsglhsrrr\",\"name\":\"ejylmbkzu\"},{\"action\":\"nigrfihotjewl\",\"name\":\"xuzzjgnrefq\"}],\"nextLink\":\"qotoihiqakydiwfb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class GlobalRulestacksListPredefinedUrlCategoriesWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PredefinedUrlCategoriesResponse response = manager.globalRulestacks()
-            .listPredefinedUrlCategoriesWithResponse("er", "htvs", 817459269, com.azure.core.util.Context.NONE)
+            .listPredefinedUrlCategoriesWithResponse("cuyzlwhhmemhoocl", "tnpqmemczjk", 865152185,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lwntsjgqrs", response.value().get(0).action());
-        Assertions.assertEquals("y", response.value().get(0).name());
-        Assertions.assertEquals("yrplrohkpigqfus", response.nextLink());
+        Assertions.assertEquals("kyujxsglhsrrr", response.value().get(0).action());
+        Assertions.assertEquals("ejylmbkzu", response.value().get(0).name());
+        Assertions.assertEquals("qotoihiqakydiwfb", response.nextLink());
     }
 }

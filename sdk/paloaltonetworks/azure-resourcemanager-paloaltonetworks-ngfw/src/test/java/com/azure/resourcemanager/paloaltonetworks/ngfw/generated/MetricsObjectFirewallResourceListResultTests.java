@@ -12,11 +12,11 @@ public final class MetricsObjectFirewallResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsObjectFirewallResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"s\",\"applicationInsightsConnectionString\":\"wprtu\",\"panEtag\":\"sawddjibabxvi\",\"provisioningState\":\"Creating\"},\"id\":\"tzeexav\",\"name\":\"xtfglecdmdqb\",\"type\":\"pypqtgsfj\"}],\"nextLink\":\"b\"}")
+            "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"gsftufqobrjlnacg\",\"applicationInsightsConnectionString\":\"ckknhxkizvy\",\"panEtag\":\"rzvul\",\"provisioningState\":\"Deleting\"},\"id\":\"eranokqgukkjqnv\",\"name\":\"roylaxxu\",\"type\":\"cdisd\"},{\"properties\":{\"applicationInsightsResourceId\":\"sfjbjsvg\",\"applicationInsightsConnectionString\":\"rwhryvycytd\",\"panEtag\":\"xgccknfnw\",\"provisioningState\":\"Succeeded\"},\"id\":\"vpdvjdhttzae\",\"name\":\"edxihchrphkmcrj\",\"type\":\"qnsdfzpbgtgky\"},{\"properties\":{\"applicationInsightsResourceId\":\"kdghrjeuutlwx\",\"applicationInsightsConnectionString\":\"z\",\"panEtag\":\"hokvbwnh\",\"provisioningState\":\"Deleted\"},\"id\":\"gehgppi\",\"name\":\"ifhpf\",\"type\":\"oajvgcxtxjcs\"}],\"nextLink\":\"afidltugsres\"}")
             .toObject(MetricsObjectFirewallResourceListResult.class);
-        Assertions.assertEquals("s", model.value().get(0).applicationInsightsResourceId());
-        Assertions.assertEquals("wprtu", model.value().get(0).applicationInsightsConnectionString());
-        Assertions.assertEquals("sawddjibabxvi", model.value().get(0).panEtag());
-        Assertions.assertEquals("b", model.nextLink());
+        Assertions.assertEquals("gsftufqobrjlnacg", model.value().get(0).applicationInsightsResourceId());
+        Assertions.assertEquals("ckknhxkizvy", model.value().get(0).applicationInsightsConnectionString());
+        Assertions.assertEquals("rzvul", model.value().get(0).panEtag());
+        Assertions.assertEquals("afidltugsres", model.nextLink());
     }
 }

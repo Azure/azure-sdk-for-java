@@ -22,7 +22,7 @@ public final class PrefixListGlobalRulestacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"wex\",\"prefixList\":[\"zvlazipbhpwvqsgn\",\"yuuzivens\",\"pmeyyvpkpatlbijp\"],\"etag\":\"sksrfhfvolmknbn\",\"auditComment\":\"cdommpvfqaw\",\"provisioningState\":\"Deleting\"},\"id\":\"rttuiaclkiexha\",\"name\":\"lfnthiqfyut\",\"type\":\"diygbpvnwswmtxky\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"sokdgoge\",\"prefixList\":[\"jymrhbg\",\"zozk\",\"ewnf\",\"zhhh\"],\"etag\":\"smffjkutycyarnr\",\"auditComment\":\"hguabzoghktdp\",\"provisioningState\":\"Failed\"},\"id\":\"coe\",\"name\":\"cnhz\",\"type\":\"rottjzcfyjzptw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrefixListGlobalRulestacksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrefixListGlobalRulestackResource> response
-            = manager.prefixListGlobalRulestacks().list("mlghktuidvrmazlp", com.azure.core.util.Context.NONE);
+            = manager.prefixListGlobalRulestacks().list("wbjsidbirkf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wex", response.iterator().next().description());
-        Assertions.assertEquals("zvlazipbhpwvqsgn", response.iterator().next().prefixList().get(0));
-        Assertions.assertEquals("sksrfhfvolmknbn", response.iterator().next().etag());
-        Assertions.assertEquals("cdommpvfqaw", response.iterator().next().auditComment());
+        Assertions.assertEquals("sokdgoge", response.iterator().next().description());
+        Assertions.assertEquals("jymrhbg", response.iterator().next().prefixList().get(0));
+        Assertions.assertEquals("smffjkutycyarnr", response.iterator().next().etag());
+        Assertions.assertEquals("hguabzoghktdp", response.iterator().next().auditComment());
     }
 }

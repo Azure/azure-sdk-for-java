@@ -21,7 +21,7 @@ public final class GlobalRulestacksGetChangeLogWithResponseMockTests {
     @Test
     public void testGetChangeLogWithResponse() throws Exception {
         String responseStr
-            = "{\"changes\":[\"gcgbjb\",\"dlfgtdysnaq\",\"flq\",\"ctqhamzjrwdk\"],\"lastCommitted\":\"2021-10-20T22:55:55Z\",\"lastModified\":\"2021-03-01T23:08:24Z\"}";
+            = "{\"changes\":[\"qboshbra\",\"apyyrmfsvbpavbo\",\"fppdbwnu\",\"gahxkumasjcaa\"],\"lastCommitted\":\"2021-05-11T19:58:13Z\",\"lastModified\":\"2021-02-17T15:20:10Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,12 @@ public final class GlobalRulestacksGetChangeLogWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Changelog response
-            = manager.globalRulestacks().getChangeLogWithResponse("m", com.azure.core.util.Context.NONE).getValue();
+        Changelog response = manager.globalRulestacks()
+            .getChangeLogWithResponse("phaimmoi", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("gcgbjb", response.changes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T22:55:55Z"), response.lastCommitted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T23:08:24Z"), response.lastModified());
+        Assertions.assertEquals("qboshbra", response.changes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T19:58:13Z"), response.lastCommitted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T15:20:10Z"), response.lastModified());
     }
 }

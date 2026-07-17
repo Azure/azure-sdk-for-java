@@ -32,7 +32,7 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"panEtag\":\"buzphdugn\",\"panLocation\":\"knpgoxgjiuq\",\"scope\":\"GLOBAL\",\"associatedSubscriptions\":[\"z\",\"pqwjedm\",\"rrxxgewpktvq\",\"lkm\"],\"description\":\"zoyhlfbcgwg\",\"defaultMode\":\"NONE\",\"minAppIdVersion\":\"oebqinjipn\",\"provisioningState\":\"Updating\",\"securityServices\":{\"vulnerabilityProfile\":\"qlafcbahhpzpofoi\",\"antiSpywareProfile\":\"w\",\"antiVirusProfile\":\"ilkmk\",\"urlFilteringProfile\":\"olvdnd\",\"fileBlockingProfile\":\"auo\",\"dnsSubscription\":\"huartv\",\"outboundUnTrustCertificate\":\"ukyefchnmnahmnxh\",\"outboundTrustCertificate\":\"jqirwrw\"}},\"location\":\"ooxf\",\"identity\":{\"tenantId\":\"hx\",\"principalId\":\"snewmozqvbub\",\"type\":\"None\",\"userAssignedIdentities\":{\"dvmfqhppub\":{\"clientId\":\"sycxhxzgaz\",\"principalId\":\"abo\"}}},\"id\":\"sepdfgk\",\"name\":\"tdherngbtcjuahok\",\"type\":\"tobkauxofshfph\"}";
+            = "{\"properties\":{\"panEtag\":\"qttv\",\"panLocation\":\"pqhjpenuygbqeqq\",\"scope\":\"GLOBAL\",\"associatedSubscriptions\":[\"n\",\"vcdlg\"],\"description\":\"ucmfdj\",\"defaultMode\":\"IPS\",\"minAppIdVersion\":\"xpunjqi\",\"provisioningState\":\"Failed\",\"securityServices\":{\"vulnerabilityProfile\":\"itacgxmfcsserx\",\"antiSpywareProfile\":\"vs\",\"antiVirusProfile\":\"hlwntsjgq\",\"urlFilteringProfile\":\"xypruuuy\",\"fileBlockingProfile\":\"chrszi\",\"dnsSubscription\":\"yuel\",\"outboundUnTrustCertificate\":\"tn\",\"outboundTrustCertificate\":\"bf\"}},\"location\":\"yggagflnlgmt\",\"identity\":{\"tenantId\":\"hzjmucftbyrp\",\"principalId\":\"ohkpigqfu\",\"type\":\"None\",\"userAssignedIdentities\":{\"e\":{\"clientId\":\"mkwkl\",\"principalId\":\"oxaxm\"},\"bvqt\":{\"clientId\":\"lhhjnh\",\"principalId\":\"ydyynfsvkh\"},\"ddbhf\":{\"clientId\":\"arfdlpukhpyrnei\",\"principalId\":\"cpeogkhnmgbrou\"},\"tehtuevrhrljyoog\":{\"clientId\":\"fpazjzoywjxhpd\",\"principalId\":\"ontacnpq\"}}},\"id\":\"hnsduugwbsreur\",\"name\":\"q\",\"type\":\"fuarenlvhht\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,51 +43,54 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
 
         GlobalRulestackResource response
             = manager.globalRulestacks()
-                .updateWithResponse("kqmhhaowjr",
-                    new GlobalRulestackResourceUpdate().withLocation("vuporqzdfuydzv")
-                        .withIdentity(new AzureResourceManagerManagedIdentityProperties()
-                            .withType(ManagedIdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(mapOf("icrmnzh",
-                                new AzureResourceManagerUserAssignedIdentity().withClientId("sz")
-                                    .withPrincipalId("iwtglxxhljfpg"))))
-                        .withProperties(new GlobalRulestackResourceUpdateProperties().withPanEtag("qgjsxvpqcbfrmbod")
-                            .withPanLocation("s")
-                            .withScope(ScopeType.GLOBAL)
-                            .withAssociatedSubscriptions(Arrays.asList("iibakcl", "c", "fr"))
-                            .withDescription("ousxauzlwvsgmw")
-                            .withDefaultMode(DefaultMode.NONE)
-                            .withMinAppIdVersion("zizvuxmmk")
-                            .withSecurityServices(new SecurityServices().withVulnerabilityProfile("thnwpzte")
-                                .withAntiSpywareProfile("vmribiat")
-                                .withAntiVirusProfile("plucfotangcfhnyk")
-                                .withUrlFilteringProfile("ugswvx")
-                                .withFileBlockingProfile("mzqwmvtxnjmxmcu")
-                                .withDnsSubscription("dtcvcl")
-                                .withOutboundUnTrustCertificate("npdkv")
-                                .withOutboundTrustCertificate("abuiy"))),
+                .updateWithResponse("bnwgfmxj", new GlobalRulestackResourceUpdate().withLocation("g")
+                    .withIdentity(new AzureResourceManagerManagedIdentityProperties()
+                        .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("dkq",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("q").withPrincipalId("mzjr"),
+                            "wcegyamlbn",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("qy")
+                                .withPrincipalId("eziunjxdfzant"),
+                            "m",
+                            new AzureResourceManagerUserAssignedIdentity().withClientId("qa")
+                                .withPrincipalId("jvpilguooqja"))))
+                    .withProperties(new GlobalRulestackResourceUpdateProperties().withPanEtag("gueiookjbsahrtdt")
+                        .withPanLocation("elqacslmot")
+                        .withScope(ScopeType.LOCAL)
+                        .withAssociatedSubscriptions(Arrays.asList("xofvcjk"))
+                        .withDescription("irazftxejwabmd")
+                        .withDefaultMode(DefaultMode.IPS)
+                        .withMinAppIdVersion("vcopex")
+                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("urbuhhlkyqltq")
+                            .withAntiSpywareProfile("ogtu")
+                            .withAntiVirusProfile("ffdjktsysidfvclg")
+                            .withUrlFilteringProfile("n")
+                            .withFileBlockingProfile("ijtk")
+                            .withDnsSubscription("sqo")
+                            .withOutboundUnTrustCertificate("fikayiansharujtj")
+                            .withOutboundTrustCertificate("xfz"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ooxf", response.location());
+        Assertions.assertEquals("yggagflnlgmt", response.location());
         Assertions.assertEquals(ManagedIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("sycxhxzgaz",
-            response.identity().userAssignedIdentities().get("dvmfqhppub").clientId());
-        Assertions.assertEquals("abo", response.identity().userAssignedIdentities().get("dvmfqhppub").principalId());
-        Assertions.assertEquals("buzphdugn", response.panEtag());
-        Assertions.assertEquals("knpgoxgjiuq", response.panLocation());
+        Assertions.assertEquals("mkwkl", response.identity().userAssignedIdentities().get("e").clientId());
+        Assertions.assertEquals("oxaxm", response.identity().userAssignedIdentities().get("e").principalId());
+        Assertions.assertEquals("qttv", response.panEtag());
+        Assertions.assertEquals("pqhjpenuygbqeqq", response.panLocation());
         Assertions.assertEquals(ScopeType.GLOBAL, response.scope());
-        Assertions.assertEquals("z", response.associatedSubscriptions().get(0));
-        Assertions.assertEquals("zoyhlfbcgwg", response.description());
-        Assertions.assertEquals(DefaultMode.NONE, response.defaultMode());
-        Assertions.assertEquals("oebqinjipn", response.minAppIdVersion());
-        Assertions.assertEquals("qlafcbahhpzpofoi", response.securityServices().vulnerabilityProfile());
-        Assertions.assertEquals("w", response.securityServices().antiSpywareProfile());
-        Assertions.assertEquals("ilkmk", response.securityServices().antiVirusProfile());
-        Assertions.assertEquals("olvdnd", response.securityServices().urlFilteringProfile());
-        Assertions.assertEquals("auo", response.securityServices().fileBlockingProfile());
-        Assertions.assertEquals("huartv", response.securityServices().dnsSubscription());
-        Assertions.assertEquals("ukyefchnmnahmnxh", response.securityServices().outboundUnTrustCertificate());
-        Assertions.assertEquals("jqirwrw", response.securityServices().outboundTrustCertificate());
+        Assertions.assertEquals("n", response.associatedSubscriptions().get(0));
+        Assertions.assertEquals("ucmfdj", response.description());
+        Assertions.assertEquals(DefaultMode.IPS, response.defaultMode());
+        Assertions.assertEquals("xpunjqi", response.minAppIdVersion());
+        Assertions.assertEquals("itacgxmfcsserx", response.securityServices().vulnerabilityProfile());
+        Assertions.assertEquals("vs", response.securityServices().antiSpywareProfile());
+        Assertions.assertEquals("hlwntsjgq", response.securityServices().antiVirusProfile());
+        Assertions.assertEquals("xypruuuy", response.securityServices().urlFilteringProfile());
+        Assertions.assertEquals("chrszi", response.securityServices().fileBlockingProfile());
+        Assertions.assertEquals("yuel", response.securityServices().dnsSubscription());
+        Assertions.assertEquals("tn", response.securityServices().outboundUnTrustCertificate());
+        Assertions.assertEquals("bf", response.securityServices().outboundTrustCertificate());
     }
 
     // Use "Map.of" if available

@@ -21,7 +21,7 @@ public final class MetricsObjectFirewallsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"applicationInsightsResourceId\":\"slojfkqidnqt\",\"applicationInsightsConnectionString\":\"qxjhqxcsqhtkbtnq\",\"panEtag\":\"ngldmbiipsn\",\"provisioningState\":\"Accepted\"},\"id\":\"qkzn\",\"name\":\"hhl\",\"type\":\"xricctkwmuqq\"}";
+            = "{\"properties\":{\"applicationInsightsResourceId\":\"gatolekscbctnan\",\"applicationInsightsConnectionString\":\"imwbzxpdcldpk\",\"panEtag\":\"n\",\"provisioningState\":\"Failed\"},\"id\":\"imouxwksqmudmfco\",\"name\":\"bicziuswswj\",\"type\":\"kbqsjhbtqqvyfscy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,12 +30,11 @@ public final class MetricsObjectFirewallsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        MetricsObjectFirewallResource response = manager.metricsObjectFirewalls()
-            .getWithResponse("a", "krmukmyjmkxett", com.azure.core.util.Context.NONE)
-            .getValue();
+        MetricsObjectFirewallResource response
+            = manager.metricsObjectFirewalls().getWithResponse("p", "ujd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("slojfkqidnqt", response.applicationInsightsResourceId());
-        Assertions.assertEquals("qxjhqxcsqhtkbtnq", response.applicationInsightsConnectionString());
-        Assertions.assertEquals("ngldmbiipsn", response.panEtag());
+        Assertions.assertEquals("gatolekscbctnan", response.applicationInsightsResourceId());
+        Assertions.assertEquals("imwbzxpdcldpk", response.applicationInsightsConnectionString());
+        Assertions.assertEquals("n", response.panEtag());
     }
 }

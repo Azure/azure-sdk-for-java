@@ -22,7 +22,7 @@ public final class FqdnListLocalRulestacksListByLocalRulestacksMockTests {
     @Test
     public void testListByLocalRulestacks() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"udndoabhjxw\",\"fqdnList\":[\"weuipmpvksmi\",\"nsqxtltc\"],\"etag\":\"rdpqgfhy\",\"auditComment\":\"rakkld\",\"provisioningState\":\"Deleting\"},\"id\":\"fcmfcn\",\"name\":\"jajqmatxjt\",\"type\":\"elnzqgxxgfbbmt\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"lmhxdqaolfylnk\",\"fqdnList\":[\"jpjvly\",\"ltm\"],\"etag\":\"obbjwhlwy\",\"auditComment\":\"nqzocrdzg\",\"provisioningState\":\"Canceled\"},\"id\":\"ntgxdncaqttie\",\"name\":\"oifuvnyttzgixgy\",\"type\":\"ihlgm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class FqdnListLocalRulestacksListByLocalRulestacksMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FqdnListLocalRulestackResource> response = manager.fqdnListLocalRulestacks()
-            .listByLocalRulestacks("ywsxvjabjqqaxu", "vym", com.azure.core.util.Context.NONE);
+            .listByLocalRulestacks("jtnqjil", "ywkdcwmqsy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("udndoabhjxw", response.iterator().next().description());
-        Assertions.assertEquals("weuipmpvksmi", response.iterator().next().fqdnList().get(0));
-        Assertions.assertEquals("rdpqgfhy", response.iterator().next().etag());
-        Assertions.assertEquals("rakkld", response.iterator().next().auditComment());
+        Assertions.assertEquals("lmhxdqaolfylnk", response.iterator().next().description());
+        Assertions.assertEquals("jpjvly", response.iterator().next().fqdnList().get(0));
+        Assertions.assertEquals("obbjwhlwy", response.iterator().next().etag());
+        Assertions.assertEquals("nqzocrdzg", response.iterator().next().auditComment());
     }
 }

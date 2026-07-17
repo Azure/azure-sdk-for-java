@@ -12,10 +12,10 @@ public final class FirewallStatusResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallStatusResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"YELLOW\",\"healthReason\":\"whryvycytdcl\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Succeeded\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"mvpdvjdhttzaef\",\"hubUrl\":\"x\"}},\"id\":\"ch\",\"name\":\"phkmcrjdqnsdfz\",\"type\":\"bg\"}],\"nextLink\":\"kylkdghrj\"}")
+            "{\"value\":[{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"YELLOW\",\"healthReason\":\"guufuzboyjathwtz\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Failed\",\"isStrataCloudManaged\":\"TRUE\",\"strataCloudManagerInfo\":{\"folderName\":\"bwjscjpahlxveab\",\"hubUrl\":\"xnmwmqtibxyijddt\"}},\"id\":\"cttadi\",\"name\":\"aeukm\",\"type\":\"sieekpndzaapm\"},{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"wig\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Succeeded\",\"isStrataCloudManaged\":\"TRUE\",\"strataCloudManagerInfo\":{\"folderName\":\"ybpmzznrtffyaq\",\"hubUrl\":\"mhh\"}},\"id\":\"oqaqhvseufuq\",\"name\":\"rxpdlcgqlsi\",\"type\":\"mjqfrddgamquhio\"}],\"nextLink\":\"sjuivfcdisyir\"}")
             .toObject(FirewallStatusResourceListResult.class);
-        Assertions.assertEquals("mvpdvjdhttzaef", model.value().get(0).strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("x", model.value().get(0).strataCloudManagerInfo().hubUrl());
-        Assertions.assertEquals("kylkdghrj", model.nextLink());
+        Assertions.assertEquals("bwjscjpahlxveab", model.value().get(0).strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("xnmwmqtibxyijddt", model.value().get(0).strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("sjuivfcdisyir", model.nextLink());
     }
 }

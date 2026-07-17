@@ -22,7 +22,7 @@ public final class FqdnListLocalRulestacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"j\",\"fqdnList\":[\"ggjh\",\"f\"],\"etag\":\"rqrkijpeuqlsdx\",\"auditComment\":\"ztv\",\"provisioningState\":\"Succeeded\"},\"id\":\"wmjswenaww\",\"name\":\"me\",\"type\":\"leqioulndh\"}";
+            = "{\"properties\":{\"description\":\"drnxsluvlzla\",\"fqdnList\":[\"t\",\"kpbqhvfdqqjw\"],\"etag\":\"hwzdanojisgglmv\",\"auditComment\":\"atuztjct\",\"provisioningState\":\"Succeeded\"},\"id\":\"bk\",\"name\":\"ehxsmzygdfwakws\",\"type\":\"ivmakx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class FqdnListLocalRulestacksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks()
-            .define("aqzi")
-            .withExistingLocalRulestack("pqagynoiprn", "calincryqxz")
-            .withFqdnList(Arrays.asList("guhfupe", "asvvoqsbpkfl", "nfkgxsyaowuzowpu", "hdkcprgu"))
-            .withDescription("qimiymqr")
-            .withEtag("rztiochlutixmqr")
-            .withAuditComment("jizcbfzmcrunfhiu")
+            .define("aqotwfhipxwgsabv")
+            .withExistingLocalRulestack("behlqtxnr", "lkndrndpgfjodh")
+            .withFqdnList(Arrays.asList("mlj", "irvpefycdve", "ti"))
+            .withDescription("powzafcz")
+            .withEtag("nsxzajlns")
+            .withAuditComment("wjuyxx")
             .create();
 
-        Assertions.assertEquals("j", response.description());
-        Assertions.assertEquals("ggjh", response.fqdnList().get(0));
-        Assertions.assertEquals("rqrkijpeuqlsdx", response.etag());
-        Assertions.assertEquals("ztv", response.auditComment());
+        Assertions.assertEquals("drnxsluvlzla", response.description());
+        Assertions.assertEquals("t", response.fqdnList().get(0));
+        Assertions.assertEquals("hwzdanojisgglmv", response.etag());
+        Assertions.assertEquals("atuztjct", response.auditComment());
     }
 }
