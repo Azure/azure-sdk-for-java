@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole> {
     /**
-     * Static value None for ReplicationRole.
+     * No replication role assigned; the server operates independently.
      */
     public static final ReplicationRole NONE = fromString("None");
 
     /**
-     * Static value Primary for ReplicationRole.
+     * Acts as the source server for replication to one or more replicas.
      */
     public static final ReplicationRole PRIMARY = fromString("Primary");
 
     /**
-     * Static value AsyncReplica for ReplicationRole.
+     * Receives data asynchronously from a primary server within the same region.
      */
     public static final ReplicationRole ASYNC_REPLICA = fromString("AsyncReplica");
 
     /**
-     * Static value GeoAsyncReplica for ReplicationRole.
+     * Receives data asynchronously from a primary server in a different region for geographical redundancy.
      */
     public static final ReplicationRole GEO_ASYNC_REPLICA = fromString("GeoAsyncReplica");
 

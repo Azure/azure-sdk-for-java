@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class BastionHostsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostListBySubscription.json
+     * x-ms-original-file: 2025-07-01/BastionHostListBySubscription.json
      */
     /**
      * Sample code: List all Bastion Hosts for a given subscription.

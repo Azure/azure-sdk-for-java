@@ -32,7 +32,7 @@ public final class ManagedNetworkProvisionsProvisionManagedNetworkMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedNetworkProvisionStatus response = manager.managedNetworkProvisions()
-            .provisionManagedNetwork("cw", "xyn", "jgsatky", new ManagedNetworkProvisionOptions(),
+            .provisionManagedNetwork("cjiuhcxyveh", "klely", "dvpqfbxgy", new ManagedNetworkProvisionOptions(),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ManagedNetworkStatus.INACTIVE, response.status());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ExtensionsListByArcSettingSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ListExtensionsByArcSetting.json
+     * x-ms-original-file: 2026-04-30/ListExtensionsByArcSetting.json
      */
     /**
      * Sample code: List Extensions under ArcSetting resource.

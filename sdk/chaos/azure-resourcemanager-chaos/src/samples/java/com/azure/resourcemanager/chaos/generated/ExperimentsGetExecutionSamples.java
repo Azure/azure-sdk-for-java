@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ExperimentsGetExecutionSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_GetExecution.json
+     * x-ms-original-file: 2026-05-01-preview/Experiments_GetExecution.json
      */
     /**
      * Sample code: Get the execution of a Experiment.

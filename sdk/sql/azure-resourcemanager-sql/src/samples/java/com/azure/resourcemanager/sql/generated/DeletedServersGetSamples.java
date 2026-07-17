@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DeletedServersGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeletedServerGet.json
+     * x-ms-original-file: 2025-01-01/DeletedServerGet.json
      */
     /**
      * Sample code: Get deleted server.

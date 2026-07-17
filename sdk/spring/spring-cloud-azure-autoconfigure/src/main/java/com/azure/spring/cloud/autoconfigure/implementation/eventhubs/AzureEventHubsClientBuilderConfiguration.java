@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
@@ -39,15 +40,15 @@ class AzureEventHubsClientBuilderConfiguration {
         this.eventHubsProperties = eventHubsProperties;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
+    @Bean(EVENT_HUB_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = EVENT_HUB_CLIENT_BUILDER_BEAN_NAME)
     EventHubClientBuilder eventHubClientBuilder(@Qualifier(EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
                                                     EventHubClientBuilderFactory factory) {
         return factory.build();
     }
 
     @Bean(EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     EventHubClientBuilderFactory eventHubClientBuilderFactory(
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {

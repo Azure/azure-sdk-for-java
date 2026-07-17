@@ -300,27 +300,36 @@ implements IDocumentQueryExecutionContext<T> {
 
         if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != null) {
 
-            String readConsistencyStrategyName = cosmosQueryRequestOptions.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            requestHeaders.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(cosmosQueryRequestOptions.getReadConsistencyStrategy());
+
+            if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                requestHeaders.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    cosmosQueryRequestOptions.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 cosmosQueryRequestOptions.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
         }
 
         if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
-            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            requestHeaders.put(
-                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
-                readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(this.client.getReadConsistencyStrategy());
+
+            if (this.client.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                requestHeaders.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    this.client.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
         }
 
-        if (consistencyLevelOverrideApplicable && this.client.getConsistencyLevel() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
+        ConsistencyLevel clientConsistencyLevel = this.client.getConsistencyLevel();
+        if (consistencyLevelOverrideApplicable
+            && clientConsistencyLevel != null
+            && !Utils.isConsistencyLevelUpgrade(this.client.getDefaultConsistencyLevelAsync(), clientConsistencyLevel)) {
+            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, clientConsistencyLevel.toString());
         }
 
         return requestHeaders;

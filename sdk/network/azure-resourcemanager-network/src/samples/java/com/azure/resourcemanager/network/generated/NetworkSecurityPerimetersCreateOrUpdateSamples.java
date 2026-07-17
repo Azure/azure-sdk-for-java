@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkSecurityPerimeterI
  */
 public final class NetworkSecurityPerimetersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityPerimeterPut.json
+     * x-ms-original-file: 2025-07-01/NetworkSecurityPerimeterPut.json
      */
     /**
      * Sample code: Put Network Security Perimeter.

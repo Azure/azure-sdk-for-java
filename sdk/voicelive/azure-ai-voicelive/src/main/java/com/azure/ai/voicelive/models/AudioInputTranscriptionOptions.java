@@ -22,7 +22,7 @@ public final class AudioInputTranscriptionOptions implements JsonSerializable<Au
     /*
      * The transcription model to use. Supported values:
      * 'whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe',
-     * 'azure-speech'.
+     * 'mai-transcribe-1', 'azure-speech'.
      */
     @Generated
     private final AudioInputTranscriptionOptionsModel model;
@@ -59,7 +59,7 @@ public final class AudioInputTranscriptionOptions implements JsonSerializable<Au
     /**
      * Get the model property: The transcription model to use. Supported values:
      * 'whisper-1', 'gpt-4o-transcribe', 'gpt-4o-mini-transcribe',
-     * 'azure-speech'.
+     * 'mai-transcribe-1', 'azure-speech'.
      *
      * @return the model value.
      */

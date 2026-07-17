@@ -31,6 +31,21 @@ public final class EdgeDeviceDisks implements JsonSerializable<EdgeDeviceDisks> 
      */
     private String type;
 
+    /*
+     * Model number of the hardware.
+     */
+    private String model;
+
+    /*
+     * The manufacturer of the disk.
+     */
+    private String manufacturer;
+
+    /*
+     * Indicates whether the manufacturer is supported.
+     */
+    private Boolean isSupported;
+
     /**
      * Creates an instance of EdgeDeviceDisks class.
      */
@@ -65,6 +80,33 @@ public final class EdgeDeviceDisks implements JsonSerializable<EdgeDeviceDisks> 
     }
 
     /**
+     * Get the model property: Model number of the hardware.
+     * 
+     * @return the model value.
+     */
+    public String model() {
+        return this.model;
+    }
+
+    /**
+     * Get the manufacturer property: The manufacturer of the disk.
+     * 
+     * @return the manufacturer value.
+     */
+    public String manufacturer() {
+        return this.manufacturer;
+    }
+
+    /**
+     * Get the isSupported property: Indicates whether the manufacturer is supported.
+     * 
+     * @return the isSupported value.
+     */
+    public Boolean isSupported() {
+        return this.isSupported;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -95,6 +137,12 @@ public final class EdgeDeviceDisks implements JsonSerializable<EdgeDeviceDisks> 
                     deserializedEdgeDeviceDisks.sizeInBytes = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedEdgeDeviceDisks.type = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedEdgeDeviceDisks.model = reader.getString();
+                } else if ("manufacturer".equals(fieldName)) {
+                    deserializedEdgeDeviceDisks.manufacturer = reader.getString();
+                } else if ("isSupported".equals(fieldName)) {
+                    deserializedEdgeDeviceDisks.isSupported = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -10,9 +10,24 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.EntitiesClient;
+import com.azure.resourcemanager.cloudhealth.fluent.models.DataAnnotationInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetDataAnnotationsResponseInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
+import com.azure.resourcemanager.cloudhealth.models.AddDataAnnotationRequest;
+import com.azure.resourcemanager.cloudhealth.models.DataAnnotation;
 import com.azure.resourcemanager.cloudhealth.models.Entities;
 import com.azure.resourcemanager.cloudhealth.models.Entity;
+import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.EntityHistoryResponse;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsRequest;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsResponse;
+import com.azure.resourcemanager.cloudhealth.models.GetSignalRecommendationsResponse;
+import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
+import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.SignalHistoryResponse;
 import java.time.OffsetDateTime;
 
 public final class EntitiesImpl implements Entities {
@@ -45,13 +60,12 @@ public final class EntitiesImpl implements Entities {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, healthModelName, entityName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String entityName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, entityName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String entityName, Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, entityName, context);
     }
 
     public PagedIterable<Entity> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -64,6 +78,112 @@ public final class EntitiesImpl implements Entities {
         PagedIterable<EntityInner> inner
             = this.serviceClient().listByHealthModel(resourceGroupName, healthModelName, timestamp, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityImpl(inner1, this.manager()));
+    }
+
+    public Response<EntityHistoryResponse> getHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, EntityHistoryRequest body, Context context) {
+        Response<EntityHistoryResponseInner> inner = this.serviceClient()
+            .getHistoryWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EntityHistoryResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public EntityHistoryResponse getHistory(String resourceGroupName, String healthModelName, String entityName,
+        EntityHistoryRequest body) {
+        EntityHistoryResponseInner inner
+            = this.serviceClient().getHistory(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new EntityHistoryResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SignalHistoryResponse> getSignalHistoryWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, SignalHistoryRequest body, Context context) {
+        Response<SignalHistoryResponseInner> inner = this.serviceClient()
+            .getSignalHistoryWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SignalHistoryResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public SignalHistoryResponse getSignalHistory(String resourceGroupName, String healthModelName, String entityName,
+        SignalHistoryRequest body) {
+        SignalHistoryResponseInner inner
+            = this.serviceClient().getSignalHistory(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new SignalHistoryResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> ingestHealthReportWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, HealthReportRequest body, Context context) {
+        return this.serviceClient()
+            .ingestHealthReportWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+    }
+
+    public void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body) {
+        this.serviceClient().ingestHealthReport(resourceGroupName, healthModelName, entityName, body);
+    }
+
+    public Response<DataAnnotation> addDataAnnotationWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body, Context context) {
+        Response<DataAnnotationInner> inner = this.serviceClient()
+            .addDataAnnotationWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DataAnnotationImpl(inner.getValue(), this.manager()));
+    }
+
+    public DataAnnotation addDataAnnotation(String resourceGroupName, String healthModelName, String entityName,
+        AddDataAnnotationRequest body) {
+        DataAnnotationInner inner
+            = this.serviceClient().addDataAnnotation(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new DataAnnotationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body, Context context) {
+        Response<GetDataAnnotationsResponseInner> inner = this.serviceClient()
+            .getDataAnnotationsWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetDataAnnotationsResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public GetDataAnnotationsResponse getDataAnnotations(String resourceGroupName, String healthModelName,
+        String entityName, GetDataAnnotationsRequest body) {
+        GetDataAnnotationsResponseInner inner
+            = this.serviceClient().getDataAnnotations(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new GetDataAnnotationsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, Context context) {
+        Response<GetSignalRecommendationsResponseInner> inner = this.serviceClient()
+            .getSignalRecommendationsWithResponse(resourceGroupName, healthModelName, entityName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetSignalRecommendationsResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public GetSignalRecommendationsResponse getSignalRecommendations(String resourceGroupName, String healthModelName,
+        String entityName) {
+        GetSignalRecommendationsResponseInner inner
+            = this.serviceClient().getSignalRecommendations(resourceGroupName, healthModelName, entityName);
+        if (inner != null) {
+            return new GetSignalRecommendationsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Entity getById(String id) {
@@ -120,10 +240,10 @@ public final class EntitiesImpl implements Entities {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, entityName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, entityName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -139,7 +259,7 @@ public final class EntitiesImpl implements Entities {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, entityName, context);
+        this.delete(resourceGroupName, healthModelName, entityName, context);
     }
 
     private EntitiesClient serviceClient() {

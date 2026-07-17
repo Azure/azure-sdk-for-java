@@ -25,7 +25,9 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     private List<DtmfToneInternal> tones;
 
     /*
-     * Target participant of send Dtmf tones.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -73,7 +75,9 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     }
 
     /**
-     * Get the targetParticipant property: Target participant of send Dtmf tones.
+     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the targetParticipant value.
      */
@@ -83,7 +87,9 @@ public final class SendDtmfTonesRequestInternal implements JsonSerializable<Send
     }
 
     /**
-     * Set the targetParticipant property: Target participant of send Dtmf tones.
+     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the SendDtmfTonesRequestInternal object itself.

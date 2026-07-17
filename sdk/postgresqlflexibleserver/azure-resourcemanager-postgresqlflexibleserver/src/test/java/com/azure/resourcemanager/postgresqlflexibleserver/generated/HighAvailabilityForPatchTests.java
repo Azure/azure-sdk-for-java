@@ -14,7 +14,7 @@ public final class HighAvailabilityForPatchTests {
     public void testDeserialize() throws Exception {
         HighAvailabilityForPatch model = BinaryData
             .fromString(
-                "{\"mode\":\"ZoneRedundant\",\"state\":\"FailingOver\",\"standbyAvailabilityZone\":\"ertgccymva\"}")
+                "{\"mode\":\"ZoneRedundant\",\"state\":\"CreatingStandby\",\"standbyAvailabilityZone\":\"ertgccymva\"}")
             .toObject(HighAvailabilityForPatch.class);
         Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ertgccymva", model.standbyAvailabilityZone());

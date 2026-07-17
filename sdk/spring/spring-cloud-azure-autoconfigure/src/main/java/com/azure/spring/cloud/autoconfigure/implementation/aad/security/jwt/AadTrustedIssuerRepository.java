@@ -53,9 +53,21 @@ public class AadTrustedIssuerRepository {
      * @param tenantId the tenant ID
      */
     public AadTrustedIssuerRepository(String tenantId) {
+        this(tenantId, true);
+    }
+
+    /**
+     * Creates a new instance of {@link AadTrustedIssuerRepository} with optional AAD issuer defaults.
+     *
+     * @param tenantId the tenant ID
+     * @param includeAadIssuers whether to include default AAD trusted issuers
+     */
+    protected AadTrustedIssuerRepository(String tenantId, boolean includeAadIssuers) {
         this.tenantId = tenantId;
-        trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER));
-        trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER_V2));
+        if (includeAadIssuers) {
+            trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER));
+            trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER_V2));
+        }
     }
 
     private List<String> buildAadIssuers(String delimiter) {

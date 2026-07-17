@@ -10,10 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.compute.models.ExtensionFeatureMetadata;
-import com.azure.resourcemanager.compute.models.ReleaseCategory;
-import com.azure.resourcemanager.compute.models.RunProfile;
-import com.azure.resourcemanager.compute.models.UrgencyLevel;
 import java.io.IOException;
 import java.util.Map;
 
@@ -147,53 +143,6 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      */
     public Boolean supportsMultipleExtensions() {
         return this.innerProperties() == null ? null : this.innerProperties().supportsMultipleExtensions();
-    }
-
-    /**
-     * Get the releaseNotes property: Summary of changes or updates in this extension version.
-     * 
-     * @return the releaseNotes value.
-     */
-    public String releaseNotes() {
-        return this.innerProperties() == null ? null : this.innerProperties().releaseNotes();
-    }
-
-    /**
-     * Get the releaseCategory property: Categorizes the type of change introduced (e.g., BugFix, SecurityFix,
-     * CompatibilityUpdate, NewFeature, Other).
-     * 
-     * @return the releaseCategory value.
-     */
-    public ReleaseCategory releaseCategory() {
-        return this.innerProperties() == null ? null : this.innerProperties().releaseCategory();
-    }
-
-    /**
-     * Get the urgencyLevel property: Indicates the urgency level for applying this extension update.
-     * 
-     * @return the urgencyLevel value.
-     */
-    public UrgencyLevel urgencyLevel() {
-        return this.innerProperties() == null ? null : this.innerProperties().urgencyLevel();
-    }
-
-    /**
-     * Get the runProfile property: Specifies when and how the extension should be executed.
-     * 
-     * @return the runProfile value.
-     */
-    public RunProfile runProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().runProfile();
-    }
-
-    /**
-     * Get the extensionFeatureMetadata property: A nested object that holds additional metadata in a flexible property
-     * bag.
-     * 
-     * @return the extensionFeatureMetadata value.
-     */
-    public ExtensionFeatureMetadata extensionFeatureMetadata() {
-        return this.innerProperties() == null ? null : this.innerProperties().extensionFeatureMetadata();
     }
 
     /**

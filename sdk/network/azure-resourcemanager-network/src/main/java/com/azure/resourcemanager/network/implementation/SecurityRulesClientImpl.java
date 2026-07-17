@@ -154,7 +154,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -197,7 +197,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -297,7 +297,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -350,7 +350,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
         } else {
             securityRuleParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -561,7 +561,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -604,7 +604,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkSecurityGroupName, securityRuleName, context);
@@ -786,7 +786,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -827,7 +827,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

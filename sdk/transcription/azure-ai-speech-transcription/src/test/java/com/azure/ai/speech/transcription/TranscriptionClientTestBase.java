@@ -134,7 +134,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
     protected void validateTranscriptionResult(String testName, TranscriptionResult result) {
         if (PRINT_RESULTS) {
             System.out.println("\n===== Test: " + testName + " =====");
-            System.out.println("Duration: " + result.getDuration() + "ms");
+            System.out.println("Duration: " + result.getDuration().toMillis() + "ms");
             if (result.getCombinedPhrases() != null) {
                 result.getCombinedPhrases()
                     .forEach(phrase -> System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText()));
@@ -167,7 +167,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             assertFalse(phrase.getText().isEmpty(), "Phrase text should not be empty");
             assertTrue(phrase.getConfidence() >= 0 && phrase.getConfidence() <= 1,
                 "Confidence should be between 0 and 1");
-            assertTrue(phrase.getOffset() >= 0, "Offset should be non-negative");
+            assertTrue(phrase.getOffset().toMillis() >= 0, "Offset should be non-negative");
             assertTrue(phrase.getDuration().toMillis() > 0, "Phrase duration should be positive");
         });
     }

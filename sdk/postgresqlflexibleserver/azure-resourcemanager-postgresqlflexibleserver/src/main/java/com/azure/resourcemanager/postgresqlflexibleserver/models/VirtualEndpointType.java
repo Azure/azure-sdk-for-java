@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class VirtualEndpointType extends ExpandableStringEnum<VirtualEndpointType> {
     /**
-     * Static value ReadWrite for VirtualEndpointType.
+     * Read-write endpoint.
      */
     public static final VirtualEndpointType READ_WRITE = fromString("ReadWrite");
 

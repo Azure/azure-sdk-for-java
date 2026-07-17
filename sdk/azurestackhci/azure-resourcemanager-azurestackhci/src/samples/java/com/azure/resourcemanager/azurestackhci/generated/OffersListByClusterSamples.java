@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class OffersListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ListOffersByCluster.json
+     * x-ms-original-file: 2026-04-30/ListOffersByCluster.json
      */
     /**
      * Sample code: List Offer resources by HCI Cluster.

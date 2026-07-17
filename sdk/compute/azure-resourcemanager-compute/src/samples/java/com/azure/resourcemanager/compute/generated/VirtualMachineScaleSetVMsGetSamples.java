@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsGetSamples {
     /*
      * x-ms-original-file:
-     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get VM scale set VM with VMSizeProperties.
@@ -25,7 +25,7 @@ public final class VirtualMachineScaleSetVMsGetSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithResilientVMDeletionStatus.json
      */
     /**
      * Sample code: Get VM scale set VM with ResiliencyView.
@@ -39,7 +39,24 @@ public final class VirtualMachineScaleSetVMsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
+     * x-ms-original-file:
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithVirtualMachineResourceId.json
+     */
+    /**
+     * Sample code: Get VM scale set Flex VM with VirtualMachineResourceId.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        getVMScaleSetFlexVMWithVirtualMachineResourceId(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .getWithResponse("myResourceGroup", "{vmss-flex-name}", "{vmss-flex-vm-name}", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
      */
     /**
      * Sample code: Get VM scale set VM with UserData.
@@ -47,6 +64,21 @@ public final class VirtualMachineScaleSetVMsGetSamples {
      * @param manager Entry point to ComputeManager.
      */
     public static void getVMScaleSetVMWithUserData(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithInterconnectBlock.json
+     */
+    /**
+     * Sample code: Get VM scale set VM with Interconnect Block.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void getVMScaleSetVMWithInterconnectBlock(com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachineScaleSetVMs()
             .getWithResponse("myResourceGroup", "{vmss-name}", "0", null, com.azure.core.util.Context.NONE);

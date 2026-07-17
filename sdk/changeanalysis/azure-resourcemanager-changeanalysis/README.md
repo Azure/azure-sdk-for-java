@@ -4,6 +4,11 @@ Azure Resource Manager AzureChangeAnalysis client library for Java.
 
 This package contains Microsoft Azure SDK for AzureChangeAnalysis Management SDK.  Package tag package-2021-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
+> Please note, this package has been deprecated and will no longer be maintained
+> after `2025-10-31`. The Change Analysis service has been retired and its
+> APIs are no longer available. There is no replacement package. Refer to our
+> deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## We'd love to hear your feedback
 
 We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better.
@@ -32,7 +37,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-changeanalysis</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

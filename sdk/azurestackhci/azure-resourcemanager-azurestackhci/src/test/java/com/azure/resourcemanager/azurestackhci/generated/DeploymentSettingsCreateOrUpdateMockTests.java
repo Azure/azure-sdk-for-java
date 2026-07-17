@@ -28,7 +28,7 @@ public final class DeploymentSettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcNodeResourceIds\":[\"ycuotennd\",\"gthdzi\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"pherwjqvswtw\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"vfybxmmrvnuvqk\",\"steps\":[{},{}]},\"deploymentStatus\":{\"status\":\"o\",\"steps\":[{}]}}},\"id\":\"rotpyabensjflw\",\"name\":\"ftvvqtmvif\",\"type\":\"cv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"arcNodeResourceIds\":[\"csaaqgoq\",\"diuycsbskowkrbhz\",\"rb\",\"htmqowi\"],\"deploymentMode\":\"Deploy\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"qgucyhfaimqv\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"fpeoehgfmq\",\"steps\":[{}]},\"deploymentStatus\":{\"status\":\"xvlzjxplhpevasyn\",\"steps\":[{},{},{}]}}},\"id\":\"yielb\",\"name\":\"rvvbqvknmpecqxg\",\"type\":\"qa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,19 +38,19 @@ public final class DeploymentSettingsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentSetting response = manager.deploymentSettings()
-            .define("b")
-            .withExistingCluster("zkfekdesb", "jqtl")
-            .withArcNodeResourceIds(Arrays.asList("uibs", "rr", "nneqrypyurvshho", "tuercpzhbwcxy"))
-            .withDeploymentMode(DeploymentMode.DEPLOY)
-            .withOperationType(OperationType.CLUSTER_UPGRADE)
-            .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("cxhaoe")
+            .define("iyvndjokgwes")
+            .withExistingCluster("gufy", "fdk")
+            .withArcNodeResourceIds(Arrays.asList("rqpfzlp", "j"))
+            .withDeploymentMode(DeploymentMode.VALIDATE)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(new DeploymentConfiguration().withVersion("ueaujqbbg")
                 .withScaleUnits(Arrays.asList(new ScaleUnits().withDeploymentData(new DeploymentData())
                     .withSbePartnerInfo(new SbePartnerInfo()))))
             .create();
 
-        Assertions.assertEquals("ycuotennd", response.arcNodeResourceIds().get(0));
-        Assertions.assertEquals(DeploymentMode.VALIDATE, response.deploymentMode());
+        Assertions.assertEquals("csaaqgoq", response.arcNodeResourceIds().get(0));
+        Assertions.assertEquals(DeploymentMode.DEPLOY, response.deploymentMode());
         Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.operationType());
-        Assertions.assertEquals("pherwjqvswtw", response.deploymentConfiguration().version());
+        Assertions.assertEquals("qgucyhfaimqv", response.deploymentConfiguration().version());
     }
 }

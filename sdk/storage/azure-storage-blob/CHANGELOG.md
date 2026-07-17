@@ -1,21 +1,61 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
+## 12.36.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
+  in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
+  channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
+  once the known resource length is reached, avoiding the extra round trip.
+- Fixed an issue where a transport-level failure while streaming the body of the trailing HTTP 416 response from
+  `BlobClientBase.openSeekableByteChannelRead` (for example "Connection reset by peer") could propagate out of the
+  channel even though all of the blob's content had already been delivered to the caller. The read behavior now
+  logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
 
 ### Other Changes
+
+## 12.35.0 (2026-06-11)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS.
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-storage-internal-avro` from `12.19.0` to version `12.20.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.34.0 (2026-05-14)
+
+### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.18.3` to version `12.19.0`.
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
 
 ## 12.33.4 (2026-05-05)
 
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-internal-avro` from `12.18.2` to version `12.18.3`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.

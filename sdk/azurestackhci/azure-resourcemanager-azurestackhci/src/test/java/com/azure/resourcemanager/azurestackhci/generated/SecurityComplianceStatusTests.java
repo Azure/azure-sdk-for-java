@@ -11,7 +11,7 @@ public final class SecurityComplianceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityComplianceStatus model = BinaryData.fromString(
-            "{\"securedCoreCompliance\":\"Compliant\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"Pending\",\"lastUpdated\":\"2021-05-26T14:32:24Z\"}")
+            "{\"securedCoreCompliance\":\"Compliant\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"Pending\",\"lastUpdated\":\"2021-10-16T13:41:26Z\"}")
             .toObject(SecurityComplianceStatus.class);
     }
 }

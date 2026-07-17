@@ -447,9 +447,8 @@ public final class TextTranslationClient {
      *                     profanityMarker: String(Asterisk/Tag) (Optional)
      *                     deploymentName: String (Optional)
      *                     allowFallback: Boolean (Optional)
-     *                     grade: String (Optional)
-     *                     tone: String (Optional)
-     *                     gender: String (Optional)
+     *                     tone: String(neutral/formal/informal) (Optional)
+     *                     gender: String(neutral/male/female) (Optional)
      *                     adaptiveDatasetId: String (Optional)
      *                     referenceTextPairs (Optional): [
      *                          (Optional){

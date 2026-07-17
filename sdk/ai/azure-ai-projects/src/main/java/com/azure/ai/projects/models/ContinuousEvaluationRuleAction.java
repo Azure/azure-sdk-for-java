@@ -23,12 +23,6 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     private EvaluationRuleActionType type = EvaluationRuleActionType.CONTINUOUS_EVALUATION;
 
     /*
-     * Eval Id to add continuous evaluation runs to.
-     */
-    @Generated
-    private final String evalId;
-
-    /*
      * Maximum number of evaluation runs allowed per hour.
      */
     @Generated
@@ -37,11 +31,11 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     /**
      * Creates an instance of ContinuousEvaluationRuleAction class.
      *
-     * @param evalId the evalId value to set.
+     * @param evaluationId the evaluationId value to set.
      */
     @Generated
-    public ContinuousEvaluationRuleAction(String evalId) {
-        this.evalId = evalId;
+    public ContinuousEvaluationRuleAction(String evaluationId) {
+        this.evaluationId = evaluationId;
     }
 
     /**
@@ -53,16 +47,6 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public EvaluationRuleActionType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the evalId property: Eval Id to add continuous evaluation runs to.
-     *
-     * @return the evalId value.
-     */
-    @Generated
-    public String getEvalId() {
-        return this.evalId;
     }
 
     /**
@@ -94,9 +78,10 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("evalId", this.evalId);
+        jsonWriter.writeStringField("evalId", this.evaluationId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("maxHourlyRuns", this.maxHourlyRuns);
+        jsonWriter.writeNumberField("samplingRate", this.samplingRate);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,27 +97,78 @@ public final class ContinuousEvaluationRuleAction extends EvaluationRuleAction {
     @Generated
     public static ContinuousEvaluationRuleAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String evalId = null;
+            String evaluationId = null;
             EvaluationRuleActionType type = EvaluationRuleActionType.CONTINUOUS_EVALUATION;
             Integer maxHourlyRuns = null;
+            Double samplingRate = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("evalId".equals(fieldName)) {
-                    evalId = reader.getString();
+                    evaluationId = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = EvaluationRuleActionType.fromString(reader.getString());
                 } else if ("maxHourlyRuns".equals(fieldName)) {
                     maxHourlyRuns = reader.getNullable(JsonReader::getInt);
+                } else if ("samplingRate".equals(fieldName)) {
+                    samplingRate = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }
             }
             ContinuousEvaluationRuleAction deserializedContinuousEvaluationRuleAction
-                = new ContinuousEvaluationRuleAction(evalId);
+                = new ContinuousEvaluationRuleAction(evaluationId);
             deserializedContinuousEvaluationRuleAction.type = type;
             deserializedContinuousEvaluationRuleAction.maxHourlyRuns = maxHourlyRuns;
+            deserializedContinuousEvaluationRuleAction.samplingRate = samplingRate;
             return deserializedContinuousEvaluationRuleAction;
         });
+    }
+
+    /*
+     * Percentage (0-100] chance that a matching event triggers an evaluation. When omitted, the service-default is to
+     * evaluate every event, which is equivalent to setting a sampling rate of 100.
+     */
+    @Generated
+    private Double samplingRate;
+
+    /**
+     * Get the samplingRate property: Percentage (0-100] chance that a matching event triggers an evaluation. When
+     * omitted, the service-default is to evaluate every event, which is equivalent to setting a sampling rate of 100.
+     *
+     * @return the samplingRate value.
+     */
+    @Generated
+    public Double getSamplingRate() {
+        return this.samplingRate;
+    }
+
+    /**
+     * Set the samplingRate property: Percentage (0-100] chance that a matching event triggers an evaluation. When
+     * omitted, the service-default is to evaluate every event, which is equivalent to setting a sampling rate of 100.
+     *
+     * @param samplingRate the samplingRate value to set.
+     * @return the ContinuousEvaluationRuleAction object itself.
+     */
+    @Generated
+    public ContinuousEvaluationRuleAction setSamplingRate(Double samplingRate) {
+        this.samplingRate = samplingRate;
+        return this;
+    }
+
+    /*
+     * Eval Id to add continuous evaluation runs to.
+     */
+    @Generated
+    private final String evaluationId;
+
+    /**
+     * Get the evaluationId property: Eval Id to add continuous evaluation runs to.
+     *
+     * @return the evaluationId value.
+     */
+    @Generated
+    public String getEvaluationId() {
+        return this.evaluationId;
     }
 }

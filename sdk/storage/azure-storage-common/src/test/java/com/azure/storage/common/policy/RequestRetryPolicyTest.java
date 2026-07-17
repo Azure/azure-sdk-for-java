@@ -22,11 +22,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -38,6 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RequestRetryPolicyTest {
     static RequestRetryOptions retryTestOptions
         = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 4, 2, 100L, 1000L, "SecondaryHost");
+    private static final RequestRetryOptions FAST_RETRY_OPTIONS
+        = new RequestRetryOptions(RetryPolicyType.FIXED, 4, (Integer) null, 1L, 5L, null);
 
     @SyncAsyncTest
     public void requestRetryPolicySuccessMaxRetries() {
@@ -144,6 +150,123 @@ public class RequestRetryPolicyTest {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
         assertEquals(3, closeCalls.get());
+    }
+
+    @Test
+    public void retryDrainsBodyBeforeClosingAsync() {
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicBoolean firstResponseClosed = new AtomicBoolean();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(FAST_RETRY_OPTIONS))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (requestCount.incrementAndGet() == 1) {
+                        return Mono.just(new MockHttpResponse(request, 500) {
+                            @Override
+                            public Flux<ByteBuffer> getBody() {
+                                return Flux.defer(() -> firstResponseClosed.get()
+                                    ? Flux.never()
+                                    : Flux.just(ByteBuffer.wrap(new byte[0])));
+                            }
+
+                            @Override
+                            public void close() {
+                                firstResponseClosed.set(true);
+                                super.close();
+                            }
+                        });
+                    }
+
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(sendRequest(pipeline))
+            .expectNextMatches(response -> response.getStatusCode() == 200)
+            .expectComplete()
+            .verify(Duration.ofSeconds(1));
+        assertEquals(2, requestCount.get());
+        Assertions.assertTrue(firstResponseClosed.get(),
+            "Retryable response should be closed after draining the body.");
+    }
+
+    @Test
+    public void retryContinuesWhenDrainingBodyFailsAsync() {
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicBoolean firstResponseClosed = new AtomicBoolean();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(FAST_RETRY_OPTIONS))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (requestCount.incrementAndGet() == 1) {
+                        return Mono.just(new MockHttpResponse(request, 500) {
+                            @Override
+                            public Flux<ByteBuffer> getBody() {
+                                return Flux.error(new IllegalStateException("Body was discarded after close."));
+                            }
+
+                            @Override
+                            public void close() {
+                                firstResponseClosed.set(true);
+                                super.close();
+                            }
+                        });
+                    }
+
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(sendRequest(pipeline))
+            .expectNextMatches(response -> response.getStatusCode() == 200)
+            .expectComplete()
+            .verify(Duration.ofSeconds(1));
+        assertEquals(2, requestCount.get());
+        Assertions.assertTrue(firstResponseClosed.get(), "Retryable response should be closed after a drain error.");
+    }
+
+    @Test
+    public void retryAfter500StillRetriesWhenDrainingClosedBodyErrors() {
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicBoolean firstResponseClosed = new AtomicBoolean();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(FAST_RETRY_OPTIONS))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (requestCount.incrementAndGet() == 1) {
+                        return Mono.just(new MockHttpResponse(request, 500) {
+                            @Override
+                            public Flux<ByteBuffer> getBody() {
+                                return Flux.defer(() -> firstResponseClosed.get()
+                                    ? Flux.error(new IllegalStateException("Body was discarded after close."))
+                                    : Flux.just(ByteBuffer.wrap(new byte[0])));
+                            }
+
+                            @Override
+                            public void close() {
+                                firstResponseClosed.set(true);
+                                super.close();
+                            }
+                        });
+                    }
+
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(sendRequest(pipeline))
+            .expectNextMatches(response -> response.getStatusCode() == 200)
+            .expectComplete()
+            .verify(Duration.ofSeconds(1));
+        assertEquals(2, requestCount.get());
+        Assertions.assertTrue(firstResponseClosed.get(),
+            "Retryable response should be closed after draining the body.");
     }
 
     @SyncAsyncTest

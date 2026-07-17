@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.models.DataShareInner;
+import com.azure.resourcemanager.storage.models.DataShareUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -240,7 +241,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String dataShareName, DataShareInner properties);
+        String dataShareName, DataShareUpdate properties);
 
     /**
      * Update a Storage DataShare.
@@ -258,7 +259,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DataShareInner>, DataShareInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String dataShareName, DataShareInner properties);
+        String accountName, String dataShareName, DataShareUpdate properties);
 
     /**
      * Update a Storage DataShare.
@@ -276,7 +277,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataShareInner>, DataShareInner> beginUpdate(String resourceGroupName, String accountName,
-        String dataShareName, DataShareInner properties);
+        String dataShareName, DataShareUpdate properties);
 
     /**
      * Update a Storage DataShare.
@@ -295,7 +296,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataShareInner>, DataShareInner> beginUpdate(String resourceGroupName, String accountName,
-        String dataShareName, DataShareInner properties, Context context);
+        String dataShareName, DataShareUpdate properties, Context context);
 
     /**
      * Update a Storage DataShare.
@@ -313,7 +314,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DataShareInner> updateAsync(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties);
+        DataShareUpdate properties);
 
     /**
      * Update a Storage DataShare.
@@ -330,7 +331,7 @@ public interface DataSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DataShareInner update(String resourceGroupName, String accountName, String dataShareName,
-        DataShareInner properties);
+        DataShareUpdate properties);
 
     /**
      * Update a Storage DataShare.
@@ -347,8 +348,8 @@ public interface DataSharesClient {
      * @return a DataShare is a tracked ARM resource modeled as a sub-resource of a Storage Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataShareInner update(String resourceGroupName, String accountName, String dataShareName, DataShareInner properties,
-        Context context);
+    DataShareInner update(String resourceGroupName, String accountName, String dataShareName,
+        DataShareUpdate properties, Context context);
 
     /**
      * Delete a Storage DataShare.

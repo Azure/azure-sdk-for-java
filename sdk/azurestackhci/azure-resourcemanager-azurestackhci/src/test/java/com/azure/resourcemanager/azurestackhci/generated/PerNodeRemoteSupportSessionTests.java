@@ -11,7 +11,7 @@ public final class PerNodeRemoteSupportSessionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PerNodeRemoteSupportSession model = BinaryData.fromString(
-            "{\"sessionStartTime\":\"2021-08-09T17:57:45Z\",\"sessionEndTime\":\"2021-12-07T09:07:14Z\",\"nodeName\":\"gxysmocmbqfqvm\",\"duration\":5073820947909840386,\"accessLevel\":\"DiagnosticsAndRepair\",\"transcriptLocation\":\"vhelxprglyatdd\"}")
+            "{\"sessionStartTime\":\"2021-02-21T10:02:12Z\",\"sessionEndTime\":\"2021-10-04T02:04:35Z\",\"nodeName\":\"zzmhjrunmpxttd\",\"duration\":5727391604733227130,\"accessLevel\":\"Diagnostics\",\"transcriptLocation\":\"nkxmyskpbhenbtk\"}")
             .toObject(PerNodeRemoteSupportSession.class);
     }
 }

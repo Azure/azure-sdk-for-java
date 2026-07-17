@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnLinkConnectionsGetIkeSasSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnSiteLinkConnectionGetIkeSas.json
+     * x-ms-original-file: 2025-07-01/VpnSiteLinkConnectionGetIkeSas.json
      */
     /**
      * Sample code: GetVpnLinkConnectionIkeSa.

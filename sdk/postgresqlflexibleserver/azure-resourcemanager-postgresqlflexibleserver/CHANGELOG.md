@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,75 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0-beta.2 (2026-06-03)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.StartMajorVersionUpgradePrecheckRequest` was added
+
+* `models.MaintenanceEventResourceProperties` was added
+
+* `models.MaintenanceEventStatus` was added
+
+* `models.MaintenanceEvents` was added
+
+* `models.PrecheckErrorInfo` was added
+
+* `models.MajorVersionUpgradePrecheckResource` was added
+
+* `models.MajorVersionUpgradePrecheckStatus` was added
+
+* `models.StartMajorVersionUpgradePrecheckResponse` was added
+
+* `models.MajorVersionUpgradePrecheckResourceProperties` was added
+
+* `models.MaintenanceEventResource` was added
+
+* `models.UpgradeSequence` was added
+
+* `models.MaintenanceEventStatusFilter` was added
+
+* `models.PolicyDetail` was added
+
+* `models.MaintenanceEventActionResponse` was added
+
+* `models.MaintenanceEventRescheduleRequest` was added
+
+* `models.MaintenanceType` was added
+
+* `models.PrecheckResult` was added
+
+* `models.MajorVersionUpgradePrechecks` was added
+
+#### `models.Servers` was modified
+
+* `startMajorVersionUpgradePrecheck(java.lang.String,java.lang.String,models.StartMajorVersionUpgradePrecheckRequest,com.azure.core.util.Context)` was added
+* `startMajorVersionUpgradePrecheck(java.lang.String,java.lang.String,models.StartMajorVersionUpgradePrecheckRequest)` was added
+
+#### `models.HighAvailabilityState` was modified
+
+* `COMPUTE_UPDATING_BY_FAILOVER` was added
+* `RECREATING_STANDBY` was added
+
+#### `models.DataEncryption` was modified
+
+* `primaryFederatedIdentityClientId()` was added
+* `withGeoBackupFederatedIdentityClientId(java.lang.String)` was added
+* `withPrimaryFederatedIdentityClientId(java.lang.String)` was added
+* `geoBackupFederatedIdentityClientId()` was added
+
+#### `models.Server` was modified
+
+* `startMajorVersionUpgradePrecheck(models.StartMajorVersionUpgradePrecheckRequest)` was added
+* `startMajorVersionUpgradePrecheck(models.StartMajorVersionUpgradePrecheckRequest,com.azure.core.util.Context)` was added
+
+#### `PostgreSqlManager` was modified
+
+* `maintenanceEvents()` was added
+* `majorVersionUpgradePrechecks()` was added
 
 ## 2.1.0-beta.1 (2026-02-13)
 

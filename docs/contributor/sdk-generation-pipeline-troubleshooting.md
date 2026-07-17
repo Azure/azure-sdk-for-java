@@ -22,7 +22,7 @@ Find the most specific signal in the failure log and jump directly:
 |---|---|---|
 | `[COMPILE] Maven build fail.` + Checkstyle `PackageName` `must match pattern` | tspconfig | [1.1 Namespace Segment Too Long](#11-namespace-segment-too-long) |
 | `not supported by Fluent Premium` | tspconfig | [1.2 Unsupported Emitter Option (Fluent Premium)](#12-unsupported-emitter-option-fluent-premium) |
-| Verify Swagger and TypeSpec Code Generation check fails | tspconfig | [1.3 Verify Swagger and TypeSpec Code Generation fails](#13-verify-swagger-and-typespec-code-generation-fails) |
+| Verify TypeSpec Code Generation check fails | tspconfig | [1.3 Verify TypeSpec Code Generation fails](#13-verify-typespec-code-generation-fails) |
 | `[COMPILE] Maven build fail.` + customization class/method referenced | customization | [2. Customization Errors](#2-customization-errors) |
 | `Could not resolve dependencies` / `Could not transfer artifact` | intermittent | [3.1 Maven Dependency Download Failure](#31-maven-dependency-download-failure) |
 | None match | unknown | [Escalation](#escalation) |
@@ -80,10 +80,10 @@ java.lang.IllegalStateException: Package 'com.azure.resourcemanager.<pkg>' is no
 
 ---
 
-### 1.3 Verify Swagger and TypeSpec Code Generation fails
+### 1.3 Verify TypeSpec Code Generation fails
 
 **Log signal:**
-- Verify Swagger and TypeSpec Code Generation check fails in Java SDK CI - java-pullrequest
+- Verify TypeSpec Code Generation check fails in Java SDK CI - java-pullrequest
 
 **Error (real-world example):**
 ```
@@ -97,7 +97,7 @@ Line |
 ```
 
 **Root cause:**
-The **Verify Swagger and TypeSpec Code Generation** step in the Java SDK PR pipeline re-runs code generation using repository-local configuration and compares regenerated output with committed code. This check usually fails because regeneration produces large diffs.
+The **Verify TypeSpec Code Generation** step in the Java SDK PR pipeline re-runs code generation using repository-local configuration and compares regenerated output with committed code. This check usually fails because regeneration produces large diffs.
 Common causes include:
 - `tspconfig.yaml` has incorrect Java emitter settings.
 - In `tspconfig.yaml`, `api-version` changes can directly change operation/model counts.

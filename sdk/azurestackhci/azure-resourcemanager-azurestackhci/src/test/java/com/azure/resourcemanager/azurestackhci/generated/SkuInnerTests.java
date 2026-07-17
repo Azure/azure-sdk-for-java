@@ -12,14 +12,14 @@ public final class SkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"zlgcndhzxrrf\",\"publisherId\":\"srhkhgsnxuwwkpph\",\"offerId\":\"sbzxl\",\"content\":\"xomeikjclwzacn\",\"contentVersion\":\"pfsuqtaaz\",\"skuMappings\":[{\"catalogPlanId\":\"yxoyfp\",\"marketplaceSkuId\":\"qi\",\"marketplaceSkuVersions\":[\"xlhdj\",\"qdcadwvps\",\"zjiihjr\",\"ybmrzoepnxwd\"]},{\"catalogPlanId\":\"njkgvfnmx\",\"marketplaceSkuId\":\"rsqftib\",\"marketplaceSkuVersions\":[\"buyvp\",\"rfqjpnqnoo\",\"sbede\"]}]},\"id\":\"exkxbhx\",\"name\":\"ucnulgmnh\",\"type\":\"evdyz\"}")
+            "{\"properties\":{\"provisioningState\":\"kxbbcbrwjiutgnj\",\"publisherId\":\"beewoi\",\"offerId\":\"rvzb\",\"content\":\"yrsrziuctixgb\",\"contentVersion\":\"uifr\",\"skuMappings\":[{\"catalogPlanId\":\"apezkiswqjmdghs\",\"marketplaceSkuId\":\"arybjufptbjc\",\"marketplaceSkuVersions\":[\"ciuiyqvldaswv\",\"pisqqzlgcndhzx\",\"rfc\",\"srhkhgsnxuwwkpph\"]},{\"catalogPlanId\":\"sbzxl\",\"marketplaceSkuId\":\"xomeikjclwzacn\",\"marketplaceSkuVersions\":[\"fsuqtaazyqbxy\",\"oyfpuq\",\"iqezxlhdj\"]},{\"catalogPlanId\":\"dcadwvpsozjiihjr\",\"marketplaceSkuId\":\"bmrzoepnx\",\"marketplaceSkuVersions\":[\"wnjkgvfn\"]},{\"catalogPlanId\":\"aursqftibtyi\",\"marketplaceSkuId\":\"yvp\",\"marketplaceSkuVersions\":[\"qjpnqnoowsbed\",\"nrexkxbhxv\"]}]},\"id\":\"nul\",\"name\":\"mnhjevdyzn\",\"type\":\"ajsvk\"}")
             .toObject(SkuInner.class);
-        Assertions.assertEquals("srhkhgsnxuwwkpph", model.publisherId());
-        Assertions.assertEquals("sbzxl", model.offerId());
-        Assertions.assertEquals("xomeikjclwzacn", model.content());
-        Assertions.assertEquals("pfsuqtaaz", model.contentVersion());
-        Assertions.assertEquals("yxoyfp", model.skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("qi", model.skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("xlhdj", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("beewoi", model.publisherId());
+        Assertions.assertEquals("rvzb", model.offerId());
+        Assertions.assertEquals("yrsrziuctixgb", model.content());
+        Assertions.assertEquals("uifr", model.contentVersion());
+        Assertions.assertEquals("apezkiswqjmdghs", model.skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("arybjufptbjc", model.skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("ciuiyqvldaswv", model.skuMappings().get(0).marketplaceSkuVersions().get(0));
     }
 }

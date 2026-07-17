@@ -12,24 +12,24 @@ public final class SanAdapterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SanAdapterProperties model = BinaryData.fromString(
-            "{\"priorityValue8021ActionCluster\":460731729,\"priorityValue8021ActionSmb\":250012247,\"bandwidthPercentageSmb\":1489687267,\"jumboPacket\":857787446}")
+            "{\"priorityValue8021ActionCluster\":445064797,\"priorityValue8021ActionSmb\":2101936696,\"bandwidthPercentageSmb\":1225956555,\"jumboPacket\":2091031438}")
             .toObject(SanAdapterProperties.class);
-        Assertions.assertEquals(460731729, model.priorityValue8021ActionCluster());
-        Assertions.assertEquals(250012247, model.priorityValue8021ActionSmb());
-        Assertions.assertEquals(1489687267, model.bandwidthPercentageSmb());
-        Assertions.assertEquals(857787446, model.jumboPacket());
+        Assertions.assertEquals(445064797, model.priorityValue8021ActionCluster());
+        Assertions.assertEquals(2101936696, model.priorityValue8021ActionSmb());
+        Assertions.assertEquals(1225956555, model.bandwidthPercentageSmb());
+        Assertions.assertEquals(2091031438, model.jumboPacket());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SanAdapterProperties model = new SanAdapterProperties().withPriorityValue8021ActionCluster(460731729)
-            .withPriorityValue8021ActionSmb(250012247)
-            .withBandwidthPercentageSmb(1489687267)
-            .withJumboPacket(857787446);
+        SanAdapterProperties model = new SanAdapterProperties().withPriorityValue8021ActionCluster(445064797)
+            .withPriorityValue8021ActionSmb(2101936696)
+            .withBandwidthPercentageSmb(1225956555)
+            .withJumboPacket(2091031438);
         model = BinaryData.fromObject(model).toObject(SanAdapterProperties.class);
-        Assertions.assertEquals(460731729, model.priorityValue8021ActionCluster());
-        Assertions.assertEquals(250012247, model.priorityValue8021ActionSmb());
-        Assertions.assertEquals(1489687267, model.bandwidthPercentageSmb());
-        Assertions.assertEquals(857787446, model.jumboPacket());
+        Assertions.assertEquals(445064797, model.priorityValue8021ActionCluster());
+        Assertions.assertEquals(2101936696, model.priorityValue8021ActionSmb());
+        Assertions.assertEquals(1225956555, model.bandwidthPercentageSmb());
+        Assertions.assertEquals(2091031438, model.jumboPacket());
     }
 }

@@ -12,16 +12,15 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
-import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -74,7 +73,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -155,25 +153,60 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                     .buildClient();
 
             BlobContainerClient containerClient = cleanupClient.getBlobContainerClient(vlwContainerName);
-            BlobContainerProperties containerProperties = containerClient.getProperties();
 
-            if (containerProperties.getLeaseState() == LeaseStateType.LEASED) {
+            if (containerClient.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(containerClient).breakLeaseWithResponse(
                     new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
             }
-            if (containerProperties.isImmutableStorageWithVersioningEnabled()) {
-                ListBlobsOptions options = new ListBlobsOptions()
-                    .setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
+
+            // With soft-delete enabled, deleting a blob in a VLW container creates a non-current
+            // version rather than truly removing it. A basic listBlobs() can't see these leftovers,
+            // but they still block container deletion (409 Conflict). Listing with versions, deleted
+            // blobs, and snapshots makes them visible so we can clear policies and delete each one.
+            // Multiple passes handle new non-current versions surfaced by prior deletions.
+            ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveDeletedBlobsWithVersions(true)
+                .setRetrieveSnapshots(true));
+
+            for (int round = 0; round < 5; round++) {
+                boolean found = false;
                 for (BlobItem blob : containerClient.listBlobs(options, null)) {
-                    BlobClient blobClient = containerClient.getBlobClient(blob.getName());
-                    BlobItemProperties blobProperties = blob.getProperties();
-                    if (Objects.equals(true, blobProperties.hasLegalHold())) {
-                        blobClient.setLegalHold(false);
+                    found = true;
+                    BlobClient rootBlobClient = containerClient.getBlobClient(blob.getName());
+                    BlobClient targetClient;
+
+                    if (blob.getSnapshot() != null) {
+                        targetClient = rootBlobClient.getSnapshotClient(blob.getSnapshot());
+                    } else if (!CoreUtils.isNullOrEmpty(blob.getVersionId())
+                        && !Boolean.TRUE.equals(blob.isCurrentVersion())) {
+                        targetClient = rootBlobClient.getVersionClient(blob.getVersionId());
+                    } else {
+                        targetClient = rootBlobClient;
                     }
-                    if (blobProperties.getImmutabilityPolicy().getPolicyMode() != null) {
-                        blobClient.deleteImmutabilityPolicy();
+
+                    // Unconditionally clear legal holds and immutability policies. Errors are
+                    // expected for soft-deleted blobs or blobs that don't have these set.
+                    try {
+                        targetClient.setLegalHold(false);
+                    } catch (BlobStorageException ignored) {
                     }
-                    blobClient.delete();
+                    try {
+                        targetClient.deleteImmutabilityPolicy();
+                    } catch (BlobStorageException ignored) {
+                    }
+                    // Deleting the current version by version ID returns 403
+                    // (OperationNotAllowedOnRootBlob); fall back to base blob URL.
+                    try {
+                        targetClient.deleteIfExists();
+                    } catch (BlobStorageException e) {
+                        if (e.getStatusCode() == 403) {
+                            rootBlobClient.deleteIfExists();
+                        }
+                    }
+                }
+                if (!found) {
+                    break;
                 }
             }
 

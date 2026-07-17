@@ -13,30 +13,30 @@ public final class DeploymentClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentCluster model = BinaryData.fromString(
-            "{\"name\":\"ipqkghvxndzwm\",\"witnessType\":\"efajpj\",\"witnessPath\":\"wkqnyhg\",\"cloudAccountName\":\"j\",\"azureServiceEndpoint\":\"ivfxzsjabibsyst\",\"hardwareClass\":\"Medium\",\"clusterPattern\":\"RackAware\"}")
+            "{\"name\":\"dvxzbncblylpst\",\"witnessType\":\"hh\",\"witnessPath\":\"rzdzucerscdnt\",\"cloudAccountName\":\"vfiwjmygtdss\",\"azureServiceEndpoint\":\"wtmwerio\",\"hardwareClass\":\"Small\",\"clusterPattern\":\"RackAware\"}")
             .toObject(DeploymentCluster.class);
-        Assertions.assertEquals("ipqkghvxndzwm", model.name());
-        Assertions.assertEquals("efajpj", model.witnessType());
-        Assertions.assertEquals("wkqnyhg", model.witnessPath());
-        Assertions.assertEquals("j", model.cloudAccountName());
-        Assertions.assertEquals("ivfxzsjabibsyst", model.azureServiceEndpoint());
+        Assertions.assertEquals("dvxzbncblylpst", model.name());
+        Assertions.assertEquals("hh", model.witnessType());
+        Assertions.assertEquals("rzdzucerscdnt", model.witnessPath());
+        Assertions.assertEquals("vfiwjmygtdss", model.cloudAccountName());
+        Assertions.assertEquals("wtmwerio", model.azureServiceEndpoint());
         Assertions.assertEquals(ClusterPattern.RACK_AWARE, model.clusterPattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentCluster model = new DeploymentCluster().withName("ipqkghvxndzwm")
-            .withWitnessType("efajpj")
-            .withWitnessPath("wkqnyhg")
-            .withCloudAccountName("j")
-            .withAzureServiceEndpoint("ivfxzsjabibsyst")
+        DeploymentCluster model = new DeploymentCluster().withName("dvxzbncblylpst")
+            .withWitnessType("hh")
+            .withWitnessPath("rzdzucerscdnt")
+            .withCloudAccountName("vfiwjmygtdss")
+            .withAzureServiceEndpoint("wtmwerio")
             .withClusterPattern(ClusterPattern.RACK_AWARE);
         model = BinaryData.fromObject(model).toObject(DeploymentCluster.class);
-        Assertions.assertEquals("ipqkghvxndzwm", model.name());
-        Assertions.assertEquals("efajpj", model.witnessType());
-        Assertions.assertEquals("wkqnyhg", model.witnessPath());
-        Assertions.assertEquals("j", model.cloudAccountName());
-        Assertions.assertEquals("ivfxzsjabibsyst", model.azureServiceEndpoint());
+        Assertions.assertEquals("dvxzbncblylpst", model.name());
+        Assertions.assertEquals("hh", model.witnessType());
+        Assertions.assertEquals("rzdzucerscdnt", model.witnessPath());
+        Assertions.assertEquals("vfiwjmygtdss", model.cloudAccountName());
+        Assertions.assertEquals("wtmwerio", model.azureServiceEndpoint());
         Assertions.assertEquals(ClusterPattern.RACK_AWARE, model.clusterPattern());
     }
 }

@@ -11,8 +11,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -26,7 +26,7 @@ public final class SignalDefinitionsListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"aehtwd\",\"refreshInterval\":\"PT5M\",\"labels\":{\"rcdlbhshfwpr\":\"wib\",\"hevxcced\":\"cstwity\"},\"dataUnit\":\"nmdyodnwzxl\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":61.44686132510554,\"dynamicThresholdDirection\":\"GreaterOrLowerThan\",\"trainingStartTime\":\"2021-02-20T03:38:09Z\"},\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"gcxn\"},\"unhealthyRule\":{\"operator\":\"GreaterOrEquals\",\"threshold\":\"wxqibyq\"}},\"deletionDate\":\"2021-05-22T21:00:43Z\"},\"id\":\"wxwlmdjrkvfgb\",\"name\":\"fvpdbo\",\"type\":\"acizsjqlhkrr\"}]}";
+            = "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"mfg\",\"refreshInterval\":\"PT15M\",\"tags\":{\"etnluankrrfx\":\"gleohi\",\"qzbqqxlajrnwxa\":\"eebtijvacvb\",\"aoqltfaey\":\"evehjkuyxoaf\",\"hriypoqeyhlqhy\":\"inmfgvxirp\"},\"dataUnit\":\"rlpyznuciqdsmexi\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":66.78962221159378,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT1H\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":74.59098749985445,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT15M\"}}},\"id\":\"ustgnljhnmgixhc\",\"name\":\"avmqfoudor\",\"type\":\"cgyypro\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,33 +36,28 @@ public final class SignalDefinitionsListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SignalDefinition> response = manager.signalDefinitions()
-            .listByHealthModel("xgfpelolppv", "srp", OffsetDateTime.parse("2021-02-05T20:48:24Z"),
+            .listByHealthModel("evy", "yhsgz", OffsetDateTime.parse("2021-10-15T05:08:39Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aehtwd", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT5M, response.iterator().next().properties().refreshInterval());
-        Assertions.assertEquals("wib", response.iterator().next().properties().labels().get("rcdlbhshfwpr"));
-        Assertions.assertEquals("nmdyodnwzxl", response.iterator().next().properties().dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            response.iterator().next().properties().evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(61.44686132510554,
-            response.iterator().next().properties().evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_OR_LOWER_THAN,
-            response.iterator()
-                .next()
-                .properties()
-                .evaluationRules()
-                .dynamicDetectionRule()
-                .dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T03:38:09Z"),
-            response.iterator().next().properties().evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN,
+        Assertions.assertEquals("mfg", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT15M, response.iterator().next().properties().refreshInterval());
+        Assertions.assertEquals("gleohi", response.iterator().next().properties().tags().get("etnluankrrfx"));
+        Assertions.assertEquals("rlpyznuciqdsmexi", response.iterator().next().properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.EQUAL,
             response.iterator().next().properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("gcxn",
+        Assertions.assertEquals(66.78962221159378D,
             response.iterator().next().properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_OR_EQUALS,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+            response.iterator().next().properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT1H,
+            response.iterator().next().properties().evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             response.iterator().next().properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("wxqibyq",
+        Assertions.assertEquals(74.59098749985445D,
             response.iterator().next().properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            response.iterator().next().properties().evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT15M,
+            response.iterator().next().properties().evaluationRules().unhealthyRule().lookBackWindow());
     }
 }

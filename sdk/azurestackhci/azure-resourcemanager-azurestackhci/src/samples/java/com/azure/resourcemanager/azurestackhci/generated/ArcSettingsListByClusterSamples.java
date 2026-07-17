@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ListArcSettingsByCluster.json
+     * x-ms-original-file: 2026-04-30/ListArcSettingsByCluster.json
      */
     /**
      * Sample code: List ArcSetting resources by HCI Cluster.

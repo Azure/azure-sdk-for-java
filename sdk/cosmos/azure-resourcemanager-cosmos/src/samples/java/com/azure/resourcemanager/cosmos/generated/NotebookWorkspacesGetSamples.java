@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBNotebookWorkspaceGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBNotebookWorkspaceGet.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceGet.

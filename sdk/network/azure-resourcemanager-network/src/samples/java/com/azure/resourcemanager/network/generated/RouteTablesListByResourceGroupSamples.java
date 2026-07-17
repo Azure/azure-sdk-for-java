@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteTablesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteTableList.json
+     * x-ms-original-file: 2025-07-01/RouteTableList.json
      */
     /**
      * Sample code: List route tables in resource group.

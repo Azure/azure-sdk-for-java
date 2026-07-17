@@ -21,6 +21,7 @@
     "**/sdk/**/*-matrix.json",
     "**/chromedriver",
     ".gitignore",
+    ".gitattrbutes",
     "*.jar",
     "*.zip",
     "*.avro",
@@ -52,6 +53,8 @@
     "*.certificate",
     "*.crt",
     "*.yml",
+    ".github/skills/agentic-workflows/**",
+    ".github/workflows/issue-triage.md",
     ".vscode/cspell.json",
     ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
@@ -350,6 +353,8 @@
     "javadocs",
     "Jdbc",
     "JSESSIONID",
+    "jspf",
+    "jspx",
     "junitxml",
     "jtoken",
     "jtokkit",
@@ -638,6 +643,7 @@
         "AICLIPIMAGE",
         "AISERVICES",
         "AITOKENS",
+        "azsearch",
         "Bangla",
         "bokmaal",
         "Bokm",
@@ -669,7 +675,8 @@
         "TLARGE",
         "vectorizable",
         "vectorizer",
-        "vectorizers"
+        "vectorizers",
+        "workiq"
       ]
     },
     {
@@ -1195,6 +1202,7 @@
     {
       "filename": "sdk/spring/scripts/**",
       "words": [
+        "ascopes",
         "agroal",
         "alluxio",
         "antlr",
@@ -1238,6 +1246,7 @@
         "gimap",
         "ginq",
         "groovysh",
+        "grpclb",
         "guice",
         "Hikari",
         "hikaricp",
@@ -1252,6 +1261,7 @@
         "inmemory",
         "infinispan",
         "informix",
+        "inprocess",
         "integ",
         "iostreams",
         "istack",
@@ -1499,6 +1509,8 @@
         "FOUNDRY",
         "genai",
         "GENAI",
+        "HDOMNI",
+        "SSML",
         "Unpooled",
         "viseme",
         "VISEME",
@@ -1606,7 +1618,10 @@
         "mqtt",
         "rservice", // appears in the name SignalRService
         "gcch",
-        "updation" // current typo in a swagger
+        "updation", // current typo in a swagger
+        "bsuid", // ACS Messaging recipient/sender identifier (BSUID / Bsuid)
+        "osscheduling", // VMSS lifecycle hook event: UpgradeAutoOSScheduling
+        "osrolling" // VMSS lifecycle hook event: UpgradeAutoOSRollingBatchStarting
       ]
     },
     {

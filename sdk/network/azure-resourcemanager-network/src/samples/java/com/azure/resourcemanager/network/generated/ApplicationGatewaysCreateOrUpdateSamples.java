@@ -50,7 +50,7 @@ import java.util.Map;
  */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayCreate.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.

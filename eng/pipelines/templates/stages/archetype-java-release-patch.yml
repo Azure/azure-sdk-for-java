@@ -54,6 +54,11 @@ stages:
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
 
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed
           # Dev feed publishes use the gpg-sign-and-deply to do it in one step
@@ -104,6 +109,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
         - deployment: PublishESRPPackage
           displayName: "Publish to Maven Central via ESRP"
@@ -229,6 +235,7 @@ stages:
                 CommitMsg: "Increment package versions for patch releases"
                 PRTitle: "Increment versions for patch releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''
 
         - job: PublishDocsMs
           displayName: Docs.MS Release

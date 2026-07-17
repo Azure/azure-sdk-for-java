@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsGeneratePasswordSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/GeneratePassword.json
+     * x-ms-original-file: 2026-04-30/GeneratePassword.json
      */
     /**
      * Sample code: Generate Password.

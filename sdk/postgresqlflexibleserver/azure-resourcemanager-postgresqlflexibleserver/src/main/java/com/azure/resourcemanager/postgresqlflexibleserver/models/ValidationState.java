@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Validation status for migration.
+ * Validation state for migration.
  */
 public final class ValidationState extends ExpandableStringEnum<ValidationState> {
     /**
-     * Static value Failed for ValidationState.
+     * Validation has failed.
      */
     public static final ValidationState FAILED = fromString("Failed");
 
     /**
-     * Static value Succeeded for ValidationState.
+     * Validation has succeeded.
      */
     public static final ValidationState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Warning for ValidationState.
+     * Validation has succeeded with warnings.
      */
     public static final ValidationState WARNING = fromString("Warning");
 

@@ -24,7 +24,7 @@ public final class DeploymentSettingsListByClustersMockTests {
     @Test
     public void testListByClusters() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"arcNodeResourceIds\":[\"qbvxqtolpwbopv\",\"cbtzaprjxcon\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterProvisioning\",\"deploymentConfiguration\":{\"version\":\"kithueoc\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"wvr\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"ewpmioleaja\",\"steps\":[{},{}]}}},\"id\":\"yzwphbjks\",\"name\":\"ecmbaaj\",\"type\":\"fwrdkql\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"PartiallySucceeded\",\"arcNodeResourceIds\":[\"fmzsizzhravr\",\"jkjymgqbgcx\",\"nqxgz\",\"lermkmerg\"],\"deploymentMode\":\"Validate\",\"operationType\":\"ClusterUpgrade\",\"deploymentConfiguration\":{\"version\":\"hnp\",\"scaleUnits\":[{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}},{\"deploymentData\":{},\"sbePartnerInfo\":{}}]},\"reportedProperties\":{\"validationStatus\":{\"status\":\"kdljqnvtsdydshkp\",\"steps\":[{},{},{},{}]},\"deploymentStatus\":{\"status\":\"oowwziz\",\"steps\":[{}]}}},\"id\":\"f\",\"name\":\"qz\",\"type\":\"ti\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DeploymentSettingsListByClustersMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DeploymentSetting> response
-            = manager.deploymentSettings().listByClusters("rb", "zepirtv", com.azure.core.util.Context.NONE);
+        PagedIterable<DeploymentSetting> response = manager.deploymentSettings()
+            .listByClusters("rugejcvjkjy", "zcmtagelajdyolj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qbvxqtolpwbopv", response.iterator().next().arcNodeResourceIds().get(0));
+        Assertions.assertEquals("fmzsizzhravr", response.iterator().next().arcNodeResourceIds().get(0));
         Assertions.assertEquals(DeploymentMode.VALIDATE, response.iterator().next().deploymentMode());
-        Assertions.assertEquals(OperationType.CLUSTER_PROVISIONING, response.iterator().next().operationType());
-        Assertions.assertEquals("kithueoc", response.iterator().next().deploymentConfiguration().version());
+        Assertions.assertEquals(OperationType.CLUSTER_UPGRADE, response.iterator().next().operationType());
+        Assertions.assertEquals("hnp", response.iterator().next().deploymentConfiguration().version());
     }
 }

@@ -46,6 +46,16 @@ public final class FileShareLimits implements JsonSerializable<FileShareLimits> 
      */
     private Integer maxProvisionedBandwidthMiBPerSec;
 
+    /*
+     * The IO scalar used for guardrail calculations for a file share in the storage account.
+     */
+    private Double guardrailIOScalar;
+
+    /*
+     * The bandwidth scalar used for guardrail calculations for a file share in the storage account.
+     */
+    private Double guardrailBandwidthScalar;
+
     /**
      * Creates an instance of FileShareLimits class.
      */
@@ -111,6 +121,26 @@ public final class FileShareLimits implements JsonSerializable<FileShareLimits> 
     }
 
     /**
+     * Get the guardrailIOScalar property: The IO scalar used for guardrail calculations for a file share in the storage
+     * account.
+     * 
+     * @return the guardrailIOScalar value.
+     */
+    public Double guardrailIOScalar() {
+        return this.guardrailIOScalar;
+    }
+
+    /**
+     * Get the guardrailBandwidthScalar property: The bandwidth scalar used for guardrail calculations for a file share
+     * in the storage account.
+     * 
+     * @return the guardrailBandwidthScalar value.
+     */
+    public Double guardrailBandwidthScalar() {
+        return this.guardrailBandwidthScalar;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -156,6 +186,10 @@ public final class FileShareLimits implements JsonSerializable<FileShareLimits> 
                 } else if ("maxProvisionedBandwidthMiBPerSec".equals(fieldName)) {
                     deserializedFileShareLimits.maxProvisionedBandwidthMiBPerSec
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("guardrailIOScalar".equals(fieldName)) {
+                    deserializedFileShareLimits.guardrailIOScalar = reader.getNullable(JsonReader::getDouble);
+                } else if ("guardrailBandwidthScalar".equals(fieldName)) {
+                    deserializedFileShareLimits.guardrailBandwidthScalar = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

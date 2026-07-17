@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.computelimit.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.computelimit.fluent.FeaturesClient;
 import com.azure.resourcemanager.computelimit.fluent.models.FeatureInner;
 import com.azure.resourcemanager.computelimit.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.computelimit.implementation.models.FeatureListResult;
+import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -110,7 +112,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
         Mono<Response<Flux<ByteBuffer>>> enable(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("featureName") String featureName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FeatureEnableRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/enable")
@@ -119,7 +122,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
         Response<BinaryData> enableSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("featureName") String featureName,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") FeatureEnableRequest body,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/disable")
@@ -329,10 +333,11 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,36 +345,39 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableWithResponseAsync(String location, String featureName) {
+    private Mono<Response<Flux<ByteBuffer>>> enableWithResponseAsync(String location, String featureName,
+        FeatureEnableRequest body) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.enable(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, featureName, accept, context))
+                this.client.getSubscriptionId(), location, featureName, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> enableWithResponse(String location, String featureName) {
+    private Response<BinaryData> enableWithResponse(String location, String featureName, FeatureEnableRequest body) {
         final String accept = "application/json";
         return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, featureName, accept, Context.NONE);
+            this.client.getSubscriptionId(), location, featureName, accept, body, Context.NONE);
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,14 +385,35 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> enableWithResponse(String location, String featureName, Context context) {
+    private Response<BinaryData> enableWithResponse(String location, String featureName, FeatureEnableRequest body,
+        Context context) {
         final String accept = "application/json";
         return service.enableSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, featureName, accept, context);
+            this.client.getSubscriptionId(), location, featureName, accept, body, context);
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableAsync(String location, String featureName, FeatureEnableRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = enableWithResponseAsync(location, featureName, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -396,14 +425,34 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginEnableAsync(String location, String featureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = enableWithResponseAsync(location, featureName);
+        final FeatureEnableRequest body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = enableWithResponseAsync(location, featureName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
+        String featureName, FeatureEnableRequest body) {
+        Response<BinaryData> response = enableWithResponse(location, featureName, body);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -415,16 +464,18 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName) {
-        Response<BinaryData> response = enableWithResponse(location, featureName);
+        final FeatureEnableRequest body = null;
+        Response<BinaryData> response = enableWithResponse(location, featureName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
             OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -433,14 +484,31 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
-        String featureName, Context context) {
-        Response<BinaryData> response = enableWithResponse(location, featureName, context);
+        String featureName, FeatureEnableRequest body, Context context) {
+        Response<BinaryData> response = enableWithResponse(location, featureName, body, context);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
             OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
+     * 
+     * @param location The name of the Azure region.
+     * @param featureName The name of the Feature.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> enableAsync(String location, String featureName,
+        FeatureEnableRequest body) {
+        return beginEnableAsync(location, featureName, body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -451,11 +519,12 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> enableAsync(String location, String featureName) {
-        return beginEnableAsync(location, featureName).last().flatMap(this.client::getLroFinalResultOrError);
+        final FeatureEnableRequest body = null;
+        return beginEnableAsync(location, featureName, body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -466,14 +535,16 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner enable(String location, String featureName) {
-        return beginEnable(location, featureName).getFinalResult();
+        final FeatureEnableRequest body = null;
+        return beginEnable(location, featureName, body).getFinalResult();
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,12 +552,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner enable(String location, String featureName, Context context) {
-        return beginEnable(location, featureName, context).getFinalResult();
+    public OperationStatusResultInner enable(String location, String featureName, FeatureEnableRequest body,
+        Context context) {
+        return beginEnable(location, featureName, body, context).getFinalResult();
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -506,7 +578,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -523,7 +595,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -541,7 +613,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -560,7 +632,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -578,7 +650,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -597,7 +669,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -612,7 +684,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -627,7 +699,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.

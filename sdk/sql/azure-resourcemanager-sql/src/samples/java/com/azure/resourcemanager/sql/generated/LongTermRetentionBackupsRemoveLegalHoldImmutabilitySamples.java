@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsRemoveLegalHoldImmutabilitySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+     * x-ms-original-file: 2025-01-01/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
      */
     /**
      * Sample code: Remove legal hold immutability of the long term retention backup.

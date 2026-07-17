@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class StaticMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerStaticMemberDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerStaticMemberDelete.json
      */
     /**
      * Sample code: StaticMembersDelete.

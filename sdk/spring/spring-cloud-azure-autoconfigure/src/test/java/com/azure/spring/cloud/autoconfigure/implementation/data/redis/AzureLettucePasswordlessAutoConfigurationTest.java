@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.Az
 import io.lettuce.core.RedisCredentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.data.redis.autoconfigure.LettuceClientConfigurationBuilderCustomizer;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
@@ -72,6 +73,22 @@ class AzureLettucePasswordlessAutoConfigurationTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureLettucePasswordlessAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureRedisCredentials.class);
+            });
+    }
+
+    @Test
+    void configureWithUserDefinedLettuceCustomizer() {
+        this.contextRunner
+            .withBean("userLettuceClientConfigurationBuilderCustomizer", LettuceClientConfigurationBuilderCustomizer.class,
+                () -> builder -> { })
+            .withPropertyValues(
+                "spring.data.redis.azure.passwordless-enabled=true",
+                "spring.data.redis.host=localhost",
+                "spring.data.redis.username=azure-username"
+            )
+            .run(context -> {
+                assertThat(context).hasBean("azureLettuceClientConfigurationBuilderCustomizer");
+                assertThat(context.getBeansOfType(LettuceClientConfigurationBuilderCustomizer.class)).hasSize(2);
             });
     }
 

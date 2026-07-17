@@ -11,7 +11,7 @@ public final class HciNicDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciNicDetail model = BinaryData.fromString(
-            "{\"adapterName\":\"cyzyzjdnrqjbt\",\"interfaceDescription\":\"eaoqaqbzgyhf\",\"componentId\":\"v\",\"driverVersion\":\"tbwbqamteuli\",\"ip4Address\":\"lpkcvmwfauxxep\",\"subnetMask\":\"wbormcqmi\",\"defaultGateway\":\"ijqpkzfbojxjmcs\",\"dnsServers\":[\"wixvcpwnkwywzw\",\"falickduoiqtamty\",\"sknxrwzawnvsbcf\"],\"defaultIsolationId\":\"agxnvhycvdimw\",\"macAddress\":\"regzgyufutrwpwer\",\"slot\":\"kzkdhmeott\",\"switchName\":\"jyosxwwh\",\"nicType\":\"jtfvpndpmiljpn\",\"vlanId\":\"nudqllz\",\"nicStatus\":\"uzpjlxeehux\",\"rdmaCapability\":\"Disabled\"}")
+            "{\"adapterName\":\"bcvex\",\"interfaceDescription\":\"uquowtljvfwhr\",\"componentId\":\"gkhyxvrqtvbczsu\",\"driverVersion\":\"dgglmepjpfs\",\"ip4Address\":\"kgsangpszng\",\"subnetMask\":\"p\",\"defaultGateway\":\"lkvec\",\"dnsServers\":[\"cngoadyedmzrg\",\"foknubnoitp\",\"pz\"],\"defaultIsolationId\":\"gdgxvcoqraswug\",\"macAddress\":\"pqitwe\",\"slot\":\"l\",\"switchName\":\"skbuhzaca\",\"nicType\":\"yltcoqcuj\",\"vlanId\":\"sxzakuejkm\",\"nicStatus\":\"iztjof\",\"rdmaCapability\":\"Disabled\"}")
             .toObject(HciNicDetail.class);
     }
 }

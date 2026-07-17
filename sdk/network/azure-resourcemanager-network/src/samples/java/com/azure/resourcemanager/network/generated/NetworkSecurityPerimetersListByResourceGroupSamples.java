@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimetersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityPerimeterList.json
+     * x-ms-original-file: 2025-07-01/NetworkSecurityPerimeterList.json
      */
     /**
      * Sample code: List Network Security Perimeter.

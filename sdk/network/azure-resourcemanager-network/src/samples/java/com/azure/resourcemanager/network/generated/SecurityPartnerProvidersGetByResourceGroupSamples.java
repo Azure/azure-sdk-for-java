@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityPartnerProvidersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SecurityPartnerProviderGet.json
+     * x-ms-original-file: 2025-07-01/SecurityPartnerProviderGet.json
      */
     /**
      * Sample code: Get Security Partner Provider.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
  */
 public final class ApplicationSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationSecurityGroupCreate.json
+     * x-ms-original-file: 2025-07-01/ApplicationSecurityGroupCreate.json
      */
     /**
      * Sample code: Create application security group.

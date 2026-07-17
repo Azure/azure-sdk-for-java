@@ -61,7 +61,7 @@ public class AadB2cAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory() {
-        return new AadB2cOidcIdTokenDecoderFactory(createRestTemplate(restTemplateBuilder));
+    JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory(AadB2cProperties properties) {
+        return new AadB2cOidcIdTokenDecoderFactory(createRestTemplate(restTemplateBuilder), properties);
     }
 }

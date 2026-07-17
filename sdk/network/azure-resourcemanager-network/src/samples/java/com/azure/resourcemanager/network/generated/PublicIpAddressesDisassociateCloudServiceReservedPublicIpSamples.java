@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.DisassociateCloudServicePublicIp
  */
 public final class PublicIpAddressesDisassociateCloudServiceReservedPublicIpSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressDisassociateCloudServiceReservedPublicIp.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressDisassociateCloudServiceReservedPublicIp.json
      */
     /**
      * Sample code: Disassociate public IP address.

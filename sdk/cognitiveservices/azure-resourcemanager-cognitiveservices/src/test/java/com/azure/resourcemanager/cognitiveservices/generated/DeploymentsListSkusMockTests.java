@@ -23,7 +23,7 @@ public final class DeploymentsListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"xqggvqr\",\"sku\":{\"name\":\"yhlwcjsqg\",\"tier\":\"Enterprise\",\"size\":\"f\",\"family\":\"rqrkijpeuqlsdx\",\"capacity\":624919964},\"capacity\":{\"minimum\":219641959,\"maximum\":818856345,\"step\":492816605,\"default\":1691277612,\"allowedValues\":[330735385,277853585]}}]}";
+            = "{\"value\":[{\"resourceType\":\"iatwfaujegqdtadr\",\"sku\":{\"name\":\"gddhjkrukizyhgs\",\"tier\":\"Basic\",\"size\":\"s\",\"family\":\"xqfpj\",\"capacity\":1700647685},\"capacity\":{\"minimum\":1566722268,\"maximum\":1205167221,\"step\":670221649,\"default\":1718194310,\"allowedValues\":[1007635827]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class DeploymentsListSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response
-            = manager.deployments().listSkus("tk", "umzued", "yzbfvxovqkx", com.azure.core.util.Context.NONE);
+            = manager.deployments().listSkus("ywhlakxpe", "pewpyj", "fxampqcrzgeuqx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xqggvqr", response.iterator().next().resourceType());
-        Assertions.assertEquals("yhlwcjsqg", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.ENTERPRISE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("f", response.iterator().next().sku().size());
-        Assertions.assertEquals("rqrkijpeuqlsdx", response.iterator().next().sku().family());
-        Assertions.assertEquals(624919964, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(219641959, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(818856345, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(492816605, response.iterator().next().capacity().step());
-        Assertions.assertEquals(1691277612, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(330735385, response.iterator().next().capacity().allowedValues().get(0));
+        Assertions.assertEquals("iatwfaujegqdtadr", response.iterator().next().resourceType());
+        Assertions.assertEquals("gddhjkrukizyhgs", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().sku().tier());
+        Assertions.assertEquals("s", response.iterator().next().sku().size());
+        Assertions.assertEquals("xqfpj", response.iterator().next().sku().family());
+        Assertions.assertEquals(1700647685, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(1566722268, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(1205167221, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(670221649, response.iterator().next().capacity().step());
+        Assertions.assertEquals(1718194310, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(1007635827, response.iterator().next().capacity().allowedValues().get(0));
     }
 }

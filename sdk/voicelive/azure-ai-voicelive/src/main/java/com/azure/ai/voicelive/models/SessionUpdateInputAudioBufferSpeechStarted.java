@@ -22,7 +22,7 @@ import java.io.IOException;
  * the audio buffer during VAD activation).
  */
 @Immutable
-public final class SessionUpdateInputAudioBufferSpeechStarted extends SessionUpdate {
+public final class SessionUpdateInputAudioBufferSpeechStarted extends SessionServerEvent {
 
     /*
      * The type of event.

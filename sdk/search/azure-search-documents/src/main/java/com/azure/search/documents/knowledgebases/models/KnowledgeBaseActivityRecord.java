@@ -130,6 +130,7 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("elapsedMs", this.elapsedMs);
         jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("warning", this.warning);
         return jsonWriter.writeEndObject();
     }
 
@@ -160,7 +161,35 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("modelWebSummarization".equals(discriminatorValue)) {
+                if ("searchIndex".equals(discriminatorValue)) {
+                    return KnowledgeBaseSearchIndexActivityRecord.fromJson(readerToUse.reset());
+                } else if ("azureBlob".equals(discriminatorValue)) {
+                    return KnowledgeBaseAzureBlobActivityRecord.fromJson(readerToUse.reset());
+                } else if ("indexedSharePoint".equals(discriminatorValue)) {
+                    return KnowledgeBaseIndexedSharePointActivityRecord.fromJson(readerToUse.reset());
+                } else if ("indexedOneLake".equals(discriminatorValue)) {
+                    return KnowledgeBaseIndexedOneLakeActivityRecord.fromJson(readerToUse.reset());
+                } else if ("web".equals(discriminatorValue)) {
+                    return KnowledgeBaseWebActivityRecord.fromJson(readerToUse.reset());
+                } else if ("remoteSharePoint".equals(discriminatorValue)) {
+                    return KnowledgeBaseRemoteSharePointActivityRecord.fromJson(readerToUse.reset());
+                } else if ("workIQ".equals(discriminatorValue)) {
+                    return KnowledgeBaseWorkIQActivityRecord.fromJson(readerToUse.reset());
+                } else if ("fabricDataAgent".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricDataAgentActivityRecord.fromJson(readerToUse.reset());
+                } else if ("fabricOntology".equals(discriminatorValue)) {
+                    return KnowledgeBaseFabricOntologyActivityRecord.fromJson(readerToUse.reset());
+                } else if ("mcpServer".equals(discriminatorValue)) {
+                    return KnowledgeBaseMcpServerActivityRecord.fromJson(readerToUse.reset());
+                } else if ("file".equals(discriminatorValue)) {
+                    return KnowledgeBaseFileActivityRecord.fromJson(readerToUse.reset());
+                } else if ("indexedSql".equals(discriminatorValue)) {
+                    return KnowledgeBaseIndexedSqlActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelQueryPlanning".equals(discriminatorValue)) {
+                    return KnowledgeBaseModelQueryPlanningActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelAnswerSynthesis".equals(discriminatorValue)) {
+                    return KnowledgeBaseModelAnswerSynthesisActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelWebSummarization".equals(discriminatorValue)) {
                     return KnowledgeBaseModelWebSummarizationActivityRecord.fromJson(readerToUse.reset());
                 } else if ("agenticReasoning".equals(discriminatorValue)) {
                     return KnowledgeBaseAgenticReasoningActivityRecord.fromJson(readerToUse.reset());
@@ -178,6 +207,7 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
             KnowledgeBaseActivityRecordType type = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
+            String warning = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -189,6 +219,8 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
                     error = KnowledgeBaseErrorDetail.fromJson(reader);
+                } else if ("warning".equals(fieldName)) {
+                    warning = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -197,7 +229,39 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
             deserializedKnowledgeBaseActivityRecord.type = type;
             deserializedKnowledgeBaseActivityRecord.elapsedMs = elapsedMs;
             deserializedKnowledgeBaseActivityRecord.error = error;
+            deserializedKnowledgeBaseActivityRecord.warning = warning;
             return deserializedKnowledgeBaseActivityRecord;
         });
+    }
+
+    /*
+     * A warning message surfacing potential configuration issues observed during the activity, such as documents
+     * dropped due to score thresholding, token limit truncation, or timeout conditions.
+     */
+    @Generated
+    private String warning;
+
+    /**
+     * Get the warning property: A warning message surfacing potential configuration issues observed during the
+     * activity, such as documents dropped due to score thresholding, token limit truncation, or timeout conditions.
+     *
+     * @return the warning value.
+     */
+    @Generated
+    public String getWarning() {
+        return this.warning;
+    }
+
+    /**
+     * Set the warning property: A warning message surfacing potential configuration issues observed during the
+     * activity, such as documents dropped due to score thresholding, token limit truncation, or timeout conditions.
+     *
+     * @param warning the warning value to set.
+     * @return the KnowledgeBaseActivityRecord object itself.
+     */
+    @Generated
+    KnowledgeBaseActivityRecord setWarning(String warning) {
+        this.warning = warning;
+        return this;
     }
 }

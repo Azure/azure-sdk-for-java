@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The state of the call connection.
+ * The states of a call connection.
  */
 public final class CallConnectionStateModelInternal extends ExpandableStringEnum<CallConnectionStateModelInternal> {
     /**

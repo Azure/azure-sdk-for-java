@@ -62,21 +62,21 @@ public interface BackupsLongTermRetentionResponse {
     OffsetDateTime endTime();
 
     /**
-     * Gets the percentComplete property: PercentageCompleted.
+     * Gets the percentComplete property: Percentage completed.
      * 
      * @return the percentComplete value.
      */
     Double percentComplete();
 
     /**
-     * Gets the errorCode property: The error code.
+     * Gets the errorCode property: Error code.
      * 
      * @return the errorCode value.
      */
     String errorCode();
 
     /**
-     * Gets the errorMessage property: The error message.
+     * Gets the errorMessage property: Error message.
      * 
      * @return the errorMessage value.
      */

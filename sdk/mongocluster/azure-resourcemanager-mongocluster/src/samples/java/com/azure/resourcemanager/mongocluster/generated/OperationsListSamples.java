@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-06-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/DeleteCluster.json
+     * x-ms-original-file: 2026-04-30/DeleteCluster.json
      */
     /**
      * Sample code: Delete cluster.

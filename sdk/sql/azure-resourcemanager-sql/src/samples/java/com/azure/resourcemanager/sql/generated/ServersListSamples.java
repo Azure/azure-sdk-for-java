@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerList.json
+     * x-ms-original-file: 2025-01-01/ServerList.json
      */
     /**
      * Sample code: List servers.
@@ -21,7 +21,7 @@ public final class ServersListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerListWithExpandEqualsAdministrators.json
+     * x-ms-original-file: 2025-01-01/ServerListWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List servers with $expand=administrators/activedirectory.

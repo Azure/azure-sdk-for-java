@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupsLongTermRetentionResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupsLongTermRetentionResponseProperties model = BinaryData.fromString("{\"numberOfContainers\":359002746}")
+        BackupsLongTermRetentionResponseProperties model = BinaryData.fromString("{\"numberOfContainers\":1869546664}")
             .toObject(BackupsLongTermRetentionResponseProperties.class);
-        Assertions.assertEquals(359002746, model.numberOfContainers());
+        Assertions.assertEquals(1869546664, model.numberOfContainers());
     }
 }

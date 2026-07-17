@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvaila
  */
 public final class NameAvailabilityCheckGloballySamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/NameAvailabilityCheckGlobally.json
+     * x-ms-original-file: 2026-04-01-preview/NameAvailabilityCheckGlobally.json
      */
     /**
      * Sample code: Check the validity and availability of the given name, to assign it to a new server or to use it as

@@ -68,6 +68,13 @@ public interface ContainerServiceManagementClient {
     MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
+     * Gets the MaintenanceWindowsClient object to access its operations.
+     * 
+     * @return the MaintenanceWindowsClient object.
+     */
+    MaintenanceWindowsClient getMaintenanceWindows();
+
+    /**
      * Gets the ManagedNamespacesClient object to access its operations.
      * 
      * @return the ManagedNamespacesClient object.
@@ -96,6 +103,13 @@ public interface ContainerServiceManagementClient {
     SnapshotsClient getSnapshots();
 
     /**
+     * Gets the ManagedClusterSnapshotsClient object to access its operations.
+     * 
+     * @return the ManagedClusterSnapshotsClient object.
+     */
+    ManagedClusterSnapshotsClient getManagedClusterSnapshots();
+
+    /**
      * Gets the TrustedAccessRoleBindingsClient object to access its operations.
      * 
      * @return the TrustedAccessRoleBindingsClient object.
@@ -103,11 +117,46 @@ public interface ContainerServiceManagementClient {
     TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
 
     /**
+     * Gets the LoadBalancersClient object to access its operations.
+     * 
+     * @return the LoadBalancersClient object.
+     */
+    LoadBalancersClient getLoadBalancers();
+
+    /**
+     * Gets the IdentityBindingsClient object to access its operations.
+     * 
+     * @return the IdentityBindingsClient object.
+     */
+    IdentityBindingsClient getIdentityBindings();
+
+    /**
+     * Gets the JWTAuthenticatorsClient object to access its operations.
+     * 
+     * @return the JWTAuthenticatorsClient object.
+     */
+    JWTAuthenticatorsClient getJWTAuthenticators();
+
+    /**
+     * Gets the MeshMembershipsClient object to access its operations.
+     * 
+     * @return the MeshMembershipsClient object.
+     */
+    MeshMembershipsClient getMeshMemberships();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the OperationStatusResultsClient object to access its operations.
+     * 
+     * @return the OperationStatusResultsClient object.
+     */
+    OperationStatusResultsClient getOperationStatusResults();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
@@ -129,4 +178,11 @@ public interface ContainerServiceManagementClient {
      * @return the TrustedAccessRolesClient object.
      */
     TrustedAccessRolesClient getTrustedAccessRoles();
+
+    /**
+     * Gets the VmSkusClient object to access its operations.
+     * 
+     * @return the VmSkusClient object.
+     */
+    VmSkusClient getVmSkus();
 }

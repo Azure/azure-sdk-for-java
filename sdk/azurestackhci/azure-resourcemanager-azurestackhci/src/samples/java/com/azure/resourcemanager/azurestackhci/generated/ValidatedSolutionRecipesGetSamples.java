@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ValidatedSolutionRecipesGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/ValidatedSolutionRecipes_Get.json
+     * x-ms-original-file: 2026-04-30/ValidatedSolutionRecipes_Get.json
      */
     /**
      * Sample code: ValidatedSolutionRecipes_Get.

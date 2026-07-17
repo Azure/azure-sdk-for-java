@@ -10,8 +10,8 @@ import com.azure.resourcemanager.azurestackhci.models.EdgeDeviceDisks;
 public final class EdgeDeviceDisksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdgeDeviceDisks model
-            = BinaryData.fromString("{\"id\":\"gmokzkltrfowt\",\"sizeInBytes\":\"rfmvlihcvjdrqcrj\",\"type\":\"h\"}")
-                .toObject(EdgeDeviceDisks.class);
+        EdgeDeviceDisks model = BinaryData.fromString(
+            "{\"id\":\"lod\",\"sizeInBytes\":\"euzanhs\",\"type\":\"hse\",\"model\":\"phpzfngqjcl\",\"manufacturer\":\"ftujwjjufw\",\"isSupported\":false}")
+            .toObject(EdgeDeviceDisks.class);
     }
 }

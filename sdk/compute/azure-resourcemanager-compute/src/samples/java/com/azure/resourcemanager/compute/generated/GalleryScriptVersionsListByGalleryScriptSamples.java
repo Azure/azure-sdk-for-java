@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryScriptVersionsListByGalleryScriptSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_ListByGalleryScript.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_ListByGalleryScript.json
      */
     /**
      * Sample code: List gallery Script Versions in a gallery Script Definition.

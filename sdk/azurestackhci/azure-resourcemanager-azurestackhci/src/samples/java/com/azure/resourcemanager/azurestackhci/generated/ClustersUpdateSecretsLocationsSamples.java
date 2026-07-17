@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ClustersUpdateSecretsLocationsSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Clusters_UpdateSecretsLocations.json
+     * x-ms-original-file: 2026-04-30/Clusters_UpdateSecretsLocations.json
      */
     /**
      * Sample code: Update secrets locations for a Cluster.

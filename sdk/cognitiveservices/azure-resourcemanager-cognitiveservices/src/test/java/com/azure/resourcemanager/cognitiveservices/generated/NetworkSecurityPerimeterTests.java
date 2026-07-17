@@ -12,10 +12,10 @@ public final class NetworkSecurityPerimeterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeter model = BinaryData
-            .fromString("{\"id\":\"obrltt\",\"perimeterGuid\":\"sjnygqdnfwqzdzgt\",\"location\":\"axhnfh\"}")
+            .fromString("{\"id\":\"vefloccsrmozihmi\",\"perimeterGuid\":\"awtxxpk\",\"location\":\"cxcjxgry\"}")
             .toObject(NetworkSecurityPerimeter.class);
-        Assertions.assertEquals("obrltt", model.id());
-        Assertions.assertEquals("sjnygqdnfwqzdzgt", model.perimeterGuid());
-        Assertions.assertEquals("axhnfh", model.location());
+        Assertions.assertEquals("vefloccsrmozihmi", model.id());
+        Assertions.assertEquals("awtxxpk", model.perimeterGuid());
+        Assertions.assertEquals("cxcjxgry", model.location());
     }
 }

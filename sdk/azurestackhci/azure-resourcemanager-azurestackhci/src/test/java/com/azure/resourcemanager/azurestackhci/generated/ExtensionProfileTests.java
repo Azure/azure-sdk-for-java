@@ -11,7 +11,7 @@ public final class ExtensionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionProfile model = BinaryData.fromString(
-            "{\"extensions\":[{\"extensionName\":\"y\",\"state\":\"Deleted\",\"errorDetails\":[{\"exception\":\"q\"},{\"exception\":\"vyeldot\"}],\"extensionResourceId\":\"dkwisw\",\"typeHandlerVersion\":\"ukjtasbvwispkxk\",\"managedBy\":\"Azure\"}]}")
+            "{\"extensions\":[{\"extensionName\":\"mxu\",\"state\":\"Creating\",\"errorDetails\":[{\"exception\":\"qg\"}],\"extensionResourceId\":\"fnozoeoqbvjh\",\"typeHandlerVersion\":\"f\",\"managedBy\":\"User\"},{\"extensionName\":\"qjchntas\",\"state\":\"Deleting\",\"errorDetails\":[{\"exception\":\"ulpzealb\"},{\"exception\":\"kyojwyvfk\"},{\"exception\":\"tsu\"},{\"exception\":\"xsgxjcmmzrrs\"}],\"extensionResourceId\":\"biwsd\",\"typeHandlerVersion\":\"pxqwo\",\"managedBy\":\"Azure\"},{\"extensionName\":\"jxcjrmmuabwib\",\"state\":\"Deleted\",\"errorDetails\":[{\"exception\":\"nmc\"},{\"exception\":\"foyzbamwineof\"}],\"extensionResourceId\":\"kak\",\"typeHandlerVersion\":\"ldtve\",\"managedBy\":\"User\"},{\"extensionName\":\"lz\",\"state\":\"Deleted\",\"errorDetails\":[{\"exception\":\"uxgvttxpnr\"}],\"extensionResourceId\":\"zaamrdixtrekid\",\"typeHandlerVersion\":\"yskbruff\",\"managedBy\":\"Azure\"}]}")
             .toObject(ExtensionProfile.class);
     }
 }
