@@ -2087,9 +2087,11 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * Max concurrent messages that this processor should process per session.
+         * The maximum number of messages processed concurrently. For the async session processor this bounds the
+         * total number of in-flight handlers across all active sessions (the processor rolls through up to
+         * {@code maxConcurrentSessions} sessions); it is not a per-session limit.
          *
-         * @param maxConcurrentCalls max concurrent messages that this processor should process.
+         * @param maxConcurrentCalls the maximum number of messages processed concurrently across all sessions.
          *
          * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
          * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
