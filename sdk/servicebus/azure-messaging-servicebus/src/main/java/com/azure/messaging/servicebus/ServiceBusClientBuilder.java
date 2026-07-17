@@ -2020,12 +2020,12 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * Sets the type of the {@link SubQueue} to connect to.
+         * Sets the type of the {@link SubQueue} to connect to. A {@link #queueName(String) queueName} or
+         * {@link #topicName(String) topicName} must also be set.
          *
          * @param subQueue The type of the sub queue.
          *
          * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
-         * @see #queueName A queue name or #topicName A topic name should be set as well.
          * @see SubQueue
          */
         public ServiceBusSessionProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {
@@ -2039,7 +2039,6 @@ public final class ServiceBusClientBuilder
          * @param subscriptionName Name of the subscription.
          *
          * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
-         * @see #topicName A topic name should be set as well.
          */
         public ServiceBusSessionProcessorAsyncClientBuilder subscriptionName(String subscriptionName) {
             sessionReceiverClientBuilder.subscriptionName(subscriptionName);
@@ -2051,7 +2050,6 @@ public final class ServiceBusClientBuilder
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
-         * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusSessionProcessorAsyncClientBuilder topicName(String topicName) {
             sessionReceiverClientBuilder.topicName(topicName);
@@ -2988,12 +2986,12 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * Sets the type of the {@link SubQueue} to connect to.
+         * Sets the type of the {@link SubQueue} to connect to. A {@link #queueName(String) queueName} or
+         * {@link #topicName(String) topicName} must also be set.
          *
          * @param subQueue The type of the sub queue.
          *
          * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
-         * @see #queueName A queue name or #topicName A topic name should be set as well.
          * @see SubQueue
          */
         public ServiceBusProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {
@@ -3007,7 +3005,6 @@ public final class ServiceBusClientBuilder
          * @param subscriptionName Name of the subscription.
          *
          * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
-         * @see #topicName A topic name should be set as well.
          */
         public ServiceBusProcessorAsyncClientBuilder subscriptionName(String subscriptionName) {
             serviceBusReceiverClientBuilder.subscriptionName(subscriptionName);
@@ -3019,7 +3016,6 @@ public final class ServiceBusClientBuilder
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
-         * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusProcessorAsyncClientBuilder topicName(String topicName) {
             serviceBusReceiverClientBuilder.topicName(topicName);
