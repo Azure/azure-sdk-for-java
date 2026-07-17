@@ -300,7 +300,7 @@ public final class AccessTokenCache {
                 if (fallback != null) {
                     return fallback;
                 }
-                throw error;
+                throw LOGGER.logThrowableAsError(error);
             }
         };
     }
