@@ -62,7 +62,7 @@ import java.util.function.Supplier;
  * <pre>
  * TokenCredential credential = new BasicAuthenticationCredential&#40;&quot;username&quot;, &quot;password&quot;&#41;;
  * AccessTokenCache tokenCache = new AccessTokenCache&#40;credential&#41;;
- * TokenRequestContext requestContext = new TokenRequestContext&#40;&#41;.addScopes&#40;&quot;https://management.azure.com/.default&quot;&#41;;
+ * TokenRequestContext requestContext = new TokenRequestContext&#40;&#41;.addScopes&#40;&quot;https:&#47;&#47;management.azure.com&#47;.default&quot;&#41;;
  * &#47;&#47; Async usage
  * Mono&lt;AccessToken&gt; tokenMono = tokenCache.getToken&#40;requestContext, false&#41;;
  * &#47;&#47; Sync usage
