@@ -9,7 +9,14 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
-/** Describes definition and update stages of unmanaged data disk of a scale set. */
+/**
+ * Describes definition and update stages of unmanaged data disk of a scale set.
+ *
+ * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+ * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+ * deprecation</a>.
+ */
+@Deprecated
 @Fluent
 public interface VirtualMachineScaleSetUnmanagedDataDisk
     extends HasInnerModel<VirtualMachineScaleSetDataDisk>, ChildResource<VirtualMachineScaleSet> {

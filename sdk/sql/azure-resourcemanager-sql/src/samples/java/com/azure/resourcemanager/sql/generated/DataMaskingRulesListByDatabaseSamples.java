@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
  */
 public final class DataMaskingRulesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingRuleListByDatabase.json
+     * x-ms-original-file: 2025-01-01/DataMaskingRuleListByDatabase.json
      */
     /**
      * Sample code: Gets a list of database data masking rules.
@@ -22,6 +22,6 @@ public final class DataMaskingRulesListByDatabaseSamples {
         manager.serviceClient()
             .getDataMaskingRules()
             .listByDatabase("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", DataMaskingPolicyName.DEFAULT,
-                null, com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

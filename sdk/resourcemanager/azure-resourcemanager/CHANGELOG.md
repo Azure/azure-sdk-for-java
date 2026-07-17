@@ -1,6 +1,6 @@
 # Release History
 
-## 2.63.0-beta.1 (Unreleased)
+## 2.64.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.63.0 (2026-07-07)
+
+### azure-resourcemanager-compute
+
+#### Features Added
+
+- Added interconnect block/group profile support, including `InterconnectBlockProfile`, `InterconnectGroupProfile`, `InterconnectBlockProperties`, `InterconnectBlockInstanceView`, `InterconnectInstanceView`, `AutomaticSkuMigrationPolicy`, and related properties on virtual machine scale set VM/network profile and SKU profile models.
+
+#### Dependency Updates
+
+- Updated `ComputeRP api-version` to `2026-03-01`.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-04-01`.
+
+### Other Changes
+
+- Updated dependencies from resources.
 
 ## 2.62.0 (2026-05-08)
 

@@ -173,7 +173,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryScriptVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -221,7 +221,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryScriptVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -335,7 +335,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
         } else {
             galleryScriptVersion.validate();
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -393,7 +393,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
         } else {
             galleryScriptVersion.validate();
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -634,7 +634,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
         } else {
             galleryScriptVersion.validate();
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -692,7 +692,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
         } else {
             galleryScriptVersion.validate();
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -924,7 +924,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryScriptVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -971,7 +971,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryScriptVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, galleryScriptName, galleryScriptVersionName, context);
@@ -1170,7 +1170,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGalleryScript(this.client.getEndpoint(), apiVersion,
@@ -1215,7 +1215,7 @@ public final class GalleryScriptVersionsClientImpl implements GalleryScriptVersi
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryScriptName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
  */
 public final class ManagedDatabaseTransparentDataEncryptionGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedTransparentDataEncryptionGet.json
+     * x-ms-original-file: 2025-01-01/ManagedTransparentDataEncryptionGet.json
      */
     /**
      * Sample code: Get a database's transparent data encryption.
