@@ -2025,7 +2025,7 @@ public final class ServiceBusClientBuilder
          * @param subQueue The type of the sub queue.
          *
          * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
-         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see #queueName A queue name or #topicName A topic name should be set as well.
          * @see SubQueue
          */
         public ServiceBusSessionProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {
@@ -2991,7 +2991,7 @@ public final class ServiceBusClientBuilder
          * @param subQueue The type of the sub queue.
          *
          * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
-         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see #queueName A queue name or #topicName A topic name should be set as well.
          * @see SubQueue
          */
         public ServiceBusProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {

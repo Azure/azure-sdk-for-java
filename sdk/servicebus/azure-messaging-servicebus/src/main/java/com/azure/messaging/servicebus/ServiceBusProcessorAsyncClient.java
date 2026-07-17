@@ -4,9 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorAsyncClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -40,7 +38,7 @@ import java.util.function.Function;
  * handler {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
  * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon() abandoned};
  * this auto-settlement can be disabled via
- * {@link ServiceBusProcessorAsyncClientBuilder#disableAutoComplete() disableAutoComplete()}.</p>
+ * {@link ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder#disableAutoComplete() disableAutoComplete()}.</p>
  *
  * <p>A {@link ServiceBusProcessorAsyncClient} can be created for a session-enabled or a non session-enabled Service
  * Bus entity through {@link ServiceBusClientBuilder#processorAsync()} and
@@ -53,7 +51,7 @@ import java.util.function.Function;
  * {@link ServiceBusReceivedMessageContext} ({@link ServiceBusReceivedMessageContext#complete() complete()},
  * {@link ServiceBusReceivedMessageContext#abandon() abandon()}, etc.) are <strong>blocking</strong>; a handler that
  * settles manually should perform that call on a scheduler that permits blocking (for example by wrapping it in
- * {@link Mono#fromRunnable(Runnable)} subscribed on {@link reactor.core.scheduler.Schedulers#boundedElastic()}), or
+ * {@link Mono#fromRunnable(Runnable)} subscribed on {@code Schedulers.boundedElastic()}), or
  * rely on auto-settlement, which is non-blocking. A future revision may add reactive settlement methods.</p>
  *
  * <p><strong>Lifecycle</strong></p>
@@ -62,8 +60,8 @@ import java.util.function.Function;
  * these calls from different threads leads to undefined behavior.</p>
  *
  * @see ServiceBusProcessorClient
- * @see ServiceBusProcessorAsyncClientBuilder
- * @see ServiceBusSessionProcessorAsyncClientBuilder
+ * @see ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder
+ * @see ServiceBusClientBuilder.ServiceBusSessionProcessorAsyncClientBuilder
  */
 public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
 
@@ -158,7 +156,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * handler when an error occurs. Control returns immediately - the returned {@link Mono} does not wait for messages
      * to be processed.
      * <p><strong>The returned {@link Mono} is cold: the processor does not start until you subscribe to (or
-     * {@link Mono#block() block} on) it. Calling {@code start()} without subscribing is a no-op.</strong></p>
+     * {@code block()} on) it. Calling {@code start()} without subscribing is a no-op.</strong></p>
      * <p>
      * This method is idempotent - subscribing to the {@link Mono} returned when the processor is already running is a
      * no-op. Calling {@code start()} after {@link #stop() stop()} resumes processing using the same underlying
@@ -188,7 +186,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * Stops message processing for this processor. The receiving links and sessions are kept active and processing can
      * be resumed by subscribing to {@link #start()} again. In-flight message handlers are not interrupted.
      * <p><strong>The returned {@link Mono} is cold: it takes effect only when subscribed to (or
-     * {@link Mono#block() block}ed on).</strong></p>
+     * blocked on).</strong></p>
      *
      * @return A {@link Mono} that completes when the processor has stopped requesting new messages.
      */
