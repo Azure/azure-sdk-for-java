@@ -327,14 +327,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             }, throwable -> {
                 LOGGER.info("Error receiving messages.", throwable);
                 handleError(throwable).subscribe();
-                if (isRunning.get()) {
-                    restartMessageReceiver();
-                }
+                scheduleRestart();
             }, () -> {
                 LOGGER.info("Completed receiving messages.");
-                if (isRunning.get()) {
-                    restartMessageReceiver();
-                }
+                scheduleRestart();
             });
         receiveDisposable.set(disposable);
     }
@@ -425,6 +421,13 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 return Mono.empty();
             });
         });
+    }
+
+    // Restart off the reactive receive thread: restartMessageReceiver() calls the blocking client close(), which must
+    // not run on the subscription's onError/onComplete callback thread. restartMessageReceiver() guards on
+    // isRunning/closing, so a stale schedule after stop()/close() is a no-op.
+    private void scheduleRestart() {
+        Schedulers.boundedElastic().schedule(this::restartMessageReceiver);
     }
 
     // Auto-recovery is one restart per receive-stream terminal (error/completion). There is deliberately no backoff
