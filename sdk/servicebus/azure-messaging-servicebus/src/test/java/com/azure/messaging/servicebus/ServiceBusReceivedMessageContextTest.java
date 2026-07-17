@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -55,7 +55,7 @@ class ServiceBusReceivedMessageContextTest {
         final ServiceBusReceivedMessageContext context
             = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
 
-        assertEquals(STATE, context.getSessionState());
+        assertArrayEquals(STATE, context.getSessionState());
         verify(receiverClient).getSessionState(message);
     }
 
@@ -116,7 +116,7 @@ class ServiceBusReceivedMessageContextTest {
         when(tracker.getSessionState(message)).thenReturn(Mono.just(STATE));
         final ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(tracker, messageContext);
 
-        assertEquals(STATE, context.getSessionState());
+        assertArrayEquals(STATE, context.getSessionState());
         verify(tracker).getSessionState(message);
     }
 

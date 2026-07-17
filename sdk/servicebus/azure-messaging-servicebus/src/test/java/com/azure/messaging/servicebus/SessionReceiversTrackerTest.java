@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -80,7 +82,9 @@ class SessionReceiversTrackerTest {
         when(receiver.getSessionState()).thenReturn(Mono.just(STATE));
         tracker.track(receiver);
 
-        StepVerifier.create(tracker.getSessionState(messageForSession("s1"))).expectNext(STATE).verifyComplete();
+        StepVerifier.create(tracker.getSessionState(messageForSession("s1")))
+            .expectNextMatches(actual -> Arrays.equals(STATE, actual))
+            .verifyComplete();
         verify(receiver).getSessionState();
     }
 
@@ -108,6 +112,8 @@ class SessionReceiversTrackerTest {
         when(receiver.getSessionState()).thenReturn(Mono.just(STATE));
         tracker.track(receiver);
 
-        StepVerifier.create(tracker.getSessionState(messageForSession("SESSION-A"))).expectNext(STATE).verifyComplete();
+        StepVerifier.create(tracker.getSessionState(messageForSession("SESSION-A")))
+            .expectNextMatches(actual -> Arrays.equals(STATE, actual))
+            .verifyComplete();
     }
 }
