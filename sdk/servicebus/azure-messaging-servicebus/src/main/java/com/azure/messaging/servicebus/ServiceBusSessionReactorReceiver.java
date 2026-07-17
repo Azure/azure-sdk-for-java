@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -26,6 +27,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     private final ClientLogger logger;
     private final String sessionId;
     private final AmqpReceiveLink sessionLink;
+    private final Mono<ServiceBusManagementNode> sessionManagement;
     private final boolean hasIdleTimeout;
     private final Sinks.Many<Boolean> nextItemIdleTimeoutSink = Sinks.many().multicast().onBackpressureBuffer();
     private final Sinks.Empty<Void> terminateEndpointStatesSink = Sinks.empty();
@@ -36,6 +38,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
         this.logger = logger;
         this.sessionId = session.getId();
         this.sessionLink = session.getLink();
+        this.sessionManagement = session.getSessionManagement();
         this.hasIdleTimeout = sessionIdleTimeout != null;
         if (hasIdleTimeout) {
             this.disposables
@@ -51,6 +54,25 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
 
     public String getSessionId() {
         return sessionId;
+    }
+
+    /**
+     * Gets the state of the session this receiver is streaming messages from.
+     *
+     * @return A Mono that completes with the session state, or an empty Mono if there is no state set for the session.
+     */
+    Mono<byte[]> getSessionState() {
+        return sessionManagement.flatMap(mgmt -> mgmt.getSessionState(sessionId, getLinkName()));
+    }
+
+    /**
+     * Sets the state of the session this receiver is streaming messages from.
+     *
+     * @param sessionState State to set on the session, or {@code null} to clear the session state.
+     * @return A Mono that completes when the session state is set.
+     */
+    Mono<Void> setSessionState(byte[] sessionState) {
+        return sessionManagement.flatMap(mgmt -> mgmt.setSessionState(sessionId, sessionState, getLinkName()));
     }
 
     @Override

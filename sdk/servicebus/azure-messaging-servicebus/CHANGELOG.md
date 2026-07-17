@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added `getSessionState()` and `setSessionState(byte[])` to `ServiceBusReceivedMessageContext`, allowing
+  session state to be read and written directly from a `ServiceBusSessionProcessorClient` message handler
+  without opening a separate session receiver. The methods throw `IllegalStateException` when the message
+  was not received from a session-enabled entity. ([#49207](https://github.com/Azure/azure-sdk-for-java/issues/49207))
+
 ### Breaking Changes
 
 ### Bugs Fixed

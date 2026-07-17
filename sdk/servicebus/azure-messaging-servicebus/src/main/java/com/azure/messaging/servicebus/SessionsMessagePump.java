@@ -789,8 +789,10 @@ final class SessionsMessagePump {
         private final ConcurrentHashMap<String, ServiceBusSessionReactorReceiver> receivers;
         private final ServiceBusReceiverInstrumentation instrumentation;
 
-        private SessionReceiversTracker(ClientLogger logger, int size, String fullyQualifiedNamespace,
-            String entityPath, ServiceBusReceiveMode receiveMode, ServiceBusReceiverInstrumentation instrumentation) {
+        // Visible for testing (package-private) so SessionReceiversTrackerTest can construct the tracker and
+        // exercise the session-state paths directly; in production it is only constructed by SessionsMessagePump.
+        SessionReceiversTracker(ClientLogger logger, int size, String fullyQualifiedNamespace, String entityPath,
+            ServiceBusReceiveMode receiveMode, ServiceBusReceiverInstrumentation instrumentation) {
             this.logger = logger;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.entityPath = entityPath;
@@ -799,7 +801,8 @@ final class SessionsMessagePump {
             this.instrumentation = instrumentation;
         }
 
-        private void track(ServiceBusSessionReactorReceiver receiver) {
+        // Visible for testing (package-private) so SessionReceiversTrackerTest can populate the receivers map.
+        void track(ServiceBusSessionReactorReceiver receiver) {
             receivers.put(receiver.getSessionId().toLowerCase(Locale.ROOT), receiver);
         }
 
@@ -870,6 +873,38 @@ final class SessionsMessagePump {
             }
             return updateDisposition(message, DispositionStatus.DEFERRED, options.getPropertiesToModify(), null, null,
                 options.getTransactionContext());
+        }
+
+        Mono<byte[]> getSessionState(ServiceBusReceivedMessage message) {
+            final ServiceBusSessionReactorReceiver receiver = sessionReceiver(message);
+            if (receiver == null) {
+                return sessionNotActiveError(message, "getSessionState");
+            }
+            return receiver.getSessionState();
+        }
+
+        Mono<Void> setSessionState(ServiceBusReceivedMessage message, byte[] sessionState) {
+            final ServiceBusSessionReactorReceiver receiver = sessionReceiver(message);
+            if (receiver == null) {
+                return sessionNotActiveError(message, "setSessionState");
+            }
+            return receiver.setSessionState(sessionState);
+        }
+
+        private ServiceBusSessionReactorReceiver sessionReceiver(ServiceBusReceivedMessage message) {
+            final String sessionId = message.getSessionId();
+            if (sessionId == null) {
+                return null;
+            }
+            return receivers.get(sessionId.toLowerCase(Locale.ROOT));
+        }
+
+        private <T> Mono<T> sessionNotActiveError(ServiceBusReceivedMessage message, String operation) {
+            final String m = String.format(
+                "Cannot perform '%s'; the session '%s' is no longer active for this processor. Session state "
+                    + "operations are only valid while the session that delivered the message is still held.",
+                operation, message.getSessionId());
+            return monoError(logger, new IllegalStateException(m));
         }
 
         private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,

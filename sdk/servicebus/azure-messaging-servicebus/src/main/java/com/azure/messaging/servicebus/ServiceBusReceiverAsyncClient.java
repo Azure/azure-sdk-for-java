@@ -708,6 +708,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Gets the state of the session that delivered the given {@code message}. Unlike {@link #getSessionState()}, this
+     * targets the message's own session id rather than the receiver's bound session id, so it is correct for a session
+     * processor whose receiver is not bound to a single session. For a non-session receiver the underlying operation
+     * fails with an {@link IllegalStateException}. Package-private; invoked by {@link ServiceBusReceivedMessageContext}.
+     *
+     * @param message the message whose session state to read.
+     * @return the session state, or an empty Mono if no state is set for the session.
+     */
+    Mono<byte[]> getSessionState(ServiceBusReceivedMessage message) {
+        return getSessionState(message.getSessionId());
+    }
+
+    /**
      * Reads the next active message without changing the state of the receiver or the message source. The first call to
      * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
      * message in the entity.
@@ -1276,6 +1289,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> setSessionState(byte[] sessionState) {
         return this.setSessionState(receiverOptions.getSessionId(), sessionState);
+    }
+
+    /**
+     * Sets the state of the session that delivered the given {@code message}. Unlike {@link #setSessionState(byte[])},
+     * this targets the message's own session id rather than the receiver's bound session id, so it is correct for a
+     * session processor whose receiver is not bound to a single session. For a non-session receiver the underlying
+     * operation fails with an {@link IllegalStateException}. Package-private; invoked by
+     * {@link ServiceBusReceivedMessageContext}.
+     *
+     * @param message the message whose session state to set.
+     * @param sessionState the state to set on the session, or {@code null} to clear it.
+     * @return a Mono that completes when the session state is set.
+     */
+    Mono<Void> setSessionState(ServiceBusReceivedMessage message, byte[] sessionState) {
+        return this.setSessionState(message.getSessionId(), sessionState);
     }
 
     /**
