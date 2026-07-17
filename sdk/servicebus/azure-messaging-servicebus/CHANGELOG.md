@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added `ServiceBusProcessorAsyncClient`, an asynchronous processor whose message and error handlers return a
+  `reactor.core.publisher.Mono` instead of running as blocking `Consumer` callbacks. It provides the same
+  push-based, auto-recovering, concurrency-managed message pump as `ServiceBusProcessorClient` for applications that
+  perform I/O-bound work reactively in the handler. Build it via `ServiceBusClientBuilder.processorAsync()` and
+  `ServiceBusClientBuilder.sessionProcessorAsync()`. ([#46564](https://github.com/Azure/azure-sdk-for-java/issues/46564))
+
 ### Breaking Changes
 
 ### Bugs Fixed
