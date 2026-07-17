@@ -43,6 +43,22 @@ class SessionReceiversTrackerTest {
     }
 
     @Test
+    void getSessionStateErrorsWhenMessageHasEmptySession() {
+        StepVerifier.create(newTracker().getSessionState(messageForSession("")))
+            .expectErrorMatches(e -> e instanceof IllegalStateException
+                && e.getMessage().contains("was not received from a session-enabled entity"))
+            .verify();
+    }
+
+    @Test
+    void setSessionStateErrorsWhenMessageHasEmptySession() {
+        StepVerifier.create(newTracker().setSessionState(messageForSession(""), STATE))
+            .expectErrorMatches(e -> e instanceof IllegalStateException
+                && e.getMessage().contains("was not received from a session-enabled entity"))
+            .verify();
+    }
+
+    @Test
     void getSessionStateErrorsWhenSessionNotTracked() {
         StepVerifier.create(newTracker().getSessionState(messageForSession("absent-session")))
             .expectError(IllegalStateException.class)

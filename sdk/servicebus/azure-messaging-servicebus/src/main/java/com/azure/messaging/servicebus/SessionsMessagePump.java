@@ -877,7 +877,7 @@ final class SessionsMessagePump {
 
         Mono<byte[]> getSessionState(ServiceBusReceivedMessage message) {
             final String sessionId = message.getSessionId();
-            if (sessionId == null) {
+            if (sessionId == null || sessionId.isEmpty()) {
                 return notSessionMessageError("getSessionState");
             }
             final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId.toLowerCase(Locale.ROOT));
@@ -889,7 +889,7 @@ final class SessionsMessagePump {
 
         Mono<Void> setSessionState(ServiceBusReceivedMessage message, byte[] sessionState) {
             final String sessionId = message.getSessionId();
-            if (sessionId == null) {
+            if (sessionId == null || sessionId.isEmpty()) {
                 return notSessionMessageError("setSessionState");
             }
             final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId.toLowerCase(Locale.ROOT));
