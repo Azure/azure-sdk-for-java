@@ -188,7 +188,9 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
 
     /**
      * Stops message processing for this processor. The receiving links and sessions are kept active and processing can
-     * be resumed by subscribing to {@link #start()} again. In-flight message handlers are not interrupted.
+     * be resumed by subscribing to {@link #start()} again. This does not wait for in-flight handlers to finish;
+     * disposing the receive subscription cancels any handlers that are still running. Use {@link #close()} to give
+     * in-flight handlers a best-effort chance to drain.
      * <p><strong>The returned {@link Mono} is cold: it takes effect only when subscribed to (or
      * blocked on).</strong></p>
      *
@@ -225,9 +227,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * timeout; handlers still running when it elapses are cancelled and those messages are lost (they cannot be
      * redelivered). A future revision may decouple handler execution from the receiver subscription to bound this.</p>
      *
-     * <p>Do not call {@code close()} (or {@link #stop()}) from within a message or error handler: the call blocks
-     * until in-flight handlers drain, so invoking it from a handler that has not yet returned would deadlock. Schedule
-     * shutdown from a separate controlling thread.</p>
+     * <p>Do not call {@code close()} from within a message or error handler: it blocks until in-flight handlers
+     * drain, so invoking it from a handler that has not yet returned would deadlock. Calling {@link #stop()} from a
+     * handler is also unsafe: it disposes the receive subscription and cancels the very handler that invoked it.
+     * Schedule shutdown from a separate controlling thread.</p>
      */
     @Override
     public void close() {
