@@ -57,19 +57,24 @@ public class ServiceBusProcessorAsyncClientTest {
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messages);
         final CountDownLatch latch = new CountDownLatch(5);
         final AtomicInteger nextId = new AtomicInteger();
+        final AtomicReference<Throwable> unexpectedError = new AtomicReference<>();
 
         final ServiceBusProcessorAsyncClient processor
             = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
                 assertEquals(String.valueOf(nextId.getAndIncrement()), context.getMessage().getMessageId());
                 latch.countDown();
                 return Mono.empty();
-            }, error -> Mono.error(new AssertionError("Unexpected error: " + error.getException())), options(1, false));
+            }, error -> {
+                unexpectedError.set(error.getException());
+                return Mono.empty();
+            }, options(1, false));
 
         processor.start().block();
         final boolean success = latch.await(5, TimeUnit.SECONDS);
         processor.close();
 
         assertTrue(success, "Failed to receive all expected messages");
+        assertNull(unexpectedError.get(), "Unexpected error-handler invocation: " + unexpectedError.get());
         verify(mockReceiver, times(5)).complete(any());
         verify(mockReceiver, never()).abandon(any());
     }
@@ -461,9 +466,13 @@ public class ServiceBusProcessorAsyncClientTest {
         final Flux<ServiceBusMessageContext> messages = Flux.just(errorContext).concatWith(Flux.never());
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messages);
         final CountDownLatch errorLatch = new CountDownLatch(1);
+        final AtomicBoolean handlerRan = new AtomicBoolean();
 
-        final ServiceBusProcessorAsyncClient processor = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null,
-            null, context -> Mono.error(new AssertionError("handler should not run for an error context")), error -> {
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> {
+                handlerRan.set(true);
+                return Mono.empty();
+            }, error -> {
                 errorLatch.countDown();
                 return Mono.empty();
             }, options(1, false));
@@ -473,6 +482,7 @@ public class ServiceBusProcessorAsyncClientTest {
         processor.close();
 
         assertTrue(errored, "Error context was not surfaced to the error handler");
+        assertFalse(handlerRan.get(), "Message handler should not run for an in-band error context");
         verify(mockReceiver, never()).complete(any());
         verify(mockReceiver, never()).abandon(any());
     }
