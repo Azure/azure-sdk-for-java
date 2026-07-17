@@ -3,9 +3,6 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -83,7 +80,7 @@ public class AccessTokenCacheTests {
 
         assertEquals(1, refreshCount.get());
 
-        // Second request with same tenant should not trigger refresh (checkToForceFetchToken=false)
+        // Second request with same tenant should not trigger refresh (refreshOnContextChange=false)
         StepVerifier.create(cache.getToken(context1, false)).assertNext(token -> {
             assertNotNull(token);
             assertEquals("token-1", token.getToken()); // Same token
@@ -91,7 +88,7 @@ public class AccessTokenCacheTests {
 
         assertEquals(1, refreshCount.get()); // No additional refresh
 
-        // Third request with different tenant should trigger force refresh with checkToForceFetchToken=true
+        // Third request with different tenant should trigger force refresh with refreshOnContextChange=true
         TokenRequestContext context2 = new TokenRequestContext().addScopes(SCOPE).setTenantId(TENANT_ID_2);
 
         StepVerifier.create(cache.getToken(context2, true)).assertNext(token -> {
