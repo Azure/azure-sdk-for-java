@@ -94,6 +94,9 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     // PEEK_LOCK is safe to skip during drain (the broker still owns the lock and will redeliver). Cached per receive
     // cycle; defaults to false (no-skip) when the receive mode cannot be determined, so messages are never dropped.
     private volatile boolean skipDuringDrain;
+    // Auto-settlement (complete/abandon) is applied only for PEEK_LOCK: in RECEIVE_AND_DELETE the broker already
+    // removed the message on delivery, so a settlement call is meaningless and would fail. Cached per receive cycle.
+    private volatile boolean settleMessages;
     private Disposable monitorDisposable;
 
     /**
@@ -303,10 +306,13 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     private void subscribeToReceiver(ServiceBusReceiverAsyncClient receiverClient) {
         cachedFullyQualifiedNamespace = receiverClient.getFullyQualifiedNamespace();
         cachedEntityPath = receiverClient.getEntityPath();
-        // Only PEEK_LOCK is safe to skip during drain; default to no-skip when the mode is unavailable.
+        // Only PEEK_LOCK is safe to skip during drain, and PEEK_LOCK is the only mode the processor settles. Default
+        // to no-skip and no-settle when the mode is unavailable.
         final ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
-        this.skipDuringDrain
+        final boolean isPeekLock
             = receiverOptions != null && receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
+        this.skipDuringDrain = isPeekLock;
+        this.settleMessages = autoComplete && isPeekLock;
 
         final Disposable disposable = receiverClient.receiveMessagesWithContext()
             .flatMap(messageContext -> dispatchMessage(messageContext, receiverClient), maxConcurrentCalls, 1)
@@ -353,20 +359,20 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
 
             return Mono.defer(() -> processMessage.apply(receivedMessageContext)).then(Mono.defer(() -> {
-                // The handler succeeded. Auto-complete if enabled; a completion failure is reported to the error
+                // The handler succeeded. Auto-settle only in PEEK_LOCK; a completion failure is reported to the error
                 // handler with its OWN error source (e.g. COMPLETE) and must NOT trigger an abandon - the handler
                 // did its job.
-                if (!autoComplete) {
+                if (!settleMessages) {
                     return Mono.<Void>empty();
                 }
                 return receiverClient.complete(messageContext.getMessage())
                     .onErrorResume(completeError -> handleError(completeError));
             }))
                 // Only a handler error reaches here (completion errors were handled above). Report it as USER_CALLBACK
-                // and abandon the message (when auto-complete is enabled).
+                // and abandon the message (when settling, i.e. PEEK_LOCK with auto-complete enabled).
                 .onErrorResume(handlerError -> handleError(
                     new ServiceBusException(handlerError, ServiceBusErrorSource.USER_CALLBACK)).then(Mono.defer(() -> {
-                        if (autoComplete) {
+                        if (settleMessages) {
                             LOGGER.warning("Error when processing message. Abandoning message.", handlerError);
                             return receiverClient.abandon(messageContext.getMessage()).onErrorResume(abandonError -> {
                                 LOGGER.verbose("Failed to abandon message", abandonError);

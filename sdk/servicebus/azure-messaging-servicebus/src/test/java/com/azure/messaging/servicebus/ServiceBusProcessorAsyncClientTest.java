@@ -617,6 +617,9 @@ public class ServiceBusProcessorAsyncClientTest {
         assertTrue(bothHandled, "RECEIVE_AND_DELETE messages during drain must be processed, not skipped");
         assertTrue(processedIds.contains("fast1") && processedIds.contains("fast2"),
             "Both RECEIVE_AND_DELETE messages should have been handled during drain");
+        // The broker already removed RECEIVE_AND_DELETE messages on delivery, so the processor must not settle them.
+        verify(mockReceiver, never()).complete(any());
+        verify(mockReceiver, never()).abandon(any());
     }
 
     private ServiceBusProcessorClientOptions options(int maxConcurrentCalls, boolean disableAutoComplete) {
@@ -674,6 +677,11 @@ public class ServiceBusProcessorAsyncClientTest {
         when(mockReceiver.isConnectionClosed()).thenReturn(false);
         when(mockReceiver.complete(any())).thenReturn(Mono.empty());
         when(mockReceiver.abandon(any())).thenReturn(Mono.empty());
+        // Default the receiver to PEEK_LOCK so auto-settlement is exercised; tests that need RECEIVE_AND_DELETE
+        // override getReceiverOptions() after calling this.
+        final ReceiverOptions peekLockOptions = mock(ReceiverOptions.class);
+        when(peekLockOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
+        when(mockReceiver.getReceiverOptions()).thenReturn(peekLockOptions);
         doNothing().when(mockReceiver).close();
     }
 }
