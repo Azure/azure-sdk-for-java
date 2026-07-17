@@ -1871,6 +1871,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
         } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException("Cannot set session state on a non-session receiver."));
+        } else if (sessionId == null) {
+            return monoError(LOGGER,
+                new IllegalStateException("Cannot set session state because the session id is null."));
         }
         assert sessionManager != null; // guaranteed to be non-null when isSessionEnabled is true.
         final String linkName = sessionManager.getLinkName(sessionId);
@@ -1888,6 +1891,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
         } else if (!isSessionEnabled) {
             return monoError(LOGGER, new IllegalStateException("Cannot get session state on a non-session receiver."));
+        } else if (sessionId == null) {
+            return monoError(LOGGER,
+                new IllegalStateException("Cannot get session state because the session id is null."));
         }
         assert sessionManager != null; // guaranteed to be non-null when isSessionEnabled is true.
         final String linkName = sessionManager.getLinkName(sessionId);

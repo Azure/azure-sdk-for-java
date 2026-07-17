@@ -876,34 +876,39 @@ final class SessionsMessagePump {
         }
 
         Mono<byte[]> getSessionState(ServiceBusReceivedMessage message) {
-            final ServiceBusSessionReactorReceiver receiver = sessionReceiver(message);
+            final String sessionId = message.getSessionId();
+            if (sessionId == null) {
+                return notSessionMessageError("getSessionState");
+            }
+            final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId.toLowerCase(Locale.ROOT));
             if (receiver == null) {
-                return sessionNotActiveError(message, "getSessionState");
+                return sessionNotActiveError(sessionId, "getSessionState");
             }
             return receiver.getSessionState();
         }
 
         Mono<Void> setSessionState(ServiceBusReceivedMessage message, byte[] sessionState) {
-            final ServiceBusSessionReactorReceiver receiver = sessionReceiver(message);
+            final String sessionId = message.getSessionId();
+            if (sessionId == null) {
+                return notSessionMessageError("setSessionState");
+            }
+            final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId.toLowerCase(Locale.ROOT));
             if (receiver == null) {
-                return sessionNotActiveError(message, "setSessionState");
+                return sessionNotActiveError(sessionId, "setSessionState");
             }
             return receiver.setSessionState(sessionState);
         }
 
-        private ServiceBusSessionReactorReceiver sessionReceiver(ServiceBusReceivedMessage message) {
-            final String sessionId = message.getSessionId();
-            if (sessionId == null) {
-                return null;
-            }
-            return receivers.get(sessionId.toLowerCase(Locale.ROOT));
+        private <T> Mono<T> notSessionMessageError(String operation) {
+            return monoError(logger, new IllegalStateException(String.format(
+                "Cannot perform '%s'; the message was not received from a session-enabled entity.", operation)));
         }
 
-        private <T> Mono<T> sessionNotActiveError(ServiceBusReceivedMessage message, String operation) {
+        private <T> Mono<T> sessionNotActiveError(String sessionId, String operation) {
             final String m = String.format(
                 "Cannot perform '%s'; the session '%s' is no longer active for this processor. Session state "
                     + "operations are only valid while the session that delivered the message is still held.",
-                operation, message.getSessionId());
+                operation, sessionId);
             return monoError(logger, new IllegalStateException(m));
         }
 
