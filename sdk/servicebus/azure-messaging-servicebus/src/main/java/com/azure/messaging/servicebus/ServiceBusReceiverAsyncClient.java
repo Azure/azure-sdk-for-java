@@ -1899,7 +1899,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = sessionManager.getLinkName(sessionId);
 
         return tracer
-            .traceMono("ServiceBus.setSessionState",
+            .traceMono("ServiceBus.getSessionState",
                 connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                     .flatMap(channel -> channel.getSessionState(sessionId, linkName)))
             .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));

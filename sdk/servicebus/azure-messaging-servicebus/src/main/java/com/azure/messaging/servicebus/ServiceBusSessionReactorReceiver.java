@@ -25,6 +25,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 
 final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     private final ClientLogger logger;
+    private final ServiceBusTracer tracer;
     private final String sessionId;
     private final AmqpReceiveLink sessionLink;
     private final Mono<ServiceBusManagementNode> sessionManagement;
@@ -36,6 +37,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     ServiceBusSessionReactorReceiver(ClientLogger logger, ServiceBusTracer tracer,
         ServiceBusSessionAcquirer.Session session, Duration sessionIdleTimeout, Duration maxSessionLockRenew) {
         this.logger = logger;
+        this.tracer = tracer;
         this.sessionId = session.getId();
         this.sessionLink = session.getLink();
         this.sessionManagement = session.getSessionManagement();
@@ -62,7 +64,8 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
      * @return A Mono that completes with the session state, or an empty Mono if there is no state set for the session.
      */
     Mono<byte[]> getSessionState() {
-        return sessionManagement.flatMap(mgmt -> mgmt.getSessionState(sessionId, getLinkName()));
+        return tracer.traceMono("ServiceBus.getSessionState",
+            sessionManagement.flatMap(mgmt -> mgmt.getSessionState(sessionId, getLinkName())));
     }
 
     /**
@@ -72,7 +75,8 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
      * @return A Mono that completes when the session state is set.
      */
     Mono<Void> setSessionState(byte[] sessionState) {
-        return sessionManagement.flatMap(mgmt -> mgmt.setSessionState(sessionId, sessionState, getLinkName()));
+        return tracer.traceMono("ServiceBus.setSessionState",
+            sessionManagement.flatMap(mgmt -> mgmt.setSessionState(sessionId, sessionState, getLinkName())));
     }
 
     @Override
