@@ -358,8 +358,15 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 decrementAndNotifyDrain();
                 return Mono.<Void>empty();
             }
-            final ServiceBusReceivedMessageContext receivedMessageContext
-                = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
+            final ServiceBusReceivedMessageContext receivedMessageContext;
+            try {
+                receivedMessageContext = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
+            } catch (RuntimeException e) {
+                // Constructor threw before the doFinally decrement could attach; release the count so a synchronous
+                // failure here cannot leave the drain permanently above zero.
+                decrementAndNotifyDrain();
+                throw LOGGER.logExceptionAsError(e);
+            }
 
             return Mono.defer(() -> processMessage.apply(receivedMessageContext)).then(Mono.defer(() -> {
                 // The handler succeeded. Auto-settle only in PEEK_LOCK; a completion failure is reported to the error
@@ -427,7 +434,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
     // not run on the subscription's onError/onComplete callback thread. restartMessageReceiver() guards on
     // isRunning/closing, so a stale schedule after stop()/close() is a no-op.
     private void scheduleRestart() {
-        Schedulers.boundedElastic().schedule(this::restartMessageReceiver);
+        Mono.fromRunnable(this::restartMessageReceiver).subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 
     // Auto-recovery is one restart per receive-stream terminal (error/completion). There is deliberately no backoff
