@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class ApprovalUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Approvals_Update.json
+     * x-ms-original-file: 2026-03-01-preview/Approvals_Update.json
      */
     /**
      * Sample code: Approval_Update.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.virtualenclaves.models.ApprovalCallbackRequestR
  */
 public final class CommunityEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/CommunityEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalCreation.

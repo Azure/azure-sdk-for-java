@@ -8,6 +8,7 @@ import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinati
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointResource;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveEndpoints_Update.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_Update.json
      */
     /**
      * Sample code: EnclaveEndpoints_Update.
@@ -35,7 +36,8 @@ public final class EnclaveEndpointsUpdateSamples {
                 .asList(new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP))
                     .withEndpointRuleName("54CEECEF-2C30-488E-946F-D20F414D99BA")
                     .withDestination("10.0.0.0/24")
-                    .withPorts("443"))))
+                    .withPorts("443")))
+                .withUpdateMode(UpdateMode.AUTOMATIC))
             .apply();
     }
 

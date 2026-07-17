@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubResource;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOptionType;
@@ -24,7 +25,7 @@ public final class TransitHubsListByCommunityResourceMockTests {
     @Test
     public void testListByCommunityResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"state\":\"Active\",\"transitOption\":{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":8562330729590351027,\"remoteVirtualNetworkId\":\"zaifghtmoqqtlff\"}},\"resourceCollection\":[\"krkjjjavf\",\"nvhnqoewdogiye\"]},\"location\":\"sypvidbztjhqtfb\",\"tags\":{\"p\":\"ynkbwetnju\",\"piaccxnafb\":\"prkzya\"},\"id\":\"qroohtu\",\"name\":\"vmaonurjt\",\"type\":\"mghihp\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":7440888451245258989,\"remoteVirtualNetworkId\":\"w\"}},\"resourceCollection\":[\"wzdanojisgglmvo\",\"atuztjct\",\"bpvbkaehxsmzygd\",\"wakwseivmakxhys\"],\"securityProvider\":\"None\"},\"location\":\"ux\",\"tags\":{\"tfjmskdchmaiub\":\"ect\",\"vgmfalkzazmgok\":\"vlzw\",\"zrthqet\":\"dgjqafkmkro\",\"iezeagm\":\"pqrtvaoznqni\"},\"id\":\"eituugedhfpjs\",\"name\":\"lzmb\",\"type\":\"syjdeolctae\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +34,18 @@ public final class TransitHubsListByCommunityResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TransitHubResource> response
-            = manager.transitHubs().listByCommunityResource("xkyctwwgzwx", "l", com.azure.core.util.Context.NONE);
+        PagedIterable<TransitHubResource> response = manager.transitHubs()
+            .listByCommunityResource("pntghyks", "rcdrnxsluvlzlad", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sypvidbztjhqtfb", response.iterator().next().location());
-        Assertions.assertEquals("ynkbwetnju", response.iterator().next().tags().get("p"));
-        Assertions.assertEquals(TransitHubState.ACTIVE, response.iterator().next().properties().state());
-        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE,
+        Assertions.assertEquals("ux", response.iterator().next().location());
+        Assertions.assertEquals("ect", response.iterator().next().tags().get("tfjmskdchmaiub"));
+        Assertions.assertEquals(TransitHubState.APPROVED, response.iterator().next().properties().state());
+        Assertions.assertEquals(TransitOptionType.PEERING,
             response.iterator().next().properties().transitOption().type());
-        Assertions.assertEquals(8562330729590351027L,
+        Assertions.assertEquals(7440888451245258989L,
             response.iterator().next().properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("zaifghtmoqqtlff",
+        Assertions.assertEquals("w",
             response.iterator().next().properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, response.iterator().next().properties().securityProvider());
     }
 }

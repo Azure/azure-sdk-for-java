@@ -24,7 +24,7 @@ public final class ApprovalsListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"parentResourceId\":\"chygtvxbyjane\",\"grandparentResourceId\":\"bdpkxyqvgx\",\"approvers\":[{\"approverEntraId\":\"detv\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-04-16T12:52:04Z\"}],\"ticketId\":\"xuwsai\",\"createdAt\":\"2021-06-06T00:47:44Z\",\"stateChangedAt\":\"2021-06-25T20:38Z\",\"requestMetadata\":{\"resourceAction\":\"osbz\",\"approvalCallbackRoute\":\"hg\",\"approvalCallbackPayload\":\"kb\",\"approvalStatus\":\"Rejected\"}},\"id\":\"olg\",\"name\":\"y\",\"type\":\"xpvelszerqzevxo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"parentResourceId\":\"ldfkcefeygzqpjoi\",\"grandparentResourceId\":\"mnaybdjnxumentq\",\"approvers\":[{\"approverEntraId\":\"why\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-01-08T19:20:46Z\",\"mandatoryApprovalGroupMembershipIds\":[\"wi\",\"qtow\"]}],\"ticketId\":\"lsycoyb\",\"createdAt\":\"2021-04-07T09:05:25Z\",\"stateChangedAt\":\"2021-07-16T20:16:28Z\",\"mandatoryApprovers\":[{\"approverEntraId\":\"fajcywhjqwm\"},{\"approverEntraId\":\"hqohtfxcpup\"},{\"approverEntraId\":\"kiymjzpwd\"},{\"approverEntraId\":\"vwtiwsmosa\"}],\"minimumApproversRequired\":1965652744849612330,\"approversApprovedCount\":8916628180376667444,\"mandatoryApproversApprovedCount\":6064510668747455354,\"approvedByEntraIds\":[\"assae\",\"ewnazeajbkajlcyi\",\"ydd\"],\"requestMetadata\":{\"resourceAction\":\"vxodkrvfs\",\"approvalCallbackRoute\":\"bydesqlvgec\",\"approvalCallbackPayload\":\"goljtzxnmxs\",\"approvalStatus\":\"Rejected\"}},\"id\":\"googxq\",\"name\":\"pjxvazyjf\",\"type\":\"csa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,24 +34,25 @@ public final class ApprovalsListByParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApprovalResource> response
-            = manager.approvals().listByParent("qba", com.azure.core.util.Context.NONE);
+            = manager.approvals().listByParent("rdkdkgaw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("chygtvxbyjane", response.iterator().next().properties().parentResourceId());
-        Assertions.assertEquals("bdpkxyqvgx", response.iterator().next().properties().grandparentResourceId());
-        Assertions.assertEquals("detv", response.iterator().next().properties().approvers().get(0).approverEntraId());
+        Assertions.assertEquals("ldfkcefeygzqpjoi", response.iterator().next().properties().parentResourceId());
+        Assertions.assertEquals("mnaybdjnxumentq", response.iterator().next().properties().grandparentResourceId());
+        Assertions.assertEquals("why", response.iterator().next().properties().approvers().get(0).approverEntraId());
         Assertions.assertEquals(ActionPerformed.REJECTED,
             response.iterator().next().properties().approvers().get(0).actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T12:52:04Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T19:20:46Z"),
             response.iterator().next().properties().approvers().get(0).lastUpdatedAt());
-        Assertions.assertEquals("xuwsai", response.iterator().next().properties().ticketId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T00:47:44Z"),
+        Assertions.assertEquals("lsycoyb", response.iterator().next().properties().ticketId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-07T09:05:25Z"),
             response.iterator().next().properties().createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T20:38Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T20:16:28Z"),
             response.iterator().next().properties().stateChangedAt());
-        Assertions.assertEquals("osbz", response.iterator().next().properties().requestMetadata().resourceAction());
-        Assertions.assertEquals("hg",
+        Assertions.assertEquals("vxodkrvfs",
+            response.iterator().next().properties().requestMetadata().resourceAction());
+        Assertions.assertEquals("bydesqlvgec",
             response.iterator().next().properties().requestMetadata().approvalCallbackRoute());
-        Assertions.assertEquals("kb",
+        Assertions.assertEquals("goljtzxnmxs",
             response.iterator().next().properties().requestMetadata().approvalCallbackPayload());
         Assertions.assertEquals(ApprovalStatus.REJECTED,
             response.iterator().next().properties().requestMetadata().approvalStatus());

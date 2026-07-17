@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.virtualenclaves.models.SecurityProvider;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.TransitHubState;
 import com.azure.resourcemanager.virtualenclaves.models.TransitOption;
@@ -16,24 +17,27 @@ public final class TransitHubPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitHubPatchProperties model = BinaryData.fromString(
-            "{\"state\":\"PendingUpdate\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":4045601352916026430,\"remoteVirtualNetworkId\":\"wbtlhflsjcdh\"}}}")
+            "{\"state\":\"PendingApproval\",\"transitOption\":{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":2080224947658838813,\"remoteVirtualNetworkId\":\"cxgkmoyxcdyui\"}},\"securityProvider\":\"None\"}")
             .toObject(TransitHubPatchProperties.class);
-        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, model.state());
-        Assertions.assertEquals(TransitOptionType.PEERING, model.transitOption().type());
-        Assertions.assertEquals(4045601352916026430L, model.transitOption().params().scaleUnits());
-        Assertions.assertEquals("wbtlhflsjcdh", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(TransitHubState.PENDING_APPROVAL, model.state());
+        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.transitOption().type());
+        Assertions.assertEquals(2080224947658838813L, model.transitOption().params().scaleUnits());
+        Assertions.assertEquals("cxgkmoyxcdyui", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, model.securityProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransitHubPatchProperties model = new TransitHubPatchProperties().withState(TransitHubState.PENDING_UPDATE)
-            .withTransitOption(new TransitOption().withType(TransitOptionType.PEERING)
-                .withParams(new TransitOptionParams().withScaleUnits(4045601352916026430L)
-                    .withRemoteVirtualNetworkId("wbtlhflsjcdh")));
+        TransitHubPatchProperties model = new TransitHubPatchProperties().withState(TransitHubState.PENDING_APPROVAL)
+            .withTransitOption(new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
+                .withParams(new TransitOptionParams().withScaleUnits(2080224947658838813L)
+                    .withRemoteVirtualNetworkId("cxgkmoyxcdyui")))
+            .withSecurityProvider(SecurityProvider.NONE);
         model = BinaryData.fromObject(model).toObject(TransitHubPatchProperties.class);
-        Assertions.assertEquals(TransitHubState.PENDING_UPDATE, model.state());
-        Assertions.assertEquals(TransitOptionType.PEERING, model.transitOption().type());
-        Assertions.assertEquals(4045601352916026430L, model.transitOption().params().scaleUnits());
-        Assertions.assertEquals("wbtlhflsjcdh", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(TransitHubState.PENDING_APPROVAL, model.state());
+        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.transitOption().type());
+        Assertions.assertEquals(2080224947658838813L, model.transitOption().params().scaleUnits());
+        Assertions.assertEquals("cxgkmoyxcdyui", model.transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(SecurityProvider.NONE, model.securityProvider());
     }
 }

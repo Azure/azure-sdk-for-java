@@ -26,6 +26,11 @@ public final class TransitHubPatchProperties implements JsonSerializable<Transit
      */
     private TransitOption transitOption;
 
+    /*
+     * Specifies the security provider for the transit hub.
+     */
+    private SecurityProvider securityProvider;
+
     /**
      * Creates an instance of TransitHubPatchProperties class.
      */
@@ -73,6 +78,26 @@ public final class TransitHubPatchProperties implements JsonSerializable<Transit
     }
 
     /**
+     * Get the securityProvider property: Specifies the security provider for the transit hub.
+     * 
+     * @return the securityProvider value.
+     */
+    public SecurityProvider securityProvider() {
+        return this.securityProvider;
+    }
+
+    /**
+     * Set the securityProvider property: Specifies the security provider for the transit hub.
+     * 
+     * @param securityProvider the securityProvider value to set.
+     * @return the TransitHubPatchProperties object itself.
+     */
+    public TransitHubPatchProperties withSecurityProvider(SecurityProvider securityProvider) {
+        this.securityProvider = securityProvider;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +105,8 @@ public final class TransitHubPatchProperties implements JsonSerializable<Transit
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeJsonField("transitOption", this.transitOption);
+        jsonWriter.writeStringField("securityProvider",
+            this.securityProvider == null ? null : this.securityProvider.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -102,6 +129,9 @@ public final class TransitHubPatchProperties implements JsonSerializable<Transit
                     deserializedTransitHubPatchProperties.state = TransitHubState.fromString(reader.getString());
                 } else if ("transitOption".equals(fieldName)) {
                     deserializedTransitHubPatchProperties.transitOption = TransitOption.fromJson(reader);
+                } else if ("securityProvider".equals(fieldName)) {
+                    deserializedTransitHubPatchProperties.securityProvider
+                        = SecurityProvider.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

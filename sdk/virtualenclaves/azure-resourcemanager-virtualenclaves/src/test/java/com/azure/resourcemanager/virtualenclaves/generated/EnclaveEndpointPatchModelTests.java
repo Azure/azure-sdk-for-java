@@ -9,6 +9,7 @@ import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointDestinati
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointPatchModel;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +19,15 @@ public final class EnclaveEndpointPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveEndpointPatchModel model = BinaryData.fromString(
-            "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ANY\",\"ESP\"],\"endpointRuleName\":\"lhvygdyftu\",\"destination\":\"twnawjslbiwkojgc\",\"ports\":\"tsf\"},{\"protocols\":[\"TCP\",\"AH\",\"ANY\"],\"endpointRuleName\":\"ph\",\"destination\":\"qnrnrpxehuwryk\",\"ports\":\"aifmvikl\"},{\"protocols\":[\"AH\"],\"endpointRuleName\":\"hbejdznxcvdsrhnj\",\"destination\":\"olvtnovqfzge\",\"ports\":\"dftuljltduce\"}]},\"tags\":{\"ejwcwwqiok\":\"mczuo\",\"p\":\"ssxmojms\",\"kwcf\":\"jpr\",\"yxgtczh\":\"ql\"}}")
+            "{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"AH\",\"ICMP\"],\"endpointRuleName\":\"g\",\"destination\":\"jbmxvavre\",\"ports\":\"eesvecu\"},{\"protocols\":[\"ICMP\",\"AH\"],\"endpointRuleName\":\"s\",\"destination\":\"prtujwsawdd\",\"ports\":\"babxvitit\"}],\"updateMode\":\"Manual\"},\"tags\":{\"tfgle\":\"xavo\",\"pypqtgsfj\":\"dmdqb\"}}")
             .toObject(EnclaveEndpointPatchModel.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.ANY,
+        Assertions.assertEquals(EnclaveEndpointProtocol.AH,
             model.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("lhvygdyftu", model.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("twnawjslbiwkojgc", model.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("tsf", model.properties().ruleCollection().get(0).ports());
-        Assertions.assertEquals("mczuo", model.tags().get("ejwcwwqiok"));
+        Assertions.assertEquals("g", model.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("jbmxvavre", model.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("eesvecu", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.MANUAL, model.properties().updateMode());
+        Assertions.assertEquals("xavo", model.tags().get("tfgle"));
     }
 
     @org.junit.jupiter.api.Test
@@ -38,29 +40,26 @@ public final class EnclaveEndpointPatchModelTests {
                             Arrays.asList(
                                 new EnclaveEndpointDestinationRule()
                                     .withProtocols(
-                                        Arrays.asList(EnclaveEndpointProtocol.ANY, EnclaveEndpointProtocol.ESP))
-                                    .withEndpointRuleName("lhvygdyftu")
-                                    .withDestination("twnawjslbiwkojgc")
-                                    .withPorts("tsf"),
+                                        Arrays.asList(EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.ICMP))
+                                    .withEndpointRuleName("g")
+                                    .withDestination("jbmxvavre")
+                                    .withPorts("eesvecu"),
                                 new EnclaveEndpointDestinationRule()
-                                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.TCP,
-                                        EnclaveEndpointProtocol.AH, EnclaveEndpointProtocol.ANY))
-                                    .withEndpointRuleName("ph")
-                                    .withDestination("qnrnrpxehuwryk")
-                                    .withPorts("aifmvikl"),
-                                new EnclaveEndpointDestinationRule()
-                                    .withProtocols(Arrays.asList(EnclaveEndpointProtocol.AH))
-                                    .withEndpointRuleName("hbejdznxcvdsrhnj")
-                                    .withDestination("olvtnovqfzge")
-                                    .withPorts("dftuljltduce"))))
-                .withTags(mapOf("ejwcwwqiok", "mczuo", "p", "ssxmojms", "kwcf", "jpr", "yxgtczh", "ql"));
+                                    .withProtocols(
+                                        Arrays.asList(EnclaveEndpointProtocol.ICMP, EnclaveEndpointProtocol.AH))
+                                    .withEndpointRuleName("s")
+                                    .withDestination("prtujwsawdd")
+                                    .withPorts("babxvitit")))
+                        .withUpdateMode(UpdateMode.MANUAL))
+                .withTags(mapOf("tfgle", "xavo", "pypqtgsfj", "dmdqb"));
         model = BinaryData.fromObject(model).toObject(EnclaveEndpointPatchModel.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.ANY,
+        Assertions.assertEquals(EnclaveEndpointProtocol.AH,
             model.properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("lhvygdyftu", model.properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("twnawjslbiwkojgc", model.properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("tsf", model.properties().ruleCollection().get(0).ports());
-        Assertions.assertEquals("mczuo", model.tags().get("ejwcwwqiok"));
+        Assertions.assertEquals("g", model.properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("jbmxvavre", model.properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("eesvecu", model.properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.MANUAL, model.properties().updateMode());
+        Assertions.assertEquals("xavo", model.tags().get("tfgle"));
     }
 
     // Use "Map.of" if available

@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class EnclaveEndpointsHandleApprovalCreationMockTests {
     @Test
     public void testHandleApprovalCreation() throws Exception {
-        String responseStr = "{\"message\":\"z\"}";
+        String responseStr = "{\"message\":\"nnctagfyvrt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class EnclaveEndpointsHandleApprovalCreationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.enclaveEndpoints()
-            .handleApprovalCreation("coqra", "wugyx", "qi",
+            .handleApprovalCreation("ayfluiyuosnu", "dtelvhyibdrqrs", "hbuubpy",
                 new ApprovalCallbackRequest()
-                    .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.CREATE)
-                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.REJECTED)
-                    .withApprovalCallbackPayload("alwvskbu"),
+                    .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.DELETE)
+                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.APPROVED)
+                    .withApprovalCallbackPayload("joxztfwfqchvczev"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("z", response.message());
+        Assertions.assertEquals("nnctagfyvrt", response.message());
     }
 }

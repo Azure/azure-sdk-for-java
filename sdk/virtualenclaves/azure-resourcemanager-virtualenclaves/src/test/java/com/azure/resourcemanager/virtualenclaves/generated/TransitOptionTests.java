@@ -14,21 +14,21 @@ public final class TransitOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransitOption model = BinaryData.fromString(
-            "{\"type\":\"ExpressRoute\",\"params\":{\"scaleUnits\":5146168087971383539,\"remoteVirtualNetworkId\":\"dsrezpdrhneuyow\"}}")
+            "{\"type\":\"Gateway\",\"params\":{\"scaleUnits\":7272807735857936974,\"remoteVirtualNetworkId\":\"ifmzzsd\"}}")
             .toObject(TransitOption.class);
-        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.type());
-        Assertions.assertEquals(5146168087971383539L, model.params().scaleUnits());
-        Assertions.assertEquals("dsrezpdrhneuyow", model.params().remoteVirtualNetworkId());
+        Assertions.assertEquals(TransitOptionType.GATEWAY, model.type());
+        Assertions.assertEquals(7272807735857936974L, model.params().scaleUnits());
+        Assertions.assertEquals("ifmzzsd", model.params().remoteVirtualNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransitOption model = new TransitOption().withType(TransitOptionType.EXPRESS_ROUTE)
-            .withParams(new TransitOptionParams().withScaleUnits(5146168087971383539L)
-                .withRemoteVirtualNetworkId("dsrezpdrhneuyow"));
+        TransitOption model = new TransitOption().withType(TransitOptionType.GATEWAY)
+            .withParams(
+                new TransitOptionParams().withScaleUnits(7272807735857936974L).withRemoteVirtualNetworkId("ifmzzsd"));
         model = BinaryData.fromObject(model).toObject(TransitOption.class);
-        Assertions.assertEquals(TransitOptionType.EXPRESS_ROUTE, model.type());
-        Assertions.assertEquals(5146168087971383539L, model.params().scaleUnits());
-        Assertions.assertEquals("dsrezpdrhneuyow", model.params().remoteVirtualNetworkId());
+        Assertions.assertEquals(TransitOptionType.GATEWAY, model.type());
+        Assertions.assertEquals(7272807735857936974L, model.params().scaleUnits());
+        Assertions.assertEquals("ifmzzsd", model.params().remoteVirtualNetworkId());
     }
 }

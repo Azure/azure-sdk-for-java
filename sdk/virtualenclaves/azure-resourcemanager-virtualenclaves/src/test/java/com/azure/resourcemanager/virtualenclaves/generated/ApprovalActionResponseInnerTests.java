@@ -12,7 +12,7 @@ public final class ApprovalActionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalActionResponseInner model
-            = BinaryData.fromString("{\"message\":\"n\"}").toObject(ApprovalActionResponseInner.class);
-        Assertions.assertEquals("n", model.message());
+            = BinaryData.fromString("{\"message\":\"vnhdldwmgxcxr\"}").toObject(ApprovalActionResponseInner.class);
+        Assertions.assertEquals("vnhdldwmgxcxr", model.message());
     }
 }

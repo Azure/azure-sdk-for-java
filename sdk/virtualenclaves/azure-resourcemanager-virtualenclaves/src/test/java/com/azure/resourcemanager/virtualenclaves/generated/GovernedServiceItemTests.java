@@ -16,24 +16,24 @@ public final class GovernedServiceItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernedServiceItem model = BinaryData.fromString(
-            "{\"serviceId\":\"DataConnectors\",\"serviceName\":\"ureximoryocfs\",\"option\":\"Allow\",\"enforcement\":\"Disabled\",\"policyAction\":\"Enforce\",\"initiatives\":[\"tki\",\"uxh\",\"yudxorrqnbp\"]}")
+            "{\"serviceId\":\"Monitoring\",\"serviceName\":\"ghsauuimjmvxied\",\"option\":\"Deny\",\"enforcement\":\"Disabled\",\"policyAction\":\"None\",\"initiatives\":[\"f\",\"y\",\"osvexcsonpclhoc\",\"hslkevleggzf\"]}")
             .toObject(GovernedServiceItem.class);
-        Assertions.assertEquals(ServiceIdentifier.DATA_CONNECTORS, model.serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.ALLOW, model.option());
+        Assertions.assertEquals(ServiceIdentifier.MONITORING, model.serviceId());
+        Assertions.assertEquals(GovernedServiceItemOption.DENY, model.option());
         Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED, model.enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.ENFORCE, model.policyAction());
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.NONE, model.policyAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernedServiceItem model = new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
-            .withOption(GovernedServiceItemOption.ALLOW)
+        GovernedServiceItem model = new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
+            .withOption(GovernedServiceItemOption.DENY)
             .withEnforcement(GovernedServiceItemEnforcement.DISABLED)
-            .withPolicyAction(GovernedServiceItemPolicyAction.ENFORCE);
+            .withPolicyAction(GovernedServiceItemPolicyAction.NONE);
         model = BinaryData.fromObject(model).toObject(GovernedServiceItem.class);
-        Assertions.assertEquals(ServiceIdentifier.DATA_CONNECTORS, model.serviceId());
-        Assertions.assertEquals(GovernedServiceItemOption.ALLOW, model.option());
+        Assertions.assertEquals(ServiceIdentifier.MONITORING, model.serviceId());
+        Assertions.assertEquals(GovernedServiceItemOption.DENY, model.option());
         Assertions.assertEquals(GovernedServiceItemEnforcement.DISABLED, model.enforcement());
-        Assertions.assertEquals(GovernedServiceItemPolicyAction.ENFORCE, model.policyAction());
+        Assertions.assertEquals(GovernedServiceItemPolicyAction.NONE, model.policyAction());
     }
 }

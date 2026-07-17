@@ -15,48 +15,41 @@ public final class CheckAddressSpaceAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckAddressSpaceAvailabilityRequest model = BinaryData.fromString(
-            "{\"communityResourceId\":\"ai\",\"enclaveVirtualNetwork\":{\"networkName\":\"brgz\",\"networkSize\":\"msweypqwdxggicc\",\"customCidrRange\":\"xqhuexm\",\"subnetConfigurations\":[{\"subnetName\":\"lstvlzywe\",\"subnetResourceId\":\"zrncsdt\",\"networkPrefixSize\":1108362585,\"subnetDelegation\":\"siypbs\",\"addressPrefix\":\"ytguslf\",\"networkSecurityGroupResourceId\":\"dcygqukyhejhz\"},{\"subnetName\":\"sx\",\"subnetResourceId\":\"pelol\",\"networkPrefixSize\":517582343,\"subnetDelegation\":\"ksrpqv\",\"addressPrefix\":\"zraehtwd\",\"networkSecurityGroupResourceId\":\"ftswibyrcdlbhsh\"},{\"subnetName\":\"wpracstwitykhev\",\"subnetResourceId\":\"cedcpnmdy\",\"networkPrefixSize\":1994704768,\"subnetDelegation\":\"wzxltjc\",\"addressPrefix\":\"hlt\",\"networkSecurityGroupResourceId\":\"gcxn\"}],\"allowSubnetCommunication\":true}}")
+            "{\"communityResourceId\":\"jvpglydzgk\",\"enclaveVirtualNetwork\":{\"networkName\":\"qeevt\",\"networkSize\":\"pryu\",\"customCidrRange\":\"wytpzdmovz\",\"subnetConfigurations\":[{\"subnetName\":\"aawzqadfl\",\"subnetResourceId\":\"ur\",\"networkPrefixSize\":1067396685,\"subnetDelegation\":\"aecxndtic\",\"addressPrefix\":\"pvz\",\"networkSecurityGroupResourceId\":\"qtmldgxo\"}],\"allowSubnetCommunication\":false}}")
             .toObject(CheckAddressSpaceAvailabilityRequest.class);
-        Assertions.assertEquals("ai", model.communityResourceId());
-        Assertions.assertEquals("brgz", model.enclaveVirtualNetwork().networkName());
-        Assertions.assertEquals("msweypqwdxggicc", model.enclaveVirtualNetwork().networkSize());
-        Assertions.assertEquals("xqhuexm", model.enclaveVirtualNetwork().customCidrRange());
-        Assertions.assertEquals("lstvlzywe", model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetName());
-        Assertions.assertEquals(1108362585,
+        Assertions.assertEquals("jvpglydzgk", model.communityResourceId());
+        Assertions.assertEquals("qeevt", model.enclaveVirtualNetwork().networkName());
+        Assertions.assertEquals("pryu", model.enclaveVirtualNetwork().networkSize());
+        Assertions.assertEquals("wytpzdmovz", model.enclaveVirtualNetwork().customCidrRange());
+        Assertions.assertEquals("aawzqadfl", model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetName());
+        Assertions.assertEquals(1067396685,
             model.enclaveVirtualNetwork().subnetConfigurations().get(0).networkPrefixSize());
-        Assertions.assertEquals("siypbs",
+        Assertions.assertEquals("aecxndtic",
             model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetDelegation());
-        Assertions.assertTrue(model.enclaveVirtualNetwork().allowSubnetCommunication());
+        Assertions.assertFalse(model.enclaveVirtualNetwork().allowSubnetCommunication());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckAddressSpaceAvailabilityRequest model
-            = new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("ai")
-                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkName("brgz")
-                    .withNetworkSize("msweypqwdxggicc")
-                    .withCustomCidrRange("xqhuexm")
-                    .withSubnetConfigurations(Arrays.asList(
-                        new SubnetConfiguration().withSubnetName("lstvlzywe")
-                            .withNetworkPrefixSize(1108362585)
-                            .withSubnetDelegation("siypbs"),
-                        new SubnetConfiguration().withSubnetName("sx")
-                            .withNetworkPrefixSize(517582343)
-                            .withSubnetDelegation("ksrpqv"),
-                        new SubnetConfiguration().withSubnetName("wpracstwitykhev")
-                            .withNetworkPrefixSize(1994704768)
-                            .withSubnetDelegation("wzxltjc")))
-                    .withAllowSubnetCommunication(true));
+            = new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("jvpglydzgk")
+                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkName("qeevt")
+                    .withNetworkSize("pryu")
+                    .withCustomCidrRange("wytpzdmovz")
+                    .withSubnetConfigurations(Arrays.asList(new SubnetConfiguration().withSubnetName("aawzqadfl")
+                        .withNetworkPrefixSize(1067396685)
+                        .withSubnetDelegation("aecxndtic")))
+                    .withAllowSubnetCommunication(false));
         model = BinaryData.fromObject(model).toObject(CheckAddressSpaceAvailabilityRequest.class);
-        Assertions.assertEquals("ai", model.communityResourceId());
-        Assertions.assertEquals("brgz", model.enclaveVirtualNetwork().networkName());
-        Assertions.assertEquals("msweypqwdxggicc", model.enclaveVirtualNetwork().networkSize());
-        Assertions.assertEquals("xqhuexm", model.enclaveVirtualNetwork().customCidrRange());
-        Assertions.assertEquals("lstvlzywe", model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetName());
-        Assertions.assertEquals(1108362585,
+        Assertions.assertEquals("jvpglydzgk", model.communityResourceId());
+        Assertions.assertEquals("qeevt", model.enclaveVirtualNetwork().networkName());
+        Assertions.assertEquals("pryu", model.enclaveVirtualNetwork().networkSize());
+        Assertions.assertEquals("wytpzdmovz", model.enclaveVirtualNetwork().customCidrRange());
+        Assertions.assertEquals("aawzqadfl", model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetName());
+        Assertions.assertEquals(1067396685,
             model.enclaveVirtualNetwork().subnetConfigurations().get(0).networkPrefixSize());
-        Assertions.assertEquals("siypbs",
+        Assertions.assertEquals("aecxndtic",
             model.enclaveVirtualNetwork().subnetConfigurations().get(0).subnetDelegation());
-        Assertions.assertTrue(model.enclaveVirtualNetwork().allowSubnetCommunication());
+        Assertions.assertFalse(model.enclaveVirtualNetwork().allowSubnetCommunication());
     }
 }

@@ -12,14 +12,14 @@ public final class EnclaveConnectionPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveConnectionPatchProperties model
-            = BinaryData.fromString("{\"sourceCidr\":\"ncyg\"}").toObject(EnclaveConnectionPatchProperties.class);
-        Assertions.assertEquals("ncyg", model.sourceCidr());
+            = BinaryData.fromString("{\"sourceCidr\":\"kb\"}").toObject(EnclaveConnectionPatchProperties.class);
+        Assertions.assertEquals("kb", model.sourceCidr());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveConnectionPatchProperties model = new EnclaveConnectionPatchProperties().withSourceCidr("ncyg");
+        EnclaveConnectionPatchProperties model = new EnclaveConnectionPatchProperties().withSourceCidr("kb");
         model = BinaryData.fromObject(model).toObject(EnclaveConnectionPatchProperties.class);
-        Assertions.assertEquals("ncyg", model.sourceCidr());
+        Assertions.assertEquals("kb", model.sourceCidr());
     }
 }

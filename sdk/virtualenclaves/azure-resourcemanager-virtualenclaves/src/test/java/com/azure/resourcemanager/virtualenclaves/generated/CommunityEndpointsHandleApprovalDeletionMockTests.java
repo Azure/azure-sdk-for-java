@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class CommunityEndpointsHandleApprovalDeletionMockTests {
     @Test
     public void testHandleApprovalDeletion() throws Exception {
-        String responseStr = "{\"message\":\"vdsmaklixq\"}";
+        String responseStr = "{\"message\":\"ee\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class CommunityEndpointsHandleApprovalDeletionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.communityEndpoints()
-            .handleApprovalDeletion(
-                "fueqfrojs", "dgrhydkygywezs", "iecafygzmxi", new ApprovalDeletionCallbackRequest()
-                    .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE),
+            .handleApprovalDeletion("yjln", "dpxot", "diiaocqibzji", new ApprovalDeletionCallbackRequest()
+                .withResourceRequestAction(ApprovalDeletionCallbackRequestResourceRequestAction.CREATE),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vdsmaklixq", response.message());
+        Assertions.assertEquals("ee", response.message());
     }
 }

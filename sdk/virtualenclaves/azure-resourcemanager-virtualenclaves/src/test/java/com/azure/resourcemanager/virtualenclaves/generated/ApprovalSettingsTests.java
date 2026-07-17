@@ -6,6 +6,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettings;
 import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
 import java.util.Arrays;
@@ -15,60 +16,95 @@ public final class ApprovalSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalSettings model = BinaryData.fromString(
-            "{\"endpointCreation\":\"NotRequired\",\"endpointUpdate\":\"NotRequired\",\"endpointDeletion\":\"NotRequired\",\"connectionCreation\":\"Required\",\"connectionUpdate\":\"NotRequired\",\"connectionDeletion\":\"Required\",\"enclaveCreation\":\"Required\",\"enclaveDeletion\":\"Required\",\"maintenanceMode\":\"NotRequired\",\"serviceCatalogDeployment\":\"Required\",\"notificationOnApprovalCreation\":\"NotRequired\",\"notificationOnApprovalAction\":\"Required\",\"notificationOnApprovalDeletion\":\"NotRequired\",\"mandatoryApprovers\":[{\"approverEntraId\":\"afnn\"},{\"approverEntraId\":\"lpichk\"},{\"approverEntraId\":\"ymkcdyhb\"},{\"approverEntraId\":\"kkpwdreqnovvq\"}],\"minimumApproversRequired\":8526417198675254199}")
+            "{\"communityEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1573874006,\"mandatoryApprovers\":[{\"approverEntraId\":\"zwmk\"},{\"approverEntraId\":\"efajpj\"},{\"approverEntraId\":\"rwkq\"}]},\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":506694346,\"mandatoryApprovers\":[{\"approverEntraId\":\"jivfxzsjabib\"},{\"approverEntraId\":\"ystawfsdjpvkvp\"},{\"approverEntraId\":\"jxbkzbzkdvn\"},{\"approverEntraId\":\"jabudurgkakmo\"}]},\"enclaveCreation\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":893447379,\"mandatoryApprovers\":[{\"approverEntraId\":\"fhmouwq\"},{\"approverEntraId\":\"gzrf\"},{\"approverEntraId\":\"eeyebi\"}]},\"connectionCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":2107900105,\"mandatoryApprovers\":[{\"approverEntraId\":\"lbjbsyb\"},{\"approverEntraId\":\"qwrvtldgmfp\"},{\"approverEntraId\":\"vm\"},{\"approverEntraId\":\"ipaslthaqfxssmwu\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1417218644,\"mandatoryApprovers\":[{\"approverEntraId\":\"pdrhne\"},{\"approverEntraId\":\"yowqkdwytisibir\"}]},\"communityMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1400964444,\"mandatoryApprovers\":[{\"approverEntraId\":\"mejzanlfzxia\"},{\"approverEntraId\":\"rmbzo\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":988966310,\"mandatoryApprovers\":[{\"approverEntraId\":\"cirgzp\"}]}}")
             .toObject(ApprovalSettings.class);
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointCreation());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointUpdate());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointDeletion());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionCreation());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionUpdate());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionDeletion());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveCreation());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveDeletion());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.maintenanceMode());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.serviceCatalogDeployment());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.notificationOnApprovalCreation());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.notificationOnApprovalAction());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.notificationOnApprovalDeletion());
-        Assertions.assertEquals("afnn", model.mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(8526417198675254199L, model.minimumApproversRequired());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.communityEndpointUpdate().approvalPolicy());
+        Assertions.assertEquals(1573874006, model.communityEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("zwmk", model.communityEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveEndpointUpdate().approvalPolicy());
+        Assertions.assertEquals(506694346, model.enclaveEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("jivfxzsjabib",
+            model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveCreation().approvalPolicy());
+        Assertions.assertEquals(893447379, model.enclaveCreation().minimumApproversRequired());
+        Assertions.assertEquals("fhmouwq", model.enclaveCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionCreation().approvalPolicy());
+        Assertions.assertEquals(2107900105, model.connectionCreation().minimumApproversRequired());
+        Assertions.assertEquals("lbjbsyb", model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionUpdate().approvalPolicy());
+        Assertions.assertEquals(1417218644, model.connectionUpdate().minimumApproversRequired());
+        Assertions.assertEquals("pdrhne", model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.communityMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(1400964444, model.communityMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("mejzanlfzxia",
+            model.communityMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(988966310, model.enclaveMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("cirgzp", model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApprovalSettings model = new ApprovalSettings().withEndpointCreation(ApprovalPolicy.NOT_REQUIRED)
-            .withEndpointUpdate(ApprovalPolicy.NOT_REQUIRED)
-            .withEndpointDeletion(ApprovalPolicy.NOT_REQUIRED)
-            .withConnectionCreation(ApprovalPolicy.REQUIRED)
-            .withConnectionUpdate(ApprovalPolicy.NOT_REQUIRED)
-            .withConnectionDeletion(ApprovalPolicy.REQUIRED)
-            .withEnclaveCreation(ApprovalPolicy.REQUIRED)
-            .withEnclaveDeletion(ApprovalPolicy.REQUIRED)
-            .withMaintenanceMode(ApprovalPolicy.NOT_REQUIRED)
-            .withServiceCatalogDeployment(ApprovalPolicy.REQUIRED)
-            .withNotificationOnApprovalCreation(ApprovalPolicy.NOT_REQUIRED)
-            .withNotificationOnApprovalAction(ApprovalPolicy.REQUIRED)
-            .withNotificationOnApprovalDeletion(ApprovalPolicy.NOT_REQUIRED)
-            .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("afnn"),
-                new MandatoryApprover().withApproverEntraId("lpichk"),
-                new MandatoryApprover().withApproverEntraId("ymkcdyhb"),
-                new MandatoryApprover().withApproverEntraId("kkpwdreqnovvq")))
-            .withMinimumApproversRequired(8526417198675254199L);
+        ApprovalSettings model = new ApprovalSettings()
+            .withCommunityEndpointUpdate(
+                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                    .withMinimumApproversRequired(1573874006)
+                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("zwmk"),
+                        new MandatoryApprover().withApproverEntraId("efajpj"),
+                        new MandatoryApprover().withApproverEntraId("rwkq"))))
+            .withEnclaveEndpointUpdate(
+                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                    .withMinimumApproversRequired(506694346)
+                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("jivfxzsjabib"),
+                        new MandatoryApprover().withApproverEntraId("ystawfsdjpvkvp"),
+                        new MandatoryApprover().withApproverEntraId("jxbkzbzkdvn"),
+                        new MandatoryApprover().withApproverEntraId("jabudurgkakmo"))))
+            .withEnclaveCreation(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                .withMinimumApproversRequired(893447379)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("fhmouwq"),
+                    new MandatoryApprover().withApproverEntraId("gzrf"),
+                    new MandatoryApprover().withApproverEntraId("eeyebi"))))
+            .withConnectionCreation(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                .withMinimumApproversRequired(2107900105)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("lbjbsyb"),
+                    new MandatoryApprover().withApproverEntraId("qwrvtldgmfp"),
+                    new MandatoryApprover().withApproverEntraId("vm"),
+                    new MandatoryApprover().withApproverEntraId("ipaslthaqfxssmwu"))))
+            .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                .withMinimumApproversRequired(1417218644)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("pdrhne"),
+                    new MandatoryApprover().withApproverEntraId("yowqkdwytisibir"))))
+            .withCommunityMaintenanceMode(
+                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                    .withMinimumApproversRequired(1400964444)
+                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("mejzanlfzxia"),
+                        new MandatoryApprover().withApproverEntraId("rmbzo"))))
+            .withEnclaveMaintenanceMode(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                .withMinimumApproversRequired(988966310)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("cirgzp"))));
         model = BinaryData.fromObject(model).toObject(ApprovalSettings.class);
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointCreation());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointUpdate());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.endpointDeletion());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionCreation());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionUpdate());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionDeletion());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveCreation());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveDeletion());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.maintenanceMode());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.serviceCatalogDeployment());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.notificationOnApprovalCreation());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.notificationOnApprovalAction());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.notificationOnApprovalDeletion());
-        Assertions.assertEquals("afnn", model.mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(8526417198675254199L, model.minimumApproversRequired());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.communityEndpointUpdate().approvalPolicy());
+        Assertions.assertEquals(1573874006, model.communityEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("zwmk", model.communityEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveEndpointUpdate().approvalPolicy());
+        Assertions.assertEquals(506694346, model.enclaveEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("jivfxzsjabib",
+            model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveCreation().approvalPolicy());
+        Assertions.assertEquals(893447379, model.enclaveCreation().minimumApproversRequired());
+        Assertions.assertEquals("fhmouwq", model.enclaveCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionCreation().approvalPolicy());
+        Assertions.assertEquals(2107900105, model.connectionCreation().minimumApproversRequired());
+        Assertions.assertEquals("lbjbsyb", model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionUpdate().approvalPolicy());
+        Assertions.assertEquals(1417218644, model.connectionUpdate().minimumApproversRequired());
+        Assertions.assertEquals("pdrhne", model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.communityMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(1400964444, model.communityMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("mejzanlfzxia",
+            model.communityMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(988966310, model.enclaveMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("cirgzp", model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
     }
 }

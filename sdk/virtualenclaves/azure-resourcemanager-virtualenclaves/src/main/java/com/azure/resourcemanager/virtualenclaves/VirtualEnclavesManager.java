@@ -28,6 +28,7 @@ import com.azure.resourcemanager.virtualenclaves.fluent.VirtualEnclavesManagemen
 import com.azure.resourcemanager.virtualenclaves.implementation.ApprovalsImpl;
 import com.azure.resourcemanager.virtualenclaves.implementation.CommunitiesImpl;
 import com.azure.resourcemanager.virtualenclaves.implementation.CommunityEndpointsImpl;
+import com.azure.resourcemanager.virtualenclaves.implementation.DedicatedHubsImpl;
 import com.azure.resourcemanager.virtualenclaves.implementation.EnclaveConnectionsImpl;
 import com.azure.resourcemanager.virtualenclaves.implementation.EnclaveEndpointsImpl;
 import com.azure.resourcemanager.virtualenclaves.implementation.OperationsImpl;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.virtualenclaves.implementation.WorkloadsImpl;
 import com.azure.resourcemanager.virtualenclaves.models.Approvals;
 import com.azure.resourcemanager.virtualenclaves.models.Communities;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityEndpoints;
+import com.azure.resourcemanager.virtualenclaves.models.DedicatedHubs;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveConnections;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpoints;
 import com.azure.resourcemanager.virtualenclaves.models.Operations;
@@ -72,6 +74,8 @@ public final class VirtualEnclavesManager {
     private EnclaveEndpoints enclaveEndpoints;
 
     private CommunityEndpoints communityEndpoints;
+
+    private DedicatedHubs dedicatedHubs;
 
     private Approvals approvals;
 
@@ -384,6 +388,18 @@ public final class VirtualEnclavesManager {
             this.communityEndpoints = new CommunityEndpointsImpl(clientObject.getCommunityEndpoints(), this);
         }
         return communityEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of DedicatedHubs. It manages DedicatedHubResource.
+     * 
+     * @return Resource collection API of DedicatedHubs.
+     */
+    public DedicatedHubs dedicatedHubs() {
+        if (this.dedicatedHubs == null) {
+            this.dedicatedHubs = new DedicatedHubsImpl(clientObject.getDedicatedHubs(), this);
+        }
+        return dedicatedHubs;
     }
 
     /**

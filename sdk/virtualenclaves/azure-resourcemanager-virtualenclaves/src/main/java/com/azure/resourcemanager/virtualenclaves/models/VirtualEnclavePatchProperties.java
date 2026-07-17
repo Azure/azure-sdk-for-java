@@ -28,6 +28,16 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
     private Boolean bastionEnabled;
 
     /*
+     * Specifies whether resources in the workload resource group(s) are visible through standard RBAC
+     */
+    private ResourceVisibilityMode workloadResourceVisibility;
+
+    /*
+     * Controls whether standard Azure RBAC role inheritance applies to the workload resource group(s)
+     */
+    private RbacInheritanceMode rbacInheritance;
+
+    /*
      * Enclave role assignments
      */
     private List<RoleAssignmentItem> enclaveRoleAssignments;
@@ -51,6 +61,21 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
      * Maintenance Mode configuration.
      */
     private MaintenanceModeConfigurationPatchModel maintenanceModeConfiguration;
+
+    /*
+     * DedicatedHub Resource ID.
+     */
+    private String dedicatedHubResourceId;
+
+    /*
+     * Approval requirements for various actions on the enclave's resources.
+     */
+    private VirtualEnclaveApprovalSettingsPatchProperties approvalSettings;
+
+    /*
+     * Virtual Enclave Monitoring Settings for diagnostic and virtual network flow logs
+     */
+    private MonitoringSettingsPatchModel monitoringSettings;
 
     /**
      * Creates an instance of VirtualEnclavePatchProperties class.
@@ -95,6 +120,51 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
      */
     public VirtualEnclavePatchProperties withBastionEnabled(Boolean bastionEnabled) {
         this.bastionEnabled = bastionEnabled;
+        return this;
+    }
+
+    /**
+     * Get the workloadResourceVisibility property: Specifies whether resources in the workload resource group(s) are
+     * visible through standard RBAC.
+     * 
+     * @return the workloadResourceVisibility value.
+     */
+    public ResourceVisibilityMode workloadResourceVisibility() {
+        return this.workloadResourceVisibility;
+    }
+
+    /**
+     * Set the workloadResourceVisibility property: Specifies whether resources in the workload resource group(s) are
+     * visible through standard RBAC.
+     * 
+     * @param workloadResourceVisibility the workloadResourceVisibility value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties
+        withWorkloadResourceVisibility(ResourceVisibilityMode workloadResourceVisibility) {
+        this.workloadResourceVisibility = workloadResourceVisibility;
+        return this;
+    }
+
+    /**
+     * Get the rbacInheritance property: Controls whether standard Azure RBAC role inheritance applies to the workload
+     * resource group(s).
+     * 
+     * @return the rbacInheritance value.
+     */
+    public RbacInheritanceMode rbacInheritance() {
+        return this.rbacInheritance;
+    }
+
+    /**
+     * Set the rbacInheritance property: Controls whether standard Azure RBAC role inheritance applies to the workload
+     * resource group(s).
+     * 
+     * @param rbacInheritance the rbacInheritance value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties withRbacInheritance(RbacInheritanceMode rbacInheritance) {
+        this.rbacInheritance = rbacInheritance;
         return this;
     }
 
@@ -201,6 +271,69 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
     }
 
     /**
+     * Get the dedicatedHubResourceId property: DedicatedHub Resource ID.
+     * 
+     * @return the dedicatedHubResourceId value.
+     */
+    public String dedicatedHubResourceId() {
+        return this.dedicatedHubResourceId;
+    }
+
+    /**
+     * Set the dedicatedHubResourceId property: DedicatedHub Resource ID.
+     * 
+     * @param dedicatedHubResourceId the dedicatedHubResourceId value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties withDedicatedHubResourceId(String dedicatedHubResourceId) {
+        this.dedicatedHubResourceId = dedicatedHubResourceId;
+        return this;
+    }
+
+    /**
+     * Get the approvalSettings property: Approval requirements for various actions on the enclave's resources.
+     * 
+     * @return the approvalSettings value.
+     */
+    public VirtualEnclaveApprovalSettingsPatchProperties approvalSettings() {
+        return this.approvalSettings;
+    }
+
+    /**
+     * Set the approvalSettings property: Approval requirements for various actions on the enclave's resources.
+     * 
+     * @param approvalSettings the approvalSettings value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties
+        withApprovalSettings(VirtualEnclaveApprovalSettingsPatchProperties approvalSettings) {
+        this.approvalSettings = approvalSettings;
+        return this;
+    }
+
+    /**
+     * Get the monitoringSettings property: Virtual Enclave Monitoring Settings for diagnostic and virtual network flow
+     * logs.
+     * 
+     * @return the monitoringSettings value.
+     */
+    public MonitoringSettingsPatchModel monitoringSettings() {
+        return this.monitoringSettings;
+    }
+
+    /**
+     * Set the monitoringSettings property: Virtual Enclave Monitoring Settings for diagnostic and virtual network flow
+     * logs.
+     * 
+     * @param monitoringSettings the monitoringSettings value to set.
+     * @return the VirtualEnclavePatchProperties object itself.
+     */
+    public VirtualEnclavePatchProperties withMonitoringSettings(MonitoringSettingsPatchModel monitoringSettings) {
+        this.monitoringSettings = monitoringSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -208,6 +341,10 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("enclaveVirtualNetwork", this.enclaveVirtualNetwork);
         jsonWriter.writeBooleanField("bastionEnabled", this.bastionEnabled);
+        jsonWriter.writeStringField("workloadResourceVisibility",
+            this.workloadResourceVisibility == null ? null : this.workloadResourceVisibility.toString());
+        jsonWriter.writeStringField("rbacInheritance",
+            this.rbacInheritance == null ? null : this.rbacInheritance.toString());
         jsonWriter.writeArrayField("enclaveRoleAssignments", this.enclaveRoleAssignments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("workloadRoleAssignments", this.workloadRoleAssignments,
@@ -216,6 +353,9 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("enclaveDefaultSettings", this.enclaveDefaultSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
+        jsonWriter.writeStringField("dedicatedHubResourceId", this.dedicatedHubResourceId);
+        jsonWriter.writeJsonField("approvalSettings", this.approvalSettings);
+        jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -242,6 +382,12 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
                 } else if ("bastionEnabled".equals(fieldName)) {
                     deserializedVirtualEnclavePatchProperties.bastionEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("workloadResourceVisibility".equals(fieldName)) {
+                    deserializedVirtualEnclavePatchProperties.workloadResourceVisibility
+                        = ResourceVisibilityMode.fromString(reader.getString());
+                } else if ("rbacInheritance".equals(fieldName)) {
+                    deserializedVirtualEnclavePatchProperties.rbacInheritance
+                        = RbacInheritanceMode.fromString(reader.getString());
                 } else if ("enclaveRoleAssignments".equals(fieldName)) {
                     List<RoleAssignmentItem> enclaveRoleAssignments
                         = reader.readArray(reader1 -> RoleAssignmentItem.fromJson(reader1));
@@ -260,6 +406,14 @@ public final class VirtualEnclavePatchProperties implements JsonSerializable<Vir
                 } else if ("maintenanceModeConfiguration".equals(fieldName)) {
                     deserializedVirtualEnclavePatchProperties.maintenanceModeConfiguration
                         = MaintenanceModeConfigurationPatchModel.fromJson(reader);
+                } else if ("dedicatedHubResourceId".equals(fieldName)) {
+                    deserializedVirtualEnclavePatchProperties.dedicatedHubResourceId = reader.getString();
+                } else if ("approvalSettings".equals(fieldName)) {
+                    deserializedVirtualEnclavePatchProperties.approvalSettings
+                        = VirtualEnclaveApprovalSettingsPatchProperties.fromJson(reader);
+                } else if ("monitoringSettings".equals(fieldName)) {
+                    deserializedVirtualEnclavePatchProperties.monitoringSettings
+                        = MonitoringSettingsPatchModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

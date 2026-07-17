@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.virtualenclaves.fluent.ApprovalsClient;
 import com.azure.resourcemanager.virtualenclaves.fluent.CommunitiesClient;
 import com.azure.resourcemanager.virtualenclaves.fluent.CommunityEndpointsClient;
+import com.azure.resourcemanager.virtualenclaves.fluent.DedicatedHubsClient;
 import com.azure.resourcemanager.virtualenclaves.fluent.EnclaveConnectionsClient;
 import com.azure.resourcemanager.virtualenclaves.fluent.EnclaveEndpointsClient;
 import com.azure.resourcemanager.virtualenclaves.fluent.OperationsClient;
@@ -247,6 +248,20 @@ public final class VirtualEnclavesManagementClientImpl implements VirtualEnclave
     }
 
     /**
+     * The DedicatedHubsClient object to access its operations.
+     */
+    private final DedicatedHubsClient dedicatedHubs;
+
+    /**
+     * Gets the DedicatedHubsClient object to access its operations.
+     * 
+     * @return the DedicatedHubsClient object.
+     */
+    public DedicatedHubsClient getDedicatedHubs() {
+        return this.dedicatedHubs;
+    }
+
+    /**
      * The ApprovalsClient object to access its operations.
      */
     private final ApprovalsClient approvals;
@@ -277,7 +292,7 @@ public final class VirtualEnclavesManagementClientImpl implements VirtualEnclave
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01-preview";
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.workloads = new WorkloadsClientImpl(this);
         this.virtualEnclaves = new VirtualEnclavesClientImpl(this);
@@ -286,6 +301,7 @@ public final class VirtualEnclavesManagementClientImpl implements VirtualEnclave
         this.enclaveConnections = new EnclaveConnectionsClientImpl(this);
         this.enclaveEndpoints = new EnclaveEndpointsClientImpl(this);
         this.communityEndpoints = new CommunityEndpointsClientImpl(this);
+        this.dedicatedHubs = new DedicatedHubsClientImpl(this);
         this.approvals = new ApprovalsClientImpl(this);
     }
 

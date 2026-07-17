@@ -14,21 +14,21 @@ public final class ApproverTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Approver model = BinaryData.fromString(
-            "{\"approverEntraId\":\"jks\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-04-16T16:08:50Z\"}")
+            "{\"approverEntraId\":\"fhxwrsne\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-10-12T12:35:10Z\",\"mandatoryApprovalGroupMembershipIds\":[\"bubqmamhsycxh\"]}")
             .toObject(Approver.class);
-        Assertions.assertEquals("jks", model.approverEntraId());
+        Assertions.assertEquals("fhxwrsne", model.approverEntraId());
         Assertions.assertEquals(ActionPerformed.REJECTED, model.actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T16:08:50Z"), model.lastUpdatedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T12:35:10Z"), model.lastUpdatedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Approver model = new Approver().withApproverEntraId("jks")
+        Approver model = new Approver().withApproverEntraId("fhxwrsne")
             .withActionPerformed(ActionPerformed.REJECTED)
-            .withLastUpdatedAt(OffsetDateTime.parse("2021-04-16T16:08:50Z"));
+            .withLastUpdatedAt(OffsetDateTime.parse("2021-10-12T12:35:10Z"));
         model = BinaryData.fromObject(model).toObject(Approver.class);
-        Assertions.assertEquals("jks", model.approverEntraId());
+        Assertions.assertEquals("fhxwrsne", model.approverEntraId());
         Assertions.assertEquals(ActionPerformed.REJECTED, model.actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T16:08:50Z"), model.lastUpdatedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T12:35:10Z"), model.lastUpdatedAt());
     }
 }

@@ -57,6 +57,31 @@ public final class ApprovalProperties implements JsonSerializable<ApprovalProper
     private OffsetDateTime stateChangedAt;
 
     /*
+     * List of mandatory approvers for the approval request
+     */
+    private List<MandatoryApprover> mandatoryApprovers;
+
+    /*
+     * Minimum number of approvers required for the approval request
+     */
+    private Long minimumApproversRequired;
+
+    /*
+     * Current count of minimum approvers required
+     */
+    private Long approversApprovedCount;
+
+    /*
+     * Current count of mandatory approvers that have approved
+     */
+    private Long mandatoryApproversApprovedCount;
+
+    /*
+     * Array of Entra IDs of approvers who have approved the approval request
+     */
+    private List<String> approvedByEntraIds;
+
+    /*
      * Request metadata for the approval request.
      */
     private RequestMetadata requestMetadata;
@@ -199,6 +224,51 @@ public final class ApprovalProperties implements JsonSerializable<ApprovalProper
     }
 
     /**
+     * Get the mandatoryApprovers property: List of mandatory approvers for the approval request.
+     * 
+     * @return the mandatoryApprovers value.
+     */
+    public List<MandatoryApprover> mandatoryApprovers() {
+        return this.mandatoryApprovers;
+    }
+
+    /**
+     * Get the minimumApproversRequired property: Minimum number of approvers required for the approval request.
+     * 
+     * @return the minimumApproversRequired value.
+     */
+    public Long minimumApproversRequired() {
+        return this.minimumApproversRequired;
+    }
+
+    /**
+     * Get the approversApprovedCount property: Current count of minimum approvers required.
+     * 
+     * @return the approversApprovedCount value.
+     */
+    public Long approversApprovedCount() {
+        return this.approversApprovedCount;
+    }
+
+    /**
+     * Get the mandatoryApproversApprovedCount property: Current count of mandatory approvers that have approved.
+     * 
+     * @return the mandatoryApproversApprovedCount value.
+     */
+    public Long mandatoryApproversApprovedCount() {
+        return this.mandatoryApproversApprovedCount;
+    }
+
+    /**
+     * Get the approvedByEntraIds property: Array of Entra IDs of approvers who have approved the approval request.
+     * 
+     * @return the approvedByEntraIds value.
+     */
+    public List<String> approvedByEntraIds() {
+        return this.approvedByEntraIds;
+    }
+
+    /**
      * Get the requestMetadata property: Request metadata for the approval request.
      * 
      * @return the requestMetadata value.
@@ -271,6 +341,20 @@ public final class ApprovalProperties implements JsonSerializable<ApprovalProper
                 } else if ("stateChangedAt".equals(fieldName)) {
                     deserializedApprovalProperties.stateChangedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("mandatoryApprovers".equals(fieldName)) {
+                    List<MandatoryApprover> mandatoryApprovers
+                        = reader.readArray(reader1 -> MandatoryApprover.fromJson(reader1));
+                    deserializedApprovalProperties.mandatoryApprovers = mandatoryApprovers;
+                } else if ("minimumApproversRequired".equals(fieldName)) {
+                    deserializedApprovalProperties.minimumApproversRequired = reader.getNullable(JsonReader::getLong);
+                } else if ("approversApprovedCount".equals(fieldName)) {
+                    deserializedApprovalProperties.approversApprovedCount = reader.getNullable(JsonReader::getLong);
+                } else if ("mandatoryApproversApprovedCount".equals(fieldName)) {
+                    deserializedApprovalProperties.mandatoryApproversApprovedCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("approvedByEntraIds".equals(fieldName)) {
+                    List<String> approvedByEntraIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApprovalProperties.approvedByEntraIds = approvedByEntraIds;
                 } else {
                     reader.skipChildren();
                 }

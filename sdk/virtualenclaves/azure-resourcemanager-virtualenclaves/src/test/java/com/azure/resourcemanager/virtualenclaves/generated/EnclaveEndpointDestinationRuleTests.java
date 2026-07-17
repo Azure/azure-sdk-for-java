@@ -14,25 +14,25 @@ public final class EnclaveEndpointDestinationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnclaveEndpointDestinationRule model = BinaryData.fromString(
-            "{\"protocols\":[\"UDP\"],\"endpointRuleName\":\"zpnfqntcypsxj\",\"destination\":\"oimwkslirc\",\"ports\":\"jxv\"}")
+            "{\"protocols\":[\"ESP\",\"UDP\"],\"endpointRuleName\":\"gwklnsr\",\"destination\":\"feycxcktp\",\"ports\":\"merteeammxqiek\"}")
             .toObject(EnclaveEndpointDestinationRule.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("zpnfqntcypsxj", model.endpointRuleName());
-        Assertions.assertEquals("oimwkslirc", model.destination());
-        Assertions.assertEquals("jxv", model.ports());
+        Assertions.assertEquals(EnclaveEndpointProtocol.ESP, model.protocols().get(0));
+        Assertions.assertEquals("gwklnsr", model.endpointRuleName());
+        Assertions.assertEquals("feycxcktp", model.destination());
+        Assertions.assertEquals("merteeammxqiek", model.ports());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnclaveEndpointDestinationRule model
-            = new EnclaveEndpointDestinationRule().withProtocols(Arrays.asList(EnclaveEndpointProtocol.UDP))
-                .withEndpointRuleName("zpnfqntcypsxj")
-                .withDestination("oimwkslirc")
-                .withPorts("jxv");
+        EnclaveEndpointDestinationRule model = new EnclaveEndpointDestinationRule()
+            .withProtocols(Arrays.asList(EnclaveEndpointProtocol.ESP, EnclaveEndpointProtocol.UDP))
+            .withEndpointRuleName("gwklnsr")
+            .withDestination("feycxcktp")
+            .withPorts("merteeammxqiek");
         model = BinaryData.fromObject(model).toObject(EnclaveEndpointDestinationRule.class);
-        Assertions.assertEquals(EnclaveEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("zpnfqntcypsxj", model.endpointRuleName());
-        Assertions.assertEquals("oimwkslirc", model.destination());
-        Assertions.assertEquals("jxv", model.ports());
+        Assertions.assertEquals(EnclaveEndpointProtocol.ESP, model.protocols().get(0));
+        Assertions.assertEquals("gwklnsr", model.endpointRuleName());
+        Assertions.assertEquals("feycxcktp", model.destination());
+        Assertions.assertEquals("merteeammxqiek", model.ports());
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.virtualenclaves.VirtualEnclavesManager;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointProtocol;
 import com.azure.resourcemanager.virtualenclaves.models.EnclaveEndpointResource;
+import com.azure.resourcemanager.virtualenclaves.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class EnclaveEndpointsListByEnclaveResourceMockTests {
     @Test
     public void testListByEnclaveResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ESP\",\"ICMP\"],\"endpointRuleName\":\"kkdtnhqsy\",\"destination\":\"jselpkpbafvafh\",\"ports\":\"ylcc\"},{\"protocols\":[\"AH\"],\"endpointRuleName\":\"hyzdfwrs\",\"destination\":\"pl\",\"ports\":\"bmairrhvhfnracwn\"},{\"protocols\":[\"ESP\",\"ANY\"],\"endpointRuleName\":\"ujwouhdawsi\",\"destination\":\"bjb\",\"ports\":\"jybvit\"},{\"protocols\":[\"ESP\",\"ICMP\",\"ESP\"],\"endpointRuleName\":\"nu\",\"destination\":\"ggmuwdcho\",\"ports\":\"nkf\"}],\"resourceCollection\":[\"v\"],\"provisioningState\":\"Canceled\"},\"location\":\"kizvoa\",\"tags\":{\"lnuwiguy\":\"a\",\"wxh\":\"lykwphvxz\"},\"id\":\"pejtl\",\"name\":\"exaonwivkcq\",\"type\":\"rxhxkn\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"ICMP\",\"ESP\",\"TCP\"],\"endpointRuleName\":\"lfuctejrthcfjzhx\",\"destination\":\"ubqjro\",\"ports\":\"vrjeqmtzzbeqrztr\"},{\"protocols\":[\"TCP\",\"ICMP\",\"ICMP\",\"AH\"],\"endpointRuleName\":\"bsrwrsnrhpqat\",\"destination\":\"kkvyanxk\",\"ports\":\"csemsvuvd\"},{\"protocols\":[\"ANY\",\"ICMP\",\"ESP\",\"ICMP\"],\"endpointRuleName\":\"mlivrjjxnwx\",\"destination\":\"hpojxl\",\"ports\":\"z\"}],\"resourceCollection\":[\"gfquwz\",\"w\",\"ibelwcerwkw\",\"pjxljtxb\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Automatic\"},\"location\":\"xniu\",\"tags\":{\"db\":\"zhgbdgzpagsecn\",\"nezoellnkki\":\"wqrgxfllmqi\",\"mtum\":\"w\"},\"id\":\"pymdjfuax\",\"name\":\"oqvqpilr\",\"type\":\"uncanlduwzorx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +33,19 @@ public final class EnclaveEndpointsListByEnclaveResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EnclaveEndpointResource> response = manager.enclaveEndpoints()
-            .listByEnclaveResource("hgf", "etzlexbsfledynoj", com.azure.core.util.Context.NONE);
+        PagedIterable<EnclaveEndpointResource> response
+            = manager.enclaveEndpoints().listByEnclaveResource("chskxxka", "sbvr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kizvoa", response.iterator().next().location());
-        Assertions.assertEquals("a", response.iterator().next().tags().get("lnuwiguy"));
-        Assertions.assertEquals(EnclaveEndpointProtocol.ESP,
+        Assertions.assertEquals("xniu", response.iterator().next().location());
+        Assertions.assertEquals("zhgbdgzpagsecn", response.iterator().next().tags().get("db"));
+        Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("kkdtnhqsy",
+        Assertions.assertEquals("lfuctejrthcfjzhx",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("jselpkpbafvafh",
+        Assertions.assertEquals("ubqjro",
             response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("ylcc", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("vrjeqmtzzbeqrztr",
+            response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.AUTOMATIC, response.iterator().next().properties().updateMode());
     }
 }

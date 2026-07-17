@@ -34,15 +34,14 @@ public final class CommunitiesCheckAddressSpaceAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckAddressSpaceAvailabilityResponse response = manager.communities()
-            .checkAddressSpaceAvailabilityWithResponse("plkeuachtomflryt", "wfpfmdgycx",
-                new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("mskwhqjjysl")
-                    .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkName("lpshhkvpedwqslsr")
-                        .withNetworkSize("pq")
-                        .withCustomCidrRange("wskondcbrwimuvqe")
-                        .withSubnetConfigurations(
-                            Arrays.asList(new SubnetConfiguration().withSubnetName("ovyrrleaesinu")
-                                .withNetworkPrefixSize(1688205844)
-                                .withSubnetDelegation("brjbbmpxdlvy")))
+            .checkAddressSpaceAvailabilityWithResponse("pezkis", "qjm",
+                new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId("g")
+                    .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkName("yparybjufptbjc")
+                        .withNetworkSize("nciuiyqvldaswvpp")
+                        .withCustomCidrRange("qqzlgcndhz")
+                        .withSubnetConfigurations(Arrays.asList(new SubnetConfiguration().withSubnetName("fcfsrhkhgsnx")
+                            .withNetworkPrefixSize(764395735)
+                            .withSubnetDelegation("bzxomeik")))
                         .withAllowSubnetCommunication(false)),
                 com.azure.core.util.Context.NONE)
             .getValue();

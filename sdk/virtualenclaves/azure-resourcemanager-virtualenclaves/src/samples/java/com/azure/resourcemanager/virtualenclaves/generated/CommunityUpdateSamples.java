@@ -4,12 +4,16 @@
 
 package com.azure.resourcemanager.virtualenclaves.generated;
 
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalPolicy;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingConfiguration;
+import com.azure.resourcemanager.virtualenclaves.models.ApprovalSettingsPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityPatchProperties;
 import com.azure.resourcemanager.virtualenclaves.models.CommunityResource;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItem;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemEnforcement;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemOption;
 import com.azure.resourcemanager.virtualenclaves.models.GovernedServiceItemPolicyAction;
+import com.azure.resourcemanager.virtualenclaves.models.MandatoryApprover;
 import com.azure.resourcemanager.virtualenclaves.models.Principal;
 import com.azure.resourcemanager.virtualenclaves.models.PrincipalType;
 import com.azure.resourcemanager.virtualenclaves.models.RoleAssignmentItem;
@@ -23,7 +27,7 @@ import java.util.Map;
  */
 public final class CommunityUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Community_Update.json
+     * x-ms-original-file: 2026-03-01-preview/Community_Update.json
      */
     /**
      * Sample code: Community_Update.
@@ -36,76 +40,109 @@ public final class CommunityUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("sampletag", "samplevalue"))
-            .withProperties(new CommunityPatchProperties().withDnsServers(Arrays.asList("azure.net"))
-                .withGovernedServiceList(Arrays.asList(
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
-                        .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
-                    new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
-                        .withOption(GovernedServiceItemOption.ALLOW)
-                        .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
-                        .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
-                .withCommunityRoleAssignments(Arrays.asList(new RoleAssignmentItem()
-                    .withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
-                    .withPrincipals(Arrays.asList(
-                        new Principal().withId("01234567-89ab-ef01-2345-0123456789ab").withType(PrincipalType.GROUP),
-                        new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0").withType(PrincipalType.USER))),
-                    new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
-                        .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
-                            .withType(PrincipalType.USER))))))
+            .withProperties(
+                new CommunityPatchProperties().withDnsServers(Arrays.asList("azure.net"))
+                    .withGovernedServiceList(
+                        Arrays
+                            .asList(
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AKS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.APP_SERVICE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.CONTAINER_REGISTRY)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.COSMOS_DB)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.KEY_VAULT)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MICROSOFT_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.MONITORING)
+                                    .withOption(GovernedServiceItemOption.fromString("Not Applicable"))
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.POSTGRE_SQL)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.SERVICE_BUS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.STORAGE)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.AZURE_FIREWALLS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.INSIGHTS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.LOGIC)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.PRIVATE_DNSZONES)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE),
+                                new GovernedServiceItem().withServiceId(ServiceIdentifier.DATA_CONNECTORS)
+                                    .withOption(GovernedServiceItemOption.ALLOW)
+                                    .withEnforcement(GovernedServiceItemEnforcement.ENABLED)
+                                    .withPolicyAction(GovernedServiceItemPolicyAction.NONE)))
+                    .withCommunityRoleAssignments(Arrays.asList(
+                        new RoleAssignmentItem().withRoleDefinitionId("b24988ac-6180-42a0-ab88-20f7382dd24c")
+                            .withPrincipals(Arrays.asList(
+                                new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
+                                    .withType(PrincipalType.GROUP),
+                                new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c0")
+                                    .withType(PrincipalType.USER)))
+                            .withCondition("@RoleDefinition.Name StringNotEquals 'Owner'"),
+                        new RoleAssignmentItem().withRoleDefinitionId("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9")
+                            .withPrincipals(Arrays.asList(new Principal().withId("355a6bb0-abc0-4cba-000d-12a345b678c9")
+                                .withType(PrincipalType.USER)))))
+                    .withGranularApprovalSettings(
+                        new ApprovalSettingsPatchProperties()
+                            .withCommunityEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(2)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000001"))))
+                            .withEnclaveEndpointUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withEnclaveCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withConnectionCreation(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
+                            .withConnectionUpdate(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
+                            .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
+                                .withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                .withMinimumApproversRequired(2)
+                                .withMandatoryApprovers(Arrays.asList(
+                                    new MandatoryApprover().withApproverEntraId("00000000-0000-0000-0000-000000000003"),
+                                    new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000004"))))
+                            .withEnclaveMaintenanceMode(
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))))
             .apply();
     }
 

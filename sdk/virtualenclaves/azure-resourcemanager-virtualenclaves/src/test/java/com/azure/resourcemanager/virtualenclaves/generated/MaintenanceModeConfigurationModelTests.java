@@ -17,24 +17,24 @@ public final class MaintenanceModeConfigurationModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceModeConfigurationModel model = BinaryData.fromString(
-            "{\"mode\":\"On\",\"principals\":[{\"id\":\"mvvd\",\"type\":\"User\"}],\"justification\":\"Governance\"}")
+            "{\"mode\":\"Advanced\",\"principals\":[{\"id\":\"lvmezyvshxmzsbbz\",\"type\":\"Group\"}],\"justification\":\"Governance\"}")
             .toObject(MaintenanceModeConfigurationModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
-        Assertions.assertEquals("mvvd", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
+        Assertions.assertEquals("lvmezyvshxmzsbbz", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
         Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.GOVERNANCE, model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceModeConfigurationModel model
-            = new MaintenanceModeConfigurationModel().withMode(MaintenanceModeConfigurationModelMode.ON)
-                .withPrincipals(Arrays.asList(new Principal().withId("mvvd").withType(PrincipalType.USER)))
+            = new MaintenanceModeConfigurationModel().withMode(MaintenanceModeConfigurationModelMode.ADVANCED)
+                .withPrincipals(Arrays.asList(new Principal().withId("lvmezyvshxmzsbbz").withType(PrincipalType.GROUP)))
                 .withJustification(MaintenanceModeConfigurationModelJustification.GOVERNANCE);
         model = BinaryData.fromObject(model).toObject(MaintenanceModeConfigurationModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ON, model.mode());
-        Assertions.assertEquals("mvvd", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
+        Assertions.assertEquals("lvmezyvshxmzsbbz", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principals().get(0).type());
         Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.GOVERNANCE, model.justification());
     }
 }

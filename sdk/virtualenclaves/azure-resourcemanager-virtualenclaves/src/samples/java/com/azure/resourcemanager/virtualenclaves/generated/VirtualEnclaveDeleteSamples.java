@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class VirtualEnclaveDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/VirtualEnclave_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/VirtualEnclave_Delete.json
      */
     /**
      * Sample code: VirtualEnclave_Delete.

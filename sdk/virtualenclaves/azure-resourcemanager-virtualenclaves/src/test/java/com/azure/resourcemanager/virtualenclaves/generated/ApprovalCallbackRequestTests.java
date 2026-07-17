@@ -14,22 +14,22 @@ public final class ApprovalCallbackRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApprovalCallbackRequest model = BinaryData.fromString(
-            "{\"resourceRequestAction\":\"Reset\",\"approvalStatus\":\"Rejected\",\"approvalCallbackPayload\":\"gqgitxmedjvcsl\"}")
+            "{\"resourceRequestAction\":\"Delete\",\"approvalStatus\":\"Rejected\",\"approvalCallbackPayload\":\"bzdopcj\"}")
             .toObject(ApprovalCallbackRequest.class);
-        Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.RESET, model.resourceRequestAction());
+        Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.DELETE, model.resourceRequestAction());
         Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.REJECTED, model.approvalStatus());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.approvalCallbackPayload());
+        Assertions.assertEquals("bzdopcj", model.approvalCallbackPayload());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApprovalCallbackRequest model = new ApprovalCallbackRequest()
-            .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.RESET)
+            .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.DELETE)
             .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.REJECTED)
-            .withApprovalCallbackPayload("gqgitxmedjvcsl");
+            .withApprovalCallbackPayload("bzdopcj");
         model = BinaryData.fromObject(model).toObject(ApprovalCallbackRequest.class);
-        Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.RESET, model.resourceRequestAction());
+        Assertions.assertEquals(ApprovalCallbackRequestResourceRequestAction.DELETE, model.resourceRequestAction());
         Assertions.assertEquals(ApprovalCallbackRequestApprovalStatus.REJECTED, model.approvalStatus());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.approvalCallbackPayload());
+        Assertions.assertEquals("bzdopcj", model.approvalCallbackPayload());
     }
 }

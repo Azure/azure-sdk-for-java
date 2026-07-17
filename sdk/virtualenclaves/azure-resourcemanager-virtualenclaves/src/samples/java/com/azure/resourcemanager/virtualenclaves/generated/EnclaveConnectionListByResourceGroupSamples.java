@@ -9,7 +9,7 @@ package com.azure.resourcemanager.virtualenclaves.generated;
  */
 public final class EnclaveConnectionListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EnclaveConnection_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01-preview/EnclaveConnection_ListByResourceGroup.json
      */
     /**
      * Sample code: EnclaveConnection_ListByResourceGroup.
