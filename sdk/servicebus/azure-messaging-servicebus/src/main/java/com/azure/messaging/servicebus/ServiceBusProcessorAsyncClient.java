@@ -38,9 +38,10 @@ import java.util.function.Function;
  * handler {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
  * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon() abandoned};
  * this auto-settlement can be disabled via
- * {@link ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder#disableAutoComplete() disableAutoComplete()}.</p>
+ * {@link ServiceBusClientBuilder.ServiceBusProcessorAsyncClientBuilder#disableAutoComplete()
+ * disableAutoComplete()}.</p>
  *
- * <p>A {@link ServiceBusProcessorAsyncClient} can be created for a session-enabled or a non session-enabled Service
+ * <p>A {@link ServiceBusProcessorAsyncClient} can be created for a session-enabled or a non-session-enabled Service
  * Bus entity through {@link ServiceBusClientBuilder#processorAsync()} and
  * {@link ServiceBusClientBuilder#sessionProcessorAsync()} respectively.</p>
  *
