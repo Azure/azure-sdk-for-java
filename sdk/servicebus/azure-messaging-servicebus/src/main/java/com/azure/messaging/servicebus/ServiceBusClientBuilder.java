@@ -3026,8 +3026,9 @@ public final class ServiceBusClientBuilder
 
         /**
          * The async message processing callback for the processor which will be executed when a message is received.
-         * The returned {@link Mono} represents the asynchronous processing of the message; a new message is requested
-         * from the broker only after the returned {@link Mono} terminates.
+         * The returned {@link Mono} represents the asynchronous processing of the message. Up to
+         * {@code maxConcurrentCalls} messages are processed concurrently; a new message is requested from the broker as
+         * each in-flight handler's {@link Mono} terminates.
          *
          * @param processMessage The async message processing function invoked when a message is received.
          *
