@@ -335,13 +335,18 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
         }
 
         return Mono.defer(() -> {
-            // Publish intent-to-run BEFORE the closing check so a concurrent close()/drain observes this dispatch as
-            // in-flight and cannot see a spurious zero in the window between the check and the handler starting. This
-            // narrows - but cannot fully eliminate - the drain-start race; close() documents the drain as best-effort.
+            // Fast path: a redeliverable PEEK_LOCK message that arrives while close() is draining is skipped WITHOUT
+            // touching the in-flight counter, so churn from skipped messages under sustained load cannot keep the
+            // drain above zero and push shutdown toward the drain timeout. (The broker redelivers a skipped message.)
+            if (closing && skipDuringDrain) {
+                LOGGER.verbose("Skipping dispatch, processor is closing.");
+                return Mono.<Void>empty();
+            }
+            // Publish intent-to-run, then re-check: this handles the check-then-act race where closing flips between
+            // the fast-path check and the increment, and narrows (best-effort, per the close() Javadoc) the window in
+            // which a dispatch could start after the drain has observed an empty in-flight set.
             activeHandlerCount.incrementAndGet();
             if (closing && skipDuringDrain) {
-                // close() is draining and this is a redeliverable PEEK_LOCK message - skip it (the broker redelivers)
-                // and release the count immediately so a busy upstream cannot keep the drain above zero.
                 LOGGER.verbose("Skipping dispatch, processor is closing.");
                 decrementAndNotifyDrain();
                 return Mono.<Void>empty();
