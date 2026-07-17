@@ -305,6 +305,7 @@ public class ServiceBusProcessorAsyncClientTest {
             processor.close();
             closeReturned.set(true);
         });
+        closeThread.setDaemon(true);
         closeThread.start();
 
         // close() must still be draining while the handler is held.
@@ -384,6 +385,40 @@ public class ServiceBusProcessorAsyncClientTest {
         verify(mockReceiver, times(1)).abandon(any());
         // ...and no spurious restart was triggered by the swallowed error (only the initial receiver was built).
         verify(builder, times(1)).buildAsyncClientForProcessor();
+    }
+
+    /**
+     * A completion failure (after the handler succeeds) is reported to the error handler with its OWN error source
+     * ({@code COMPLETE}, not {@code USER_CALLBACK}) and does NOT trigger an abandon - the handler did its job.
+     */
+    @Test
+    public void completeFailureIsReportedAndNotAbandoned() throws InterruptedException {
+        final AtomicReference<FluxSink<ServiceBusMessageContext>> sinkRef = new AtomicReference<>();
+        final Flux<ServiceBusMessageContext> messages = Flux.create(sinkRef::set);
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(messages);
+        final ServiceBusException completeError
+            = new ServiceBusException(new IllegalStateException("complete failed"), ServiceBusErrorSource.COMPLETE);
+        when(mockReceiver.complete(any())).thenReturn(Mono.error(completeError));
+        final CountDownLatch errorLatch = new CountDownLatch(1);
+        final AtomicReference<ServiceBusErrorSource> source = new AtomicReference<>();
+
+        final ServiceBusProcessorAsyncClient processor
+            = new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME, null, null, context -> Mono.empty(), error -> {
+                source.set(error.getErrorSource());
+                errorLatch.countDown();
+                return Mono.empty();
+            }, options(1, false));
+
+        processor.start().block();
+        sinkRef.get().next(messageContext("m1"));
+        assertTrue(errorLatch.await(5, TimeUnit.SECONDS), "Completion failure was not surfaced to the error handler");
+        processor.close();
+
+        // The completion failure keeps its COMPLETE source (not misclassified as USER_CALLBACK), and the message is
+        // NOT abandoned - the handler succeeded.
+        assertEquals(ServiceBusErrorSource.COMPLETE, source.get(), "error source should be COMPLETE");
+        verify(mockReceiver, times(1)).complete(any());
+        verify(mockReceiver, never()).abandon(any());
     }
 
     /**
@@ -479,6 +514,7 @@ public class ServiceBusProcessorAsyncClientTest {
             processor.close();
             closeReturned.set(true);
         });
+        closeThread.setDaemon(true);
         closeThread.start();
         // close() is now draining (closing == true), waiting for the slow handler.
         Thread.sleep(300);
@@ -552,6 +588,7 @@ public class ServiceBusProcessorAsyncClientTest {
             processor.close();
             closeReturned.set(true);
         });
+        closeThread.setDaemon(true);
         closeThread.start();
         // close() is now draining (closing == true), waiting for the slow handler.
         Thread.sleep(300);

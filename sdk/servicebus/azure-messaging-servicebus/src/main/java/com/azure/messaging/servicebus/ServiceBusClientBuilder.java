@@ -2148,6 +2148,9 @@ public final class ServiceBusClientBuilder
          *     callbacks are not set.
          */
         public ServiceBusProcessorAsyncClient buildProcessorAsyncClient() {
+            // Validate entity/connection inputs eagerly so a misconfiguration fails at build time (matching the
+            // documented exceptions) rather than being deferred to start().
+            validateInputs();
             // The async processor manages message settlement explicitly in its reactive pipeline, so the underlying
             // receiver must never auto-settle. The user's auto-complete preference is carried in
             // processorClientOptions and applied by the processor itself.
@@ -2157,6 +2160,14 @@ public final class ServiceBusClientBuilder
                 sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        private void validateInputs() {
+            final ServiceBusSessionReceiverClientBuilder builder = sessionReceiverClientBuilder;
+            final MessagingEntityType entityType
+                = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 
@@ -3119,6 +3130,9 @@ public final class ServiceBusClientBuilder
          *     callbacks are not set.
          */
         public ServiceBusProcessorAsyncClient buildProcessorAsyncClient() {
+            // Validate entity/connection inputs eagerly so a misconfiguration fails at build time (matching the
+            // documented exceptions) rather than being deferred to start().
+            validateInputs();
             // The async processor manages message settlement explicitly in its reactive pipeline, so the underlying
             // receiver must never auto-settle. The user's auto-complete preference is carried in
             // processorClientOptions and applied by the processor itself.
@@ -3128,6 +3142,14 @@ public final class ServiceBusClientBuilder
                 serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        private void validateInputs() {
+            final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
+            final MessagingEntityType entityType
+                = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 

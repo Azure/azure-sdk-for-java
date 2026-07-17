@@ -345,13 +345,22 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
             final ServiceBusReceivedMessageContext receivedMessageContext
                 = new ServiceBusReceivedMessageContext(receiverClient, messageContext);
 
-            return Mono.defer(() -> processMessage.apply(receivedMessageContext))
-                .then(Mono.defer(
-                    () -> autoComplete ? receiverClient.complete(messageContext.getMessage()) : Mono.<Void>empty()))
-                .onErrorResume(error -> handleError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK))
-                    .then(Mono.defer(() -> {
+            return Mono.defer(() -> processMessage.apply(receivedMessageContext)).then(Mono.defer(() -> {
+                // The handler succeeded. Auto-complete if enabled; a completion failure is reported to the error
+                // handler with its OWN error source (e.g. COMPLETE) and must NOT trigger an abandon - the handler
+                // did its job.
+                if (!autoComplete) {
+                    return Mono.<Void>empty();
+                }
+                return receiverClient.complete(messageContext.getMessage())
+                    .onErrorResume(completeError -> handleError(completeError));
+            }))
+                // Only a handler error reaches here (completion errors were handled above). Report it as USER_CALLBACK
+                // and abandon the message (when auto-complete is enabled).
+                .onErrorResume(handlerError -> handleError(
+                    new ServiceBusException(handlerError, ServiceBusErrorSource.USER_CALLBACK)).then(Mono.defer(() -> {
                         if (autoComplete) {
-                            LOGGER.warning("Error when processing message. Abandoning message.", error);
+                            LOGGER.warning("Error when processing message. Abandoning message.", handlerError);
                             return receiverClient.abandon(messageContext.getMessage()).onErrorResume(abandonError -> {
                                 LOGGER.verbose("Failed to abandon message", abandonError);
                                 return Mono.<Void>empty();
