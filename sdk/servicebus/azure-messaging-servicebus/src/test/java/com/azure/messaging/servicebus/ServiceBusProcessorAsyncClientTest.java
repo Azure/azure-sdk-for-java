@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -385,6 +386,17 @@ public class ServiceBusProcessorAsyncClientTest {
         verify(mockReceiver, times(1)).abandon(any());
         // ...and no spurious restart was triggered by the swallowed error (only the initial receiver was built).
         verify(builder, times(1)).buildAsyncClientForProcessor();
+    }
+
+    /**
+     * The constructor rejects a {@code maxConcurrentCalls} value below 1 (fail-fast defense in depth beyond the
+     * builder validation).
+     */
+    @Test
+    public void constructorRejectsInvalidMaxConcurrentCalls() {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = nonSessionBuilder(Flux.never());
+        assertThrows(IllegalArgumentException.class, () -> new ServiceBusProcessorAsyncClient(builder, ENTITY_NAME,
+            null, null, context -> Mono.empty(), error -> Mono.empty(), options(0, false)));
     }
 
     /**

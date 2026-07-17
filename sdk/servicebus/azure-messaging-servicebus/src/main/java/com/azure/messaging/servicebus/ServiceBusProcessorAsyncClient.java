@@ -118,7 +118,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.autoComplete = !processorOptions.isDisableAutoComplete();
-        this.maxConcurrentCalls = processorOptions.getMaxConcurrentCalls();
+        this.maxConcurrentCalls = validateMaxConcurrentCalls(processorOptions.getMaxConcurrentCalls());
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
@@ -146,7 +146,7 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.autoComplete = !processorOptions.isDisableAutoComplete();
-        this.maxConcurrentCalls = processorOptions.getMaxConcurrentCalls();
+        this.maxConcurrentCalls = validateMaxConcurrentCalls(processorOptions.getMaxConcurrentCalls());
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
@@ -216,6 +216,10 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
      * {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} the broker simply redelivers such a message, and for
      * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} no settlement is required. Callers should
      * avoid invoking {@code close()} on latency-sensitive threads.</p>
+     *
+     * <p>Do not call {@code close()} (or {@link #stop()}) from within a message or error handler: the call blocks
+     * until in-flight handlers drain, so invoking it from a handler that has not yet returned would deadlock. Schedule
+     * shutdown from a separate controlling thread.</p>
      */
     @Override
     public void close() {
@@ -383,6 +387,14 @@ public final class ServiceBusProcessorAsyncClient implements AutoCloseable {
                 drainLock.notifyAll();
             }
         }
+    }
+
+    private static int validateMaxConcurrentCalls(int maxConcurrentCalls) {
+        if (maxConcurrentCalls < 1) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
+        }
+        return maxConcurrentCalls;
     }
 
     private Mono<Void> handleError(Throwable throwable) {
