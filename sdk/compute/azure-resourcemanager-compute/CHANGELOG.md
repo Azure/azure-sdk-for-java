@@ -1,14 +1,56 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.59.0 (2026-07-15)
 
 ### Features Added
 
-### Breaking Changes
+* `models.ImmutabilityPolicyLockData` was added
 
-### Bugs Fixed
+* `models.ImmutabilityPolicyData` was added
+
+* `models.ImmutabilityPolicyType` was added
+
+* `models.ConfidentialVMVersion` was added
+
+* `models.ImmutabilityPolicy` was added
+
+#### `models.RollingUpgradeStatusCode` was modified
+
+* `ROLLING_BACK` was added
+
+#### `models.DiskSecurityProfile` was modified
+
+* `confidentialVMVersion()` was added
+
+#### `models.UpgradeState` was modified
+
+* `ROLLING_BACK` was added
 
 ### Other Changes
+
+- Updated `DiskRP api-version` to `2026-03-02`.
+
+## 2.58.2 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.3` to version `2.59.1`.
+
+## 2.58.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.58.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+
+* Deprecated unmanaged disk related methods on `VirtualMachine`, `VirtualMachineScaleSet` and `VirtualMachineScaleSetVM`, as unmanaged disks are being retired by Azure. Use managed disks instead.
 
 ## 2.58.0 (2026-06-17)
 

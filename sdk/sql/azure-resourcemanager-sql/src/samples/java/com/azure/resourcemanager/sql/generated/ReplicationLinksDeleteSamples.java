@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ReplicationLinksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ReplicationLinkDelete.json
+     * x-ms-original-file: 2025-01-01/ReplicationLinkDelete.json
      */
     /**
      * Sample code: Delete replication link on server.

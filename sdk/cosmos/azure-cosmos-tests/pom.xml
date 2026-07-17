@@ -942,6 +942,40 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
+      <!-- thin client integration tests exercising the connectivity-probe (implicit) path.
+           Identical to the 'thinclient' profile EXCEPT COSMOS.THINCLIENT_ENABLED is deliberately
+           left unset: leaving it unset keeps Configs.isThinClientEnabled() null (neither
+           hard-enabled nor hard-disabled), so routing defers to the endpoint-probe verdict with
+           fallback to Gateway V1 rather than a hard opt-in. The probe HttpClient is wired whenever
+           ThinClientConnectivityConfig.canThinClientBeUsed() is true (GATEWAY mode + HTTP/2 and not
+           an explicit false), so HTTP2_ENABLED must stay true. -->
+      <id>thinclient-endpoint-probe</id>
+      <properties>
+        <test.groups>thinclientEndpointProbe</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/thinclient-endpoint-probe-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>manual-http-network-fault</id>
       <properties>
         <test.groups>manual-http-network-fault</test.groups>
