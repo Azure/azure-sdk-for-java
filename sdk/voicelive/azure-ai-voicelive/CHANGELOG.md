@@ -15,8 +15,6 @@
   - New `ServerEventResponseInvocationDelta` (`response.invocation.delta`) and `ServerEventType.RESPONSE_INVOCATION_DELTA` pass through non-speech SSE events from the hosted agent
 - **Session expiration**: `VoiceLiveSessionResponse.getExpiresAt()` / `setExpiresAt(OffsetDateTime)` expose the server-assigned session expiration time (serialized on the wire as seconds since epoch)
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Regenerated against the `2026-07-15` (GA) VoiceLive TypeSpec.
