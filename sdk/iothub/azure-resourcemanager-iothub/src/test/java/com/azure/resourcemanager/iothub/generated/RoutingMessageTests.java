@@ -14,23 +14,24 @@ public final class RoutingMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingMessage model = BinaryData.fromString(
-            "{\"body\":\"wyzmhtxon\",\"appProperties\":{\"knftguvriuh\":\"savjcbpwxqps\"},\"systemProperties\":{\"ro\":\"mdyvxqtayriw\",\"mcqibycnojv\":\"qbex\",\"zhpvgqzcjrvxd\":\"nmefqsgzvahapj\"}}")
+            "{\"body\":\"lns\",\"appProperties\":{\"aln\":\"xwyjsflhhc\",\"qcslyjpkiid\":\"ixisxyawjoy\",\"eli\":\"yexz\",\"bnxknalaulppg\":\"hnrztfol\"},\"systemProperties\":{\"igvpgylg\":\"pnapnyiropuh\",\"medjvcslynqwwncw\":\"git\",\"pkteo\":\"zhxgktrmgucn\",\"pfqbuaceopzf\":\"llwptfdy\"}}")
             .toObject(RoutingMessage.class);
-        Assertions.assertEquals("wyzmhtxon", model.body());
-        Assertions.assertEquals("savjcbpwxqps", model.appProperties().get("knftguvriuh"));
-        Assertions.assertEquals("mdyvxqtayriw", model.systemProperties().get("ro"));
+        Assertions.assertEquals("lns", model.body());
+        Assertions.assertEquals("xwyjsflhhc", model.appProperties().get("aln"));
+        Assertions.assertEquals("pnapnyiropuh", model.systemProperties().get("igvpgylg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingMessage model = new RoutingMessage().withBody("wyzmhtxon")
-            .withAppProperties(mapOf("knftguvriuh", "savjcbpwxqps"))
-            .withSystemProperties(
-                mapOf("ro", "mdyvxqtayriw", "mcqibycnojv", "qbex", "zhpvgqzcjrvxd", "nmefqsgzvahapj"));
+        RoutingMessage model = new RoutingMessage().withBody("lns")
+            .withAppProperties(
+                mapOf("aln", "xwyjsflhhc", "qcslyjpkiid", "ixisxyawjoy", "eli", "yexz", "bnxknalaulppg", "hnrztfol"))
+            .withSystemProperties(mapOf("igvpgylg", "pnapnyiropuh", "medjvcslynqwwncw", "git", "pkteo", "zhxgktrmgucn",
+                "pfqbuaceopzf", "llwptfdy"));
         model = BinaryData.fromObject(model).toObject(RoutingMessage.class);
-        Assertions.assertEquals("wyzmhtxon", model.body());
-        Assertions.assertEquals("savjcbpwxqps", model.appProperties().get("knftguvriuh"));
-        Assertions.assertEquals("mdyvxqtayriw", model.systemProperties().get("ro"));
+        Assertions.assertEquals("lns", model.body());
+        Assertions.assertEquals("xwyjsflhhc", model.appProperties().get("aln"));
+        Assertions.assertEquals("pnapnyiropuh", model.systemProperties().get("igvpgylg"));
     }
 
     // Use "Map.of" if available

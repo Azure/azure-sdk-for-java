@@ -12,14 +12,14 @@ public final class UserSubscriptionQuotaListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserSubscriptionQuotaListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"nwnwme\",\"type\":\"syyceuzsoibjud\",\"unit\":\"rx\",\"currentValue\":1839855586,\"limit\":747190122,\"name\":{\"value\":\"ytdw\",\"localizedValue\":\"brqubp\"}}],\"nextLink\":\"h\"}")
+            "{\"value\":[{\"id\":\"olmncwsobqwcs\",\"type\":\"nwdcfhu\",\"unit\":\"dpfuvg\",\"currentValue\":793590133,\"limit\":1418717450,\"name\":{\"value\":\"nvxbvt\",\"localizedValue\":\"dut\"}}],\"nextLink\":\"ormrlxqtvcofudfl\"}")
             .toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("nwnwme", model.value().get(0).id());
-        Assertions.assertEquals("syyceuzsoibjud", model.value().get(0).type());
-        Assertions.assertEquals("rx", model.value().get(0).unit());
-        Assertions.assertEquals(1839855586, model.value().get(0).currentValue());
-        Assertions.assertEquals(747190122, model.value().get(0).limit());
-        Assertions.assertEquals("ytdw", model.value().get(0).name().value());
-        Assertions.assertEquals("brqubp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("olmncwsobqwcs", model.value().get(0).id());
+        Assertions.assertEquals("nwdcfhu", model.value().get(0).type());
+        Assertions.assertEquals("dpfuvg", model.value().get(0).unit());
+        Assertions.assertEquals(793590133, model.value().get(0).currentValue());
+        Assertions.assertEquals(1418717450, model.value().get(0).limit());
+        Assertions.assertEquals("nvxbvt", model.value().get(0).name().value());
+        Assertions.assertEquals("dut", model.value().get(0).name().localizedValue());
     }
 }

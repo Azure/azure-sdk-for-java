@@ -13,12 +13,12 @@ public final class MatchedRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MatchedRoute model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"lnjixisxya\",\"source\":\"DeviceMessages\",\"condition\":\"yaqcslyjpkiidz\",\"endpointNames\":[\"xznelixhnrztf\",\"lhbnxkna\",\"aulppggd\"],\"isEnabled\":true}}")
+            "{\"properties\":{\"name\":\"tpvjzbexilzznfqq\",\"source\":\"DeviceMessages\",\"condition\":\"pmqtaru\",\"endpointNames\":[\"jmkcjhwqytj\",\"ybn\",\"jewgdrjerv\"],\"isEnabled\":false}}")
             .toObject(MatchedRoute.class);
-        Assertions.assertEquals("lnjixisxya", model.properties().name());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.properties().name());
         Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.properties().source());
-        Assertions.assertEquals("yaqcslyjpkiidz", model.properties().condition());
-        Assertions.assertEquals("xznelixhnrztf", model.properties().endpointNames().get(0));
-        Assertions.assertTrue(model.properties().isEnabled());
+        Assertions.assertEquals("pmqtaru", model.properties().condition());
+        Assertions.assertEquals("jmkcjhwqytj", model.properties().endpointNames().get(0));
+        Assertions.assertFalse(model.properties().isEnabled());
     }
 }

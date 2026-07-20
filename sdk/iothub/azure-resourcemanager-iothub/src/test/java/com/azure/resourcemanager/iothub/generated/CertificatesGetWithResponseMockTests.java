@@ -21,7 +21,7 @@ public final class CertificatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"viylwdshfssnrbgy\",\"expiry\":\"Wed, 17 Feb 2021 11:04:17 GMT\",\"thumbprint\":\"msgaoj\",\"isVerified\":false,\"created\":\"Sun, 25 Jul 2021 05:28:25 GMT\",\"updated\":\"Sat, 06 Mar 2021 15:23:12 GMT\",\"certificate\":\"rfh\",\"policyResourceId\":\"ctymoxoftp\"},\"etag\":\"iwyczuh\",\"id\":\"cpqjlihhyu\",\"name\":\"pskasdvlmfwdg\",\"type\":\"x\"}";
+            = "{\"properties\":{\"subject\":\"iplt\",\"expiry\":\"Wed, 21 Apr 2021 08:05:23 GMT\",\"thumbprint\":\"baxk\",\"isVerified\":false,\"created\":\"Tue, 15 Jun 2021 04:05:50 GMT\",\"updated\":\"Wed, 27 Jan 2021 09:50:08 GMT\",\"certificate\":\"yklyhpluodpvruud\",\"policyResourceId\":\"zibt\"},\"etag\":\"stgktst\",\"id\":\"xeclzedqbcvhzlhp\",\"name\":\"odqkdlwwqfb\",\"type\":\"mlkxtrqjfs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CertificatesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateDescription response = manager.certificates()
-            .getWithResponse("cluyovwxnbkf", "zzxscyhwzdgiruj", "zbomvzzbtdcqvpni", com.azure.core.util.Context.NONE)
+            .getWithResponse("yxgtczh", "ydbsd", "hmkxmaehvbb", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.properties().isVerified());
-        Assertions.assertEquals("rfh", response.properties().certificate());
-        Assertions.assertEquals("ctymoxoftp", response.properties().policyResourceId());
+        Assertions.assertEquals("yklyhpluodpvruud", response.properties().certificate());
+        Assertions.assertEquals("zibt", response.properties().policyResourceId());
     }
 }

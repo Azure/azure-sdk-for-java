@@ -21,7 +21,7 @@ public final class CertificatesListByIotHubWithResponseMockTests {
     @Test
     public void testListByIotHubWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subject\":\"zpnfqntcypsxj\",\"expiry\":\"Thu, 01 Apr 2021 01:04:39 GMT\",\"thumbprint\":\"mwks\",\"isVerified\":true,\"created\":\"Mon, 06 Sep 2021 21:17:56 GMT\",\"updated\":\"Thu, 08 Jul 2021 14:21:01 GMT\",\"certificate\":\"vydfceacvlhvygdy\",\"policyResourceId\":\"umrtwnawjsl\"},\"etag\":\"wkojgcyztsfmzn\",\"id\":\"eqphchqnrnr\",\"name\":\"x\",\"type\":\"huwrykqgaifm\"}]}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"iqtqzfavyvnq\",\"expiry\":\"Sun, 23 May 2021 06:21:06 GMT\",\"thumbprint\":\"ryeu\",\"isVerified\":false,\"created\":\"Tue, 25 May 2021 11:37:10 GMT\",\"updated\":\"Mon, 19 Apr 2021 19:49:12 GMT\",\"certificate\":\"gzslesjcbhernnti\",\"policyResourceId\":\"djc\"},\"etag\":\"quwrbehwag\",\"id\":\"buffkmrqemvvhm\",\"name\":\"tdrjfutacoebj\",\"type\":\"ewzcjznmwcp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CertificatesListByIotHubWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateListDescription response = manager.certificates()
-            .listByIotHubWithResponse("pauutpw", "qhih", com.azure.core.util.Context.NONE)
+            .listByIotHubWithResponse("ookk", "fqjbvleo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.value().get(0).properties().isVerified());
-        Assertions.assertEquals("vydfceacvlhvygdy", response.value().get(0).properties().certificate());
-        Assertions.assertEquals("umrtwnawjsl", response.value().get(0).properties().policyResourceId());
+        Assertions.assertFalse(response.value().get(0).properties().isVerified());
+        Assertions.assertEquals("gzslesjcbhernnti", response.value().get(0).properties().certificate());
+        Assertions.assertEquals("djc", response.value().get(0).properties().policyResourceId());
     }
 }

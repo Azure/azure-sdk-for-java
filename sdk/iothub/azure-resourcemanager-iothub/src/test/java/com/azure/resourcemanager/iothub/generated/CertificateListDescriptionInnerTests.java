@@ -12,10 +12,10 @@ public final class CertificateListDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateListDescriptionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subject\":\"aeaeneqnzarrw\",\"expiry\":\"Fri, 21 May 2021 16:07:38 GMT\",\"thumbprint\":\"ijfqkacewiipfp\",\"isVerified\":false,\"created\":\"Fri, 06 Aug 2021 09:42:10 GMT\",\"updated\":\"Sun, 24 Jan 2021 11:42:32 GMT\",\"certificate\":\"f\",\"policyResourceId\":\"hqkvpuvksgplsak\"},\"etag\":\"n\",\"id\":\"ynl\",\"name\":\"ph\",\"type\":\"op\"},{\"properties\":{\"subject\":\"lqiyntorzihl\",\"expiry\":\"Sat, 03 Jul 2021 10:26:48 GMT\",\"thumbprint\":\"swsrms\",\"isVerified\":false,\"created\":\"Tue, 30 Mar 2021 08:07:03 GMT\",\"updated\":\"Fri, 08 Oct 2021 11:48:09 GMT\",\"certificate\":\"hckqqzqioxiy\",\"policyResourceId\":\"iizynkedyatrwyh\"},\"etag\":\"ibzyhwitsmyp\",\"id\":\"npcdpumnzgm\",\"name\":\"z\",\"type\":\"mabiknsorgjhxb\"}]}")
+            "{\"value\":[{\"properties\":{\"subject\":\"mdbl\",\"expiry\":\"Sat, 06 Mar 2021 12:44:58 GMT\",\"thumbprint\":\"mfnjh\",\"isVerified\":false,\"created\":\"Fri, 12 Mar 2021 13:28:14 GMT\",\"updated\":\"Tue, 29 Jun 2021 07:51:14 GMT\",\"certificate\":\"kfoqreyfkzikfj\",\"policyResourceId\":\"n\"},\"etag\":\"ivx\",\"id\":\"zel\",\"name\":\"c\",\"type\":\"r\"},{\"properties\":{\"subject\":\"feaenwab\",\"expiry\":\"Tue, 07 Dec 2021 11:50:32 GMT\",\"thumbprint\":\"lddxbjhwua\",\"isVerified\":false,\"created\":\"Tue, 30 Mar 2021 04:43:35 GMT\",\"updated\":\"Sun, 21 Nov 2021 08:23:20 GMT\",\"certificate\":\"hyoulpjr\",\"policyResourceId\":\"ag\"},\"etag\":\"vimjwos\",\"id\":\"xitc\",\"name\":\"kfcktqum\",\"type\":\"ekkezzikhlyfjh\"}]}")
             .toObject(CertificateListDescriptionInner.class);
         Assertions.assertFalse(model.value().get(0).properties().isVerified());
-        Assertions.assertEquals("f", model.value().get(0).properties().certificate());
-        Assertions.assertEquals("hqkvpuvksgplsak", model.value().get(0).properties().policyResourceId());
+        Assertions.assertEquals("kfoqreyfkzikfj", model.value().get(0).properties().certificate());
+        Assertions.assertEquals("n", model.value().get(0).properties().policyResourceId());
     }
 }

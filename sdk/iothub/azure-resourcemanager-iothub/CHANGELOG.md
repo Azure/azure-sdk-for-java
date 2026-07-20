@@ -1,14 +1,60 @@
 # Release History
 
-## 1.4.0-beta.3 (Unreleased)
+## 1.4.0-beta.3 (2026-07-20)
 
-### Features Added
+- Azure Resource Manager IotHub client library for Java. This package contains Microsoft Azure SDK for IotHub Management SDK. Use this API to manage the IoT hubs in your Azure subscription. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RoutingTwinProperties` was modified
 
-### Other Changes
+* `withReported(java.lang.Object)` was removed
+* `java.lang.Object reported()` -> `java.util.Map reported()`
+* `java.lang.Object desired()` -> `java.util.Map desired()`
+* `withDesired(java.lang.Object)` was removed
+
+#### `models.IotHubSkuTier` was modified
+
+* `GENERATION2` was removed
+
+#### `models.IotHubSku` was modified
+
+* `GEN2` was removed
+
+#### `models.RoutingTwin` was modified
+
+* `withTags(java.lang.Object)` was removed
+* `java.lang.Object tags()` -> `java.util.Map tags()`
+
+### Features Added
+
+* `models.EventStreamAuthenticationType` was added
+
+* `models.GatewayVersion` was added
+
+* `models.RoutingEventStreamProperties` was added
+
+* `models.IotHubDetails` was added
+
+#### `models.IotHubProperties` was modified
+
+* `deviceHostName()` was added
+* `serviceHostName()` was added
+* `iotHubDetails()` was added
+
+#### `models.RoutingTwinProperties` was modified
+
+* `withDesired(java.util.Map)` was added
+* `withReported(java.util.Map)` was added
+
+#### `models.RoutingEndpoints` was modified
+
+* `withEventStreams(java.util.List)` was added
+* `eventStreams()` was added
+
+#### `models.RoutingTwin` was modified
+
+* `withTags(java.util.Map)` was added
 
 ## 1.4.0-beta.2 (2026-05-08)
 

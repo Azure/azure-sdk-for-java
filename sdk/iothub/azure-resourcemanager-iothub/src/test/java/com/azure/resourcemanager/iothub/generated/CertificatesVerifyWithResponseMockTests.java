@@ -22,7 +22,7 @@ public final class CertificatesVerifyWithResponseMockTests {
     @Test
     public void testVerifyWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"sdshmkxmaehvb\",\"expiry\":\"Tue, 19 Oct 2021 14:45:47 GMT\",\"thumbprint\":\"iplt\",\"isVerified\":false,\"created\":\"Thu, 08 Jul 2021 01:08:27 GMT\",\"updated\":\"Fri, 03 Sep 2021 15:46:46 GMT\",\"certificate\":\"gx\",\"policyResourceId\":\"rc\"},\"etag\":\"yklyhpluodpvruud\",\"id\":\"zibt\",\"name\":\"ostgkts\",\"type\":\"vdxec\"}";
+            = "{\"properties\":{\"subject\":\"kokwbqplhlvnu\",\"expiry\":\"Sun, 29 Aug 2021 14:02:44 GMT\",\"thumbprint\":\"lrphwzsoldw\",\"isVerified\":true,\"created\":\"Mon, 15 Mar 2021 18:22:51 GMT\",\"updated\":\"Wed, 19 May 2021 00:01:37 GMT\",\"certificate\":\"nnrwrbiork\",\"policyResourceId\":\"lywjhh\"},\"etag\":\"nhxmsi\",\"id\":\"omi\",\"name\":\"ox\",\"type\":\"gdufiqnd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class CertificatesVerifyWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateDescription response = manager.certificates()
-            .verifyWithResponse("wcw", "qioknssxmojm", "vpkjpr", "kwcf",
-                new CertificateVerificationDescription().withCertificate("ljyxgtczhe"),
+            .verifyWithResponse("rwm", "uvwpklvxwmyg", "xpgpq", "hiszepnnbjcrxgib",
+                new CertificateVerificationDescription().withCertificate("axconfozauo"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.properties().isVerified());
-        Assertions.assertEquals("gx", response.properties().certificate());
-        Assertions.assertEquals("rc", response.properties().policyResourceId());
+        Assertions.assertTrue(response.properties().isVerified());
+        Assertions.assertEquals("nnrwrbiork", response.properties().certificate());
+        Assertions.assertEquals("lywjhh", response.properties().policyResourceId());
     }
 }

@@ -13,12 +13,12 @@ public final class TestAllRoutesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesResultInner model = BinaryData.fromString(
-            "{\"routes\":[{\"properties\":{\"name\":\"pwo\",\"source\":\"Invalid\",\"condition\":\"kfpbs\",\"endpointNames\":[\"ofd\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"us\",\"source\":\"MqttBrokerMessages\",\"condition\":\"ouwaboekqvkeln\",\"endpointNames\":[\"vbxwyjsflhh\"],\"isEnabled\":false}}]}")
+            "{\"routes\":[{\"properties\":{\"name\":\"irx\",\"source\":\"DigitalTwinChangeEvents\",\"condition\":\"bsrfbj\",\"endpointNames\":[\"twss\"],\"isEnabled\":false}}]}")
             .toObject(TestAllRoutesResultInner.class);
-        Assertions.assertEquals("pwo", model.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.INVALID, model.routes().get(0).properties().source());
-        Assertions.assertEquals("kfpbs", model.routes().get(0).properties().condition());
-        Assertions.assertEquals("ofd", model.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals("irx", model.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS, model.routes().get(0).properties().source());
+        Assertions.assertEquals("bsrfbj", model.routes().get(0).properties().condition());
+        Assertions.assertEquals("twss", model.routes().get(0).properties().endpointNames().get(0));
         Assertions.assertFalse(model.routes().get(0).properties().isEnabled());
     }
 }

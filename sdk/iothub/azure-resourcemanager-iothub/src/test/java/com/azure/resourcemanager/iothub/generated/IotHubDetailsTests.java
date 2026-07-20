@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.iothub.models.RouteErrorPosition;
+import com.azure.resourcemanager.iothub.models.GatewayVersion;
+import com.azure.resourcemanager.iothub.models.IotHubDetails;
 import org.junit.jupiter.api.Assertions;
 
-public final class RouteErrorPositionTests {
+public final class IotHubDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteErrorPosition model
-            = BinaryData.fromString("{\"line\":1545768261,\"column\":436968596}").toObject(RouteErrorPosition.class);
-        Assertions.assertEquals(1545768261, model.line());
-        Assertions.assertEquals(436968596, model.column());
+        IotHubDetails model = BinaryData.fromString("{\"gatewayVersion\":\"V1\"}").toObject(IotHubDetails.class);
+        Assertions.assertEquals(GatewayVersion.V1, model.gatewayVersion());
     }
 }

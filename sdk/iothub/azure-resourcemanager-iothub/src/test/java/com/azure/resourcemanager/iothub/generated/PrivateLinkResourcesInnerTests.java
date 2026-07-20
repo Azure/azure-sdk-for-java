@@ -12,10 +12,10 @@ public final class PrivateLinkResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"c\",\"name\":\"elsfeaen\",\"type\":\"bfatklddxbjhwu\",\"properties\":{\"groupId\":\"nozj\",\"requiredMembers\":[\"hyoulpjr\"],\"requiredZoneNames\":[\"glrvimjwosytxi\"]}},{\"id\":\"skfc\",\"name\":\"qumiek\",\"type\":\"zzikhlyfjhdg\",\"properties\":{\"groupId\":\"gebdunygaeq\",\"requiredMembers\":[\"qfatpxllrxcyjm\",\"a\",\"su\",\"arm\"],\"requiredZoneNames\":[\"mjsjqb\",\"hhyxxrw\"]}},{\"id\":\"co\",\"name\":\"hp\",\"type\":\"kgymareqnajxqug\",\"properties\":{\"groupId\":\"ky\",\"requiredMembers\":[\"eddgssofw\",\"mzqa\",\"krmnjijpxacqqud\"],\"requiredZoneNames\":[\"yxbaaabjyvayf\",\"imrzrtuzqog\",\"exn\"]}}]}")
+            "{\"value\":[{\"id\":\"axoruzfgsquy\",\"name\":\"rxxle\",\"type\":\"ramxjezwlwnw\",\"properties\":{\"groupId\":\"qlcvydy\",\"requiredMembers\":[\"dooaojkniodko\",\"ebwnujhe\"],\"requiredZoneNames\":[\"bvdkcrodtjin\",\"wj\",\"fltkacjv\",\"f\"]}},{\"id\":\"lfoakg\",\"name\":\"fpagaowpulp\",\"type\":\"lyls\",\"properties\":{\"groupId\":\"k\",\"requiredMembers\":[\"sjervti\"],\"requiredZoneNames\":[\"sdszue\",\"psbzkfzbeyvpn\",\"icvi\"]}},{\"id\":\"kjj\",\"name\":\"xrbuukzclew\",\"type\":\"mlwpazt\",\"properties\":{\"groupId\":\"ofncckwyfzqwhxxb\",\"requiredMembers\":[\"a\"],\"requiredZoneNames\":[\"eqz\",\"ppriol\",\"or\"]}}]}")
             .toObject(PrivateLinkResourcesInner.class);
-        Assertions.assertEquals("nozj", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("hyoulpjr", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("glrvimjwosytxi", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("qlcvydy", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("dooaojkniodko", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }
