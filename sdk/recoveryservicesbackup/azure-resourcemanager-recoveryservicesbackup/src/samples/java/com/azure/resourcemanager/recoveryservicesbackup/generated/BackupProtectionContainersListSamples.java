@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupProtectionContainersListSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionContainers_List.json
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -20,5 +20,20 @@ public final class BackupProtectionContainersListSamples {
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager.backupProtectionContainers()
             .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_List_WithAccessType.json
+     */
+    /**
+     * Sample code: List Backup Protection Containers with Access Type.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void listBackupProtectionContainersWithAccessType(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backupProtectionContainers()
+            .list("swaggertestvault", "SwaggerTestRg", "backupManagementType eq 'AzureStorage'",
+                com.azure.core.util.Context.NONE);
     }
 }
