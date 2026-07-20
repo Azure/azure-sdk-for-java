@@ -173,6 +173,26 @@ public class EventHubProducerClientTest {
     }
 
     /**
+     * Verifies that a null event or null options throws a NullPointerException.
+     */
+    @Test
+    public void sendSingleMessageNullArguments() {
+        // Arrange
+        final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
+        final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
+
+        // Act & Assert
+        try {
+            Assertions.assertThrows(NullPointerException.class, () -> producer.send((EventData) null));
+            Assertions.assertThrows(NullPointerException.class,
+                () -> producer.send((EventData) null, new SendOptions()));
+            Assertions.assertThrows(NullPointerException.class, () -> producer.send(eventData, null));
+        } finally {
+            producer.close();
+        }
+    }
+
+    /**
      *Verifies start and end span invoked when sending a single message.
      */
     @Test

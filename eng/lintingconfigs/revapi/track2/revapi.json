@@ -329,6 +329,14 @@
           "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
         },
         {
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method (void|reactor\\.core\\.publisher\\.Mono<java\\.lang\\.Void>) com\\.azure\\.messaging\\.eventhubs\\.EventHubProducer(Async)?Client::send\\(com\\.azure\\.messaging\\.eventhubs\\.EventData(, com\\.azure\\.messaging\\.eventhubs\\.models\\.SendOptions)?\\)"
+          },
+          "justification": "The single-event send methods on the Event Hubs producer clients change from package-private to public. This adds API surface and removes none, so callers stay source and binary compatible. See https://github.com/Azure/azure-sdk-for-java/issues/41395"
+        },
+        {
           "code": "java.method.removed",
           "old": {
             "matcher": "regex",

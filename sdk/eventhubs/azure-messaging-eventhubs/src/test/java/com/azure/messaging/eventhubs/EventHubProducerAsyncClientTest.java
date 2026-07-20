@@ -204,6 +204,28 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
+     * Verifies that a null event or null options results in a NullPointerException.
+     */
+    @Test
+    void sendSingleMessageNullArguments() {
+        // Arrange
+        final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
+
+        // Act & Assert
+        StepVerifier.create(producer.send((EventData) null))
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(producer.send((EventData) null, new SendOptions()))
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
+
+        StepVerifier.create(producer.send(testData, null))
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
      * Verifies that sending multiple events will result in calling producer.send(List&lt;Message&gt;).
      */
     @Test
