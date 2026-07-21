@@ -11,7 +11,7 @@ import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
  */
 public final class IotHubResourceImportDevicesSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_importdevices.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_importdevices.json
      */
     /**
      * Sample code: IotHubResource_ImportDevices.

@@ -886,6 +886,7 @@ public final class DocumentTranslationClientImpl {
      * responses that contain a different page size or contain a continuation token.
      * 
      * 
+     * 
      * When both top and skip are included, the server should first apply
      * skip and then top on the collection.
      * Note: If the server can't honor top
@@ -1042,6 +1043,7 @@ public final class DocumentTranslationClientImpl {
      * The server honors
      * the values specified by the client. However, clients must be prepared to handle
      * responses that contain a different page size or contain a continuation token.
+     * 
      * 
      * 
      * When both top and skip are included, the server should first apply
@@ -1220,6 +1222,7 @@ public final class DocumentTranslationClientImpl {
      * responses that contain a different page size or contain a continuation token.
      * 
      * 
+     * 
      * When both top and skip are included, the server should first apply
      * skip and then top on the collection.
      * Note: If the server can't honor top
@@ -1374,6 +1377,7 @@ public final class DocumentTranslationClientImpl {
      * The server honors
      * the values specified by the client. However, clients must be prepared to handle
      * responses that contain a different page size or contain a continuation token.
+     * 
      * 
      * 
      * When both top and skip are included, the server should first apply
@@ -1842,6 +1846,7 @@ public final class DocumentTranslationClientImpl {
      * Returns the status for all documents in a batch document translation request.
      * 
      * 
+     * 
      * If the number of documents in the response exceeds our paging limit,
      * server-side paging is used.
      * Paginated responses indicate a partial result and
@@ -1861,6 +1866,7 @@ public final class DocumentTranslationClientImpl {
      * maxpagesize is the maximum items returned in a page.
      * If more items are requested via top (or top is not specified and there are
      * more items to be returned), &#064;nextLink will contain the link to the next page.
+     * 
      * 
      * 
      * orderby query parameter can be used to sort the returned list (ex
@@ -1991,6 +1997,7 @@ public final class DocumentTranslationClientImpl {
      * Returns the status for all documents in a batch document translation request.
      * 
      * 
+     * 
      * If the number of documents in the response exceeds our paging limit,
      * server-side paging is used.
      * Paginated responses indicate a partial result and
@@ -2010,6 +2017,7 @@ public final class DocumentTranslationClientImpl {
      * maxpagesize is the maximum items returned in a page.
      * If more items are requested via top (or top is not specified and there are
      * more items to be returned), &#064;nextLink will contain the link to the next page.
+     * 
      * 
      * 
      * orderby query parameter can be used to sort the returned list (ex
@@ -2158,6 +2166,7 @@ public final class DocumentTranslationClientImpl {
      * Returns the status for all documents in a batch document translation request.
      * 
      * 
+     * 
      * If the number of documents in the response exceeds our paging limit,
      * server-side paging is used.
      * Paginated responses indicate a partial result and
@@ -2177,6 +2186,7 @@ public final class DocumentTranslationClientImpl {
      * maxpagesize is the maximum items returned in a page.
      * If more items are requested via top (or top is not specified and there are
      * more items to be returned), &#064;nextLink will contain the link to the next page.
+     * 
      * 
      * 
      * orderby query parameter can be used to sort the returned list (ex
@@ -2306,6 +2316,7 @@ public final class DocumentTranslationClientImpl {
      * Returns the status for all documents in a batch document translation request.
      * 
      * 
+     * 
      * If the number of documents in the response exceeds our paging limit,
      * server-side paging is used.
      * Paginated responses indicate a partial result and
@@ -2325,6 +2336,7 @@ public final class DocumentTranslationClientImpl {
      * maxpagesize is the maximum items returned in a page.
      * If more items are requested via top (or top is not specified and there are
      * more items to be returned), &#064;nextLink will contain the link to the next page.
+     * 
      * 
      * 
      * orderby query parameter can be used to sort the returned list (ex

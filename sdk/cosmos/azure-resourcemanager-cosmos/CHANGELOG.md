@@ -6,6 +6,15 @@
 
 - Updated `api-version` to `2026-03-15`.
 
+## 2.54.4 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+
+
 ## 2.54.3 (2026-05-05)
 
 ### Other Changes

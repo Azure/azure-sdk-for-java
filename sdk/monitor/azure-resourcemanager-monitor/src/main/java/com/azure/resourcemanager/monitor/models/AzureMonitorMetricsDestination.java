@@ -17,6 +17,7 @@ import java.io.IOException;
 @Fluent
 public class AzureMonitorMetricsDestination implements JsonSerializable<AzureMonitorMetricsDestination> {
     /*
+     * 
      * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
@@ -29,7 +30,8 @@ public class AzureMonitorMetricsDestination implements JsonSerializable<AzureMon
     }
 
     /**
-     * Get the name property: A friendly name for the destination.
+     * Get the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -39,7 +41,8 @@ public class AzureMonitorMetricsDestination implements JsonSerializable<AzureMon
     }
 
     /**
-     * Set the name property: A friendly name for the destination.
+     * Set the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

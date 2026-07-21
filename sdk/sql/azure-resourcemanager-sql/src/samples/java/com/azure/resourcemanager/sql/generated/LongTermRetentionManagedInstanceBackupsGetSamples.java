@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionManagedInstanceBackupsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionBackupGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionBackupGet.json
      */
     /**
      * Sample code: Get the long term retention backup of a managed database.

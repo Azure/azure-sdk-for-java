@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
  */
 public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExportDatabaseUsingDatabaseExtensionsWithManagedIdentity.json
+     * x-ms-original-file: 2025-01-01/ExportDatabaseUsingDatabaseExtensionsWithManagedIdentity.json
      */
     /**
      * Sample code: Export database using database extension with Managed Identity.
@@ -37,7 +37,7 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ImportDatabaseUsingDatabaseExtensions.json
+     * x-ms-original-file: 2025-01-01/ImportDatabaseUsingDatabaseExtensions.json
      */
     /**
      * Sample code: Import database using database extension.
@@ -60,7 +60,7 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExportDatabaseUsingDatabaseExtensions.json
+     * x-ms-original-file: 2025-01-01/ExportDatabaseUsingDatabaseExtensions.json
      */
     /**
      * Sample code: Export database using database extension.
@@ -83,7 +83,7 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateDatabaseExtensions.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateDatabaseExtensions.json
      */
     /**
      * Sample code: Create or Update database extensions.
