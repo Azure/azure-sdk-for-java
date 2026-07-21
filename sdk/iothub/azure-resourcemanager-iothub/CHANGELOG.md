@@ -26,9 +26,9 @@
 
 #### `models.IotHubProperties` was modified
 
-* `serviceHostName()` was added
 * `iotHubDetails()` was added
 * `deviceHostName()` was added
+* `serviceHostName()` was added
 
 #### `models.RoutingEndpoints` was modified
 

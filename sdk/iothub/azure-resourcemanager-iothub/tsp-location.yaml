@@ -1,4 +1,4 @@
 directory: specification/iothub/resource-manager/Microsoft.Devices/IoTHub
-commit: b6c5dbafe5fae7584e95266840371ace84be41dc
+commit: 81261972e09ae6977caf311750928c7a42876ad8
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
