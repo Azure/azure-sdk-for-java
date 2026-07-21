@@ -5,6 +5,7 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.implementation.DatasImpl;
+import com.azure.analytics.planetarycomputer.implementation.XmlSerializerProviders;
 import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosaicsSearchRequest;
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
@@ -54,6 +55,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Objects;
@@ -64,6 +66,9 @@ import java.util.stream.Collectors;
  */
 @ServiceClient(builder = PlanetaryComputerProClientBuilder.class)
 public final class DataClient {
+    @Generated
+    private static final ObjectSerializer SERIALIZER = XmlSerializerProviders.createInstance();
+
     @Generated
     private final DatasImpl serviceClient;
 
@@ -4194,7 +4199,7 @@ public final class DataClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getWmtsCapabilitiesWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions).getValue()
-            .toObject(byte[].class);
+            .toObject(byte[].class, SERIALIZER);
     }
 
     /**
@@ -5087,7 +5092,7 @@ public final class DataClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getMosaicsWmtsCapabilitiesWithResponse(searchId, tileMatrixSetId, requestOptions).getValue()
-            .toObject(byte[].class);
+            .toObject(byte[].class, SERIALIZER);
     }
 
     @Generated
