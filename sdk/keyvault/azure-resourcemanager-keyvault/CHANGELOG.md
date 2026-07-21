@@ -2,6 +2,10 @@
 
 ## 2.56.0 (2026-07-21)
 
+### Other Changes
+
+- Updated `api-version` to `2026-02-01`.
+
 ## 2.55.3 (2026-07-01)
 
 ### Other Changes
@@ -12,7 +16,6 @@
 - Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
 - Upgraded `azure-security-keyvault-secrets` from `4.10.7` to version `4.11.1`.
 - Upgraded `azure-security-keyvault-keys` from `4.10.7` to version `4.11.1`.
-
 
 ## 2.55.2 (2026-05-05)
 
