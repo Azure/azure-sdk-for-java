@@ -153,6 +153,8 @@ jobs:
       WorkingDirectory: $(Build.SourcesDirectory)
       ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
       RepoName: azure-sdk-for-java
+      # Push the automation branch directly to the Azure org (default PROwner is azure-sdk).
+      PROwner: Azure
       BaseBranchName: 'refs/heads/main'
       PRBranchName: typespec-java-generation-$(Build.BuildId)
       CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
