@@ -443,8 +443,8 @@ public final class QueuesImpl {
      *          (Required){
      *             Id: String (Required)
      *             AccessPolicy (Required): {
-     *                 Start: String (Optional)
-     *                 Expiry: String (Optional)
+     *                 Start: OffsetDateTime (Optional)
+     *                 Expiry: OffsetDateTime (Optional)
      *                 Permission: String (Optional)
      *             }
      *         }
@@ -492,8 +492,8 @@ public final class QueuesImpl {
      *          (Required){
      *             Id: String (Required)
      *             AccessPolicy (Required): {
-     *                 Start: String (Optional)
-     *                 Expiry: String (Optional)
+     *                 Start: OffsetDateTime (Optional)
+     *                 Expiry: OffsetDateTime (Optional)
      *                 Permission: String (Optional)
      *             }
      *         }
@@ -550,8 +550,8 @@ public final class QueuesImpl {
      *          (Required){
      *             Id: String (Required)
      *             AccessPolicy (Required): {
-     *                 Start: String (Optional)
-     *                 Expiry: String (Optional)
+     *                 Start: OffsetDateTime (Optional)
+     *                 Expiry: OffsetDateTime (Optional)
      *                 Permission: String (Optional)
      *             }
      *         }
@@ -611,8 +611,8 @@ public final class QueuesImpl {
      *          (Required){
      *             Id: String (Required)
      *             AccessPolicy (Required): {
-     *                 Start: String (Optional)
-     *                 Expiry: String (Optional)
+     *                 Start: OffsetDateTime (Optional)
+     *                 Expiry: OffsetDateTime (Optional)
      *                 Permission: String (Optional)
      *             }
      *         }

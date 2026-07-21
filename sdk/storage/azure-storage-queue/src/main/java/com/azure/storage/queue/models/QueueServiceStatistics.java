@@ -53,7 +53,8 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueServiceStats" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceStats" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.geoReplication, "GeoReplication");
         return xmlWriter.writeEndElement();
@@ -86,7 +87,7 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
     public static QueueServiceStatistics fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "QueueServiceStats" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceStats" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueServiceStatistics deserializedQueueServiceStatistics = new QueueServiceStatistics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

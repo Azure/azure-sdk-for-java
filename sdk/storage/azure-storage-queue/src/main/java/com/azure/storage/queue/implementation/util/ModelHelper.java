@@ -237,8 +237,9 @@ public class ModelHelper {
         addOptionalQueryParam(requestOptions, "prefix", prefix);
         addOptionalQueryParam(requestOptions, "marker", marker);
         addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        requestOptions.addQueryParam("include",
-            (include == null || include.isEmpty()) ? "" : String.join(",", include));
+        if (include != null && !include.isEmpty()) {
+            requestOptions.addQueryParam("include", String.join(",", include));
+        }
         return requestOptions;
     }
 

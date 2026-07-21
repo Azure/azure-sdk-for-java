@@ -49,7 +49,10 @@ public class QueueTestBase extends TestProxyTestBase {
                     // AutoRest recordings captured '.../{queue}?comp=metadata'. The trailing slash is semantically
                     // insignificant to the Queue service (LIVE behavior is identical), so normalize it away for playback
                     // matching rather than treating it as a behavior change.
-                    new TestProxySanitizer("(?<s>/)[?]comp=", "", TestProxySanitizerType.URL).setGroupForReplace("s")));
+                    new TestProxySanitizer("(?<s>/)[?]comp=", "", TestProxySanitizerType.URL).setGroupForReplace("s"),
+                    // Strip the empty 'include=' left in older recordings; non-empty 'include=metadata' is preserved.
+                    new TestProxySanitizer("(?<inc>&include=)(?=&|$)", "", TestProxySanitizerType.URL)
+                        .setGroupForReplace("inc")));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter

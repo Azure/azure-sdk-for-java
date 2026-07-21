@@ -53,6 +53,16 @@ public class QueueStorageCustomizations extends Customization {
         "QueuesServiceVersion.java"
     };
 
+    private static final String IMPL_MODELS_PATH = "src/main/java/com/azure/storage/queue/implementation/models/";
+
+    // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
+    private static final String[] UNUSED_GENERATED_MODELS = new String[] {
+        "ReceivedMessages.java",
+        "PeekedMessages.java",
+        "ListOfSentMessage.java",
+        "SignedIdentifiers.java"
+    };
+
     private static final List<String> FLUENT_MODELS = Arrays.asList(
         "QueueRetentionPolicy", "QueueMetrics", "QueueCorsRule", "QueueAnalyticsLogging", "QueueSignedIdentifier",
         "GeoReplication", "QueueItem", "QueueServiceStatistics", "SendMessageResult", "UserDelegationKey");
@@ -61,51 +71,12 @@ public class QueueStorageCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedPublicClients(editor, logger);
+        removeUnusedGeneratedModels(editor, logger);
         preserveHandwrittenModuleInfo(editor, logger);
         retargetServiceVersionReferences(editor, logger);
-        restoreAccessPolicyDateTimeType(editor, logger);
         restoreFluentModels(customization, logger);
         exposeRawListQueuesResponse(customization.getPackage("com.azure.storage.queue.implementation"), logger);
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.queue.implementation"), logger);
-    }
-
-    private static void restoreAccessPolicyDateTimeType(Editor editor, Logger logger) {
-        String path = "src/main/java/com/azure/storage/queue/models/QueueAccessPolicy.java";
-        String content = editor.getContents().get(path);
-        if (content == null) {
-            logger.info("QueueAccessPolicy.java not present; skipping date-time type restoration.");
-            return;
-        }
-        if (content.contains("private OffsetDateTime startsOn;")) {
-            logger.info("QueueAccessPolicy already uses OffsetDateTime; skipping.");
-            return;
-        }
-        String updated = content
-            .replace("import com.azure.core.annotation.Generated;",
-                "import com.azure.core.annotation.Generated;\n"
-                    + "import com.azure.core.util.CoreUtils;\n"
-                    + "import java.time.OffsetDateTime;\n"
-                    + "import java.time.format.DateTimeFormatter;")
-            .replace("private String startsOn;", "private OffsetDateTime startsOn;")
-            .replace("private String expiresOn;", "private OffsetDateTime expiresOn;")
-            .replace("public String getStartsOn() {", "public OffsetDateTime getStartsOn() {")
-            .replace("public String getExpiresOn() {", "public OffsetDateTime getExpiresOn() {")
-            .replace("public QueueAccessPolicy setStartsOn(String startsOn) {",
-                "public QueueAccessPolicy setStartsOn(OffsetDateTime startsOn) {")
-            .replace("public QueueAccessPolicy setExpiresOn(String expiresOn) {",
-                "public QueueAccessPolicy setExpiresOn(OffsetDateTime expiresOn) {")
-            .replace("xmlWriter.writeStringElement(\"Start\", this.startsOn);",
-                "xmlWriter.writeStringElement(\"Start\",\n"
-                    + "            this.startsOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startsOn));")
-            .replace("xmlWriter.writeStringElement(\"Expiry\", this.expiresOn);",
-                "xmlWriter.writeStringElement(\"Expiry\",\n"
-                    + "            this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));")
-            .replace("deserializedQueueAccessPolicy.startsOn = reader.getStringElement();",
-                "deserializedQueueAccessPolicy.startsOn = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));")
-            .replace("deserializedQueueAccessPolicy.expiresOn = reader.getStringElement();",
-                "deserializedQueueAccessPolicy.expiresOn = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));");
-        editor.replaceFile(path, updated);
-        logger.info("Restored OffsetDateTime type for QueueAccessPolicy startsOn/expiresOn.");
     }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
@@ -307,6 +278,18 @@ public class QueueStorageCustomizations extends Customization {
                 logger.info("Removed generated public client {}", path);
             } else {
                 logger.info("Generated file {} not present; skipping removal.", path);
+            }
+        }
+    }
+
+    private static void removeUnusedGeneratedModels(Editor editor, Logger logger) {
+        for (String fileName : UNUSED_GENERATED_MODELS) {
+            String path = IMPL_MODELS_PATH + fileName;
+            if (editor.getContents().containsKey(path)) {
+                editor.removeFile(path);
+                logger.info("Removed unused generated model {}", path);
+            } else {
+                logger.info("Generated model {} not present; skipping removal.", path);
             }
         }
     }
