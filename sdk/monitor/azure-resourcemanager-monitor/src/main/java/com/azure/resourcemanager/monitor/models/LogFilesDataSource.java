@@ -19,6 +19,7 @@ import java.util.List;
 @Fluent
 public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSource> {
     /*
+     * 
      * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data source
      */
@@ -45,6 +46,7 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     private String transformKql;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -57,7 +59,8 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     }
 
     /**
-     * Get the streams property: List of streams that this data source will be sent to.
+     * Get the streams property:
+     * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data source.
      * 
      * @return the streams value.
@@ -67,7 +70,8 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     }
 
     /**
-     * Set the streams property: List of streams that this data source will be sent to.
+     * Set the streams property:
+     * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data source.
      * 
      * @param streams the streams value to set.
@@ -161,7 +165,8 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -171,7 +176,8 @@ public final class LogFilesDataSource implements JsonSerializable<LogFilesDataSo
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.
