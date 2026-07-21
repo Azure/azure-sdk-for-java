@@ -28,11 +28,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupEnginesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupJobsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupJobsFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectableItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectedItemsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectedItemsFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionIntentsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceEncryptionConfigsClient;
@@ -43,6 +45,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultCredentialOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultCredentialOperationStatusesClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultCredentialsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultMappingStatusClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultMappingsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultRecoveryPointOperationsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossTenantVaultRecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
@@ -51,15 +60,20 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.GetTieringCostOpe
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectableContainersClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOperationResultsFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOperationStatusesClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOperationStatusesFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
@@ -74,9 +88,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryServicesB
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxyOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.TieringCostOperationStatusClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationFromCrossTenantVaultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusFromCrossTenantVaultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
 import java.io.IOException;
@@ -556,6 +574,260 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
     }
 
     /**
+     * The CrossTenantVaultMappingsClient object to access its operations.
+     */
+    private final CrossTenantVaultMappingsClient crossTenantVaultMappings;
+
+    /**
+     * Gets the CrossTenantVaultMappingsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultMappingsClient object.
+     */
+    public CrossTenantVaultMappingsClient getCrossTenantVaultMappings() {
+        return this.crossTenantVaultMappings;
+    }
+
+    /**
+     * The CrossTenantVaultMappingStatusClient object to access its operations.
+     */
+    private final CrossTenantVaultMappingStatusClient crossTenantVaultMappingStatus;
+
+    /**
+     * Gets the CrossTenantVaultMappingStatusClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultMappingStatusClient object.
+     */
+    public CrossTenantVaultMappingStatusClient getCrossTenantVaultMappingStatus() {
+        return this.crossTenantVaultMappingStatus;
+    }
+
+    /**
+     * The BackupProtectedItemsFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupProtectedItemsFromCrossTenantVaultsClient backupProtectedItemsFromCrossTenantVaults;
+
+    /**
+     * Gets the BackupProtectedItemsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupProtectedItemsFromCrossTenantVaultsClient object.
+     */
+    public BackupProtectedItemsFromCrossTenantVaultsClient getBackupProtectedItemsFromCrossTenantVaults() {
+        return this.backupProtectedItemsFromCrossTenantVaults;
+    }
+
+    /**
+     * The ProtectedItemFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ProtectedItemFromCrossTenantVaultsClient protectedItemFromCrossTenantVaults;
+
+    /**
+     * Gets the ProtectedItemFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemFromCrossTenantVaultsClient object.
+     */
+    public ProtectedItemFromCrossTenantVaultsClient getProtectedItemFromCrossTenantVaults() {
+        return this.protectedItemFromCrossTenantVaults;
+    }
+
+    /**
+     * The CrossTenantVaultRecoveryPointsClient object to access its operations.
+     */
+    private final CrossTenantVaultRecoveryPointsClient crossTenantVaultRecoveryPoints;
+
+    /**
+     * Gets the CrossTenantVaultRecoveryPointsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultRecoveryPointsClient object.
+     */
+    public CrossTenantVaultRecoveryPointsClient getCrossTenantVaultRecoveryPoints() {
+        return this.crossTenantVaultRecoveryPoints;
+    }
+
+    /**
+     * The CrossTenantVaultRecoveryPointOperationsClient object to access its operations.
+     */
+    private final CrossTenantVaultRecoveryPointOperationsClient crossTenantVaultRecoveryPointOperations;
+
+    /**
+     * Gets the CrossTenantVaultRecoveryPointOperationsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultRecoveryPointOperationsClient object.
+     */
+    public CrossTenantVaultRecoveryPointOperationsClient getCrossTenantVaultRecoveryPointOperations() {
+        return this.crossTenantVaultRecoveryPointOperations;
+    }
+
+    /**
+     * The RestoresFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final RestoresFromCrossTenantVaultsClient restoresFromCrossTenantVaults;
+
+    /**
+     * Gets the RestoresFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestoresFromCrossTenantVaultsClient object.
+     */
+    public RestoresFromCrossTenantVaultsClient getRestoresFromCrossTenantVaults() {
+        return this.restoresFromCrossTenantVaults;
+    }
+
+    /**
+     * The ProtectedItemOperationResultsFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ProtectedItemOperationResultsFromCrossTenantVaultsClient protectedItemOperationResultsFromCrossTenantVaults;
+
+    /**
+     * Gets the ProtectedItemOperationResultsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemOperationResultsFromCrossTenantVaultsClient object.
+     */
+    public ProtectedItemOperationResultsFromCrossTenantVaultsClient
+        getProtectedItemOperationResultsFromCrossTenantVaults() {
+        return this.protectedItemOperationResultsFromCrossTenantVaults;
+    }
+
+    /**
+     * The ProtectedItemOperationStatusesFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ProtectedItemOperationStatusesFromCrossTenantVaultsClient protectedItemOperationStatusesFromCrossTenantVaults;
+
+    /**
+     * Gets the ProtectedItemOperationStatusesFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemOperationStatusesFromCrossTenantVaultsClient object.
+     */
+    public ProtectedItemOperationStatusesFromCrossTenantVaultsClient
+        getProtectedItemOperationStatusesFromCrossTenantVaults() {
+        return this.protectedItemOperationStatusesFromCrossTenantVaults;
+    }
+
+    /**
+     * The BackupJobsFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final BackupJobsFromCrossTenantVaultsClient backupJobsFromCrossTenantVaults;
+
+    /**
+     * Gets the BackupJobsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupJobsFromCrossTenantVaultsClient object.
+     */
+    public BackupJobsFromCrossTenantVaultsClient getBackupJobsFromCrossTenantVaults() {
+        return this.backupJobsFromCrossTenantVaults;
+    }
+
+    /**
+     * The JobDetailsFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final JobDetailsFromCrossTenantVaultsClient jobDetailsFromCrossTenantVaults;
+
+    /**
+     * Gets the JobDetailsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the JobDetailsFromCrossTenantVaultsClient object.
+     */
+    public JobDetailsFromCrossTenantVaultsClient getJobDetailsFromCrossTenantVaults() {
+        return this.jobDetailsFromCrossTenantVaults;
+    }
+
+    /**
+     * The OperationFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final OperationFromCrossTenantVaultsClient operationFromCrossTenantVaults;
+
+    /**
+     * Gets the OperationFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the OperationFromCrossTenantVaultsClient object.
+     */
+    public OperationFromCrossTenantVaultsClient getOperationFromCrossTenantVaults() {
+        return this.operationFromCrossTenantVaults;
+    }
+
+    /**
+     * The ValidateOperationFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ValidateOperationFromCrossTenantVaultsClient validateOperationFromCrossTenantVaults;
+
+    /**
+     * Gets the ValidateOperationFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationFromCrossTenantVaultsClient object.
+     */
+    public ValidateOperationFromCrossTenantVaultsClient getValidateOperationFromCrossTenantVaults() {
+        return this.validateOperationFromCrossTenantVaults;
+    }
+
+    /**
+     * The ValidateOperationResultFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ValidateOperationResultFromCrossTenantVaultsClient validateOperationResultFromCrossTenantVaults;
+
+    /**
+     * Gets the ValidateOperationResultFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationResultFromCrossTenantVaultsClient object.
+     */
+    public ValidateOperationResultFromCrossTenantVaultsClient getValidateOperationResultFromCrossTenantVaults() {
+        return this.validateOperationResultFromCrossTenantVaults;
+    }
+
+    /**
+     * The ValidateOperationStatusFromCrossTenantVaultsClient object to access its operations.
+     */
+    private final ValidateOperationStatusFromCrossTenantVaultsClient validateOperationStatusFromCrossTenantVaults;
+
+    /**
+     * Gets the ValidateOperationStatusFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationStatusFromCrossTenantVaultsClient object.
+     */
+    public ValidateOperationStatusFromCrossTenantVaultsClient getValidateOperationStatusFromCrossTenantVaults() {
+        return this.validateOperationStatusFromCrossTenantVaults;
+    }
+
+    /**
+     * The CrossTenantVaultCredentialsClient object to access its operations.
+     */
+    private final CrossTenantVaultCredentialsClient crossTenantVaultCredentials;
+
+    /**
+     * Gets the CrossTenantVaultCredentialsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialsClient object.
+     */
+    public CrossTenantVaultCredentialsClient getCrossTenantVaultCredentials() {
+        return this.crossTenantVaultCredentials;
+    }
+
+    /**
+     * The CrossTenantVaultCredentialOperationResultsClient object to access its operations.
+     */
+    private final CrossTenantVaultCredentialOperationResultsClient crossTenantVaultCredentialOperationResults;
+
+    /**
+     * Gets the CrossTenantVaultCredentialOperationResultsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialOperationResultsClient object.
+     */
+    public CrossTenantVaultCredentialOperationResultsClient getCrossTenantVaultCredentialOperationResults() {
+        return this.crossTenantVaultCredentialOperationResults;
+    }
+
+    /**
+     * The CrossTenantVaultCredentialOperationStatusesClient object to access its operations.
+     */
+    private final CrossTenantVaultCredentialOperationStatusesClient crossTenantVaultCredentialOperationStatuses;
+
+    /**
+     * Gets the CrossTenantVaultCredentialOperationStatusesClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialOperationStatusesClient object.
+     */
+    public CrossTenantVaultCredentialOperationStatusesClient getCrossTenantVaultCredentialOperationStatuses() {
+        return this.crossTenantVaultCredentialOperationStatuses;
+    }
+
+    /**
      * The BackupStatusClient object to access its operations.
      */
     private final BackupStatusClient backupStatus;
@@ -922,7 +1194,7 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-31-preview";
+        this.apiVersion = "2026-05-31-preview";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
@@ -950,6 +1222,30 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.jobOperationResults = new JobOperationResultsClientImpl(this);
         this.exportJobsOperationResults = new ExportJobsOperationResultsClientImpl(this);
         this.backupEngines = new BackupEnginesClientImpl(this);
+        this.crossTenantVaultMappings = new CrossTenantVaultMappingsClientImpl(this);
+        this.crossTenantVaultMappingStatus = new CrossTenantVaultMappingStatusClientImpl(this);
+        this.backupProtectedItemsFromCrossTenantVaults = new BackupProtectedItemsFromCrossTenantVaultsClientImpl(this);
+        this.protectedItemFromCrossTenantVaults = new ProtectedItemFromCrossTenantVaultsClientImpl(this);
+        this.crossTenantVaultRecoveryPoints = new CrossTenantVaultRecoveryPointsClientImpl(this);
+        this.crossTenantVaultRecoveryPointOperations = new CrossTenantVaultRecoveryPointOperationsClientImpl(this);
+        this.restoresFromCrossTenantVaults = new RestoresFromCrossTenantVaultsClientImpl(this);
+        this.protectedItemOperationResultsFromCrossTenantVaults
+            = new ProtectedItemOperationResultsFromCrossTenantVaultsClientImpl(this);
+        this.protectedItemOperationStatusesFromCrossTenantVaults
+            = new ProtectedItemOperationStatusesFromCrossTenantVaultsClientImpl(this);
+        this.backupJobsFromCrossTenantVaults = new BackupJobsFromCrossTenantVaultsClientImpl(this);
+        this.jobDetailsFromCrossTenantVaults = new JobDetailsFromCrossTenantVaultsClientImpl(this);
+        this.operationFromCrossTenantVaults = new OperationFromCrossTenantVaultsClientImpl(this);
+        this.validateOperationFromCrossTenantVaults = new ValidateOperationFromCrossTenantVaultsClientImpl(this);
+        this.validateOperationResultFromCrossTenantVaults
+            = new ValidateOperationResultFromCrossTenantVaultsClientImpl(this);
+        this.validateOperationStatusFromCrossTenantVaults
+            = new ValidateOperationStatusFromCrossTenantVaultsClientImpl(this);
+        this.crossTenantVaultCredentials = new CrossTenantVaultCredentialsClientImpl(this);
+        this.crossTenantVaultCredentialOperationResults
+            = new CrossTenantVaultCredentialOperationResultsClientImpl(this);
+        this.crossTenantVaultCredentialOperationStatuses
+            = new CrossTenantVaultCredentialOperationStatusesClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
         this.featureSupports = new FeatureSupportsClientImpl(this);
         this.backupProtectionIntents = new BackupProtectionIntentsClientImpl(this);

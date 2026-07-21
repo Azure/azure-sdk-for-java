@@ -4,16 +4,45 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
+import com.azure.resourcemanager.recoveryservicesbackup.models.AccessType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAccountLock;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.models.OperationType;
 
 /**
  * Samples for ProtectionContainers Register.
  */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
+     */
+    /**
+     * Sample code: Re-register Azure Storage ProtectionContainers switching to User Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void reRegisterAzureStorageProtectionContainersSwitchingToUserAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.protectionContainers()
+            .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
+            .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
+            .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE)
+                .withOperationType(OperationType.REREGISTER)
+                .withAccessType(AccessType.IDENTITY_BASED)
+                .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                    .withManagedIdentityResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.
@@ -30,6 +59,78 @@ public final class ProtectionContainersRegisterSamples {
                 .withSourceResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
                 .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
+     */
+    /**
+     * Sample code: Re-register Azure Storage ProtectionContainers switching to System Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void reRegisterAzureStorageProtectionContainersSwitchingToSystemAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.protectionContainers()
+            .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
+            .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
+            .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE)
+                .withOperationType(OperationType.REREGISTER)
+                .withAccessType(AccessType.IDENTITY_BASED)
+                .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register_WithSAMI.json
+     */
+    /**
+     * Sample code: Register Azure Storage ProtectionContainers with System Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void registerAzureStorageProtectionContainersWithSystemAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.protectionContainers()
+            .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
+            .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
+            .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE)
+                .withAccessType(AccessType.IDENTITY_BASED)
+                .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register_WithUAMI.json
+     */
+    /**
+     * Sample code: Register Azure Storage ProtectionContainers with User Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void registerAzureStorageProtectionContainersWithUserAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.protectionContainers()
+            .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
+            .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
+            .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE)
+                .withAccessType(AccessType.IDENTITY_BASED)
+                .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                    .withManagedIdentityResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami")))
             .create();
     }
 }
