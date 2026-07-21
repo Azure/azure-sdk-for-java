@@ -360,11 +360,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /*
      * Specifies whether the volume operates in Breakthrough Mode.
      */
-    private BreakthroughMode breakthroughModeOld;
-
-    /*
-     * Specifies whether the volume operates in Breakthrough Mode.
-     */
     private BreakthroughMode breakthroughMode;
 
     /**
@@ -1418,26 +1413,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode.
-     * 
-     * @return the breakthroughModeOld value.
-     */
-    public BreakthroughMode breakthroughModeOld() {
-        return this.breakthroughModeOld;
-    }
-
-    /**
-     * Set the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode.
-     * 
-     * @param breakthroughModeOld the breakthroughModeOld value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withBreakthroughModeOld(BreakthroughMode breakthroughModeOld) {
-        this.breakthroughModeOld = breakthroughModeOld;
-        return this;
-    }
-
-    /**
      * Get the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
      * 
      * @return the breakthroughMode value.
@@ -1544,8 +1519,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("enableSubvolumes",
             this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
-        jsonWriter.writeStringField("breakthroughModeOld",
-            this.breakthroughModeOld == null ? null : this.breakthroughModeOld.toString());
         jsonWriter.writeStringField("breakthroughMode",
             this.breakthroughMode == null ? null : this.breakthroughMode.toString());
         return jsonWriter.writeEndObject();
@@ -1696,8 +1669,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
                 } else if ("inheritedSizeInBytes".equals(fieldName)) {
                     deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
-                } else if ("breakthroughModeOld".equals(fieldName)) {
-                    deserializedVolumeProperties.breakthroughModeOld = BreakthroughMode.fromString(reader.getString());
                 } else if ("breakthroughMode".equals(fieldName)) {
                     deserializedVolumeProperties.breakthroughMode = BreakthroughMode.fromString(reader.getString());
                 } else {

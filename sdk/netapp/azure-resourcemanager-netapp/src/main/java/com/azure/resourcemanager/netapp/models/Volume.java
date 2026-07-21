@@ -533,13 +533,6 @@ public interface Volume {
     Long inheritedSizeInBytes();
 
     /**
-     * Gets the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode.
-     * 
-     * @return the breakthroughModeOld value.
-     */
-    BreakthroughMode breakthroughModeOld();
-
-    /**
      * Gets the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
      * 
      * @return the breakthroughMode value.
@@ -697,8 +690,7 @@ public interface Volume {
             DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
             DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
             DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
-            DefinitionStages.WithIsLargeVolume, DefinitionStages.WithBreakthroughModeOld,
-            DefinitionStages.WithBreakthroughMode {
+            DefinitionStages.WithIsLargeVolume, DefinitionStages.WithBreakthroughMode {
             /**
              * Executes the create request.
              * 
@@ -1289,19 +1281,6 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
-        }
-
-        /**
-         * The stage of the Volume definition allowing to specify breakthroughModeOld.
-         */
-        interface WithBreakthroughModeOld {
-            /**
-             * Specifies the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode..
-             * 
-             * @param breakthroughModeOld Specifies whether the volume operates in Breakthrough Mode.
-             * @return the next definition stage.
-             */
-            WithCreate withBreakthroughModeOld(BreakthroughMode breakthroughModeOld);
         }
 
         /**

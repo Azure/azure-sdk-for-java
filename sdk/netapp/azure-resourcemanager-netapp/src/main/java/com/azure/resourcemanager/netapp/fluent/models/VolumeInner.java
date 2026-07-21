@@ -1343,29 +1343,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode.
-     * 
-     * @return the breakthroughModeOld value.
-     */
-    public BreakthroughMode breakthroughModeOld() {
-        return this.innerProperties() == null ? null : this.innerProperties().breakthroughModeOld();
-    }
-
-    /**
-     * Set the breakthroughModeOld property: Specifies whether the volume operates in Breakthrough Mode.
-     * 
-     * @param breakthroughModeOld the breakthroughModeOld value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withBreakthroughModeOld(BreakthroughMode breakthroughModeOld) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withBreakthroughModeOld(breakthroughModeOld);
-        return this;
-    }
-
-    /**
      * Get the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
      * 
      * @return the breakthroughMode value.

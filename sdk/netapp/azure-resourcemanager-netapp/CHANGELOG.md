@@ -11,18 +11,14 @@
 #### `models.Volume$Definition` was modified
 
 * `withBreakthroughMode(models.BreakthroughMode)` was added
-* `withBreakthroughModeOld(models.BreakthroughMode)` was added
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `withBreakthroughModeOld(models.BreakthroughMode)` was added
-* `breakthroughMode()` was added
 * `withBreakthroughMode(models.BreakthroughMode)` was added
-* `breakthroughModeOld()` was added
+* `breakthroughMode()` was added
 
 #### `models.Volume` was modified
 
-* `breakthroughModeOld()` was added
 * `breakthroughMode()` was added
 
 ## 2.4.0-beta.1 (2026-06-30)

@@ -350,10 +350,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().inheritedSizeInBytes();
     }
 
-    public BreakthroughMode breakthroughModeOld() {
-        return this.innerModel().breakthroughModeOld();
-    }
-
     public BreakthroughMode breakthroughMode() {
         return this.innerModel().breakthroughMode();
     }
@@ -938,11 +934,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
-        return this;
-    }
-
-    public VolumeImpl withBreakthroughModeOld(BreakthroughMode breakthroughModeOld) {
-        this.innerModel().withBreakthroughModeOld(breakthroughModeOld);
         return this;
     }
 
