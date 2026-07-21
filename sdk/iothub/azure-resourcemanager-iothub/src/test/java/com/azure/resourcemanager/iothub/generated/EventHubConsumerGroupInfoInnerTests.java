@@ -11,7 +11,7 @@ public final class EventHubConsumerGroupInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubConsumerGroupInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"rfouyftaakcpw\":\"\\\"datauefywsbpfvmwy\\\"\",\"nubexk\":\"\\\"datayzvqt\\\"\",\"quxvypomgkop\":\"\\\"datazksmondj\\\"\",\"jqg\":\"\\\"datawhojvp\\\"\"},\"etag\":\"smocmbq\",\"id\":\"vmkcx\",\"name\":\"zapvhelx\",\"type\":\"rgly\"}")
+            "{\"properties\":{\"dltfz\":\"\\\"datavmkqzeqq\\\"\",\"gureodkwobdag\":\"\\\"datamhhv\\\"\",\"gqxndlkzgxhuripl\":\"\\\"datatibqdxbxwakb\\\"\"},\"etag\":\"odxun\",\"id\":\"ebxmubyynt\",\"name\":\"lrb\",\"type\":\"tkoievseotgq\"}")
             .toObject(EventHubConsumerGroupInfoInner.class);
     }
 }

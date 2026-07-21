@@ -21,7 +21,7 @@ public final class IotHubResourcesListEventHubConsumerGroupsMockTests {
     @Test
     public void testListEventHubConsumerGroups() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"txifqj\":\"\\\"datasjnhn\\\"\"},\"etag\":\"xmrhu\",\"id\":\"wp\",\"name\":\"esutrgjupauutpw\",\"type\":\"qhih\"}]}";
+            = "{\"value\":[{\"properties\":{\"atjinrvgoupmfiib\":\"\\\"dataqrvqq\\\"\",\"x\":\"\\\"dataggjioolvr\\\"\",\"kkgll\":\"\\\"datav\\\"\"},\"etag\":\"jygvjayvbl\",\"id\":\"vkzuhbxvvyhgso\",\"name\":\"byrqufeg\",\"type\":\"uvwzfbnh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class IotHubResourcesListEventHubConsumerGroupsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EventHubConsumerGroupInfo> response = manager.iotHubResources()
-            .listEventHubConsumerGroups("skasdvlmfwdgzxu", "ucvpamrs", "euzvx", com.azure.core.util.Context.NONE);
+            .listEventHubConsumerGroups("tmtdhtmdvypgik", "gszywk", "irryuzhlh", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -14,14 +14,14 @@ public final class TestRouteResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestRouteResultInner model = BinaryData.fromString(
-            "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"ebmnzbtbhjpglk\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":834040298,\"column\":458990624},\"end\":{\"line\":1976701075,\"column\":1777092191}}},{\"message\":\"yhtozfikdowwqu\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":1447033048,\"column\":2116821034},\"end\":{\"line\":1591350946,\"column\":1631099320}}},{\"message\":\"nosggbhcoh\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":459931810,\"column\":1077119628},\"end\":{\"line\":391766197,\"column\":1151274297}}}]}}")
+            "{\"result\":\"false\",\"details\":{\"compilationErrors\":[{\"message\":\"srfbjfdtwss\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":874148827,\"column\":1235013026},\"end\":{\"line\":1057432086,\"column\":1579331831}}},{\"message\":\"nfqqnvwp\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":1284168772,\"column\":623539244},\"end\":{\"line\":1203309297,\"column\":1426920839}}},{\"message\":\"qytjrybnwjewgd\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":604177419,\"column\":1214178064},\"end\":{\"line\":305613807,\"column\":1479768723}}},{\"message\":\"doy\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":372150678,\"column\":132200951},\"end\":{\"line\":294736838,\"column\":962281735}}}]}}")
             .toObject(TestRouteResultInner.class);
-        Assertions.assertEquals(TestResultStatus.UNDEFINED, model.result());
-        Assertions.assertEquals("ebmnzbtbhjpglk", model.details().compilationErrors().get(0).message());
-        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.details().compilationErrors().get(0).severity());
-        Assertions.assertEquals(834040298, model.details().compilationErrors().get(0).location().start().line());
-        Assertions.assertEquals(458990624, model.details().compilationErrors().get(0).location().start().column());
-        Assertions.assertEquals(1976701075, model.details().compilationErrors().get(0).location().end().line());
-        Assertions.assertEquals(1777092191, model.details().compilationErrors().get(0).location().end().column());
+        Assertions.assertEquals(TestResultStatus.FALSE, model.result());
+        Assertions.assertEquals("srfbjfdtwss", model.details().compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.details().compilationErrors().get(0).severity());
+        Assertions.assertEquals(874148827, model.details().compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(1235013026, model.details().compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1057432086, model.details().compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(1579331831, model.details().compilationErrors().get(0).location().end().column());
     }
 }

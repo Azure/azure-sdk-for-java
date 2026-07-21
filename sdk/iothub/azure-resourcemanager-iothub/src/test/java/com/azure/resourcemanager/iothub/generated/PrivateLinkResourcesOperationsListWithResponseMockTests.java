@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesOperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"kkudzp\",\"name\":\"wjplma\",\"type\":\"tcyohpfkyrk\",\"properties\":{\"groupId\":\"dg\",\"requiredMembers\":[\"sjkmnwqj\"],\"requiredZoneNames\":[\"aiy\",\"ddviacegfnmntfpm\",\"memfnczdwvvbalxl\",\"lchpodbzevwrdn\"]}}]}";
+            = "{\"value\":[{\"id\":\"udygooo\",\"name\":\"qfqjbvleorfm\",\"type\":\"iqtqzfavyvnq\",\"properties\":{\"groupId\":\"bar\",\"requiredMembers\":[\"ayjkqa\",\"qgzsles\"],\"requiredZoneNames\":[\"hernntiewdjc\",\"bquwrbehw\",\"gohbuffkmrq\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class PrivateLinkResourcesOperationsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResources response = manager.privateLinkResourcesOperations()
-            .listWithResponse("vudtjuewbcihx", "uwhcjyxccybv", com.azure.core.util.Context.NONE)
+            .listWithResponse("qjfsmlmbtxhw", "fwsrtawcoezbrhu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dg", response.value().get(0).properties().groupId());
-        Assertions.assertEquals("sjkmnwqj", response.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("aiy", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("bar", response.value().get(0).properties().groupId());
+        Assertions.assertEquals("ayjkqa", response.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("hernntiewdjc", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

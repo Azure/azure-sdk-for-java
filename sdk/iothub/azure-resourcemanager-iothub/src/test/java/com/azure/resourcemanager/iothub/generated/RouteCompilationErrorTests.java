@@ -13,13 +13,13 @@ public final class RouteCompilationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteCompilationError model = BinaryData.fromString(
-            "{\"message\":\"uflrwd\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":885184868,\"column\":1095036678},\"end\":{\"line\":1900906621,\"column\":2058639805}}}")
+            "{\"message\":\"dbzm\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":307071571,\"column\":451636387},\"end\":{\"line\":1616602527,\"column\":722282959}}}")
             .toObject(RouteCompilationError.class);
-        Assertions.assertEquals("uflrwd", model.message());
-        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.severity());
-        Assertions.assertEquals(885184868, model.location().start().line());
-        Assertions.assertEquals(1095036678, model.location().start().column());
-        Assertions.assertEquals(1900906621, model.location().end().line());
-        Assertions.assertEquals(2058639805, model.location().end().column());
+        Assertions.assertEquals("dbzm", model.message());
+        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.severity());
+        Assertions.assertEquals(307071571, model.location().start().line());
+        Assertions.assertEquals(451636387, model.location().start().column());
+        Assertions.assertEquals(1616602527, model.location().end().line());
+        Assertions.assertEquals(722282959, model.location().end().column());
     }
 }

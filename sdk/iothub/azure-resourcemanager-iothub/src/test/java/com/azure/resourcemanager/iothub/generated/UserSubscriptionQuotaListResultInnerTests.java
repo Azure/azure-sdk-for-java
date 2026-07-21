@@ -12,14 +12,14 @@ public final class UserSubscriptionQuotaListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserSubscriptionQuotaListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"olmncwsobqwcs\",\"type\":\"nwdcfhu\",\"unit\":\"dpfuvg\",\"currentValue\":793590133,\"limit\":1418717450,\"name\":{\"value\":\"nvxbvt\",\"localizedValue\":\"dut\"}}],\"nextLink\":\"ormrlxqtvcofudfl\"}")
+            "{\"value\":[{\"id\":\"feaenwab\",\"type\":\"tkl\",\"unit\":\"xbjhwuaanozjosph\",\"currentValue\":1172987793,\"limit\":2134334822,\"name\":{\"value\":\"v\",\"localizedValue\":\"glrvimjwosytxi\"}},{\"id\":\"skfc\",\"type\":\"qumiek\",\"unit\":\"zzikhlyfjhdg\",\"currentValue\":757390701,\"limit\":558583308,\"name\":{\"value\":\"nyga\",\"localizedValue\":\"idb\"}},{\"id\":\"atpxl\",\"type\":\"xcyjmoadsuvarmy\",\"unit\":\"mjsjqb\",\"currentValue\":1682275079,\"limit\":249171205,\"name\":{\"value\":\"wlycoduhpkxkg\",\"localizedValue\":\"areqna\"}},{\"id\":\"qugjhkycube\",\"type\":\"gssofwq\",\"unit\":\"qal\",\"currentValue\":1473869810,\"limit\":1723578922,\"name\":{\"value\":\"pxacqqudfn\",\"localizedValue\":\"xbaaabjyv\"}}],\"nextLink\":\"ffimrzrtuzqogsex\"}")
             .toObject(UserSubscriptionQuotaListResultInner.class);
-        Assertions.assertEquals("olmncwsobqwcs", model.value().get(0).id());
-        Assertions.assertEquals("nwdcfhu", model.value().get(0).type());
-        Assertions.assertEquals("dpfuvg", model.value().get(0).unit());
-        Assertions.assertEquals(793590133, model.value().get(0).currentValue());
-        Assertions.assertEquals(1418717450, model.value().get(0).limit());
-        Assertions.assertEquals("nvxbvt", model.value().get(0).name().value());
-        Assertions.assertEquals("dut", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("feaenwab", model.value().get(0).id());
+        Assertions.assertEquals("tkl", model.value().get(0).type());
+        Assertions.assertEquals("xbjhwuaanozjosph", model.value().get(0).unit());
+        Assertions.assertEquals(1172987793, model.value().get(0).currentValue());
+        Assertions.assertEquals(2134334822, model.value().get(0).limit());
+        Assertions.assertEquals("v", model.value().get(0).name().value());
+        Assertions.assertEquals("glrvimjwosytxi", model.value().get(0).name().localizedValue());
     }
 }

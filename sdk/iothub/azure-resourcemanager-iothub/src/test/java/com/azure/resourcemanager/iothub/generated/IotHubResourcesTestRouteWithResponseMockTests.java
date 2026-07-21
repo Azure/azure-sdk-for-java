@@ -32,7 +32,7 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
     @Test
     public void testTestRouteWithResponse() throws Exception {
         String responseStr
-            = "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"tpkiwkkbnujry\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}}]}}";
+            = "{\"result\":\"undefined\",\"details\":{\"compilationErrors\":[{\"message\":\"gpikpzimejza\",\"severity\":\"warning\",\"location\":{\"start\":{},\"end\":{}}}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -43,30 +43,25 @@ public final class IotHubResourcesTestRouteWithResponseMockTests {
 
         TestRouteResult response
             = manager.iotHubResources()
-                .testRouteWithResponse("s", "pbyrqufegxu",
+                .testRouteWithResponse("bdeibqipqk", "hvxndzwmkrefajpj",
                     new TestRouteInput()
-                        .withMessage(new RoutingMessage().withBody("fbn")
-                            .withAppProperties(mapOf("hrixkwmy", "ctlpdngitvgb", "hbpnaixexccbd", "jejveg", "htpwij",
-                                "eaxhcexdrrvqahqk"))
-                            .withSystemProperties(mapOf("vmtgjqppy", "jsvfycxzbfvoowv", "ronzmyhgfip", "s")))
-                        .withRoute(new RouteProperties().withName("sxkm")
-                            .withSource(RoutingSource.MQTT_BROKER_MESSAGES)
-                            .withCondition("ekrrjr")
-                            .withEndpointNames(Arrays.asList("fxtsgum", "jglikkxwslolb"))
+                        .withMessage(new RoutingMessage().withBody("kqnyh")
+                            .withAppProperties(mapOf("jivfxzsjabib", "j"))
+                            .withSystemProperties(mapOf("jxbkzbzkdvn", "tawfsdjpvkvp", "zhjjklffhmouwq",
+                                "jabudurgkakmo", "eeyebi", "gzrf")))
+                        .withRoute(new RouteProperties().withName("ikayuhqlbjbsybb")
+                            .withSource(RoutingSource.DEVICE_MESSAGES)
+                            .withCondition("vtldgmfpgvmpip")
+                            .withEndpointNames(Arrays.asList("ltha", "fxssm"))
                             .withIsEnabled(false))
-                        .withTwin(new RoutingTwin()
-                            .withTags(mapOf("elfk", "\"datalmv\"", "njwmwkpnbsazejj", "\"datagplcrpwjxeznoigb\"",
-                                "augzxnfaazpxdtn", "\"dataqkagfhsxt\""))
-                            .withProperties(new RoutingTwinProperties()
-                                .withDesired(mapOf("rkpyouaibrebqaay", "\"dataqjjlwuen\"", "ixqtn", "\"dataj\"",
-                                    "ffiakp", "\"datattezlw\"", "tmmjihyeozph", "\"datapqqmted\""))
-                                .withReported(mapOf("cwxqu", "\"datauyqncygupkvipmd\"", "xhojuj", "\"dataevzhfsto\"",
-                                    "hixbjxyfwnyl", "\"dataypelmcu\"")))),
+                        .withTwin(new RoutingTwin().withTags("\"databdsrez\"")
+                            .withProperties(new RoutingTwinProperties().withDesired("\"datahneuyowqkd\"")
+                                .withReported("\"datat\""))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(TestResultStatus.UNDEFINED, response.result());
-        Assertions.assertEquals("tpkiwkkbnujry", response.details().compilationErrors().get(0).message());
+        Assertions.assertEquals("gpikpzimejza", response.details().compilationErrors().get(0).message());
         Assertions.assertEquals(RouteErrorSeverity.WARNING, response.details().compilationErrors().get(0).severity());
     }
 

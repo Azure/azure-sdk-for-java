@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"dwmsweypqwd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gicccnxqhuex\",\"actionsRequired\":\"ttlstvlzywemhz\"}},\"id\":\"csdtclusiypbs\",\"name\":\"gytguslfead\",\"type\":\"ygqukyhejh\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"xgfpelolppv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"r\",\"actionsRequired\":\"vu\"}},\"id\":\"raehtwdwrft\",\"name\":\"wib\",\"type\":\"rcdlbhshfwpr\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"twitykhev\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cedcpnmdy\",\"actionsRequired\":\"nwzxltjcv\"}},\"id\":\"ltiugcxnavv\",\"name\":\"xqi\",\"type\":\"y\"}]";
+            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"nnqvsa\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"qntorudsgsahmkyc\",\"actionsRequired\":\"auwjuetaebu\"}},\"id\":\"vdmovsmzlxwabm\",\"name\":\"oefki\",\"type\":\"rvtp\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"jmqlgkfb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"doaon\",\"actionsRequired\":\"jcntuj\"}},\"id\":\"c\",\"name\":\"ed\",\"type\":\"twwaezkojvdcpzf\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateEndpointConnection> response = manager.privateEndpointConnections()
-            .listWithResponse("scywuggwoluhc", "bwemhairs", com.azure.core.util.Context.NONE)
+            .listWithResponse("vkg", "u", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             response.get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gicccnxqhuex",
+        Assertions.assertEquals("qntorudsgsahmkyc",
             response.get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ttlstvlzywemhz",
+        Assertions.assertEquals("auwjuetaebu",
             response.get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

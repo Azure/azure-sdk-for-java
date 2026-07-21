@@ -21,7 +21,7 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
     @Test
     public void testGetSubscriptionQuotaWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"uvsj\",\"type\":\"wsmystuluqypf\",\"unit\":\"lerchpq\",\"currentValue\":131662933,\"limit\":1988339423,\"name\":{\"value\":\"bwidfcxsspuunn\",\"localizedValue\":\"yhkx\"}}],\"nextLink\":\"ddrihpf\"}";
+            = "{\"value\":[{\"id\":\"hmxtdr\",\"type\":\"utacoe\",\"unit\":\"vewzcj\",\"currentValue\":96469803,\"limit\":1754338424,\"name\":{\"value\":\"guaadraufactkahz\",\"localizedValue\":\"ajjziuxxpshne\"}},{\"id\":\"ulfgslqu\",\"type\":\"wdlenrdsut\",\"unit\":\"bazpjuohmi\",\"currentValue\":853013745,\"limit\":1572022243,\"name\":{\"value\":\"wmd\",\"localizedValue\":\"wpklvxw\"}},{\"id\":\"gdxpg\",\"type\":\"chisze\",\"unit\":\"nb\",\"currentValue\":1746749164,\"limit\":1933702310,\"name\":{\"value\":\"bdaxconfozauorsu\",\"localizedValue\":\"kwbqplhlvnuu\"}}],\"nextLink\":\"zlrphwzs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class ResourceProviderCommonsGetSubscriptionQuotaWithResponseMockTe
             .getSubscriptionQuotaWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uvsj", response.value().get(0).id());
-        Assertions.assertEquals("wsmystuluqypf", response.value().get(0).type());
-        Assertions.assertEquals("lerchpq", response.value().get(0).unit());
-        Assertions.assertEquals(131662933, response.value().get(0).currentValue());
-        Assertions.assertEquals(1988339423, response.value().get(0).limit());
-        Assertions.assertEquals("bwidfcxsspuunn", response.value().get(0).name().value());
-        Assertions.assertEquals("yhkx", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("hmxtdr", response.value().get(0).id());
+        Assertions.assertEquals("utacoe", response.value().get(0).type());
+        Assertions.assertEquals("vewzcj", response.value().get(0).unit());
+        Assertions.assertEquals(96469803, response.value().get(0).currentValue());
+        Assertions.assertEquals(1754338424, response.value().get(0).limit());
+        Assertions.assertEquals("guaadraufactkahz", response.value().get(0).name().value());
+        Assertions.assertEquals("ajjziuxxpshne", response.value().get(0).name().localizedValue());
     }
 }

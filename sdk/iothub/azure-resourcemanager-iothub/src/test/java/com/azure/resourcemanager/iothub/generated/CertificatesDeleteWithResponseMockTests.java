@@ -28,7 +28,7 @@ public final class CertificatesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.certificates()
-            .deleteWithResponse("lmbtxhwgfwsrt", "wcoezbrhub", "kh", "dyg", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xqupevzhf", "totxhojujb", "pelmcuvhixbjxyf", "n", com.azure.core.util.Context.NONE);
 
     }
 }

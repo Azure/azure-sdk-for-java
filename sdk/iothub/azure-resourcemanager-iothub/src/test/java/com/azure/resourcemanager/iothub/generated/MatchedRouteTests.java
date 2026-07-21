@@ -13,12 +13,12 @@ public final class MatchedRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MatchedRoute model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"tpvjzbexilzznfqq\",\"source\":\"DeviceMessages\",\"condition\":\"pmqtaru\",\"endpointNames\":[\"jmkcjhwqytj\",\"ybn\",\"jewgdrjerv\"],\"isEnabled\":false}}")
+            "{\"properties\":{\"name\":\"dahzxctobg\",\"source\":\"TwinChangeEvents\",\"condition\":\"moizpos\",\"endpointNames\":[\"grcfb\",\"nrmfqjhhk\"],\"isEnabled\":true}}")
             .toObject(MatchedRoute.class);
-        Assertions.assertEquals("tpvjzbexilzznfqq", model.properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.properties().source());
-        Assertions.assertEquals("pmqtaru", model.properties().condition());
-        Assertions.assertEquals("jmkcjhwqytj", model.properties().endpointNames().get(0));
-        Assertions.assertFalse(model.properties().isEnabled());
+        Assertions.assertEquals("dahzxctobg", model.properties().name());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());
+        Assertions.assertEquals("moizpos", model.properties().condition());
+        Assertions.assertEquals("grcfb", model.properties().endpointNames().get(0));
+        Assertions.assertTrue(model.properties().isEnabled());
     }
 }

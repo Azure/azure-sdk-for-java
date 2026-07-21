@@ -22,7 +22,7 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"mlqoljx\",\"expiry\":\"Fri, 12 Nov 2021 05:30:54 GMT\",\"thumbprint\":\"xlx\",\"isVerified\":false,\"created\":\"Sun, 24 Jan 2021 07:17:26 GMT\",\"updated\":\"Wed, 08 Dec 2021 16:57:45 GMT\",\"certificate\":\"qzdwlvwlyoup\",\"policyResourceId\":\"fbkjubdyhgkfmi\"},\"etag\":\"g\",\"id\":\"zfttsttktlahb\",\"name\":\"actxtgzukxitm\",\"type\":\"qtgqqqxhrnxr\"}";
+            = "{\"properties\":{\"subject\":\"v\",\"expiry\":\"Tue, 30 Mar 2021 03:00:35 GMT\",\"thumbprint\":\"emjdftul\",\"isVerified\":false,\"created\":\"Sat, 06 Mar 2021 23:14:05 GMT\",\"updated\":\"Sat, 01 May 2021 02:04:00 GMT\",\"certificate\":\"mtmczuome\",\"policyResourceId\":\"cwwqiokn\"},\"etag\":\"xmojmsvpkjp\",\"id\":\"kwcf\",\"name\":\"ql\",\"type\":\"yxgtczh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class CertificatesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateDescription response = manager.certificates()
-            .define("cubiipuipw")
-            .withExistingIotHub("euzaof", "chvcyyysfgdo")
+            .define("gdyftumrtwna")
+            .withExistingIotHub("zjxvydfcea", "vlhv")
             .withProperties(new CertificateProperties().withIsVerified(false)
-                .withCertificate("gmblrri")
-                .withPolicyResourceId("ywdxsmic"))
-            .withIfMatch("smsks")
+                .withCertificate("pxehuwrykqga")
+                .withPolicyResourceId("mvikl"))
+            .withIfMatch("v")
             .create();
 
         Assertions.assertFalse(response.properties().isVerified());
-        Assertions.assertEquals("qzdwlvwlyoup", response.properties().certificate());
-        Assertions.assertEquals("fbkjubdyhgkfmi", response.properties().policyResourceId());
+        Assertions.assertEquals("mtmczuome", response.properties().certificate());
+        Assertions.assertEquals("cwwqiokn", response.properties().policyResourceId());
     }
 }
