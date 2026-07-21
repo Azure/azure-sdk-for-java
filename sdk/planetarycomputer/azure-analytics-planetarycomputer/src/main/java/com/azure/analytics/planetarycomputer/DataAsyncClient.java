@@ -5,6 +5,7 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.implementation.DatasImpl;
+import com.azure.analytics.planetarycomputer.implementation.XmlSerializerProviders;
 import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosaicsSearchRequest;
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
@@ -55,6 +56,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import java.util.Objects;
@@ -66,6 +68,9 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = PlanetaryComputerProClientBuilder.class, isAsync = true)
 public final class DataAsyncClient {
+    @Generated
+    private static final ObjectSerializer SERIALIZER = XmlSerializerProviders.createInstance();
+
     @Generated
     private final DatasImpl serviceClient;
 
@@ -4217,7 +4222,7 @@ public final class DataAsyncClient {
         }
         return getWmtsCapabilitiesWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class, SERIALIZER));
     }
 
     /**
@@ -5118,7 +5123,7 @@ public final class DataAsyncClient {
         }
         return getMosaicsWmtsCapabilitiesWithResponse(searchId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class, SERIALIZER));
     }
 
     @Generated
