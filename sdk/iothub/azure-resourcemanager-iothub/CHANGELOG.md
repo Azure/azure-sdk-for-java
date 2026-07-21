@@ -32,8 +32,8 @@
 
 #### `models.RoutingEndpoints` was modified
 
-* `eventStreams()` was added
 * `withEventStreams(java.util.List)` was added
+* `eventStreams()` was added
 
 ## 1.4.0-beta.2 (2026-05-08)
 
