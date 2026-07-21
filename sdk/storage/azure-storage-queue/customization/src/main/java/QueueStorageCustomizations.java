@@ -41,26 +41,23 @@ public class QueueStorageCustomizations extends Customization {
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/storage/queue/";
 
     private static final String[] FILES_TO_REMOVE = new String[] {
-        "QueueClient.java",
-        "QueueAsyncClient.java",
-        "ServiceClient.java",
-        "ServiceAsyncClient.java",
-        "MessagesClient.java",
-        "MessagesAsyncClient.java",
-        "MessageIdsClient.java",
-        "MessageIdsAsyncClient.java",
-        "AzureQueueStorageBuilder.java",
-        "QueuesServiceVersion.java"
-    };
-
-    private static final String IMPL_MODELS_PATH = "src/main/java/com/azure/storage/queue/implementation/models/";
-
-    // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
-    private static final String[] UNUSED_GENERATED_MODELS = new String[] {
-        "ReceivedMessages.java",
-        "PeekedMessages.java",
-        "ListOfSentMessage.java",
-        "SignedIdentifiers.java"
+        ROOT_FILE_PATH + "QueueClient.java",
+        ROOT_FILE_PATH + "QueueAsyncClient.java",
+        ROOT_FILE_PATH + "ServiceClient.java",
+        ROOT_FILE_PATH + "ServiceAsyncClient.java",
+        ROOT_FILE_PATH + "MessagesClient.java",
+        ROOT_FILE_PATH + "MessagesAsyncClient.java",
+        ROOT_FILE_PATH + "MessageIdsClient.java",
+        ROOT_FILE_PATH + "MessageIdsAsyncClient.java",
+        ROOT_FILE_PATH + "AzureQueueStorageBuilder.java",
+        ROOT_FILE_PATH + "QueuesServiceVersion.java",
+        // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
+        ROOT_FILE_PATH + "implementation/models/ReceivedMessages.java",
+        ROOT_FILE_PATH + "implementation/models/PeekedMessages.java",
+        ROOT_FILE_PATH + "implementation/models/ListOfSentMessage.java",
+        ROOT_FILE_PATH + "implementation/models/SignedIdentifiers.java",
+        // Generated module-info replaced by the hand-written module descriptor.
+        "src/main/java/module-info.java"
     };
 
     private static final List<String> FLUENT_MODELS = Arrays.asList(
@@ -70,9 +67,7 @@ public class QueueStorageCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
-        removeGeneratedPublicClients(editor, logger);
-        removeUnusedGeneratedModels(editor, logger);
-        preserveHandwrittenModuleInfo(editor, logger);
+        removeGeneratedFiles(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         exposeRawListQueuesResponse(customization.getPackage("com.azure.storage.queue.implementation"), logger);
@@ -260,36 +255,13 @@ public class QueueStorageCustomizations extends Customization {
         }
     }
 
-    private static void preserveHandwrittenModuleInfo(Editor editor, Logger logger) {
-        String path = "src/main/java/module-info.java";
-        if (editor.getContents().containsKey(path)) {
-            editor.removeFile(path);
-            logger.info("Removed generated module-info.java to preserve the hand-written module descriptor.");
-        } else {
-            logger.info("Generated module-info.java not present; nothing to remove.");
-        }
-    }
-
-    private static void removeGeneratedPublicClients(Editor editor, Logger logger) {
-        for (String fileName : FILES_TO_REMOVE) {
-            String path = ROOT_FILE_PATH + fileName;
+    private static void removeGeneratedFiles(Editor editor, Logger logger) {
+        for (String path : FILES_TO_REMOVE) {
             if (editor.getContents().containsKey(path)) {
                 editor.removeFile(path);
-                logger.info("Removed generated public client {}", path);
+                logger.info("Removed generated file {}", path);
             } else {
                 logger.info("Generated file {} not present; skipping removal.", path);
-            }
-        }
-    }
-
-    private static void removeUnusedGeneratedModels(Editor editor, Logger logger) {
-        for (String fileName : UNUSED_GENERATED_MODELS) {
-            String path = IMPL_MODELS_PATH + fileName;
-            if (editor.getContents().containsKey(path)) {
-                editor.removeFile(path);
-                logger.info("Removed unused generated model {}", path);
-            } else {
-                logger.info("Generated model {} not present; skipping removal.", path);
             }
         }
     }
