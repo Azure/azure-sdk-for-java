@@ -140,7 +140,7 @@ public final class DeploymentsImpl {
     /**
      * Get a deployment
      * 
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -160,7 +160,7 @@ public final class DeploymentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deployment
      * 
-     * Gets a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * Retrieves a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(String name, RequestOptions requestOptions) {
@@ -172,7 +172,7 @@ public final class DeploymentsImpl {
     /**
      * Get a deployment
      * 
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -192,7 +192,7 @@ public final class DeploymentsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deployment
      * 
-     * Gets a deployed model along with {@link Response}.
+     * Retrieves a deployed model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {

@@ -889,7 +889,7 @@ public final class BetaEvaluationTaxonomiesImpl {
     /**
      * Update an evaluation taxonomy
      * 
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1000,7 +1000,7 @@ public final class BetaEvaluationTaxonomiesImpl {
     /**
      * Update an evaluation taxonomy
      * 
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>

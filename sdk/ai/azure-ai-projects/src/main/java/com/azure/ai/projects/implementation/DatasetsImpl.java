@@ -976,7 +976,7 @@ public final class DatasetsImpl {
     /**
      * Get dataset credentials
      * 
-     * Gets the SAS credential to access the storage account associated with a Dataset version.
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1003,7 +1003,7 @@ public final class DatasetsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return dataset credentials
      * 
-     * Gets the SAS credential to access the storage account associated with a Dataset version along with
+     * Retrieves the SAS credential to access the storage account associated with a dataset version along with
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1017,7 +1017,7 @@ public final class DatasetsImpl {
     /**
      * Get dataset credentials
      * 
-     * Gets the SAS credential to access the storage account associated with a Dataset version.
+     * Retrieves the SAS credential to access the storage account associated with a dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1044,7 +1044,7 @@ public final class DatasetsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return dataset credentials
      * 
-     * Gets the SAS credential to access the storage account associated with a Dataset version along with
+     * Retrieves the SAS credential to access the storage account associated with a dataset version along with
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
