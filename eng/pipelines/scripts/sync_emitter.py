@@ -213,7 +213,7 @@ def fetch_specs_dev_dependencies() -> dict:
     # Read the devDependencies map from the specs repo package.json, the source of truth for the
     # designated library versions.
     logging.info(f"Fetch designated library versions from {SPECS_PACKAGE_JSON_URL}")
-    with urllib.request.urlopen(SPECS_PACKAGE_JSON_URL) as response:
+    with urllib.request.urlopen(SPECS_PACKAGE_JSON_URL, timeout=30) as response:
         specs_package_json = json.loads(response.read().decode("utf-8"))
     return specs_package_json.get("devDependencies", {})
 
@@ -366,12 +366,8 @@ def update_sdks():
             logging.info(f"Skip azure-core-v2 module on path {module_path}")
             continue
 
-        generated_samples_path = os.path.join(
-            module_path, get_generated_folder_from_artifact(module_path, artifact, "samples")
-        )
-        generated_test_path = os.path.join(
-            module_path, get_generated_folder_from_artifact(module_path, artifact, "test")
-        )
+        generated_samples_path = get_generated_folder_from_artifact(module_path, artifact, "samples")
+        generated_test_path = get_generated_folder_from_artifact(module_path, artifact, "test")
         generated_samples_exists = os.path.isdir(generated_samples_path)
         generated_test_exists = os.path.isdir(generated_test_path)
 
