@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_getprivatelinkresources.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_getprivatelinkresources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.

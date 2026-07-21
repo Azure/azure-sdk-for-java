@@ -118,6 +118,7 @@
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
+    <module>sdk/enclave</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
