@@ -193,8 +193,12 @@ public class ToolboxTool implements JsonSerializable<ToolboxTool> {
                     return WorkIqPreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
                     return FabricIqPreviewToolboxTool.fromJson(readerToUse.reset());
+                } else if ("web_iq_preview".equals(discriminatorValue)) {
+                    return WebIqPreviewToolboxTool.fromJson(readerToUse.reset());
                 } else if ("toolbox_search_preview".equals(discriminatorValue)) {
                     return ToolboxSearchPreviewToolboxTool.fromJson(readerToUse.reset());
+                } else if ("toolbox_search".equals(discriminatorValue)) {
+                    return ToolSearchToolboxTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

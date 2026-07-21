@@ -64,6 +64,16 @@ public enum ToolboxToolType {
     FABRIC_IQ_PREVIEW("fabric_iq_preview"),
 
     /**
+     * Enum value web_iq_preview.
+     */
+    WEB_IQ_PREVIEW("web_iq_preview"),
+
+    /**
+     * Enum value toolbox_search.
+     */
+    TOOLBOX_SEARCH("toolbox_search"),
+
+    /**
      * Enum value toolbox_search_preview.
      */
     TOOLBOX_SEARCH_PREVIEW("toolbox_search_preview");
