@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_operations.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_operations.json
      */
     /**
      * Sample code: Operations_List.

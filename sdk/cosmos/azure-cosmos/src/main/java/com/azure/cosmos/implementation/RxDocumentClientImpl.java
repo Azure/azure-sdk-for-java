@@ -921,29 +921,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.additionalHeaders);
 
-            // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator
-            // can fan out probes after every topology refresh. Must happen BEFORE
-            // globalEndpointManager.init() so the first refresh probes immediately.
-            // The probe client is wired whenever thin-client is usable — GATEWAY mode + HTTP/2 and
-            // COSMOS.THINCLIENT_ENABLED not an explicit false (a hard opt-out); see
-            // ThinClientConnectivityConfig.canThinClientBeUsed(). We deliberately wire even on an
-            // explicit true: the wiring decision is made once here at init, but the tri-state flag is
-            // re-read lazily per request, so a runtime transition of COSMOS.THINCLIENT_ENABLED from
-            // true back to unset (an operator dropping the opt-in to rely on probe-based rollout)
-            // must still have a live probe to consult instead of silently pinning to Gateway V1.
-            // Wiring the probe for an explicit opt-in is otherwise free: shouldUseThinClientStoreModel
-            // returns the explicit verdict directly and never consults the probe. When the probe is
-            // NOT wired (hard opt-out), GEM's probeClient stays null and `getProxyProbeDecision()`
-            // renders no decision (null). Wiring itself is guarded inside GEM so any failure cannot
-            // trip client init.
-            if (this.thinClientConnectivityConfig.canThinClientBeUsed()) {
-                try {
-                    this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
-                } catch (Throwable t) {
-                    // Defense in depth: GEM already swallows wiring failures, but if anything
-                    // does escape we must not fail CosmosClient construction over a probe.
-                    logger.warn("Failed to wire thin-client connectivity-probe HttpClient; continuing without probe gating.", t);
-                }
+            // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator can fan out
+            // probes after every topology refresh. Must happen BEFORE globalEndpointManager.init() so
+            // the first refresh probes immediately. We always wire the probe client and do NOT gate on
+            // COSMOS.THINCLIENT_ENABLED here: the flag is runtime-mutable and re-read lazily, so gating
+            // wiring on it would make an init-time hard opt-out (false) permanent. Instead the probe
+            // cycle itself is a no-op whenever the flag is explicitly set (true or false); it only
+            // probes when the flag is unset (the case where the probe verdict actually gates routing).
+            // Wiring is guarded inside GEM so any failure cannot trip client init.
+            try {
+                this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
+            } catch (Throwable t) {
+                // Defense in depth: GEM already swallows wiring failures, but if anything
+                // does escape we must not fail CosmosClient construction over a probe.
+                logger.warn("Failed to wire thin-client connectivity-probe HttpClient; continuing without probe gating.", t);
             }
 
             this.perPartitionFailoverConfigModifier
