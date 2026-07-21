@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0 (2026-07-17)
+## 2.4.0 (2026-07-21)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -15,10 +15,10 @@
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `breakthroughModeOld()` was added
 * `withBreakthroughModeOld(models.BreakthroughMode)` was added
 * `breakthroughMode()` was added
 * `withBreakthroughMode(models.BreakthroughMode)` was added
+* `breakthroughModeOld()` was added
 
 #### `models.Volume` was modified
 
