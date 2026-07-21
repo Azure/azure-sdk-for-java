@@ -139,6 +139,42 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_ThinClient_EndpointProbe'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_thinclient_endpoint_probe
+              Path: sdk/cosmos/live-thinclient-endpoint-probe-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            # COSMOS.THINCLIENT_ENABLED is intentionally omitted so the connectivity-probe (implicit)
+            # path is exercised: thin-client is default-on and routing is gated on the probe verdict
+            # with fallback to Gateway V1, rather than a hard opt-in. HTTP2_ENABLED stays true because
+            # thin-client routing requires HTTP/2 to be effectively enabled.
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.HTTP2_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
           CloudConfig:
             Public:

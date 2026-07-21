@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolOperationsListByInstancePoolSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListInstancePoolOperations.json
+     * x-ms-original-file: 2025-01-01/ListInstancePoolOperations.json
      */
     /**
      * Sample code: List the instance pool management operations with some results.
@@ -24,7 +24,7 @@ public final class InstancePoolOperationsListByInstancePoolSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListInstancePoolOperationsEmpty.json
+     * x-ms-original-file: 2025-01-01/ListInstancePoolOperationsEmpty.json
      */
     /**
      * Sample code: List the instance pool management operations with no results.

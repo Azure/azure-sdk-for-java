@@ -251,7 +251,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
         String endEpk = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
         String readFeedKeyType = request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE);
-        if (startEpk != null && endEpk != null
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            // QueryPlan is collection-scoped on the thin-client proxy: it carries no
+            // EffectivePartitionKey and no StartEpkHash/EndEpkHash headers - the proxy fans out
+            // across partitions itself. Keep this explicit so the contract is self-documenting and
+            // cannot be violated if a resolved partition key range is ever present on the request.
+            //noinspection StatementWithEmptyBody
+        } else if (startEpk != null && endEpk != null
             && ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(readFeedKeyType)) {
             // The request already carries the effective-partition-key range as HTTP headers (set together by
             // FeedRangeEpkImpl#populateFeedRangeFilteringHeaders). This covers a partial (prefix)

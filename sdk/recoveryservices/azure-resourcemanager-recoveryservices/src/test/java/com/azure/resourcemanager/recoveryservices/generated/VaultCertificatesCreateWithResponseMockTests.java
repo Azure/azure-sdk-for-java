@@ -23,7 +23,7 @@ public final class VaultCertificatesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"wwquuvxzxclvithh\",\"type\":\"o\",\"id\":\"sg\",\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"ohfwds\",\"issuer\":\"ka\",\"resourceId\":923632264277516469,\"subject\":\"iswac\",\"thumbprint\":\"gdkz\",\"validFrom\":\"2021-09-01T23:23:38Z\",\"validTo\":\"2021-06-27T17:37:44Z\"}}";
+            = "{\"name\":\"qkacewii\",\"type\":\"pubjibw\",\"id\":\"f\",\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"kvpuvksgplsaknyn\",\"issuer\":\"ynl\",\"resourceId\":6417676090208458078,\"subject\":\"pxodlqiyntorzih\",\"thumbprint\":\"osjswsr\",\"validFrom\":\"2021-01-12T15:56:27Z\",\"validTo\":\"2021-10-17T02:41:29Z\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class VaultCertificatesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VaultCertificateResponse response = manager.vaultCertificates()
-            .define("phsdyhto")
-            .withExistingVault("bhjpglkfgohdne", "el")
-            .withProperties(new RawCertificateData().withAuthType(AuthType.ACCESS_CONTROL_SERVICE))
+            .define("aeneqnzarrwl")
+            .withExistingVault("ovljxywsu", "syrsndsytgadgvra")
+            .withProperties(new RawCertificateData().withAuthType(AuthType.ACS))
             .create();
 
-        Assertions.assertEquals("ohfwds", response.properties().friendlyName());
-        Assertions.assertEquals("ka", response.properties().issuer());
-        Assertions.assertEquals(923632264277516469L, response.properties().resourceId());
-        Assertions.assertEquals("iswac", response.properties().subject());
-        Assertions.assertEquals("gdkz", response.properties().thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T23:23:38Z"), response.properties().validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T17:37:44Z"), response.properties().validTo());
+        Assertions.assertEquals("kvpuvksgplsaknyn", response.properties().friendlyName());
+        Assertions.assertEquals("ynl", response.properties().issuer());
+        Assertions.assertEquals(6417676090208458078L, response.properties().resourceId());
+        Assertions.assertEquals("pxodlqiyntorzih", response.properties().subject());
+        Assertions.assertEquals("osjswsr", response.properties().thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T15:56:27Z"), response.properties().validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T02:41:29Z"), response.properties().validTo());
     }
 }
