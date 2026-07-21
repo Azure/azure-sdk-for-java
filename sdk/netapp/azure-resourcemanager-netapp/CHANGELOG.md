@@ -14,8 +14,8 @@
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `withBreakthroughMode(models.BreakthroughMode)` was added
 * `breakthroughMode()` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
 
 #### `models.Volume` was modified
 
