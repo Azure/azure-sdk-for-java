@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class TopicsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicGet.json
+     * x-ms-original-file: 2026-07-01-preview/Topics/SBTopicGet.json
      */
     /**
      * Sample code: TopicGet.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.models.FailOver;
  */
 public final class NamespacesFailoverSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNamespaceFailover.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/SBNamespaceFailover.json
      */
     /**
      * Sample code: NameSpaceCreate.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.servicebus.models.MigrationConfigurationName;
 public final class MigrationConfigsCreateAndStartMigrationSamples {
     /*
      * x-ms-original-file:
-     * 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
+     * 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
      */
     /**
      * Sample code: MigrationConfigurationsStartMigration.
