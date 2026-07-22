@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DatabaseAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseAutomaticTuningUpdateMax.json
+     * x-ms-original-file: 2025-01-01/DatabaseAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with all properties.
@@ -38,7 +38,7 @@ public final class DatabaseAutomaticTuningUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseAutomaticTuningUpdateMin.json
+     * x-ms-original-file: 2025-01-01/DatabaseAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with minimal properties.

@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
+import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRestoreRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CopyOptions;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreWithRehydrationRequest;
@@ -13,6 +15,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointRehy
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriority;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessOption;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessSettings;
 import java.util.Arrays;
@@ -22,7 +25,7 @@ import java.util.Arrays;
  */
 public final class RestoresTriggerSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreWithRehydrationRequest.
@@ -61,7 +64,33 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
+     */
+    /**
+     * Sample code: Restore Azure File Share to Original Location with User Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void restoreAzureFileShareToOriginalLocationWithUserAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("swaggertestvault", "SwaggerTestRg", "Azure",
+                "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare",
+                "932886657837421071",
+                new RestoreRequestResource().withProperties(new AzureFileShareRestoreRequest()
+                    .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                    .withCopyOptions(CopyOptions.OVERWRITE)
+                    .withRestoreRequestType(RestoreRequestType.FULL_SHARE_RESTORE)
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest.
@@ -98,8 +127,32 @@ public final class RestoresTriggerSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-05-31-preview/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
+     */
+    /**
+     * Sample code: Restore Azure File Share to Original Location with Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void restoreAzureFileShareToOriginalLocationWithManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("swaggertestvault", "SwaggerTestRg", "Azure",
+                "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare",
+                "932886657837421071",
+                new RestoreRequestResource().withProperties(new AzureFileShareRestoreRequest()
+                    .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                    .withCopyOptions(CopyOptions.OVERWRITE)
+                    .withRestoreRequestType(RestoreRequestType.FULL_SHARE_RESTORE)
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+     * 2026-05-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreWithRehydrationRequest.
@@ -131,7 +184,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-05-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails.
@@ -168,7 +221,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest.
@@ -205,7 +258,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-05-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest with IdentityBasedRestoreDetails.
@@ -236,7 +289,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Restore with Resource Guard Enabled.

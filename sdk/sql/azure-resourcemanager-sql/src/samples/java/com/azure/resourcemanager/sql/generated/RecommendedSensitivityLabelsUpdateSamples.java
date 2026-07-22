@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class RecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SensitivityLabelsRecommendedUpdate.json
+     * x-ms-original-file: 2025-01-01/SensitivityLabelsRecommendedUpdate.json
      */
     /**
      * Sample code: Update recommended sensitivity labels of a given database using an operations batch.

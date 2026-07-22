@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedServerDnsAliasCreation;
  */
 public final class ManagedServerDnsAliasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedServerDnsAliasCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/ManagedServerDnsAliasCreateOrUpdate.json
      */
     /**
      * Sample code: Create managed server DNS alias.

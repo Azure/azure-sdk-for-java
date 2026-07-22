@@ -247,7 +247,7 @@ public final class IotHubClientImpl implements IotHubClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-01-preview";
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.iotHubResources = new IotHubResourcesClientImpl(this);
