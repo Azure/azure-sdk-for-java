@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservicesbackupcrossregionrestore/ci.yml
+      - sdk/recoveryservicesbackupcrossregionrestore/azure-resourcemanager-recoveryservicesbackupcrossregionrestore/
+    exclude:
+      - sdk/recoveryservicesbackupcrossregionrestore/pom.xml
+      - sdk/recoveryservicesbackupcrossregionrestore/azure-resourcemanager-recoveryservicesbackupcrossregionrestore/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservicesbackupcrossregionrestore/ci.yml
+      - sdk/recoveryservicesbackupcrossregionrestore/azure-resourcemanager-recoveryservicesbackupcrossregionrestore/
+    exclude:
+      - sdk/recoveryservicesbackupcrossregionrestore/pom.xml
+      - sdk/recoveryservicesbackupcrossregionrestore/azure-resourcemanager-recoveryservicesbackupcrossregionrestore/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerrecoveryservicesbackupcrossregionrestore
+    displayName: azure-resourcemanager-recoveryservicesbackupcrossregionrestore
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: recoveryservicesbackupcrossregionrestore
+    Artifacts:
+      - name: azure-resourcemanager-recoveryservicesbackupcrossregionrestore
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerrecoveryservicesbackupcrossregionrestore
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerrecoveryservicesbackupcrossregionrestore }}
