@@ -12,11 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Identity information used by Defender security gating to access container registries.
+ * Identity mapping used by Defender security gating for registry access.
  */
 @Fluent
-public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
-    implements JsonSerializable<ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem> {
+public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentity
+    implements JsonSerializable<ManagedClusterSecurityProfileDefenderSecurityGatingIdentity> {
     /*
      * The container registry for which the identity will be used; the identity specified here should have a federated
      * identity credential attached to it.
@@ -29,9 +29,9 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentities
     private UserAssignedIdentity identity;
 
     /**
-     * Creates an instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem class.
+     * Creates an instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentity class.
      */
-    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem() {
+    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentity() {
     }
 
     /**
@@ -49,9 +49,9 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentities
      * specified here should have a federated identity credential attached to it.
      * 
      * @param azureContainerRegistry the azureContainerRegistry value to set.
-     * @return the ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem object itself.
+     * @return the ManagedClusterSecurityProfileDefenderSecurityGatingIdentity object itself.
      */
-    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
+    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentity
         withAzureContainerRegistry(String azureContainerRegistry) {
         this.azureContainerRegistry = azureContainerRegistry;
         return this;
@@ -70,10 +70,9 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentities
      * Set the identity property: The identity object used to access the registry.
      * 
      * @param identity the identity value to set.
-     * @return the ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem object itself.
+     * @return the ManagedClusterSecurityProfileDefenderSecurityGatingIdentity object itself.
      */
-    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
-        withIdentity(UserAssignedIdentity identity) {
+    public ManagedClusterSecurityProfileDefenderSecurityGatingIdentity withIdentity(UserAssignedIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -101,35 +100,35 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGatingIdentities
     }
 
     /**
-     * Reads an instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem from the JsonReader.
+     * Reads an instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentity from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ManagedClusterSecurityProfileDefenderSecurityGatingIdentity if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem.
+     * ManagedClusterSecurityProfileDefenderSecurityGatingIdentity.
      */
-    public static ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem fromJson(JsonReader jsonReader)
+    public static ManagedClusterSecurityProfileDefenderSecurityGatingIdentity fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
-                = new ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem();
+            ManagedClusterSecurityProfileDefenderSecurityGatingIdentity deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentity
+                = new ManagedClusterSecurityProfileDefenderSecurityGatingIdentity();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("azureContainerRegistry".equals(fieldName)) {
-                    deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem.azureContainerRegistry
+                    deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentity.azureContainerRegistry
                         = reader.getString();
                 } else if ("identity".equals(fieldName)) {
-                    deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem.identity
+                    deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentity.identity
                         = UserAssignedIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem;
+            return deserializedManagedClusterSecurityProfileDefenderSecurityGatingIdentity;
         });
     }
 }
