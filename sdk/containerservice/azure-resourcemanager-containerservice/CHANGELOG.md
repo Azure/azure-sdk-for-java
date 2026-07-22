@@ -28,7 +28,7 @@
 
 ### Other Changes
 
-- Updated `api-version` to `2026-03-02-preview`.
+- Updated `api-version` to `2026-05-01`.
 
 ## 2.61.1 (2026-07-01)
 
