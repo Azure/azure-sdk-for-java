@@ -2,8 +2,6 @@
 
 ## 2.62.0 (2026-07-22)
 
-- Azure Resource Manager ContainerService client library for Java. This package contains Microsoft Azure SDK for ContainerService Management SDK. Microsoft Azure Container Service Resource Provider. Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-
 ### Features Added
 
 * `models.ManagedClusterSecurityProfileDefenderSecurityGating` was added
