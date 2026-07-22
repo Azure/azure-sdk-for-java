@@ -1,14 +1,49 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2026-07-22)
+
+- Azure Resource Manager Connected Cache client library for Java. This package contains Microsoft Azure SDK for Connected Cache Management SDK. Microsoft Connected Cache Rest APIs. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.MccCacheNodeTlsCertificate` was modified
 
-### Bugs Fixed
+* `certType()` was added
 
-### Other Changes
+#### `models.AutoUpdateRingType` was modified
+
+* `STABLE` was added
+* `BETA` was added
+
+#### `models.CacheNodeEntity` was modified
+
+* `openFirewallPort5001()` was added
+* `withBgpNetworkInterface(java.lang.String)` was added
+* `openFirewallPort443()` was added
+* `withOpenFirewallPort5001(java.lang.Boolean)` was added
+* `bgpNetworkInterface()` was added
+* `runtimeAccountType()` was added
+* `withOpenFirewallPort5000(java.lang.Boolean)` was added
+* `openFirewallPort80()` was added
+* `withOpenFirewallPort80(java.lang.Boolean)` was added
+* `withRuntimeAccountType(java.lang.String)` was added
+* `openFirewallPort5000()` was added
+* `withOpenFirewallPort443(java.lang.Boolean)` was added
+
+#### `models.AdditionalCacheNodeProperties` was modified
+
+* `hostOsEdition()` was added
+* `containerOsEdition()` was added
+* `containerOsBuild()` was added
+* `installVersionMsix()` was added
+* `hostOsBuild()` was added
+* `installVersionScript()` was added
+* `containerOsVersion()` was added
+* `distroOsEditionWsl()` was added
+* `appVersionWsl()` was added
+* `distroOsVersionWsl()` was added
+* `distroOsBuildWsl()` was added
+* `hostOsVersion()` was added
 
 ## 1.0.0-beta.2 (2025-12-24)
 
