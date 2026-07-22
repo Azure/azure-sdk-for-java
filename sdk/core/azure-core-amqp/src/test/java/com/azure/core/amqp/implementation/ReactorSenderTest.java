@@ -187,6 +187,102 @@ public class ReactorSenderTest {
     }
 
     /**
+     * Verifies that getLinkSize falls back to a bounded default when the remote peer does not advertise
+     * max-message-size on its ATTACH frame. Per AMQP 1.0 section 2.7.3 an absent value means the peer imposes no
+     * limit, so it must not be treated as a zero-byte limit that fails every send.
+     */
+    @Test
+    public void testLinkSizeUsesDefaultWhenRemoteMaxMessageSizeAbsent() {
+        // Arrange -- brokers such as ActiveMQ Artemis omit max-message-size on their receiving links.
+        when(sender.getRemoteMaxMessageSize()).thenReturn(null);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert
+        StepVerifier.create(reactorSender.getLinkSize())
+            .expectNext(ClientConstants.MAX_MESSAGE_LENGTH_BYTES)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Second call returns the cached default without consulting the link again.
+        StepVerifier.create(reactorSender.getLinkSize())
+            .expectNext(ClientConstants.MAX_MESSAGE_LENGTH_BYTES)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        verify(sender, times(1)).getRemoteMaxMessageSize();
+    }
+
+    /**
+     * Verifies that getLinkSize treats an explicit zero max-message-size as "no limit imposed" per AMQP 1.0
+     * section 2.7.3 and falls back to the bounded default.
+     */
+    @Test
+    public void testLinkSizeUsesDefaultWhenRemoteMaxMessageSizeZero() {
+        // Arrange
+        when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(0));
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert
+        StepVerifier.create(reactorSender.getLinkSize())
+            .expectNext(ClientConstants.MAX_MESSAGE_LENGTH_BYTES)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that getLinkSize clamps a remote max-message-size larger than Integer.MAX_VALUE instead of
+     * truncating it to a negative or otherwise incorrect int. Peers may advertise the maximum unsigned long to
+     * signal an effectively unlimited link.
+     */
+    @Test
+    public void testLinkSizeClampsRemoteMaxMessageSizeAboveIntegerMax() {
+        // Arrange -- 0xFFFFFFFFFFFFFFFF is 2^64 - 1, the largest unsigned long.
+        when(sender.getRemoteMaxMessageSize()).thenReturn(new UnsignedLong(0xFFFFFFFFFFFFFFFFL));
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+
+        // Act & Assert
+        StepVerifier.create(reactorSender.getLinkSize())
+            .expectNext(Integer.MAX_VALUE)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // The max-message-size fallback in getMaxBatchSize applies the same clamping.
+        StepVerifier.create(reactorSender.getMaxBatchSize())
+            .expectNext(Integer.MAX_VALUE)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that a message is sent successfully when the remote peer does not advertise max-message-size:
+     * the encode buffer is sized from the default link size instead of zero bytes.
+     */
+    @Test
+    public void testSendWhenRemoteMaxMessageSizeAbsent() {
+        // Arrange
+        when(sender.getRemoteMaxMessageSize()).thenReturn(null);
+
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        final ReactorSender spyReactorSender = spy(reactorSender);
+
+        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
+
+        // Act
+        StepVerifier.create(spyReactorSender.send(message)).expectComplete().verify(VERIFY_TIMEOUT);
+
+        // Assert
+        verify(sender).getRemoteMaxMessageSize();
+        verify(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
+    }
+
+    /**
      * Verifies that getMaxBatchSize reads the vendor property com.microsoft:max-message-batch-size from the link's
      * remote properties and returns its value.
      */
