@@ -28,6 +28,10 @@
 * `securityGating()` was added
 * `withSecurityGating(models.ManagedClusterSecurityProfileDefenderSecurityGating)` was added
 
+### Other Changes
+
+- Updated `api-version` to `2026-03-02-preview`.
+
 ## 2.61.1 (2026-07-01)
 
 ### Other Changes
