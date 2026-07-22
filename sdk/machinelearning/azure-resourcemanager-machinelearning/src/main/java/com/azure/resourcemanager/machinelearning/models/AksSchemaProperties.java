@@ -16,7 +16,7 @@ import java.util.List;
  * AKS properties.
  */
 @Fluent
-public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProperties> {
+public final class AksSchemaProperties implements JsonSerializable<AksSchemaProperties> {
     /*
      * Cluster full qualified domain name
      */
@@ -50,7 +50,7 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
     /*
      * AKS networking configuration for vnet
      */
-    private AKSNetworkingConfiguration aksNetworkingConfiguration;
+    private AksNetworkingConfiguration aksNetworkingConfiguration;
 
     /*
      * Load Balancer Type
@@ -63,9 +63,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
     private String loadBalancerSubnet;
 
     /**
-     * Creates an instance of AKSSchemaProperties class.
+     * Creates an instance of AksSchemaProperties class.
      */
-    public AKSSchemaProperties() {
+    public AksSchemaProperties() {
     }
 
     /**
@@ -81,9 +81,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the clusterFqdn property: Cluster full qualified domain name.
      * 
      * @param clusterFqdn the clusterFqdn value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withClusterFqdn(String clusterFqdn) {
+    public AksSchemaProperties withClusterFqdn(String clusterFqdn) {
         this.clusterFqdn = clusterFqdn;
         return this;
     }
@@ -110,9 +110,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the agentCount property: Number of agents.
      * 
      * @param agentCount the agentCount value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withAgentCount(Integer agentCount) {
+    public AksSchemaProperties withAgentCount(Integer agentCount) {
         this.agentCount = agentCount;
         return this;
     }
@@ -130,9 +130,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the agentVmSize property: Agent virtual machine size.
      * 
      * @param agentVmSize the agentVmSize value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withAgentVmSize(String agentVmSize) {
+    public AksSchemaProperties withAgentVmSize(String agentVmSize) {
         this.agentVmSize = agentVmSize;
         return this;
     }
@@ -150,9 +150,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the clusterPurpose property: Intended usage of the cluster.
      * 
      * @param clusterPurpose the clusterPurpose value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withClusterPurpose(ClusterPurpose clusterPurpose) {
+    public AksSchemaProperties withClusterPurpose(ClusterPurpose clusterPurpose) {
         this.clusterPurpose = clusterPurpose;
         return this;
     }
@@ -170,9 +170,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the sslConfiguration property: SSL configuration.
      * 
      * @param sslConfiguration the sslConfiguration value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withSslConfiguration(SslConfiguration sslConfiguration) {
+    public AksSchemaProperties withSslConfiguration(SslConfiguration sslConfiguration) {
         this.sslConfiguration = sslConfiguration;
         return this;
     }
@@ -182,7 +182,7 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * 
      * @return the aksNetworkingConfiguration value.
      */
-    public AKSNetworkingConfiguration aksNetworkingConfiguration() {
+    public AksNetworkingConfiguration aksNetworkingConfiguration() {
         return this.aksNetworkingConfiguration;
     }
 
@@ -190,9 +190,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the aksNetworkingConfiguration property: AKS networking configuration for vnet.
      * 
      * @param aksNetworkingConfiguration the aksNetworkingConfiguration value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withAksNetworkingConfiguration(AKSNetworkingConfiguration aksNetworkingConfiguration) {
+    public AksSchemaProperties withAksNetworkingConfiguration(AksNetworkingConfiguration aksNetworkingConfiguration) {
         this.aksNetworkingConfiguration = aksNetworkingConfiguration;
         return this;
     }
@@ -210,9 +210,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the loadBalancerType property: Load Balancer Type.
      * 
      * @param loadBalancerType the loadBalancerType value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withLoadBalancerType(LoadBalancerType loadBalancerType) {
+    public AksSchemaProperties withLoadBalancerType(LoadBalancerType loadBalancerType) {
         this.loadBalancerType = loadBalancerType;
         return this;
     }
@@ -230,9 +230,9 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
      * Set the loadBalancerSubnet property: Load Balancer Subnet.
      * 
      * @param loadBalancerSubnet the loadBalancerSubnet value to set.
-     * @return the AKSSchemaProperties object itself.
+     * @return the AksSchemaProperties object itself.
      */
-    public AKSSchemaProperties withLoadBalancerSubnet(String loadBalancerSubnet) {
+    public AksSchemaProperties withLoadBalancerSubnet(String loadBalancerSubnet) {
         this.loadBalancerSubnet = loadBalancerSubnet;
         return this;
     }
@@ -257,46 +257,46 @@ public final class AKSSchemaProperties implements JsonSerializable<AKSSchemaProp
     }
 
     /**
-     * Reads an instance of AKSSchemaProperties from the JsonReader.
+     * Reads an instance of AksSchemaProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AKSSchemaProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AksSchemaProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AKSSchemaProperties.
+     * @throws IOException If an error occurs while reading the AksSchemaProperties.
      */
-    public static AKSSchemaProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static AksSchemaProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AKSSchemaProperties deserializedAKSSchemaProperties = new AKSSchemaProperties();
+            AksSchemaProperties deserializedAksSchemaProperties = new AksSchemaProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clusterFqdn".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.clusterFqdn = reader.getString();
+                    deserializedAksSchemaProperties.clusterFqdn = reader.getString();
                 } else if ("systemServices".equals(fieldName)) {
                     List<SystemService> systemServices = reader.readArray(reader1 -> SystemService.fromJson(reader1));
-                    deserializedAKSSchemaProperties.systemServices = systemServices;
+                    deserializedAksSchemaProperties.systemServices = systemServices;
                 } else if ("agentCount".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.agentCount = reader.getNullable(JsonReader::getInt);
+                    deserializedAksSchemaProperties.agentCount = reader.getNullable(JsonReader::getInt);
                 } else if ("agentVmSize".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.agentVmSize = reader.getString();
+                    deserializedAksSchemaProperties.agentVmSize = reader.getString();
                 } else if ("clusterPurpose".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.clusterPurpose = ClusterPurpose.fromString(reader.getString());
+                    deserializedAksSchemaProperties.clusterPurpose = ClusterPurpose.fromString(reader.getString());
                 } else if ("sslConfiguration".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.sslConfiguration = SslConfiguration.fromJson(reader);
+                    deserializedAksSchemaProperties.sslConfiguration = SslConfiguration.fromJson(reader);
                 } else if ("aksNetworkingConfiguration".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.aksNetworkingConfiguration
-                        = AKSNetworkingConfiguration.fromJson(reader);
+                    deserializedAksSchemaProperties.aksNetworkingConfiguration
+                        = AksNetworkingConfiguration.fromJson(reader);
                 } else if ("loadBalancerType".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.loadBalancerType = LoadBalancerType.fromString(reader.getString());
+                    deserializedAksSchemaProperties.loadBalancerType = LoadBalancerType.fromString(reader.getString());
                 } else if ("loadBalancerSubnet".equals(fieldName)) {
-                    deserializedAKSSchemaProperties.loadBalancerSubnet = reader.getString();
+                    deserializedAksSchemaProperties.loadBalancerSubnet = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAKSSchemaProperties;
+            return deserializedAksSchemaProperties;
         });
     }
 }

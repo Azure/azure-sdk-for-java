@@ -17,7 +17,7 @@ import java.util.List;
  * A Machine Learning compute based on AKS.
  */
 @Fluent
-public final class AKS extends Compute {
+public final class Aks extends Compute {
     /*
      * The type of compute
      */
@@ -26,12 +26,12 @@ public final class AKS extends Compute {
     /*
      * AKS properties
      */
-    private AKSSchemaProperties properties;
+    private AksSchemaProperties properties;
 
     /**
-     * Creates an instance of AKS class.
+     * Creates an instance of Aks class.
      */
-    public AKS() {
+    public Aks() {
     }
 
     /**
@@ -49,7 +49,7 @@ public final class AKS extends Compute {
      * 
      * @return the properties value.
      */
-    public AKSSchemaProperties properties() {
+    public AksSchemaProperties properties() {
         return this.properties;
     }
 
@@ -57,9 +57,9 @@ public final class AKS extends Compute {
      * Set the properties property: AKS properties.
      * 
      * @param properties the properties value to set.
-     * @return the AKS object itself.
+     * @return the Aks object itself.
      */
-    public AKS withProperties(AKSSchemaProperties properties) {
+    public Aks withProperties(AksSchemaProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -68,7 +68,7 @@ public final class AKS extends Compute {
      * {@inheritDoc}
      */
     @Override
-    public AKS withComputeLocation(String computeLocation) {
+    public Aks withComputeLocation(String computeLocation) {
         super.withComputeLocation(computeLocation);
         return this;
     }
@@ -77,7 +77,7 @@ public final class AKS extends Compute {
      * {@inheritDoc}
      */
     @Override
-    public AKS withDescription(String description) {
+    public Aks withDescription(String description) {
         super.withDescription(description);
         return this;
     }
@@ -86,7 +86,7 @@ public final class AKS extends Compute {
      * {@inheritDoc}
      */
     @Override
-    public AKS withResourceId(String resourceId) {
+    public Aks withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
@@ -95,7 +95,7 @@ public final class AKS extends Compute {
      * {@inheritDoc}
      */
     @Override
-    public AKS withDisableLocalAuth(Boolean disableLocalAuth) {
+    public Aks withDisableLocalAuth(Boolean disableLocalAuth) {
         super.withDisableLocalAuth(disableLocalAuth);
         return this;
     }
@@ -116,52 +116,52 @@ public final class AKS extends Compute {
     }
 
     /**
-     * Reads an instance of AKS from the JsonReader.
+     * Reads an instance of Aks from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AKS if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * @return An instance of Aks if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
-     * @throws IOException If an error occurs while reading the AKS.
+     * @throws IOException If an error occurs while reading the Aks.
      */
-    public static AKS fromJson(JsonReader jsonReader) throws IOException {
+    public static Aks fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AKS deserializedAKS = new AKS();
+            Aks deserializedAks = new Aks();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("computeLocation".equals(fieldName)) {
-                    deserializedAKS.withComputeLocation(reader.getString());
+                    deserializedAks.withComputeLocation(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedAKS.withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                    deserializedAks.withProvisioningState(ProvisioningState.fromString(reader.getString()));
                 } else if ("description".equals(fieldName)) {
-                    deserializedAKS.withDescription(reader.getString());
+                    deserializedAks.withDescription(reader.getString());
                 } else if ("createdOn".equals(fieldName)) {
-                    deserializedAKS.withCreatedOn(reader
+                    deserializedAks.withCreatedOn(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("modifiedOn".equals(fieldName)) {
-                    deserializedAKS.withModifiedOn(reader
+                    deserializedAks.withModifiedOn(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("resourceId".equals(fieldName)) {
-                    deserializedAKS.withResourceId(reader.getString());
+                    deserializedAks.withResourceId(reader.getString());
                 } else if ("provisioningErrors".equals(fieldName)) {
                     List<ManagementError> provisioningErrors
                         = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedAKS.withProvisioningErrors(provisioningErrors);
+                    deserializedAks.withProvisioningErrors(provisioningErrors);
                 } else if ("isAttachedCompute".equals(fieldName)) {
-                    deserializedAKS.withIsAttachedCompute(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAks.withIsAttachedCompute(reader.getNullable(JsonReader::getBoolean));
                 } else if ("disableLocalAuth".equals(fieldName)) {
-                    deserializedAKS.withDisableLocalAuth(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAks.withDisableLocalAuth(reader.getNullable(JsonReader::getBoolean));
                 } else if ("computeType".equals(fieldName)) {
-                    deserializedAKS.computeType = ComputeType.fromString(reader.getString());
+                    deserializedAks.computeType = ComputeType.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    deserializedAKS.properties = AKSSchemaProperties.fromJson(reader);
+                    deserializedAks.properties = AksSchemaProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAKS;
+            return deserializedAks;
         });
     }
 }

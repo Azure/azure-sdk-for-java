@@ -19,7 +19,7 @@ public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeI
     /*
      * Name of the user.
      */
-    private String userName;
+    private String username;
 
     /*
      * Uniquely identifies user' Azure Active Directory organization.
@@ -38,12 +38,12 @@ public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeI
     }
 
     /**
-     * Get the userName property: Name of the user.
+     * Get the username property: Name of the user.
      * 
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
     }
 
     /**
@@ -89,7 +89,7 @@ public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeI
                 reader.nextToken();
 
                 if ("userName".equals(fieldName)) {
-                    deserializedComputeInstanceCreatedBy.userName = reader.getString();
+                    deserializedComputeInstanceCreatedBy.username = reader.getString();
                 } else if ("userOrgId".equals(fieldName)) {
                     deserializedComputeInstanceCreatedBy.userOrgId = reader.getString();
                 } else if ("userId".equals(fieldName)) {

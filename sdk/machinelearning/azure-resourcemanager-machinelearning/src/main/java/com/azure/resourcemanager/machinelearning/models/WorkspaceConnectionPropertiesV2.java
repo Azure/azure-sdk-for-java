@@ -404,7 +404,7 @@ public class WorkspaceConnectionPropertiesV2 implements JsonSerializable<Workspa
                 } else if ("OAuth2".equals(discriminatorValue)) {
                     return OAuth2AuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
                 } else if ("PAT".equals(discriminatorValue)) {
-                    return PATAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
+                    return PatAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
                 } else if ("SAS".equals(discriminatorValue)) {
                     return SasAuthTypeWorkspaceConnectionProperties.fromJson(readerToUse.reset());
                 } else if ("ServicePrincipal".equals(discriminatorValue)) {

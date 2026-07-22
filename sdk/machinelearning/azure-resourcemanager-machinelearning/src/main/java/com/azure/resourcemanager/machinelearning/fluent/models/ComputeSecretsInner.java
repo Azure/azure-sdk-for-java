@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.machinelearning.models.AKSComputeSecrets;
+import com.azure.resourcemanager.machinelearning.models.AksComputeSecrets;
 import com.azure.resourcemanager.machinelearning.models.ComputeType;
 import com.azure.resourcemanager.machinelearning.models.DatabricksComputeSecrets;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSecrets;
@@ -75,7 +75,7 @@ public class ComputeSecretsInner implements JsonSerializable<ComputeSecretsInner
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AKS".equals(discriminatorValue)) {
-                    return AKSComputeSecrets.fromJson(readerToUse.reset());
+                    return AksComputeSecrets.fromJson(readerToUse.reset());
                 } else if ("VirtualMachine".equals(discriminatorValue)) {
                     return VirtualMachineSecrets.fromJson(readerToUse.reset());
                 } else if ("Databricks".equals(discriminatorValue)) {

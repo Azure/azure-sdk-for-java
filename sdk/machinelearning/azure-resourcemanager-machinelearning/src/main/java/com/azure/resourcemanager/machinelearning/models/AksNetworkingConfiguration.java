@@ -15,7 +15,7 @@ import java.io.IOException;
  * Advance configuration for AKS networking.
  */
 @Fluent
-public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNetworkingConfiguration> {
+public final class AksNetworkingConfiguration implements JsonSerializable<AksNetworkingConfiguration> {
     /*
      * Virtual network subnet resource ID the compute nodes belong to
      */
@@ -30,7 +30,7 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
      * An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range
      * specified in serviceCidr.
      */
-    private String dnsServiceIP;
+    private String dnsServiceIp;
 
     /*
      * A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
@@ -39,9 +39,9 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
     private String dockerBridgeCidr;
 
     /**
-     * Creates an instance of AKSNetworkingConfiguration class.
+     * Creates an instance of AksNetworkingConfiguration class.
      */
-    public AKSNetworkingConfiguration() {
+    public AksNetworkingConfiguration() {
     }
 
     /**
@@ -57,9 +57,9 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
      * Set the subnetId property: Virtual network subnet resource ID the compute nodes belong to.
      * 
      * @param subnetId the subnetId value to set.
-     * @return the AKSNetworkingConfiguration object itself.
+     * @return the AksNetworkingConfiguration object itself.
      */
-    public AKSNetworkingConfiguration withSubnetId(String subnetId) {
+    public AksNetworkingConfiguration withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
     }
@@ -79,32 +79,32 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
      * overlap with any Subnet IP ranges.
      * 
      * @param serviceCidr the serviceCidr value to set.
-     * @return the AKSNetworkingConfiguration object itself.
+     * @return the AksNetworkingConfiguration object itself.
      */
-    public AKSNetworkingConfiguration withServiceCidr(String serviceCidr) {
+    public AksNetworkingConfiguration withServiceCidr(String serviceCidr) {
         this.serviceCidr = serviceCidr;
         return this;
     }
 
     /**
-     * Get the dnsServiceIP property: An IP address assigned to the Kubernetes DNS service. It must be within the
+     * Get the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in serviceCidr.
      * 
-     * @return the dnsServiceIP value.
+     * @return the dnsServiceIp value.
      */
-    public String dnsServiceIP() {
-        return this.dnsServiceIP;
+    public String dnsServiceIp() {
+        return this.dnsServiceIp;
     }
 
     /**
-     * Set the dnsServiceIP property: An IP address assigned to the Kubernetes DNS service. It must be within the
+     * Set the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in serviceCidr.
      * 
-     * @param dnsServiceIP the dnsServiceIP value to set.
-     * @return the AKSNetworkingConfiguration object itself.
+     * @param dnsServiceIp the dnsServiceIp value to set.
+     * @return the AksNetworkingConfiguration object itself.
      */
-    public AKSNetworkingConfiguration withDnsServiceIP(String dnsServiceIP) {
-        this.dnsServiceIP = dnsServiceIP;
+    public AksNetworkingConfiguration withDnsServiceIp(String dnsServiceIp) {
+        this.dnsServiceIp = dnsServiceIp;
         return this;
     }
 
@@ -123,9 +123,9 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
      * overlap with any Subnet IP ranges or the Kubernetes service address range.
      * 
      * @param dockerBridgeCidr the dockerBridgeCidr value to set.
-     * @return the AKSNetworkingConfiguration object itself.
+     * @return the AksNetworkingConfiguration object itself.
      */
-    public AKSNetworkingConfiguration withDockerBridgeCidr(String dockerBridgeCidr) {
+    public AksNetworkingConfiguration withDockerBridgeCidr(String dockerBridgeCidr) {
         this.dockerBridgeCidr = dockerBridgeCidr;
         return this;
     }
@@ -138,40 +138,40 @@ public final class AKSNetworkingConfiguration implements JsonSerializable<AKSNet
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("serviceCidr", this.serviceCidr);
-        jsonWriter.writeStringField("dnsServiceIP", this.dnsServiceIP);
+        jsonWriter.writeStringField("dnsServiceIP", this.dnsServiceIp);
         jsonWriter.writeStringField("dockerBridgeCidr", this.dockerBridgeCidr);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of AKSNetworkingConfiguration from the JsonReader.
+     * Reads an instance of AksNetworkingConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AKSNetworkingConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of AksNetworkingConfiguration if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AKSNetworkingConfiguration.
+     * @throws IOException If an error occurs while reading the AksNetworkingConfiguration.
      */
-    public static AKSNetworkingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static AksNetworkingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AKSNetworkingConfiguration deserializedAKSNetworkingConfiguration = new AKSNetworkingConfiguration();
+            AksNetworkingConfiguration deserializedAksNetworkingConfiguration = new AksNetworkingConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("subnetId".equals(fieldName)) {
-                    deserializedAKSNetworkingConfiguration.subnetId = reader.getString();
+                    deserializedAksNetworkingConfiguration.subnetId = reader.getString();
                 } else if ("serviceCidr".equals(fieldName)) {
-                    deserializedAKSNetworkingConfiguration.serviceCidr = reader.getString();
+                    deserializedAksNetworkingConfiguration.serviceCidr = reader.getString();
                 } else if ("dnsServiceIP".equals(fieldName)) {
-                    deserializedAKSNetworkingConfiguration.dnsServiceIP = reader.getString();
+                    deserializedAksNetworkingConfiguration.dnsServiceIp = reader.getString();
                 } else if ("dockerBridgeCidr".equals(fieldName)) {
-                    deserializedAKSNetworkingConfiguration.dockerBridgeCidr = reader.getString();
+                    deserializedAksNetworkingConfiguration.dockerBridgeCidr = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAKSNetworkingConfiguration;
+            return deserializedAksNetworkingConfiguration;
         });
     }
 }

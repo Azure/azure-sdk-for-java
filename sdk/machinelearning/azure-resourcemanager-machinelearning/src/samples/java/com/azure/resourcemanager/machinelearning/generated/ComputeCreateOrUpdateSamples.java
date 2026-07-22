@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.AKS;
-import com.azure.resourcemanager.machinelearning.models.AKSSchemaProperties;
+import com.azure.resourcemanager.machinelearning.models.Aks;
+import com.azure.resourcemanager.machinelearning.models.AksSchemaProperties;
 import com.azure.resourcemanager.machinelearning.models.AmlCompute;
 import com.azure.resourcemanager.machinelearning.models.AmlComputeProperties;
 import com.azure.resourcemanager.machinelearning.models.ApplicationSharingPolicy;
@@ -68,10 +68,10 @@ public final class ComputeCreateOrUpdateSamples {
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(new AKS().withDescription("some compute")
+            .withProperties(new Aks().withDescription("some compute")
                 .withResourceId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
-                .withProperties(new AKSSchemaProperties().withAgentCount(4)))
+                .withProperties(new AksSchemaProperties().withAgentCount(4)))
             .create();
     }
 
@@ -88,7 +88,7 @@ public final class ComputeCreateOrUpdateSamples {
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(new AKS())
+            .withProperties(new Aks())
             .create();
     }
 

@@ -28,7 +28,7 @@ public final class DockerCredential extends DataReferenceCredential {
     /*
      * DockerCredential user name
      */
-    private String userName;
+    private String username;
 
     /**
      * Creates an instance of DockerCredential class.
@@ -56,12 +56,12 @@ public final class DockerCredential extends DataReferenceCredential {
     }
 
     /**
-     * Get the userName property: DockerCredential user name.
+     * Get the username property: DockerCredential user name.
      * 
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
     }
 
     /**
@@ -73,7 +73,7 @@ public final class DockerCredential extends DataReferenceCredential {
         jsonWriter.writeStringField("credentialType",
             this.credentialType == null ? null : this.credentialType.toString());
         jsonWriter.writeStringField("password", this.password);
-        jsonWriter.writeStringField("userName", this.userName);
+        jsonWriter.writeStringField("userName", this.username);
         return jsonWriter.writeEndObject();
     }
 
@@ -98,7 +98,7 @@ public final class DockerCredential extends DataReferenceCredential {
                 } else if ("password".equals(fieldName)) {
                     deserializedDockerCredential.password = reader.getString();
                 } else if ("userName".equals(fieldName)) {
-                    deserializedDockerCredential.userName = reader.getString();
+                    deserializedDockerCredential.username = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

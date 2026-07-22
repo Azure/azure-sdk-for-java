@@ -5,31 +5,31 @@
 package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.machinelearning.models.AKSNetworkingConfiguration;
+import com.azure.resourcemanager.machinelearning.models.AksNetworkingConfiguration;
 import org.junit.jupiter.api.Assertions;
 
-public final class AKSNetworkingConfigurationTests {
+public final class AksNetworkingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AKSNetworkingConfiguration model = BinaryData.fromString(
+        AksNetworkingConfiguration model = BinaryData.fromString(
             "{\"subnetId\":\"quxpjhcfaara\",\"serviceCidr\":\"iovmufzgugrblwal\",\"dnsServiceIP\":\"ssnqe\",\"dockerBridgeCidr\":\"otbptg\"}")
-            .toObject(AKSNetworkingConfiguration.class);
+            .toObject(AksNetworkingConfiguration.class);
         Assertions.assertEquals("quxpjhcfaara", model.subnetId());
         Assertions.assertEquals("iovmufzgugrblwal", model.serviceCidr());
-        Assertions.assertEquals("ssnqe", model.dnsServiceIP());
+        Assertions.assertEquals("ssnqe", model.dnsServiceIp());
         Assertions.assertEquals("otbptg", model.dockerBridgeCidr());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AKSNetworkingConfiguration model = new AKSNetworkingConfiguration().withSubnetId("quxpjhcfaara")
+        AksNetworkingConfiguration model = new AksNetworkingConfiguration().withSubnetId("quxpjhcfaara")
             .withServiceCidr("iovmufzgugrblwal")
-            .withDnsServiceIP("ssnqe")
+            .withDnsServiceIp("ssnqe")
             .withDockerBridgeCidr("otbptg");
-        model = BinaryData.fromObject(model).toObject(AKSNetworkingConfiguration.class);
+        model = BinaryData.fromObject(model).toObject(AksNetworkingConfiguration.class);
         Assertions.assertEquals("quxpjhcfaara", model.subnetId());
         Assertions.assertEquals("iovmufzgugrblwal", model.serviceCidr());
-        Assertions.assertEquals("ssnqe", model.dnsServiceIP());
+        Assertions.assertEquals("ssnqe", model.dnsServiceIp());
         Assertions.assertEquals("otbptg", model.dockerBridgeCidr());
     }
 }

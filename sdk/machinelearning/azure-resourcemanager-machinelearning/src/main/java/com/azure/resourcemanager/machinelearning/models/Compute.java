@@ -311,7 +311,7 @@ public class Compute implements JsonSerializable<Compute> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AKS".equals(discriminatorValue)) {
-                    return AKS.fromJson(readerToUse.reset());
+                    return Aks.fromJson(readerToUse.reset());
                 } else if ("Kubernetes".equals(discriminatorValue)) {
                     return Kubernetes.fromJson(readerToUse.reset());
                 } else if ("AmlCompute".equals(discriminatorValue)) {
