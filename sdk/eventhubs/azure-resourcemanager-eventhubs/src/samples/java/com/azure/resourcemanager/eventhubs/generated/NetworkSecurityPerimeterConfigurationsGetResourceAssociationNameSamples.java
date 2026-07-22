@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsGetResourceAssociationNameSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationAssociationproxy.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationAssociationproxy.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterConfigurationassociationProxyName.

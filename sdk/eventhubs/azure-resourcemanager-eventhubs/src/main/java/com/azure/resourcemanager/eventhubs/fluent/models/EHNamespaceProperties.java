@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
 import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
+import com.azure.resourcemanager.eventhubs.models.IpAddressType;
 import com.azure.resourcemanager.eventhubs.models.PlatformCapabilities;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventhubs.models.TlsVersion;
@@ -119,6 +120,12 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
      * Geo Data Replication settings for the namespace
      */
     private GeoDataReplicationProperties geoDataReplication;
+
+    /*
+     * The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4 and IPv6
+     * (dual stack).
+     */
+    private IpAddressType ipAddressType;
 
     /**
      * Creates an instance of EHNamespaceProperties class.
@@ -450,6 +457,28 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
     }
 
     /**
+     * Get the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @return the ipAddressType value.
+     */
+    public IpAddressType ipAddressType() {
+        return this.ipAddressType;
+    }
+
+    /**
+     * Set the ipAddressType property: The IP address type for the namespace. Determines whether the namespace supports
+     * IPv4 only or both IPv4 and IPv6 (dual stack).
+     * 
+     * @param ipAddressType the ipAddressType value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withIpAddressType(IpAddressType ipAddressType) {
+        this.ipAddressType = ipAddressType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -491,6 +520,7 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
         jsonWriter.writeStringField("alternateName", this.alternateName);
         jsonWriter.writeJsonField("platformCapabilities", this.platformCapabilities);
         jsonWriter.writeJsonField("geoDataReplication", this.geoDataReplication);
+        jsonWriter.writeStringField("ipAddressType", this.ipAddressType == null ? null : this.ipAddressType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -553,6 +583,8 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
                 } else if ("geoDataReplication".equals(fieldName)) {
                     deserializedEHNamespaceProperties.geoDataReplication
                         = GeoDataReplicationProperties.fromJson(reader);
+                } else if ("ipAddressType".equals(fieldName)) {
+                    deserializedEHNamespaceProperties.ipAddressType = IpAddressType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

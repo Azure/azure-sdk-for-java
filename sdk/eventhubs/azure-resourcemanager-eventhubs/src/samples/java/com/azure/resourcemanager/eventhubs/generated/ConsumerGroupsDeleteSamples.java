@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ConsumerGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupDelete.json
+     * x-ms-original-file: 2026-07-01-preview/ConsumerGroup/EHConsumerGroupDelete.json
      */
     /**
      * Sample code: ConsumerGroupDelete.

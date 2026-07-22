@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class NamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceGet.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/EHNameSpaceGet.json
      */
     /**
      * Sample code: NameSpaceGet.

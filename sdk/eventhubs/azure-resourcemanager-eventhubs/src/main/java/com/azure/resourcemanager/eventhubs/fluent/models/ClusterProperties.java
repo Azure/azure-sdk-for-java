@@ -53,6 +53,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      */
     private PlatformCapabilities platformCapabilities;
 
+    /*
+     * A value that indicates whether the cluster is zone redundant.
+     */
+    private Boolean zoneRedundant;
+
     /**
      * Creates an instance of ClusterProperties class.
      */
@@ -146,6 +151,26 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the zoneRedundant property: A value that indicates whether the cluster is zone redundant.
+     * 
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set the zoneRedundant property: A value that indicates whether the cluster is zone redundant.
+     * 
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,6 +189,7 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("supportsScaling", this.supportsScaling);
         jsonWriter.writeJsonField("platformCapabilities", this.platformCapabilities);
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
         return jsonWriter.writeEndObject();
     }
 
@@ -196,6 +222,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.supportsScaling = reader.getNullable(JsonReader::getBoolean);
                 } else if ("platformCapabilities".equals(fieldName)) {
                     deserializedClusterProperties.platformCapabilities = PlatformCapabilities.fromJson(reader);
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedClusterProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

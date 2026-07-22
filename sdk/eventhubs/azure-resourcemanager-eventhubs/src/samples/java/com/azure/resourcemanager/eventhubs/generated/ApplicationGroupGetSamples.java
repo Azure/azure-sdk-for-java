@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ApplicationGroupGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ApplicationGroup/ApplicationGroupGet.json
+     * x-ms-original-file: 2026-07-01-preview/ApplicationGroup/ApplicationGroupGet.json
      */
     /**
      * Sample code: ApplicationGroupGet.
