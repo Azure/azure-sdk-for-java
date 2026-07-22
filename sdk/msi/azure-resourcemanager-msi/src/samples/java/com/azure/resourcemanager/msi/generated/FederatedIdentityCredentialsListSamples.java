@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class FederatedIdentityCredentialsListSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/FederatedIdentityCredentialList.json
+     * x-ms-original-file: 2024-11-30/FederatedIdentityCredentialList.json
      */
     /**
      * Sample code: FederatedIdentityCredentialList.

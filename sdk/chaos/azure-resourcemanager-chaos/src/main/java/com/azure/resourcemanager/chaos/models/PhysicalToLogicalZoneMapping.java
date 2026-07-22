@@ -22,6 +22,7 @@ public final class PhysicalToLogicalZoneMapping implements JsonSerializable<Phys
     private String physicalZone;
 
     /*
+     * 
      * The logical availability zone resolved for this subscription
      * (e.g., `"1"`, `"2"`, `"3"`).
      */
@@ -43,7 +44,8 @@ public final class PhysicalToLogicalZoneMapping implements JsonSerializable<Phys
     }
 
     /**
-     * Get the logicalZone property: The logical availability zone resolved for this subscription
+     * Get the logicalZone property:
+     * The logical availability zone resolved for this subscription
      * (e.g., `"1"`, `"2"`, `"3"`).
      * 
      * @return the logicalZone value.

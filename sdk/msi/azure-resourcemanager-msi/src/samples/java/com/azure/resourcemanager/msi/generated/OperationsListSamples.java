@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/MsiOperationsList.json
+     * x-ms-original-file: 2024-11-30/MsiOperationsList.json
      */
     /**
      * Sample code: MsiOperationsList.

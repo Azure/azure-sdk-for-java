@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class UserAssignedIdentitiesListSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/IdentityListBySubscription.json
+     * x-ms-original-file: 2024-11-30/IdentityListBySubscription.json
      */
     /**
      * Sample code: IdentityListBySubscription.

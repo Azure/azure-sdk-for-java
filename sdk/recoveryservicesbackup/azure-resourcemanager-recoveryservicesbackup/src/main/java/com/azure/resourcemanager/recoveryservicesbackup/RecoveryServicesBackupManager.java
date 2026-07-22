@@ -26,11 +26,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryServicesBackupManagementClient;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupEnginesImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupJobsFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupJobsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectableItemsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectedItemsFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupProtectionIntentsImpl;
@@ -42,6 +44,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsa
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultCredentialOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultCredentialOperationStatusesImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultCredentialsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultMappingStatusImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultMappingsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultRecoveryPointOperationsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.CrossTenantVaultRecoveryPointsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.DeletedProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.FeatureSupportsImpl;
@@ -49,15 +58,20 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.FetchTier
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.GetTieringCostOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ItemLevelRecoveryConnectionsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobCancellationsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobDetailsFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobDetailsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.JobsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.OperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.PrivateEndpointsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectableContainersImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemFromCrossTenantVaultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemOperationResultsFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemOperationStatusesFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionContainerOperationResultsImpl;
@@ -72,19 +86,25 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryP
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RecoveryServicesBackupManagementClientBuilder;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceGuardProxyOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.SecurityPINsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.TieringCostOperationStatusImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationFromCrossTenantVaultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationResultFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusFromCrossTenantVaultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobsFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationStatuses;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupPolicies;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectableItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectedItems;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectedItemsFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionIntents;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigs;
@@ -95,6 +115,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultCredentialOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultCredentialOperationStatuses;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultCredentials;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultMappingStatus;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultMappings;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultRecoveryPointOperations;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CrossTenantVaultRecoveryPoints;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DeletedProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupports;
@@ -103,15 +130,20 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.GetTieringCostOpe
 import com.azure.resourcemanager.recoveryservicesbackup.models.ItemLevelRecoveryConnections;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobCancellations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetails;
+import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetailsFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Jobs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.OperationFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Operations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoints;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainers;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOperationResultsFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOperationStatuses;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOperationStatusesFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerRefreshOperationResults;
@@ -125,9 +157,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsRec
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RestoresFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringCostOperationStatus;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationFromCrossTenantVaults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResultFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatusFromCrossTenantVaults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
 import java.time.Duration;
@@ -196,6 +232,42 @@ public final class RecoveryServicesBackupManager {
     private ExportJobsOperationResults exportJobsOperationResults;
 
     private BackupEngines backupEngines;
+
+    private CrossTenantVaultMappings crossTenantVaultMappings;
+
+    private CrossTenantVaultMappingStatus crossTenantVaultMappingStatus;
+
+    private BackupProtectedItemsFromCrossTenantVaults backupProtectedItemsFromCrossTenantVaults;
+
+    private ProtectedItemFromCrossTenantVaults protectedItemFromCrossTenantVaults;
+
+    private CrossTenantVaultRecoveryPoints crossTenantVaultRecoveryPoints;
+
+    private CrossTenantVaultRecoveryPointOperations crossTenantVaultRecoveryPointOperations;
+
+    private RestoresFromCrossTenantVaults restoresFromCrossTenantVaults;
+
+    private ProtectedItemOperationResultsFromCrossTenantVaults protectedItemOperationResultsFromCrossTenantVaults;
+
+    private ProtectedItemOperationStatusesFromCrossTenantVaults protectedItemOperationStatusesFromCrossTenantVaults;
+
+    private BackupJobsFromCrossTenantVaults backupJobsFromCrossTenantVaults;
+
+    private JobDetailsFromCrossTenantVaults jobDetailsFromCrossTenantVaults;
+
+    private OperationFromCrossTenantVaults operationFromCrossTenantVaults;
+
+    private ValidateOperationFromCrossTenantVaults validateOperationFromCrossTenantVaults;
+
+    private ValidateOperationResultFromCrossTenantVaults validateOperationResultFromCrossTenantVaults;
+
+    private ValidateOperationStatusFromCrossTenantVaults validateOperationStatusFromCrossTenantVaults;
+
+    private CrossTenantVaultCredentials crossTenantVaultCredentials;
+
+    private CrossTenantVaultCredentialOperationResults crossTenantVaultCredentialOperationResults;
+
+    private CrossTenantVaultCredentialOperationStatuses crossTenantVaultCredentialOperationStatuses;
 
     private BackupStatus backupStatus;
 
@@ -798,6 +870,242 @@ public final class RecoveryServicesBackupManager {
             this.backupEngines = new BackupEnginesImpl(clientObject.getBackupEngines(), this);
         }
         return backupEngines;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultMappings. It manages CrossTenantVaultMapping.
+     * 
+     * @return Resource collection API of CrossTenantVaultMappings.
+     */
+    public CrossTenantVaultMappings crossTenantVaultMappings() {
+        if (this.crossTenantVaultMappings == null) {
+            this.crossTenantVaultMappings
+                = new CrossTenantVaultMappingsImpl(clientObject.getCrossTenantVaultMappings(), this);
+        }
+        return crossTenantVaultMappings;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultMappingStatus.
+     * 
+     * @return Resource collection API of CrossTenantVaultMappingStatus.
+     */
+    public CrossTenantVaultMappingStatus crossTenantVaultMappingStatus() {
+        if (this.crossTenantVaultMappingStatus == null) {
+            this.crossTenantVaultMappingStatus
+                = new CrossTenantVaultMappingStatusImpl(clientObject.getCrossTenantVaultMappingStatus(), this);
+        }
+        return crossTenantVaultMappingStatus;
+    }
+
+    /**
+     * Gets the resource collection API of BackupProtectedItemsFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupProtectedItemsFromCrossTenantVaults.
+     */
+    public BackupProtectedItemsFromCrossTenantVaults backupProtectedItemsFromCrossTenantVaults() {
+        if (this.backupProtectedItemsFromCrossTenantVaults == null) {
+            this.backupProtectedItemsFromCrossTenantVaults = new BackupProtectedItemsFromCrossTenantVaultsImpl(
+                clientObject.getBackupProtectedItemsFromCrossTenantVaults(), this);
+        }
+        return backupProtectedItemsFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ProtectedItemFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ProtectedItemFromCrossTenantVaults.
+     */
+    public ProtectedItemFromCrossTenantVaults protectedItemFromCrossTenantVaults() {
+        if (this.protectedItemFromCrossTenantVaults == null) {
+            this.protectedItemFromCrossTenantVaults = new ProtectedItemFromCrossTenantVaultsImpl(
+                clientObject.getProtectedItemFromCrossTenantVaults(), this);
+        }
+        return protectedItemFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultRecoveryPoints.
+     * 
+     * @return Resource collection API of CrossTenantVaultRecoveryPoints.
+     */
+    public CrossTenantVaultRecoveryPoints crossTenantVaultRecoveryPoints() {
+        if (this.crossTenantVaultRecoveryPoints == null) {
+            this.crossTenantVaultRecoveryPoints
+                = new CrossTenantVaultRecoveryPointsImpl(clientObject.getCrossTenantVaultRecoveryPoints(), this);
+        }
+        return crossTenantVaultRecoveryPoints;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultRecoveryPointOperations.
+     * 
+     * @return Resource collection API of CrossTenantVaultRecoveryPointOperations.
+     */
+    public CrossTenantVaultRecoveryPointOperations crossTenantVaultRecoveryPointOperations() {
+        if (this.crossTenantVaultRecoveryPointOperations == null) {
+            this.crossTenantVaultRecoveryPointOperations = new CrossTenantVaultRecoveryPointOperationsImpl(
+                clientObject.getCrossTenantVaultRecoveryPointOperations(), this);
+        }
+        return crossTenantVaultRecoveryPointOperations;
+    }
+
+    /**
+     * Gets the resource collection API of RestoresFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of RestoresFromCrossTenantVaults.
+     */
+    public RestoresFromCrossTenantVaults restoresFromCrossTenantVaults() {
+        if (this.restoresFromCrossTenantVaults == null) {
+            this.restoresFromCrossTenantVaults
+                = new RestoresFromCrossTenantVaultsImpl(clientObject.getRestoresFromCrossTenantVaults(), this);
+        }
+        return restoresFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ProtectedItemOperationResultsFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ProtectedItemOperationResultsFromCrossTenantVaults.
+     */
+    public ProtectedItemOperationResultsFromCrossTenantVaults protectedItemOperationResultsFromCrossTenantVaults() {
+        if (this.protectedItemOperationResultsFromCrossTenantVaults == null) {
+            this.protectedItemOperationResultsFromCrossTenantVaults
+                = new ProtectedItemOperationResultsFromCrossTenantVaultsImpl(
+                    clientObject.getProtectedItemOperationResultsFromCrossTenantVaults(), this);
+        }
+        return protectedItemOperationResultsFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ProtectedItemOperationStatusesFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ProtectedItemOperationStatusesFromCrossTenantVaults.
+     */
+    public ProtectedItemOperationStatusesFromCrossTenantVaults protectedItemOperationStatusesFromCrossTenantVaults() {
+        if (this.protectedItemOperationStatusesFromCrossTenantVaults == null) {
+            this.protectedItemOperationStatusesFromCrossTenantVaults
+                = new ProtectedItemOperationStatusesFromCrossTenantVaultsImpl(
+                    clientObject.getProtectedItemOperationStatusesFromCrossTenantVaults(), this);
+        }
+        return protectedItemOperationStatusesFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupJobsFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of BackupJobsFromCrossTenantVaults.
+     */
+    public BackupJobsFromCrossTenantVaults backupJobsFromCrossTenantVaults() {
+        if (this.backupJobsFromCrossTenantVaults == null) {
+            this.backupJobsFromCrossTenantVaults
+                = new BackupJobsFromCrossTenantVaultsImpl(clientObject.getBackupJobsFromCrossTenantVaults(), this);
+        }
+        return backupJobsFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of JobDetailsFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of JobDetailsFromCrossTenantVaults.
+     */
+    public JobDetailsFromCrossTenantVaults jobDetailsFromCrossTenantVaults() {
+        if (this.jobDetailsFromCrossTenantVaults == null) {
+            this.jobDetailsFromCrossTenantVaults
+                = new JobDetailsFromCrossTenantVaultsImpl(clientObject.getJobDetailsFromCrossTenantVaults(), this);
+        }
+        return jobDetailsFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of OperationFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of OperationFromCrossTenantVaults.
+     */
+    public OperationFromCrossTenantVaults operationFromCrossTenantVaults() {
+        if (this.operationFromCrossTenantVaults == null) {
+            this.operationFromCrossTenantVaults
+                = new OperationFromCrossTenantVaultsImpl(clientObject.getOperationFromCrossTenantVaults(), this);
+        }
+        return operationFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ValidateOperationFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ValidateOperationFromCrossTenantVaults.
+     */
+    public ValidateOperationFromCrossTenantVaults validateOperationFromCrossTenantVaults() {
+        if (this.validateOperationFromCrossTenantVaults == null) {
+            this.validateOperationFromCrossTenantVaults = new ValidateOperationFromCrossTenantVaultsImpl(
+                clientObject.getValidateOperationFromCrossTenantVaults(), this);
+        }
+        return validateOperationFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ValidateOperationResultFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ValidateOperationResultFromCrossTenantVaults.
+     */
+    public ValidateOperationResultFromCrossTenantVaults validateOperationResultFromCrossTenantVaults() {
+        if (this.validateOperationResultFromCrossTenantVaults == null) {
+            this.validateOperationResultFromCrossTenantVaults = new ValidateOperationResultFromCrossTenantVaultsImpl(
+                clientObject.getValidateOperationResultFromCrossTenantVaults(), this);
+        }
+        return validateOperationResultFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ValidateOperationStatusFromCrossTenantVaults.
+     * 
+     * @return Resource collection API of ValidateOperationStatusFromCrossTenantVaults.
+     */
+    public ValidateOperationStatusFromCrossTenantVaults validateOperationStatusFromCrossTenantVaults() {
+        if (this.validateOperationStatusFromCrossTenantVaults == null) {
+            this.validateOperationStatusFromCrossTenantVaults = new ValidateOperationStatusFromCrossTenantVaultsImpl(
+                clientObject.getValidateOperationStatusFromCrossTenantVaults(), this);
+        }
+        return validateOperationStatusFromCrossTenantVaults;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultCredentials.
+     * 
+     * @return Resource collection API of CrossTenantVaultCredentials.
+     */
+    public CrossTenantVaultCredentials crossTenantVaultCredentials() {
+        if (this.crossTenantVaultCredentials == null) {
+            this.crossTenantVaultCredentials
+                = new CrossTenantVaultCredentialsImpl(clientObject.getCrossTenantVaultCredentials(), this);
+        }
+        return crossTenantVaultCredentials;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultCredentialOperationResults.
+     * 
+     * @return Resource collection API of CrossTenantVaultCredentialOperationResults.
+     */
+    public CrossTenantVaultCredentialOperationResults crossTenantVaultCredentialOperationResults() {
+        if (this.crossTenantVaultCredentialOperationResults == null) {
+            this.crossTenantVaultCredentialOperationResults = new CrossTenantVaultCredentialOperationResultsImpl(
+                clientObject.getCrossTenantVaultCredentialOperationResults(), this);
+        }
+        return crossTenantVaultCredentialOperationResults;
+    }
+
+    /**
+     * Gets the resource collection API of CrossTenantVaultCredentialOperationStatuses.
+     * 
+     * @return Resource collection API of CrossTenantVaultCredentialOperationStatuses.
+     */
+    public CrossTenantVaultCredentialOperationStatuses crossTenantVaultCredentialOperationStatuses() {
+        if (this.crossTenantVaultCredentialOperationStatuses == null) {
+            this.crossTenantVaultCredentialOperationStatuses = new CrossTenantVaultCredentialOperationStatusesImpl(
+                clientObject.getCrossTenantVaultCredentialOperationStatuses(), this);
+        }
+        return crossTenantVaultCredentialOperationStatuses;
     }
 
     /**
