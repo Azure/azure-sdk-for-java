@@ -1,5 +1,30 @@
 steps:
   - pwsh: |
+      if ([string]::IsNullOrWhiteSpace($env:HTTP_FAULT_INJECTOR_PID)) {
+        Write-Host "No http-fault-injector process ID was recorded."
+        return
+      }
+
+      $faultInjectorProcessId = 0
+      if (-not [int]::TryParse($env:HTTP_FAULT_INJECTOR_PID, [ref] $faultInjectorProcessId)) {
+        throw "Invalid http-fault-injector process ID '$env:HTTP_FAULT_INJECTOR_PID'."
+      }
+
+      $faultInjectorProcess = Get-Process -Id $faultInjectorProcessId -ErrorAction SilentlyContinue
+      if (-not $faultInjectorProcess) {
+        Write-Host "http-fault-injector process $faultInjectorProcessId has already exited."
+        return
+      }
+
+      Write-Host "Stopping http-fault-injector process $faultInjectorProcessId."
+      Stop-Process -Id $faultInjectorProcessId -Force -ErrorAction SilentlyContinue
+      if (-not $faultInjectorProcess.WaitForExit(10000)) {
+        throw "http-fault-injector process $faultInjectorProcessId did not exit within 10 seconds."
+      }
+    displayName: 'Stop http-fault-injector'
+    condition: always()
+
+  - pwsh: |
       if (Test-Path -Path "$(Build.SourcesDirectory)/http-fault-injector.log") {
         if (-not (Test-Path "$(System.DefaultWorkingDirectory)/troubleshooting")) {
           New-Item -ItemType Directory -Path "$(System.DefaultWorkingDirectory)/troubleshooting" | Out-Null

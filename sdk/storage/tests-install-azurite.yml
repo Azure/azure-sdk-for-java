@@ -13,11 +13,15 @@ steps:
           path: ${{ parameters.AzuriteLocation }}
           cacheHitVar: STORAGE_AZURITE_CACHE_RESTORED
       displayName: Cache Azurite installation
+    # CFSClean blocks registry.npmjs.org, so configure the authenticated Azure SDK CFS feed.
+    - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+      parameters:
+          CustomCondition: and(succeeded(), ne(variables.STORAGE_AZURITE_CACHE_RESTORED, 'true'))
     - task: Npm@1
       inputs:
           command: custom
           customCommand: install --prefix ${{ parameters.AzuriteLocation }} azurite@${{ parameters.AzuriteVersion }}
-      condition: ne(variables.STORAGE_AZURITE_CACHE_RESTORED, 'true')
+      condition: and(succeeded(), ne(variables.STORAGE_AZURITE_CACHE_RESTORED, 'true'))
       displayName: Install Azurite
     - task: PowerShell@2
       displayName: Add Azurite location as environment variable
