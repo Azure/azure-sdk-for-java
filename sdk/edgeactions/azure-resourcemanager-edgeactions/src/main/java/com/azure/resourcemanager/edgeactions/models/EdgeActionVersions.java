@@ -92,7 +92,7 @@ public interface EdgeActionVersions {
     PagedIterable<EdgeActionVersion> listByEdgeAction(String resourceGroupName, String edgeActionName, Context context);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -107,7 +107,7 @@ public interface EdgeActionVersions {
         VersionCodeInner body);
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

@@ -8,10 +8,12 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -98,7 +100,21 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                                              .getContainer(createdCollection.getId());
         RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
-        RxStoreModel proxy = asyncDocumentClient.useThinClient() ?
+
+        // useThinClient() only reflects config-eligibility (GATEWAY + HTTP/2 + THINCLIENT_ENABLED != false).
+        // Actual per-request routing to the thin proxy additionally requires the account to advertise
+        // thin-client read locations and either an explicit COSMOS.THINCLIENT_ENABLED opt-in or a positive
+        // connectivity-probe verdict. Mirror RxDocumentClientImpl.useThinClientStoreModel for an eligible
+        // Document query so the spy target and assertions match where the request truly lands.
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(asyncDocumentClient);
+        Boolean thinClientEnabled = Configs.isThinClientEnabled();
+        boolean usesThinClientRouting = asyncDocumentClient.useThinClient()
+            && globalEndpointManager.hasThinClientReadLocations()
+            && (thinClientEnabled != null
+                ? thinClientEnabled
+                : Boolean.TRUE.equals(globalEndpointManager.getProxyProbeDecision()));
+
+        RxStoreModel proxy = usesThinClientRouting ?
             ReflectionUtils.getThinProxy(asyncDocumentClient) :
             ReflectionUtils.getGatewayProxy(asyncDocumentClient);
 
@@ -106,7 +122,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         RxStoreModel spyProxy = Mockito.spy(proxy);
 
         ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
-        if (asyncDocumentClient.useThinClient()) {
+        if (usesThinClientRouting) {
             ReflectionUtils.setThinProxy(asyncDocumentClient, spyProxy);
         } else {
             ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyProxy);
@@ -123,9 +139,16 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
-        Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
-        if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
-            Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+        if (usesThinClientRouting) {
+            // In thin client mode both the QueryPlan request and the data query are routed through the thin proxy
+            // (RxDocumentClientImpl.useThinClientStoreModel now includes OperationType.QueryPlan), so the proxy is
+            // invoked twice: once for the QueryPlan and once for the query.
+            Mockito.verify(spyProxy, Mockito.times(2)).processMessage(Mockito.any());
+        } else {
+            Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
+            if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+            }
         }
     }
 

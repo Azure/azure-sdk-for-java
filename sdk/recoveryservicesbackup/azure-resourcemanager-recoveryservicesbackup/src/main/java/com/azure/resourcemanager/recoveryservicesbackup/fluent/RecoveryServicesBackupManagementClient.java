@@ -236,6 +236,132 @@ public interface RecoveryServicesBackupManagementClient {
     BackupEnginesClient getBackupEngines();
 
     /**
+     * Gets the CrossTenantVaultMappingsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultMappingsClient object.
+     */
+    CrossTenantVaultMappingsClient getCrossTenantVaultMappings();
+
+    /**
+     * Gets the CrossTenantVaultMappingStatusClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultMappingStatusClient object.
+     */
+    CrossTenantVaultMappingStatusClient getCrossTenantVaultMappingStatus();
+
+    /**
+     * Gets the BackupProtectedItemsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupProtectedItemsFromCrossTenantVaultsClient object.
+     */
+    BackupProtectedItemsFromCrossTenantVaultsClient getBackupProtectedItemsFromCrossTenantVaults();
+
+    /**
+     * Gets the ProtectedItemFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemFromCrossTenantVaultsClient object.
+     */
+    ProtectedItemFromCrossTenantVaultsClient getProtectedItemFromCrossTenantVaults();
+
+    /**
+     * Gets the CrossTenantVaultRecoveryPointsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultRecoveryPointsClient object.
+     */
+    CrossTenantVaultRecoveryPointsClient getCrossTenantVaultRecoveryPoints();
+
+    /**
+     * Gets the CrossTenantVaultRecoveryPointOperationsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultRecoveryPointOperationsClient object.
+     */
+    CrossTenantVaultRecoveryPointOperationsClient getCrossTenantVaultRecoveryPointOperations();
+
+    /**
+     * Gets the RestoresFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the RestoresFromCrossTenantVaultsClient object.
+     */
+    RestoresFromCrossTenantVaultsClient getRestoresFromCrossTenantVaults();
+
+    /**
+     * Gets the ProtectedItemOperationResultsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemOperationResultsFromCrossTenantVaultsClient object.
+     */
+    ProtectedItemOperationResultsFromCrossTenantVaultsClient getProtectedItemOperationResultsFromCrossTenantVaults();
+
+    /**
+     * Gets the ProtectedItemOperationStatusesFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ProtectedItemOperationStatusesFromCrossTenantVaultsClient object.
+     */
+    ProtectedItemOperationStatusesFromCrossTenantVaultsClient getProtectedItemOperationStatusesFromCrossTenantVaults();
+
+    /**
+     * Gets the BackupJobsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the BackupJobsFromCrossTenantVaultsClient object.
+     */
+    BackupJobsFromCrossTenantVaultsClient getBackupJobsFromCrossTenantVaults();
+
+    /**
+     * Gets the JobDetailsFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the JobDetailsFromCrossTenantVaultsClient object.
+     */
+    JobDetailsFromCrossTenantVaultsClient getJobDetailsFromCrossTenantVaults();
+
+    /**
+     * Gets the OperationFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the OperationFromCrossTenantVaultsClient object.
+     */
+    OperationFromCrossTenantVaultsClient getOperationFromCrossTenantVaults();
+
+    /**
+     * Gets the ValidateOperationFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationFromCrossTenantVaultsClient object.
+     */
+    ValidateOperationFromCrossTenantVaultsClient getValidateOperationFromCrossTenantVaults();
+
+    /**
+     * Gets the ValidateOperationResultFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationResultFromCrossTenantVaultsClient object.
+     */
+    ValidateOperationResultFromCrossTenantVaultsClient getValidateOperationResultFromCrossTenantVaults();
+
+    /**
+     * Gets the ValidateOperationStatusFromCrossTenantVaultsClient object to access its operations.
+     * 
+     * @return the ValidateOperationStatusFromCrossTenantVaultsClient object.
+     */
+    ValidateOperationStatusFromCrossTenantVaultsClient getValidateOperationStatusFromCrossTenantVaults();
+
+    /**
+     * Gets the CrossTenantVaultCredentialsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialsClient object.
+     */
+    CrossTenantVaultCredentialsClient getCrossTenantVaultCredentials();
+
+    /**
+     * Gets the CrossTenantVaultCredentialOperationResultsClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialOperationResultsClient object.
+     */
+    CrossTenantVaultCredentialOperationResultsClient getCrossTenantVaultCredentialOperationResults();
+
+    /**
+     * Gets the CrossTenantVaultCredentialOperationStatusesClient object to access its operations.
+     * 
+     * @return the CrossTenantVaultCredentialOperationStatusesClient object.
+     */
+    CrossTenantVaultCredentialOperationStatusesClient getCrossTenantVaultCredentialOperationStatuses();
+
+    /**
      * Gets the BackupStatusClient object to access its operations.
      * 
      * @return the BackupStatusClient object.

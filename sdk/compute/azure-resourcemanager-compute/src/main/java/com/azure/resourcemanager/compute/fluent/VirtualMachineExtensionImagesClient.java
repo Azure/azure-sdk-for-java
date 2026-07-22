@@ -19,7 +19,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -35,7 +35,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -51,7 +51,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -68,7 +68,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -83,7 +83,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -98,7 +98,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -111,7 +111,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +126,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -139,7 +139,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -158,7 +158,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +172,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -191,7 +191,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

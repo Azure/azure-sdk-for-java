@@ -132,7 +132,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -181,7 +181,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -286,7 +286,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -331,7 +331,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2025-03-03";
+        final String apiVersion = "2025-12-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -756,16 +756,29 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * A builder for creating a new instance of the beta AIProjectClient type.
+     * Returns the sub-builder used to create beta clients for preview-only service areas.
+     * <p>
+     * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
+     * policies, retry settings, logging options, client options, and service version. Use this method
+     * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaModelsClient},
+     * {@link BetaRedTeamsClient}, {@link BetaDatasetsClient}, or their async counterparts.
+     * <p>
+     * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
+     * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
+     * clients; that setting only controls supported preview behavior on non-beta clients.
      *
-     * @return a builder for creating a new instance of the beta AIProjectClient type.
+     * @return a builder for creating beta AI Projects service clients.
      */
     public BetaAIProjectClientBuilder beta() {
         return new BetaAIProjectClientBuilder();
     }
 
     /**
-     * A builder for creating a new instance of the beta AIProjectClient type.
+     * A sub-builder for creating beta AI Projects service clients.
+     * <p>
+     * Instances are created by calling {@link AIProjectClientBuilder#beta()}. Build methods on this class use the
+     * enclosing {@link AIProjectClientBuilder}'s configuration and automatically add the {@code Foundry-Features}
+     * header required by the beta service area they target.
      */
     @Beta
     @ServiceClientBuilder(
@@ -790,11 +803,20 @@ public final class AIProjectClientBuilder
             BetaDatasetsClient.class })
     public final class BetaAIProjectClientBuilder {
 
+        /**
+         * Creates a new instance of BetaAIProjectClientBuilder. Use {@link AIProjectClientBuilder#beta()} to get an
+         * instance.
+         */
         private BetaAIProjectClientBuilder() {
         }
 
         /**
-         * Builds an instance of BetaModelsAsyncClient class.
+         * Builds an asynchronous beta Models client for preview model operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for models preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaModelsAsyncClient.
          */
@@ -804,7 +826,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaRedTeamsAsyncClient class.
+         * Builds an asynchronous beta Red Teams client for preview red team operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for red teams preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaRedTeamsAsyncClient.
          */
@@ -814,7 +841,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaEvaluationTaxonomiesAsyncClient class.
+         * Builds an asynchronous beta Evaluation Taxonomies client for preview evaluation taxonomy operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for evaluations preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaEvaluationTaxonomiesAsyncClient.
          */
@@ -825,7 +857,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaEvaluatorsAsyncClient class.
+         * Builds an asynchronous beta Evaluators client for preview evaluator operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for evaluations preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaEvaluatorsAsyncClient.
          */
@@ -835,7 +872,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaInsightsAsyncClient class.
+         * Builds an asynchronous beta Insights client for preview insight operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for insights preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaInsightsAsyncClient.
          */
@@ -845,7 +887,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaSchedulesAsyncClient class.
+         * Builds an asynchronous beta Schedules client for preview schedule operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for schedules preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaSchedulesAsyncClient.
          */
@@ -855,7 +902,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaRoutinesAsyncClient class.
+         * Builds an asynchronous beta Routines client for preview routine operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for routines preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaRoutinesAsyncClient.
          */
@@ -865,7 +917,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaSkillsAsyncClient class.
+         * Builds an asynchronous beta Skills client for preview skill operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for skills preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaSkillsAsyncClient.
          */
@@ -875,7 +932,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaDatasetsAsyncClient class.
+         * Builds an asynchronous beta Datasets client for preview data generation job operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for data generation jobs preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaDatasetsAsyncClient.
          */
@@ -886,7 +948,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaModelsClient class.
+         * Builds a synchronous beta Models client for preview model operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for models preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaModelsClient.
          */
@@ -896,7 +963,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaRedTeamsClient class.
+         * Builds a synchronous beta Red Teams client for preview red team operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for red teams preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaRedTeamsClient.
          */
@@ -906,7 +978,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaEvaluationTaxonomiesClient class.
+         * Builds a synchronous beta Evaluation Taxonomies client for preview evaluation taxonomy operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for evaluations preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaEvaluationTaxonomiesClient.
          */
@@ -917,7 +994,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaEvaluatorsClient class.
+         * Builds a synchronous beta Evaluators client for preview evaluator operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for evaluations preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaEvaluatorsClient.
          */
@@ -927,7 +1009,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaInsightsClient class.
+         * Builds a synchronous beta Insights client for preview insight operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for insights preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaInsightsClient.
          */
@@ -937,7 +1024,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaSchedulesClient class.
+         * Builds a synchronous beta Schedules client for preview schedule operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for schedules preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaSchedulesClient.
          */
@@ -947,7 +1039,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaRoutinesClient class.
+         * Builds a synchronous beta Routines client for preview routine operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for routines preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaRoutinesClient.
          */
@@ -957,7 +1054,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaSkillsClient class.
+         * Builds a synchronous beta Skills client for preview skill operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for skills preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaSkillsClient.
          */
@@ -967,7 +1069,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an instance of BetaDatasetsClient class.
+         * Builds a synchronous beta Datasets client for preview data generation job operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for data generation jobs preview operations, so
+         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaDatasetsClient.
          */

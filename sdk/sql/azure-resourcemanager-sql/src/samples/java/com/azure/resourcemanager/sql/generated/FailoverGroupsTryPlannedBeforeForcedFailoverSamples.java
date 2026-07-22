@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class FailoverGroupsTryPlannedBeforeForcedFailoverSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverGroupTryPlannedBeforeForcedFailover.json
+     * x-ms-original-file: 2025-01-01/FailoverGroupTryPlannedBeforeForcedFailover.json
      */
     /**
      * Sample code: Try planned before forced failover of a failover group.

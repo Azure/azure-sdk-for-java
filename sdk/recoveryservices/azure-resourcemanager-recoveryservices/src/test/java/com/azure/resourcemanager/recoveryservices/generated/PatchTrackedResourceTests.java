@@ -14,22 +14,22 @@ public final class PatchTrackedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchTrackedResource model = BinaryData.fromString(
-            "{\"location\":\"mcl\",\"tags\":{\"oejctbzaqsqsy\":\"j\",\"ppofmxaxcfjpgdd\":\"bkbfkgukdkex\",\"zxibqeoj\":\"ocjjxhvpmouexh\"},\"etag\":\"qbzvddntwnd\",\"id\":\"cbtwnpzaoqvuh\",\"name\":\"hcffcyddglmjthjq\",\"type\":\"wpyeicxmqciwqvh\"}")
+            "{\"location\":\"ftutqxlngxlefgu\",\"tags\":{\"mi\":\"krxd\",\"abhjybi\":\"tthzrvqd\"},\"etag\":\"h\",\"id\":\"fbowskanyk\",\"name\":\"zlcuiywgqywgndrv\",\"type\":\"nhzgpphrcgyn\"}")
             .toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("mcl", model.location());
-        Assertions.assertEquals("j", model.tags().get("oejctbzaqsqsy"));
-        Assertions.assertEquals("qbzvddntwnd", model.etag());
+        Assertions.assertEquals("ftutqxlngxlefgu", model.location());
+        Assertions.assertEquals("krxd", model.tags().get("mi"));
+        Assertions.assertEquals("h", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchTrackedResource model = new PatchTrackedResource().withLocation("mcl")
-            .withTags(mapOf("oejctbzaqsqsy", "j", "ppofmxaxcfjpgdd", "bkbfkgukdkex", "zxibqeoj", "ocjjxhvpmouexh"))
-            .withEtag("qbzvddntwnd");
+        PatchTrackedResource model = new PatchTrackedResource().withLocation("ftutqxlngxlefgu")
+            .withTags(mapOf("mi", "krxd", "abhjybi", "tthzrvqd"))
+            .withEtag("h");
         model = BinaryData.fromObject(model).toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("mcl", model.location());
-        Assertions.assertEquals("j", model.tags().get("oejctbzaqsqsy"));
-        Assertions.assertEquals("qbzvddntwnd", model.etag());
+        Assertions.assertEquals("ftutqxlngxlefgu", model.location());
+        Assertions.assertEquals("krxd", model.tags().get("mi"));
+        Assertions.assertEquals("h", model.etag());
     }
 
     // Use "Map.of" if available

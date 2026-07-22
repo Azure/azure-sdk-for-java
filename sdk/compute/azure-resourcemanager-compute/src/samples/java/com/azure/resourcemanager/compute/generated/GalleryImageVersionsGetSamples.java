@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
  */
 public final class GalleryImageVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with vhd as a source.
@@ -27,7 +27,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Get.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Get.json
      */
     /**
      * Sample code: Get a gallery image version.
@@ -43,7 +43,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
+     * 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery image version with validation profile and replication status.
@@ -60,7 +60,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery image version with replication status.
@@ -76,7 +76,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with snapshots as a source.
@@ -92,7 +92,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfile.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfile.json
      */
     /**
      * Sample code: Get a gallery image version with validation profile.

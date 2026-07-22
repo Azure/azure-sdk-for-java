@@ -19,8 +19,6 @@ import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
-import com.azure.resourcemanager.netapp.models.LargeVolumeType;
-import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -28,7 +26,6 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -238,11 +235,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
-     * to 2400TiB.
-     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
-     * of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -252,11 +247,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
-     * to 2400TiB.
-     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
-     * of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeInner object itself.
@@ -871,29 +864,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @return the ldapServerType value.
-     */
-    public LdapServerType ldapServerType() {
-        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
-    }
-
-    /**
-     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
-     * 
-     * @param ldapServerType the ldapServerType value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLdapServerType(LdapServerType ldapServerType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLdapServerType(ldapServerType);
-        return this;
-    }
-
-    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -1297,7 +1267,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1306,7 +1277,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeInner object itself.
@@ -1353,37 +1325,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
-     * volume is created with standard configuration.
-     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
-     * with cool access enabled,
-     * delivering higher capacity limit with lower costs.
-     * 
-     * @return the largeVolumeType value.
-     */
-    public LargeVolumeType largeVolumeType() {
-        return this.innerProperties() == null ? null : this.innerProperties().largeVolumeType();
-    }
-
-    /**
-     * Set the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
-     * volume is created with standard configuration.
-     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
-     * with cool access enabled,
-     * delivering higher capacity limit with lower costs.
-     * 
-     * @param largeVolumeType the largeVolumeType value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLargeVolumeType(LargeVolumeType largeVolumeType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLargeVolumeType(largeVolumeType);
-        return this;
-    }
-
-    /**
      * Get the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
@@ -1399,29 +1340,6 @@ public final class VolumeInner extends Resource {
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.innerProperties() == null ? null : this.innerProperties().language();
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLanguage(VolumeLanguage language) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLanguage(language);
-        return this;
     }
 
     /**

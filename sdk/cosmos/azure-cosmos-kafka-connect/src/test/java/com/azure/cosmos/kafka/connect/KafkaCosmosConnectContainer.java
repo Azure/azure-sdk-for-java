@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.core.exception.ResourceNotFoundException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.errors.TopicExistsException;
+import org.apache.kafka.common.errors.UnknownTopicOrPartitionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
@@ -14,18 +15,29 @@ import org.sourcelab.kafka.connect.apiclient.KafkaConnectClient;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
     private static final int KAFKA_CONNECT_PORT = 8083;
+    private static final Duration KAFKA_CONNECT_REST_OPERATION_TIMEOUT = Duration.ofMinutes(2);
+    private static final Duration KAFKA_CONNECT_REST_RETRY_DELAY = Duration.ofMillis(500);
+    private static final int KAFKA_ADMIN_OPERATION_TIMEOUT_IN_SECONDS = 30;
     private Properties producerProperties;
     private Properties consumerProperties;
     private AdminClient adminClient;
@@ -54,6 +66,10 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 //        withEnv("CONNECT_LOG4J_LOGGERS", "org.apache.kafka=DEBUG,org.reflections=DEBUG,com.azure.cosmos.kafka=DEBUG");
 
         withExposedPorts(KAFKA_CONNECT_PORT);
+        waitingFor(Wait.forHttp("/connectors")
+            .forPort(KAFKA_CONNECT_PORT)
+            .forStatusCode(200)
+            .withStartupTimeout(KAFKA_CONNECT_REST_OPERATION_TIMEOUT));
     }
 
     private Properties defaultConsumerConfig() {
@@ -158,13 +174,9 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
 
         logger.info("adding kafka connector {}", name);
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        ConnectorDefinition connectorDefinition = kafkaConnectClient.addConnector(newConnectorDefinition);
+        ConnectorDefinition connectorDefinition = executeWithKafkaConnectRestRetry(
+            "adding kafka connector " + name,
+            () -> kafkaConnectClient.addConnector(newConnectorDefinition));
         logger.info("adding kafka connector completed with " + connectorDefinition);
     }
 
@@ -212,7 +224,9 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
     public ConnectorStatus getConnectorStatus(String name) {
         KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
-        return kafkaConnectClient.getConnectorStatus(name);
+        return executeWithKafkaConnectRestRetry(
+            "getting kafka connector status " + name,
+            () -> kafkaConnectClient.getConnectorStatus(name));
     }
 
     public String getTarget() {
@@ -232,11 +246,91 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     public void createTopic(String topicName, int numPartitions) {
-        this.adminClient.createTopics(
-            Arrays.asList(new NewTopic(topicName, numPartitions, (short) replicationFactor)));
+        try {
+            this.adminClient.createTopics(
+                    Arrays.asList(new NewTopic(topicName, numPartitions, (short) replicationFactor)))
+                .all()
+                .get(KAFKA_ADMIN_OPERATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+            logger.info("Creating topic {} succeeded.", topicName);
+        } catch (ExecutionException exception) {
+            if (exception.getCause() instanceof TopicExistsException) {
+                logger.info("Topic {} already exists.", topicName);
+                return;
+            }
+
+            throw new RuntimeException("Failed to create topic " + topicName, exception);
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while creating topic " + topicName, exception);
+        } catch (TimeoutException exception) {
+            throw new RuntimeException("Timed out while creating topic " + topicName, exception);
+        }
     }
 
     public void deleteTopic(String topicName) {
-        this.adminClient.deleteTopics(Arrays.asList(topicName));
+        try {
+            this.adminClient.deleteTopics(Arrays.asList(topicName))
+                .all()
+                .get(KAFKA_ADMIN_OPERATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
+            logger.info("Deleting topic {} succeeded.", topicName);
+        } catch (ExecutionException exception) {
+            if (exception.getCause() instanceof UnknownTopicOrPartitionException) {
+                logger.info("Topic {} not found.", topicName);
+                return;
+            }
+
+            logger.warn("Failed to delete topic {}", topicName, exception);
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while deleting topic " + topicName, exception);
+        } catch (TimeoutException exception) {
+            logger.warn("Timed out while deleting topic {}", topicName, exception);
+        }
+    }
+
+    private <T> T executeWithKafkaConnectRestRetry(String operationName, Callable<T> operation) {
+        long deadlineNanos = System.nanoTime() + KAFKA_CONNECT_REST_OPERATION_TIMEOUT.toNanos();
+        int attempts = 0;
+        InvalidRequestException lastException = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            attempts++;
+            try {
+                return operation.call();
+            } catch (InvalidRequestException exception) {
+                if (!isTransientKafkaConnectRestNotFound(exception)) {
+                    throw exception;
+                }
+
+                lastException = exception;
+                logger.warn(
+                    "Kafka Connect REST returned transient Not Found while {} on attempt {}. Retrying.",
+                    operationName,
+                    attempts,
+                    exception);
+            } catch (Exception exception) {
+                throw new RuntimeException("Failed while " + operationName, exception);
+            }
+
+            sleepBeforeKafkaConnectRestRetry(operationName);
+        }
+
+        throw new RuntimeException(
+            "Timed out after " + KAFKA_CONNECT_REST_OPERATION_TIMEOUT.getSeconds()
+                + " seconds while " + operationName,
+            lastException);
+    }
+
+    private static boolean isTransientKafkaConnectRestNotFound(InvalidRequestException exception) {
+        return exception.getErrorCode() == 404;
+    }
+
+    private static void sleepBeforeKafkaConnectRestRetry(String operationName) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(KAFKA_CONNECT_REST_RETRY_DELAY.toMillis());
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while " + operationName, exception);
+        }
     }
 }

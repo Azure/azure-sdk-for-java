@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class EntitiesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Entities_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Entities_Get.json
      */
     /**
      * Sample code: Entities_Get.
@@ -17,6 +17,7 @@ public final class EntitiesGetSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void entitiesGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.entities().getWithResponse("rgopenapi", "myHealthModel", "entity1", com.azure.core.util.Context.NONE);
+        manager.entities()
+            .getWithResponse("online-store-rg", "online-store", "orders-db", com.azure.core.util.Context.NONE);
     }
 }

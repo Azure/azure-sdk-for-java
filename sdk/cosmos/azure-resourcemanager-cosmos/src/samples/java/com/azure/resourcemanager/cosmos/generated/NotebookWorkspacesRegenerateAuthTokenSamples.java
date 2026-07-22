@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesRegenerateAuthTokenSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
+     * x-ms-original-file: 2026-03-15/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceRegenerateAuthToken.
