@@ -8,12 +8,12 @@
 
 #### `models.ResourceOperation` was modified
 
-* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
 * `java.lang.String errorCode()` -> `java.lang.String errorCode()`
-* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
 * `fromJson(com.azure.json.JsonReader)` was removed
-* `toJson(com.azure.json.JsonWriter)` was removed
+* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
+* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
 * `java.lang.String resourceId()` -> `java.lang.String resourceId()`
+* `toJson(com.azure.json.JsonWriter)` was removed
 
 ### Features Added
 
@@ -467,26 +467,26 @@
 
 #### `models.VirtualMachineBulkOperations` was modified
 
-* `bulkCreateOperation(java.lang.String,java.lang.String,models.ExecuteCreateContent)` was added
-* `bulkCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was added
-* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was added
+* `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was added
 * `bulkListOperationErrors(java.lang.String,java.lang.String)` was added
 * `bulkReimageOperation(java.lang.String,java.lang.String,models.ExecuteReimageRequest)` was added
+* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was added
+* `bulkCreateOperation(java.lang.String,java.lang.String,models.ExecuteCreateContent)` was added
 * `bulkReimageOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteReimageRequest,com.azure.core.util.Context)` was added
-* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was added
 * `bulkVdiFlexCreateOperation(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest)` was added
-* `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `bulkCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was added
 * `bulkVdiFlexCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest,com.azure.core.util.Context)` was added
 
 #### `models.ExecuteDeallocateContent` was modified
 
-* `resourcesWithContext()` was added
 * `withResourcesWithContext(models.ResourcesWithContext)` was added
+* `resourcesWithContext()` was added
 
 #### `models.ResourceOperation` was modified
 
-* `virtualMachineInfo()` was added
 * `innerModel()` was added
+* `virtualMachineInfo()` was added
 
 #### `models.ResourceOperationDetails` was modified
 
@@ -494,10 +494,10 @@
 
 #### `models.ExecutionParameters` was modified
 
-* `withOptimizationPreference(models.OptimizationPreference)` was added
-* `optimizationPreference()` was added
 * `withVerifyVmAgentHealth(java.lang.Boolean)` was added
+* `optimizationPreference()` was added
 * `verifyVmAgentHealth()` was added
+* `withOptimizationPreference(models.OptimizationPreference)` was added
 
 #### `models.ResourceOperationType` was modified
 
@@ -505,28 +505,28 @@
 
 #### `models.ExecuteStartContent` was modified
 
-* `withResourcesWithContext(models.ResourcesWithContext)` was added
 * `resourcesWithContext()` was added
+* `withResourcesWithContext(models.ResourcesWithContext)` was added
 
 #### `ComputeBulkActionsManager` was modified
 
-* `bulkCreateCustoms()` was added
-* `scheduledActionOperationStatus()` was added
-* `occurrences()` was added
-* `scheduledActions()` was added
 * `launchBulkInstancesOperations()` was added
+* `bulkCreateCustoms()` was added
 * `occurrenceExtensions()` was added
+* `scheduledActions()` was added
 * `scheduledActionExtensions()` was added
+* `occurrences()` was added
+* `scheduledActionOperationStatus()` was added
 
 #### `models.ExecuteHibernateContent` was modified
 
-* `withResourcesWithContext(models.ResourcesWithContext)` was added
 * `resourcesWithContext()` was added
+* `withResourcesWithContext(models.ResourcesWithContext)` was added
 
 #### `models.ExecuteDeleteContent` was modified
 
-* `withResourcesWithContext(models.ResourcesWithContext)` was added
 * `resourcesWithContext()` was added
+* `withResourcesWithContext(models.ResourcesWithContext)` was added
 
 ## 1.0.0-beta.1 (2026-07-01)
 
