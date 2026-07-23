@@ -180,9 +180,11 @@ final class BulkExecutorUtil {
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
                                PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
-                               // Hierarchical partition key ending in "/id": append the item id to
-                               // the partition key so callers can pass only its prefix.
-                               if (PartitionKeyHelper.isLastPartitionKeyPathId(definition)) {
+                               // Hierarchical partition key ending in "/id": append the item id so
+                               // callers can pass only the prefix of the partition key. The item id
+                               // (resolving which may serialize the item) is only fetched when the
+                               // provided partition key is not already fully specified.
+                               if (PartitionKeyHelper.partitionKeyRequiresIdComponent(definition, partitionKeyInternal)) {
                                    String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();
                                    partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
                                        definition, partitionKeyInternal, itemId);

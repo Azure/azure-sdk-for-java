@@ -2325,15 +2325,40 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
-        boolean userPartitionKeyProvided = options != null && options.getPartitionKey() != null;
-        boolean lastPartitionKeyPathIsId = PartitionKeyHelper.isLastPartitionKeyPathId(partitionKeyDefinition);
+        // Resolve the partition key supplied by the caller through the request options (if any).
+        PartitionKeyInternal partitionKeyInternal = null;
+        boolean partitionKeyProvidedByCaller = false;
+        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)) {
+            partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+            partitionKeyProvidedByCaller = true;
+        } else if (options != null && options.getPartitionKey() != null) {
+            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
+            partitionKeyProvidedByCaller = true;
+        } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
+            // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
+            // have empty value for it and user doesn't need to specify it explicitly.
+            partitionKeyInternal = PartitionKeyInternal.getEmpty();
+            partitionKeyProvidedByCaller = true;
+        }
+
+        // Hierarchical partition key ending in "/id": for a point operation the item id has to be
+        // appended so a caller can address an item using only the prefix of the partition key. This
+        // is only needed when the container's last partition key path is "/id" and the resolved
+        // partition key is not already fully specified. Queries/read-feed, stored procedures and
+        // delete-by-partition-key (ResourceType.PartitionKey) are excluded by shouldEnsureIdInPartitionKey.
+        boolean ensureIdInPartitionKey =
+            shouldEnsureIdInPartitionKey(request, options, partitionKeyDefinition)
+                && PartitionKeyHelper.partitionKeyRequiresIdComponent(partitionKeyDefinition, partitionKeyInternal);
 
         // Materialize the payload (if any) only when it will actually be used: either to extract the
-        // partition key value from the document (no partition key provided by the caller) or, for a
-        // hierarchical partition key ending in "/id", to read the item id.
+        // partition key value from the document (no partition key provided by the caller), or to read
+        // the item id for a "/id"-terminated partition key that still needs it. Only write operations
+        // carry a payload here; read/delete/patch recover the id from the request path instead. In
+        // particular, when the caller already supplied a fully specified partition key, the body is
+        // left untouched (it is never parsed for the partition key).
+        boolean materializeDocument = !partitionKeyProvidedByCaller || ensureIdInPartitionKey;
         InternalObjectNode internalObjectNode = null;
-        if ((contentAsByteBuffer != null || objectDoc != null)
-            && (!userPartitionKeyProvided || lastPartitionKeyPathIsId)) {
+        if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
             if (objectDoc instanceof InternalObjectNode) {
                 internalObjectNode = (InternalObjectNode) objectDoc;
             } else if (objectDoc instanceof ObjectNode) {
@@ -2348,16 +2373,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        PartitionKeyInternal partitionKeyInternal = null;
-        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
-            partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
-        } else if (options != null && options.getPartitionKey() != null) {
-            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
-        } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
-            // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
-            // have empty value for it and user doesn't need to specify it explicitly.
-            partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (internalObjectNode != null) {
+        // When the caller did not provide a partition key, derive it from the document body.
+        if (!partitionKeyProvidedByCaller && internalObjectNode != null) {
             Instant serializationStartTime = Instant.now();
             partitionKeyInternal =  PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
             Instant serializationEndTime = Instant.now();
@@ -2387,11 +2404,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         }
 
-        // Hierarchical partition key ending in "/id": ensure the item id is part of the partition
-        // key so a caller can address an item using only the prefix of the partition key. This only
-        // applies to document point operations - queries/read-feed, stored procedures and
-        // delete-by-partition-key (ResourceType.PartitionKey) are intentionally excluded.
-        if (shouldEnsureIdInPartitionKey(request, options, partitionKeyDefinition)) {
+        // Append the item id to complete a hierarchical partition key ending in "/id". For write
+        // operations the id is read from the (already materialized) body; for read/delete/patch it is
+        // recovered from the request path.
+        if (ensureIdInPartitionKey) {
             String itemId = (internalObjectNode != null)
                 ? internalObjectNode.getId()
                 : getItemIdFromRequestForPartitionKey(request);
@@ -2431,8 +2447,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static String getItemIdFromRequestForPartitionKey(RxDocumentServiceRequest request) {
+        if (request == null) {
+            return null;
+        }
+
+        // The trailing path segment is only guaranteed to be the item id for read/delete/patch
+        // requests (their resource address ends with "docs/{id}"). Restrict the extraction to those
+        // operations so a future change that routes a differently-shaped path here cannot silently
+        // turn a non-id path segment into the last component of the partition key.
+        OperationType operationType = request.getOperationType();
+        if (operationType != OperationType.Read
+            && operationType != OperationType.Delete
+            && operationType != OperationType.Patch) {
+            return null;
+        }
+
         // The item id can only be recovered from a name based request path (e.g. dbs/../colls/../docs/{id}).
-        if (request == null || !request.getIsNameBased()) {
+        if (!request.getIsNameBased()) {
             return null;
         }
 
@@ -2642,22 +2673,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if(serverBatchRequest instanceof SinglePartitionKeyServerBatchRequest) {
 
             PartitionKey partitionKey = ((SinglePartitionKeyServerBatchRequest) serverBatchRequest).getPartitionKeyValue();
+            PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
             PartitionKeyInternal partitionKeyInternal;
 
             if (partitionKey.equals(PartitionKey.NONE)) {
-                PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
                 partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
             } else {
                 // Partition key is always non-null
                 partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
-            }
 
-            // Hierarchical partition key ending in "/id": a batch targets a single partition key, so
-            // no per-item id can be appended. If the partition key is not fully specified (i.e. the
-            // id is missing) this throws, matching the .NET behaviour - transactional batch is only
-            // supported when the full partition key (including the id) is provided.
-            partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
-                collection.getPartitionKey(), partitionKeyInternal, null);
+                // Hierarchical partition key ending in "/id": a transactional batch targets a single
+                // logical partition and cannot carry a per-item id, so the batch's partition key must
+                // already include the id (i.e. be fully specified). A prefix-only partition key is
+                // rejected because there is no per-item id available to complete it.
+                if (PartitionKeyHelper.partitionKeyRequiresIdComponent(partitionKeyDefinition, partitionKeyInternal)) {
+                    throw new IllegalArgumentException(
+                        "A transactional batch on a container whose last partition key path is '/id' "
+                            + "requires the id value to be part of the batch's partition key. Include the "
+                            + "id when building the PartitionKey used to create the batch.");
+                }
+            }
 
             request.setPartitionKeyInternal(partitionKeyInternal);
             request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());

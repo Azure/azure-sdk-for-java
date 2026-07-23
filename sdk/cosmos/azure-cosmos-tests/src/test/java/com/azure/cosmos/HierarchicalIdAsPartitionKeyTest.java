@@ -16,6 +16,7 @@ import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyBuilder;
@@ -28,6 +29,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,8 +42,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * Validates that when a container's (hierarchical) partition key definition ends with "/id" the SDK
  * automatically appends the item id to the partition key, so callers can address an item using only
- * the prefix of the partition key. This mirrors
- * https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5600.
+ * the prefix of the partition key.
  */
 public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
 
@@ -151,24 +152,111 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
     public void hpkBulkWithPrefixPartitionKey() {
         PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add("pkBulk").build();
 
-        List<CosmosItemOperation> operations = new ArrayList<>();
+        // Seed items with bulk create using only the prefix partition key. Create operations have no
+        // explicit operation id, so the id is resolved from the item body (item-body-fallback branch).
+        List<CosmosItemOperation> createOperations = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             String id = UUID.randomUUID().toString();
             ids.add(id);
-            operations.add(CosmosBulkOperations.getCreateItemOperation(
+            createOperations.add(CosmosBulkOperations.getCreateItemOperation(
                 new TestItem(id, "pkBulk", "v" + i), prefixPartitionKey));
         }
 
-        for (CosmosBulkOperationResponse<Object> response : hpkContainer.<Object>executeBulkOperations(operations)) {
+        for (CosmosBulkOperationResponse<Object> response : hpkContainer.<Object>executeBulkOperations(createOperations)) {
             assertThat(response.getResponse().getStatusCode()).isEqualTo(201);
         }
 
-        // The bulk-created items are addressable using only the prefix.
+        // Each bulk-created item is addressable via the fully specified partition key [pk, id], which
+        // proves the id was appended in the right position (not only reachable through the prefix).
         for (String id : ids) {
-            assertThat(hpkContainer.readItem(id, prefixPartitionKey, TestItem.class).getItem().getId())
+            PartitionKey fullPartitionKey = new PartitionKeyBuilder().add("pkBulk").add(id).build();
+            assertThat(hpkContainer.readItem(id, fullPartitionKey, TestItem.class).getItem().getId())
                 .isEqualTo(id);
         }
+
+        // Mixed bulk operations that carry an explicit operation id (read/replace/upsert/delete/patch)
+        // exercised with only the prefix partition key - this covers the operation-id branch of id
+        // resolution which the create-only path does not reach.
+        String replaceId = ids.get(0);
+        String upsertId = ids.get(1);
+        String patchId = ids.get(2);
+        String deleteId = ids.get(3);
+        String readId = ids.get(4);
+        String insertViaUpsertId = UUID.randomUUID().toString();
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create().replace("/prop", "patched");
+
+        List<CosmosItemOperation> mixedOperations = Arrays.asList(
+            CosmosBulkOperations.getReadItemOperation(readId, prefixPartitionKey),
+            CosmosBulkOperations.getReplaceItemOperation(
+                replaceId, new TestItem(replaceId, "pkBulk", "replaced"), prefixPartitionKey),
+            CosmosBulkOperations.getUpsertItemOperation(
+                new TestItem(upsertId, "pkBulk", "upserted"), prefixPartitionKey),
+            CosmosBulkOperations.getUpsertItemOperation(
+                new TestItem(insertViaUpsertId, "pkBulk", "insertedViaUpsert"), prefixPartitionKey),
+            CosmosBulkOperations.getPatchItemOperation(patchId, prefixPartitionKey, patchOperations),
+            CosmosBulkOperations.getDeleteItemOperation(deleteId, prefixPartitionKey));
+
+        for (CosmosBulkOperationResponse<Object> response : hpkContainer.<Object>executeBulkOperations(mixedOperations)) {
+            assertThat(response.getResponse().getStatusCode()).isIn(200, 201, 204);
+        }
+
+        // Every operation took effect and the items remain addressable with just the prefix.
+        assertThat(hpkContainer.readItem(replaceId, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("replaced");
+        assertThat(hpkContainer.readItem(upsertId, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("upserted");
+        assertThat(hpkContainer.readItem(insertViaUpsertId, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("insertedViaUpsert");
+        assertThat(hpkContainer.readItem(patchId, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("patched");
+        assertThatThrownBy(() -> hpkContainer.readItem(deleteId, prefixPartitionKey, TestItem.class))
+            .isInstanceOf(CosmosException.class);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkByteBufferCreateWithPrefixPartitionKey() {
+        String id = UUID.randomUUID().toString();
+        PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add("pkBytes").build();
+
+        String rawItem = "{\"id\":\"" + id + "\",\"pk\":\"pkBytes\",\"prop\":\"bytes\"}";
+        byte[] itemBytes = rawItem.getBytes(StandardCharsets.UTF_8);
+
+        // Create from a raw byte payload with only the prefix partition key. The id is read from the
+        // byte-buffer body and appended to complete the [pk, id] partition key.
+        hpkContainer.createItem(itemBytes, prefixPartitionKey, new CosmosItemRequestOptions());
+
+        // The item is addressable with the prefix and with the fully specified partition key.
+        assertThat(hpkContainer.readItem(id, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("bytes");
+        PartitionKey fullPartitionKey = new PartitionKeyBuilder().add("pkBytes").add(id).build();
+        assertThat(hpkContainer.readItem(id, fullPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("bytes");
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkQueryWithPrefixPartitionKeyReturnsAllItemsSharingPrefix() {
+        String prefix = "pkQuery-" + UUID.randomUUID();
+        PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add(prefix).build();
+
+        int itemCount = 3;
+        List<String> ids = new ArrayList<>();
+        for (int i = 0; i < itemCount; i++) {
+            String id = UUID.randomUUID().toString();
+            ids.add(id);
+            hpkContainer.createItem(new TestItem(id, prefix, "v" + i), prefixPartitionKey, new CosmosItemRequestOptions());
+        }
+
+        // A query scoped to the prefix partition key must treat it as a prefix and return ALL items
+        // sharing it. The id must NOT be auto-appended for queries (that would return at most one
+        // item) - this locks down the primary safety property the feature relies on.
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions().setPartitionKey(prefixPartitionKey);
+        List<String> resultIds = new ArrayList<>();
+        hpkContainer.queryItems("SELECT * FROM c", queryOptions, TestItem.class)
+            .forEach(item -> resultIds.add(item.getId()));
+
+        assertThat(resultIds).containsExactlyInAnyOrderElementsOf(ids);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -183,7 +271,7 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
         // partition key is rejected for a container whose last partition key path is "/id".
         assertThatThrownBy(() -> hpkContainer.executeCosmosBatch(batch))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("itemId needs to be specified");
+            .hasMessageContaining("requires the id value to be part of the batch's partition key");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
