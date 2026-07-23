@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.devopsinfrastructure.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.PoolInner;
+import com.azure.resourcemanager.devopsinfrastructure.models.DeleteResourcesDetails;
 import com.azure.resourcemanager.devopsinfrastructure.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
@@ -149,6 +151,14 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
             .getByResourceGroupWithResponse(resourceGroupName, poolName, context)
             .getValue();
         return this;
+    }
+
+    public Response<Void> deleteResourcesWithResponse(DeleteResourcesDetails body, Context context) {
+        return serviceManager.pools().deleteResourcesWithResponse(resourceGroupName, poolName, body, context);
+    }
+
+    public void deleteResources(DeleteResourcesDetails body) {
+        serviceManager.pools().deleteResources(resourceGroupName, poolName, body);
     }
 
     public PoolImpl withRegion(Region location) {

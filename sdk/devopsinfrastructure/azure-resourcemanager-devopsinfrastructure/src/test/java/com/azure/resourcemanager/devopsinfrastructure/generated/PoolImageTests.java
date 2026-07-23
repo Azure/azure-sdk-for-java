@@ -14,27 +14,39 @@ public final class PoolImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolImage model = BinaryData.fromString(
-            "{\"resourceId\":\"nkzsmodmglou\",\"wellKnownImageName\":\"b\",\"aliases\":[\"mutduqktaps\"],\"buffer\":\"gcue\",\"ephemeralType\":\"ResourceDisk\"}")
+            "{\"resourceId\":\"vbqid\",\"wellKnownImageName\":\"ajzyul\",\"aliases\":[\"dj\"],\"buffer\":\"lkhbz\",\"ephemeralType\":\"ResourceDisk\",\"isEphemeral\":true,\"provisioningScriptStorageAccountResourceId\":\"gqexzlocxs\",\"provisioningScriptManagedIdentityClientId\":\"aierhhb\",\"provisioningScriptShouldRestart\":false,\"provisioningScriptEntryPoint\":\"ummajtjaod\"}")
             .toObject(PoolImage.class);
-        Assertions.assertEquals("nkzsmodmglou", model.resourceId());
-        Assertions.assertEquals("b", model.wellKnownImageName());
-        Assertions.assertEquals("mutduqktaps", model.aliases().get(0));
-        Assertions.assertEquals("gcue", model.buffer());
+        Assertions.assertEquals("vbqid", model.resourceId());
+        Assertions.assertEquals("ajzyul", model.wellKnownImageName());
+        Assertions.assertEquals("dj", model.aliases().get(0));
+        Assertions.assertEquals("lkhbz", model.buffer());
         Assertions.assertEquals(EphemeralType.RESOURCE_DISK, model.ephemeralType());
+        Assertions.assertEquals("gqexzlocxs", model.provisioningScriptStorageAccountResourceId());
+        Assertions.assertEquals("aierhhb", model.provisioningScriptManagedIdentityClientId());
+        Assertions.assertFalse(model.provisioningScriptShouldRestart());
+        Assertions.assertEquals("ummajtjaod", model.provisioningScriptEntryPoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolImage model = new PoolImage().withResourceId("nkzsmodmglou")
-            .withWellKnownImageName("b")
-            .withAliases(Arrays.asList("mutduqktaps"))
-            .withBuffer("gcue")
-            .withEphemeralType(EphemeralType.RESOURCE_DISK);
+        PoolImage model = new PoolImage().withResourceId("vbqid")
+            .withWellKnownImageName("ajzyul")
+            .withAliases(Arrays.asList("dj"))
+            .withBuffer("lkhbz")
+            .withEphemeralType(EphemeralType.RESOURCE_DISK)
+            .withProvisioningScriptStorageAccountResourceId("gqexzlocxs")
+            .withProvisioningScriptManagedIdentityClientId("aierhhb")
+            .withProvisioningScriptShouldRestart(false)
+            .withProvisioningScriptEntryPoint("ummajtjaod");
         model = BinaryData.fromObject(model).toObject(PoolImage.class);
-        Assertions.assertEquals("nkzsmodmglou", model.resourceId());
-        Assertions.assertEquals("b", model.wellKnownImageName());
-        Assertions.assertEquals("mutduqktaps", model.aliases().get(0));
-        Assertions.assertEquals("gcue", model.buffer());
+        Assertions.assertEquals("vbqid", model.resourceId());
+        Assertions.assertEquals("ajzyul", model.wellKnownImageName());
+        Assertions.assertEquals("dj", model.aliases().get(0));
+        Assertions.assertEquals("lkhbz", model.buffer());
         Assertions.assertEquals(EphemeralType.RESOURCE_DISK, model.ephemeralType());
+        Assertions.assertEquals("gqexzlocxs", model.provisioningScriptStorageAccountResourceId());
+        Assertions.assertEquals("aierhhb", model.provisioningScriptManagedIdentityClientId());
+        Assertions.assertFalse(model.provisioningScriptShouldRestart());
+        Assertions.assertEquals("ummajtjaod", model.provisioningScriptEntryPoint());
     }
 }

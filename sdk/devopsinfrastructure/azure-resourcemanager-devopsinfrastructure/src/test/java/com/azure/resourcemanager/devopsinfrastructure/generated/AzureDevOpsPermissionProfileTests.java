@@ -14,22 +14,22 @@ public final class AzureDevOpsPermissionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsPermissionProfile model = BinaryData.fromString(
-            "{\"kind\":\"Inherit\",\"users\":[\"gsntnbybkzgcwr\",\"clxxwrljdo\",\"skcqvkocrcjd\"],\"groups\":[\"nh\",\"bnjbiksqrglssain\"]}")
+            "{\"kind\":\"SpecificAccounts\",\"users\":[\"bvmgxsabkyqduuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"],\"groups\":[\"wjfeusnhutjel\",\"mrldhu\"]}")
             .toObject(AzureDevOpsPermissionProfile.class);
-        Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.kind());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.users().get(0));
-        Assertions.assertEquals("nh", model.groups().get(0));
+        Assertions.assertEquals(AzureDevOpsPermissionType.SPECIFIC_ACCOUNTS, model.kind());
+        Assertions.assertEquals("bvmgxsabkyqduuji", model.users().get(0));
+        Assertions.assertEquals("wjfeusnhutjel", model.groups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDevOpsPermissionProfile model
-            = new AzureDevOpsPermissionProfile().withKind(AzureDevOpsPermissionType.INHERIT)
-                .withUsers(Arrays.asList("gsntnbybkzgcwr", "clxxwrljdo", "skcqvkocrcjd"))
-                .withGroups(Arrays.asList("nh", "bnjbiksqrglssain"));
+            = new AzureDevOpsPermissionProfile().withKind(AzureDevOpsPermissionType.SPECIFIC_ACCOUNTS)
+                .withUsers(Arrays.asList("bvmgxsabkyqduuji", "c", "czdzev", "dhkrwpdappdsbdk"))
+                .withGroups(Arrays.asList("wjfeusnhutjel", "mrldhu"));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsPermissionProfile.class);
-        Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.kind());
-        Assertions.assertEquals("gsntnbybkzgcwr", model.users().get(0));
-        Assertions.assertEquals("nh", model.groups().get(0));
+        Assertions.assertEquals(AzureDevOpsPermissionType.SPECIFIC_ACCOUNTS, model.kind());
+        Assertions.assertEquals("bvmgxsabkyqduuji", model.users().get(0));
+        Assertions.assertEquals("wjfeusnhutjel", model.groups().get(0));
     }
 }

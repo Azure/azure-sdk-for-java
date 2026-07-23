@@ -16,39 +16,45 @@ public final class AzureDevOpsOrganizationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsOrganizationProfile model = BinaryData.fromString(
-            "{\"kind\":\"AzureDevOps\",\"organizations\":[{\"url\":\"v\",\"projects\":[\"rwzoxxjtfelluwf\",\"it\"],\"parallelism\":180815183,\"openAccess\":false},{\"url\":\"fpjkjlxofp\",\"projects\":[\"pfxxy\"],\"parallelism\":507207264,\"openAccess\":true}],\"permissionProfile\":{\"kind\":\"Inherit\",\"users\":[\"uybbkpodep\"],\"groups\":[\"inuvamiheogn\",\"rxzxtheo\",\"usivye\"]}}")
+            "{\"kind\":\"AzureDevOps\",\"description\":\"v\",\"updateDescription\":false,\"organizations\":[{\"url\":\"ihnhun\",\"projects\":[\"jzrnf\",\"gxg\",\"spemvtzfk\",\"fublj\"],\"parallelism\":1710309731,\"openAccess\":true,\"alias\":\"fjaeq\"}],\"permissionProfile\":{\"kind\":\"CreatorOnly\",\"users\":[\"asvm\"],\"groups\":[\"qulngsntnbybkzgc\"]},\"alias\":\"wclxxwrl\"}")
             .toObject(AzureDevOpsOrganizationProfile.class);
-        Assertions.assertEquals("v", model.organizations().get(0).url());
-        Assertions.assertEquals("rwzoxxjtfelluwf", model.organizations().get(0).projects().get(0));
-        Assertions.assertEquals(180815183, model.organizations().get(0).parallelism());
-        Assertions.assertFalse(model.organizations().get(0).openAccess());
-        Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.permissionProfile().kind());
-        Assertions.assertEquals("uybbkpodep", model.permissionProfile().users().get(0));
-        Assertions.assertEquals("inuvamiheogn", model.permissionProfile().groups().get(0));
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertFalse(model.updateDescription());
+        Assertions.assertEquals("ihnhun", model.organizations().get(0).url());
+        Assertions.assertEquals("jzrnf", model.organizations().get(0).projects().get(0));
+        Assertions.assertEquals(1710309731, model.organizations().get(0).parallelism());
+        Assertions.assertTrue(model.organizations().get(0).openAccess());
+        Assertions.assertEquals("fjaeq", model.organizations().get(0).alias());
+        Assertions.assertEquals(AzureDevOpsPermissionType.CREATOR_ONLY, model.permissionProfile().kind());
+        Assertions.assertEquals("asvm", model.permissionProfile().users().get(0));
+        Assertions.assertEquals("qulngsntnbybkzgc", model.permissionProfile().groups().get(0));
+        Assertions.assertEquals("wclxxwrl", model.alias());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDevOpsOrganizationProfile model = new AzureDevOpsOrganizationProfile()
-            .withOrganizations(Arrays.asList(
-                new Organization().withUrl("v")
-                    .withProjects(Arrays.asList("rwzoxxjtfelluwf", "it"))
-                    .withParallelism(180815183)
-                    .withOpenAccess(false),
-                new Organization().withUrl("fpjkjlxofp")
-                    .withProjects(Arrays.asList("pfxxy"))
-                    .withParallelism(507207264)
-                    .withOpenAccess(true)))
-            .withPermissionProfile(new AzureDevOpsPermissionProfile().withKind(AzureDevOpsPermissionType.INHERIT)
-                .withUsers(Arrays.asList("uybbkpodep"))
-                .withGroups(Arrays.asList("inuvamiheogn", "rxzxtheo", "usivye")));
+        AzureDevOpsOrganizationProfile model = new AzureDevOpsOrganizationProfile().withDescription("v")
+            .withUpdateDescription(false)
+            .withOrganizations(Arrays.asList(new Organization().withUrl("ihnhun")
+                .withProjects(Arrays.asList("jzrnf", "gxg", "spemvtzfk", "fublj"))
+                .withParallelism(1710309731)
+                .withOpenAccess(true)
+                .withAlias("fjaeq")))
+            .withPermissionProfile(new AzureDevOpsPermissionProfile().withKind(AzureDevOpsPermissionType.CREATOR_ONLY)
+                .withUsers(Arrays.asList("asvm"))
+                .withGroups(Arrays.asList("qulngsntnbybkzgc")))
+            .withAlias("wclxxwrl");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrganizationProfile.class);
-        Assertions.assertEquals("v", model.organizations().get(0).url());
-        Assertions.assertEquals("rwzoxxjtfelluwf", model.organizations().get(0).projects().get(0));
-        Assertions.assertEquals(180815183, model.organizations().get(0).parallelism());
-        Assertions.assertFalse(model.organizations().get(0).openAccess());
-        Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.permissionProfile().kind());
-        Assertions.assertEquals("uybbkpodep", model.permissionProfile().users().get(0));
-        Assertions.assertEquals("inuvamiheogn", model.permissionProfile().groups().get(0));
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertFalse(model.updateDescription());
+        Assertions.assertEquals("ihnhun", model.organizations().get(0).url());
+        Assertions.assertEquals("jzrnf", model.organizations().get(0).projects().get(0));
+        Assertions.assertEquals(1710309731, model.organizations().get(0).parallelism());
+        Assertions.assertTrue(model.organizations().get(0).openAccess());
+        Assertions.assertEquals("fjaeq", model.organizations().get(0).alias());
+        Assertions.assertEquals(AzureDevOpsPermissionType.CREATOR_ONLY, model.permissionProfile().kind());
+        Assertions.assertEquals("asvm", model.permissionProfile().users().get(0));
+        Assertions.assertEquals("qulngsntnbybkzgc", model.permissionProfile().groups().get(0));
+        Assertions.assertEquals("wclxxwrl", model.alias());
     }
 }
