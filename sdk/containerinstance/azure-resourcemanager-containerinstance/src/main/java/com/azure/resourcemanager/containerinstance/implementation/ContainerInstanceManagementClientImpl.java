@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.containerinstance.fluent.AiAgentsGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.CGProfilesClient;
 import com.azure.resourcemanager.containerinstance.fluent.CGProfilesOperationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
@@ -167,6 +168,20 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
     }
 
     /**
+     * The AiAgentsGroupsClient object to access its operations.
+     */
+    private final AiAgentsGroupsClient aiAgentsGroups;
+
+    /**
+     * Gets the AiAgentsGroupsClient object to access its operations.
+     * 
+     * @return the AiAgentsGroupsClient object.
+     */
+    public AiAgentsGroupsClient getAiAgentsGroups() {
+        return this.aiAgentsGroups;
+    }
+
+    /**
      * The ContainersClient object to access its operations.
      */
     private final ContainersClient containers;
@@ -240,11 +255,12 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-08-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.nGroups = new NGroupsClientImpl(this);
         this.cGProfiles = new CGProfilesClientImpl(this);
+        this.aiAgentsGroups = new AiAgentsGroupsClientImpl(this);
         this.containers = new ContainersClientImpl(this);
         this.cGProfilesOperations = new CGProfilesOperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
