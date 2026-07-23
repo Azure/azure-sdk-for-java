@@ -22,6 +22,11 @@ public final class JobType extends ExpandableStringEnum<JobType> {
     public static final JobType CLOUD_TO_CLOUD = fromString("CloudToCloud");
 
     /**
+     * Static value OnPremToCloudAgentLess for JobType.
+     */
+    public static final JobType ON_PREM_TO_CLOUD_AGENT_LESS = fromString("OnPremToCloudAgentLess");
+
+    /**
      * Creates a new instance of JobType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

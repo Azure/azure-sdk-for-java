@@ -7,31 +7,38 @@ package com.azure.resourcemanager.storagemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.AzureStorageBlobContainerEndpointProperties;
 import com.azure.resourcemanager.storagemover.models.EndpointKind;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageBlobContainerEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageBlobContainerEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureStorageBlobContainer\",\"storageAccountResourceId\":\"waopvkmijcmmxd\",\"blobContainerName\":\"ufufsrp\",\"description\":\"zidnsezcxtbzsgfy\",\"endpointKind\":\"Source\",\"provisioningState\":\"Canceled\"}")
+            "{\"endpointType\":\"AzureStorageBlobContainer\",\"storageAccountResourceId\":\"waopvkmijcmmxd\",\"blobContainerName\":\"ufufsrp\",\"enableCrossTenantTransfer\":true,\"allowedStorageAccounts\":[\"nsez\",\"xtbzsgfyccsne\",\"mdwzjeiachboo\"],\"description\":\"lnrosfqp\",\"endpointKind\":\"Target\",\"provisioningState\":\"Deleting\"}")
             .toObject(AzureStorageBlobContainerEndpointProperties.class);
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.description());
-        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
+        Assertions.assertEquals("lnrosfqp", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
         Assertions.assertEquals("waopvkmijcmmxd", model.storageAccountResourceId());
         Assertions.assertEquals("ufufsrp", model.blobContainerName());
+        Assertions.assertTrue(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("nsez", model.allowedStorageAccounts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageBlobContainerEndpointProperties model
-            = new AzureStorageBlobContainerEndpointProperties().withDescription("zidnsezcxtbzsgfy")
-                .withEndpointKind(EndpointKind.SOURCE)
+            = new AzureStorageBlobContainerEndpointProperties().withDescription("lnrosfqp")
+                .withEndpointKind(EndpointKind.TARGET)
                 .withStorageAccountResourceId("waopvkmijcmmxd")
-                .withBlobContainerName("ufufsrp");
+                .withBlobContainerName("ufufsrp")
+                .withEnableCrossTenantTransfer(true)
+                .withAllowedStorageAccounts(Arrays.asList("nsez", "xtbzsgfyccsne", "mdwzjeiachboo"));
         model = BinaryData.fromObject(model).toObject(AzureStorageBlobContainerEndpointProperties.class);
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.description());
-        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
+        Assertions.assertEquals("lnrosfqp", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
         Assertions.assertEquals("waopvkmijcmmxd", model.storageAccountResourceId());
         Assertions.assertEquals("ufufsrp", model.blobContainerName());
+        Assertions.assertTrue(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("nsez", model.allowedStorageAccounts().get(0));
     }
 }

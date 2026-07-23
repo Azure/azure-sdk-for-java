@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureMultiCloudConnectorEndpointUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMultiCloudConnectorEndpointUpdateProperties model = BinaryData
-            .fromString("{\"endpointType\":\"AzureMultiCloudConnector\",\"description\":\"qdrabhjybigehoqf\"}")
-            .toObject(AzureMultiCloudConnectorEndpointUpdateProperties.class);
-        Assertions.assertEquals("qdrabhjybigehoqf", model.description());
+        AzureMultiCloudConnectorEndpointUpdateProperties model
+            = BinaryData.fromString("{\"endpointType\":\"AzureMultiCloudConnector\",\"description\":\"cynpwlbjnp\"}")
+                .toObject(AzureMultiCloudConnectorEndpointUpdateProperties.class);
+        Assertions.assertEquals("cynpwlbjnp", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMultiCloudConnectorEndpointUpdateProperties model
-            = new AzureMultiCloudConnectorEndpointUpdateProperties().withDescription("qdrabhjybigehoqf");
+            = new AzureMultiCloudConnectorEndpointUpdateProperties().withDescription("cynpwlbjnp");
         model = BinaryData.fromObject(model).toObject(AzureMultiCloudConnectorEndpointUpdateProperties.class);
-        Assertions.assertEquals("qdrabhjybigehoqf", model.description());
+        Assertions.assertEquals("cynpwlbjnp", model.description());
     }
 }

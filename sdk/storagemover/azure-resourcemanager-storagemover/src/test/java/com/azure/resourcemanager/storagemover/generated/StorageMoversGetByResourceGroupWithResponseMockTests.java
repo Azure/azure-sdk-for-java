@@ -21,7 +21,7 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"rfouyftaakcpw\",\"provisioningState\":\"Failed\"},\"location\":\"qtmnubexkpzk\",\"tags\":{\"mg\":\"ndjmquxvyp\",\"ajqgxy\":\"opkwhojv\"},\"id\":\"mocmbqfqvmk\",\"name\":\"xozap\",\"type\":\"helxprglya\"}";
+            = "{\"properties\":{\"description\":\"gvvcnayrhyr\",\"provisioningState\":\"Canceled\"},\"location\":\"ueedndrdvs\",\"tags\":{\"alm\":\"qqtch\"},\"id\":\"mtdaa\",\"name\":\"gdv\",\"type\":\"vgpiohgwxrt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class StorageMoversGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .getByResourceGroupWithResponse("dggkzzlvmbmpa", "modfvuefywsbpfvm", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("kallatmel", "uipiccjzk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qtmnubexkpzk", response.location());
-        Assertions.assertEquals("ndjmquxvyp", response.tags().get("mg"));
-        Assertions.assertEquals("rfouyftaakcpw", response.description());
+        Assertions.assertEquals("ueedndrdvs", response.location());
+        Assertions.assertEquals("qqtch", response.tags().get("alm"));
+        Assertions.assertEquals("gvvcnayrhyr", response.description());
     }
 }
