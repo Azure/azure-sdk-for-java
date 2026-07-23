@@ -223,10 +223,7 @@ stages:
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
           timeoutInMinutes: 120
           # Auto-release is post-merge automation, so use an environment with no approval checks.
-          ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
-            environment: none
-          ${{ else }}:
-            environment: ${{ parameters.PublicPublishEnvironment }}
+          environment: none
           dependsOn: TagRepository
           templateContext:
             type: releaseJob
