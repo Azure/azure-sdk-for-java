@@ -1,6 +1,6 @@
 ---
 name: create-package-skill
-description: 'Interactive wizard that walks service teams through creating a package-specific skill for their Azure SDK package. Scans the package, detects customization patterns, scaffolds a SKILL.md with references, and validates with vally lint. The skill is placed inside the package''s .github/skills/ directory so find-package-skill discovers it automatically. WHEN: create package skill; add service skill; bootstrap skill for package; new package skill; skill for my SDK package; write skill for search; write skill for cosmos.'
+description: 'Interactive wizard that walks service teams through creating a package-specific skill for their Azure SDK package. Scans the package, detects customization patterns, scaffolds a SKILL.md with references, and validates with vally lint. The skill is placed inside the package''s .github/skills/ directory so find-package-skill discovers it automatically. WHEN: create package skill; add service skill; bootstrap skill for package; new package skill; skill for my SDK package; write skill for search; write skill for cosmos. temp change for test.'
 ---
 
 # Create Package Skill Wizard
