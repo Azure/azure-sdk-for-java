@@ -91,7 +91,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
-    private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 10000;
+    private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 5000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
@@ -173,14 +173,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
             safeStopChangeFeedProcessor(changeFeedProcessor);
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
      }
 
@@ -239,7 +237,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -353,7 +351,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeClose(cosmosAsyncClient);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -484,7 +482,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeClose(cosmosAsyncClientForLocalRegion);
             safeClose(cosmosAsyncClientForSatelliteRegion);
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -646,7 +644,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeClose(cosmosAsyncClientLocalRegion);
             safeClose(cosmosAsyncClientRemoteRegion);
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -782,7 +780,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -920,7 +918,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1049,15 +1047,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             safeStopChangeFeedProcessor(changeFeedProcessorSecond);
 
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1183,15 +1179,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             safeStopChangeFeedProcessor(changeFeedProcessorFirst);
 
-            // Wait for the feed processor to shutdown.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1392,7 +1386,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1489,7 +1483,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1571,7 +1565,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1635,7 +1629,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1699,7 +1693,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeClose(clientWithE2ETimeoutConfig);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1776,7 +1770,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeClose(clientWithThroughputControl);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1926,7 +1920,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 
@@ -1998,7 +1992,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
-            Thread.sleep(500);
+            Thread.sleep(100);
         }
     }
 

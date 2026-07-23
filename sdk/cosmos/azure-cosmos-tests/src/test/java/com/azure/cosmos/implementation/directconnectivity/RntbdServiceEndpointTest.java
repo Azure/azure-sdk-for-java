@@ -24,7 +24,7 @@ public class RntbdServiceEndpointTest {
     @Test(groups = { "unit" })
     public void endpointCloseOnIdleEndpointTimeout() throws Exception {
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
-        directConnectionConfig.setIdleEndpointTimeout(Duration.ofSeconds(20));
+        directConnectionConfig.setIdleEndpointTimeout(Duration.ofSeconds(2));
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
@@ -59,9 +59,9 @@ public class RntbdServiceEndpointTest {
 
         //5 endpoints were explicitly  closed above
         assertThat(endpointProvider.evictions()).isEqualTo(5);
-        Thread.sleep(30000);
+        Thread.sleep(3000);
 
-        //Remaining 5 were closed due to IdleEndpointTimeout set to 20 sec
+        //Remaining 5 were closed due to IdleEndpointTimeout set to 2 sec
         assertThat(endpointProvider.evictions()).isEqualTo(10);
     }
 }
