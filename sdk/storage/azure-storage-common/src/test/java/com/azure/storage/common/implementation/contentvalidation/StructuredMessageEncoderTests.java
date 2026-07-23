@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MessageEncoderTests {
+public class StructuredMessageEncoderTests {
 
     private static byte[] getRandomData(int size) {
         byte[] result = new byte[size];
