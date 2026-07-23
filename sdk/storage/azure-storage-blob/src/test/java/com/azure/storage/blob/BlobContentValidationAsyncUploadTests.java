@@ -839,15 +839,27 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             outFile.deleteOnExit();
 
             try {
-                try (AsynchronousFileChannel channel
-                    = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ)) {
-                    FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes).concatMap(bb -> {
-                        AppendBlobAppendBlockOptions appendOptions = new AppendBlobAppendBlockOptions()
-                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                        return client.appendBlockWithResponse(Flux.just(bb), bb.remaining(), appendOptions);
-                    }).then().block();
-                }
-                StepVerifier.create(client.create().then(blobClient.downloadToFile(outFile.getPath(), true)))
+                // Append blobs must be created before any block can be appended; otherwise the first
+                // appendBlock call fails with 404 BlobNotFound. Create, append every block, then download,
+                // all chained into a single reactive pipeline (no blocking calls in the test).
+                StepVerifier
+                    .create(client.create()
+                        .thenMany(Flux.using(
+                            () -> AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ),
+                            channel -> FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes)
+                                .concatMap(bb -> {
+                                    AppendBlobAppendBlockOptions appendOptions = new AppendBlobAppendBlockOptions()
+                                        .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                                    return client.appendBlockWithResponse(Flux.just(bb), bb.remaining(), appendOptions);
+                                }),
+                            channel -> {
+                                try {
+                                    channel.close();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }))
+                        .then(blobClient.downloadToFile(outFile.getPath(), true)))
                     .assertNext(Assertions::assertNotNull)
                     .verifyComplete();
                 assertTrue(compareFiles(sourceFile, outFile, 0, chosenPayloadSizeBytes), prefix);

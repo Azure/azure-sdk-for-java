@@ -129,6 +129,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class BlobApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -2153,12 +2154,19 @@ public class BlobApiTests extends BlobTestBase {
             () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null));
     }
 
+    // Abort-copy tests race the service: the cross-account copy must still be pending when the abort request
+    // lands. A larger source widens that window (A1); combined with an assumeTrue guard on the poll status (B),
+    // the tests assert abort behavior when a copy is genuinely pending and skip (rather than fail) if the
+    // service finished the copy first. Server-to-server copy, so the larger size costs only the initial upload.
+    private static final int ABORT_COPY_SOURCE_SIZE_BYTES = 64 * Constants.MB;
+
     @Test
     public void abortCopyBaseSimple() {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2171,6 +2179,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId());
         BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId()));
@@ -2186,7 +2196,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2202,6 +2213,8 @@ public class BlobApiTests extends BlobTestBase {
             bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
+        assumeTrue(response.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; cannot observe the 412 lease mismatch.");
         BlobCopyInfo blobCopyInfo = response.getValue();
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
@@ -2217,7 +2230,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2230,6 +2244,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         Response<Void> response
             = bu2.abortCopyFromUrlWithResponse(lastResponse.getValue().getCopyId(), null, null, null);
         HttpHeaders headers = response.getHeaders();
@@ -2247,7 +2263,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateContainerName());
         cu2.create();
@@ -2264,6 +2281,8 @@ public class BlobApiTests extends BlobTestBase {
 
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         String copyId = lastResponse.getValue().getCopyId();
         assertResponseStatusCode(bu2.abortCopyFromUrlWithResponse(copyId, leaseId, null, null), 204);
         // cleanup:
