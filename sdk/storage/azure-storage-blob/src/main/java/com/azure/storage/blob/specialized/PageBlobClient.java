@@ -189,7 +189,6 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(PageRange pageRange) {
         return getBlobOutputStream(pageRange, null);
     }
@@ -206,7 +205,6 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
     }
@@ -218,7 +216,6 @@ public final class PageBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(PageBlobOutputStreamOptions options) {
         if (options == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
