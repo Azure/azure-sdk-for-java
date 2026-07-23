@@ -112,7 +112,10 @@ public class StorageCrc64CalculatorTests {
             Arguments.of(10, Constants.KB, Constants.KB), Arguments.of(2, Constants.KB, 4 * Constants.KB),
             Arguments.of(3, Constants.KB, 4 * Constants.KB), Arguments.of(10, Constants.KB, 4 * Constants.KB),
             Arguments.of(2, Constants.KB, Constants.MB), Arguments.of(3, Constants.KB, Constants.MB),
-            Arguments.of(2, Constants.KB, 512 * Constants.MB), Arguments.of(3, Constants.KB, 512 * Constants.MB));
+            // Cover large, non-uniform block sizes to exercise concat-composition without allocating
+            // multi-hundred-MB buffers (previously 512 MB, which intermittently OOMed the 4 GB fork and
+            // triggered a multi-GB heap dump that filled the CI agent disk).
+            Arguments.of(2, Constants.KB, 4 * Constants.MB), Arguments.of(3, Constants.KB, 4 * Constants.MB));
     }
 
     @Test

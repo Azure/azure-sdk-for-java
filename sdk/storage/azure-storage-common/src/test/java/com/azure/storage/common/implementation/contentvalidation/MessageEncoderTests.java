@@ -137,18 +137,18 @@ public class MessageEncoderTests {
             Arguments.of(1024 * 1024, 512, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(1024 * 1024, 1024, StructuredMessageFlags.NONE),
             Arguments.of(1024 * 1024, 1024, StructuredMessageFlags.STORAGE_CRC64),
+            // A single multi-MB case with >= 1 MiB segments is sufficient to cover large content and large
+            // segment sizes. Larger 8 MiB / 12 MiB variants were removed as they add no structural coverage
+            // (same handful of segments) while multiplying the test's heap footprint.
             Arguments.of(1024 * 1024 * 4, 1024 * 1024, StructuredMessageFlags.NONE),
             Arguments.of(1024 * 1024 * 4, 1024 * 1024, StructuredMessageFlags.STORAGE_CRC64),
-            Arguments.of(1024 * 1024 * 8, 1024 * 1024, StructuredMessageFlags.NONE),
-            Arguments.of(1024 * 1024 * 8, 1024 * 1024, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(1234, 123, StructuredMessageFlags.NONE),
             Arguments.of(1234, 123, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(1234 * 10, 12, StructuredMessageFlags.NONE),
             Arguments.of(1234 * 10, 12, StructuredMessageFlags.STORAGE_CRC64),
+            // Non-power-of-two content and segment sizes to exercise uneven segment boundaries.
             Arguments.of(1234 * 1234, 567, StructuredMessageFlags.NONE),
-            Arguments.of(1234 * 1234, 567, StructuredMessageFlags.STORAGE_CRC64),
-            Arguments.of(1234 * 1234 * 8, 1234 * 1234, StructuredMessageFlags.NONE),
-            Arguments.of(1234 * 1234 * 8, 1234 * 1234, StructuredMessageFlags.STORAGE_CRC64));
+            Arguments.of(1234 * 1234, 567, StructuredMessageFlags.STORAGE_CRC64));
     }
 
     @ParameterizedTest
@@ -263,7 +263,6 @@ public class MessageEncoderTests {
             Arguments.of(1024, 512, StructuredMessageFlags.NONE),
             Arguments.of(1024, 512, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(4 * 1024 * 1024, V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64),
-            Arguments.of(10 * 1024 * 1024, V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(1234, 123, StructuredMessageFlags.STORAGE_CRC64));
     }
 
@@ -283,8 +282,23 @@ public class MessageEncoderTests {
     // Direct (non-array-backed) ByteBuffer
     // ===========================================================================================
 
+    private static Stream<Arguments> readAllDirectSupplier() {
+        // Direct (non-array-backed) buffers take the scratch-buffer CRC path
+        // (StructuredMessageEncoder.CRC64_SCRATCH_BUFFER_SIZE == 64 KiB). These cases only need to cover
+        // that path: empty/uneven segment boundaries plus content larger than the scratch buffer (to force
+        // multiple scratch iterations). They intentionally stay small so the direct-buffer test doesn't
+        // re-run the large readAllSupplier cases and double their heap footprint.
+        return Stream.of(Arguments.of(10, 1, StructuredMessageFlags.NONE),
+            Arguments.of(10, 1, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024, 200, StructuredMessageFlags.NONE),
+            Arguments.of(1024, 200, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 128, 512, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 128, 512, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 128, 1024 * 128, StructuredMessageFlags.STORAGE_CRC64));
+    }
+
     @ParameterizedTest
-    @MethodSource("readAllSupplier")
+    @MethodSource("readAllDirectSupplier")
     public void readAllDirectByteBuffer(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(size);
         ByteBuffer directBuffer = ByteBuffer.allocateDirect(size);
