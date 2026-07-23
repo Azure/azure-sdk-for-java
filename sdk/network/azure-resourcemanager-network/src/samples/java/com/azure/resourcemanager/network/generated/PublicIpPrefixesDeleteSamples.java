@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpPrefixesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpPrefixDelete.json
+     * x-ms-original-file: 2025-07-01/PublicIpPrefixDelete.json
      */
     /**
      * Sample code: Delete public IP prefix.

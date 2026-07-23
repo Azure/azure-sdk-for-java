@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.TableRoleAssignmentResourc
  */
 public final class TableResourcesCreateUpdateTableRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBTableRoleAssignmentCreateUpdate.

@@ -14,28 +14,28 @@ public final class DependenciesSignalGroupV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DependenciesSignalGroupV2 model = BinaryData.fromString(
-            "{\"aggregationType\":\"MaxNotHealthy\",\"degradedThreshold\":74.0455958389497,\"unhealthyThreshold\":89.34519489007312,\"unit\":\"Percentage\",\"ignoreUnknown\":false}")
+            "{\"aggregationType\":\"MaxNotHealthy\",\"degradedThreshold\":50.23650274229857,\"unhealthyThreshold\":72.57790891273328,\"unit\":\"Percentage\",\"ignoreUnknown\":true}")
             .toObject(DependenciesSignalGroupV2.class);
         Assertions.assertEquals(DependenciesAggregationType.MAX_NOT_HEALTHY, model.aggregationType());
-        Assertions.assertEquals(74.0455958389497D, model.degradedThreshold());
-        Assertions.assertEquals(89.34519489007312D, model.unhealthyThreshold());
+        Assertions.assertEquals(50.23650274229857D, model.degradedThreshold());
+        Assertions.assertEquals(72.57790891273328D, model.unhealthyThreshold());
         Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.unit());
-        Assertions.assertFalse(model.ignoreUnknown());
+        Assertions.assertTrue(model.ignoreUnknown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DependenciesSignalGroupV2 model
             = new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MAX_NOT_HEALTHY)
-                .withDegradedThreshold(74.0455958389497D)
-                .withUnhealthyThreshold(89.34519489007312D)
+                .withDegradedThreshold(50.23650274229857D)
+                .withUnhealthyThreshold(72.57790891273328D)
                 .withUnit(DependenciesAggregationUnit.PERCENTAGE)
-                .withIgnoreUnknown(false);
+                .withIgnoreUnknown(true);
         model = BinaryData.fromObject(model).toObject(DependenciesSignalGroupV2.class);
         Assertions.assertEquals(DependenciesAggregationType.MAX_NOT_HEALTHY, model.aggregationType());
-        Assertions.assertEquals(74.0455958389497D, model.degradedThreshold());
-        Assertions.assertEquals(89.34519489007312D, model.unhealthyThreshold());
+        Assertions.assertEquals(50.23650274229857D, model.degradedThreshold());
+        Assertions.assertEquals(72.57790891273328D, model.unhealthyThreshold());
         Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.unit());
-        Assertions.assertFalse(model.ignoreUnknown());
+        Assertions.assertTrue(model.ignoreUnknown());
     }
 }

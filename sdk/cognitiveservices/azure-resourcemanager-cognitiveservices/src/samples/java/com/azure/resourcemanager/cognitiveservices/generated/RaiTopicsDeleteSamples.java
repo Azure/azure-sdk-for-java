@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiTopicsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/DeleteRaiTopic.json
+     * x-ms-original-file: 2026-05-15-preview/DeleteRaiTopic.json
      */
     /**
      * Sample code: DeleteRaiTopic.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesListTableRoleAssignmentsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentList.json
+     * x-ms-original-file: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentList.json
      */
     /**
      * Sample code: CosmosDBTableRoleAssignmentList.

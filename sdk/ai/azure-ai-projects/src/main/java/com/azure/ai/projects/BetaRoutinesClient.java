@@ -30,8 +30,8 @@ import java.util.Map;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRoutinesClient {
 
     @Generated
@@ -52,7 +52,7 @@ public final class BetaRoutinesClient {
      *
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -69,9 +69,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -114,7 +114,7 @@ public final class BetaRoutinesClient {
      *
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -156,7 +156,7 @@ public final class BetaRoutinesClient {
      *
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -196,7 +196,7 @@ public final class BetaRoutinesClient {
      *
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -249,7 +249,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -322,7 +322,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -331,6 +331,9 @@ public final class BetaRoutinesClient {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)
@@ -371,7 +374,7 @@ public final class BetaRoutinesClient {
      *
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -381,9 +384,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

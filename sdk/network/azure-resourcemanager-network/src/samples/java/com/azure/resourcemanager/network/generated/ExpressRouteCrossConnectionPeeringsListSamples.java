@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCrossConnectionPeeringsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCrossConnectionBgpPeeringList.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCrossConnectionBgpPeeringList.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringList.

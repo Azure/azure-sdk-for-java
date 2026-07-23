@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Constants which is used for management calls to support operations for example renewlock, schedule, defer etc.
  */
@@ -25,6 +28,27 @@ public class ManagementConstants {
     public static final String SEQUENCE_NUMBERS = "sequence-numbers";
     public static final String SESSION_ID = "session-id";
     public static final String SESSION_STATE = "session-state";
+    /**
+     * Wire key for the session-ID array in the {@code OPERATION_GET_MESSAGE_SESSIONS} response. The
+     * field name ("sessions-ids") is fixed by the broker contract; the constant name omits the extra
+     * "s" so it reads consistently with {@link #SESSION_ID} and {@link #SEQUENCE_NUMBERS}.
+     */
+    public static final String SESSION_IDS = "sessions-ids";
+
+    /**
+     * Sentinel timestamp the broker recognizes as "list sessions with active messages" mode for the
+     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. Matches Track 1's
+     * {@code SessionBrowser.MAXDATE = new Date(253402300800000L)}
+     * (rendered by {@link OffsetDateTime#toString()} as {@code +10000-01-01T00:00Z} - the leading
+     * {@code +} is required by ISO 8601 for years with more than four digits); using any other
+     * value risks the broker not switching into the proven mode. Defined as {@link OffsetDateTime}
+     * so callers and the implementation can clamp inputs via {@link OffsetDateTime#compareTo}
+     * without each owning their own copy.
+     */
+    public static final OffsetDateTime ACTIVE_MESSAGES_SENTINEL
+        = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    public static final String LAST_UPDATED_TIME = "last-updated-time";
+    public static final String LAST_SESSION_ID = "last-session-id";
     public static final String VIA_PARTITION_KEY = "via-partition-key";
     public static final String RULE_NAME = "rule-name";
     public static final String RULE_DESCRIPTION = "rule-description";
@@ -61,6 +85,7 @@ public class ManagementConstants {
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
+    static final String OPERATION_GET_MESSAGE_SESSIONS = AmqpConstants.VENDOR + ":get-message-sessions";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 

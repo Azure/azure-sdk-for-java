@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class WorkbenchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutWorkbench.json
+     * x-ms-original-file: 2026-05-15-preview/PutWorkbench.json
      */
     /**
      * Sample code: PutWorkbench.

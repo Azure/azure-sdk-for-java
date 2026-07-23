@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualRoutersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualRouterListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/VirtualRouterListByResourceGroup.json
      */
     /**
      * Sample code: List all Virtual Router for a given resource group.

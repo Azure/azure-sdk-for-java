@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class DiscoveryRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_Delete.json
      */
     /**
      * Sample code: DiscoveryRules_Delete.
@@ -18,6 +18,6 @@ public final class DiscoveryRulesDeleteSamples {
      */
     public static void discoveryRulesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.discoveryRules()
-            .delete("my-resource-group", "my-health-model", "my-discovery-rule", com.azure.core.util.Context.NONE);
+            .delete("online-store-rg", "online-store", "discover-web-apps", com.azure.core.util.Context.NONE);
     }
 }

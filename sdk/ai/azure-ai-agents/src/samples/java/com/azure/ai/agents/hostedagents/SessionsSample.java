@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
@@ -34,28 +33,27 @@ public class SessionsSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = betaAgentsClient.getSession(agentName, session.getAgentSessionId(), null);
+            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId());
             System.out.printf("Retrieved session (id: %s, status: %s)%n", fetched.getAgentSessionId(),
                 fetched.getStatus());
 
             System.out.println("Listing sessions for the agent...");
-            PagedIterable<AgentSessionResource> sessions = betaAgentsClient.listSessions(agentName, null, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null, null);
             for (AgentSessionResource item : sessions) {
                 System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(), item.getStatus());
             }
 
             System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-            betaAgentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
+            agentsClient.deleteSession(agentName, session.getAgentSessionId());
             System.out.printf("Session with id: %s deleted.%n", session.getAgentSessionId());
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 }

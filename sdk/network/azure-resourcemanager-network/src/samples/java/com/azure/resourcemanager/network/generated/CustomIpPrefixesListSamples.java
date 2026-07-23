@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class CustomIpPrefixesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CustomIpPrefixListAll.json
+     * x-ms-original-file: 2025-07-01/CustomIpPrefixListAll.json
      */
     /**
      * Sample code: List all custom IP prefixes.

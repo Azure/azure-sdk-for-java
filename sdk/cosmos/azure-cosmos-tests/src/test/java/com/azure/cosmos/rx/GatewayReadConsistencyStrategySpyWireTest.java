@@ -698,12 +698,33 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         return "dbs/" + databaseId + "/colls/" + containerId;
     }
 
+    /**
+     * Identifies the thin-client connectivity-probe request. When {@code COSMOS.THINCLIENT_ENABLED} is
+     * set the probe is still wired (the routing site bypasses it), so its bodyless
+     * {@code POST /connectivity-probe} to the proxy port :10250 appears on the wire. It carries the
+     * {@code x-ms-thinclient-proxy-operation-type: ConnectivityProbe} header and no RNTBD frame body,
+     * so it must be excluded from data-request selection.
+     */
+    private static boolean isConnectivityProbeRequest(HttpRequest request) {
+        String operationType = request.headers().toMap().get(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE);
+        if ("ConnectivityProbe".equalsIgnoreCase(operationType)) {
+            return true;
+        }
+        return request.uri().toString().contains("/connectivity-probe");
+    }
+
     private HttpRequest findDocumentReadRequest(String mode, List<HttpRequest> requests) {
         for (HttpRequest request : requests) {
             String uri = request.uri().toString();
             if (isGatewayV2(mode)) {
                 // Thin client sends all requests as POST to proxy (:10250) with RNTBD frame body
                 if ("POST".equalsIgnoreCase(request.httpMethod().toString()) && uri.contains(":10250")) {
+                    // Skip the connectivity-probe request: when COSMOS.THINCLIENT_ENABLED is set the probe is
+                    // still wired (routing bypasses it), so its bodyless POST /connectivity-probe to :10250
+                    // shows up on the wire. It is not the data request and carries no RNTBD frame.
+                    if (isConnectivityProbeRequest(request)) {
+                        continue;
+                    }
                     return request;
                 }
             } else {
@@ -728,6 +749,18 @@ public class GatewayReadConsistencyStrategySpyWireTest {
             String uri = request.uri().toString();
             if (isGatewayV2(mode)) {
                 if ("POST".equalsIgnoreCase(request.httpMethod().toString()) && uri.contains(":10250")) {
+                    // Skip the connectivity-probe request first: it is a bodyless POST /connectivity-probe
+                    // that (a) is not a feed request and (b) would NPE the collectHttpBody() call below.
+                    if (isConnectivityProbeRequest(request)) {
+                        continue;
+                    }
+                    // Skip query-plan precursor requests: thin-client routes QueryPlan via V2 too, and those
+                    // RNTBD frames intentionally carry no ReadConsistencyStrategy / ConsistencyLevel tokens
+                    // because QueryPlan generation doesn't depend on read-consistency. Mirror the V1 filter
+                    // below by inspecting the RNTBD operation type encoded in the framed body.
+                    if (isRntbdQueryPlanFrame(collectHttpBody(request))) {
+                        continue;
+                    }
                     return request;
                 }
             } else {
@@ -795,6 +828,24 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         int expectedLength = buffer.getIntLE(buffer.readerIndex());
         ByteBuf sliced = buffer.slice(buffer.readerIndex(), expectedLength);
         return RntbdRequest.decode(sliced);
+    }
+
+    /**
+     * Peeks at an RNTBD frame's operation-type token (offset 6 LE after the 4-byte length prefix
+     * and 2-byte resource type) to detect QueryPlan precursor frames. QueryPlan == 0x0042 in
+     * {@link RntbdConstants.RntbdOperationType}.
+     */
+    private static boolean isRntbdQueryPlanFrame(byte[] rntbdFrame) {
+        if (rntbdFrame == null || rntbdFrame.length < 8) {
+            return false;
+        }
+        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
+        try {
+            short operationType = buffer.getShortLE(buffer.readerIndex() + Integer.BYTES + Short.BYTES);
+            return operationType == RntbdConstants.RntbdOperationType.QueryPlan.id();
+        } catch (RuntimeException ignored) {
+            return false;
+        }
     }
 
     // endregion

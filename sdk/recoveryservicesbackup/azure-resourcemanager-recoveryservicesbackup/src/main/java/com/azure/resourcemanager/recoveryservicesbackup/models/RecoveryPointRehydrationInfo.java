@@ -17,6 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class RecoveryPointRehydrationInfo implements JsonSerializable<RecoveryPointRehydrationInfo> {
     /*
+     * 
      * How long the rehydrated RP should be kept
      * Should be ISO8601 Duration format e.g. "P7D"
      */
@@ -34,7 +35,8 @@ public final class RecoveryPointRehydrationInfo implements JsonSerializable<Reco
     }
 
     /**
-     * Get the rehydrationRetentionDuration property: How long the rehydrated RP should be kept
+     * Get the rehydrationRetentionDuration property:
+     * How long the rehydrated RP should be kept
      * Should be ISO8601 Duration format e.g. "P7D".
      * 
      * @return the rehydrationRetentionDuration value.
@@ -44,7 +46,8 @@ public final class RecoveryPointRehydrationInfo implements JsonSerializable<Reco
     }
 
     /**
-     * Set the rehydrationRetentionDuration property: How long the rehydrated RP should be kept
+     * Set the rehydrationRetentionDuration property:
+     * How long the rehydrated RP should be kept
      * Should be ISO8601 Duration format e.g. "P7D".
      * 
      * @param rehydrationRetentionDuration the rehydrationRetentionDuration value to set.

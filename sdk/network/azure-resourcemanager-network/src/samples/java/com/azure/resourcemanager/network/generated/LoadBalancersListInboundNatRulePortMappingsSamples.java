@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRe
  */
 public final class LoadBalancersListInboundNatRulePortMappingsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/QueryInboundNatRulePortMapping.json
+     * x-ms-original-file: 2025-07-01/QueryInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Query inbound NAT rule port mapping.

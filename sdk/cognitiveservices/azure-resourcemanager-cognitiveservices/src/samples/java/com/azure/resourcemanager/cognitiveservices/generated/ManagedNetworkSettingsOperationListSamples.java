@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ManagedNetworkSettingsOperationListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ManagedNetwork/listManagedNetworkV2.json
+     * x-ms-original-file: 2026-05-15-preview/ManagedNetwork/listManagedNetworkV2.json
      */
     /**
      * Sample code: List ManagedNetworkSettings.

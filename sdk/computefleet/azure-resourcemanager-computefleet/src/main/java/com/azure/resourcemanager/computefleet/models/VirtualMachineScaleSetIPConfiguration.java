@@ -23,6 +23,7 @@ public final class VirtualMachineScaleSetIPConfiguration
     private String name;
 
     /*
+     * 
      * Describes a virtual machine scale set network profile's IP configuration
      * properties.
      */
@@ -55,7 +56,8 @@ public final class VirtualMachineScaleSetIPConfiguration
     }
 
     /**
-     * Get the properties property: Describes a virtual machine scale set network profile's IP configuration
+     * Get the properties property:
+     * Describes a virtual machine scale set network profile's IP configuration
      * properties.
      * 
      * @return the properties value.
@@ -65,7 +67,8 @@ public final class VirtualMachineScaleSetIPConfiguration
     }
 
     /**
-     * Set the properties property: Describes a virtual machine scale set network profile's IP configuration
+     * Set the properties property:
+     * Describes a virtual machine scale set network profile's IP configuration
      * properties.
      * 
      * @param properties the properties value to set.

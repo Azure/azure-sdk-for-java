@@ -48,6 +48,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -497,6 +498,62 @@ public class SessionsMessagePumpIsolatedTest {
         final DeliveryState deliveryState = deliveryStateCaptor.getValue();
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertEquals(Accepted.getInstance(), deliveryState);
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(onTerminate, times(1)).run();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldNotReDispositionWhenHandlerSettlesWithAutoCompleteEnabled() {
+        // Regression test for https://github.com/Azure/azure-sdk-for-java/issues/47356
+        // When a session message handler settles the message manually (e.g. complete()) while auto-complete is
+        // left enabled, the redundant auto-settlement must short-circuit at the message.isSettled() guard and
+        // must NOT issue a second disposition on the receive-link (which would log a spurious
+        // DeliveryNotOnLinkException once the delivery has been removed from the link's DeliveryMap).
+        final String session1Id = "1";
+
+        final HashMap<Message, ServiceBusReceivedMessage> session1Messages = createMockMessages(session1Id, 1);
+        // Wire the mock message's settled flag so the isSettled() guard in updateDisposition() behaves like the
+        // real message: setIsSettled() flips it to true and isSettled() reflects the current value.
+        final ServiceBusReceivedMessage message = session1Messages.values().iterator().next();
+        final AtomicBoolean settled = new AtomicBoolean(false);
+        when(message.isSettled()).thenAnswer(__ -> settled.get());
+        doAnswer(__ -> {
+            settled.set(true);
+            return null;
+        }).when(message).setIsSettled();
+
+        final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
+        session1EpStates.next(AmqpEndpointState.ACTIVE);
+        final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
+        when(session1.getLink().updateDisposition(any(), any())).thenReturn(Mono.empty());
+        final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
+        final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
+        final Runnable onTerminate = createMockOnTerminate();
+
+        final int maxSessions = 1;
+        final int concurrency = 1;
+        final boolean autoDispositionDisabled = false; // auto-complete enabled.
+        // The handler settles the message manually, mirroring the customer scenario in the issue.
+        final Consumer<ServiceBusReceivedMessageContext> processMessage = ServiceBusReceivedMessageContext::complete;
+        final Consumer<ServiceBusErrorContext> processError = e -> {
+        };
+        final SessionsMessagePump pump = createSessionsMessagePump(sessionAcquirer, idleTimeoutDisabled, maxSessions,
+            concurrency, autoDispositionDisabled, serializer, processMessage, processError, onTerminate);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> pump.begin()).thenAwait().thenCancel().verify();
+        }
+
+        // The successful manual disposition marks the message settled...
+        Assertions.assertTrue(message.isSettled());
+        verify(message, times(1)).setIsSettled();
+        // ...so the redundant auto-complete short-circuits at the isSettled() guard and the receive-link sees
+        // exactly ONE disposition (the manual one), never a second that would raise DeliveryNotOnLinkException.
+        verify(session1.getLink(), times(1)).updateDisposition(lockTokenCaptor.capture(),
+            deliveryStateCaptor.capture());
+        Assertions.assertEquals(message.getLockToken(), lockTokenCaptor.getValue());
+        Assertions.assertEquals(Accepted.getInstance(), deliveryStateCaptor.getValue());
         verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
