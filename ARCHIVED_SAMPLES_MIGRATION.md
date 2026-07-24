@@ -13,7 +13,26 @@ Source pages:
 
 The moved samples are intentionally **concise**: they focus on the resource-management operations, drop the verbose
 `Utils.print(...)` resource dumps, and only print output where it is meaningful. A minimal shared helper
-(`com.azure.resourcemanager.samples.SampleUtils`) provides random names, a sample password, and an SSH key.
+(`com.azure.resourcemanager.samples.SampleUtils`) provides random names and an SSH key.
+
+## Tests
+
+Each service has one test class under
+`sdk/resourcemanager/azure-resourcemanager/src/test/java/com/azure/resourcemanager/samples/`, with one test case per
+sample (all extend `SamplesTestBase`, mirroring the existing `azure-resourcemanager` tests and the
+`azure-resourcemanager-samples` module):
+
+| Service | Test class | Cases |
+| --- | --- | --- |
+| Compute | `ComputeSampleTests` | `CreateVirtualMachineUsingCustomImageFromVM`, `CreateVirtualMachineUsingSpecializedDiskFromVhd`, `ManageVirtualMachinesInParallel` |
+| App Service | `AppServiceSampleTests` | `ManageWebAppSlots`, `ConnectWebAppToSqlDatabase`, `ManageWebAppWithCustomDomain`\*, `ScaleWebAppWithTrafficManager`\*, `ConnectWebAppToStorageAccount`\*, `DeployImageFromAcrToLinuxWebApp`\* |
+| SQL | `SqlSampleTests` | `ManageSqlDatabase`, `ManageSqlDatabasesAcrossRegions`\* |
+| Container Registry | `ContainerRegistrySampleTests` | `ManageContainerRegistry`\* |
+| Container Service | `ContainerServiceSampleTests` | `ManageKubernetesCluster` |
+
+\* Annotated `@DoNotRecord(skipInPlayback = true)` because the sample makes calls (DNS, Traffic Manager, storage/ACR
+data plane, or long-running cross-region provisioning) that cannot be recorded for playback. These require a live
+environment. Tests have been written and compiled but **not yet run** (running needs live Azure credentials).
 
 ## Sample name (MS Learn) → file path
 
