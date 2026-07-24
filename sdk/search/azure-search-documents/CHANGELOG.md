@@ -1,5 +1,17 @@
 # Release History
 
+## 12.1.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Regenerated the SDK against the `2026-04-01` service specification (spec commit `18ebae7ea8f6aefd83268aacdb1f480b24842726`). No public API changes.
+
 ## 12.0.0 (2026-04-10)
 
 ### Features Added
