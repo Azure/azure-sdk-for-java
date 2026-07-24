@@ -43,14 +43,14 @@ public final class ManageSqlDatabase {
             // Create a managed identity to act as the SQL Server's Microsoft Entra administrator (no password needed).
             Identity adminIdentity = azureResourceManager.identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST3)
                 .withNewResourceGroup(rgName)
                 .create();
 
             // Create a Microsoft Entra-only SQL Server with two firewall rules.
             SqlServer sqlServer = azureResourceManager.sqlServers()
                 .define(sqlServerName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST3)
                 .withExistingResourceGroup(rgName)
                 .withAzureActiveDirectoryOnlyAuthentication()
                 .withExternalActiveDirectoryAdministrator(identityName, adminIdentity.principalId(),

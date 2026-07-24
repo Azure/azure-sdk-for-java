@@ -49,14 +49,14 @@ public final class ManageSqlDatabasesAcrossRegions {
             // Create a managed identity that administers every SQL Server (Microsoft Entra-only, no password).
             Identity adminIdentity = azureResourceManager.identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST3)
                 .withNewResourceGroup(rgName)
                 .create();
 
             // Create the master SQL Server and database.
             SqlServer masterSqlServer = azureResourceManager.sqlServers()
                 .define(masterServerName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST3)
                 .withExistingResourceGroup(rgName)
                 .withAzureActiveDirectoryOnlyAuthentication()
                 .withExternalActiveDirectoryAdministrator(identityName, adminIdentity.principalId(),
@@ -69,7 +69,7 @@ public final class ManageSqlDatabasesAcrossRegions {
             SqlServer secondarySqlServer1 = createSecondaryServer(azureResourceManager, secondary1Name, rgName,
                 Region.US_EAST2, identityName, adminIdentity, databaseName, masterDatabase);
             SqlServer secondarySqlServer2 = createSecondaryServer(azureResourceManager, secondary2Name, rgName,
-                Region.US_SOUTH_CENTRAL, identityName, adminIdentity, databaseName, masterDatabase);
+                Region.US_CENTRAL, identityName, adminIdentity, databaseName, masterDatabase);
 
             // Add a firewall rule to each SQL Server to allow access from an on-premises client.
             List<SqlServer> sqlServers = Arrays.asList(masterSqlServer, secondarySqlServer1, secondarySqlServer2);

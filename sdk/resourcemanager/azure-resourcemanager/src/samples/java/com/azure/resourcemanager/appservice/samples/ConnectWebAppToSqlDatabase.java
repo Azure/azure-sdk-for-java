@@ -59,7 +59,7 @@ public final class ConnectWebAppToSqlDatabase {
             // No SQL login/password is created, so there is no secret to store or leak.
             SqlServer server = azureResourceManager.sqlServers()
                 .define(sqlServerName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_WEST3)
                 .withExistingResourceGroup(rgName)
                 .withAzureActiveDirectoryOnlyAuthentication()
                 .withExternalActiveDirectoryAdministrator(appName,

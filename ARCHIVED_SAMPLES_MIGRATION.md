@@ -32,7 +32,32 @@ sample (all extend `SamplesTestBase`, mirroring the existing `azure-resourcemana
 
 \* Annotated `@DoNotRecord(skipInPlayback = true)` because the sample makes calls (DNS, Traffic Manager, storage/ACR
 data plane, or long-running cross-region provisioning) that cannot be recorded for playback. These require a live
-environment. Tests have been written and compiled but **not yet run** (running needs live Azure credentials).
+environment.
+
+### RECORD run results (subscription `faa080af-…`)
+
+Ran in `AZURE_TEST_MODE=RECORD` against the live test subscription. **7 of 13 passed and were recorded**; the
+recordings live in the test-proxy asset store (`.assets/…/session-records/`) and still need to be pushed to
+`Azure/azure-sdk-assets` (via `test-proxy push`) — that push needs credentials to the assets repo and is a follow-up.
+
+| Test case | Result | Notes |
+| --- | --- | --- |
+| `ComputeSampleTests#testCreateVirtualMachineUsingCustomImageFromVM` | ✅ recorded | |
+| `ComputeSampleTests#testManageVirtualMachinesInParallel` | ✅ recorded | |
+| `SqlSampleTests#testManageSqlDatabase` | ✅ recorded | Region changed `US_EAST → US_WEST3` (East US refused SQL server creation). |
+| `AppServiceSampleTests#testManageWebAppSlots` | ✅ recorded | |
+| `AppServiceSampleTests#testConnectWebAppToSqlDatabase` | ✅ recorded | SQL server region changed `US_WEST → US_WEST3`. |
+| `AppServiceSampleTests#testManageWebAppWithCustomDomain` | ✅ passed | |
+| `ContainerServiceSampleTests#testManageKubernetesCluster` | ✅ recorded | Region changed `US_EAST → US_WEST3` (`Standard_D2_v3` not allowed in East US). |
+| `ComputeSampleTests#testCreateVirtualMachineUsingSpecializedDiskFromVhd` | ❌ blocked | Storage account creation denied by subscription policy *“disable local auth”* (`allowSharedKeyAccess` must be `false`). The VHD-to-blob sample inherently needs shared-key storage. Needs policy exemption. |
+| `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ❌ blocked | App Service Plan quota *“Total VMs”* limited to **1** in the test subscription; multi-region scaling needs more. Needs quota increase. |
+| `AppServiceSampleTests#testConnectWebAppToStorageAccount` | ❌ blocked | Same storage *“disable local auth”* policy. Sample intentionally uses a storage-key connection string (web app handwritten layer cannot use MI). Needs policy exemption. |
+| `AppServiceSampleTests#testDeployImageFromAcrToLinuxWebApp` | ❌ blocked | ACR admin user disabled by policy *“Container registries should have local admin account disabled”*. Sample needs admin creds (web app fluent layer requires `withCredentials`). Needs policy exemption. |
+| `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ❌ blocked | SQL server creation capacity-restricted in most regions (East US, West US, South Central US, West US 2, Central US all refused; only US West 3 + US East 2 worked). Sample needs 3 distinct SQL-capable regions. |
+| `ContainerRegistrySampleTests#testManageContainerRegistry` | ❌ blocked | `Microsoft.Authorization/roleAssignments/write` denied — account lacks permission to create the AcrPull role assignment the sample demonstrates. Needs User Access Administrator. Sample NOT changed (the AcrPull grant is its stated purpose). |
+
+None of the tests were disabled. The 6 blocked cases are all subscription policy / quota / region-capacity /
+permission restrictions in the test environment — not sample-code defects.
 
 ## Sample name (MS Learn) → file path
 

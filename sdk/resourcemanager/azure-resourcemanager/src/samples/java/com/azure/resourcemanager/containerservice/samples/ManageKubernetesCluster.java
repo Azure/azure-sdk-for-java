@@ -34,7 +34,7 @@ public final class ManageKubernetesCluster {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgaks", 15);
         final String aksName = SampleUtils.randomResourceName(azureResourceManager, "akssample", 30);
-        final Region region = Region.US_EAST;
+        final Region region = Region.US_WEST3;
 
         try {
             // Create a Kubernetes cluster with a single-node system agent pool.
