@@ -853,7 +853,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                                     return client.appendBlockWithResponse(Flux.just(bb), bb.remaining(), appendOptions);
                                 }),
                             channel -> {
-                                } catch (IOException e) {
+                                try {
+                                    channel.close();
+                                }
+                                catch (IOException e) {
                                     throw new java.io.UncheckedIOException(e);
                                 }
                             }))
