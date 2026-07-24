@@ -42,7 +42,7 @@ public final class ConnectWebAppToStorageAccount {
             // Create a storage account for the web app to use.
             StorageAccount storageAccount = azureResourceManager.storageAccounts()
                 .define(storageName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.JAPAN_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
@@ -53,7 +53,7 @@ public final class ConnectWebAppToStorageAccount {
             // Create a web app and store the storage connection string in its settings.
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.JAPAN_EAST)
                 .withExistingResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_11)

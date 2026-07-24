@@ -15,8 +15,6 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.samples.SampleUtils;
 
-import java.util.UUID;
-
 /**
  * Azure Container Registry sample for managing container registries.
  *  - Create an Azure Container Registry to hold private Docker images (admin user disabled)
@@ -59,7 +57,7 @@ public final class ManageContainerRegistry {
             // Grant that identity the AcrPull role, scoped to the registry (passwordless, least-privilege pull access).
             azureResourceManager.accessManagement()
                 .roleAssignments()
-                .define(UUID.randomUUID().toString())
+                .define(SampleUtils.randomUuid(azureResourceManager))
                 .forObjectId(pullIdentity.principalId())
                 .withBuiltInRole(BuiltInRole.ACR_PULL)
                 .withResourceScope(azureRegistry)

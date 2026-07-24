@@ -36,7 +36,7 @@ public final class DeployImageFromAcrToLinuxWebApp {
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgACR", 15);
         final String acrName = SampleUtils.randomResourceName(azureResourceManager, "acrsample", 20);
         final String appName = SampleUtils.randomResourceName(azureResourceManager, "webapp", 20);
-        final Region region = Region.US_EAST;
+        final Region region = Region.JAPAN_EAST;
 
         try {
             // Create an Azure Container Registry with the admin user enabled.

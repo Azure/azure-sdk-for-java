@@ -36,6 +36,16 @@ public final class SampleUtils {
     }
 
     /**
+     * Generates a random UUID that is stable across test record/playback.
+     *
+     * @param azure the {@link AzureResourceManager} instance
+     * @return a random UUID string
+     */
+    public static String randomUuid(AzureResourceManager azure) {
+        return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
      * Generates an SSH public key in OpenSSH format.
      * <p>
      * Uses 2048-bit RSA so the sample stays compatible with the Java 8 baseline. If your JDK is 15 or later, prefer

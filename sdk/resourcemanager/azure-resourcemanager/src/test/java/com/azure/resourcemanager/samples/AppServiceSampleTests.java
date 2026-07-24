@@ -33,27 +33,28 @@ public class AppServiceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageWebAppWithCustomDomain.runSample(azureResourceManager));
     }
 
-    // Disabled: the sample scales an App Service plan to 2 instances, but the test subscription's
-    // "Total VMs" App Service quota is limited to 1, so the scale-up step is rejected. The sample itself
-    // runs correctly up to that final step; re-enable once the subscription quota is raised.
-    // Uses Traffic Manager with DNS, which also cannot be recorded.
+    // Disabled: App Service's Traffic Manager integration requires the web apps to be in *different* regions
+    // (same-region endpoints are rejected by the geomaster with "endpoints are not valid"), and the final
+    // scale-up doubles the primary plan to 2 instances. Recording therefore needs a subscription with App
+    // Service "Total VMs" quota >= 1 in three regions AND >= 2 in the primary region. Neither the shared test
+    // subscription (quota 1 in a single region) nor a personal subscription (quota only in one region) satisfies
+    // this. Re-enable once such quota is available.
     @Test
-    @Disabled("Test subscription 'Total VMs' App Service quota is 1; the sample's scale-up to 2 instances is denied.")
-    @DoNotRecord(skipInPlayback = true)
+    @Disabled("Needs App Service 'Total VMs' quota across 3 regions (>=2 in the primary); test subscriptions lack it.")
     public void testScaleWebAppWithTrafficManager() {
         Assertions.assertTrue(ScaleWebAppWithTrafficManager.runSample(azureResourceManager));
     }
 
-    // Configures a storage account connection, which makes calls that cannot be recorded.
+    // Recorded on a personal subscription (Japan East) because the shared test subscription's policy blocks
+    // storage-account shared-key access and its US-region App Service "Total VMs" quota is 0.
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testConnectWebAppToStorageAccount() {
         Assertions.assertTrue(ConnectWebAppToStorageAccount.runSample(azureResourceManager));
     }
 
-    // Depends on an image in Azure Container Registry, which cannot be recorded.
+    // Recorded on a personal subscription (Japan East) because the shared test subscription's policy disables
+    // the ACR admin account and its US-region App Service "Total VMs" quota is 0.
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testDeployImageFromAcrToLinuxWebApp() {
         Assertions.assertTrue(DeployImageFromAcrToLinuxWebApp.runSample(azureResourceManager));
     }

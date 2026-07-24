@@ -25,20 +25,26 @@ sample (all extend `SamplesTestBase`, mirroring the existing `azure-resourcemana
 | Service | Test class | Cases |
 | --- | --- | --- |
 | Compute | `ComputeSampleTests` | `CreateVirtualMachineUsingCustomImageFromVM`, `CreateVirtualMachineUsingSpecializedDiskFromSnapshot`, `ManageVirtualMachinesInParallel` |
-| App Service | `AppServiceSampleTests` | `ManageWebAppSlots`, `ConnectWebAppToSqlDatabase`, `ManageWebAppWithCustomDomain`\*, `ScaleWebAppWithTrafficManager`\*, `ConnectWebAppToStorageAccount`\*, `DeployImageFromAcrToLinuxWebApp`\* |
-| SQL | `SqlSampleTests` | `ManageSqlDatabase`, `ManageSqlDatabasesAcrossRegions`\* |
-| Container Registry | `ContainerRegistrySampleTests` | `ManageContainerRegistry`\* |
+| App Service | `AppServiceSampleTests` | `ManageWebAppSlots`, `ConnectWebAppToSqlDatabase`, `ManageWebAppWithCustomDomain`\*, `ScaleWebAppWithTrafficManager`\*\*, `ConnectWebAppToStorageAccount`, `DeployImageFromAcrToLinuxWebApp` |
+| SQL | `SqlSampleTests` | `ManageSqlDatabase`, `ManageSqlDatabasesAcrossRegions` |
+| Container Registry | `ContainerRegistrySampleTests` | `ManageContainerRegistry` |
 | Container Service | `ContainerServiceSampleTests` | `ManageKubernetesCluster` |
 
-\* Annotated `@DoNotRecord(skipInPlayback = true)` because the sample makes calls (DNS, Traffic Manager, storage/ACR
-data plane, or long-running cross-region provisioning) that cannot be recorded for playback. These require a live
-environment.
+\* `@DoNotRecord(skipInPlayback = true)` — registers a custom domain (DNS) that cannot be recorded; live-only.
+\*\* `@Disabled` — needs multi-region App Service quota (see the results table). Everything else is recorded and
+replays in playback.
 
-### RECORD run results (subscription `faa080af-…`)
+### RECORD run results
 
-Ran in `AZURE_TEST_MODE=RECORD` against the live test subscription. **8 of 13 passed and were recorded**; the
-recordings live in the test-proxy asset store (`.assets/…/session-records/`) and still need to be pushed to
-`Azure/azure-sdk-assets` (via `test-proxy push`) — that push needs credentials to the assets repo and is a follow-up.
+Ran in `AZURE_TEST_MODE=RECORD`. **11 of 13 tests are recorded and replay in playback**; the remaining 2 are
+`@DoNotRecord`/`@Disabled` as noted. Recordings live in the test-proxy asset store (`.assets/…/session-records/`)
+and still need to be pushed to `Azure/azure-sdk-assets` (via `test-proxy push`) — that push needs credentials to the
+assets repo and is a follow-up.
+
+Most tests were recorded against the shared test subscription. Three tests (`testManageContainerRegistry`,
+`testConnectWebAppToStorageAccount`, `testDeployImageFromAcrToLinuxWebApp`) are recorded against a **personal
+subscription** because the shared test subscription blocks them via policy/quota (see notes); their test methods carry
+an inline comment saying so.
 
 | Test case | Result | Notes |
 | --- | --- | --- |
@@ -46,20 +52,18 @@ recordings live in the test-proxy asset store (`.assets/…/session-records/`) a
 | `ComputeSampleTests#testManageVirtualMachinesInParallel` | ✅ recorded | |
 | `ComputeSampleTests#testCreateVirtualMachineUsingSpecializedDiskFromSnapshot` | ✅ recorded | Rewritten from the old VHD/unmanaged-disk approach to a specialized **managed**-disk-from-snapshot flow (no storage account), which also sidesteps the "disable local auth" storage policy. Recorded in US_WEST2. |
 | `SqlSampleTests#testManageSqlDatabase` | ✅ recorded | Region changed `US_EAST → US_WEST3` (East US refused SQL server creation). |
+| `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ✅ recorded | Trimmed from 2 secondaries to **1** (master US_WEST3 + secondary US_EAST2) — still demonstrates cross-region geo-replication. Most regions refused new SQL server creation (only US_WEST3 + US_EAST2 accepted). Recorded on the shared test subscription. |
 | `AppServiceSampleTests#testManageWebAppSlots` | ✅ recorded | |
 | `AppServiceSampleTests#testConnectWebAppToSqlDatabase` | ✅ recorded | SQL server region changed `US_WEST → US_WEST3`. |
-| `AppServiceSampleTests#testManageWebAppWithCustomDomain` | ✅ passed | |
 | `ContainerServiceSampleTests#testManageKubernetesCluster` | ✅ recorded | Region changed `US_EAST → US_WEST3` (`Standard_D2_v3` not allowed in East US). |
-| `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ⚠️ disabled | The 3 web apps/plans are created successfully across 3 regions; the sample only fails at the final **scale-up** step (`plan1.update().withCapacity(capacity*2)`, doubling 1→2 instances) because the test subscription's App Service *“Total VMs”* quota is **1**. Test marked `@Disabled` with this constraint; sample left as-is (it runs correctly up to the last step). Re-enable when quota is raised. |
-| `AppServiceSampleTests#testConnectWebAppToStorageAccount` | ❌ blocked | Same storage *“disable local auth”* policy. Sample intentionally uses a storage-key connection string (web app handwritten layer cannot use MI). Needs policy exemption. |
-| `AppServiceSampleTests#testDeployImageFromAcrToLinuxWebApp` | ❌ blocked | ACR admin user disabled by policy *“Container registries should have local admin account disabled”*. Sample needs admin creds (web app fluent layer requires `withCredentials`). Needs policy exemption. |
-| `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ✅ passed (live-only) | Most regions refused new SQL server creation (East US, West US, South Central US, West US 2, Central US); only US West 3 + US East 2 accepted. Trimmed the sample from 2 secondaries to **1** (master US_WEST3 + secondary US_EAST2) — still demonstrates cross-region geo-replication. Passes live; `@DoNotRecord` (live-only). |
-| `ContainerRegistrySampleTests#testManageContainerRegistry` | ❌ blocked | `Microsoft.Authorization/roleAssignments/write` denied — account lacks permission to create the AcrPull role assignment the sample demonstrates. Needs User Access Administrator. Sample NOT changed (the AcrPull grant is its stated purpose). |
+| `ContainerRegistrySampleTests#testManageContainerRegistry` | ✅ recorded (personal sub) | Shared test sub denies `Microsoft.Authorization/roleAssignments/write` (the AcrPull grant is the sample's purpose). Recorded on a personal sub. Also fixed the role-assignment name to use `SampleUtils.randomUuid(...)` so it's deterministic across record/playback (raw `UUID.randomUUID()` broke playback matching). |
+| `AppServiceSampleTests#testConnectWebAppToStorageAccount` | ✅ recorded (personal sub) | Shared test sub blocks storage shared-key access (policy) and has 0 US-region App Service "Total VMs" quota. Recorded on a personal sub in **Japan East** (region changed `US_WEST → JAPAN_EAST`). |
+| `AppServiceSampleTests#testDeployImageFromAcrToLinuxWebApp` | ✅ recorded (personal sub) | Shared test sub disables the ACR admin account (policy) and has 0 US-region App Service quota. Recorded on a personal sub in **Japan East** (region changed `US_EAST → JAPAN_EAST`). |
+| `AppServiceSampleTests#testManageWebAppWithCustomDomain` | ⏭️ `@DoNotRecord` | Registers a custom domain, which needs out-of-band DNS configuration that cannot be recorded. Live-only. |
+| `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ⚠️ `@Disabled` | App Service's Traffic Manager integration requires the web apps in **different** regions (same-region endpoints are rejected by the geomaster), and the final scale-up doubles the primary plan to 2 instances. Recording needs App Service "Total VMs" quota >= 1 in three regions **and** >= 2 in the primary region — neither the shared test sub (quota 1, single region) nor a personal sub (quota only in Japan East) satisfies this. Sample left as-is; re-enable when quota is available. |
 
-None of the passing tests were disabled to make them pass. One test (`testScaleWebAppWithTrafficManager`) is
-`@Disabled` because the test subscription's App Service "Total VMs" quota (1) rejects the sample's scale-up step; the
-remaining 3 blocked cases are subscription policy / permission restrictions in the test environment — not
-sample-code defects.
+None of the recorded tests were altered to make them pass. The 1 `@DoNotRecord` case and the 1 `@Disabled` case are
+test-environment restrictions (unrecordable DNS, subscription region/quota availability), not sample-code defects.
 
 ## Sample name (MS Learn) → file path
 
