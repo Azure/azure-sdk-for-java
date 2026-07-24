@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.implementation.MultipartFormDataHelper;
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
 import com.azure.ai.translation.document.models.DocumentTranslateContent;
+import com.azure.ai.translation.document.models.DocumentTranslateOptions;
 import com.azure.ai.translation.document.models.GlossaryFileDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -192,6 +193,74 @@ public final class SingleDocumentTranslationClient {
         }
         if (translateTextWithinImage != null) {
             requestOptions.addQueryParam("translateTextWithinImage", String.valueOf(translateTextWithinImage), false);
+        }
+        return translateWithResponse(targetLanguage,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
+                    documentTranslateContent.getDocument().getContentType(),
+                    documentTranslateContent.getDocument().getFilename())
+                .serializeFileFields("glossary",
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getContent)
+                            .collect(Collectors.toList()),
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getContentType)
+                            .collect(Collectors.toList()),
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getFilename)
+                            .collect(Collectors.toList()))
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue();
+    }
+
+    /**
+     * Submit a single document translation request to the Document Translation service
+     *
+     * Use this API to submit a single translation request to the Document Translation Service.
+     *
+     * @param targetLanguage Specifies the language of the output document.
+     * The target language must be one of the supported languages included in the translation scope.
+     * For example if you want to translate the document in German language, then use targetLanguage=de.
+     * @param documentTranslateContent Document Translate Request Content.
+     * @param options The configurable options to pass when submitting the translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
+        DocumentTranslateOptions options) {
+        DocumentTranslateOptions translateOptions = options == null ? new DocumentTranslateOptions() : options;
+        RequestOptions requestOptions = new RequestOptions();
+        if (translateOptions.getSourceLanguage() != null) {
+            requestOptions.addQueryParam("sourceLanguage", translateOptions.getSourceLanguage(), false);
+        }
+        if (translateOptions.getCategory() != null) {
+            requestOptions.addQueryParam("category", translateOptions.getCategory(), false);
+        }
+        if (translateOptions.getDeploymentName() != null) {
+            requestOptions.addQueryParam("deploymentName", translateOptions.getDeploymentName(), false);
+        }
+        if (translateOptions.isAllowFallback() != null) {
+            requestOptions.addQueryParam("allowFallback", String.valueOf(translateOptions.isAllowFallback()), false);
+        }
+        if (translateOptions.isTranslateTextWithinImage() != null) {
+            requestOptions.addQueryParam("translateTextWithinImage",
+                String.valueOf(translateOptions.isTranslateTextWithinImage()), false);
         }
         return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)

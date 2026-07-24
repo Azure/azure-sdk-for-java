@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.models.DocumentFileDetails;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.ai.translation.document.models.DocumentTranslateContent;
+import com.azure.ai.translation.document.models.DocumentTranslateOptions;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
@@ -81,15 +82,12 @@ public class TranslateWithCustomModel {
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
 
         String targetLanguage = "hi";
-        String sourceLanguage = null;
-        String category = null;
         // Provide the custom model deployment name for the translation.
-        String deploymentName = "<custom translation model deployment name>";
-        Boolean allowFallback = null;
-        Boolean translateTextWithinImage = null;
+        DocumentTranslateOptions options
+            = new DocumentTranslateOptions().setDeploymentName("<custom translation model deployment name>");
 
-        BinaryData response = singleDocumentTranslationClient.translate(targetLanguage, documentTranslateContent,
-            sourceLanguage, category, deploymentName, allowFallback, translateTextWithinImage);
+        BinaryData response
+            = singleDocumentTranslationClient.translate(targetLanguage, documentTranslateContent, options);
         System.out.println("Translated Response: " + response);
         // END:singleDocumentTranslationWithCustomModel
     }

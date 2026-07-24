@@ -15,6 +15,7 @@
   - Added the `deploymentName` property to `TranslationTarget` to specify the deployment name of the custom translation model for a batch translation request.
   - Added the `deploymentName` property to `DocumentStatusResult`, exposing the deployment name of the custom translation model used for the translation.
   - Added the `deploymentName` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document translation requests.
+- Added the `DocumentTranslateOptions` model and `translate(String, DocumentTranslateContent, DocumentTranslateOptions)` convenience overloads to `SingleDocumentTranslationClient` and `SingleDocumentTranslationAsyncClient`, grouping the optional `sourceLanguage`, `category`, `deploymentName`, `allowFallback`, and `translateTextWithinImage` settings into a single options bag.
 
 ### Breaking Changes
 
