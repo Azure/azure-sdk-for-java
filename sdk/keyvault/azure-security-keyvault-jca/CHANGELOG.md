@@ -2,14 +2,8 @@
 
 ## 2.12.0 (2026-07-24)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 - Fixed an issue where a disabled certificate in Azure Key Vault caused keystore initialization to fail with an HTTP 403 error. Disabled certificates are now skipped when loading aliases and a warning is logged for each skipped certificate. [#49730](https://github.com/Azure/azure-sdk-for-java/pull/49730)
-
-### Other Changes
 
 ## 2.11.0 (2026-02-28)
 
