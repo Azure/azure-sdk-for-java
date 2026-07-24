@@ -73,28 +73,44 @@ Paths are relative to `sdk/resourcemanager/azure-resourcemanager/src/samples/jav
 - Removed the legacy `Microsoft.OSTCExtensions` `CustomScriptForLinux` v1.4 extension setup and the
   `org.apache.commons.lang3.time.StopWatch` dependency.
 
-## Potential refinements (NOT changed yet — for a later pass)
+## Security refinements applied
 
-These were left as-is to keep the move focused; they should be revisited to adopt up-to-date and more secure patterns:
+A follow-up pass applied these passwordless/security improvements (all compile against the module):
 
-- **SQL admin password in app settings** (`ConnectWebAppToSqlDatabase`): prefer Microsoft Entra authentication with a
-  managed identity, or store secrets in Azure Key Vault, instead of embedding the SQL username/password in web app
-  settings.
+- **SQL passwordless auth** (`ConnectWebAppToSqlDatabase`): replaced the SQL admin login/password (previously stored in
+  web app settings) with a **Microsoft Entra-only** SQL Server whose administrator is the web app's **system-assigned
+  managed identity**. The app now stores only a secret-free JDBC connection string using
+  `authentication=ActiveDirectoryMSI`.
+- **ACR AcrPull via RBAC** (`ManageContainerRegistry`): removed the ACR **admin user**; the registry is created without
+  admin credentials and a **managed identity** is granted the built-in **`AcrPull`** role scoped to the registry
+  (`accessManagement().roleAssignments()...withBuiltInRole(BuiltInRole.ACR_PULL)`).
+- **SSH key** (`SampleUtils.sshPublicKey()`): kept **2048-bit RSA** (dependency-free, Java 8 compatible) and added a
+  ready-to-uncomment **Ed25519** helper for users on **JDK 15+** (`EdECPublicKey` / `EdECPoint` are unavailable on
+  Java 8, so enabling it by default would require a third-party crypto dependency such as BouncyCastle).
+
+## Potential refinements (NOT changed — for a later pass)
+
+These were left as-is, either to keep the move focused or because of a current API limitation:
+
 - **Storage account key connection string in app settings** (`ConnectWebAppToStorageAccount`): prefer a managed
-  identity with the appropriate data-plane role instead of account-key connection strings.
-- **ACR admin user enabled** (`ManageContainerRegistry`, `DeployImageFromAcrToLinuxWebApp`): the registry admin user is
-  discouraged. Prefer managed identity / token-based access (for example the `AcrPull` role for the web app identity).
+  identity with the appropriate data-plane role instead of account-key connection strings. **Left as-is** — the
+  handwritten App Service fluent layer does not support configuring the storage connection with a managed identity.
+- **ACR pull for the Linux web app** (`DeployImageFromAcrToLinuxWebApp`): still uses ACR **admin credentials** for the
+  image pull. **Left as-is** — the fluent `withPrivateRegistryImage(...)` mandates `withCredentials(username, password)`
+  and the handwritten App Service layer does not expose managed-identity ACR pull (`acrUseManagedIdentityCreds` exists
+  only on the inner `SiteConfig`). Moving to managed-identity pull would require dropping to the inner layer.
 - **SQL-across-regions sample scope**: the original sample also created 5 virtual networks and 5 VMs to derive
   firewall IPs. This was trimmed to the SQL geo-replication core plus a single example firewall rule for conciseness.
-- **SSH key strength**: the original shared `Utils.sshPublicKey()` generated a **1024-bit RSA** key (insecure). The new
-  `SampleUtils.sshPublicKey()` uses **2048-bit RSA**; consider moving to Ed25519.
+- **Ed25519 SSH keys**: enable the commented `sshPublicKeyEd25519()` helper once the samples baseline moves to JDK 15+.
 - **Sample password generation** (`SampleUtils.password()`) is deterministic-ish and for samples only; do not use in
   production.
 
 ## RBAC references
 
-- None of the moved samples contain explicit RBAC role-assignment code (no `roleAssignments()` / `RoleAssignment`
-  usage).
+- **`ManageContainerRegistry`** now contains an explicit RBAC role assignment: it grants the built-in **`AcrPull`** role
+  to a managed identity, scoped to the container registry.
+- **`ConnectWebAppToSqlDatabase`** sets the web app's system-assigned managed identity as the SQL Server's Microsoft
+  Entra administrator (an identity/access configuration rather than an Azure RBAC role assignment).
 - The **AKS** sample uses a **system-assigned managed identity**. Running the cluster still relies on Azure assigning
   the necessary RBAC roles to that identity behind the scenes; if the sample is extended to pull from ACR, an
   `AcrPull` role assignment on the kubelet identity would be required.

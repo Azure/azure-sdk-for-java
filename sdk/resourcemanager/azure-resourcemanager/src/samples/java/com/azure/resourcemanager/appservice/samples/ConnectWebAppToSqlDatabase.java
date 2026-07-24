@@ -15,14 +15,19 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.samples.SampleUtils;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
 /**
- * Azure App Service sample for connecting a web app to a SQL database.
- *  - Create a SQL Server and database
- *  - Create a web app whose settings hold the SQL connection information
+ * Azure App Service sample for connecting a web app to a SQL database using passwordless authentication.
+ *  - Create a web app with a system-assigned managed identity
+ *  - Create a Microsoft Entra-only SQL Server whose administrator is that managed identity, plus a database
+ *  - Store only the (secret-free) connection information in the web app settings
  *  - Add firewall rules so the web app can reach the SQL Server
+ * <p>
+ * The web app authenticates to SQL with its managed identity (no SQL login or password), for example with a JDBC
+ * connection string that uses {@code authentication=ActiveDirectoryMSI}.
  */
 public final class ConnectWebAppToSqlDatabase {
 
@@ -37,44 +42,49 @@ public final class ConnectWebAppToSqlDatabase {
         final String appName = SampleUtils.randomResourceName(azureResourceManager, "webapp-", 20);
         final String sqlServerName = SampleUtils.randomResourceName(azureResourceManager, "jsdkserver", 20);
         final String sqlDbName = SampleUtils.randomResourceName(azureResourceManager, "jsdkdb", 20);
-        final String admin = "jsdkadmin";
-        final String password = SampleUtils.password();
 
         try {
-            // Create a SQL Server and a database for the web app to use.
+            // Create a web app with a system-assigned managed identity; that identity is used to reach SQL.
+            WebApp app = azureResourceManager.webApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_11)
+                .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
+                .withSystemAssignedManagedServiceIdentity()
+                .create();
+
+            // Create a Microsoft Entra-only SQL Server whose administrator is the web app's managed identity.
+            // No SQL login/password is created, so there is no secret to store or leak.
             SqlServer server = azureResourceManager.sqlServers()
                 .define(sqlServerName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(admin)
-                .withAdministratorPassword(password)
+                .withExistingResourceGroup(rgName)
+                .withAzureActiveDirectoryOnlyAuthentication()
+                .withExternalActiveDirectoryAdministrator(appName,
+                    app.systemAssignedManagedServiceIdentityPrincipalId(), PrincipalType.APPLICATION)
                 .create();
 
             SqlDatabase db = server.databases().define(sqlDbName).create();
 
-            // Create a web app that stores the SQL connection information in its app settings.
-            WebApp app = azureResourceManager.webApps()
-                .define(appName)
-                .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(rgName)
-                .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                .withJavaVersion(JavaVersion.JAVA_11)
-                .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
-                .withAppSetting("DBHost", server.fullyQualifiedDomainName())
-                .withAppSetting("DBName", db.name())
-                .withAppSetting("DBUser", admin)
-                .withAppSetting("DBPass", password)
-                .create();
-
             // Allow the web app's outbound IP addresses to reach the SQL Server.
-            SqlServer.Update update = server.update();
+            SqlServer.Update firewall = server.update();
             int i = 0;
             for (String ip : app.outboundIPAddresses()) {
-                update = update.defineFirewallRule("webappRule" + i++).withIpAddress(ip).attach();
+                firewall = firewall.defineFirewallRule("webappRule" + i++).withIpAddress(ip).attach();
             }
-            update.apply();
+            firewall.apply();
 
-            System.out.println("Connected web app " + app.name() + " to SQL database " + db.name());
+            // Store only secret-free connection information. The web app authenticates with its managed identity.
+            String connectionString = "jdbc:sqlserver://" + server.fullyQualifiedDomainName()
+                + ":1433;database=" + db.name() + ";authentication=ActiveDirectoryMSI;encrypt=true";
+            app.update()
+                .withAppSetting("SQL_CONNECTION_STRING", connectionString)
+                .apply();
+
+            System.out.println("Connected web app " + app.name() + " to SQL database " + db.name()
+                + " using managed identity");
             return true;
         } finally {
             azureResourceManager.resourceGroups().beginDeleteByName(rgName);

@@ -10,18 +10,21 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerregistry.models.Registry;
-import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.samples.SampleUtils;
+
+import java.util.UUID;
 
 /**
  * Azure Container Registry sample for managing container registries.
- *  - Create an Azure Container Registry to hold private Docker images
- *  - Retrieve the admin credentials used to push and pull images
+ *  - Create an Azure Container Registry to hold private Docker images (admin user disabled)
+ *  - Grant pull access to a managed identity with the {@code AcrPull} role instead of using admin credentials
  * <p>
- * Once the registry exists, images are pushed and pulled with the Docker CLI, for example:
- * {@code docker login <loginServer>}, {@code docker push <loginServer>/<repo>:<tag>}.
+ * Consumers (for example a web app, AKS, or a CI agent) authenticate with their own Microsoft Entra identity, so no
+ * registry password needs to be stored or shared. Images are then pushed and pulled with the Docker CLI, for example:
+ * {@code az acr login --name <name>}, {@code docker push <loginServer>/<repo>:<tag>}.
  */
 public final class ManageContainerRegistry {
 
@@ -34,25 +37,36 @@ public final class ManageContainerRegistry {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgACR", 15);
         final String acrName = SampleUtils.randomResourceName(azureResourceManager, "acrsample", 20);
+        final String identityName = SampleUtils.randomResourceName(azureResourceManager, "acrpull", 20);
         final Region region = Region.US_EAST;
 
         try {
-            // Create an Azure Container Registry with the admin user enabled.
+            // Create an Azure Container Registry without the admin user (admin user is discouraged).
             Registry azureRegistry = azureResourceManager.containerRegistries()
                 .define(acrName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
-                .withRegistryNameAsAdminUser()
                 .create();
 
-            // Retrieve the credentials used to authenticate against the registry.
-            RegistryCredentials credentials = azureRegistry.getCredentials();
+            // Create a managed identity that consumers use to pull images.
+            Identity pullIdentity = azureResourceManager.identities()
+                .define(identityName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+            // Grant that identity the AcrPull role, scoped to the registry (passwordless, least-privilege pull access).
+            azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(UUID.randomUUID().toString())
+                .forObjectId(pullIdentity.principalId())
+                .withBuiltInRole(BuiltInRole.ACR_PULL)
+                .withResourceScope(azureRegistry)
+                .create();
 
             System.out.println("Created container registry: " + azureRegistry.loginServerUrl());
-            System.out.println("Admin user: " + credentials.username());
-            System.out.println("Primary access key available: "
-                + (credentials.accessKeys().get(AccessKeyType.PRIMARY) != null));
+            System.out.println("Granted AcrPull to managed identity: " + pullIdentity.id());
             return true;
         } finally {
             azureResourceManager.resourceGroups().beginDeleteByName(rgName);
