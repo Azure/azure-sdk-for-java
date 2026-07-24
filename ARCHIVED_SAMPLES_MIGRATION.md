@@ -50,14 +50,16 @@ recordings live in the test-proxy asset store (`.assets/…/session-records/`) a
 | `AppServiceSampleTests#testConnectWebAppToSqlDatabase` | ✅ recorded | SQL server region changed `US_WEST → US_WEST3`. |
 | `AppServiceSampleTests#testManageWebAppWithCustomDomain` | ✅ passed | |
 | `ContainerServiceSampleTests#testManageKubernetesCluster` | ✅ recorded | Region changed `US_EAST → US_WEST3` (`Standard_D2_v3` not allowed in East US). |
-| `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ❌ blocked | App Service Plan quota *“Total VMs”* limited to **1** in the test subscription; multi-region scaling needs more. Needs quota increase. |
+| `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ⚠️ disabled | The 3 web apps/plans are created successfully across 3 regions; the sample only fails at the final **scale-up** step (`plan1.update().withCapacity(capacity*2)`, doubling 1→2 instances) because the test subscription's App Service *“Total VMs”* quota is **1**. Test marked `@Disabled` with this constraint; sample left as-is (it runs correctly up to the last step). Re-enable when quota is raised. |
 | `AppServiceSampleTests#testConnectWebAppToStorageAccount` | ❌ blocked | Same storage *“disable local auth”* policy. Sample intentionally uses a storage-key connection string (web app handwritten layer cannot use MI). Needs policy exemption. |
 | `AppServiceSampleTests#testDeployImageFromAcrToLinuxWebApp` | ❌ blocked | ACR admin user disabled by policy *“Container registries should have local admin account disabled”*. Sample needs admin creds (web app fluent layer requires `withCredentials`). Needs policy exemption. |
 | `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ❌ blocked | SQL server creation capacity-restricted in most regions (East US, West US, South Central US, West US 2, Central US all refused; only US West 3 + US East 2 worked). Sample needs 3 distinct SQL-capable regions. |
 | `ContainerRegistrySampleTests#testManageContainerRegistry` | ❌ blocked | `Microsoft.Authorization/roleAssignments/write` denied — account lacks permission to create the AcrPull role assignment the sample demonstrates. Needs User Access Administrator. Sample NOT changed (the AcrPull grant is its stated purpose). |
 
-None of the tests were disabled. The 5 blocked cases are all subscription policy / quota / region-capacity /
-permission restrictions in the test environment — not sample-code defects.
+None of the passing tests were disabled to make them pass. One test (`testScaleWebAppWithTrafficManager`) is
+`@Disabled` because the test subscription's App Service "Total VMs" quota (1) rejects the sample's scale-up step; the
+remaining 4 blocked cases are subscription policy / region-capacity / permission restrictions in the test
+environment — not sample-code defects.
 
 ## Sample name (MS Learn) → file path
 

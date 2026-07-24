@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appservice.samples.ManageWebAppSlots;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppWithCustomDomain;
 import com.azure.resourcemanager.appservice.samples.ScaleWebAppWithTrafficManager;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class AppServiceSampleTests extends SamplesTestBase {
@@ -32,8 +33,12 @@ public class AppServiceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageWebAppWithCustomDomain.runSample(azureResourceManager));
     }
 
-    // Uses Traffic Manager with DNS, which cannot be recorded.
+    // Disabled: the sample scales an App Service plan to 2 instances, but the test subscription's
+    // "Total VMs" App Service quota is limited to 1, so the scale-up step is rejected. The sample itself
+    // runs correctly up to that final step; re-enable once the subscription quota is raised.
+    // Uses Traffic Manager with DNS, which also cannot be recorded.
     @Test
+    @Disabled("Test subscription 'Total VMs' App Service quota is 1; the sample's scale-up to 2 instances is denied.")
     @DoNotRecord(skipInPlayback = true)
     public void testScaleWebAppWithTrafficManager() {
         Assertions.assertTrue(ScaleWebAppWithTrafficManager.runSample(azureResourceManager));
