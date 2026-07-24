@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.samples;
 
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVM;
-import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromVhd;
+import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromSnapshot;
 import com.azure.resourcemanager.compute.samples.ManageVirtualMachinesInParallel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,8 +17,8 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testCreateVirtualMachineUsingSpecializedDiskFromVhd() {
-        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromVhd.runSample(azureResourceManager));
+    public void testCreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
+        Assertions.assertTrue(CreateVirtualMachineUsingSpecializedDiskFromSnapshot.runSample(azureResourceManager));
     }
 
     @Test

@@ -14,21 +14,18 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.samples.SampleUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Azure Compute sample for creating a virtual machine from a specialized VHD.
- *  - Create a virtual machine with un-managed OS and data disks
- *  - Create managed disks from the specialized un-managed OS and data VHDs
- *  - Create a new virtual machine by attaching the managed disks
+ * Azure Compute sample for creating a virtual machine from a specialized managed disk.
+ *  - Create a virtual machine with managed OS and data disks
+ *  - Snapshot the specialized OS and data disks, then create new managed disks from the snapshots
+ *  - Create a new virtual machine by attaching the specialized managed disks
  */
-public final class CreateVirtualMachineUsingSpecializedDiskFromVhd {
+public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
 
     /**
      * Main function which runs the actual sample.
@@ -37,18 +34,19 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromVhd {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String linuxVMName1 = SampleUtils.randomResourceName(azureResourceManager, "VM1", 15);
         final String linuxVMName2 = SampleUtils.randomResourceName(azureResourceManager, "VM2", 15);
+        final String osSnapshotName = SampleUtils.randomResourceName(azureResourceManager, "ss-os-", 15);
+        final String dataSnapshotName = SampleUtils.randomResourceName(azureResourceManager, "ss-data-", 15);
         final String managedOSDiskName = SampleUtils.randomResourceName(azureResourceManager, "ds-os-", 15);
         final String managedDataDiskName = SampleUtils.randomResourceName(azureResourceManager, "ds-data-", 15);
-        final String storageAccountName = SampleUtils.randomResourceName(azureResourceManager, "stg", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = SampleUtils.sshPublicKey();
 
         try {
-            // Create a Linux virtual machine using un-managed OS and data disks (VHDs in a storage account).
+            // Create a Linux virtual machine with managed OS and data disks.
             VirtualMachine linuxVM = azureResourceManager.virtualMachines()
                 .define(linuxVMName1)
                 .withRegion(region)
@@ -59,43 +57,49 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
                 .withRootUsername(userName)
                 .withSsh(sshPublicKey)
-                .withUnmanagedDisks()
-                .defineUnmanagedDataDisk("disk-1")
-                .withNewVhd(50)
-                .withLun(1)
-                .attach()
-                .withNewStorageAccount(storageAccountName)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+                .withNewDataDisk(50)
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                 .create();
 
-            // Collect the specialized OS and data disk VHD URIs before deleting the virtual machine.
-            String specializedOSVhdUri = linuxVM.osUnmanagedDiskVhdUri();
-            List<String> dataVhdUris = new ArrayList<>();
-            for (VirtualMachineUnmanagedDataDisk dataDisk : linuxVM.unmanagedDataDisks().values()) {
-                dataVhdUris.add(dataDisk.vhdUri());
-            }
+            // The VM's managed OS and data disks are "specialized" - they retain the machine state.
+            Disk osDisk = azureResourceManager.disks().getById(linuxVM.osDiskId());
+            Disk dataDisk
+                = azureResourceManager.disks().getById(linuxVM.dataDisks().values().iterator().next().id());
 
+            // Delete the virtual machine; the managed disks remain and keep their specialized state.
             azureResourceManager.virtualMachines().deleteById(linuxVM.id());
 
-            // Create a managed disk from the specialized OS VHD.
-            Disk osDisk = azureResourceManager.disks()
+            // Snapshot the specialized OS and data disks.
+            Snapshot osSnapshot = azureResourceManager.snapshots()
+                .define(osSnapshotName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withLinuxFromDisk(osDisk)
+                .create();
+
+            Snapshot dataSnapshot = azureResourceManager.snapshots()
+                .define(dataSnapshotName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withDataFromDisk(dataDisk)
+                .create();
+
+            // Create managed disks from the specialized snapshots.
+            Disk newOSDisk = azureResourceManager.disks()
                 .define(managedOSDiskName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withLinuxFromVhd(specializedOSVhdUri)
-                .withStorageAccountName(storageAccountName)
+                .withLinuxFromSnapshot(osSnapshot)
                 .withSizeInGB(100)
                 .create();
 
-            // Create a managed disk from the specialized data VHD.
-            Disk dataDisk = azureResourceManager.disks()
+            Disk newDataDisk = azureResourceManager.disks()
                 .define(managedDataDiskName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withData()
-                .fromVhd(dataVhdUris.get(0))
-                .withStorageAccountName(storageAccountName)
-                .withSizeInGB(150)
+                .fromSnapshot(dataSnapshot)
+                .withSizeInGB(50)
                 .withSku(DiskSkuTypes.STANDARD_LRS)
                 .create();
 
@@ -107,9 +111,9 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
-                .withExistingDataDisk(dataDisk)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+                .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
+                .withExistingDataDisk(newDataDisk)
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                 .create();
 
             System.out.println("Created virtual machine from specialized disks: " + linuxVM2.id());
@@ -142,6 +146,6 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromVhd {
         }
     }
 
-    private CreateVirtualMachineUsingSpecializedDiskFromVhd() {
+    private CreateVirtualMachineUsingSpecializedDiskFromSnapshot() {
     }
 }
