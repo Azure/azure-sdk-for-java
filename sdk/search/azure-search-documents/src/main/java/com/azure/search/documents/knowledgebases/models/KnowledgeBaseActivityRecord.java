@@ -160,7 +160,15 @@ public class KnowledgeBaseActivityRecord implements JsonSerializable<KnowledgeBa
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("modelWebSummarization".equals(discriminatorValue)) {
+                if ("searchIndex".equals(discriminatorValue)) {
+                    return KnowledgeBaseSearchIndexActivityRecord.fromJson(readerToUse.reset());
+                } else if ("azureBlob".equals(discriminatorValue)) {
+                    return KnowledgeBaseAzureBlobActivityRecord.fromJson(readerToUse.reset());
+                } else if ("indexedOneLake".equals(discriminatorValue)) {
+                    return KnowledgeBaseIndexedOneLakeActivityRecord.fromJson(readerToUse.reset());
+                } else if ("web".equals(discriminatorValue)) {
+                    return KnowledgeBaseWebActivityRecord.fromJson(readerToUse.reset());
+                } else if ("modelWebSummarization".equals(discriminatorValue)) {
                     return KnowledgeBaseModelWebSummarizationActivityRecord.fromJson(readerToUse.reset());
                 } else if ("agenticReasoning".equals(discriminatorValue)) {
                     return KnowledgeBaseAgenticReasoningActivityRecord.fromJson(readerToUse.reset());

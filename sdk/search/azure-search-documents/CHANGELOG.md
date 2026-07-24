@@ -4,13 +4,19 @@
 
 ### Features Added
 
+- Added knowledge base retrieval activity record models for additional knowledge source types:
+  `KnowledgeBaseSearchIndexActivityRecord`, `KnowledgeBaseAzureBlobActivityRecord`,
+  `KnowledgeBaseIndexedOneLakeActivityRecord`, and `KnowledgeBaseWebActivityRecord`, along with their
+  corresponding `KnowledgeBaseSearchIndexActivityArguments`, `KnowledgeBaseAzureBlobActivityArguments`,
+  `KnowledgeBaseIndexedOneLakeActivityArguments`, and `KnowledgeBaseWebActivityArguments` argument models.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
 
-- Regenerated the SDK against the `2026-04-01` service specification (spec commit `18ebae7ea8f6aefd83268aacdb1f480b24842726`). No public API changes.
+- Regenerated the SDK against the `2026-04-01` service specification (spec commit `18ebae7ea8f6aefd83268aacdb1f480b24842726`).
 
 ## 12.0.0 (2026-04-10)
 
