@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Azure SQL sample for managing SQL databases across multiple regions.
  *  - Create a master Microsoft Entra-only SQL Server and database in one region
- *  - Create secondary SQL Servers in other regions with read-only replicas of the master database
+ *  - Create a secondary SQL Server in another region with a read-only replica of the master database
  *  - Add a firewall rule to every SQL Server
  * <p>
  * All servers are administered by a single managed identity (Microsoft Entra-only authentication), so no SQL login or
@@ -40,8 +40,7 @@ public final class ManageSqlDatabasesAcrossRegions {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgRSSDRE", 20);
         final String masterServerName = SampleUtils.randomResourceName(azureResourceManager, "master-sql", 20);
-        final String secondary1Name = SampleUtils.randomResourceName(azureResourceManager, "slave1-sql", 20);
-        final String secondary2Name = SampleUtils.randomResourceName(azureResourceManager, "slave2-sql", 20);
+        final String secondaryName = SampleUtils.randomResourceName(azureResourceManager, "slave-sql", 20);
         final String identityName = SampleUtils.randomResourceName(azureResourceManager, "sqladmin", 20);
         final String databaseName = "mydatabase";
 
@@ -65,14 +64,12 @@ public final class ManageSqlDatabasesAcrossRegions {
 
             SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName).withBasicEdition().create();
 
-            // Create secondary SQL Servers, each holding a read-only replica of the master database.
-            SqlServer secondarySqlServer1 = createSecondaryServer(azureResourceManager, secondary1Name, rgName,
+            // Create a secondary SQL Server in another region holding a read-only replica of the master database.
+            SqlServer secondarySqlServer = createSecondaryServer(azureResourceManager, secondaryName, rgName,
                 Region.US_EAST2, identityName, adminIdentity, databaseName, masterDatabase);
-            SqlServer secondarySqlServer2 = createSecondaryServer(azureResourceManager, secondary2Name, rgName,
-                Region.US_CENTRAL, identityName, adminIdentity, databaseName, masterDatabase);
 
             // Add a firewall rule to each SQL Server to allow access from an on-premises client.
-            List<SqlServer> sqlServers = Arrays.asList(masterSqlServer, secondarySqlServer1, secondarySqlServer2);
+            List<SqlServer> sqlServers = Arrays.asList(masterSqlServer, secondarySqlServer);
             for (SqlServer sqlServer : sqlServers) {
                 sqlServer.firewallRules().define("allowedClient").withIpAddress("10.10.10.10").create();
             }

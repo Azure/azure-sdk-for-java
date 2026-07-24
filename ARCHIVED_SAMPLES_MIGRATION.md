@@ -53,13 +53,13 @@ recordings live in the test-proxy asset store (`.assets/…/session-records/`) a
 | `AppServiceSampleTests#testScaleWebAppWithTrafficManager` | ⚠️ disabled | The 3 web apps/plans are created successfully across 3 regions; the sample only fails at the final **scale-up** step (`plan1.update().withCapacity(capacity*2)`, doubling 1→2 instances) because the test subscription's App Service *“Total VMs”* quota is **1**. Test marked `@Disabled` with this constraint; sample left as-is (it runs correctly up to the last step). Re-enable when quota is raised. |
 | `AppServiceSampleTests#testConnectWebAppToStorageAccount` | ❌ blocked | Same storage *“disable local auth”* policy. Sample intentionally uses a storage-key connection string (web app handwritten layer cannot use MI). Needs policy exemption. |
 | `AppServiceSampleTests#testDeployImageFromAcrToLinuxWebApp` | ❌ blocked | ACR admin user disabled by policy *“Container registries should have local admin account disabled”*. Sample needs admin creds (web app fluent layer requires `withCredentials`). Needs policy exemption. |
-| `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ❌ blocked | SQL server creation capacity-restricted in most regions (East US, West US, South Central US, West US 2, Central US all refused; only US West 3 + US East 2 worked). Sample needs 3 distinct SQL-capable regions. |
+| `SqlSampleTests#testManageSqlDatabasesAcrossRegions` | ✅ passed (live-only) | Most regions refused new SQL server creation (East US, West US, South Central US, West US 2, Central US); only US West 3 + US East 2 accepted. Trimmed the sample from 2 secondaries to **1** (master US_WEST3 + secondary US_EAST2) — still demonstrates cross-region geo-replication. Passes live; `@DoNotRecord` (live-only). |
 | `ContainerRegistrySampleTests#testManageContainerRegistry` | ❌ blocked | `Microsoft.Authorization/roleAssignments/write` denied — account lacks permission to create the AcrPull role assignment the sample demonstrates. Needs User Access Administrator. Sample NOT changed (the AcrPull grant is its stated purpose). |
 
 None of the passing tests were disabled to make them pass. One test (`testScaleWebAppWithTrafficManager`) is
 `@Disabled` because the test subscription's App Service "Total VMs" quota (1) rejects the sample's scale-up step; the
-remaining 4 blocked cases are subscription policy / region-capacity / permission restrictions in the test
-environment — not sample-code defects.
+remaining 3 blocked cases are subscription policy / permission restrictions in the test environment — not
+sample-code defects.
 
 ## Sample name (MS Learn) → file path
 
