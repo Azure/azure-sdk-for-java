@@ -851,19 +851,11 @@ private class BulkWriter
         s"Context: ${operationContext.toString}")
       // Track ignored/skipped operations via the metrics publisher (recordCount=0) so operators can
       // distinguish expected skips (e.g., not-found or predicate-412 ignores) from normal write progress.
-      val diagnosticsOpt = Option(itemResponse) match {
-        case Some(r) => Option.apply(r.getCosmosDiagnostics)
-        case None => responseException match {
-          case Some(e) => Option.apply(e.getDiagnostics)
-          case None => None
-        }
-      }
-      outputMetricsPublisher.trackWriteOperation(
-        0,
-        diagnosticsOpt match {
-          case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
-          case None => None
-        })
+      // Diagnostics are intentionally omitted (None) here: RU charge for every diagnostics context
+      // observed by the bulk executor - including ignored/failed ones - is already tracked via
+      // ForwardingMetricTracker.trackDiagnostics above; passing diagnostics again would double-count
+      // the RU charge (mirrors the no-error success path, which also passes None for the same reason).
+      outputMetricsPublisher.trackWriteOperation(0, None)
       totalSuccessfulIngestionMetrics.getAndIncrement()
       // work done
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, context)) {
