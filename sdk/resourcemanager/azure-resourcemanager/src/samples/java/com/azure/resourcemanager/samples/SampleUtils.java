@@ -36,16 +36,6 @@ public final class SampleUtils {
     }
 
     /**
-     * Generates a random password suitable for samples only.
-     *
-     * @return a random password
-     */
-    public static String password() {
-        // Sample only. Use a secret store (for example, Azure Key Vault) in production code.
-        return "Pa5$" + Long.toHexString(System.nanoTime()) + "aA1!";
-    }
-
-    /**
      * Generates an SSH public key in OpenSSH format.
      * <p>
      * Uses 2048-bit RSA so the sample stays compatible with the Java 8 baseline. If your JDK is 15 or later, prefer

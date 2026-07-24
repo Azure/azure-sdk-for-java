@@ -10,8 +10,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.samples.SampleUtils;
 import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
@@ -20,9 +22,12 @@ import java.util.List;
 
 /**
  * Azure SQL sample for managing SQL databases across multiple regions.
- *  - Create a master SQL Server and database in one region
+ *  - Create a master Microsoft Entra-only SQL Server and database in one region
  *  - Create secondary SQL Servers in other regions with read-only replicas of the master database
  *  - Add a firewall rule to every SQL Server
+ * <p>
+ * All servers are administered by a single managed identity (Microsoft Entra-only authentication), so no SQL login or
+ * password is created.
  */
 public final class ManageSqlDatabasesAcrossRegions {
 
@@ -37,27 +42,34 @@ public final class ManageSqlDatabasesAcrossRegions {
         final String masterServerName = SampleUtils.randomResourceName(azureResourceManager, "master-sql", 20);
         final String secondary1Name = SampleUtils.randomResourceName(azureResourceManager, "slave1-sql", 20);
         final String secondary2Name = SampleUtils.randomResourceName(azureResourceManager, "slave2-sql", 20);
+        final String identityName = SampleUtils.randomResourceName(azureResourceManager, "sqladmin", 20);
         final String databaseName = "mydatabase";
-        final String administratorLogin = "sqladmin3423";
-        final String administratorPassword = SampleUtils.password();
 
         try {
+            // Create a managed identity that administers every SQL Server (Microsoft Entra-only, no password).
+            Identity adminIdentity = azureResourceManager.identities()
+                .define(identityName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .create();
+
             // Create the master SQL Server and database.
             SqlServer masterSqlServer = azureResourceManager.sqlServers()
                 .define(masterServerName)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
+                .withExistingResourceGroup(rgName)
+                .withAzureActiveDirectoryOnlyAuthentication()
+                .withExternalActiveDirectoryAdministrator(identityName, adminIdentity.principalId(),
+                    PrincipalType.APPLICATION)
                 .create();
 
             SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName).withBasicEdition().create();
 
             // Create secondary SQL Servers, each holding a read-only replica of the master database.
             SqlServer secondarySqlServer1 = createSecondaryServer(azureResourceManager, secondary1Name, rgName,
-                Region.US_EAST2, administratorLogin, administratorPassword, databaseName, masterDatabase);
+                Region.US_EAST2, identityName, adminIdentity, databaseName, masterDatabase);
             SqlServer secondarySqlServer2 = createSecondaryServer(azureResourceManager, secondary2Name, rgName,
-                Region.US_SOUTH_CENTRAL, administratorLogin, administratorPassword, databaseName, masterDatabase);
+                Region.US_SOUTH_CENTRAL, identityName, adminIdentity, databaseName, masterDatabase);
 
             // Add a firewall rule to each SQL Server to allow access from an on-premises client.
             List<SqlServer> sqlServers = Arrays.asList(masterSqlServer, secondarySqlServer1, secondarySqlServer2);
@@ -78,14 +90,15 @@ public final class ManageSqlDatabasesAcrossRegions {
     }
 
     private static SqlServer createSecondaryServer(AzureResourceManager azureResourceManager, String serverName,
-        String rgName, Region region, String administratorLogin, String administratorPassword, String databaseName,
+        String rgName, Region region, String adminLogin, Identity adminIdentity, String databaseName,
         SqlDatabase masterDatabase) {
         SqlServer sqlServer = azureResourceManager.sqlServers()
             .define(serverName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
-            .withAdministratorLogin(administratorLogin)
-            .withAdministratorPassword(administratorPassword)
+            .withAzureActiveDirectoryOnlyAuthentication()
+            .withExternalActiveDirectoryAdministrator(adminLogin, adminIdentity.principalId(),
+                PrincipalType.APPLICATION)
             .create();
 
         sqlServer.databases()

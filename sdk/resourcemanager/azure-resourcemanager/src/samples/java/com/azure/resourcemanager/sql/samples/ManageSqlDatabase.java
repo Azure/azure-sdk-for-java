@@ -10,7 +10,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.samples.SampleUtils;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlFirewallRule;
@@ -18,7 +20,7 @@ import com.azure.resourcemanager.sql.models.SqlServer;
 
 /**
  * Azure SQL sample for managing SQL Database.
- *  - Create a SQL Server with two firewall rules
+ *  - Create a Microsoft Entra-only SQL Server (administered by a managed identity) with two firewall rules
  *  - Create a database and change its performance level (SKU)
  *  - List and delete firewall rules, then create a new one
  *  - Delete the database and the SQL Server
@@ -34,18 +36,25 @@ public final class ManageSqlDatabase {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = SampleUtils.randomResourceName(azureResourceManager, "rgRSDSI", 20);
         final String sqlServerName = SampleUtils.randomResourceName(azureResourceManager, "sqlserver", 20);
+        final String identityName = SampleUtils.randomResourceName(azureResourceManager, "sqladmin", 20);
         final String databaseName = "mydatabase";
-        final String administratorLogin = "sqladmin3423";
-        final String administratorPassword = SampleUtils.password();
 
         try {
-            // Create a SQL Server with two firewall rules.
+            // Create a managed identity to act as the SQL Server's Microsoft Entra administrator (no password needed).
+            Identity adminIdentity = azureResourceManager.identities()
+                .define(identityName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .create();
+
+            // Create a Microsoft Entra-only SQL Server with two firewall rules.
             SqlServer sqlServer = azureResourceManager.sqlServers()
                 .define(sqlServerName)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
+                .withExistingResourceGroup(rgName)
+                .withAzureActiveDirectoryOnlyAuthentication()
+                .withExternalActiveDirectoryAdministrator(identityName, adminIdentity.principalId(),
+                    PrincipalType.APPLICATION)
                 .defineFirewallRule("firewallRule1")
                 .withIpAddress("10.0.0.1")
                 .attach()

@@ -87,6 +87,9 @@ A follow-up pass applied these passwordless/security improvements (all compile a
 - **SSH key** (`SampleUtils.sshPublicKey()`): kept **2048-bit RSA** (dependency-free, Java 8 compatible) and added a
   ready-to-uncomment **Ed25519** helper for users on **JDK 15+** (`EdECPublicKey` / `EdECPoint` are unavailable on
   Java 8, so enabling it by default would require a third-party crypto dependency such as BouncyCastle).
+- **SQL passwordless auth (management samples)** (`ManageSqlDatabase`, `ManageSqlDatabasesAcrossRegions`): switched from
+  a SQL admin login/password to **Microsoft Entra-only** SQL Servers whose administrator is a **user-assigned managed
+  identity**. As a result the sample-only `SampleUtils.password()` helper was **removed** entirely.
 
 ## Potential refinements (NOT changed — for a later pass)
 
@@ -102,15 +105,15 @@ These were left as-is, either to keep the move focused or because of a current A
 - **SQL-across-regions sample scope**: the original sample also created 5 virtual networks and 5 VMs to derive
   firewall IPs. This was trimmed to the SQL geo-replication core plus a single example firewall rule for conciseness.
 - **Ed25519 SSH keys**: enable the commented `sshPublicKeyEd25519()` helper once the samples baseline moves to JDK 15+.
-- **Sample password generation** (`SampleUtils.password()`) is deterministic-ish and for samples only; do not use in
-  production.
 
 ## RBAC references
 
 - **`ManageContainerRegistry`** now contains an explicit RBAC role assignment: it grants the built-in **`AcrPull`** role
   to a managed identity, scoped to the container registry.
-- **`ConnectWebAppToSqlDatabase`** sets the web app's system-assigned managed identity as the SQL Server's Microsoft
-  Entra administrator (an identity/access configuration rather than an Azure RBAC role assignment).
+- **`ConnectWebAppToSqlDatabase`**, **`ManageSqlDatabase`**, and **`ManageSqlDatabasesAcrossRegions`** set a managed
+  identity as the SQL Server's Microsoft Entra administrator (an identity/access configuration rather than an Azure
+  RBAC role assignment). The web-app sample uses the app's system-assigned identity; the two management samples use a
+  dedicated user-assigned managed identity.
 - The **AKS** sample uses a **system-assigned managed identity**. Running the cluster still relies on Azure assigning
   the necessary RBAC roles to that identity behind the scenes; if the sample is extended to pull from ACR, an
   `AcrPull` role assignment on the kubelet identity would be required.
