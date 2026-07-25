@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.hybridcompute.models.Identity;
+import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
 import com.azure.resourcemanager.hybridcompute.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
-public final class ManagedServiceIdentityTests {
+public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model = BinaryData.fromString(
+        Identity model = BinaryData.fromString(
             "{\"principalId\":\"indoygmifthnzd\",\"tenantId\":\"sl\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"lbg\":{\"principalId\":\"igynduhavhqlk\",\"clientId\":\"umaq\"}}}")
-            .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+            .toObject(Identity.class);
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+        Identity model = new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
             .withUserAssignedIdentities(mapOf("lbg", new UserAssignedIdentity()));
-        model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        model = BinaryData.fromObject(model).toObject(Identity.class);
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

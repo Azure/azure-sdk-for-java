@@ -6,13 +6,9 @@
 
 ### Breaking Changes
 
-#### `models.ResourceIdentityType` was removed
-
 #### `models.ExtensionValueListResult` was removed
 
 #### `models.PrivateLinkScopesResource` was removed
-
-#### `models.Identity` was removed
 
 #### `models.HybridComputePrivateLinkScopeListResult` was removed
 
@@ -37,11 +33,17 @@
 * `OperationValueDisplay()` was changed to private access
 * `validate()` was removed
 
+#### `models.ResourceIdentityType` was modified
+
+* `models.ResourceIdentityType[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+
 #### `models.AgentUpgrade` was modified
 
-* `withCorrelationId(java.util.UUID)` was removed
-* `java.util.UUID correlationId()` -> `java.lang.String correlationId()`
 * `validate()` was removed
+* `java.util.UUID correlationId()` -> `java.lang.String correlationId()`
+* `withCorrelationId(java.util.UUID)` was removed
 
 #### `models.PrivateEndpointConnectionProperties` was modified
 
@@ -61,6 +63,10 @@
 * `validate()` was removed
 
 #### `models.MachineExtensionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
 
 * `validate()` was removed
 
@@ -93,8 +99,8 @@
 #### `models.PatchSettingsStatus` was modified
 
 * `PatchSettingsStatus()` was changed to private access
-* `withHotpatchEnablementStatus(models.HotpatchEnablementStatus)` was removed
 * `validate()` was removed
+* `withHotpatchEnablementStatus(models.HotpatchEnablementStatus)` was removed
 
 #### `models.AccessRule` was modified
 
@@ -177,14 +183,12 @@
 #### `models.IpAddress` was modified
 
 * `IpAddress()` was changed to private access
+* `validate()` was removed
 * `withAddress(java.lang.String)` was removed
 * `withIpAddressVersion(java.lang.String)` was removed
-* `validate()` was removed
 
 #### `models.MachineUpdate` was modified
 
-* `models.Identity identity()` -> `models.ManagedServiceIdentity identity()`
-* `withIdentity(models.Identity)` was removed
 * `validate()` was removed
 
 #### `models.LicenseProfileArmEsuPropertiesWithoutAssignedLicense` was modified
@@ -237,7 +241,6 @@
 
 #### `models.Machine` was modified
 
-* `models.Identity identity()` -> `models.ManagedServiceIdentity identity()`
 * `java.util.UUID vmUuid()` -> `java.lang.String vmUuid()`
 * `java.util.UUID vmId()` -> `java.lang.String vmId()`
 
@@ -328,8 +331,6 @@
 
 * `models.Gateway` was added
 
-* `models.ManagedServiceIdentityType` was added
-
 * `models.Disk` was added
 
 * `models.ServiceExtensionPublicNetworkAccess` was added
@@ -356,8 +357,6 @@
 
 * `models.ExtensionType` was added
 
-* `models.ManagedServiceIdentity` was added
-
 * `models.Gateways` was added
 
 * `models.Gateway$UpdateStages` was added
@@ -379,6 +378,13 @@
 * `setupExtensions(java.lang.String,java.lang.String,fluent.models.SetupExtensionRequestInner)` was added
 * `setupExtensions(java.lang.String,java.lang.String,fluent.models.SetupExtensionRequestInner,com.azure.core.util.Context)` was added
 
+#### `models.ResourceIdentityType` was modified
+
+* `ResourceIdentityType()` was added
+* `USER_ASSIGNED` was added
+* `SYSTEM_ASSIGNED_USER_ASSIGNED` was added
+* `NONE` was added
+
 #### `models.AgentUpgrade` was modified
 
 * `withCorrelationId(java.lang.String)` was added
@@ -391,24 +397,29 @@
 
 * `systemData()` was added
 
+#### `models.Identity` was modified
+
+* `withUserAssignedIdentities(java.util.Map)` was added
+* `userAssignedIdentities()` was added
+
 #### `models.MachineProperties` was modified
 
-* `statusReason()` was added
-* `firmwareProfile()` was added
-* `storageProfile()` was added
 * `identityKeyStore()` was added
-* `hardwareProfile()` was added
 * `tpmEkCertificate()` was added
+* `hardwareProfile()` was added
+* `storageProfile()` was added
+* `statusReason()` was added
 * `hardwareResourceId()` was added
+* `firmwareProfile()` was added
 
 #### `models.Machines` was modified
 
-* `getByIdWithResponse(java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was added
 * `getById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
 * `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `deleteById(java.lang.String)` was added
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `define(java.lang.String)` was added
 
 #### `models.HybridComputePrivateLinkScopeProperties` was modified
 
@@ -417,9 +428,9 @@
 
 #### `models.NetworkInterface` was modified
 
+* `id()` was added
 * `macAddress()` was added
 * `name()` was added
-* `id()` was added
 
 #### `models.StatusTypes` was modified
 
@@ -427,43 +438,42 @@
 
 #### `models.MachineUpdate` was modified
 
-* `withTpmEkCertificate(java.lang.String)` was added
-* `identityKeyStore()` was added
-* `tpmEkCertificate()` was added
-* `withIdentity(models.ManagedServiceIdentity)` was added
 * `withIdentityKeyStore(java.lang.String)` was added
+* `withTpmEkCertificate(java.lang.String)` was added
+* `tpmEkCertificate()` was added
+* `identityKeyStore()` was added
 
 #### `models.Machine` was modified
 
+* `region()` was added
+* `refresh()` was added
 * `tpmEkCertificate()` was added
 * `refresh(com.azure.core.util.Context)` was added
-* `refresh()` was added
-* `firmwareProfile()` was added
-* `hardwareResourceId()` was added
-* `storageProfile()` was added
 * `regionName()` was added
+* `storageProfile()` was added
 * `resourceGroupName()` was added
-* `region()` was added
-* `update()` was added
-* `identityKeyStore()` was added
+* `hardwareResourceId()` was added
 * `statusReason()` was added
 * `hardwareProfile()` was added
+* `update()` was added
+* `firmwareProfile()` was added
+* `identityKeyStore()` was added
 
 #### `HybridComputeManager` was modified
 
-* `extensionTypes()` was added
-* `machineRunCommands()` was added
-* `settingsOperations()` was added
-* `gateways()` was added
 * `extensionPublishers()` was added
+* `extensionTypes()` was added
 * `extensionMetadataV2s()` was added
+* `machineRunCommands()` was added
+* `gateways()` was added
+* `settingsOperations()` was added
 
 #### `models.WindowsParameters` was modified
 
-* `patchNameMasksToInclude()` was added
-* `patchNameMasksToExclude()` was added
 * `withPatchNameMasksToInclude(java.util.List)` was added
 * `withPatchNameMasksToExclude(java.util.List)` was added
+* `patchNameMasksToInclude()` was added
+* `patchNameMasksToExclude()` was added
 
 ## 1.1.0-beta.3 (2026-07-23)
 
