@@ -9,8 +9,8 @@
   - Added the `BatchOptions` model with the `translateTextWithinImage` property, and the `options` property on `TranslationBatch`, to enable translation of text embedded within images for batch requests.
   - Added `beginTranslation(List<DocumentTranslationInput>, Boolean)` convenience overloads to `DocumentTranslationClient` and `DocumentTranslationAsyncClient` to enable batch image translation without constructing a `TranslationBatch`/`BatchOptions`.
   - Added the `translateTextWithinImage` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document requests.
-  - Added image scan reporting to `DocumentStatusResult`: `imageCharacterDetected`, `imageCharged`, `totalImageScansSucceeded`, and `totalImageScansFailed`.
-  - Added image scan totals to `TranslationStatusSummary`: `totalImageScansSucceeded`, `totalImageScansFailed`, and `totalImagesChargedCount`.
+  - Added image scan reporting to `DocumentStatusResult`: `imageCharacterDetectedCount`, `imageChargedCount`, `totalImageScansSucceededCount`, and `totalImageScansFailedCount`.
+  - Added image scan totals to `TranslationStatusSummary`: `totalImageScansSucceededCount`, `totalImageScansFailedCount`, and `totalImagesChargedCount`.
 - Added custom translation model support:
   - Added the `deploymentName` property to `TranslationTarget` to specify the deployment name of the custom translation model for a batch translation request.
   - Added the `deploymentName` property to `DocumentStatusResult`, exposing the deployment name of the custom translation model used for the translation.
@@ -19,6 +19,7 @@
 
 ### Breaking Changes
 
+- Renamed `DocumentStatusResult.getCharacterCharged()` to `getCharacterChargedCount()` for naming consistency with the other count properties. Existing callers must update to the new method name.
 - Replaced the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience overload `translate(String, DocumentTranslateContent, String, String, Boolean)` with `translate(String, DocumentTranslateContent, String, String, String, Boolean, Boolean)`, adding the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively). Existing callers of the previous overload must update their call sites to the new signature.
 - Made the `type` parameter required on `getSupportedFormats`, matching the service contract. Removed the no-argument `getSupportedFormats()` overload from `DocumentTranslationClient` and `DocumentTranslationAsyncClient`; callers must now pass a `FileFormatType` (for example, `getSupportedFormats(FileFormatType.DOCUMENT)`).
 - Changed the underlying values of `FileFormatType.DOCUMENT` and `FileFormatType.GLOSSARY` from `document`/`glossary` to `Document`/`Glossary` to match the service. The enum constant names are unchanged.
