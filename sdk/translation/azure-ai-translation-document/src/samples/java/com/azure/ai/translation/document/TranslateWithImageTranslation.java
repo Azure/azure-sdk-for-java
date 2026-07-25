@@ -55,10 +55,10 @@ public class TranslateWithImageTranslation {
             System.out.println("Document Id: " + document.getId());
             System.out.println("Document Status: " + document.getStatus());
             // Image scan usage is reported when image translation is enabled.
-            System.out.println("Total image scans succeeded: " + document.getTotalImageScansSucceeded());
-            System.out.println("Total image scans failed: " + document.getTotalImageScansFailed());
-            System.out.println("Images charged: " + document.getImageCharged());
-            System.out.println("Characters detected within images: " + document.getImageCharacterDetected());
+            System.out.println("Total image scans succeeded: " + document.getTotalImageScansSucceededCount());
+            System.out.println("Total image scans failed: " + document.getTotalImageScansFailedCount());
+            System.out.println("Images charged: " + document.getImageChargedCount());
+            System.out.println("Characters detected within images: " + document.getImageCharacterDetectedCount());
         }
         // END:startDocumentTranslationWithImageTranslation
     }

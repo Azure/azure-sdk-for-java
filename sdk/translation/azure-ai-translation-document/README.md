@@ -249,10 +249,10 @@ for (DocumentStatusResult document : documentTranslationClient.listDocumentStatu
     System.out.println("Document Id: " + document.getId());
     System.out.println("Document Status: " + document.getStatus());
     // Image scan usage is reported when image translation is enabled.
-    System.out.println("Total image scans succeeded: " + document.getTotalImageScansSucceeded());
-    System.out.println("Total image scans failed: " + document.getTotalImageScansFailed());
-    System.out.println("Images charged: " + document.getImageCharged());
-    System.out.println("Characters detected within images: " + document.getImageCharacterDetected());
+    System.out.println("Total image scans succeeded: " + document.getTotalImageScansSucceededCount());
+    System.out.println("Total image scans failed: " + document.getTotalImageScansFailedCount());
+    System.out.println("Images charged: " + document.getImageChargedCount());
+    System.out.println("Characters detected within images: " + document.getImageCharacterDetectedCount());
 }
 ```
 
@@ -510,7 +510,7 @@ try {
         System.out.println("Document ID is: " + documentStatus.getId());
         System.out.println("Document Status is: " + documentStatus.getStatus().toString());
         System.out.println("Characters Charged is: "
-            + documentStatus.getCharacterCharged().toString());
+            + documentStatus.getCharacterChargedCount().toString());
         System.out.println("Document path is: " + documentStatus.getPath());
         System.out.println("Document source path is: " + documentStatus.getSourcePath());
     }

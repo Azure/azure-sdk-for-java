@@ -238,7 +238,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
 
         assertEquals(translationStatus.getStatus().toString(), firstItem.getStatus().toString());
         assertEquals(translationStatus.getSummary().getTotalCharactersChargedCount(),
-            (long) firstItem.getCharacterCharged());
+            (long) firstItem.getCharacterChargedCount());
     }
 
     @RecordWithoutRequestBody

@@ -68,10 +68,10 @@ public class DocumentTranslationModelTests {
         }
 
         Assertions.assertEquals("myDeployment", result.getDeploymentName());
-        Assertions.assertEquals(6, result.getTotalImageScansSucceeded());
-        Assertions.assertEquals(1, result.getTotalImageScansFailed());
-        Assertions.assertEquals(3, result.getImageCharged());
-        Assertions.assertEquals(1257, result.getImageCharacterDetected());
+        Assertions.assertEquals(6, result.getTotalImageScansSucceededCount());
+        Assertions.assertEquals(1, result.getTotalImageScansFailedCount());
+        Assertions.assertEquals(3, result.getImageChargedCount());
+        Assertions.assertEquals(1257, result.getImageCharacterDetectedCount());
     }
 
     private static String toJson(com.azure.json.JsonSerializable<?> serializable) throws IOException {
