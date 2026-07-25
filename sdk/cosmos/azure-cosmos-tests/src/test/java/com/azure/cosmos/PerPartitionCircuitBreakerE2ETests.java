@@ -3084,7 +3084,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -3844,7 +3844,12 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         }
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    // Only assert thin-client routing when thin-client is EXPLICITLY opted in
+                    // (COSMOS.THINCLIENT_ENABLED=true), the sole config where routing is deterministic
+                    // because the endpoint probe is bypassed. On the implicit/unset path routing is
+                    // gated on the probe verdict, which under fault injection is not guaranteed to
+                    // greenlight all regions -- requests may legitimately fall back to Gateway V1 (:443).
+                    if (Boolean.TRUE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -3896,7 +3901,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    // Only assert thin-client routing when thin-client is EXPLICITLY opted in
+                    // (COSMOS.THINCLIENT_ENABLED=true); see note above. On the implicit/probe path
+                    // routing may legitimately fall back to Gateway V1 (:443).
+                    if (Boolean.TRUE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -4609,6 +4617,65 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
             } finally {
                 System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            }
+        }
+    }
+
+    /**
+     * Regression validation for the Per-Partition Circuit Breaker (PPCB) diagnostics fix (see PR 49734).
+     *
+     * The {@code clientCfgs} section of the emitted {@link CosmosDiagnostics} must always include the
+     * {@code partitionLevelCircuitBreakerCfg} field for every client, regardless of whether PPCB is
+     * explicitly enabled. A prior regression silently dropped this field unless PPAF mandated it. This
+     * test asserts that all the expected {@code clientCfgs} keys - including
+     * {@code partitionLevelCircuitBreakerCfg} - are present in the diagnostics of a real operation
+     * without setting any PPCB configuration.
+     */
+    @Test(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = TIMEOUT)
+    public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
+
+        try (CosmosAsyncClient client = getClientBuilder().buildAsyncClient()) {
+
+            CosmosAsyncContainer container = client
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            TestObject item = TestObject.create();
+
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(item, new PartitionKey(item.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+
+            String diagnosticsString = createResponse.getDiagnostics().toString();
+
+            assertThat(diagnosticsString)
+                .as("clientCfgs section should be present in the CosmosDiagnostics")
+                .contains("\"clientCfgs\"");
+
+            // All the clientCfgs keys unconditionally emitted by DiagnosticsClientConfigSerializer,
+            // including partitionLevelCircuitBreakerCfg (the field the regression previously dropped).
+            List<String> expectedClientCfgsKeys = Arrays.asList(
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg");
+
+            for (String expectedKey : expectedClientCfgsKeys) {
+                assertThat(diagnosticsString)
+                    .as("clientCfgs key '%s' should be present in the CosmosDiagnostics", expectedKey)
+                    .contains("\"" + expectedKey + "\"");
             }
         }
     }
@@ -5613,7 +5680,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             throw new SkipException("Test only applicable to DIRECT mode");
         }
 
-        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT mode is not supported with thin client");
         }
 

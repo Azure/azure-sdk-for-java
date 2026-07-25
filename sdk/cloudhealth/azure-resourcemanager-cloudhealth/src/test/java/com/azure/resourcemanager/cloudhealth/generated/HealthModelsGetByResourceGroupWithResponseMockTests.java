@@ -22,7 +22,7 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"onmacjekniz\",\"tenantId\":\"qvci\",\"type\":\"None\",\"userAssignedIdentities\":{\"wrwfscjfnyns\":{\"principalId\":\"gmblrri\",\"clientId\":\"ywdxsmic\"},\"vutpthjoxo\":{\"principalId\":\"ujiz\",\"clientId\":\"oqytibyowbblgy\"},\"xkcgxxlxsffgcvi\":{\"principalId\":\"msksbp\",\"clientId\":\"lqol\"}}},\"location\":\"zdwlvwlyoupfgfb\",\"tags\":{\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\"},\"id\":\"pjui\",\"name\":\"av\",\"type\":\"k\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"cbslhhx\",\"tenantId\":\"bxv\",\"type\":\"None\",\"userAssignedIdentities\":{\"dfgsftufqobrj\":{\"principalId\":\"sirudhzmmesckdlp\",\"clientId\":\"zrcxfailcfxwmdbo\"}}},\"location\":\"acgcckknhx\",\"tags\":{\"tnrzvuljra\":\"v\",\"roylaxxu\":\"eranokqgukkjqnv\",\"sfjbjsvg\":\"cdisd\",\"lxgccknfnwmbtm\":\"rwhryvycytd\"},\"id\":\"pdvjdhttzaefedx\",\"name\":\"hchrphkmcrjdqn\",\"type\":\"dfzpbgtgkylkdg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class HealthModelsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .getByResourceGroupWithResponse("yyysfgdotcubi", "p", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ecdmdqbwpy", "q", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zdwlvwlyoupfgfb", response.location());
-        Assertions.assertEquals("bdyhgkfminsgowz", response.tags().get("ttsttktlahbqact"));
+        Assertions.assertEquals("acgcckknhx", response.location());
+        Assertions.assertEquals("v", response.tags().get("tnrzvuljra"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

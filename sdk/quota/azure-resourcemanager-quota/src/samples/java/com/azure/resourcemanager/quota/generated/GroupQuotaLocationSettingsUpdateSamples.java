@@ -13,7 +13,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEnforcementStatusProper
  */
 public final class GroupQuotaLocationSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_Patch.

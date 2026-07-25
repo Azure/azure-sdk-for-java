@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.ExternalSignal;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import org.junit.jupiter.api.Assertions;
@@ -15,31 +17,45 @@ public final class ExternalSignalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSignal model = BinaryData.fromString(
-            "{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":38.97777089679916},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":51.602360644099235}},\"name\":\"eptra\",\"signalDefinitionName\":\"jezwlwnw\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":59.55474680688931,\"reportedAt\":\"2021-06-21T00:43:05Z\",\"error\":\"atdooaojkniod\"}}")
+            "{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":85.24879619390303,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT1H\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":7.776737881638674,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT15M\"}},\"name\":\"ujxukndxd\",\"signalDefinitionName\":\"rjguufzdmsyqtf\",\"status\":{\"healthState\":\"Deleted\",\"value\":22.60072330795513,\"reportedAt\":\"2021-08-12T19:36:43Z\",\"error\":\"gamv\",\"additionalContext\":\"ho\"}}")
             .toObject(ExternalSignal.class);
-        Assertions.assertEquals("eptra", model.name());
-        Assertions.assertEquals("jezwlwnw", model.signalDefinitionName());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(38.97777089679916, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("ujxukndxd", model.name());
+        Assertions.assertEquals("rjguufzdmsyqtf", model.signalDefinitionName());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(85.24879619390303D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().degradedRule().lookBackWindow());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(51.602360644099235, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(7.776737881638674D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT15M, model.evaluationRules().unhealthyRule().lookBackWindow());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSignal model = new ExternalSignal().withName("eptra")
-            .withSignalDefinitionName("jezwlwnw")
+        ExternalSignal model = new ExternalSignal().withName("ujxukndxd")
+            .withSignalDefinitionName("rjguufzdmsyqtf")
             .withEvaluationRules(new EvaluationRule()
-                .withDegradedRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(38.97777089679916))
-                .withUnhealthyRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(51.602360644099235)));
+                .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                    .withThreshold(85.24879619390303D)
+                    .withSensitivity(DynamicThresholdSensitivity.HIGH)
+                    .withLookBackWindow(LookBackWindow.PT1H))
+                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL)
+                    .withThreshold(7.776737881638674D)
+                    .withSensitivity(DynamicThresholdSensitivity.HIGH)
+                    .withLookBackWindow(LookBackWindow.PT15M)));
         model = BinaryData.fromObject(model).toObject(ExternalSignal.class);
-        Assertions.assertEquals("eptra", model.name());
-        Assertions.assertEquals("jezwlwnw", model.signalDefinitionName());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(38.97777089679916, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("ujxukndxd", model.name());
+        Assertions.assertEquals("rjguufzdmsyqtf", model.signalDefinitionName());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(85.24879619390303D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().degradedRule().lookBackWindow());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(51.602360644099235, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(7.776737881638674D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT15M, model.evaluationRules().unhealthyRule().lookBackWindow());
     }
 }

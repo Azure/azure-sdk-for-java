@@ -3,15 +3,20 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
+* Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed thin-client (Gateway V2) queries with a prefix (partial) hierarchical partition key returning co-located documents from other logical partitions. - See PR [49688](https://github.com/Azure/azure-sdk-for-java/pull/49688).
 
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 * Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
+* Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM are configured with the same service endpoint. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed. - See [PR 49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
 
 ### 4.81.0 (2026-06-08)
 
@@ -24,6 +29,7 @@
 * Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
 * Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 * Fixed silent drift in `CosmosChangeFeedRequestOptions` when resuming from a continuation token via `byPage(savedContinuation)`. Previously only `maxPrefetchPageCount` and `throughputControlGroupName` were inherited onto the rebuilt impl; `endLSN`, `customSerializer`, `excludeRegions`, `readConsistencyStrategy`, `completeAfterAllCurrentChangesRetrieved`, and other caller-supplied configuration were silently dropped. All non-token-encoded fields are now propagated. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+* Fixed HTTP/2 PING keepalive handler (introduced in [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)) so it observes child-stream HEADERS/DATA reads via `Http2PingCloseRewrapHandler.channelReadComplete`, preventing spurious PINGs (and spurious closes) on connections actively serving requests through `Http2MultiplexHandler`.
 
 #### Other Changes
 * Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)

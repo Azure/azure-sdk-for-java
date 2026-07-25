@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class IotHubResourceListJobsSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_listjobs.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_listjobs.json
      */
     /**
      * Sample code: IotHubResource_ListJobs.

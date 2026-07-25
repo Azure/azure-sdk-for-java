@@ -619,7 +619,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
+    @BeforeSuite(groups = {"thinclient", "thinclientEndpointProbe", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SHARED_SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
@@ -670,7 +670,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return collection;
     }
 
-    @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
+    @AfterSuite(groups = {"thinclient", "thinclientEndpointProbe", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
         "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
@@ -1184,6 +1184,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 || (statusCode == HttpConstants.StatusCodes.NOTFOUND
                     && (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN
                         || cosmosException.getSubStatusCode() == 1013
+                        || cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
                         || cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
         }
 
@@ -2710,16 +2711,40 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         assertThat(requests).isNotNull();
         assertThat(requests.size()).isPositive();
 
+        // When thin client is opted in with HTTP/2, QueryPlan calls are routed to Gateway V2 as well
+        // (Configs.isThinClientQueryPlanEnabled() defaults to true), so every request -- including
+        // QueryPlan -- must target the thin-client proxy endpoint.
+        //
+        // The kill-switch (COSMOS.THINCLIENT_QUERY_PLAN_ENABLED / COSMOS_THINCLIENT_QUERY_PLAN_ENABLED)
+        // flips only the QueryPlan routing: when disabled, QueryPlan requests are forced back onto
+        // Gateway V1 while all data-plane requests continue through the thin-client proxy. In that mixed
+        // state QueryPlan requests are exempt from the :10250 requirement (and are asserted to NOT use it),
+        // whereas every non-QueryPlan request must still target the thin-client endpoint.
+        //
+        // Validate every request rather than early-returning on the first thin-client match: an
+        // unexpected mixed scenario (some data requests via the classic gateway) must still fail.
+        boolean queryPlanRoutedToThinClient = Configs.isThinClientQueryPlanEnabled();
         for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            if (requestInfo.getEndpoint() != null
-                && requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
-                return;
-            }
-        }
+            String requestType = requestInfo.getRequestType();
+            String endpoint = requestInfo.getEndpoint();
+            boolean isQueryPlan = requestType != null && requestType.endsWith(":QueryPlan");
+            boolean usesThinClient = endpoint != null && endpoint.contains(THIN_CLIENT_ENDPOINT_INDICATOR);
 
-        assertThat(false)
-            .as("No request targeting thin client proxy endpoint (" + THIN_CLIENT_ENDPOINT_INDICATOR + ")")
-            .isTrue();
+            if (isQueryPlan && !queryPlanRoutedToThinClient) {
+                assertThat(usesThinClient)
+                    .as("QueryPlan request must be forced onto Gateway V1 (NOT the thin-client proxy "
+                        + THIN_CLIENT_ENDPOINT_INDICATOR + ") when the thin-client query-plan kill-switch "
+                        + "is disabled, but endpoint was: " + endpoint)
+                    .isFalse();
+                continue;
+            }
+
+            assertThat(usesThinClient)
+                .as("Request must target the thin client proxy endpoint ("
+                    + THIN_CLIENT_ENDPOINT_INDICATOR + "), but was: " + endpoint
+                    + " (requestType: " + requestType + ")")
+                .isTrue();
+        }
     }
 
     protected static void safeClose(AsyncDocumentClient client) {

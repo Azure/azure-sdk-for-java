@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -18,45 +20,59 @@ public final class PrometheusMetricsSignalDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrometheusMetricsSignalDefinitionProperties model = BinaryData.fromString(
-            "{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"ynnaam\",\"timeGrain\":\"ctehfiqscjey\",\"provisioningState\":\"Creating\",\"displayName\":\"zrkgqhcjrefovg\",\"refreshInterval\":\"PT1H\",\"tags\":{\"pngjcrcczsqpjhvm\":\"eyyvxyqjpkcat\",\"a\":\"ajvnysounqe\"},\"dataUnit\":\"ae\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":10.564383504938279},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":48.92303982037844}}}")
+            "{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"qweykhmenev\",\"timeGrain\":\"exfwhy\",\"provisioningState\":\"Succeeded\",\"displayName\":\"vyvdcs\",\"refreshInterval\":\"PT30M\",\"tags\":{\"hfiqscjeypvhe\":\"aamdect\",\"gm\":\"rkgqhcjrefo\"},\"dataUnit\":\"sle\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":50.57474212645342,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT1H\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":90.09296445411387,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT5M\"}}}")
             .toObject(PrometheusMetricsSignalDefinitionProperties.class);
-        Assertions.assertEquals("zrkgqhcjrefovg", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1H, model.refreshInterval());
-        Assertions.assertEquals("eyyvxyqjpkcat", model.tags().get("pngjcrcczsqpjhvm"));
-        Assertions.assertEquals("ae", model.dataUnit());
+        Assertions.assertEquals("vyvdcs", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
+        Assertions.assertEquals("aamdect", model.tags().get("hfiqscjeypvhe"));
+        Assertions.assertEquals("sle", model.dataUnit());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(10.564383504938279, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(48.92303982037844, model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("ynnaam", model.queryText());
-        Assertions.assertEquals("ctehfiqscjey", model.timeGrain());
+        Assertions.assertEquals(50.57474212645342D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(90.09296445411387D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.evaluationRules().unhealthyRule().lookBackWindow());
+        Assertions.assertEquals("qweykhmenev", model.queryText());
+        Assertions.assertEquals("exfwhy", model.timeGrain());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrometheusMetricsSignalDefinitionProperties model
-            = new PrometheusMetricsSignalDefinitionProperties().withDisplayName("zrkgqhcjrefovg")
-                .withRefreshInterval(RefreshInterval.PT1H)
-                .withTags(mapOf("pngjcrcczsqpjhvm", "eyyvxyqjpkcat", "a", "ajvnysounqe"))
-                .withDataUnit("ae")
+            = new PrometheusMetricsSignalDefinitionProperties().withDisplayName("vyvdcs")
+                .withRefreshInterval(RefreshInterval.PT30M)
+                .withTags(mapOf("hfiqscjeypvhe", "aamdect", "gm", "rkgqhcjrefo"))
+                .withDataUnit("sle")
                 .withEvaluationRules(new EvaluationRule()
-                    .withDegradedRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(10.564383504938279))
-                    .withUnhealthyRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(48.92303982037844)))
-                .withQueryText("ynnaam")
-                .withTimeGrain("ctehfiqscjey");
+                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL)
+                        .withThreshold(50.57474212645342D)
+                        .withSensitivity(DynamicThresholdSensitivity.LOW)
+                        .withLookBackWindow(LookBackWindow.PT1H))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                        .withThreshold(90.09296445411387D)
+                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
+                        .withLookBackWindow(LookBackWindow.PT5M)))
+                .withQueryText("qweykhmenev")
+                .withTimeGrain("exfwhy");
         model = BinaryData.fromObject(model).toObject(PrometheusMetricsSignalDefinitionProperties.class);
-        Assertions.assertEquals("zrkgqhcjrefovg", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1H, model.refreshInterval());
-        Assertions.assertEquals("eyyvxyqjpkcat", model.tags().get("pngjcrcczsqpjhvm"));
-        Assertions.assertEquals("ae", model.dataUnit());
+        Assertions.assertEquals("vyvdcs", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
+        Assertions.assertEquals("aamdect", model.tags().get("hfiqscjeypvhe"));
+        Assertions.assertEquals("sle", model.dataUnit());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(10.564383504938279, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(48.92303982037844, model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("ynnaam", model.queryText());
-        Assertions.assertEquals("ctehfiqscjey", model.timeGrain());
+        Assertions.assertEquals(50.57474212645342D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().degradedRule().lookBackWindow());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(90.09296445411387D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.evaluationRules().unhealthyRule().lookBackWindow());
+        Assertions.assertEquals("qweykhmenev", model.queryText());
+        Assertions.assertEquals("exfwhy", model.timeGrain());
     }
 
     // Use "Map.of" if available

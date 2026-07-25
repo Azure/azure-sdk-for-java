@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryImageVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Delete.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Delete.json
      */
     /**
      * Sample code: Delete a gallery image version.

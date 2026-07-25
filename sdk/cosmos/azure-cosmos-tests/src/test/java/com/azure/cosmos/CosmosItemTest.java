@@ -176,7 +176,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
         docDefinition.set("mypk", sb.toString());
 
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition);
+        container.createItem(docDefinition);
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
@@ -191,7 +191,9 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        container.createItem(properties);
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
                                                                                     new PartitionKey(properties.get("mypk")),
@@ -290,6 +292,8 @@ public class CosmosItemTest extends TestSuiteBase {
             cosmosItemIdentities.add(cosmosItemIdentity);
             idSet.add(document.getId());
         }
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
@@ -565,6 +569,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
         cosmosItemIdentities.add(cosmosItemIdentity);
 
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         FeedResponse<SampleType> feedResponse = container.readMany(cosmosItemIdentities, SampleType.class);
 
         assertThat(feedResponse.getResults()).isNotNull();
@@ -1078,6 +1083,8 @@ public class CosmosItemTest extends TestSuiteBase {
         ObjectNode fallBackProperties = getDocumentDefinition("justFallback", "justFallback");
         container.createItem(properties);
 
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
         String successfulResponse = wrapWithSoftTimeoutAndFallback(
             container
                 .asyncContainer
@@ -1334,6 +1341,8 @@ public class CosmosItemTest extends TestSuiteBase {
             ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
             CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
+            waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+
             String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
             CosmosQueryRequestOptions cosmosQueryRequestOptions =
                 new CosmosQueryRequestOptions()
@@ -1449,9 +1458,11 @@ public class CosmosItemTest extends TestSuiteBase {
     public void readAllItemsOfLogicalPartition() throws Exception{
         String pkValue = UUID.randomUUID().toString();
         ObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
-        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
             container.readAllItems(
@@ -1481,6 +1492,8 @@ public class CosmosItemTest extends TestSuiteBase {
 
         properties = getDocumentDefinition(UUID.randomUUID().toString(), pkValue);
         container.createItem(properties);
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         String continuationToken = null;

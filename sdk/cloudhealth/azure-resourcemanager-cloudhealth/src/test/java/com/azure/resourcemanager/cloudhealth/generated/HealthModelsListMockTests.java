@@ -23,7 +23,7 @@ public final class HealthModelsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"agst\",\"tenantId\":\"ohpfkyrkdbdgiog\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"egfnmntfpmvmemfn\":{\"principalId\":\"wqjnob\",\"clientId\":\"yhddvia\"},\"evwrdnhfuk\":{\"principalId\":\"dwvvba\",\"clientId\":\"lllchpodb\"}}},\"location\":\"sjcswsmystuluqyp\",\"tags\":{\"mfpjbabw\":\"lerchpq\",\"sspuunnoxyhkx\":\"dfc\",\"dao\":\"qddrihpfhoqcaae\",\"xkzb\":\"djvlpj\"},\"id\":\"msgeivsiykzk\",\"name\":\"ncj\",\"type\":\"xonbzoggculapz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"mebwjscjpah\",\"tenantId\":\"veabfqxnmwmqtib\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"aeukm\":{\"principalId\":\"dt\",\"clientId\":\"cttadi\"},\"yxeb\":{\"principalId\":\"ieekpndzaa\",\"clientId\":\"udqmeqwigpibudq\"}}},\"location\":\"bpmzzn\",\"tags\":{\"heioqa\":\"fyaqitm\"},\"id\":\"hvseufuqyrx\",\"name\":\"dlcgqlsismjqfr\",\"type\":\"dgamquhiosrsj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class HealthModelsListMockTests {
 
         PagedIterable<HealthModel> response = manager.healthModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sjcswsmystuluqyp", response.iterator().next().location());
-        Assertions.assertEquals("lerchpq", response.iterator().next().tags().get("mfpjbabw"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("bpmzzn", response.iterator().next().location());
+        Assertions.assertEquals("fyaqitm", response.iterator().next().tags().get("heioqa"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
     }
 }

@@ -24,6 +24,16 @@
 - Made the `type` parameter required on `getSupportedFormats`, matching the service contract. Removed the no-argument `getSupportedFormats()` overload from `DocumentTranslationClient` and `DocumentTranslationAsyncClient`; callers must now pass a `FileFormatType` (for example, `getSupportedFormats(FileFormatType.DOCUMENT)`).
 - Changed the underlying values of `FileFormatType.DOCUMENT` and `FileFormatType.GLOSSARY` from `document`/`glossary` to `Document`/`Glossary` to match the service. The enum constant names are unchanged.
 
+## 1.0.9 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
 ## 1.0.8 (2026-05-05)
 
 ### Other Changes
