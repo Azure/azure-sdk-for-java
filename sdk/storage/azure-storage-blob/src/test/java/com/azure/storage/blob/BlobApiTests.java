@@ -2158,7 +2158,12 @@ public class BlobApiTests extends BlobTestBase {
     // lands. A larger source widens that window (A1); combined with an assumeTrue guard on the poll status (B),
     // the tests assert abort behavior when a copy is genuinely pending and skip (rather than fail) if the
     // service finished the copy first. Server-to-server copy, so the larger size costs only the initial upload.
-    private static final int ABORT_COPY_SOURCE_SIZE_BYTES = 64 * Constants.MB;
+    //
+    // The source is capped just under the test proxy's 30,000,000-byte request-body limit: a body at/above that
+    // limit cannot be ingested by the proxy in record or playback (it fails with HTTP 500 "Request body too large"
+    // or a premature connection close, and also destabilizes the shared proxy connection pool for concurrent
+    // tests). 28 MiB (29,360,128 bytes) stays under the cap while keeping the window wide enough to exercise abort.
+    private static final int ABORT_COPY_SOURCE_SIZE_BYTES = 28 * Constants.MB;
 
     @Test
     public void abortCopyBaseSimple() {
