@@ -72,6 +72,9 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
     private final Duration sessionIdleTimeout;
+    // Backoff between retries for link/connection-level failures, which can fail fast and would otherwise
+    // spin in a tight, CPU-burning loop. Honors the configured AmqpRetryOptions delay.
+    private final Duration retryBackoff;
 
     /**
      * SessionId to receiver mapping.
@@ -117,6 +120,13 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
         this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
             ? receiverOptions.getSessionIdleTimeout()
             : connectionCacheWrapper.getRetryOptions().getTryTimeout();
+        // Link/connection-level acquire failures can fail fast (e.g. the broker repeatedly detaches the
+        // link quickly), so space those retries by the configured retry delay rather than retrying with a
+        // zero delay, which spins the retry loop. Falls back to 100ms when no usable delay is configured.
+        final Duration configuredDelay = connectionCacheWrapper.getRetryOptions().getDelay();
+        this.retryBackoff = (configuredDelay == null || configuredDelay.isZero() || configuredDelay.isNegative())
+            ? Duration.ofMillis(100)
+            : configuredDelay;
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
@@ -313,8 +323,9 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
                     return Mono.delay(Duration.ZERO);
                 } else if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
-                    // Link or connection-level error — retry to acquire a fresh link (or connection).
-                    return Mono.delay(Duration.ZERO);
+                    // Link or connection-level error — retry to acquire a fresh link (or connection) after a
+                    // bounded backoff, so a link that repeatedly detaches quickly does not spin the retry loop.
+                    return Mono.delay(retryBackoff);
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire new session.", failure);
