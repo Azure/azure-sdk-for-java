@@ -194,7 +194,8 @@ class RecoveryKindTest {
 
     @Test
     void illegalStateExceptionDisposedDataBatchReturnsLink() {
-        // Matches ReactorSender.send(List) message: "connectionId[%s] linkName[%s] Cannot publish data batch when disposed."
+        // Matches ReactorSender.send(List) message:
+        // "connectionId[%s] linkName[%s] Cannot publish data batch when disposed."
         assertEquals(RecoveryKind.LINK, RecoveryKind.classify(
             new IllegalStateException("connectionId[abc] linkName[xyz] Cannot publish data batch when disposed.")));
     }
