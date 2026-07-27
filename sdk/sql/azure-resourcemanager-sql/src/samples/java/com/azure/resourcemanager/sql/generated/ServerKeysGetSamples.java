@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerKeysGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyGet.json
+     * x-ms-original-file: 2025-01-01/ServerKeyGet.json
      */
     /**
      * Sample code: Get the server key.
@@ -24,7 +24,7 @@ public final class ServerKeysGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyGetWithVersionlessKey.json
+     * x-ms-original-file: 2025-01-01/ServerKeyGetWithVersionlessKey.json
      */
     /**
      * Sample code: Get the server key with versionless key.

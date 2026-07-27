@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
 #### Breaking Changes
@@ -28,6 +29,7 @@
 * Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
 * Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 * Fixed silent drift in `CosmosChangeFeedRequestOptions` when resuming from a continuation token via `byPage(savedContinuation)`. Previously only `maxPrefetchPageCount` and `throughputControlGroupName` were inherited onto the rebuilt impl; `endLSN`, `customSerializer`, `excludeRegions`, `readConsistencyStrategy`, `completeAfterAllCurrentChangesRetrieved`, and other caller-supplied configuration were silently dropped. All non-token-encoded fields are now propagated. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+* Fixed HTTP/2 PING keepalive handler (introduced in [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)) so it observes child-stream HEADERS/DATA reads via `Http2PingCloseRewrapHandler.channelReadComplete`, preventing spurious PINGs (and spurious closes) on connections actively serving requests through `Http2MultiplexHandler`.
 
 #### Other Changes
 * Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)

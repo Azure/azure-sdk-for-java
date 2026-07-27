@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseOperationsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListDatabaseOperations.json
+     * x-ms-original-file: 2025-01-01/ListDatabaseOperations.json
      */
     /**
      * Sample code: List the database management operations.

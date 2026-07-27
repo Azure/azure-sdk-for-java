@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DataWarehouseUserActivitiesOperationListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListDataWarehouseUserActivities.json
+     * x-ms-original-file: 2025-01-01/ListDataWarehouseUserActivities.json
      */
     /**
      * Sample code: List of the user activities of a data warehouse.

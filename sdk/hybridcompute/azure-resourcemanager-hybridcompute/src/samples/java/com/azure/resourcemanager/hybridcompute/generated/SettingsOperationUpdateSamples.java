@@ -11,7 +11,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
  */
 public final class SettingsOperationUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/settings/SettingsUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/settings/SettingsUpdate.json
      */
     /**
      * Sample code: SettingsUpdate.

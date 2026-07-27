@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryApplicationVersionsListByGalleryApplicationSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
      */
     /**
      * Sample code: List gallery Application Versions in a gallery Application Definition.

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class JobAgentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateJobAgent.json
+     * x-ms-original-file: 2025-01-01/UpdateJobAgent.json
      */
     /**
      * Sample code: Update a job agent's tags.
@@ -32,7 +32,7 @@ public final class JobAgentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateJobAgentWithSku.json
+     * x-ms-original-file: 2025-01-01/UpdateJobAgentWithSku.json
      */
     /**
      * Sample code: Update a job agent's sku.
@@ -47,7 +47,7 @@ public final class JobAgentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateJobAgentWithIdentity.json
+     * x-ms-original-file: 2025-01-01/UpdateJobAgentWithIdentity.json
      */
     /**
      * Sample code: Update a job agent's identity.

@@ -27,6 +27,7 @@ public final class StorageTableDestination implements JsonSerializable<StorageTa
     private String storageAccountResourceId;
 
     /*
+     * 
      * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
@@ -79,7 +80,8 @@ public final class StorageTableDestination implements JsonSerializable<StorageTa
     }
 
     /**
-     * Get the name property: A friendly name for the destination.
+     * Get the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -89,7 +91,8 @@ public final class StorageTableDestination implements JsonSerializable<StorageTa
     }
 
     /**
-     * Set the name property: A friendly name for the destination.
+     * Set the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.
