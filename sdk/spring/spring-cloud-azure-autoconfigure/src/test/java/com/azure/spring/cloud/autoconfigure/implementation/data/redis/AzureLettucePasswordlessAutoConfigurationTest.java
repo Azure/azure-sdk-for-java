@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.Az
 import io.lettuce.core.RedisCredentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.data.redis.autoconfigure.LettuceClientConfigurationBuilderCustomizer;
+import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
