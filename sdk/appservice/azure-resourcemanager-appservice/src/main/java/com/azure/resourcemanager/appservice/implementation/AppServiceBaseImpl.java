@@ -458,6 +458,26 @@ abstract class AppServiceBaseImpl<FluentT extends WebAppBase, FluentImplT extend
         return (FluentImplT) this;
     }
 
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials() {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(null);
+        return (FluentImplT) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(userAssignedManagedIdentityClientId);
+        return (FluentImplT) this;
+    }
+
     protected abstract void cleanUpContainerSettings();
 
     protected void ensureLinuxPlan() {

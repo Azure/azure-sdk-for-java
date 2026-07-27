@@ -464,6 +464,28 @@ abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT ex
 
     @Override
     @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials() {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(null);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(userAssignedManagedIdentityClientId);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public FluentImplT withStartUpCommand(String startUpCommand) {
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
@@ -484,5 +506,12 @@ abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT ex
         withoutAppSetting(SETTING_REGISTRY_SERVER);
         withoutAppSetting(SETTING_REGISTRY_USERNAME);
         withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+        // ACR managed identity pull
+        if (siteConfig != null && siteConfig.acrUseManagedIdentityCreds() != null) {
+            siteConfig.withAcrUseManagedIdentityCreds(null);
+        }
+        if (siteConfig != null && siteConfig.acrUserManagedIdentityId() != null) {
+            siteConfig.withAcrUserManagedIdentityId(null);
+        }
     }
 }
