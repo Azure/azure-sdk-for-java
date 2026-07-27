@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
     (Re)creates the fixed Cosmos DB accounts used by the azure-sdk-for-java Cosmos live
-    tests and outputs the cosmos-live-test-accounts JSON (endpoints + keys).
+    tests and outputs the sub-config-cosmos-azure-cloud-test-resources JSON (endpoints + keys).
 
 .DESCRIPTION
     The Java Cosmos live tests run against fixed, self-owned accounts (Track A of the
@@ -12,11 +12,12 @@
          with the requested consistency / multi-write / multi-region / thin-client /
          partition-merge configuration.
       3. Read each account's endpoint + primary (and optional secondary) key.
-      4. Assemble the versioned cosmos-live-test-accounts JSON and emit it (to stdout,
+      4. Assemble the versioned account JSON and emit it (to stdout,
          and to -OutputPath if provided).
 
-    This script does NOT touch Key Vault. Update the cosmos-live-test-accounts secret /
-    ADO variable manually with the JSON it outputs.
+    This script does NOT touch Key Vault. Update the
+    sub-config-cosmos-azure-cloud-test-resources secret / ADO variable manually with the
+    JSON it outputs.
 
     Uses the Az PowerShell modules (Az.Accounts, Az.Resources, Az.CosmosDB).
 
@@ -254,6 +255,6 @@ if ($OutputPath) {
     }
 }
 
-Write-Info "Assembled $($secret.accounts.Count) accounts. Update the cosmos-live-test-accounts secret manually with this JSON."
+Write-Info "Assembled $($secret.accounts.Count) accounts. Update the sub-config-cosmos-azure-cloud-test-resources secret manually with this JSON."
 # Emit the JSON to stdout so it can be captured/redirected.
 Write-Output $secretJson

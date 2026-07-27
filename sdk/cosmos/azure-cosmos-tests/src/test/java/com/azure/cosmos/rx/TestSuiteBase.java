@@ -65,7 +65,6 @@ import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -117,9 +116,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -175,6 +176,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final Duration TRANSIENT_CREATE_RETRY_DELAY = Duration.ofSeconds(3);
 
+    private static final Duration TRANSIENT_CREATE_RETRY_MAX_JITTER = Duration.ofMillis(500);
+
     private static final int TRANSIENT_CREATE_MAX_RETRY_ATTEMPTS = 20;
 
     private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
@@ -197,7 +200,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     private static boolean isConflictException(Throwable t) {
-        return t instanceof CosmosException && ((CosmosException) t).getStatusCode() == 409;
+        CosmosException cosmosException = getCosmosException(t);
+        return cosmosException != null && cosmosException.getStatusCode() == 409;
     }
 
     /**
@@ -208,11 +212,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * deterministic failures (e.g. 400 bad request, 409 conflict) are intentionally excluded.
      */
     private static boolean isTransientControlPlaneFailure(Throwable t) {
-        Throwable unwrapped = Exceptions.unwrap(t);
-        if (!(unwrapped instanceof CosmosException)) {
+        CosmosException cosmosException = getCosmosException(t);
+        if (cosmosException == null) {
             return false;
         }
-        int statusCode = ((CosmosException) unwrapped).getStatusCode();
+        int statusCode = cosmosException.getStatusCode();
         return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
             || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
             || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
@@ -232,16 +236,31 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      *                    failed attempt's spans do not leak into the next attempt); may be null
      */
     protected static <T> T executeControlPlaneWithRetry(Supplier<T> action, Runnable beforeRetry) {
-        final int maxAttempts = 20;
-        final long retryDelayMillis = Duration.ofSeconds(3).toMillis();
+        return executeWithRetry(action, beforeRetry, TestSuiteBase::isTransientControlPlaneFailure);
+    }
+
+    private static <T> T executeCreateWithRetry(Supplier<T> action) {
+        return executeWithRetry(action, null, TestSuiteBase::isTransientCreateFailure);
+    }
+
+    private static <T> T executeWithRetry(
+        Supplier<T> action,
+        Runnable beforeRetry,
+        Predicate<Throwable> retryPredicate) {
+
         for (int attempt = 1; ; attempt++) {
             try {
                 return action.get();
             } catch (RuntimeException e) {
-                if (attempt >= maxAttempts || !isTransientControlPlaneFailure(e)) {
+                if (attempt >= TRANSIENT_CREATE_MAX_RETRY_ATTEMPTS || !retryPredicate.test(e)) {
                     throw e;
                 }
-                logger.warn("Transient control-plane failure (attempt {}/{}): {}", attempt, maxAttempts, e.getMessage());
+                long retryDelayMillis = getRetryDelayMillis(e);
+                logger.warn("Transient control-plane failure (attempt {}/{}), retrying after {} ms: {}",
+                    attempt,
+                    TRANSIENT_CREATE_MAX_RETRY_ATTEMPTS,
+                    retryDelayMillis,
+                    e.getMessage());
                 if (beforeRetry != null) {
                     beforeRetry.run();
                 }
@@ -253,6 +272,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 }
             }
         }
+    }
+
+    private static long getRetryDelayMillis(Throwable error) {
+        long retryAfterMillis = getRetryAfterMillis(error);
+        long baseDelayMillis = retryAfterMillis > 0
+            ? retryAfterMillis
+            : TRANSIENT_CREATE_RETRY_DELAY.toMillis();
+        long maxJitterMillis = TRANSIENT_CREATE_RETRY_MAX_JITTER.toMillis();
+        long jitterMillis = ThreadLocalRandom.current().nextLong(maxJitterMillis + 1);
+        return Math.addExact(baseDelayMillis, jitterMillis);
     }
 
     protected static <T> T executeControlPlaneWithRetry(Supplier<T> action) {
@@ -674,33 +703,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return list != null ? ImmutableList.copyOf(list) : null;
     }
 
-    private static class DatabaseManagerImpl implements CosmosDatabaseForTest.DatabaseManager {
-        public static DatabaseManagerImpl getInstance(CosmosAsyncClient client) {
-            return new DatabaseManagerImpl(client);
-        }
-
-        private final CosmosAsyncClient client;
-
-        private DatabaseManagerImpl(CosmosAsyncClient client) {
-            this.client = client;
-        }
-
-        @Override
-        public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
-        }
-
-        @Override
-        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
-            return client.createDatabase(databaseDefinition);
-        }
-
-        @Override
-        public CosmosAsyncDatabase getDatabase(String id) {
-            return client.getDatabase(id);
-        }
-    }
-
     @BeforeSuite(groups = {"thinclient", "thinclientEndpointProbe", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SHARED_SUITE_SETUP_TIMEOUT)
@@ -709,8 +711,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("beforeSuite Started");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
-            SHARED_DATABASE = dbForTest.createdDatabase;
+            SHARED_DATABASE = createDatabase(houseKeepingClient, CosmosDatabaseForTest.generateId());
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
             SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 10100);
             SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(), options, 10100);
@@ -1061,19 +1062,20 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosContainerRequestOptions options,
         int throughput) {
 
-        database.createContainer(
-                cosmosContainerProperties,
-                ThroughputProperties.createManualThroughput(throughput),
-                options)
-            .retryWhen(Retry.fixedDelay(TRANSIENT_CREATE_MAX_RETRY_ATTEMPTS, TRANSIENT_CREATE_RETRY_DELAY)
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.info(
-                    "Container {} already exists (409 Conflict), treating as success",
-                    cosmosContainerProperties.getId());
-                return Mono.empty();
-            })
-            .block();
+        try {
+            executeCreateWithRetry(() -> database.createContainer(
+                    cosmosContainerProperties,
+                    ThroughputProperties.createManualThroughput(throughput),
+                    options)
+                .block());
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info(
+                "Container {} already exists (409 Conflict), treating as success",
+                cosmosContainerProperties.getId());
+        }
     }
 
     protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
@@ -1411,16 +1413,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, CosmosAsyncClient probeClient) {
-        database.createContainer(cosmosContainerProperties, options)
-            .retryWhen(Retry.fixedDelay(TRANSIENT_CREATE_MAX_RETRY_ATTEMPTS, TRANSIENT_CREATE_RETRY_DELAY)
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.info(
-                    "Container {} already exists (409 Conflict), treating as success",
-                    cosmosContainerProperties.getId());
-                return Mono.empty();
-            })
-            .block();
+        try {
+            executeCreateWithRetry(() -> database.createContainer(cosmosContainerProperties, options).block());
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info(
+                "Container {} already exists (409 Conflict), treating as success",
+                cosmosContainerProperties.getId());
+        }
         waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         getFeedRangesWithRetry(
             getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
@@ -1843,49 +1845,59 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
         safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
-        client.createDatabase(databaseSettings)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
-            .block();
+        createDatabaseWithRetry(client, databaseSettings);
         return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-        client.createDatabase(databaseSettings)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
-            .block();
+        createDatabaseWithRetry(client, databaseSettings);
         return client.getDatabase(databaseSettings.getId());
+    }
+
+    private static void createDatabaseWithRetry(
+        CosmosAsyncClient client,
+        CosmosDatabaseProperties databaseSettings) {
+
+        try {
+            executeCreateWithRetry(() -> client.createDatabase(databaseSettings).block());
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info(
+                "Database {} already exists (409 Conflict), treating as success",
+                databaseSettings.getId());
+        }
     }
 
     static protected CosmosDatabase createSyncDatabase(CosmosClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
-            client.createDatabase(databaseSettings);
-            return client.getDatabase(databaseSettings.getId());
-        } catch (CosmosException e) {
-            e.printStackTrace();
+            executeCreateWithRetry(() -> client.createDatabase(databaseSettings));
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info(
+                "Database {} already exists (409 Conflict), treating as success",
+                databaseSettings.getId());
         }
-        return null;
+        return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
-        List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
-            .collectList()
-            .block();
+        List<CosmosDatabaseProperties> res = executeControlPlaneWithRetry(() ->
+            client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
+                .collectList()
+                .block());
         if (res.size() != 0) {
             CosmosAsyncDatabase database = client.getDatabase(databaseId);
-            database.read().block();
+            executeControlPlaneWithRetry(() -> database.read().block());
             return database;
         } else {
             CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-            client.createDatabase(databaseSettings)
-                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                    .filter(TestSuiteBase::isTransientCreateFailure))
-                .block();
+            createDatabaseWithRetry(client, databaseSettings);
             return client.getDatabase(databaseSettings.getId());
         }
     }
@@ -2785,7 +2797,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                                       RequestOptions options) {
         AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
         try {
-            return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+            return createLegacyCollectionWithRetry(client, databaseId, collection, options);
         } finally {
             client.close();
         }
@@ -2794,21 +2806,60 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     public static Database createDatabase(AsyncDocumentClient client, String databaseId) {
         Database database = new Database();
         database.setId(databaseId);
-        return client.createDatabase(database, null).block().getResource();
+        return createLegacyDatabaseWithRetry(client, database);
     }
 
     public static Database createDatabase(AsyncDocumentClient client, Database database) {
-        return client.createDatabase(database, null).block().getResource();
+        return createLegacyDatabaseWithRetry(client, database);
     }
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection, RequestOptions options) {
-        return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+        return createLegacyCollectionWithRetry(client, databaseId, collection, options);
     }
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection) {
-        return client.createCollection("dbs/" + databaseId, collection, null).block().getResource();
+        return createLegacyCollectionWithRetry(client, databaseId, collection, null);
+    }
+
+    private static Database createLegacyDatabaseWithRetry(
+        AsyncDocumentClient client,
+        Database database) {
+
+        try {
+            return executeCreateWithRetry(() -> client.createDatabase(database, null).block().getResource());
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info("Database {} already exists (409 Conflict), reading existing resource", database.getId());
+            return executeControlPlaneWithRetry(
+                () -> client.readDatabase("dbs/" + database.getId(), null).block().getResource());
+        }
+    }
+
+    private static DocumentCollection createLegacyCollectionWithRetry(
+        AsyncDocumentClient client,
+        String databaseId,
+        DocumentCollection collection,
+        RequestOptions options) {
+
+        String collectionLink = "dbs/" + databaseId + "/colls/" + collection.getId();
+        try {
+            return executeCreateWithRetry(
+                () -> client.createCollection("dbs/" + databaseId, collection, options).block().getResource());
+        } catch (RuntimeException e) {
+            if (!isConflictException(e)) {
+                throw e;
+            }
+            logger.info(
+                "Container {}.{} already exists (409 Conflict), reading existing resource",
+                databaseId,
+                collection.getId());
+            return executeControlPlaneWithRetry(
+                () -> client.readCollection(collectionLink, null).block().getResource());
+        }
     }
 
     public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document) {

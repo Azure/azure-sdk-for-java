@@ -2,15 +2,14 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 #
-# Resolves a single Cosmos live-test account from the one JSON secret
-# (cosmos-live-test-accounts) and exports ACCOUNT_HOST / ACCOUNT_KEY (and optional
-# SECONDARY_ACCOUNT_KEY / PREFERRED_LOCATIONS / ACCOUNT_CONSISTENCY) for the tests.
+# Resolves a single Cosmos live-test account from the one JSON secret and exports
+# ACCOUNT_HOST / ACCOUNT_KEY (and optional SECONDARY_ACCOUNT_KEY) for the tests.
 #
 # All Cosmos live-test matrix legs run on linux agents, so this is bash + jq.
 #
 # Inputs (environment variables):
 #   COSMOS_TEST_ACCOUNTS_JSON  Raw JSON matching live-test-accounts.schema.json
-#                              (the value of the cosmos-live-test-accounts secret).
+#                              (the value of sub-config-cosmos-azure-cloud-test-resources).
 #   COSMOS_ACCOUNT_SELECTOR    Logical account name to select (e.g. multimaster-multiregion-session).
 #   COSMOS_ACCOUNTS_LOCAL      Optional. When "true", prints KEY=VALUE to stdout instead of
 #                              emitting Azure DevOps ##vso logging commands (used for local tests).
@@ -26,7 +25,7 @@ json="${COSMOS_TEST_ACCOUNTS_JSON:-}"
 selector="${COSMOS_ACCOUNT_SELECTOR:-}"
 local_mode="${COSMOS_ACCOUNTS_LOCAL:-false}"
 
-[ -n "$json" ] || fail "COSMOS_TEST_ACCOUNTS_JSON is empty. Wire the cosmos-live-test-accounts secret to this variable."
+[ -n "$json" ] || fail "COSMOS_TEST_ACCOUNTS_JSON is empty. Wire the sub-config-cosmos-azure-cloud-test-resources secret to this variable."
 [ -n "$selector" ] || fail "COSMOS_ACCOUNT_SELECTOR is empty. Set it to a logical account name."
 
 echo "$json" | jq empty 2>/dev/null || fail "COSMOS_TEST_ACCOUNTS_JSON is not valid JSON."
@@ -44,8 +43,6 @@ acct="$(echo "$json" | jq -c --arg s "$selector" '.accounts[$s]')"
 endpoint="$(echo "$acct" | jq -r '.endpoint // empty')"
 key="$(echo "$acct" | jq -r '.key // empty')"
 secondary_key="$(echo "$acct" | jq -r '.secondaryKey // empty')"
-consistency="$(echo "$acct" | jq -r '.consistency // empty')"
-preferred="$(echo "$acct" | jq -r '(.preferredLocations // []) | join(",")')"
 
 [ -n "$endpoint" ] || fail "Account '$selector' is missing required 'endpoint'."
 [ -n "$key" ] || fail "Account '$selector' is missing required 'key'."
@@ -84,4 +81,4 @@ emit_secret ACCOUNT_KEY "$key"
 [ -n "$secondary_key" ] && emit_secret SECONDARY_ACCOUNT_KEY "$secondary_key"
 
 # Masked, secret-free summary for logs.
-echo "Resolved Cosmos test account '$selector': endpoint=$endpoint consistency=${consistency:-<n/a>} preferredLocations=${preferred:-<none>} key=***" >&2
+echo "Resolved Cosmos test account '$selector': endpoint=$endpoint key=***" >&2

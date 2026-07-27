@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://azure.github.io/azure-sdk-for-java/cosmos/live-test-accounts.schema.json",
   "title": "Cosmos live-test fixed accounts config",
-  "description": "Single-secret JSON describing the fixed Cosmos DB accounts used by the Java live tests. Stored as one Key Vault secret / ADO variable (cosmos-live-test-accounts) and refreshed by the account-creation script on each ephemeral-tenant rotation. Each pipeline stage selects one account by its logical name.",
+  "description": "Single-secret JSON describing the fixed Cosmos DB accounts used by the Java live tests. Stored as the Key Vault secret / ADO variable sub-config-cosmos-azure-cloud-test-resources and refreshed by the account-creation script on each ephemeral-tenant rotation. Each pipeline stage selects one account by its logical name.",
   "type": "object",
   "required": ["version", "accounts"],
   "additionalProperties": false,
@@ -46,12 +46,12 @@
         },
         "preferredLocations": {
           "type": "array",
-          "description": "Optional preferred locations exported as PREFERRED_LOCATIONS.",
+          "description": "Optional preferred locations for the provisioned account. Runtime PREFERRED_LOCATIONS remains matrix-controlled and is not exported by the resolver.",
           "items": { "type": "string" }
         },
         "consistency": {
           "type": "string",
-          "description": "Account default consistency level (exported as ACCOUNT_CONSISTENCY).",
+          "description": "Account default consistency level. Runtime ACCOUNT_CONSISTENCY remains matrix-controlled and is not exported by the resolver.",
           "enum": ["Strong", "BoundedStaleness", "Session", "ConsistentPrefix", "Eventual"]
         },
         "multiWrite": {
