@@ -47,9 +47,7 @@ public class WorkIQAsync {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId)
-            .setName("work_iq_lookup")
-            .setDescription("Use Work IQ to answer questions grounded in enterprise data.");
+        WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId);
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("Use the available Work IQ tools to answer questions and perform tasks.")

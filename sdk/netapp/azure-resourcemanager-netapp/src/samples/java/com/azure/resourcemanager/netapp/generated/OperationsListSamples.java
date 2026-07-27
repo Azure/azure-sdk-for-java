@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/OperationList.json
+     * x-ms-original-file: 2026-05-01/OperationList.json
      */
     /**
      * Sample code: OperationList.

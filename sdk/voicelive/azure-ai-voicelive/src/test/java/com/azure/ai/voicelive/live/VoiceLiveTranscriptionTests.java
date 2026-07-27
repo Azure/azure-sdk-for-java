@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> whisperTranscriptionParams() {
-        // gpt-realtime uses WHISPER_1, which the 2026-04-10 service does not emit
+        // gpt-realtime uses WHISPER_1, which the 2026-07-15 service does not emit
         // transcription.completed events for; restrict it to the GA version. gpt-4.1
         // uses AZURE_SPEECH, which works on both API versions.
         return Stream.concat(Stream.of(Arguments.of("gpt-realtime", API_VERSIONS[0])),
@@ -113,7 +113,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> gpt4oTranscribeParams() {
         // gpt-4o-transcribe and gpt-4o-mini-transcribe do not emit transcription.completed
-        // events on the 2026-04-10 service; restrict to the GA version.
+        // events on the 2026-07-15 service; restrict to the GA version.
         return crossProduct(new String[] { "gpt-4o-transcribe", "gpt-4o-mini-transcribe" },
             new String[] { API_VERSIONS[0] });
     }

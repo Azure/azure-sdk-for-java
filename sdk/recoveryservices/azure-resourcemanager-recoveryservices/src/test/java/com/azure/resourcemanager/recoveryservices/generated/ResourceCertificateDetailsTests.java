@@ -13,14 +13,14 @@ public final class ResourceCertificateDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCertificateDetails model = BinaryData.fromString(
-            "{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"fsj\",\"issuer\":\"gzfbishcbk\",\"resourceId\":2397229897389162071,\"subject\":\"yeamdphagalpb\",\"thumbprint\":\"wgipwhono\",\"validFrom\":\"2021-08-11T20:32:50Z\",\"validTo\":\"2021-09-21T08:55:02Z\"}")
+            "{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"qylihkaetckt\",\"issuer\":\"civfsnkymuctq\",\"resourceId\":1554730688618106722,\"subject\":\"brjcxe\",\"thumbprint\":\"uwutttxfvjrbi\",\"validFrom\":\"2020-12-24T00:10:53Z\",\"validTo\":\"2020-12-31T13:56:03Z\"}")
             .toObject(ResourceCertificateDetails.class);
-        Assertions.assertEquals("fsj", model.friendlyName());
-        Assertions.assertEquals("gzfbishcbk", model.issuer());
-        Assertions.assertEquals(2397229897389162071L, model.resourceId());
-        Assertions.assertEquals("yeamdphagalpb", model.subject());
-        Assertions.assertEquals("wgipwhono", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-11T20:32:50Z"), model.validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T08:55:02Z"), model.validTo());
+        Assertions.assertEquals("qylihkaetckt", model.friendlyName());
+        Assertions.assertEquals("civfsnkymuctq", model.issuer());
+        Assertions.assertEquals(1554730688618106722L, model.resourceId());
+        Assertions.assertEquals("brjcxe", model.subject());
+        Assertions.assertEquals("uwutttxfvjrbi", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T00:10:53Z"), model.validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T13:56:03Z"), model.validTo());
     }
 }

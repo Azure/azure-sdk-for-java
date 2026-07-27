@@ -283,7 +283,8 @@ public final class RntbdConstants {
         PreReplaceValidation((short) 0x0020, OperationType.PreReplaceValidation),
         AddComputeGatewayRequestCharges((short) 0x0021, OperationType.AddComputeGatewayRequestCharges),
         MigratePartition((short) 0x0022, OperationType.MigratePartition),
-        Batch((short) 0x0025, OperationType.Batch);
+        Batch((short) 0x0025, OperationType.Batch),
+        QueryPlan((short) 0x0042, OperationType.QueryPlan);
 
         private final short id;
         private final OperationType type;
@@ -367,6 +368,8 @@ public final class RntbdConstants {
                     return RntbdOperationType.MigratePartition;
                 case 0x0025:
                     return RntbdOperationType.Batch;
+                case 0x0042:
+                    return RntbdOperationType.QueryPlan;
                 default:
                     throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdOperationType.class.getSimpleName(),
@@ -444,6 +447,8 @@ public final class RntbdConstants {
                     return RntbdOperationType.AddComputeGatewayRequestCharges;
                 case Batch:
                     return RntbdOperationType.Batch;
+                case QueryPlan:
+                    return RntbdOperationType.QueryPlan;
                 default:
                     throw new IllegalArgumentException(String.format("unrecognized operation type: %s", type));
             }
@@ -619,7 +624,10 @@ public final class RntbdConstants {
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
         WorkloadId((short)0x00DC, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
-        ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false);
+        ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false),
+        // QueryPlan headers for proxy — IDs match server-side RntbdConstants.cs
+        SupportedQueryFeatures((short) 0x00FF, RntbdTokenType.String, false),
+        QueryVersion((short) 0x0100, RntbdTokenType.SmallString, false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,

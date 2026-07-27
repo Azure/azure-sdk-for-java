@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraDataCentersListSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterList.json
+     * x-ms-original-file: 2026-03-15/CosmosDBManagedCassandraDataCenterList.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterList.
