@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `okio` from `3.16.0` to `3.17.0`.
+
 ## 1.5.0 (2026-06-11)
 
 ### Features Added
