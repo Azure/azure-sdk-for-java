@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.utils.{CosmosPatchTestHelper, TestOutputMetricsPublisher}
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
+import com.azure.cosmos.CosmosAsyncContainer
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -822,7 +822,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
     }
   }
 
-  "Point Writer" can "patch item with condition" in {
+  "Point Writer" can "skip 412 for patch item with condition" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -875,14 +875,9 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
         partitionKeyDefinition,
         Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
 
-    try {
-      pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-      pointWriterForPatch.flushAndClose()
-      fail("Test should fail with 412 since the condition is false :" + originalItem.get("propInt").asInt())
-    } catch {
-      case e: CosmosException =>
-        e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
-    }
+    // the 412 raised by the always-false filter should be skipped, not thrown
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
 
     // since the condition is always false, so the item should not be updated
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem

@@ -131,7 +131,6 @@ private[spark] object CosmosConfigNames {
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
   val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
-  val WritePatchFilterPredicateIgnorePreconditionFailures = "spark.cosmos.write.patch.filterPredicateIgnorePreconditionFailures"
   val WriteBulkUpdateColumnConfigs = "spark.cosmos.write.bulkUpdate.columnConfigs"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
@@ -273,7 +272,6 @@ private[spark] object CosmosConfigNames {
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
     WritePatchFilterPredicate,
-    WritePatchFilterPredicateIgnorePreconditionFailures,
     WriteBulkUpdateColumnConfigs,
     WriteStrategy,
     WriteMaxRetryCount,
@@ -1583,8 +1581,7 @@ private case class CosmosPatchColumnConfig(columnName: String,
                                            isRawJson: Boolean)
 
 private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
-                                      filter: Option[String] = None,
-                                      filterPredicateIgnorePreconditionFailures: Boolean = false)
+                                      filter: Option[String] = None)
 
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
@@ -1757,17 +1754,6 @@ private object CosmosWriteConfig {
     parseFromStringFunction = filterPredicateString => filterPredicateString,
     helpMessage = "Used for conditional patch. Please see examples here: " +
      "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java")
-
-  private val patchFilterPredicateIgnorePreconditionFailures = CosmosConfigEntry[Boolean](
-    key = CosmosConfigNames.WritePatchFilterPredicateIgnorePreconditionFailures,
-    mandatory = false,
-    defaultValue = Option.apply(false),
-    parseFromStringFunction = ignoreString => ignoreString.toBoolean,
-    helpMessage = "Flag to indicate whether precondition failures (HTTP 412) should be ignored when using " +
-     "the ItemPatch/ItemPatchIfExists write strategy together with a patch filter predicate " +
-     s"('${CosmosConfigNames.WritePatchFilterPredicate}'). When enabled, documents skipped by the filter " +
-     "predicate (which the service rejects with a 412) are treated as a successful no-op instead of failing " +
-     "the write. Defaults to false.")
 
   private val patchBulkUpdateColumnConfigs = CosmosConfigEntry[TrieMap[String, CosmosPatchColumnConfig]](key = CosmosConfigNames.WriteBulkUpdateColumnConfigs,
       mandatory = false,
@@ -1947,9 +1933,7 @@ private object CosmosWriteConfig {
       case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
-        val ignorePreconditionFailures =
-          CosmosConfigEntry.parse(cfg, patchFilterPredicateIgnorePreconditionFailures).getOrElse(false)
-        patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter, ignorePreconditionFailures))
+        patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))
       case ItemWriteStrategy.ItemBulkUpdate =>
         val patchColumnConfigMapOpt = CosmosConfigEntry.parse(cfg, patchBulkUpdateColumnConfigs)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMapOpt.getOrElse(new TrieMap[String, CosmosPatchColumnConfig])))

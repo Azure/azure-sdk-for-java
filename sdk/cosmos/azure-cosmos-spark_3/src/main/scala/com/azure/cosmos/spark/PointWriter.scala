@@ -375,8 +375,10 @@ private class PointWriter(container: CosmosAsyncContainer,
               case None => None
             })
           return
+        // A 412 here can only come from the configured patch filter predicate, whose contract is
+        // "only modify the document when the condition holds" - so it is an expected no-op skip.
         case e: CosmosException if cosmosWriteConfig.patchConfigs.exists(patchConfigs =>
-          patchConfigs.filterPredicateIgnorePreconditionFailures && patchConfigs.filter.exists(_.nonEmpty)) &&
+          patchConfigs.filter.exists(_.nonEmpty)) &&
           Exceptions.isPreconditionFailedException(e.getStatusCode) =>
           log.logItemWriteSkipped(patchOperation, "preConditionNotMet")
           outputMetricsPublisher.trackWriteOperation(

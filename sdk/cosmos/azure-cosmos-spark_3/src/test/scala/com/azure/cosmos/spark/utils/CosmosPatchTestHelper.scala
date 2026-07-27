@@ -167,9 +167,8 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None,
                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
-                           filterPredicateIgnorePreconditionFailures: Boolean = false,
                            itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): BulkWriter = {
-  val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter, filterPredicateIgnorePreconditionFailures)
+  val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
    itemWriteStrategy,
    5,
@@ -218,10 +217,9 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
                             partitionKeyDefinition: PartitionKeyDefinition,
                             patchPredicateFilter: Option[String] = None,
                             metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
-                            filterPredicateIgnorePreconditionFailures: Boolean = false,
                             itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): PointWriter = {
 
-  val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter, filterPredicateIgnorePreconditionFailures)
+  val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
    itemWriteStrategy,
    5,

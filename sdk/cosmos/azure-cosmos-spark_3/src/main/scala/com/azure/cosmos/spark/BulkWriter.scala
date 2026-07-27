@@ -1302,16 +1302,20 @@ private class BulkWriter
   }
 
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
-    val ignorePatchPreconditionFailures =
-      writeConfig.patchConfigs.exists(patchConfigs =>
-        patchConfigs.filterPredicateIgnorePreconditionFailures && patchConfigs.filter.exists(_.nonEmpty))
+    // A 412 on patch can only originate from the configured filter predicate (etag/If-Match is not
+    // wired for patch today). The predicate's contract is "only modify the document when the condition
+    // holds, otherwise leave it alone", so a 412 is an expected no-op skip rather than a failure - the
+    // same way ItemDeleteIfNotModified/ItemOverwriteIfNotModified already treat it. Revisit this once
+    // etag support lands for patch, because then 412 would have two distinct causes.
+    val hasPatchFilterPredicate =
+      writeConfig.patchConfigs.exists(patchConfigs => patchConfigs.filter.exists(_.nonEmpty))
     val returnValue = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
       case ItemWriteStrategy.ItemPatch =>
-        ignorePatchPreconditionFailures && Exceptions.isPreconditionFailedException(statusCode)
+        hasPatchFilterPredicate && Exceptions.isPreconditionFailedException(statusCode)
       case ItemWriteStrategy.ItemPatchIfExists =>
         Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
-          (ignorePatchPreconditionFailures && Exceptions.isPreconditionFailedException(statusCode))
+          (hasPatchFilterPredicate && Exceptions.isPreconditionFailedException(statusCode))
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)
