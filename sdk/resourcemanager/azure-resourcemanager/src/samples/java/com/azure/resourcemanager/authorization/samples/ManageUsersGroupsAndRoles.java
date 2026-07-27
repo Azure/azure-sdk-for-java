@@ -9,6 +9,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
@@ -123,13 +124,14 @@ public final class ManageUsersGroupsAndRoles {
             }
             if (sp != null) {
                 // withNewApplication() created an AD application named after the service principal; delete that
-                // application (which also deletes the service principal) so nothing is left orphaned.
-                azureResourceManager.accessManagement()
+                // application (which also deletes the service principal) so nothing is left orphaned. Guard the
+                // lookup because getByName(...) can return null under eventual consistency or a name collision.
+                ActiveDirectoryApplication application = azureResourceManager.accessManagement()
                     .activeDirectoryApplications()
-                    .deleteById(azureResourceManager.accessManagement()
-                        .activeDirectoryApplications()
-                        .getByName(spName)
-                        .id());
+                    .getByName(spName);
+                if (application != null) {
+                    azureResourceManager.accessManagement().activeDirectoryApplications().deleteById(application.id());
+                }
             }
             if (user != null) {
                 azureResourceManager.accessManagement().activeDirectoryUsers().deleteById(user.id());

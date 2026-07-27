@@ -20,6 +20,7 @@ import com.azure.resourcemanager.samples.SampleUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -151,6 +152,10 @@ public final class ConnectWebAppToStorageAccount {
                     zos.putNextEntry(new ZipEntry(file));
                     try (InputStream is = ConnectWebAppToStorageAccount.class
                         .getResourceAsStream("/appservice/mi-blob-verify/" + file)) {
+                        if (is == null) {
+                            throw new FileNotFoundException(
+                                "Sample resource not found on classpath: /appservice/mi-blob-verify/" + file);
+                        }
                         int read;
                         while ((read = is.read(buffer)) > 0) {
                             zos.write(buffer, 0, read);
