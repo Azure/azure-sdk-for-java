@@ -1292,6 +1292,9 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     bulkWriter.flushAndClose()
     val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
 
+    // Cosmos patch does not support for system properties
+    // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+    // so the test is to make sure we have skipped these properties and the request can succeed for other properties
     val partialUpdateSchema = StructType(Seq(
       StructField("propInt", IntegerType)
     ))
@@ -1366,6 +1369,9 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     bulkWriter.flushAndClose()
     val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
 
+    // Cosmos patch does not support for system properties
+    // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+    // so the test is to make sure we have skipped these properties and the request can succeed for other properties
     val partialUpdateSchema = StructType(Seq(
       StructField("propInt", IntegerType)
     ))

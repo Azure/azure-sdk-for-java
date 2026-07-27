@@ -59,6 +59,10 @@ private class PointWriter(container: CosmosAsyncContainer,
 
   private val capturedFailure = new AtomicReference[Throwable]()
   private val totalSkippedOperations = new AtomicLong(0)
+
+  // Constant for the lifetime of the writer - cosmosWriteConfig is immutable.
+  private val hasPatchFilterPredicate =
+    cosmosWriteConfig.patchConfigs.exists(patchConfigs => patchConfigs.filter.exists(_.nonEmpty))
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
   private val closed = new AtomicBoolean(false)
 
@@ -390,8 +394,7 @@ private class PointWriter(container: CosmosAsyncContainer,
           return
         // A 412 here can only come from the configured patch filter predicate, whose contract is
         // "only modify the document when the condition holds" - so it is an expected no-op skip.
-        case e: CosmosException if cosmosWriteConfig.patchConfigs.exists(patchConfigs =>
-          patchConfigs.filter.exists(_.nonEmpty)) &&
+        case e: CosmosException if hasPatchFilterPredicate &&
           Exceptions.isPreconditionFailedException(e.getStatusCode) =>
           log.logItemWriteSkipped(patchOperation, "preConditionNotMet")
           trackSkippedOperation(e)
