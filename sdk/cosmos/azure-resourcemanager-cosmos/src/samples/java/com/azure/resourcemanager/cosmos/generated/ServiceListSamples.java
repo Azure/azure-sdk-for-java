@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class ServiceListSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBServicesList.json
+     * x-ms-original-file: 2026-03-15/CosmosDBServicesList.json
      */
     /**
      * Sample code: CosmosDBServicesList.

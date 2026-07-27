@@ -248,6 +248,16 @@
 * `listUpdates(java.lang.String,java.lang.String)` was added
 * `listNames(java.lang.String)` was added
 
+## 1.0.34 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
 ## 1.0.33 (2026-05-05)
 
 ### Other Changes

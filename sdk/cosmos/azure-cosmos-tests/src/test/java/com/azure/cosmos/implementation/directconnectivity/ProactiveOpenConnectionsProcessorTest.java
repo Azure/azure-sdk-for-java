@@ -188,8 +188,13 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
             assertThat(processedDoc.get()).isEqualTo(totalRequests);
             RxDocumentClientImpl rxDocumentClient =
                     (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(connectionWarmupClient);
+            // The partition-key-range (routing map) cache is shared across clients on the same service
+            // endpoint, so it may hold multiple containers' entries. Assert on this container's own
+            // entry rather than an arbitrary key from the shared map.
+            String collectionRid =
+                containerUnderOpenConnectionsAndInitCaches.read().block().getProperties().getResourceId();
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
-            String cacheKeyBeforePartition = routingMap.keys().nextElement();
+            assertThat(routingMap).containsKey(collectionRid);
 
             // introduce a split and continue bulk operations after split. The partition key range cache has to be
             // refreshed and bulk processing should complete without errors
@@ -221,10 +226,10 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
                     .as("Partition ranges should increase after split");
             logger.info("After split num partitions = {}", partitionKeyRangesAfterSplit.size());
 
+            // After the split the routing map entry for this container is refreshed in place under the
+            // same collection rid, so the entry must still be present.
             routingMap = getRoutingMap(rxDocumentClient);
-            String cacheKeyAfterPartition = routingMap.keys().nextElement();
-
-            assertThat(cacheKeyBeforePartition).isEqualTo(cacheKeyAfterPartition);
+            assertThat(routingMap).containsKey(collectionRid);
 
             responseFlux = containerUnderOpenConnectionsAndInitCaches.executeBulkOperations(cosmosItemOperationFlux2, cosmosBulkExecutionOptions);
 

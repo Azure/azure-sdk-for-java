@@ -103,7 +103,6 @@ For **developers building or maintaining** SDK libraries:
 | [Versioning](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/versioning.md) | Version files, dependency tags, incrementing |
 | [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md) | Create a new SDK module in the repo |
 | [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md) | End-to-end workflow: generate, build, test, release |
-| [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) | OpenAPI 2.0 / Swagger code generation |
 | [Writing Performance Tests](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/performance-tests.md) | `perf-test-core` benchmarking framework |
 | [JavaDoc & Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md) | Javadoc standards + codesnippet plugin |
 | [Access Helpers](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/access-helpers.md) | Cross-package internal access without public APIs |

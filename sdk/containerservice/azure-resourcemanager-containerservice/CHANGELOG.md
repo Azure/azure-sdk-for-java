@@ -1,6 +1,6 @@
 # Release History
 
-## 2.62.0-beta.2 (Unreleased)
+## 2.63.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,45 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.62.0 (2026-07-22)
+
+### Features Added
+
+* `models.ManagedClusterSecurityProfileDefenderSecurityGating` was added
+
+* `models.SchedulerInstanceProfile` was added
+
+* `models.AutoScaleProfile` was added
+
+* `models.SchedulerConfigMode` was added
+
+* `models.SchedulerProfile` was added
+
+* `models.ManagedClusterSecurityProfileDefenderSecurityGatingIdentity` was added
+
+#### `models.ScaleProfile` was modified
+
+* `withAutoscale(java.util.List)` was added
+* `autoscale()` was added
+
+#### `models.ManagedClusterSecurityProfileDefender` was modified
+
+* `securityGating()` was added
+* `withSecurityGating(models.ManagedClusterSecurityProfileDefenderSecurityGating)` was added
+
+### Other Changes
+
+- Updated `api-version` to `2026-05-01`.
+
+## 2.61.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+
 
 ## 2.62.0-beta.1 (2026-06-12)
 

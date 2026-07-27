@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class ManagedDatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateRecovery.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateRecovery.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a geo-replicated backup.
@@ -35,7 +35,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateRestoreExternalBackupManagedIdentity.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateRestoreExternalBackupManagedIdentity.json
      */
     /**
      * Sample code: Creates a new managed database by restoring from an external backup using managed identity.
@@ -58,7 +58,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateManagedDatabaseLedger.json
+     * x-ms-original-file: 2025-01-01/CreateManagedDatabaseLedger.json
      */
     /**
      * Sample code: Creates a new managed database with ledger on.
@@ -74,7 +74,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateCrossSubscriptionPointInTimeRestore.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateCrossSubscriptionPointInTimeRestore.json
      */
     /**
      * Sample code: Creates a new managed database using cross subscription point in time restore.
@@ -97,7 +97,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateMax.json
      */
     /**
      * Sample code: Creates a new managed database with maximal properties.
@@ -115,7 +115,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateRestoreExternalBackup.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateRestoreExternalBackup.json
      */
     /**
      * Sample code: Creates a new managed database by restoring from an external backup.
@@ -138,7 +138,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateMin.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateMin.json
      */
     /**
      * Sample code: Creates a new managed database with minimal properties.
@@ -154,7 +154,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreatePointInTimeRestore.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Creates a new managed database using point in time restore.
@@ -175,7 +175,7 @@ public final class ManagedDatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCreateRestoreLtrBackup.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCreateRestoreLtrBackup.json
      */
     /**
      * Sample code: Creates a new managed database from restoring a long term retention backup.

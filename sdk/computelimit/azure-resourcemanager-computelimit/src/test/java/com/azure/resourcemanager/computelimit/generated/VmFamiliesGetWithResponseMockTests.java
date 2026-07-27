@@ -21,7 +21,7 @@ public final class VmFamiliesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"category\":\"j\",\"provisioningState\":\"Canceled\"},\"id\":\"ok\",\"name\":\"jljyoxgv\",\"type\":\"ltbgsncghkj\"}";
+            = "{\"properties\":{\"category\":\"zywbiex\",\"provisioningState\":\"Failed\"},\"id\":\"ue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class VmFamiliesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VmFamily response
-            = manager.vmFamilies().getWithResponse("hfnljkyq", "j", com.azure.core.util.Context.NONE).getValue();
+            = manager.vmFamilies().getWithResponse("bt", "wrqpue", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("j", response.properties().category());
+        Assertions.assertEquals("zywbiex", response.properties().category());
     }
 }

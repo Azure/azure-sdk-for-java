@@ -42,9 +42,11 @@ import com.azure.resourcemanager.compute.fluent.RestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryInvitesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SoftDeletedResourcesClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
+import com.azure.resourcemanager.compute.fluent.TenantLevelSharedGalleryInvitesClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
@@ -685,6 +687,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The SharedGalleryInvitesClient object to access its operations.
+     */
+    private final SharedGalleryInvitesClient sharedGalleryInvites;
+
+    /**
+     * Gets the SharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the SharedGalleryInvitesClient object.
+     */
+    public SharedGalleryInvitesClient getSharedGalleryInvites() {
+        return this.sharedGalleryInvites;
+    }
+
+    /**
+     * The TenantLevelSharedGalleryInvitesClient object to access its operations.
+     */
+    private final TenantLevelSharedGalleryInvitesClient tenantLevelSharedGalleryInvites;
+
+    /**
+     * Gets the TenantLevelSharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the TenantLevelSharedGalleryInvitesClient object.
+     */
+    public TenantLevelSharedGalleryInvitesClient getTenantLevelSharedGalleryInvites() {
+        return this.tenantLevelSharedGalleryInvites;
+    }
+
+    /**
      * The ResourceSkusClient object to access its operations.
      */
     private final ResourceSkusClient resourceSkus;
@@ -909,6 +939,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.communityGalleries = new CommunityGalleriesClientImpl(this);
         this.communityGalleryImages = new CommunityGalleryImagesClientImpl(this);
         this.communityGalleryImageVersions = new CommunityGalleryImageVersionsClientImpl(this);
+        this.sharedGalleryInvites = new SharedGalleryInvitesClientImpl(this);
+        this.tenantLevelSharedGalleryInvites = new TenantLevelSharedGalleryInvitesClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);

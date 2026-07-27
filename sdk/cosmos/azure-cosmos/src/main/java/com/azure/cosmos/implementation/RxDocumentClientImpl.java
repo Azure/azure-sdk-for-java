@@ -173,10 +173,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     }
 
-    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
-        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
-    }
-
     private static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor() {
         return ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
@@ -349,7 +345,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
-    private final boolean useThinClient;
+    private final ThinClientConnectivityConfig thinClientConnectivityConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
@@ -799,13 +795,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
-            this.useThinClient = Configs.isThinClientEnabled()
-                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
-                && this.connectionPolicy.getHttp2ConnectionConfig() != null
-                && httpCfgAccessor()
-                    .isEffectivelyEnabled(
-                        this.connectionPolicy.getHttp2ConnectionConfig()
-                    );
+            this.thinClientConnectivityConfig = new ThinClientConnectivityConfig(this.connectionPolicy);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -931,6 +921,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.additionalHeaders);
 
+            // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator can fan out
+            // probes after every topology refresh. Must happen BEFORE globalEndpointManager.init() so
+            // the first refresh probes immediately. We always wire the probe client and do NOT gate on
+            // COSMOS.THINCLIENT_ENABLED here: the flag is runtime-mutable and re-read lazily, so gating
+            // wiring on it would make an init-time hard opt-out (false) permanent. Instead the probe
+            // cycle itself is a no-op whenever the flag is explicitly set (true or false); it only
+            // probes when the flag is unset (the case where the probe verdict actually gates routing).
+            // Wiring is guarded inside GEM so any failure cannot trip client init.
+            try {
+                this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
+            } catch (Throwable t) {
+                // Defense in depth: GEM already swallows wiring failures, but if anything
+                // does escape we must not fail CosmosClient construction over a probe.
+                logger.warn("Failed to wire thin-client connectivity-probe HttpClient; continuing without probe gating.", t);
+            }
+
             this.perPartitionFailoverConfigModifier
                 = (databaseAccount -> {
                 this.initializePerPartitionFailover(databaseAccount);
@@ -974,7 +980,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
-                collectionCache);
+                collectionCache, this.serviceEndpoint);
 
             updateGatewayProxy();
             updateThinProxy();
@@ -1068,7 +1074,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient);
+                logger.info("Getting database account endpoint from {} - useThinClient: {}",
+                    endpoint, RxDocumentClientImpl.this.thinClientConnectivityConfig.canThinClientBeUsed());
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -1701,7 +1708,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
         }
 
-        if (!Configs.isThinClientEnabled()) {
+        if (Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.ThinClient);
         }
 
@@ -4687,11 +4694,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     });
                 }
 
-                // First-call path: validate custom query, resolve routing map, build batches
+                // First-call path: validate custom query, resolve routing map, build batches.
+                // Pass the resolved DocumentCollection so the query-plan request is eligible to
+                // route through Gateway V2 (thin client) when enabled — the proxy needs the
+                // PartitionKeyDefinition to convert its queryRanges payload.
                 Mono<Void> queryValidationMono;
                 if (customQuery != null) {
                     queryValidationMono = validateCustomQueryForReadManyByPartitionKeys(
-                        customQuery, resourceLink, state.getQueryOptions());
+                        customQuery, resourceLink, state.getQueryOptions(), collection);
                 } else {
                     queryValidationMono = Mono.empty();
                 }
@@ -5135,7 +5145,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<Void> validateCustomQueryForReadManyByPartitionKeys(
         SqlQuerySpec customQuery,
         String resourceLink,
-        CosmosQueryRequestOptions queryRequestOptions) {
+        CosmosQueryRequestOptions queryRequestOptions,
+        DocumentCollection collection) {
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(
             RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
@@ -5147,6 +5158,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 customQuery,
                 resourceLink,
                 queryRequestOptions,
+                collection,
                 Configs.isQueryPlanCachingEnabled(),
                 this.getQueryPlanCache())
             .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKeys)
@@ -5662,6 +5674,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
                 return RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+            }
+
+            @Override
+            public boolean useThinClient(RxDocumentServiceRequest request) {
+                return RxDocumentClientImpl.this.useThinClientStoreModel(request);
             }
         };
     }
@@ -7398,7 +7415,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
             // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-            if (useThinClient) {
+            if (this.thinClientConnectivityConfig.canThinClientBeUsed()) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
             }
             return this.populateHeadersAsync(request, RequestVerb.GET)
@@ -7444,7 +7461,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType == ResourceType.ClientEncryptionKey ||
             resourceType.isScript() && operationType != OperationType.ExecuteJavaScript ||
             resourceType == ResourceType.PartitionKeyRange ||
-            resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
+            resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete ||
+            operationType == OperationType.QueryPlan) {
             return this.gatewayProxy;
         }
 
@@ -7482,7 +7500,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if ((operationType == OperationType.Query ||
                 operationType == OperationType.SqlQuery ||
                 operationType == OperationType.ReadFeed) &&
-                    Utils.isCollectionChild(request.getResourceType())) {
+                Utils.isCollectionChild(request.getResourceType())) {
                 // Go to gateway only when partition key range and partition key are not set. This should be very rare
                 if (request.getPartitionKeyRangeIdentity() == null &&
                         request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) == null) {
@@ -7519,6 +7537,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.throughputControlEnabled.get()) {
                 logger.info("Closing ThroughputControlStore ...");
                 this.throughputControlStore.close();
+            }
+
+            if (this.partitionKeyRangeCache != null) {
+                logger.info("Closing PartitionKeyRangeCache ...");
+                LifeCycleUtils.closeQuietly(this.partitionKeyRangeCache);
             }
 
             if (this.clientTelemetry != null) {
@@ -9038,23 +9061,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public boolean useThinClient() {
-        return useThinClient;
+        return this.thinClientConnectivityConfig.canThinClientBeUsed();
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        if (!useThinClient
-            || !this.globalEndpointManager.hasThinClientReadLocations()
-            || request.getResourceType() != ResourceType.Document) {
-
-            return false;
-        }
-
-        OperationType operationType = request.getOperationType();
-
-        return operationType.isPointOperation()
-                    || operationType == OperationType.Query
-                    || operationType == OperationType.Batch
-                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
+        // The routing decision is a pure function of these signals. The connectivity-probe verdict is
+        // forwarded as a tri-state (null = no decision rendered) so a null never collapses into a
+        // boolean clause here — ThinClientConnectivityConfig is the single authority that interprets
+        // it. All inputs are read lazily so a dynamic System property / env var change is honored per
+        // request.
+        return ThinClientConnectivityConfig.shouldUseThinClientStoreModel(
+            this.thinClientConnectivityConfig.canThinClientBeUsed(),
+            this.globalEndpointManager.hasThinClientReadLocations(),
+            Configs.isThinClientEnabled(),
+            this.globalEndpointManager.getProxyProbeDecision(),
+            request);
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
