@@ -624,47 +624,54 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
 
         if (payloadBytes >= FUZZY_PARALLEL_DOWNLOAD_FILE_ROUND_TRIP_THRESHOLD_BYTES) {
             File sourceFile = getRandomFile(payloadBytes);
-            sourceFile.deleteOnExit();
             File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-async", ".bin").toFile();
-            outFile.deleteOnExit();
             Files.deleteIfExists(outFile.toPath());
-
-            BlobUploadFromFileOptions uploadOptions
-                = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath()).setParallelTransferOptions(
-                    new com.azure.storage.blob.models.ParallelTransferOptions().setBlockSizeLong(blockSizeBytes)
-                        .setMaxConcurrency(maxConcurrency));
-
-            BlobDownloadToFileOptions downloadOptions
-                = new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(parallelOptions)
-                    .setContentValidationAlgorithm(algorithm);
-
-            StepVerifier
-                .create(client.uploadFromFileWithResponse(uploadOptions)
-                    .then(client.downloadToFileWithResponse(downloadOptions)))
-                .assertNext(r -> assertNotNull(r.getValue(), assertionMessage))
-                .verifyComplete();
-
-            assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
-        } else {
-            byte[] randomData = getRandomByteArray(payloadBytes);
-
-            if (payloadBytes > blockSizeBytes) {
-                File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-async-mp", ".bin").toFile();
-                outFile.deleteOnExit();
-                Files.deleteIfExists(outFile.toPath());
+            try {
+                BlobUploadFromFileOptions uploadOptions
+                    = new BlobUploadFromFileOptions(sourceFile.getAbsolutePath()).setParallelTransferOptions(
+                        new com.azure.storage.blob.models.ParallelTransferOptions().setBlockSizeLong(blockSizeBytes)
+                            .setMaxConcurrency(maxConcurrency));
 
                 BlobDownloadToFileOptions downloadOptions = new BlobDownloadToFileOptions(outFile.toPath().toString())
                     .setParallelTransferOptions(parallelOptions)
                     .setContentValidationAlgorithm(algorithm);
 
                 StepVerifier
-                    .create(client.upload(BinaryData.fromBytes(randomData), true)
+                    .create(client.uploadFromFileWithResponse(uploadOptions)
                         .then(client.downloadToFileWithResponse(downloadOptions)))
                     .assertNext(r -> assertNotNull(r.getValue(), assertionMessage))
                     .verifyComplete();
 
-                byte[] downloaded = Files.readAllBytes(outFile.toPath());
-                assertArrayEquals(randomData, downloaded, assertionMessage);
+                assertTrue(compareFiles(sourceFile, outFile, 0, payloadBytes), assertionMessage);
+            } finally {
+                // Delete eagerly (not deleteOnExit) so large fuzzy payloads don't accumulate for the whole JVM and
+                // exhaust agent disk space when many cases run in the same live-test process.
+                deleteFileQuietly(sourceFile);
+                deleteFileQuietly(outFile);
+            }
+        } else {
+            byte[] randomData = getRandomByteArray(payloadBytes);
+
+            if (payloadBytes > blockSizeBytes) {
+                File outFile = Files.createTempFile("blob-cv-fuzzy-parallel-dl-async-mp", ".bin").toFile();
+                Files.deleteIfExists(outFile.toPath());
+                try {
+                    BlobDownloadToFileOptions downloadOptions
+                        = new BlobDownloadToFileOptions(outFile.toPath().toString())
+                            .setParallelTransferOptions(parallelOptions)
+                            .setContentValidationAlgorithm(algorithm);
+
+                    StepVerifier
+                        .create(client.upload(BinaryData.fromBytes(randomData), true)
+                            .then(client.downloadToFileWithResponse(downloadOptions)))
+                        .assertNext(r -> assertNotNull(r.getValue(), assertionMessage))
+                        .verifyComplete();
+
+                    byte[] downloaded = Files.readAllBytes(outFile.toPath());
+                    assertArrayEquals(randomData, downloaded, assertionMessage);
+                } finally {
+                    deleteFileQuietly(outFile);
+                }
             } else {
                 BlobDownloadContentOptions downloadOptions
                     = new BlobDownloadContentOptions().setContentValidationAlgorithm(algorithm);
@@ -685,6 +692,16 @@ public class BlobContentValidationAsyncDownloadTests extends BlobTestBase {
             }
         }
         assertTrue(hasStructuredMessageDownloadRequestHeaders(recorded, false), assertionMessage);
+    }
+
+    /**
+     * Deletes a temp file eagerly, falling back to {@link File#deleteOnExit()} only if the immediate delete fails.
+     * Prevents large fuzzy round-trip payloads from accumulating on disk across the many cases that share a JVM.
+     */
+    private static void deleteFileQuietly(File file) {
+        if (file != null && file.exists() && !file.delete()) {
+            file.deleteOnExit();
+        }
     }
 
 }
