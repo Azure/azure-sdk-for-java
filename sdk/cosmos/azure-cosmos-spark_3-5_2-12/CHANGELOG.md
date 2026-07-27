@@ -10,6 +10,7 @@
 * Fixed bounded change feed reads hanging after partition splits when stale feed-range metadata collapsed child continuation LSNs into a single `endLsn`. - See [PR 49883](https://github.com/Azure/azure-sdk-for-java/pull/49883)
 
 #### Other Changes
+* Upgraded Jackson from `2.18.7` to `2.18.9`.
 
 ### 4.49.1 (2026-07-03)
 
