@@ -1202,14 +1202,13 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
-        ArrayList<ListBlobsIncludeItem> include
-            = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+        ArrayList<ListBlobsIncludeItem> include = options.getDetails().toList();
+        include = include.isEmpty() ? null : include;
 
-        ListBlobsOptions finalOptions = options;
         return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, finalOptions.getPrefix(), marker,
-                finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
-                finalOptions.getEndBefore(), null, Context.NONE),
+            .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, options.getPrefix(), marker,
+                options.getMaxResultsPerPage(), include, null, options.getStartFrom(), options.getEndBefore(), null,
+                Context.NONE),
             timeout).flatMap(response -> {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
