@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.50.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.49.2 (2026-07-27)
 
 #### Bugs Fixed
 * Fixed bounded change feed reads hanging after partition splits when stale feed-range metadata collapsed child continuation LSNs into a single `endLsn`. - See [PR 49883](https://github.com/Azure/azure-sdk-for-java/pull/49883)
-
-#### Other Changes
 
 ### 4.49.1 (2026-07-03)
 
