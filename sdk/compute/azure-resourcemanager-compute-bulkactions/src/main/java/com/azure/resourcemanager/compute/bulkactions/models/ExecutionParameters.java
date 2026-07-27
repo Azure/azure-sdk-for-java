@@ -21,6 +21,12 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      */
     private RetryPolicy retryPolicy;
 
+    /*
+     * When true on an executeStart request, run a post-Start VM agent health check and engage the fallback chain if the
+     * guest agent does not report Ready. Ignored for non-Start operations.
+     */
+    private Boolean verifyVmAgentHealth;
+
     /**
      * Creates an instance of ExecutionParameters class.
      */
@@ -48,12 +54,35 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
+     * Get the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
+     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * 
+     * @return the verifyVmAgentHealth value.
+     */
+    public Boolean verifyVmAgentHealth() {
+        return this.verifyVmAgentHealth;
+    }
+
+    /**
+     * Set the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
+     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * 
+     * @param verifyVmAgentHealth the verifyVmAgentHealth value to set.
+     * @return the ExecutionParameters object itself.
+     */
+    public ExecutionParameters withVerifyVmAgentHealth(Boolean verifyVmAgentHealth) {
+        this.verifyVmAgentHealth = verifyVmAgentHealth;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
+        jsonWriter.writeBooleanField("verifyVmAgentHealth", this.verifyVmAgentHealth);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,6 +103,8 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
 
                 if ("retryPolicy".equals(fieldName)) {
                     deserializedExecutionParameters.retryPolicy = RetryPolicy.fromJson(reader);
+                } else if ("verifyVmAgentHealth".equals(fieldName)) {
+                    deserializedExecutionParameters.verifyVmAgentHealth = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

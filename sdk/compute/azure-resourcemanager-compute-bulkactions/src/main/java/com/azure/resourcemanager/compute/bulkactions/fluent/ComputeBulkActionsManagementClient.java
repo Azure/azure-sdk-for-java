@@ -59,4 +59,11 @@ public interface ComputeBulkActionsManagementClient {
      * @return the VirtualMachineBulkOperationsClient object.
      */
     VirtualMachineBulkOperationsClient getVirtualMachineBulkOperations();
+
+    /**
+     * Gets the LaunchBulkInstancesOperationsClient object to access its operations.
+     * 
+     * @return the LaunchBulkInstancesOperationsClient object.
+     */
+    LaunchBulkInstancesOperationsClient getLaunchBulkInstancesOperations();
 }
