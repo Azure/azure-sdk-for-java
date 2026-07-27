@@ -868,16 +868,23 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
         field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", false)
     })
 
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
     val pointWriterForPatch =
       CosmosPatchTestHelper.getPointWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
-        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
+        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}"), // using a always false condition
+        metricsPublisher = patchMetricsPublisher)
 
     // the 412 raised by the always-false filter should be skipped, not thrown
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
+
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() > 0 shouldEqual true
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() < 20 shouldEqual true
 
     // since the condition is always false, so the item should not be updated
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem

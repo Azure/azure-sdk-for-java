@@ -923,16 +923,25 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
     })
 
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
     val pointWriterForPatch =
       CosmosPatchTestHelper.getPointWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
-        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using an always false condition
+        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}"), // using an always false condition
+        metricsPublisher = patchMetricsPublisher)
 
     // the 412 raised by the always-false filter should be skipped, not thrown
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
+
+    // a skip must be accounted for as a skip - never as a written record - and its RU charge must
+    // still be attributed, exactly once
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() > 0 shouldEqual true
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() < 20 shouldEqual true
 
     // since the condition is always false, the item should not be updated even though no exception was thrown
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
@@ -983,18 +992,25 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
     })
 
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
     val pointWriterForPatch =
       CosmosPatchTestHelper.getPointWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
         Some(s"from c where c.propInt > ${Integer.MAX_VALUE}"), // using an always false condition
+        metricsPublisher = patchMetricsPublisher,
         itemWriteStrategy = ItemWriteStrategy.ItemPatchIfExists)
 
     // the item exists, so the predicate-412 OR-branch (not the not-found branch) is exercised here;
     // the 412 raised by the always-false filter should be skipped, not thrown
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
+
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() > 0 shouldEqual true
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() < 20 shouldEqual true
 
     // since the condition is always false, the item should not be updated even though no exception was thrown
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
@@ -1028,16 +1044,21 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
     })
 
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
     val pointWriterForPatch =
       CosmosPatchTestHelper.getPointWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
+        metricsPublisher = patchMetricsPublisher,
         itemWriteStrategy = ItemWriteStrategy.ItemPatchIfExists)
 
     // the item was never created, so the not-found should be skipped rather than throwing
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
+
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
 
     // the item should still not exist since patchIfExists is a no-op for missing items
     try {

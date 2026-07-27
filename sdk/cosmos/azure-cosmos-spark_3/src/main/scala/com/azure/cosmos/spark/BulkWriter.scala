@@ -112,6 +112,7 @@ private class BulkWriter
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
+  private val totalSkippedIngestionMetrics = new AtomicLong(0)
 
   private val maxOperationTimeout = java.time.Duration.ofSeconds(CosmosConstants.batchOperationEndToEndTimeoutInSeconds)
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
@@ -849,13 +850,12 @@ private class BulkWriter
       log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
         s"ignored encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', " +
         s"Context: ${operationContext.toString}")
-      // Track ignored/skipped operations via the metrics publisher (recordCount=0) so operators can
-      // distinguish expected skips (e.g., not-found or predicate-412 ignores) from normal write progress.
-      // Diagnostics are intentionally omitted (None) here: RU charge for every diagnostics context
-      // observed by the bulk executor - including ignored/failed ones - is already tracked via
-      // ForwardingMetricTracker.trackDiagnostics above; passing diagnostics again would double-count
-      // the RU charge (mirrors the no-error success path, which also passes None for the same reason).
-      outputMetricsPublisher.trackWriteOperation(0, None)
+      // Count the skip so operators can distinguish expected no-ops from real write progress.
+      // Diagnostics are intentionally omitted (None): RU charge for every diagnostics context observed
+      // by the bulk executor - including ignored ones - is already tracked via
+      // ForwardingMetricTracker.trackDiagnostics, so passing them again would double-count.
+      outputMetricsPublisher.trackSkippedOperation(1, None)
+      totalSkippedIngestionMetrics.getAndIncrement()
       totalSuccessfulIngestionMetrics.getAndIncrement()
       // work done
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, context)) {
@@ -1215,6 +1215,15 @@ private class BulkWriter
             logInfoOrWarning(s"flushAndClose completed with no error. " +
               s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
               s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
+          }
+
+          val totalSkipped = totalSkippedIngestionMetrics.get()
+          if (totalSkipped > 0) {
+            // Logged unconditionally at info level: a fully skipped write is otherwise indistinguishable
+            // from a fully successful one (for example when a patch filter predicate never matches).
+            log.logInfo(s"$totalSkipped of ${totalScheduledMetrics.get()} operations were skipped as an " +
+              s"intentional no-op by the '${writeConfig.itemWriteStrategy}' write strategy. " +
+              s"Context: ${operationContext.toString} $getThreadInfo")
           }
         }
       } finally {
