@@ -207,7 +207,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -295,7 +295,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -402,7 +402,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -510,7 +510,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -612,7 +612,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -718,7 +718,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -808,7 +808,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -874,7 +874,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -969,7 +969,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1035,7 +1035,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1129,7 +1129,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1195,7 +1195,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1298,7 +1298,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1364,7 +1364,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1467,7 +1467,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1533,7 +1533,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1635,7 +1635,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1701,7 +1701,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1794,7 +1794,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
@@ -1880,7 +1880,7 @@ public final class BetaDatasetsImpl {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use) (Required)
+     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
      *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {

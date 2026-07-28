@@ -244,7 +244,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
      * optimizer proposes a prompt change, evaluates it on a small subset, and the score does not improve — so no full
      * validation-set evaluation is triggered. The counter resets whenever a minibatch passes and its full-validation
      * score beats the current best. Only a sustained plateau of `max_stalls` consecutive minibatch failures triggers
-     * the stop. When omitted, the optimizer uses its internal default. Must be >= 1 when set.
+     * the stop. The service defaults to 5 if a value is not specified by the caller. Must be >= 1 when set.
      */
     @Generated
     private Integer maxStalls;
@@ -254,8 +254,8 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
      * A 'stall' occurs when the optimizer proposes a prompt change, evaluates it on a small subset, and the score does
      * not improve — so no full validation-set evaluation is triggered. The counter resets whenever a minibatch passes
      * and its full-validation score beats the current best. Only a sustained plateau of `max_stalls` consecutive
-     * minibatch failures triggers the stop. When omitted, the optimizer uses its internal default. Must be &gt;= 1 when
-     * set.
+     * minibatch failures triggers the stop. The service defaults to 5 if a value is not specified by the caller. Must
+     * be &gt;= 1 when set.
      *
      * @return the maxStalls value.
      */
@@ -269,8 +269,8 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
      * A 'stall' occurs when the optimizer proposes a prompt change, evaluates it on a small subset, and the score does
      * not improve — so no full validation-set evaluation is triggered. The counter resets whenever a minibatch passes
      * and its full-validation score beats the current best. Only a sustained plateau of `max_stalls` consecutive
-     * minibatch failures triggers the stop. When omitted, the optimizer uses its internal default. Must be &gt;= 1 when
-     * set.
+     * minibatch failures triggers the stop. The service defaults to 5 if a value is not specified by the caller. Must
+     * be &gt;= 1 when set.
      *
      * @param maxStalls the maxStalls value to set.
      * @return the OptimizationOptions object itself.

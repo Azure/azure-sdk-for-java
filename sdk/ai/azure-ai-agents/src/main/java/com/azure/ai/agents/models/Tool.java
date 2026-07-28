@@ -101,8 +101,6 @@ public class Tool implements JsonSerializable<Tool> {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
                     return FabricIqPreviewTool.fromJson(readerToUse.reset());
-                } else if ("web_iq_preview".equals(discriminatorValue)) {
-                    return WebIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
