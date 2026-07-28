@@ -45,6 +45,7 @@ public final class ConnectWebAppToSqlDatabase {
 
         try {
             // Create a web app with a system-assigned managed identity; that identity is used to reach SQL.
+            // HTTPS-only is enforced; minimum TLS 1.2 and FTPS-only are already the App Service defaults.
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(Region.US_WEST)
@@ -52,6 +53,7 @@ public final class ConnectWebAppToSqlDatabase {
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_11)
                 .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
+                .withHttpsOnly(true)
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
 
