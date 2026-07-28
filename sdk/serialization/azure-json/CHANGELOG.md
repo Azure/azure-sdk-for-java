@@ -10,10 +10,6 @@
 
 ### Other Changes
 
-#### Dependency Updates
-
-- Updated shaded Jackson Core from `2.18.7` to `2.18.9`.
-
 ## 1.5.1 (2026-01-14)
 
 ### Other Changes

@@ -10,10 +10,6 @@
 
 ### Other Changes
 
-#### Dependency Updates
-
-- Upgraded `okio` from `3.16.0` to `3.17.0`.
-
 ## 1.0.0-beta.32 (2025-02-04)
 
 ### Other Changes
