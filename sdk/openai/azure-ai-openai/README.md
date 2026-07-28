@@ -52,7 +52,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.16</version>
+    <version>1.0.0-beta.17</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,7 +113,7 @@ Authentication with Entra ID requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.1</version>
+    <version>1.18.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
