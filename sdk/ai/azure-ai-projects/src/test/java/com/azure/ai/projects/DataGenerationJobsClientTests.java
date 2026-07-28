@@ -65,9 +65,13 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         String modelName = getRecordedConfig("FOUNDRY_MODEL_NAME");
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
-        DataGenerationJob job = dataGenerationJobsClient.createGenerationJob(
-            DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-            testResourceNamer.randomUuid());
+        DataGenerationJob job
+            = dataGenerationJobsClient
+                .beginCreateGenerationJob(
+                    DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+                    testResourceNamer.randomUuid())
+                .poll()
+                .getValue();
 
         job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
         if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {

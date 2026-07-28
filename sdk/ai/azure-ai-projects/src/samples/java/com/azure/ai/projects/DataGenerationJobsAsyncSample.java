@@ -72,10 +72,10 @@ public class DataGenerationJobsAsyncSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsAsyncSample.createGenerationJob
 
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-        return DATA_GENERATION_JOBS_ASYNC_CLIENT.createGenerationJob(
+        return DATA_GENERATION_JOBS_ASYNC_CLIENT.beginCreateGenerationJob(
             createSampleDataGenerationJob(model),
             UUID.randomUUID().toString()
-        ).doOnNext(job -> {
+        ).next().map(response -> response.getValue()).doOnNext(job -> {
             System.out.printf("Created data generation job: %s%n", job.getId());
             System.out.printf("Status: %s%n", job.getStatus());
         })

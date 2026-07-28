@@ -64,8 +64,11 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
         Mono<Void> scenario = dataGenerationJobsAsyncClient
-            .createGenerationJob(DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+            .beginCreateGenerationJob(
+                DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
                 testResourceNamer.randomUuid())
+            .next()
+            .map(response -> response.getValue())
             .flatMap(job -> waitForDataGenerationJob(dataGenerationJobsAsyncClient, job.getId(), 5, 180)
                 .flatMap(completedJob -> {
                     if (!JobStatus.SUCCEEDED.equals(completedJob.getStatus())) {

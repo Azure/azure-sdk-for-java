@@ -66,10 +66,10 @@ public class DataGenerationJobsSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsSample.createGenerationJob
 
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-        DataGenerationJob job = DATA_GENERATION_JOBS_CLIENT.createGenerationJob(
+        DataGenerationJob job = DATA_GENERATION_JOBS_CLIENT.beginCreateGenerationJob(
             createSampleDataGenerationJob(model),
             UUID.randomUUID().toString()
-        );
+        ).poll().getValue();
 
         System.out.printf("Created data generation job: %s%n", job.getId());
         System.out.printf("Status: %s%n", job.getStatus());
