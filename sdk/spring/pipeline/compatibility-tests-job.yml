@@ -65,6 +65,7 @@ jobs:
             - 'sdk/storage'
             - 'sdk/tools'
             - 'sdk/trafficmanager/azure-resourcemanager-trafficmanager'
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         continueOnError: true

@@ -24,6 +24,7 @@ jobs:
           Paths:
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/spring'
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
       - script: |
             python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
