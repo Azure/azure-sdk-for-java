@@ -152,6 +152,13 @@ public interface ContainerServiceManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the AlertConfigurationsClient object to access its operations.
+     * 
+     * @return the AlertConfigurationsClient object.
+     */
+    AlertConfigurationsClient getAlertConfigurations();
+
+    /**
      * Gets the OperationStatusResultsClient object to access its operations.
      * 
      * @return the OperationStatusResultsClient object.

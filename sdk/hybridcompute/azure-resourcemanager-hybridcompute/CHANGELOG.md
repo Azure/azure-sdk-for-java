@@ -1,8 +1,18 @@
 # Release History
 
-## 1.1.0-beta.3 (2026-07-07)
+## 1.1.0-beta.4 (Unreleased)
 
-- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. Azure Arc( Servers and K8s Clusters) API reference for Private Link's Scopes management. Package api-version 2025-09-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.3 (2026-07-23)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. Azure Arc API reference for managing connected machines, machine extensions, run commands, gateways, licenses, license profiles, private link scopes, and related HybridCompute resources. Package api-version 2026-06-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
@@ -10,11 +20,15 @@
 
 #### `models.ExtensionPublisherListResult` was removed
 
+#### `models.ResourceIdentityType` was removed
+
 #### `models.GatewaysListResult` was removed
 
 #### `models.ExtensionValueListResult` was removed
 
 #### `models.PrivateLinkScopesResource` was removed
+
+#### `models.Identity` was removed
 
 #### `models.HybridComputePrivateLinkScopeListResult` was removed
 
@@ -47,8 +61,8 @@
 
 #### `models.AgentUpgrade` was modified
 
-* `withCorrelationId(java.util.UUID)` was removed
 * `java.util.UUID correlationId()` -> `java.lang.String correlationId()`
+* `withCorrelationId(java.util.UUID)` was removed
 * `validate()` was removed
 
 #### `models.PrivateEndpointConnectionProperties` was modified
@@ -72,10 +86,6 @@
 
 * `validate()` was removed
 
-#### `models.Identity` was modified
-
-* `validate()` was removed
-
 #### `models.OSProfile` was modified
 
 * `validate()` was removed
@@ -87,8 +97,8 @@
 #### `models.StorageProfile` was modified
 
 * `StorageProfile()` was changed to private access
-* `withDisks(java.util.List)` was removed
 * `validate()` was removed
+* `withDisks(java.util.List)` was removed
 
 #### `models.ProvisioningIssue` was modified
 
@@ -133,8 +143,8 @@
 
 * `EsuKey()` was changed to private access
 * `withSku(java.lang.String)` was removed
-* `validate()` was removed
 * `withLicenseStatus(java.lang.Integer)` was removed
+* `validate()` was removed
 
 #### `models.MachineExtensionUpdate` was modified
 
@@ -185,11 +195,11 @@
 #### `models.NetworkInterface` was modified
 
 * `NetworkInterface()` was changed to private access
-* `withMacAddress(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
-* `validate()` was removed
 * `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
 * `withIpAddresses(java.util.List)` was removed
+* `withMacAddress(java.lang.String)` was removed
 
 #### `models.ResourceAssociation` was modified
 
@@ -203,13 +213,15 @@
 #### `models.IpAddress` was modified
 
 * `IpAddress()` was changed to private access
-* `withAddress(java.lang.String)` was removed
 * `validate()` was removed
+* `withAddress(java.lang.String)` was removed
 * `withIpAddressVersion(java.lang.String)` was removed
 
 #### `models.MachineUpdate` was modified
 
 * `validate()` was removed
+* `models.Identity identity()` -> `models.ManagedServiceIdentity identity()`
+* `withIdentity(models.Identity)` was removed
 
 #### `models.LicenseProfileArmEsuPropertiesWithoutAssignedLicense` was modified
 
@@ -227,14 +239,14 @@
 #### `models.Disk` was modified
 
 * `Disk()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withDiskType(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
-* `withMaxSizeInBytes(java.lang.Long)` was removed
-* `withGeneratedId(java.lang.String)` was removed
-* `validate()` was removed
-* `withUsedSpaceInBytes(java.lang.Long)` was removed
 * `withPath(java.lang.String)` was removed
+* `withDiskType(java.lang.String)` was removed
+* `withGeneratedId(java.lang.String)` was removed
+* `withMaxSizeInBytes(java.lang.Long)` was removed
+* `withUsedSpaceInBytes(java.lang.Long)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 
 #### `models.ConnectionDetail` was modified
 
@@ -244,8 +256,8 @@
 #### `models.PrivateEndpointConnectionDataModel` was modified
 
 * `PrivateEndpointConnectionDataModel()` was changed to private access
-* `withProperties(models.PrivateEndpointConnectionProperties)` was removed
 * `validate()` was removed
+* `withProperties(models.PrivateEndpointConnectionProperties)` was removed
 
 #### `models.ResourceUpdate` was modified
 
@@ -266,11 +278,11 @@
 #### `models.ExtensionsResourceStatus` was modified
 
 * `ExtensionsResourceStatus()` was changed to private access
-* `validate()` was removed
-* `withCode(java.lang.String)` was removed
-* `withTime(java.time.OffsetDateTime)` was removed
-* `withDisplayStatus(java.lang.String)` was removed
 * `withLevel(models.ExtensionsStatusLevelTypes)` was removed
+* `validate()` was removed
+* `withTime(java.time.OffsetDateTime)` was removed
+* `withCode(java.lang.String)` was removed
+* `withDisplayStatus(java.lang.String)` was removed
 * `withMessage(java.lang.String)` was removed
 
 #### `models.ServiceStatus` was modified
@@ -284,15 +296,15 @@
 #### `models.MachineRunCommandInstanceView` was modified
 
 * `MachineRunCommandInstanceView()` was changed to private access
-* `withEndTime(java.time.OffsetDateTime)` was removed
-* `validate()` was removed
-* `withError(java.lang.String)` was removed
-* `withExecutionState(models.ExecutionState)` was removed
-* `withExecutionMessage(java.lang.String)` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
-* `withOutput(java.lang.String)` was removed
-* `withExitCode(java.lang.Integer)` was removed
+* `withEndTime(java.time.OffsetDateTime)` was removed
 * `withStatuses(java.util.List)` was removed
+* `withExecutionState(models.ExecutionState)` was removed
+* `withExitCode(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withExecutionMessage(java.lang.String)` was removed
+* `withError(java.lang.String)` was removed
+* `withOutput(java.lang.String)` was removed
 
 #### `models.HardwareProfile` was modified
 
@@ -310,6 +322,7 @@
 
 #### `models.Machine` was modified
 
+* `models.Identity identity()` -> `models.ManagedServiceIdentity identity()`
 * `java.util.UUID vmUuid()` -> `java.lang.String vmUuid()`
 * `java.util.UUID vmId()` -> `java.lang.String vmId()`
 
@@ -366,43 +379,81 @@
 
 * `models.Machine$DefinitionStages` was added
 
+* `models.UserAssignedIdentity` was added
+
+* `models.ManagedServiceIdentityType` was added
+
 * `models.ServiceExtensionPublicNetworkAccess` was added
 
 * `models.ServiceExtension` was added
 
 * `models.Machine$Definition` was added
 
+* `models.ManagedServiceIdentity` was added
+
 * `models.Machine$UpdateStages` was added
+
+* `models.MachineStatusReason` was added
 
 #### `models.AgentUpgrade` was modified
 
 * `withCorrelationId(java.lang.String)` was added
 
+#### `models.LicenseTarget` was modified
+
+* `WINDOWS_SERVER_2016` was added
+
 #### `models.NetworkSecurityPerimeterConfiguration` was modified
 
 * `systemData()` was added
 
+#### `models.Gateway$Definition` was modified
+
+* `withGatewayBypass(java.util.List)` was added
+
+#### `models.MachineProperties` was modified
+
+* `statusReason()` was added
+
+#### `models.GatewayUpdate` was modified
+
+* `gatewayBypass()` was added
+* `withGatewayBypass(java.util.List)` was added
+
+#### `models.Gateway$Update` was modified
+
+* `withGatewayBypass(java.util.List)` was added
+
 #### `models.Machines` was modified
 
-* `define(java.lang.String)` was added
-* `getById(java.lang.String)` was added
-* `deleteById(java.lang.String)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `getByIdWithResponse(java.lang.String,models.InstanceViewTypes,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
 
 #### `models.HybridComputePrivateLinkScopeProperties` was modified
 
-* `serviceExtensions()` was added
 * `withServiceExtensions(java.util.List)` was added
+* `serviceExtensions()` was added
+
+#### `models.Gateway` was modified
+
+* `gatewayBypass()` was added
+
+#### `models.MachineUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.Machine` was modified
 
-* `refresh(com.azure.core.util.Context)` was added
+* `statusReason()` was added
 * `update()` was added
 * `resourceGroupName()` was added
-* `regionName()` was added
-* `region()` was added
+* `refresh(com.azure.core.util.Context)` was added
 * `refresh()` was added
+* `region()` was added
+* `regionName()` was added
 
 ## 1.1.0-beta.2 (2025-06-16)
 

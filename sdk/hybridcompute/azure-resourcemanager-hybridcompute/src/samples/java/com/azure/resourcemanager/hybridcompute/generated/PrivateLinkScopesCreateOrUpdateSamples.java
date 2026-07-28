@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
      */
     /**
      * Sample code: PrivateLinkScopeCreate.
@@ -28,7 +28,7 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdate.

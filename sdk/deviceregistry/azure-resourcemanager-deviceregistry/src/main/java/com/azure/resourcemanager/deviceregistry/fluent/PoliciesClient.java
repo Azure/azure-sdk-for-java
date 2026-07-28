@@ -264,7 +264,7 @@ public interface PoliciesClient {
     PagedIterable<PolicyInner> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -279,7 +279,7 @@ public interface PoliciesClient {
         String policyName);
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -295,7 +295,7 @@ public interface PoliciesClient {
         String policyName, Context context);
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -308,7 +308,7 @@ public interface PoliciesClient {
     void revokeIssuer(String resourceGroupName, String namespaceName, String policyName);
 
     /**
-     * A long-running resource action.
+     * The revokeIssuer operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
