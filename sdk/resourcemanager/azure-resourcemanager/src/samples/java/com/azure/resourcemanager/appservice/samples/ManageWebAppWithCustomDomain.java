@@ -39,11 +39,13 @@ public final class ManageWebAppWithCustomDomain {
 
         try {
             // Create a web app with a new app service plan.
+            // HTTPS-only is enforced; minimum TLS 1.2 and FTPS-only are already the App Service defaults.
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withHttpsOnly(true)
                 .create();
 
             // Purchase an Azure-managed domain.
