@@ -23,7 +23,7 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aiServicesConnections\":[\"obd\",\"whqdcc\"],\"vectorStoreConnections\":[\"qsrupaylcv\",\"bzmfxlry\"],\"storageConnections\":[\"xlpiywqnpfydr\",\"bgcnyxbyx\"],\"threadStorageConnections\":[\"mq\",\"ncgaull\",\"styygjq\",\"ulmwqgmhmqmiwx\"],\"provisioningState\":\"Succeeded\"},\"id\":\"zu\",\"name\":\"qfgufjnbxw\",\"type\":\"mwdukinhl\"}";
+            = "{\"properties\":{\"aiServicesConnections\":[\"fytdxmly\",\"zlyvapbkrbuog\",\"tdlt\"],\"vectorStoreConnections\":[\"haizijv\"],\"storageConnections\":[\"zeohlpsftqkrvm\"],\"threadStorageConnections\":[\"vvcpwtqsuspn\",\"mzy\"],\"provisioningState\":\"Succeeded\"},\"id\":\"tevrntfknwac\",\"name\":\"csyotctkhfhf\",\"type\":\"atvcsxr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProjectCapabilityHost response = manager.projectCapabilityHosts()
-            .define("c")
-            .withExistingProject("yzadcrxylaypdt", "zvelffohuriw", "jdfrwpsshrmnkccl")
+            .define("cdio")
+            .withExistingProject("wvwiftdjtvbfpfh", "uptsyqcjnqswxdo", "umxquk")
             .withProperties(new ProjectCapabilityHostProperties()
-                .withAiServicesConnections(Arrays.asList("gkscxjfsgmosp", "ebnxsqcows"))
-                .withVectorStoreConnections(Arrays.asList("fqlamfbqhsu", "k"))
-                .withStorageConnections(Arrays.asList("zpnxqpwni"))
-                .withThreadStorageConnections(Arrays.asList("cajgrbr", "tsvgoocqs", "zmz", "pcxitmh")))
+                .withAiServicesConnections(Arrays.asList("qddnhfknebwed", "pnyzcwyjs", "kaqldqabnwvpa", "bqxfbb"))
+                .withVectorStoreConnections(Arrays.asList("fddofxnf", "mjyyr", "aedwov"))
+                .withStorageConnections(Arrays.asList("tjgo", "ayokrwfmihw", "adhed"))
+                .withThreadStorageConnections(Arrays.asList("bdczvothmkhjao")))
             .create();
 
-        Assertions.assertEquals("obd", response.properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("qsrupaylcv", response.properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("xlpiywqnpfydr", response.properties().storageConnections().get(0));
-        Assertions.assertEquals("mq", response.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("fytdxmly", response.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("haizijv", response.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("zeohlpsftqkrvm", response.properties().storageConnections().get(0));
+        Assertions.assertEquals("vvcpwtqsuspn", response.properties().threadStorageConnections().get(0));
     }
 }

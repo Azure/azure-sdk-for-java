@@ -20,7 +20,7 @@ public final class DeletedVaultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vaultId\":\"ygmi\",\"vaultDeletionTime\":\"2021-05-30T21:32:13Z\",\"purgeAt\":\"2021-09-13T22:02:43Z\"},\"id\":\"ndslgnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}";
+            = "{\"properties\":{\"vaultId\":\"vo\",\"vaultDeletionTime\":\"2021-06-13T01:25:27Z\",\"purgeAt\":\"2021-05-12T03:56:16Z\"},\"id\":\"obzdopcjwvnhdl\",\"name\":\"wmgxcxrsl\",\"type\":\"mutwuoe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DeletedVaultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeletedVault response = manager.deletedVaults()
-            .getWithResponse("tjrybnwjewgdr", "ervnaenqpehi", com.azure.core.util.Context.NONE)
+            .getWithResponse("pnedgf", "cvkcvqvpkeqdcv", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

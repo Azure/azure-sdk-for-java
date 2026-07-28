@@ -26,14 +26,19 @@ public final class ThroughputSettingsGetResultsInner extends ProxyResource {
     private ThroughputSettingsGetProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
+     * The location of the resource group to which the resource belongs.
      */
     private String location;
+
+    /*
+     * Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater than 128 characters and value no greater than 256 characters. For example, the default experience
+     * for a template type is set with
+     * \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\"
+     * .
+     */
+    private Map<String, String> tags;
 
     /*
      * Identity for the resource.
@@ -76,21 +81,25 @@ public final class ThroughputSettingsGetResultsInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: The location of the resource group to which the resource belongs.
      * 
      * @return the location value.
      */
     public String location() {
         return this.location;
+    }
+
+    /**
+     * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
@@ -171,8 +180,8 @@ public final class ThroughputSettingsGetResultsInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -203,11 +212,11 @@ public final class ThroughputSettingsGetResultsInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedThroughputSettingsGetResultsInner.innerProperties
                         = ThroughputSettingsGetProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedThroughputSettingsGetResultsInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedThroughputSettingsGetResultsInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedThroughputSettingsGetResultsInner.location = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedThroughputSettingsGetResultsInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

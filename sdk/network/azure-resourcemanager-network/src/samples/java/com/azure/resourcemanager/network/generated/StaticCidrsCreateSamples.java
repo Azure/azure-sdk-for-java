@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class StaticCidrsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/StaticCidrs_Create.json
+     * x-ms-original-file: 2025-07-01/StaticCidrs_Create.json
      */
     /**
      * Sample code: StaticCidrs_Create.

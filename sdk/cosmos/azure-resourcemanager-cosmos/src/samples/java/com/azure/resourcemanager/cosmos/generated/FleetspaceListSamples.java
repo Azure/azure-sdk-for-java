@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class FleetspaceListSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetspaceList.json
+     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetspaceList.json
      */
     /**
      * Sample code: CosmosDB Fleetspace List.

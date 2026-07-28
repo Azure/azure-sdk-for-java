@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedComputeDeploymentProvisioningDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedComputeDeploymentProvisioningDetails model = BinaryData
-            .fromString("{\"message\":\"uhqawmoaianc\",\"lastOperationTimestamp\":\"2021-09-01T14:01:13Z\"}")
-            .toObject(ManagedComputeDeploymentProvisioningDetails.class);
-        Assertions.assertEquals("uhqawmoaianc", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T14:01:13Z"), model.lastOperationTimestamp());
+        ManagedComputeDeploymentProvisioningDetails model
+            = BinaryData.fromString("{\"message\":\"gchbapxkiy\",\"lastOperationTimestamp\":\"2021-02-28T15:19:21Z\"}")
+                .toObject(ManagedComputeDeploymentProvisioningDetails.class);
+        Assertions.assertEquals("gchbapxkiy", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T15:19:21Z"), model.lastOperationTimestamp());
     }
 }

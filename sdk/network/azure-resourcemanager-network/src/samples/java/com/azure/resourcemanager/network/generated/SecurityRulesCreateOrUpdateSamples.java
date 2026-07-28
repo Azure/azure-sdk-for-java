@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
  */
 public final class SecurityRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityGroupRuleCreate.json
+     * x-ms-original-file: 2025-07-01/NetworkSecurityGroupRuleCreate.json
      */
     /**
      * Sample code: Create security rule.

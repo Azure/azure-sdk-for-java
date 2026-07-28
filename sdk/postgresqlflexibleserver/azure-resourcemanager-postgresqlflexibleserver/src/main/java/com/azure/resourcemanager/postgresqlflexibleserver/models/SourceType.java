@@ -8,129 +8,126 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Source server type used for the migration: ApsaraDB_RDS, AWS, AWS_AURORA, AWS_EC2, AWS_RDS, AzureVM,
- * Crunchy_PostgreSQL, Digital_Ocean_Droplets, Digital_Ocean_PostgreSQL, EDB, EDB_Oracle_Server, EDB_PostgreSQL, GCP,
- * GCP_AlloyDB, GCP_CloudSQL, GCP_Compute, Heroku_PostgreSQL, Huawei_Compute, Huawei_RDS, OnPremises,
- * PostgreSQLCosmosDB, PostgreSQLFlexibleServer, PostgreSQLSingleServer, or Supabase_PostgreSQL.
+ * Source server type used for the migration.
  */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /**
-     * Static value OnPremises for SourceType.
+     * On-premises PostgreSQL server.
      */
     public static final SourceType ON_PREMISES = fromString("OnPremises");
 
     /**
-     * Static value AWS for SourceType.
+     * Amazon Web Services PostgreSQL server.
      */
     public static final SourceType AWS = fromString("AWS");
 
     /**
-     * Static value GCP for SourceType.
+     * Google Cloud Platform PostgreSQL server.
      */
     public static final SourceType GCP = fromString("GCP");
 
     /**
-     * Static value AzureVM for SourceType.
+     * Azure Virtual Machine PostgreSQL server.
      */
     public static final SourceType AZURE_VM = fromString("AzureVM");
 
     /**
-     * Static value PostgreSQLSingleServer for SourceType.
+     * Azure Database for PostgreSQL single server.
      */
     public static final SourceType POSTGRE_SQLSINGLE_SERVER = fromString("PostgreSQLSingleServer");
 
     /**
-     * Static value AWS_RDS for SourceType.
+     * Amazon RDS for PostgreSQL.
      */
     public static final SourceType AWS_RDS = fromString("AWS_RDS");
 
     /**
-     * Static value AWS_AURORA for SourceType.
+     * Amazon Aurora for PostgreSQL.
      */
     public static final SourceType AWS_AURORA = fromString("AWS_AURORA");
 
     /**
-     * Static value AWS_EC2 for SourceType.
+     * Amazon EC2 for PostgreSQL.
      */
     public static final SourceType AWS_EC2 = fromString("AWS_EC2");
 
     /**
-     * Static value GCP_CloudSQL for SourceType.
+     * Google Cloud SQL for PostgreSQL.
      */
     public static final SourceType GCP_CLOUD_SQL = fromString("GCP_CloudSQL");
 
     /**
-     * Static value GCP_AlloyDB for SourceType.
+     * Google Cloud AlloyDB for PostgreSQL.
      */
     public static final SourceType GCP_ALLOY_DB = fromString("GCP_AlloyDB");
 
     /**
-     * Static value GCP_Compute for SourceType.
+     * Google Compute Engine for PostgreSQL.
      */
     public static final SourceType GCP_COMPUTE = fromString("GCP_Compute");
 
     /**
-     * Static value EDB for SourceType.
+     * EnterpriseDB PostgreSQL server.
      */
     public static final SourceType EDB = fromString("EDB");
 
     /**
-     * Static value EDB_Oracle_Server for SourceType.
+     * EnterpriseDB Oracle Server.
      */
     public static final SourceType EDB_ORACLE_SERVER = fromString("EDB_Oracle_Server");
 
     /**
-     * Static value EDB_PostgreSQL for SourceType.
+     * EnterpriseDB PostgreSQL server.
      */
     public static final SourceType EDB_POSTGRE_SQL = fromString("EDB_PostgreSQL");
 
     /**
-     * Static value PostgreSQLFlexibleServer for SourceType.
+     * Azure Database for PostgreSQL flexible server.
      */
     public static final SourceType POSTGRE_SQLFLEXIBLE_SERVER = fromString("PostgreSQLFlexibleServer");
 
     /**
-     * Static value PostgreSQLCosmosDB for SourceType.
+     * .NET Cosmos DB for PostgreSQL.
      */
     public static final SourceType POSTGRE_SQLCOSMOS_DB = fromString("PostgreSQLCosmosDB");
 
     /**
-     * Static value Huawei_RDS for SourceType.
+     * Huawei RDS for PostgreSQL.
      */
     public static final SourceType HUAWEI_RDS = fromString("Huawei_RDS");
 
     /**
-     * Static value Huawei_Compute for SourceType.
+     * Huawei Compute for PostgreSQL.
      */
     public static final SourceType HUAWEI_COMPUTE = fromString("Huawei_Compute");
 
     /**
-     * Static value Heroku_PostgreSQL for SourceType.
+     * Heroku PostgreSQL.
      */
     public static final SourceType HEROKU_POSTGRE_SQL = fromString("Heroku_PostgreSQL");
 
     /**
-     * Static value Crunchy_PostgreSQL for SourceType.
+     * Crunchy PostgreSQL.
      */
     public static final SourceType CRUNCHY_POSTGRE_SQL = fromString("Crunchy_PostgreSQL");
 
     /**
-     * Static value ApsaraDB_RDS for SourceType.
+     * ApsaraDB RDS for PostgreSQL.
      */
     public static final SourceType APSARA_DB_RDS = fromString("ApsaraDB_RDS");
 
     /**
-     * Static value Digital_Ocean_Droplets for SourceType.
+     * Digital Ocean Droplets for PostgreSQL.
      */
     public static final SourceType DIGITAL_OCEAN_DROPLETS = fromString("Digital_Ocean_Droplets");
 
     /**
-     * Static value Digital_Ocean_PostgreSQL for SourceType.
+     * Digital Ocean PostgreSQL.
      */
     public static final SourceType DIGITAL_OCEAN_POSTGRE_SQL = fromString("Digital_Ocean_PostgreSQL");
 
     /**
-     * Static value Supabase_PostgreSQL for SourceType.
+     * Supabase PostgreSQL.
      */
     public static final SourceType SUPABASE_POSTGRE_SQL = fromString("Supabase_PostgreSQL");
 

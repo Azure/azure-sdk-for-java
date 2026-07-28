@@ -14,6 +14,7 @@
     "-Pcircuit-breaker-read-all-read-many": "CircuitBreakerReadAllAndReadMany",
     "-Pmulti-region": "MultiRegion",
     "-Pmulti-region-strong": "MultiRegionStrong",
+    "-Pconsistency-overrides": "ConsistencyOverrides",
     "-Plong": "Long",
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
@@ -51,7 +52,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect" ],
+      "ProfileFlag": [ "-Pcfp-split", "-Psplit", "-Pquery", "-Pfast", "-Pdirect", "-Pconsistency-overrides" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "AdditionalArgs": [
         "-DargLine=\"-Dio.netty.handler.ssl.noOpenSsl=true\""

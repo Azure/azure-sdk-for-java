@@ -14,13 +14,14 @@ public final class SignalHistoryResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalHistoryResponseInner model = BinaryData.fromString(
-            "{\"entityName\":\"wtovvtgsein\",\"signalName\":\"fiufx\",\"history\":[{\"occurredAt\":\"2021-10-13T18:52:56Z\",\"value\":30.731247330307,\"healthState\":\"Unhealthy\",\"additionalContext\":\"epttwqmsniff\"},{\"occurredAt\":\"2021-05-13T05:35:52Z\",\"value\":97.3156283574271,\"healthState\":\"Degraded\",\"additionalContext\":\"jlpijnkrx\"},{\"occurredAt\":\"2020-12-27T04:23:31Z\",\"value\":38.54525582570131,\"healthState\":\"Healthy\",\"additionalContext\":\"atiz\"},{\"occurredAt\":\"2021-03-09T16:30:01Z\",\"value\":19.844183889260492,\"healthState\":\"Degraded\",\"additionalContext\":\"i\"}]}")
+            "{\"entityName\":\"ccybvp\",\"signalName\":\"yakk\",\"history\":[{\"occurredAt\":\"2021-07-27T17:18:09Z\",\"value\":91.30333284933613,\"healthState\":\"Deleted\",\"additionalContext\":\"plmag\"},{\"occurredAt\":\"2021-01-17T07:38:08Z\",\"value\":98.8252906927025,\"healthState\":\"Unknown\",\"additionalContext\":\"fkyrk\"},{\"occurredAt\":\"2021-09-01T09:28:39Z\",\"value\":81.52493620632941,\"healthState\":\"Degraded\",\"additionalContext\":\"sjkmnwqj\"}],\"nextMarker\":\"baiyhddviaceg\"}")
             .toObject(SignalHistoryResponseInner.class);
-        Assertions.assertEquals("wtovvtgsein", model.entityName());
-        Assertions.assertEquals("fiufx", model.signalName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T18:52:56Z"), model.history().get(0).occurredAt());
-        Assertions.assertEquals(30.731247330307D, model.history().get(0).value());
-        Assertions.assertEquals(HealthState.UNHEALTHY, model.history().get(0).healthState());
-        Assertions.assertEquals("epttwqmsniff", model.history().get(0).additionalContext());
+        Assertions.assertEquals("ccybvp", model.entityName());
+        Assertions.assertEquals("yakk", model.signalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T17:18:09Z"), model.history().get(0).occurredAt());
+        Assertions.assertEquals(91.30333284933613D, model.history().get(0).value());
+        Assertions.assertEquals(HealthState.DELETED, model.history().get(0).healthState());
+        Assertions.assertEquals("plmag", model.history().get(0).additionalContext());
+        Assertions.assertEquals("baiyhddviaceg", model.nextMarker());
     }
 }

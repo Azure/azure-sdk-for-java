@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: 2026-04-01-preview/PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: Delete a private endpoint connection.

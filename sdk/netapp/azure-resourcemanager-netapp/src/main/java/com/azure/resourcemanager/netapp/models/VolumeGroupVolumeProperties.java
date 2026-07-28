@@ -1234,7 +1234,8 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1243,7 +1244,8 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
     }
 
     /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -1305,6 +1307,29 @@ public final class VolumeGroupVolumeProperties implements JsonSerializable<Volum
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
+    }
+
+    /**
+     * Get the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @return the breakthroughMode value.
+     */
+    public BreakthroughMode breakthroughMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().breakthroughMode();
+    }
+
+    /**
+     * Set the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @param breakthroughMode the breakthroughMode value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withBreakthroughMode(BreakthroughMode breakthroughMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withBreakthroughMode(breakthroughMode);
+        return this;
     }
 
     /**

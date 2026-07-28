@@ -8,19 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if geographically redundant backups are supported in this location. 'Enabled' means geographically
- * redundant backups are supported. 'Disabled' stands for geographically redundant backup is not supported. Will be
- * deprecated in the future. Look to Supported Features for 'GeoBackup'.
+ * Indicates if geographically redundant backups are supported in this location. Will be deprecated in the future. Look
+ * to Supported Features for 'GeoBackup'.
  */
 public final class GeographicallyRedundantBackupSupport
     extends ExpandableStringEnum<GeographicallyRedundantBackupSupport> {
     /**
-     * Static value Enabled for GeographicallyRedundantBackupSupport.
+     * Geographically redundant backups are supported in this location.
      */
     public static final GeographicallyRedundantBackupSupport ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for GeographicallyRedundantBackupSupport.
+     * Geographically redundant backups are not supported in this location.
      */
     public static final GeographicallyRedundantBackupSupport DISABLED = fromString("Disabled");
 

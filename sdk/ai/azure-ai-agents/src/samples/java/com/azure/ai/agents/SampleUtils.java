@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -18,12 +19,22 @@ public class SampleUtils {
     public static Path getResourcePath(String fileName) {
         try {
             URL resourceUrl = SampleUtils.class.getClassLoader().getResource(fileName);
-            if (resourceUrl == null) {
-                throw new RuntimeException("Sample resource file not found: " + fileName);
+            if (resourceUrl != null) {
+                return Paths.get(resourceUrl.toURI());
             }
-            return Paths.get(resourceUrl.toURI());
         } catch (URISyntaxException e) {
             throw new RuntimeException("Invalid URI for sample resource: " + fileName, e);
         }
+
+        Path[] resourcePaths = new Path[] {
+            Paths.get("src", "samples", "resources", fileName),
+            Paths.get("sdk", "ai", "azure-ai-agents", "src", "samples", "resources", fileName)
+        };
+        for (Path resourcePath : resourcePaths) {
+            if (Files.exists(resourcePath)) {
+                return resourcePath;
+            }
+        }
+        throw new RuntimeException("Sample resource file not found: " + fileName);
     }
 }

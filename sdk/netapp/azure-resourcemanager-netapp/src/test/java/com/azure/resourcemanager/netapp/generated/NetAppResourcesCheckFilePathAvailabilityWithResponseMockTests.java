@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests {
     @Test
     public void testCheckFilePathAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"ttmvmmagoaqylkjz\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"wwhnhjtfvpn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkFilePathAvailabilityWithResponse("bqxvhcsyhzlwxae",
-                new FilePathAvailabilityRequest().withName("ov")
-                    .withSubnetId("rexdndsbd")
-                    .withAvailabilityZone("aderzmw"),
+            .checkFilePathAvailabilityWithResponse("hzagxnvhycvdimw",
+                new FilePathAvailabilityRequest().withName("zregzgyufutrwpw")
+                    .withSubnetId("ryekzkd")
+                    .withAvailabilityZone("eotta"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("ttmvmmagoaqylkjz", response.message());
+        Assertions.assertFalse(response.isAvailable());
+        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("wwhnhjtfvpn", response.message());
     }
 }

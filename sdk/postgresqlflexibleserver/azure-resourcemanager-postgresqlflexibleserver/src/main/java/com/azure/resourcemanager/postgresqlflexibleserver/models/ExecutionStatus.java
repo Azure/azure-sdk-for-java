@@ -8,26 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Service-set extensible enum indicating the status of operation.
+ * Service-set extensible enumeration indicating the status of operation.
  */
 public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus> {
     /**
-     * Static value Running for ExecutionStatus.
+     * Operation is currently running.
      */
     public static final ExecutionStatus RUNNING = fromString("Running");
 
     /**
-     * Static value Cancelled for ExecutionStatus.
+     * Operation has been cancelled.
      */
     public static final ExecutionStatus CANCELLED = fromString("Cancelled");
 
     /**
-     * Static value Failed for ExecutionStatus.
+     * Operation has failed.
      */
     public static final ExecutionStatus FAILED = fromString("Failed");
 
     /**
-     * Static value Succeeded for ExecutionStatus.
+     * Operation has succeeded.
      */
     public static final ExecutionStatus SUCCEEDED = fromString("Succeeded");
 

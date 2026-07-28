@@ -1673,12 +1673,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link PollerFlux} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPoolChangeAsync(String resourceGroupName, String accountName,
-        String poolName, String cacheName, PoolChangeRequest body) {
+    private PollerFlux<PollResult<CacheInner>, CacheInner> beginPoolChangeAsync(String resourceGroupName,
+        String accountName, String poolName, String cacheName, PoolChangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = poolChangeWithResponseAsync(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
+            CacheInner.class, this.client.getContext());
     }
 
     /**
@@ -1695,11 +1695,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body) {
         Response<BinaryData> response
             = poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1717,11 +1718,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body, Context context) {
         Response<BinaryData> response
             = poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
     }
 
     /**
@@ -1738,8 +1739,8 @@ public final class CachesClientImpl implements CachesClient {
      * @return cache resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> poolChangeAsync(String resourceGroupName, String accountName, String poolName, String cacheName,
-        PoolChangeRequest body) {
+    private Mono<CacheInner> poolChangeAsync(String resourceGroupName, String accountName, String poolName,
+        String cacheName, PoolChangeRequest body) {
         return beginPoolChangeAsync(resourceGroupName, accountName, poolName, cacheName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1755,11 +1756,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
     }
 
     /**
@@ -1774,11 +1776,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
     }
 
     /**
@@ -1930,12 +1933,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link PollerFlux} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResetSmbPasswordAsync(String resourceGroupName, String accountName,
-        String poolName, String cacheName) {
+    private PollerFlux<PollResult<CacheInner>, CacheInner> beginResetSmbPasswordAsync(String resourceGroupName,
+        String accountName, String poolName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = resetSmbPasswordWithResponseAsync(resourceGroupName, accountName, poolName, cacheName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
+            CacheInner.class, this.client.getContext());
     }
 
     /**
@@ -1951,11 +1954,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
-        String poolName, String cacheName) {
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName,
+        String accountName, String poolName, String cacheName) {
         Response<BinaryData> response
             = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -1972,11 +1976,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
-        String poolName, String cacheName, Context context) {
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName,
+        String accountName, String poolName, String cacheName, Context context) {
         Response<BinaryData> response
             = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
     }
 
     /**
@@ -1992,7 +1996,7 @@ public final class CachesClientImpl implements CachesClient {
      * @return cache resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resetSmbPasswordAsync(String resourceGroupName, String accountName, String poolName,
+    private Mono<CacheInner> resetSmbPasswordAsync(String resourceGroupName, String accountName, String poolName,
         String cacheName) {
         return beginResetSmbPasswordAsync(resourceGroupName, accountName, poolName, cacheName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2008,10 +2012,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
-        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
+    public CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName,
+        String cacheName) {
+        return beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
     }
 
     /**
@@ -2025,11 +2031,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
         Context context) {
-        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
+        return beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
     }
 
     /**

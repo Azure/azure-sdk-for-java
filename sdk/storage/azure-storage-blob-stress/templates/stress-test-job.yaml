@@ -4,6 +4,13 @@ metadata:
   labels:
     chaos: "{{ default false .Stress.chaos }}"
     testInstance: "{{.Stress.Scenario}}-{{ .Stress.BaseName }}-{{ .Release.Revision }}"
+  annotations:
+    # Prevent the cluster autoscaler from evicting stress pods when a node
+    # becomes under-utilized. Otherwise long-running scenarios that happen to
+    # share a node with quickly-finishing ones get drained ~10 min after the
+    # node's utilization drops below the autoscaler's threshold, terminating
+    # the test mid-flight and showing up as Error in the Storage Stress Dashboard.
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 spec:
   nodeSelector:
     sku: default

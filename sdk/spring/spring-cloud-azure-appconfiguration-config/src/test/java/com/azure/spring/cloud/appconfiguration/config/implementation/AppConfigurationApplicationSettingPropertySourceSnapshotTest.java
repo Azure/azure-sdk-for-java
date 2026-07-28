@@ -39,12 +39,12 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 
 public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
@@ -77,8 +77,6 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     private static final ConfigurationSetting ITEM_NULL =
         createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
     private List<ConfigurationSetting> testItems = new ArrayList<>();
 
     private AppConfigurationSnapshotPropertySource propertySource;
@@ -107,9 +105,11 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     @BeforeEach
     public void init() {
         session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
-        MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
+
+        when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
 
         testItems = new ArrayList<>();
         testItems.add(ITEM_1);

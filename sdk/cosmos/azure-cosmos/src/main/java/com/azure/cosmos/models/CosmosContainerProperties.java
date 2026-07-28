@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
@@ -383,6 +384,37 @@ public final class CosmosContainerProperties {
      */
     public CosmosContainerProperties setFullTextPolicy(CosmosFullTextPolicy value) {
         this.documentCollection.setFullTextPolicy(value);
+        return this;
+    }
+
+    /**
+     * Gets the global secondary index definition for this container in the Azure Cosmos DB service.
+     * A global secondary index is derived from a source container and is defined by a SQL-like query.
+     *
+     * @return the CosmosGlobalSecondaryIndexDefinition
+     */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+        return this.documentCollection.getGlobalSecondaryIndexDefinition();
+    }
+
+    /**
+     * Sets the global secondary index definition for this container in the Azure Cosmos DB service.
+     * A global secondary index is derived from a source container and is defined by a SQL-like query.
+     * <p>
+     * Example:
+     * <pre>{@code
+     * CosmosGlobalSecondaryIndexDefinition gsiDef =
+     *     new CosmosGlobalSecondaryIndexDefinition("gsi-src", "SELECT c.customerId, c.emailAddress FROM c");
+     * containerProperties.setGlobalSecondaryIndexDefinition(gsiDef);
+     * }</pre>
+     *
+     * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
+     * @return the CosmosContainerProperties.
+     */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+        this.documentCollection.setGlobalSecondaryIndexDefinition(value);
         return this;
     }
 

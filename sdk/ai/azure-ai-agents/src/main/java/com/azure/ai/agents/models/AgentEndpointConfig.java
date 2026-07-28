@@ -28,12 +28,6 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
     private VersionSelector versionSelector;
 
     /*
-     * The protocols that the agent supports
-     */
-    @Generated
-    private List<AgentEndpointProtocol> protocols;
-
-    /*
      * The authorization schemes supported by the agent endpoint
      */
     @Generated
@@ -103,29 +97,6 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
     }
 
     /**
-     * Get the protocols property: The protocols that the agent supports.
-     *
-     * @return the protocols value.
-     */
-    @Generated
-    public List<AgentEndpointProtocol> getProtocols() {
-        return this.protocols;
-    }
-
-    /**
-     * Set the protocols property: The protocols that the agent supports.
-     *
-     * @param protocols the protocols value to set.
-     * @return the AgentEndpointConfig object itself.
-     */
-    @Generated
-    public AgentEndpointConfig setProtocols(List<AgentEndpointProtocol> protocols) {
-        this.protocols = protocols;
-        this.updatedProperties.add("protocols");
-        return this;
-    }
-
-    /**
      * Get the authorizationSchemes property: The authorization schemes supported by the agent endpoint.
      *
      * @return the authorizationSchemes value.
@@ -159,8 +130,7 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeJsonField("version_selector", this.versionSelector);
-            jsonWriter.writeArrayField("protocols", this.protocols,
-                (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            jsonWriter.writeJsonField("protocol_configuration", this.protocolConfiguration);
             jsonWriter.writeArrayField("authorization_schemes", this.authorizationSchemes,
                 (writer, element) -> writer.writeJson(element));
             return jsonWriter.writeEndObject();
@@ -181,12 +151,15 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
                     .prepareModelForJsonMergePatch(this.versionSelector, false);
             }
         }
-        if (updatedProperties.contains("protocols")) {
-            if (this.protocols == null) {
-                jsonWriter.writeNullField("protocols");
+        if (updatedProperties.contains("protocolConfiguration")) {
+            if (this.protocolConfiguration == null) {
+                jsonWriter.writeNullField("protocol_configuration");
             } else {
-                jsonWriter.writeArrayField("protocols", this.protocols,
-                    (writer, element) -> writer.writeString(element.toString()));
+                JsonMergePatchHelper.getProtocolConfigurationAccessor()
+                    .prepareModelForJsonMergePatch(this.protocolConfiguration, true);
+                jsonWriter.writeJsonField("protocol_configuration", this.protocolConfiguration);
+                JsonMergePatchHelper.getProtocolConfigurationAccessor()
+                    .prepareModelForJsonMergePatch(this.protocolConfiguration, false);
             }
         }
         if (updatedProperties.contains("authorizationSchemes")) {
@@ -217,10 +190,8 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
                 reader.nextToken();
                 if ("version_selector".equals(fieldName)) {
                     deserializedAgentEndpointConfig.versionSelector = VersionSelector.fromJson(reader);
-                } else if ("protocols".equals(fieldName)) {
-                    List<AgentEndpointProtocol> protocols
-                        = reader.readArray(reader1 -> AgentEndpointProtocol.fromString(reader1.getString()));
-                    deserializedAgentEndpointConfig.protocols = protocols;
+                } else if ("protocol_configuration".equals(fieldName)) {
+                    deserializedAgentEndpointConfig.protocolConfiguration = ProtocolConfiguration.fromJson(reader);
                 } else if ("authorization_schemes".equals(fieldName)) {
                     List<AgentEndpointAuthorizationScheme> authorizationSchemes
                         = reader.readArray(reader1 -> AgentEndpointAuthorizationScheme.fromJson(reader1));
@@ -231,5 +202,34 @@ public final class AgentEndpointConfig implements JsonSerializable<AgentEndpoint
             }
             return deserializedAgentEndpointConfig;
         });
+    }
+
+    /*
+     * Per-protocol configuration for the agent endpoint.
+     */
+    @Generated
+    private ProtocolConfiguration protocolConfiguration;
+
+    /**
+     * Get the protocolConfiguration property: Per-protocol configuration for the agent endpoint.
+     *
+     * @return the protocolConfiguration value.
+     */
+    @Generated
+    public ProtocolConfiguration getProtocolConfiguration() {
+        return this.protocolConfiguration;
+    }
+
+    /**
+     * Set the protocolConfiguration property: Per-protocol configuration for the agent endpoint.
+     *
+     * @param protocolConfiguration the protocolConfiguration value to set.
+     * @return the AgentEndpointConfig object itself.
+     */
+    @Generated
+    public AgentEndpointConfig setProtocolConfiguration(ProtocolConfiguration protocolConfiguration) {
+        this.protocolConfiguration = protocolConfiguration;
+        this.updatedProperties.add("protocolConfiguration");
+        return this;
     }
 }

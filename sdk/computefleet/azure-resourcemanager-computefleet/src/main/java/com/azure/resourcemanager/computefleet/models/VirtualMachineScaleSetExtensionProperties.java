@@ -21,6 +21,7 @@ import java.util.Map;
 public final class VirtualMachineScaleSetExtensionProperties
     implements JsonSerializable<VirtualMachineScaleSetExtensionProperties> {
     /*
+     * 
      * If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not
      * changed.
@@ -43,6 +44,7 @@ public final class VirtualMachineScaleSetExtensionProperties
     private String typeHandlerVersion;
 
     /*
+     * 
      * Indicates whether the extension should use a newer minor version if one is
      * available at deployment time. Once deployed, however, the extension will not
      * upgrade minor versions unless redeployed, even with this property set to true.
@@ -50,6 +52,7 @@ public final class VirtualMachineScaleSetExtensionProperties
     private Boolean autoUpgradeMinorVersion;
 
     /*
+     * 
      * Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
      */
@@ -72,12 +75,14 @@ public final class VirtualMachineScaleSetExtensionProperties
     private String provisioningState;
 
     /*
+     * 
      * Collection of extension names after which this extension needs to be
      * provisioned.
      */
     private List<String> provisionAfterExtensions;
 
     /*
+     * 
      * Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed
      * regardless of this value). The default is false.
@@ -85,6 +90,7 @@ public final class VirtualMachineScaleSetExtensionProperties
     private Boolean suppressFailures;
 
     /*
+     * 
      * The extensions protected settings that are passed by reference, and consumed
      * from key vault
      */
@@ -97,7 +103,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
+     * Get the forceUpdateTag property:
+     * If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not
      * changed.
      * 
@@ -108,7 +115,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
+     * Set the forceUpdateTag property:
+     * If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not
      * changed.
      * 
@@ -181,8 +189,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is
+     * Get the autoUpgradeMinorVersion property:
+     * Indicates whether the extension should use a newer minor version if one is
      * available at deployment time. Once deployed, however, the extension will not
      * upgrade minor versions unless redeployed, even with this property set to true.
      * 
@@ -193,8 +201,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is
+     * Set the autoUpgradeMinorVersion property:
+     * Indicates whether the extension should use a newer minor version if one is
      * available at deployment time. Once deployed, however, the extension will not
      * upgrade minor versions unless redeployed, even with this property set to true.
      * 
@@ -207,7 +215,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * Get the enableAutomaticUpgrade property:
+     * Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
      * 
      * @return the enableAutomaticUpgrade value.
@@ -217,7 +226,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * Set the enableAutomaticUpgrade property:
+     * Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
      * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
@@ -280,7 +290,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * Get the provisionAfterExtensions property:
+     * Collection of extension names after which this extension needs to be
      * provisioned.
      * 
      * @return the provisionAfterExtensions value.
@@ -290,7 +301,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * Set the provisionAfterExtensions property:
+     * Collection of extension names after which this extension needs to be
      * provisioned.
      * 
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
@@ -303,7 +315,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
+     * Get the suppressFailures property:
+     * Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed
      * regardless of this value). The default is false.
      * 
@@ -314,7 +327,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
+     * Set the suppressFailures property:
+     * Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed
      * regardless of this value). The default is false.
      * 
@@ -327,8 +341,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
-     * and consumed
+     * Get the protectedSettingsFromKeyVault property:
+     * The extensions protected settings that are passed by reference, and consumed
      * from key vault.
      * 
      * @return the protectedSettingsFromKeyVault value.
@@ -338,8 +352,8 @@ public final class VirtualMachineScaleSetExtensionProperties
     }
 
     /**
-     * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
-     * and consumed
+     * Set the protectedSettingsFromKeyVault property:
+     * The extensions protected settings that are passed by reference, and consumed
      * from key vault.
      * 
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.

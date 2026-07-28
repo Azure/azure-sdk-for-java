@@ -13,11 +13,12 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupAutomaticAndOnDemandPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupAutomaticAndOnDemandProperties model = BinaryData.fromString(
-            "{\"backupType\":\"Customer On-Demand\",\"completedTime\":\"2020-12-31T19:00:58Z\",\"source\":\"fvpgshoxgsg\"}")
+        BackupAutomaticAndOnDemandProperties model = BinaryData
+            .fromString(
+                "{\"backupType\":\"Full\",\"completedTime\":\"2021-09-06T02:43:55Z\",\"source\":\"tcxapzhyrpetogeb\"}")
             .toObject(BackupAutomaticAndOnDemandProperties.class);
-        Assertions.assertEquals(BackupType.CUSTOMER_ON_DEMAND, model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T19:00:58Z"), model.completedTime());
-        Assertions.assertEquals("fvpgshoxgsg", model.source());
+        Assertions.assertEquals(BackupType.FULL, model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:43:55Z"), model.completedTime());
+        Assertions.assertEquals("tcxapzhyrpetogeb", model.source());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class HealthModelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/HealthModels_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
      */
     /**
      * Sample code: HealthModels_ListByResourceGroup.
@@ -18,6 +18,6 @@ public final class HealthModelsListByResourceGroupSamples {
      */
     public static void
         healthModelsListByResourceGroup(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.healthModels().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+        manager.healthModels().listByResourceGroup("online-store-rg", com.azure.core.util.Context.NONE);
     }
 }

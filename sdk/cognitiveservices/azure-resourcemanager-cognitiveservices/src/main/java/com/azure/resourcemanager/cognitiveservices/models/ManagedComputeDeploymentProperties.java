@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Properties of a Cognitive Services managed compute deployment.
@@ -40,6 +41,12 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
      * Template auto-upgrade policy. Defaults to OnceNewDefaultVersionAvailable.
      */
     private DeploymentModelVersionUpgradeOption versionUpgradeOption;
+
+    /*
+     * Deployment capabilities represented as key-value pairs.
+     * Example: { assetsV2: "true" }.
+     */
+    private Map<String, String> capabilities;
 
     /*
      * Foundry compute ARM resource ID for VM-backed managed compute deployments. Required when sku.name is
@@ -177,6 +184,16 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
     }
 
     /**
+     * Get the capabilities property: Deployment capabilities represented as key-value pairs.
+     * Example: { assetsV2: "true" }.
+     * 
+     * @return the capabilities value.
+     */
+    public Map<String, String> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
      * Get the computeId property: Foundry compute ARM resource ID for VM-backed managed compute deployments. Required
      * when sku.name is VmManagedCompute; immutable after creation.
      * 
@@ -311,6 +328,9 @@ public final class ManagedComputeDeploymentProperties implements JsonSerializabl
                 } else if ("versionUpgradeOption".equals(fieldName)) {
                     deserializedManagedComputeDeploymentProperties.versionUpgradeOption
                         = DeploymentModelVersionUpgradeOption.fromString(reader.getString());
+                } else if ("capabilities".equals(fieldName)) {
+                    Map<String, String> capabilities = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedComputeDeploymentProperties.capabilities = capabilities;
                 } else if ("computeId".equals(fieldName)) {
                     deserializedManagedComputeDeploymentProperties.computeId = reader.getString();
                 } else if ("priority".equals(fieldName)) {

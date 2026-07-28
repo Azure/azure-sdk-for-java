@@ -18,8 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class AddParticipantRequestInternal implements JsonSerializable<AddParticipantRequestInternal> {
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * A phone number.
      */
     @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
@@ -32,7 +31,9 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     private String sourceDisplayName;
 
     /*
-     * The participant to invite.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel participantToAdd;
@@ -58,7 +59,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     private String operationCallbackUri;
 
     /*
-     * Used by customer to send custom calling context to targets
+     * The custom calling context which will be sent to the target
      */
     @Generated
     private CustomCallingContext customCallingContext;
@@ -71,9 +72,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when inviting a PSTN participant.
+     * Get the sourceCallerIdNumber property: A phone number.
      * 
      * @return the sourceCallerIdNumber value.
      */
@@ -83,9 +82,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when inviting a PSTN participant.
+     * Set the sourceCallerIdNumber property: A phone number.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the AddParticipantRequestInternal object itself.
@@ -123,7 +120,9 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the participantToAdd property: The participant to invite.
+     * Get the participantToAdd property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the participantToAdd value.
      */
@@ -133,7 +132,9 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the participantToAdd property: The participant to invite.
+     * Set the participantToAdd property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param participantToAdd the participantToAdd value to set.
      * @return the AddParticipantRequestInternal object itself.
@@ -221,7 +222,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     * Get the customCallingContext property: The custom calling context which will be sent to the target.
      * 
      * @return the customCallingContext value.
      */
@@ -231,7 +232,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     * Set the customCallingContext property: The custom calling context which will be sent to the target.
      * 
      * @param customCallingContext the customCallingContext value to set.
      * @return the AddParticipantRequestInternal object itself.

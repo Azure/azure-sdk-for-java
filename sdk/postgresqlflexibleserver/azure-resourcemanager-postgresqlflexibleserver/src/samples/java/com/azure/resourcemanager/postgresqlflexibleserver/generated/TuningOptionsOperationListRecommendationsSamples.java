@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptionPar
  */
 public final class TuningOptionsOperationListRecommendationsSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsListIndexRecommendations.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsListIndexRecommendations.json
      */
     /**
      * Sample code: List available index recommendations.
@@ -27,7 +27,7 @@ public final class TuningOptionsOperationListRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsListTableRecommendations.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsListTableRecommendations.json
      */
     /**
      * Sample code: List available table recommendations.
@@ -42,7 +42,7 @@ public final class TuningOptionsOperationListRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsListIndexRecommendationsFilteredForCreateIndex.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsListIndexRecommendationsFilteredForCreateIndex.json
      */
     /**
      * Sample code: List available index recommendations, filtered to exclusively get those of CREATE INDEX type.
@@ -57,7 +57,7 @@ public final class TuningOptionsOperationListRecommendationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsListTableRecommendationsFilteredForAnalyzeTable.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsListTableRecommendationsFilteredForAnalyzeTable.json
      */
     /**
      * Sample code: List available table recommendations, filtered to exclusively get those of ANALYZE TABLE type.

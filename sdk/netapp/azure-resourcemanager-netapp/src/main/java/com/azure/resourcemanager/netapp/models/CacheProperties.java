@@ -142,6 +142,12 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
      */
     private EnableWriteBackState writeBack;
 
+    /*
+     * Flag indicating whether file access logs are enabled for the Cache, based on active diagnostic settings present
+     * on the Cache.
+     */
+    private CacheFileAccessLogs fileAccessLogs;
+
     /**
      * Creates an instance of CacheProperties class.
      */
@@ -569,6 +575,16 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     }
 
     /**
+     * Get the fileAccessLogs property: Flag indicating whether file access logs are enabled for the Cache, based on
+     * active diagnostic settings present on the Cache.
+     * 
+     * @return the fileAccessLogs value.
+     */
+    public CacheFileAccessLogs fileAccessLogs() {
+        return this.fileAccessLogs;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -716,6 +732,8 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
                         = GlobalFileLockingState.fromString(reader.getString());
                 } else if ("writeBack".equals(fieldName)) {
                     deserializedCacheProperties.writeBack = EnableWriteBackState.fromString(reader.getString());
+                } else if ("fileAccessLogs".equals(fieldName)) {
+                    deserializedCacheProperties.fileAccessLogs = CacheFileAccessLogs.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

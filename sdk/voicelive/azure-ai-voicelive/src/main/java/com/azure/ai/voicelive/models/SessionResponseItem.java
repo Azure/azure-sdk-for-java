@@ -135,9 +135,7 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("message".equals(discriminatorValue)) {
-                    return SessionResponseMessageItem.fromJson(readerToUse.reset());
-                } else if ("function_call".equals(discriminatorValue)) {
+                if ("function_call".equals(discriminatorValue)) {
                     return ResponseFunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return ResponseFunctionCallOutputItem.fromJson(readerToUse.reset());
@@ -153,6 +151,8 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
                     return ResponseWebSearchCallItem.fromJson(readerToUse.reset());
                 } else if ("file_search_call".equals(discriminatorValue)) {
                     return ResponseFileSearchCallItem.fromJson(readerToUse.reset());
+                } else if ("message".equals(discriminatorValue)) {
+                    return SessionResponseMessageItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

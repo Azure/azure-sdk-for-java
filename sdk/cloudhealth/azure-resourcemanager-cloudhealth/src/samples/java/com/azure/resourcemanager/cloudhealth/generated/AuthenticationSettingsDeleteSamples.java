@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class AuthenticationSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/AuthenticationSettings_Delete.json
      */
     /**
      * Sample code: AuthenticationSettings_Delete.
@@ -18,6 +18,6 @@ public final class AuthenticationSettingsDeleteSamples {
      */
     public static void authenticationSettingsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.authenticationSettings()
-            .delete("my-resource-group", "my-health-model", "my-auth-setting", com.azure.core.util.Context.NONE);
+            .delete("online-store-rg", "online-store", "default-auth", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,6 +15,9 @@ This wiki page is used to track the timeline for Spring Cloud Azure. So we can g
 4. In "java - spring - compatibility - tests" pipeline, it will tests versions from sdk/spring/spring-cloud-azure-supported-spring.json file which supportedStatus is `SUPPORTED`, so when the supported version changed, this page should be updated.
 
 ## Timeline
+ - **2026-06-15**: In "java - spring - compatibility - tests" pipeline, run unit tests:
+   - spring-boot-dependencies:4.1.0 and spring-cloud-dependencies:2025.1.2.
+   - spring-boot-dependencies:4.0.7 and spring-cloud-dependencies:2025.1.2.
  - **2026-06-01**: Released spring-cloud-azure-dependencies:6.4.0, which depends on: SpringBoot:3.5.14 and SpringCloud:2025.0.2.
  - **2026-05-27**: Released spring-cloud-azure-dependencies:7.3.0, which depends on: SpringBoot:4.0.6 and SpringCloud:2025.1.1.
  - **2026-04-29**: Released spring-cloud-azure-dependencies:6.3.0, which depends on: SpringBoot:3.5.14 and SpringCloud:2025.0.2.

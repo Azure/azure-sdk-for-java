@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class PrivateLinkServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateLinkServiceCreate.json
+     * x-ms-original-file: 2025-07-01/PrivateLinkServiceCreate.json
      */
     /**
      * Sample code: Create private link service.

@@ -167,4 +167,3 @@ mvn verify -f sdk/<service>/<module>/pom.xml
 
 - [Serialization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/serialization.md) — architecture of `azure-json` vs `JacksonAdapter`
 - [Code Quality](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) — RevApi suppressions
-- [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md)

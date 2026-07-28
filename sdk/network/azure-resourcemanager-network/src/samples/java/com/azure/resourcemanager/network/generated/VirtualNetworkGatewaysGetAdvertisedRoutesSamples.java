@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetAdvertisedRoutesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayAdvertisedRoutes.

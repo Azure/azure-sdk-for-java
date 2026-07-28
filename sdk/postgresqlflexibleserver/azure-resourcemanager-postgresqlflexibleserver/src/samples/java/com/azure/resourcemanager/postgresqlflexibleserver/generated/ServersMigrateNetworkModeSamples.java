@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersMigrateNetworkModeSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersMigrateNetworkMode.json
+     * x-ms-original-file: 2026-04-01-preview/ServersMigrateNetworkMode.json
      */
     /**
      * Sample code: Migrate server network configuration.

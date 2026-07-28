@@ -1,16 +1,23 @@
 ## Release History
 
-### 2.11.0-beta.1 (Unreleased)
+### 2.12.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 2.11.0 (2026-06-08)
+
+#### Bugs Fixed
 * Fixed per-record error isolation in Kafka sink transformer to honor DLQ and tolerance settings, instead of failing the entire batch when a single record fails during transformation. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
 * Guarded `ErrantRecordReporter.report()` in `CosmosWriterBase` against secondary failures so DLQ errors do not mask original write failures. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
 
 ### 2.10.0 (2026-05-01)
 

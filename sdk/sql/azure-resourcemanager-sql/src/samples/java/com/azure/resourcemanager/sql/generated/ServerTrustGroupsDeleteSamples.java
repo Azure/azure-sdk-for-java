@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerTrustGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerTrustGroupDelete.json
+     * x-ms-original-file: 2025-01-01/ServerTrustGroupDelete.json
      */
     /**
      * Sample code: Drop server trust group.

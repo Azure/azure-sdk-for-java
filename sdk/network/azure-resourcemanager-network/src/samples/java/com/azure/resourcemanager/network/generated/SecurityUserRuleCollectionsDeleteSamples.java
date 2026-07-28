@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityUserRuleCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityUserRuleCollectionDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityUserRuleCollectionDelete.json
      */
     /**
      * Sample code: Deletes a Security User Rule collection.

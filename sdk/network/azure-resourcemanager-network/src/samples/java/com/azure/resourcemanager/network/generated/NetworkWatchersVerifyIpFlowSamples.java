@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
  */
 public final class NetworkWatchersVerifyIpFlowSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherIpFlowVerify.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherIpFlowVerify.json
      */
     /**
      * Sample code: Ip flow verify.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupDraftsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftDelete.json
      */
     /**
      * Sample code: delete firewall rule collection group draft.

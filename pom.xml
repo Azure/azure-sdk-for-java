@@ -35,12 +35,14 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
+    <module>sdk/azureresiliencemanagement</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
+    <module>sdk/billingtrust</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
@@ -52,6 +54,7 @@
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/commvaultcontentstore</module>
     <module>sdk/compute</module>
     <module>sdk/computebulkactions</module>
     <module>sdk/computefleet</module>
@@ -115,6 +118,7 @@
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
+    <module>sdk/enclave</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
@@ -179,6 +183,7 @@
     <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
+    <module>sdk/napsteromniagentapi</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/network</module>
@@ -208,6 +213,7 @@
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
     <module>sdk/privatedns</module>
+    <module>sdk/programenrollment</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>
@@ -277,7 +283,6 @@
     <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voicelive</module>

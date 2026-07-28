@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
  */
 public final class TableResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBTableBackupInformation.json
+     * x-ms-original-file: 2026-03-15/CosmosDBTableBackupInformation.json
      */
     /**
      * Sample code: CosmosDBTableCollectionBackupInformation.

@@ -4,7 +4,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.SkillFileDetails;
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -23,7 +23,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Sample demonstrating uploading and downloading a skill package using the asynchronous SkillsAsyncClient.
+ * Sample demonstrating uploading and downloading a skill package using the asynchronous BetaSkillsAsyncClient.
  *
  * <p>Skills are a preview feature. Before running, set the following environment variable:</p>
  * <ul>
@@ -33,10 +33,10 @@ import java.util.zip.ZipOutputStream;
 public class SkillsPackageAsyncSample {
     private static final String SKILL_NAME = "java-sample-skill-package";
 
-    private static final SkillsAsyncClient SKILLS_ASYNC_CLIENT = new AIProjectClientBuilder()
+    private static final BetaSkillsAsyncClient SKILLS_ASYNC_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildSkillsAsyncClient();
+        .beta().buildBetaSkillsAsyncClient();
 
     public static void main(String[] args) throws IOException {
         AtomicReference<String> skillNameRef = new AtomicReference<>(SKILL_NAME);
@@ -64,7 +64,7 @@ public class SkillsPackageAsyncSample {
             .block();
     }
 
-    private static Mono<Skill> downloadSkillContent(Skill fetched) {
+    private static Mono<SkillDetails> downloadSkillContent(SkillDetails fetched) {
         return SKILLS_ASYNC_CLIENT.getSkillContent(fetched.getName())
             .map(downloaded -> {
                 try {
