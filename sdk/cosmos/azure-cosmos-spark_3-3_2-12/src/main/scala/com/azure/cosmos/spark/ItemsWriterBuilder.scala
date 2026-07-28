@@ -52,6 +52,7 @@ private class ItemsWriterBuilder
       Array(
         new CosmosBytesWrittenMetric(),
         new CosmosRecordsWrittenMetric(),
+        new CosmosRecordsSkippedMetric(),
         new TotalRequestChargeMetric()
       )
     }

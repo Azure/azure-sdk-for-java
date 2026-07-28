@@ -14,6 +14,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * Minimal set of helpers shared by the resource manager samples.
@@ -43,6 +44,16 @@ public final class SampleUtils {
      */
     public static String randomUuid(AzureResourceManager azure) {
         return azure.resourceGroups().manager().internalContext().randomUuid();
+    }
+
+    /**
+     * Generates a strong password that satisfies Microsoft Entra ID complexity requirements.
+     *
+     * @return a strong password
+     */
+    public static String password() {
+        return "P@0" + Base64.getUrlEncoder().withoutPadding().encodeToString(UUID.randomUUID().toString().getBytes(
+            StandardCharsets.US_ASCII)).substring(0, 12);
     }
 
     /**

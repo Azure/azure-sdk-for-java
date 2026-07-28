@@ -97,6 +97,7 @@ public final class ScaleWebAppWithTrafficManager {
             .withExistingLinuxPlan(plan)
             .withExistingResourceGroup(rgName)
             .withBuiltInImage(RuntimeStack.JAVA_17_JAVA17)
+            .withHttpsOnly(true)
             .create();
     }
 

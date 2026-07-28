@@ -52,6 +52,7 @@ public final class DeployImageFromAcrToLinuxWebApp {
             String privateImage = azureRegistry.loginServerUrl() + "/samples/tomcat:latest";
 
             // Create a Linux web app that pulls its image from the private registry.
+            // HTTPS-only is enforced; minimum TLS 1.2 and FTPS-only are already the App Service defaults.
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(region)
@@ -60,6 +61,7 @@ public final class DeployImageFromAcrToLinuxWebApp {
                 .withPrivateRegistryImage(privateImage, "https://" + azureRegistry.loginServerUrl())
                 .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
                 .withAppSetting("PORT", "8080")
+                .withHttpsOnly(true)
                 .create();
 
             System.out.println("Deployed image " + privateImage + " to web app " + app.defaultHostname());
