@@ -6,12 +6,6 @@
 
 - Added `withManagedIdentityCredentials()` and `withManagedIdentityCredentials(String userAssignedManagedIdentityClientId)` to `WebApp` and `FunctionApp` (definition and update) and deployment slots (`DeploymentSlot`/`FunctionDeploymentSlot` update), to pull a private container image (e.g. from Azure Container Registry) using the app's or slot's managed identity instead of a registry username and password.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.55.4 (2026-07-07)
 
 ### Other Changes
