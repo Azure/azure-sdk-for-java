@@ -1,14 +1,117 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.4.0-beta.2 (2026-07-28)
 
-### Features Added
+- Azure Resource Manager Chaos client library for Java. This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. Package api-version 2026-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ConfigurationExclusions` was removed
 
-### Other Changes
+#### `models.ScenarioEvaluationResultItem` was removed
+
+#### `models.ConfigurationFilters` was removed
+
+#### `models.Workspace` was modified
+
+* `refreshRecommendations(com.azure.core.util.Context)` was removed
+* `refreshRecommendations()` was removed
+
+#### `models.Workspaces` was modified
+
+* `refreshRecommendations(java.lang.String,java.lang.String)` was removed
+* `refreshRecommendations(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ScenarioConfigurationProperties` was modified
+
+* `withFilters(models.ConfigurationFilters)` was removed
+* `filters()` was removed
+* `exclusions()` was removed
+* `withExclusions(models.ConfigurationExclusions)` was removed
+
+#### `models.WorkspaceEvaluationProperties` was modified
+
+* `numScenariosEvaluatedCancelled()` was removed
+* `numScenariosToEvaluate()` was removed
+* `numScenariosEvaluatedSucceeded()` was removed
+* `numScenariosEvaluatedFailed()` was removed
+
+### Features Added
+
+* `models.ConnectionStatus` was added
+
+* `models.ResourceTargeting` was added
+
+* `models.WorkspaceDiscoveryStatus` was added
+
+* `models.WorkspaceDiscovery` was added
+
+* `models.Connection$Update` was added
+
+* `models.ConnectionKind` was added
+
+* `models.TemplateEvaluationResultItem` was added
+
+* `models.ConnectionProperties` was added
+
+* `models.Connection$UpdateStages` was added
+
+* `models.Connection$Definition` was added
+
+* `models.Connection` was added
+
+* `models.WorkspaceDiscoveryProperties` was added
+
+* `models.ResourceTargetingCriteria` was added
+
+* `models.Connections` was added
+
+* `models.Connection$DefinitionStages` was added
+
+#### `models.ScenarioRunProperties` was modified
+
+* `resourceSnapshotId()` was added
+* `excludedResources()` was added
+
+#### `models.Workspace` was modified
+
+* `discover()` was added
+* `evaluate(com.azure.core.util.Context)` was added
+* `evaluate()` was added
+* `discover(com.azure.core.util.Context)` was added
+
+#### `models.ValidationProperties` was modified
+
+* `excludedResources()` was added
+* `resources()` was added
+
+#### `models.Workspaces` was modified
+
+* `evaluate(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `discover(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `discover(java.lang.String,java.lang.String)` was added
+* `evaluate(java.lang.String,java.lang.String)` was added
+
+#### `models.ScenarioConfigurationProperties` was modified
+
+* `resourceTargeting()` was added
+* `withResourceTargeting(models.ResourceTargeting)` was added
+
+#### `models.WorkspaceEvaluationProperties` was modified
+
+* `numTemplatesToEvaluate()` was added
+* `numTemplatesEvaluatedCancelled()` was added
+* `numTemplatesEvaluatedFailed()` was added
+* `resourceSnapshotId()` was added
+* `numTemplatesEvaluatedSucceeded()` was added
+
+#### `models.PermissionError` was modified
+
+* `errorMessage()` was added
+
+#### `ChaosManager` was modified
+
+* `connections()` was added
 
 ## 1.4.0-beta.1 (2026-05-26)
 

@@ -11,7 +11,7 @@ public final class ScenarioRunSummaryActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScenarioRunSummaryAction model = BinaryData.fromString(
-            "{\"resources\":[{\"id\":\"enx\"},{\"id\":\"ulkpakd\"}],\"actionUrn\":\"ifmjnn\",\"state\":\"Pending\",\"startedAt\":\"2021-07-19T21:58:59Z\",\"completedAt\":\"2020-12-24T01:47:50Z\"}")
+            "{\"resources\":[{\"id\":\"lrjvmtyg\"}],\"actionUrn\":\"bmzyospsps\",\"state\":\"Canceling\",\"startedAt\":\"2021-11-10T17:31:52Z\",\"completedAt\":\"2021-02-11T14:20:08Z\"}")
             .toObject(ScenarioRunSummaryAction.class);
     }
 }
