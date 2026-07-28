@@ -188,6 +188,7 @@
               </includes>
             </bannedDependencies>
           </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>
