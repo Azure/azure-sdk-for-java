@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.assertj.AssertableApplicationContex
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpoint;
 import org.springframework.jms.connection.CachingConnectionFactory;
@@ -524,6 +525,41 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(queueContainer.getConnectionFactory()).isSameAs(sharedBean);
                 assertThat(topicContainer.getConnectionFactory()).isSameAs(sharedBean);
             });
+    }
+
+    @Test
+    void listenerContainerCreatesDedicatedPoolConnectionFactoryWhenSharedBeanIsNotPooled() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=standard",
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
+                "spring.jms.servicebus.pool.enabled=true"
+            )
+            .withUserConfiguration(PrimaryConnectionFactoryConfiguration.class)
+            .run(context -> {
+                // The ConnectionFactory injected into the listener container factory is the user supplied primary bean,
+                // which is not pooled. The listener container therefore has to build a dedicated
+                // JmsPoolConnectionFactory reflectively, which is the only code path that resolves
+                // JmsPoolConnectionFactoryFactory by class name.
+                DefaultJmsListenerContainerFactory queueFactory =
+                    context.getBean("jmsListenerContainerFactory", DefaultJmsListenerContainerFactory.class);
+                DefaultMessageListenerContainer queueContainer =
+                    queueFactory.createListenerContainer(mock(JmsListenerEndpoint.class));
+
+                assertThat(queueContainer.getConnectionFactory())
+                    .isInstanceOf(JmsPoolConnectionFactory.class)
+                    .isNotSameAs(context.getBean("customConnectionFactory"));
+            });
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    static class PrimaryConnectionFactoryConfiguration {
+
+        @Bean
+        @Primary
+        ConnectionFactory customConnectionFactory() {
+            return mock(ConnectionFactory.class);
+        }
     }
 
     @ParameterizedTest

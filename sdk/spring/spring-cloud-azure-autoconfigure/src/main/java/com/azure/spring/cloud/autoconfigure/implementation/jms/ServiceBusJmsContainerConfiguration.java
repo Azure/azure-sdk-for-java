@@ -158,8 +158,8 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
         if (dedicatedPoolConnectionFactory == null) {
             try {
                 // Use reflection to create JmsPoolConnectionFactory to avoid hard dependency
-                Class<?> poolClass = Class.forName("org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryProperties");
-                Class<?> factoryClass = Class.forName("org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryFactory");
+                Class<?> poolClass = Class.forName("org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties");
+                Class<?> factoryClass = Class.forName("org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactory");
                 Object factoryInstance = factoryClass.getConstructor(poolClass)
                     .newInstance(azureServiceBusJMSProperties.getPool());
                 dedicatedPoolConnectionFactory = (ConnectionFactory) factoryClass
