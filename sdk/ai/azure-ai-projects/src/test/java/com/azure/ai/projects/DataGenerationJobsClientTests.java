@@ -57,7 +57,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
         BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();

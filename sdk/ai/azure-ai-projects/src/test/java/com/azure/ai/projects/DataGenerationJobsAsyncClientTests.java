@@ -54,7 +54,7 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobWithEvaluationAsyncSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
         BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
             = projectClientBuilder.beta().buildBetaDatasetsAsyncClient();
         DatasetsAsyncClient datasetsAsyncClient = projectClientBuilder.buildDatasetsAsyncClient();

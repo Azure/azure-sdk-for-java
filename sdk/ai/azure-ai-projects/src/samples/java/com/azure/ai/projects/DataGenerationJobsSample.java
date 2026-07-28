@@ -98,7 +98,7 @@ public class DataGenerationJobsSample {
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
             .setDescription("Contoso TrailGear support policy and product guidance.");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(1)
+        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
         DataGenerationJobInputs inputs = new DataGenerationJobInputs(
