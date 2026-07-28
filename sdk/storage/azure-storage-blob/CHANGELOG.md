@@ -1,8 +1,9 @@
 # Release History
 
-## 12.36.0-beta.1 (Unreleased)
+## 12.36.0-beta.1 (2026-07-28)
 
 ### Features Added
+- Added support for service version 2026-10-06.
 - Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
 - Added support for `PutBlob` operations returning both the existing MD5 content hash and the new CRC64 checksum.
 - Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
