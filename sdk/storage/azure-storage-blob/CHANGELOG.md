@@ -10,8 +10,6 @@
 - Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
 `GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
   in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
