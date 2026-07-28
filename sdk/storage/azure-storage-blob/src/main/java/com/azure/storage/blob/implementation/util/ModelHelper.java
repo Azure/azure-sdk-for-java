@@ -41,6 +41,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -686,6 +687,22 @@ public final class ModelHelper {
             return DEFAULT_SERIALIZATION_FORMAT;
         }
         return format;
+    }
+
+    /**
+     * Validates that {@code endBefore}, when specified, is used with the Apache Arrow response format.
+     *
+     * @param options the listing options to validate.
+     * @throws IllegalArgumentException if {@code endBefore} is specified for a non-Arrow response format.
+     */
+    public static void validateListBlobsOptions(ListBlobsOptions options) {
+        if (options != null
+            && options.getEndBefore() != null
+            && resolveSerializationFormat(options.getStorageResponseSerializationFormat())
+                != StorageResponseSerializationFormat.ARROW) {
+            throw new IllegalArgumentException(
+                "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.");
+        }
     }
 
     private ModelHelper() {

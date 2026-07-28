@@ -1033,6 +1033,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, String continuationToken, Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> retriever = (nextMarker, pageSize) -> {
             ListBlobsOptions finalOptions = new ListBlobsOptions();
             if (options != null) {
@@ -1227,6 +1228,7 @@ public final class BlobContainerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, PagedResponse<BlobItem>> func = (marker, pageSize) -> {
             ListBlobsOptions finalOptions = new ListBlobsOptions();
             if (options != null) {

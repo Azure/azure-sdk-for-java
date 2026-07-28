@@ -1037,6 +1037,18 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void listBlobsFlatEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> cc.listBlobs(options, null));
+
+        assertEquals("The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.",
+            exception.getMessage());
+    }
+
+    @Test
     public void listBlobsFlatMarker() {
         int numBlobs = 10;
         int pageSize = 6;
@@ -1337,6 +1349,18 @@ public class ContainerApiTests extends BlobTestBase {
     private static Stream<Arguments> listBlobsHierOptionsFailSupplier() {
         return Stream.of(Arguments.of(true, 5, UnsupportedOperationException.class),
             Arguments.of(false, 0, IllegalArgumentException.class));
+    }
+
+    @Test
+    public void listBlobsHierEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> cc.listBlobsByHierarchy("/", options, null));
+
+        assertEquals("The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.",
+            exception.getMessage());
     }
 
     @Test

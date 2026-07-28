@@ -1120,6 +1120,7 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
         Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
             ListBlobsOptions finalOptions;
             /*
@@ -1363,6 +1364,7 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
             ListBlobsOptions finalOptions;
             /*

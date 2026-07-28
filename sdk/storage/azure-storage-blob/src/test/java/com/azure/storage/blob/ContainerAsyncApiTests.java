@@ -1029,6 +1029,18 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void listBlobsFlatEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        StepVerifier.create(ccAsync.listBlobs(options, null))
+            .expectErrorMatches(error -> error instanceof IllegalArgumentException
+                && "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW."
+                    .equals(error.getMessage()))
+            .verify();
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
@@ -1419,6 +1431,18 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(ccAsync.listBlobsByHierarchy(null, options))
             .verifyError(UnsupportedOperationException.class);
+    }
+
+    @Test
+    public void listBlobsHierEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", options))
+            .expectErrorMatches(error -> error instanceof IllegalArgumentException
+                && "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW."
+                    .equals(error.getMessage()))
+            .verify();
     }
 
     @Test
