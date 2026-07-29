@@ -222,7 +222,7 @@
           <artifactId>arrow-format</artifactId>
           <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
         </dependency>
-        <!-- Must match arrow-format's dep.fbs.version. dependencyConvergence below rejects version drift. -->
+        <!-- Must match arrow-format's dep.fbs.version -->
         <dependency>
           <groupId>com.google.flatbuffers</groupId>
           <artifactId>flatbuffers-java</artifactId>
