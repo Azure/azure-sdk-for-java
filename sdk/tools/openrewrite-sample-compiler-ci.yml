@@ -52,6 +52,9 @@ extends:
                     - "**/*.md"
                     - "**/ci*.yml"
 
+              # Authenticate with Azure Artifacts
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
               - task: Maven@3
                 displayName: 'Build and Install Necesssary Dependencies'
                 inputs:
