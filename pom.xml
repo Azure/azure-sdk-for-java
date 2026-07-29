@@ -71,6 +71,7 @@
     <module>sdk/containerservice</module>
     <module>sdk/containerserviceaimanager</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicepreparedimgspec</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/contentunderstanding</module>
