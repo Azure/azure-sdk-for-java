@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLe
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,6 +29,23 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
+
+    /**
+     * For PPAF write hedging on single-writer accounts, this field holds the target
+     * read region that the hedged write should be routed to. When set, {@code ClientRetryPolicy}
+     * uses {@code routeToLocation(RegionalRoutingContext)} to force-route the request
+     * to this region, bypassing the excluded-regions mechanism which cannot route writes
+     * to read regions on single-writer accounts.
+     */
+    private volatile RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy;
+
+    /**
+     * Captures the resolved {@link PartitionKeyRangeWrapper} during
+     * {@code tryAddPartitionLevelLocationOverride} so the availability strategy
+     * success callback can persist the failover entry via
+     * {@code tryRecordSuccessfulWriteHedge}.
+     */
+    private volatile PartitionKeyRangeWrapper resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
 
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
@@ -95,5 +113,21 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public PerPartitionAutomaticFailoverInfoHolder getPerPartitionAutomaticFailoverInfoHolder() {
         return this.perPartitionAutomaticFailoverInfoHolder;
+    }
+
+    public RegionalRoutingContext getWriteRegionRoutingContextForPpafAvailabilityStrategy() {
+        return this.writeRegionRoutingContextForPpafAvailabilityStrategy;
+    }
+
+    public void setWriteRegionRoutingContextForPpafAvailabilityStrategy(RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy) {
+        this.writeRegionRoutingContextForPpafAvailabilityStrategy = writeRegionRoutingContextForPpafAvailabilityStrategy;
+    }
+
+    public PartitionKeyRangeWrapper getResolvedPartitionKeyRangeWrapperForPpafWriteHedge() {
+        return this.resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
+    }
+
+    public void setResolvedPartitionKeyRangeWrapperForPpafWriteHedge(PartitionKeyRangeWrapper resolvedPartitionKeyRangeWrapperForPpafWriteHedge) {
+        this.resolvedPartitionKeyRangeWrapperForPpafWriteHedge = resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
     }
 }

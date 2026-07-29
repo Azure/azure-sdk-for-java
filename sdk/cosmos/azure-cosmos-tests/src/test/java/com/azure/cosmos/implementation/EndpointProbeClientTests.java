@@ -367,8 +367,18 @@ public class EndpointProbeClientTests {
         // Cycle #3 (after the CAS was released): a fresh topology with a new region (WEST) must win
         // the single-flight CAS and probe the delta again — proving the guard freed the flag when
         // cycle #1 completed rather than pinning the client to a single lifetime cycle.
-        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
-        assertThat(sendCount.get()).isEqualTo(2); // WEST (the delta) was probed
+        //
+        // cycleOne.get() above unblocks when cycle #1 emits its value, but the single-flight flag is
+        // cleared in a doFinally hook that runs on the terminal signal — a hair later. A cycle fired
+        // in that tiny window would lose the CAS and short-circuit without probing WEST. Retry until
+        // the fresh cycle wins the CAS (probes WEST) so this assertion doesn't race the flag release.
+        Boolean cycleThreeGate = probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
+        for (int attempt = 0; attempt < 500 && sendCount.get() < 2; attempt++) {
+            Thread.sleep(10);
+            cycleThreeGate = probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
+        }
+        assertThat(sendCount.get()).isEqualTo(2); // WEST (the delta) was probed exactly once
+        assertThat(cycleThreeGate).isTrue();
         assertThat(probeClient.isThinClientRoutable()).isTrue();
     }
 

@@ -5,6 +5,7 @@
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
+* Added write availability strategy (hedging) for Per-Partition Automatic Failover (PPAF) single-writer accounts. When a write to the current write region is slow or fails (410/21005, 503/21008, 403/3, 408), the SDK hedges the write to a read region via the existing availability strategy. On success, the PPAF manager records the new region so subsequent writes route directly there. This feature is opt-in and gated behind the `COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF` system property (default: disabled). - See [PR 48421](https://github.com/Azure/azure-sdk-for-java/pull/48421)
 
 #### Breaking Changes
 

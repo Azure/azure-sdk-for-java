@@ -159,6 +159,9 @@ public class ThinClientProbeWiringTests {
             waitForProbeCallCount(probeCallCount, 2, Duration.ofSeconds(5));
 
             assertThat(probeCallCount.get()).as("probe was issued for each thin-client region").isGreaterThanOrEqualTo(2);
+            // probeCallCount reaching 2 means both send()s were issued, but the gate flips to healthy
+            // only after the cycle applies the 200 results. Wait for that so we don't race completion.
+            waitForProxyDecision(gem, Boolean.TRUE, Duration.ofSeconds(5));
             assertThat(gem.getProxyProbeDecision()).as("after all-200 cycle, proxy is healthy").isEqualTo(Boolean.TRUE);
         } finally {
             LifeCycleUtils.closeQuietly(gem);
@@ -246,6 +249,9 @@ public class ThinClientProbeWiringTests {
             assertThat(probeCallCount.get())
                 .as("delta refresh probes only the newly-added region (East Asia); East US is not re-probed")
                 .isEqualTo(2);
+            // The delta cycle flips the gate healthy only after it applies the East Asia 200 result;
+            // wait for the decision instead of racing the cycle completion right after the send fired.
+            waitForProxyDecision(gem, Boolean.TRUE, Duration.ofSeconds(5));
             assertThat(gem.getProxyProbeDecision())
                 .as("both thin-client regions are now proven healthy")
                 .isEqualTo(Boolean.TRUE);

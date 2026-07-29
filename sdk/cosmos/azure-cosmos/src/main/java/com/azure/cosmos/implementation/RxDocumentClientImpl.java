@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -128,6 +129,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -349,6 +351,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
+    private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForWrites;
     private Consumer<DatabaseAccount> perPartitionFailoverConfigModifier;
     private Map<String, String> additionalHeaders;
 
@@ -3727,6 +3730,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // rely on PPAF enforced defaults
         if (operationType.isReadOnlyOperation()) {
             return this.ppafEnforcedE2ELatencyPolicyConfigForReads;
+        }
+
+        // For write point operations, apply PPAF-enforced write availability strategy — mirroring
+        // the read default. This enables hedging writes to read regions when the primary write
+        // region is unresponsive. Batch is excluded (not a point operation) because it bypasses
+        // wrapPointOperationWithAvailabilityStrategy.
+        if (operationType.isWriteOperation() && operationType.isPointOperation()) {
+            return this.ppafEnforcedE2ELatencyPolicyConfigForWrites;
         }
 
         return null;
@@ -8280,6 +8291,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             idempotentWriteRetriesEnabled,
             nonNullRequestOptions);
 
+        // For PPAF write availability strategy on single-writer accounts, build a map of region name → RegionalRoutingContext
+        // so hedged requests can be force-routed to specific read regions via routeToLocation.
+        // This bypasses the excluded-regions mechanism which cannot route writes to read regions.
+        boolean applyAvailabilityStrategyForWritesForPpaf = operationType.isWriteOperation()
+            && !this.globalEndpointManager.canUseMultipleWriteLocations()
+            && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
+            && Configs.isWriteAvailabilityStrategyEnabledWithPpaf();
+
+        Map<String, RegionalRoutingContext> regionToRoutingContext;
+        if (applyAvailabilityStrategyForWritesForPpaf) {
+            regionToRoutingContext = new HashMap<>();
+            // Use ALL account-level read regions (not just preferred regions) as hedge candidates.
+            // PPAF write failover can target any read region, not just the ones in the preferred list.
+            List<RegionalRoutingContext> readRoutingContexts =
+                this.globalEndpointManager.getAvailableReadRoutingContexts();
+            for (RegionalRoutingContext rrc : readRoutingContexts) {
+                String regionName = this.globalEndpointManager.getRegionName(
+                    rrc.getGatewayRegionalEndpoint(), OperationType.Read);
+                if (regionName != null) {
+                    regionToRoutingContext.put(regionName.toLowerCase(Locale.ROOT), rrc);
+                }
+            }
+        } else {
+            regionToRoutingContext = Collections.emptyMap();
+        }
+
         AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
         AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
         PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
@@ -8392,9 +8429,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         perPartitionCircuitBreakerInfoHolder,
                         perPartitionAutomaticFailoverInfoHolder);
 
+                    // For PPAF write availability strategy, set the target read region so ClientRetryPolicy
+                    // routes the hedged write there via routeToLocation instead of excluded-regions.
+                    if (applyAvailabilityStrategyForWritesForPpaf) {
+                        RegionalRoutingContext targetRegion = regionToRoutingContext.get(region.toLowerCase(Locale.ROOT));
+                        if (targetRegion != null) {
+                            crossRegionAvailabilityContextForHedgedRequest.setWriteRegionRoutingContextForPpafAvailabilityStrategy(targetRegion);
+                        }
+                    }
+
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForHedgedRequest)
                             .map(NonTransientPointOperationResult::new)
+                            .doOnNext(result -> {
+                                // For PPAF write hedging: only when the hedged write succeeds, persist
+                                // the failover entry so subsequent writes route directly to this region.
+                                if (applyAvailabilityStrategyForWritesForPpaf && !result.isError()) {
+                                    PartitionKeyRangeWrapper resolvedWrapper =
+                                        crossRegionAvailabilityContextForHedgedRequest
+                                            .getResolvedPartitionKeyRangeWrapperForPpafWriteHedge();
+                                    RegionalRoutingContext targetRegion =
+                                        crossRegionAvailabilityContextForHedgedRequest
+                                            .getWriteRegionRoutingContextForPpafAvailabilityStrategy();
+                                    if (resolvedWrapper != null && targetRegion != null) {
+                                        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                                            .tryRecordSuccessfulWriteHedge(resolvedWrapper, targetRegion);
+                                    }
+                                }
+                            })
                             .onErrorResume(
                                 RxDocumentClientImpl::isNonTransientCosmosException,
                                 t -> Mono.just(
@@ -8596,6 +8658,55 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
+    /**
+     * Evaluates whether a PPAF-enforced E2E latency policy should be applied for write operations.
+     * Uses the same timeout/threshold values as the read policy — the availability strategy
+     * hedging behavior should be symmetric for reads and writes under PPAF.
+     */
+    private CosmosEndToEndOperationLatencyPolicyConfig evaluatePpafEnforcedE2eLatencyPolicyCfgForWrites(
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+        ConnectionPolicy connectionPolicy) {
+
+        if (!globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+            return null;
+        }
+
+        if (Configs.isWriteAvailabilityStrategyEnabledWithPpaf()) {
+
+            logger.info("ATTN: As Per-Partition Automatic Failover (PPAF) is enabled a default End-to-End Operation Latency Policy will be applied for write operation types.");
+
+            if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
+                Duration networkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
+
+                checkNotNull(networkRequestTimeout, "Argument 'networkRequestTimeout' cannot be null!");
+
+                Duration overallE2eLatencyTimeout = networkRequestTimeout.plus(Utils.ONE_SECOND);
+                Duration threshold = Utils.min(networkRequestTimeout.dividedBy(2), Utils.ONE_SECOND);
+                Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
+
+                return new CosmosEndToEndOperationLatencyPolicyConfigBuilder(overallE2eLatencyTimeout)
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(threshold, thresholdStep))
+                    .build();
+            } else {
+
+                Duration httpNetworkRequestTimeout = connectionPolicy.getHttpNetworkRequestTimeout();
+
+                checkNotNull(httpNetworkRequestTimeout, "Argument 'httpNetworkRequestTimeout' cannot be null!");
+
+                Duration overallE2eLatencyTimeout = Utils.min(Utils.SIX_SECONDS, httpNetworkRequestTimeout);
+
+                Duration threshold = Utils.min(overallE2eLatencyTimeout.dividedBy(2), Utils.ONE_SECOND);
+                Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
+
+                return new CosmosEndToEndOperationLatencyPolicyConfigBuilder(overallE2eLatencyTimeout)
+                    .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(threshold, thresholdStep))
+                    .build();
+            }
+        }
+
+        return null;
+    }
+
     private DiagnosticsClientContext getEffectiveClientContext(DiagnosticsClientContext clientContextOverride) {
         if (clientContextOverride != null) {
             return clientContextOverride;
@@ -8667,10 +8778,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (operationType.isWriteOperation() && !isIdempotentWriteRetriesEnabled) {
-            return EMPTY_REGION_LIST;
+            // For PPAF-enabled single-writer accounts, write hedging is allowed even without
+            // explicit idempotent write retries because PPAF provides partition-level write
+            // consistency guarantees — the service ensures exactly-once semantics for writes
+            // to failed-over partitions.
+            boolean isPpafEnabled =
+                this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
+                && Configs.isWriteAvailabilityStrategyEnabledWithPpaf();
+
+            if (!isPpafEnabled) {
+                return EMPTY_REGION_LIST;
+            }
         }
 
-        if (operationType.isWriteOperation() && !this.globalEndpointManager.canUseMultipleWriteLocations()) {
+        // For PPAF-enabled single-writer accounts, allow write availability strategy using read regions.
+        // In PPAF, a partition can fail over to a read region for writes, so read regions
+        // are valid hedge targets even when the account has only one write region.
+        //
+        // Design tradeoff: We relax the multi-write-location gate here because PPAF
+        // fundamentally changes the write routing model — the service accepts writes
+        // at read regions for failed-over partitions. Without this, write hedging would
+        // never activate for the most common PPAF scenario (single-writer accounts),
+        // leaving the customer waiting up to 60-120s for the retry-based failover path.
+        boolean applyAvailabilityStrategyForWritesForPpaf = operationType.isWriteOperation()
+            && !this.globalEndpointManager.canUseMultipleWriteLocations()
+            && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
+            && Configs.isWriteAvailabilityStrategyEnabledWithPpaf();
+
+        if (operationType.isWriteOperation()
+            && !this.globalEndpointManager.canUseMultipleWriteLocations()
+            && !applyAvailabilityStrategyForWritesForPpaf) {
             return EMPTY_REGION_LIST;
         }
 
@@ -8678,7 +8815,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<RegionalRoutingContext> regionalRoutingContextList = getApplicableEndPoints(operationType, excludedRegions);
+        // For PPAF write availability strategy on single-writer accounts, use ALL account-level read regions
+        // as hedge candidates (not just preferred regions). PPAF failover can target any read region.
+        List<RegionalRoutingContext> regionalRoutingContextList =
+            applyAvailabilityStrategyForWritesForPpaf
+                ? withoutNulls(new ArrayList<>(this.globalEndpointManager.getAvailableReadRoutingContexts()))
+                : getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
@@ -8687,7 +8829,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
         regionalRoutingContextList.forEach(consolidatedLocationEndpoints -> {
-            String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
+            // For PPAF write availability strategy, resolve region names against read endpoints since
+            // the hedged write targets are read regions (not write regions).
+            String regionName = applyAvailabilityStrategyForWritesForPpaf
+                ? this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), OperationType.Read)
+                : this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(RegionNameNormalizer.normalize(regionName))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
@@ -9007,6 +9153,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         initializePerPartitionAutomaticFailover(databaseAccountSnapshot);
         initializePerPartitionCircuitBreaker();
         enableAvailabilityStrategyForReads();
+        enableAvailabilityStrategyForWrites();
 
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover, "Argument 'globalPartitionEndpointManagerForPerPartitionAutomaticFailover' cannot be null.");
         checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' cannot be null.");
@@ -9057,6 +9204,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is enabled.");
         } else {
             logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for reads is disabled.");
+        }
+    }
+
+    private void enableAvailabilityStrategyForWrites() {
+        this.ppafEnforcedE2ELatencyPolicyConfigForWrites = this.evaluatePpafEnforcedE2eLatencyPolicyCfgForWrites(
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            this.connectionPolicy
+        );
+
+        if (this.ppafEnforcedE2ELatencyPolicyConfigForWrites != null) {
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for writes is enabled.");
+        } else {
+            logger.info("ATTN: Per-Partition Automatic Failover (PPAF) enforced E2E Latency Policy for writes is disabled.");
         }
     }
 

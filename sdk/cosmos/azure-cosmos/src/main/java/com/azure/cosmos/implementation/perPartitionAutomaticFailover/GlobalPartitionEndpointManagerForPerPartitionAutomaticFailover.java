@@ -172,7 +172,73 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return true;
         }
 
+        // For PPAF write hedging: when the availability strategy has set a target read region
+        // for a hedged write, route the request to that region WITHOUT creating a failover entry.
+        // A failover override should only be persisted when the hedged request succeeds — creating
+        // one eagerly here would route future requests to a potentially bad region if this request fails.
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionCtx =
+            request.requestContext.getCrossRegionAvailabilityContext();
+
+        if (crossRegionCtx != null && crossRegionCtx.getWriteRegionRoutingContextForPpafAvailabilityStrategy() != null) {
+            RegionalRoutingContext hedgeTarget = crossRegionCtx.getWriteRegionRoutingContextForPpafAvailabilityStrategy();
+
+            // Check if an existing failover entry already exists for this partition
+            PartitionLevelAutomaticFailoverInfo existingFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
+
+            if (existingFailoverInfo != null) {
+                // An existing entry exists (from retry-based failover path) — use its current region
+                request.requestContext.routeToLocation(existingFailoverInfo.getCurrent());
+                request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(existingFailoverInfo);
+            } else {
+                // No existing entry — route directly to the hedge target WITHOUT creating an override.
+                // The override will only be created if this hedged request succeeds (via
+                // tryRecordSuccessfulWriteHedge called from the doOnNext callback).
+                request.requestContext.routeToLocation(hedgeTarget);
+            }
+
+            // Capture the resolved partition key range on the cross-region context so
+            // the availability strategy success callback can persist the failover entry.
+            crossRegionCtx.setResolvedPartitionKeyRangeWrapperForPpafWriteHedge(partitionKeyRangeWrapper);
+
+            if (logger.isInfoEnabled()) {
+                logger.info(
+                    "PPAF write availability strategy: routing write for partition key range {} and collection rid {} to target region {}",
+                    partitionKeyRangeWrapper.getPartitionKeyRange(),
+                    partitionKeyRangeWrapper.getCollectionResourceId(),
+                    hedgeTarget.getGatewayRegionalEndpoint());
+            }
+
+            return true;
+        }
+
         return false;
+    }
+
+    /**
+     * Persists a failover entry for a partition after a successful hedged write.
+     * Called from the availability strategy success path — only when a hedged write
+     * to a read region succeeds, creating the ConcurrentHashMap entry so that
+     * subsequent writes to this partition route directly to the failover region.
+     */
+    public void tryRecordSuccessfulWriteHedge(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        RegionalRoutingContext successfulRegion) {
+
+        if (partitionKeyRangeWrapper == null || successfulRegion == null) {
+            return;
+        }
+
+        this.partitionKeyRangeToFailoverInfo.computeIfAbsent(
+            partitionKeyRangeWrapper,
+            key -> new PartitionLevelAutomaticFailoverInfo(successfulRegion, this.globalEndpointManager));
+
+        if (logger.isInfoEnabled()) {
+            logger.info(
+                "PPAF write availability strategy: recorded successful hedge for partition key range {} and collection rid {} to region {}",
+                partitionKeyRangeWrapper.getPartitionKeyRange(),
+                partitionKeyRangeWrapper.getCollectionResourceId(),
+                successfulRegion.getGatewayRegionalEndpoint());
+        }
     }
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
