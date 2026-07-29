@@ -256,8 +256,8 @@
 
               <artifactSet>
                 <includes>
-                  <include>org.apache.arrow:arrow-format</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
-                  <include>com.google.flatbuffers:flatbuffers-java</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+                  <include>org.apache.arrow:arrow-format:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
+                  <include>com.google.flatbuffers:flatbuffers-java:[25.2.10]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
                 </includes>
               </artifactSet>
 
