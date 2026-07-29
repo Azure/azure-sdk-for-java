@@ -13,7 +13,7 @@ public final class FeatureInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureInner model = BinaryData.fromString(
-            "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Failed\"},\"id\":\"it\",\"name\":\"np\",\"type\":\"qfpjk\"}")
+            "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Canceled\"},\"id\":\"gls\",\"name\":\"ainqpjwnzlljfm\",\"type\":\"pee\"}")
             .toObject(FeatureInner.class);
         Assertions.assertEquals(FeatureState.DISABLED, model.properties().state());
     }

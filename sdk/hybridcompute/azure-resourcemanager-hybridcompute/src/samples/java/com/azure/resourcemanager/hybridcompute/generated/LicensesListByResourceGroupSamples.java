@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class LicensesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_ListByResourceGroup.json
      */
     /**
      * Sample code: GET all Machine Extensions.
