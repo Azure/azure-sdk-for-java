@@ -4,10 +4,8 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.resourcemanager.msi.models.AssignmentRestrictions;
 import com.azure.resourcemanager.msi.models.IdentityUpdate;
 import com.azure.resourcemanager.msi.models.IsolationScope;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +14,7 @@ import java.util.Map;
  */
 public final class UserAssignedIdentitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/IdentityUpdate.json
+     * x-ms-original-file: 2024-11-30/IdentityUpdate.json
      */
     /**
      * Sample code: IdentityUpdate.
@@ -29,9 +27,7 @@ public final class UserAssignedIdentitiesUpdateSamples {
             .updateWithResponse("rgName", "resourceName",
                 new IdentityUpdate().withLocation("eastus")
                     .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                    .withIsolationScope(IsolationScope.REGIONAL)
-                    .withAssignmentRestrictions(new AssignmentRestrictions()
-                        .withProviders(Arrays.asList("Microsoft.Compute", "Microsoft.Storage/Accounts"))),
+                    .withIsolationScope(IsolationScope.REGIONAL),
                 com.azure.core.util.Context.NONE);
     }
 

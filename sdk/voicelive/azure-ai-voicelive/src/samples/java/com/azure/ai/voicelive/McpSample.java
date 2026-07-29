@@ -145,7 +145,7 @@ public final class McpSample {
         // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
+            .serviceVersion(VoiceLiveServiceVersion.V2026_07_15)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 

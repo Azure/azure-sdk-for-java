@@ -2,7 +2,7 @@
 
 Azure Resource Manager HybridCompute client library for Java.
 
-This package contains Microsoft Azure SDK for HybridCompute Management SDK. Azure Arc( Servers and K8s Clusters) API reference for Private Link's Scopes management. Package api-version 2025-09-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for HybridCompute Management SDK. Azure Arc API reference for managing connected machines, machine extensions, run commands, gateways, licenses, license profiles, private link scopes, and related HybridCompute resources. Package api-version 2026-06-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

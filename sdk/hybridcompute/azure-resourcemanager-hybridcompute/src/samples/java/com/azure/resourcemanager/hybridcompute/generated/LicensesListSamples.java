@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class LicensesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_ListBySubscription.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_ListBySubscription.json
      */
     /**
      * Sample code: List Licenses by Subscription.

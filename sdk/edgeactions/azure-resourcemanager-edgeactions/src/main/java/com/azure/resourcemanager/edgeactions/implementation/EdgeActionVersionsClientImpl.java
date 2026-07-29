@@ -990,7 +990,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1014,7 +1014,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1036,7 +1036,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1059,7 +1059,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1082,7 +1082,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1102,7 +1102,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1125,7 +1125,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1144,7 +1144,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1162,7 +1162,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * The deployVersionCode operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

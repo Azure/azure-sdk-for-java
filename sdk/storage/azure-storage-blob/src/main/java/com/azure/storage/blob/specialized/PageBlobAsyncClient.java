@@ -22,6 +22,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.PageBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
@@ -56,8 +57,11 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -450,7 +454,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
+        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -488,15 +492,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
-     *
-     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
+     * @deprecated Use {@link #uploadPagesWithResponse(PageRange, Flux, PageBlobUploadPagesOptions)}. The optional
+     * parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also forward-compatible with
+     * future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
-        if (body == null) {
-            return Mono.error(new NullPointerException("'body' cannot be null."));
-        }
         try {
             return withContext(
                 context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, context));
@@ -505,22 +508,55 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Writes one or more pages to the page blob with options.
+     *
+     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
+     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
+     * are 0-511, 512-1023, etc.
+     * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
+     * default). In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
+     * @return A reactive response containing the information of the uploaded pages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
+        PageBlobUploadPagesOptions options) {
+        try {
+            return withContext(context -> uploadPagesWithResponseInternal(pageRange, body, options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Context context) {
-        pageBlobRequestConditions
-            = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
+        // Prevents revapi visibility increased error
+        return uploadPagesWithResponseInternal(pageRange, body,
+            new PageBlobUploadPagesOptions().setContentMd5(contentMd5).setRequestConditions(pageBlobRequestConditions),
+            context);
+    }
 
+    Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
+        PageBlobUploadPagesOptions options, Context context) {
         if (pageRange == null) {
-            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
-            // subscription.
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'pageRange' cannot be null."));
         }
+        if (body == null) {
+            return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
+        }
+        PageBlobUploadPagesOptions opts = options == null ? new PageBlobUploadPagesOptions() : options;
+        PageBlobRequestConditions pageBlobRequestConditions
+            = opts.getRequestConditions() == null ? new PageBlobRequestConditions() : opts.getRequestConditions();
+
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
-        context = context == null ? Context.NONE : context;
+        long length = pageRange.getEnd() - pageRange.getStart() + 1;
+        context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
+            opts.getContentValidationAlgorithm(), length, false);
 
         return this.azureBlobStorage.getPageBlobs()
-            .uploadPagesWithResponseAsync(containerName, blobName, pageRange.getEnd() - pageRange.getStart() + 1, body,
-                contentMd5, null, null, pageRangeStr, pageBlobRequestConditions.getLeaseId(),
+            .uploadPagesWithResponseAsync(containerName, blobName, length, body, opts.getContentMd5(), null, null,
+                pageRangeStr, pageBlobRequestConditions.getLeaseId(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
@@ -529,9 +565,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 null, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobSequenceNumber());
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -720,8 +756,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), null);
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }

@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,7 +42,7 @@ public final class StacMosaicConfiguration implements JsonSerializable<StacMosai
      * A list of CQL-JSON expressions to use as the default for this collection.
      */
     @Generated
-    private Map<String, Object> defaultCustomQuery;
+    private Map<String, BinaryData> defaultCustomQuery;
 
     /**
      * Creates an instance of StacMosaicConfiguration class.
@@ -91,7 +92,7 @@ public final class StacMosaicConfiguration implements JsonSerializable<StacMosai
      * @return the defaultCustomQuery value.
      */
     @Generated
-    public Map<String, Object> getDefaultCustomQuery() {
+    public Map<String, BinaryData> getDefaultCustomQuery() {
         return this.defaultCustomQuery;
     }
 
@@ -105,8 +106,13 @@ public final class StacMosaicConfiguration implements JsonSerializable<StacMosai
         jsonWriter.writeArrayField("mosaics", this.mosaics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("renderOptions", this.renderOptions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("defaultLocation", this.defaultLocation);
-        jsonWriter.writeMapField("defaultCustomQuery", this.defaultCustomQuery,
-            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("defaultCustomQuery", this.defaultCustomQuery, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -125,7 +131,7 @@ public final class StacMosaicConfiguration implements JsonSerializable<StacMosai
             List<StacMosaic> mosaics = null;
             List<RenderOption> renderOptions = null;
             DefaultLocation defaultLocation = null;
-            Map<String, Object> defaultCustomQuery = null;
+            Map<String, BinaryData> defaultCustomQuery = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -137,7 +143,8 @@ public final class StacMosaicConfiguration implements JsonSerializable<StacMosai
                 } else if ("defaultLocation".equals(fieldName)) {
                     defaultLocation = DefaultLocation.fromJson(reader);
                 } else if ("defaultCustomQuery".equals(fieldName)) {
-                    defaultCustomQuery = reader.readMap(reader1 -> reader1.readUntyped());
+                    defaultCustomQuery = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }

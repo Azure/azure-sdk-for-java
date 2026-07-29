@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class ExtensionTypeListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionType_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionType_List.json
      */
     /**
      * Sample code: GET a list of extension types.

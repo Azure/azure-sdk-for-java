@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.GeoBackupPolicyName;
  */
 public final class GeoBackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GeoBackupPoliciesGet.json
+     * x-ms-original-file: 2025-01-01/GeoBackupPoliciesGet.json
      */
     /**
      * Sample code: Gets the specified Geo backup policy.

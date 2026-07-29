@@ -69,7 +69,9 @@
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
+    <module>sdk/containerserviceaimanager</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicepreparedimgspec</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/contentunderstanding</module>
@@ -118,6 +120,7 @@
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
+    <module>sdk/enclave</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
@@ -282,7 +285,6 @@
     <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voicelive</module>

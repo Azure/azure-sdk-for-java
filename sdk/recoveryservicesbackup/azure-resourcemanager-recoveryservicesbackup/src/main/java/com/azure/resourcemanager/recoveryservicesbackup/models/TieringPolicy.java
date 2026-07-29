@@ -19,6 +19,7 @@ import java.io.IOException;
 @Fluent
 public final class TieringPolicy implements JsonSerializable<TieringPolicy> {
     /*
+     * 
      * Tiering Mode to control automatic tiering of recovery points. Supported values are:
      * 1. TierRecommended: Tier all recovery points recommended to be tiered
      * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
@@ -45,7 +46,8 @@ public final class TieringPolicy implements JsonSerializable<TieringPolicy> {
     }
 
     /**
-     * Get the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
+     * Get the tieringMode property:
+     * Tiering Mode to control automatic tiering of recovery points. Supported values are:
      * 1. TierRecommended: Tier all recovery points recommended to be tiered
      * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
      * 3. DoNotTier: Do not tier any recovery points.
@@ -57,7 +59,8 @@ public final class TieringPolicy implements JsonSerializable<TieringPolicy> {
     }
 
     /**
-     * Set the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
+     * Set the tieringMode property:
+     * Tiering Mode to control automatic tiering of recovery points. Supported values are:
      * 1. TierRecommended: Tier all recovery points recommended to be tiered
      * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
      * 3. DoNotTier: Do not tier any recovery points.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceDtcsListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceDtcList.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceDtcList.json
      */
     /**
      * Sample code: Gets a list of managed instance DTC settings.
