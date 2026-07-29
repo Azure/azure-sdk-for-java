@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class PreparedImageSpecificationsCreateOrSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_CreateOrUpdate.json
      */
     /**
      * Sample code: PreparedImageSpecifications_CreateOrUpdate.

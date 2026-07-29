@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PreparedImageSpecificationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_Update.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_Update.json
      */
     /**
      * Sample code: PreparedImageSpecifications_Update.

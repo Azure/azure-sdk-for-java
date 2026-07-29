@@ -36,8 +36,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicepreparedimgspec.fluent.PreparedImageSpecificationsClient;
 import com.azure.resourcemanager.containerservicepreparedimgspec.fluent.models.PreparedImageSpecificationInner;
 import com.azure.resourcemanager.containerservicepreparedimgspec.fluent.models.PreparedImageSpecificationVersionInner;
-import com.azure.resourcemanager.containerservicepreparedimgspec.implementation.models.PreparedImageSpecificationListResult;
-import com.azure.resourcemanager.containerservicepreparedimgspec.implementation.models.PreparedImageSpecificationVersionListResult;
+import com.azure.resourcemanager.containerservicepreparedimgspec.implementation.models.PreparedImgSpecListResult;
+import com.azure.resourcemanager.containerservicepreparedimgspec.implementation.models.PreparedImgSpecVersionListResult;
 import com.azure.resourcemanager.containerservicepreparedimgspec.models.PreparedImageSpecificationPatch;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -181,7 +181,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<PreparedImgSpecListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -190,7 +190,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<PreparedImgSpecListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -199,7 +199,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/preparedImageSpecifications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<PreparedImgSpecListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -207,7 +207,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/preparedImageSpecifications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationListResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<PreparedImgSpecListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -235,7 +235,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationVersionListResult>> listVersions(@HostParam("endpoint") String endpoint,
+        Mono<Response<PreparedImgSpecVersionListResult>> listVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("preparedImageSpecificationName") String preparedImageSpecificationName,
@@ -245,7 +245,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationVersionListResult> listVersionsSync(@HostParam("endpoint") String endpoint,
+        Response<PreparedImgSpecVersionListResult> listVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("preparedImageSpecificationName") String preparedImageSpecificationName,
@@ -255,7 +255,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationListResult>> listByResourceGroupNext(
+        Mono<Response<PreparedImgSpecListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -263,7 +263,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationListResult> listByResourceGroupNextSync(
+        Response<PreparedImgSpecListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -271,7 +271,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationListResult>> listBySubscriptionNext(
+        Mono<Response<PreparedImgSpecListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -279,7 +279,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationListResult> listBySubscriptionNextSync(
+        Response<PreparedImgSpecListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -287,7 +287,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreparedImageSpecificationVersionListResult>> listVersionsNext(
+        Mono<Response<PreparedImgSpecVersionListResult>> listVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -295,7 +295,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<PreparedImageSpecificationVersionListResult> listVersionsNextSync(
+        Response<PreparedImgSpecVersionListResult> listVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -1276,7 +1276,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupSinglePage(String resourceGroupName) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<PreparedImgSpecListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1296,7 +1296,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<PreparedImgSpecListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1378,7 +1378,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listSinglePage() {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res = service.listSync(this.client.getEndpoint(),
+        Response<PreparedImgSpecListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1396,7 +1396,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listSinglePage(Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res = service.listSync(this.client.getEndpoint(),
+        Response<PreparedImgSpecListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1566,7 +1566,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsSinglePage(String resourceGroupName,
         String preparedImageSpecificationName) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationVersionListResult> res = service.listVersionsSync(this.client.getEndpoint(),
+        Response<PreparedImgSpecVersionListResult> res = service.listVersionsSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
             preparedImageSpecificationName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1588,7 +1588,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsSinglePage(String resourceGroupName,
         String preparedImageSpecificationName, Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationVersionListResult> res
+        Response<PreparedImgSpecVersionListResult> res
             = service.listVersionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, preparedImageSpecificationName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1667,7 +1667,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res
+        Response<PreparedImgSpecListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1687,7 +1687,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res
+        Response<PreparedImgSpecListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1727,7 +1727,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationInner> listBySubscriptionNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res
+        Response<PreparedImgSpecListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1747,7 +1747,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationInner> listBySubscriptionNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationListResult> res
+        Response<PreparedImgSpecListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1786,7 +1786,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationVersionListResult> res
+        Response<PreparedImgSpecVersionListResult> res
             = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1806,7 +1806,7 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     private PagedResponse<PreparedImageSpecificationVersionInner> listVersionsNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
-        Response<PreparedImageSpecificationVersionListResult> res
+        Response<PreparedImgSpecVersionListResult> res
             = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

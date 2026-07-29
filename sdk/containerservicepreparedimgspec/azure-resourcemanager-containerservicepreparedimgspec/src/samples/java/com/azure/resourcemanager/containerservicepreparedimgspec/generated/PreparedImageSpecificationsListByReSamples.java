@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicepreparedimgspec.generated;
  */
 public final class PreparedImageSpecificationsListByReSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_ListByResourceGroup.json
      */
     /**
      * Sample code: PreparedImageSpecifications_ListByResourceGroup.

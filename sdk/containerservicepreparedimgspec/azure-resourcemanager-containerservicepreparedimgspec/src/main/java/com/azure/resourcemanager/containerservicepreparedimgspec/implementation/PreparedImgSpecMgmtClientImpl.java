@@ -172,7 +172,7 @@ public final class PreparedImgSpecMgmtClientImpl implements PreparedImgSpecMgmtC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-02-02-preview";
+        this.apiVersion = "2026-05-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.preparedImageSpecifications = new PreparedImageSpecificationsClientImpl(this);
     }

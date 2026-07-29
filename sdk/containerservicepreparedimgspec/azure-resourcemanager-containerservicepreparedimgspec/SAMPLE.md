@@ -24,7 +24,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/Operations_List.json
+     * x-ms-original-file: 2026-05-02-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public final class PreparedImageSpecificationsCreateOrSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_CreateOrUpdate.json
      */
     /**
      * Sample code: PreparedImageSpecifications_CreateOrUpdate.
@@ -103,7 +103,7 @@ public final class PreparedImageSpecificationsCreateOrSamples {
  */
 public final class PreparedImageSpecificationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_Delete.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_Delete.json
      */
     /**
      * Sample code: PreparedImageSpecifications_Delete.
@@ -126,7 +126,7 @@ public final class PreparedImageSpecificationsDeleteSamples {
  */
 public final class PreparedImageSpecificationsDeleteVeSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_DeleteVersion.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_DeleteVersion.json
      */
     /**
      * Sample code: PreparedImageSpecifications_DeleteVersion.
@@ -150,7 +150,7 @@ public final class PreparedImageSpecificationsDeleteVeSamples {
  */
 public final class PreparedImageSpecificationsGetByResSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_Get.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_Get.json
      */
     /**
      * Sample code: PreparedImageSpecifications_Get.
@@ -173,7 +173,7 @@ public final class PreparedImageSpecificationsGetByResSamples {
  */
 public final class PreparedImageSpecificationsGetVersiSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_GetVersion.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_GetVersion.json
      */
     /**
      * Sample code: PreparedImageSpecifications_GetVersion.
@@ -197,7 +197,7 @@ public final class PreparedImageSpecificationsGetVersiSamples {
  */
 public final class PreparedImageSpecificationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_ListBySubscription.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_ListBySubscription.json
      */
     /**
      * Sample code: PreparedImageSpecifications_ListBySubscription.
@@ -219,7 +219,7 @@ public final class PreparedImageSpecificationsListSamples {
  */
 public final class PreparedImageSpecificationsListByReSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_ListByResourceGroup.json
      */
     /**
      * Sample code: PreparedImageSpecifications_ListByResourceGroup.
@@ -241,7 +241,7 @@ public final class PreparedImageSpecificationsListByReSamples {
  */
 public final class PreparedImageSpecificationsListVersSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_ListVersions.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_ListVersions.json
      */
     /**
      * Sample code: PreparedImageSpecifications_ListVersions.
@@ -268,7 +268,7 @@ import java.util.Map;
  */
 public final class PreparedImageSpecificationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-02-preview/PreparedImageSpecifications_Update.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_Update.json
      */
     /**
      * Sample code: PreparedImageSpecifications_Update.
