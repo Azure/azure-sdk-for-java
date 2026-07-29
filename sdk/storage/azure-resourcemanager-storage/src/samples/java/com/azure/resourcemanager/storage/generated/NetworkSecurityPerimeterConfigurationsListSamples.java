@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/NetworkSecurityPerimeterConfigurationList.json
+     * x-ms-original-file: 2026-04-01/NetworkSecurityPerimeterConfigurationList.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterConfigurationList.

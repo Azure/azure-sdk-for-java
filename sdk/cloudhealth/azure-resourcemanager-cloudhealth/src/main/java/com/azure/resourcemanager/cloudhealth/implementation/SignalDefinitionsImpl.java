@@ -46,14 +46,12 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName,
-        String signalDefinitionName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, signalDefinitionName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName, Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, signalDefinitionName, context);
     }
 
     public PagedIterable<SignalDefinition> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -123,10 +121,10 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -142,7 +140,7 @@ public final class SignalDefinitionsImpl implements SignalDefinitions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signaldefinitions'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, context);
+        this.delete(resourceGroupName, healthModelName, signalDefinitionName, context);
     }
 
     private SignalDefinitionsClient serviceClient() {

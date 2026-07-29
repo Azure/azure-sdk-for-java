@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RetryContext;
+import com.azure.cosmos.implementation.RetryWithRetryPolicy;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -27,7 +28,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -46,7 +46,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
-    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
@@ -55,8 +54,16 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             waitTimeInSeconds,
             this.retryContext
         );
-        this.retryWithRetryPolicy = new RetryWithRetryPolicy(waitTimeInSeconds, this.retryContext);
         this.start = Instant.now();
+        this.retryWithRetryPolicy = new RetryWithRetryPolicy(
+            waitTimeInSeconds,
+            this.retryContext,
+            () -> GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis(),
+            cosmosException -> {
+                if (cosmosException instanceof RetryWithException) {
+                    GoneAndRetryWithRetryPolicy.this.lastRetryWithException = (RetryWithException) cosmosException;
+                }
+            });
     }
 
     @Override
@@ -311,81 +318,4 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
     }
 
-    class RetryWithRetryPolicy implements IRetryPolicy {
-        private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
-        private final static int MAXIMUM_BACKOFF_TIME_IN_MS = 1000;
-        private final static int INITIAL_BACKOFF_TIME_MS = 10;
-        private final static int BACK_OFF_MULTIPLIER = 2;
-        private final static int RANDOM_SALT_IN_MS = 5;
-
-        private final AtomicInteger attemptCount = new AtomicInteger(1);
-        private final AtomicInteger currentBackoffMilliseconds = new AtomicInteger(RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS);
-
-        private final int waitTimeInSeconds;
-        private final RetryContext retryContext;
-
-        public RetryWithRetryPolicy(Integer waitTimeInSeconds, RetryContext retryContext) {
-            this.waitTimeInSeconds = waitTimeInSeconds != null ? waitTimeInSeconds : DEFAULT_WAIT_TIME_IN_SECONDS;
-            this.retryContext = retryContext;
-        }
-
-        @Override
-        public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-            Duration backoffTime;
-            Duration timeout;
-
-            if (!(exception instanceof RetryWithException)) {
-                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount.get(),
-                    exception);
-                return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
-            }
-
-            RetryWithException lastRetryWithException = (RetryWithException)exception;
-            GoneAndRetryWithRetryPolicy.this.lastRetryWithException = lastRetryWithException;
-
-            long remainingMilliseconds =
-                (this.waitTimeInSeconds * 1_000L) -
-                    GoneAndRetryWithRetryPolicy.this.getElapsedTime().toMillis();
-            int currentRetryAttemptCount = this.attemptCount.getAndIncrement();
-
-            if (remainingMilliseconds <= 0) {
-                logger.warn("Received RetryWithException after backoff/retry. Will fail the request.",
-                    lastRetryWithException);
-                return Mono.just(ShouldRetryResult.error(lastRetryWithException));
-            }
-
-            backoffTime = Duration.ofMillis(
-                Math.min(
-                    Math.min(this.currentBackoffMilliseconds.get() + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
-                    RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS));
-
-            this.currentBackoffMilliseconds.set(
-                Math.max(
-                    RetryWithRetryPolicy.INITIAL_BACKOFF_TIME_MS,
-                    Math.min(
-                        RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS,
-                        this.currentBackoffMilliseconds.get() * RetryWithRetryPolicy.BACK_OFF_MULTIPLIER))
-            );
-
-            logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());
-
-            // Calculate the remaining time based after accounting for the backoff that we
-            // will perform
-            long timeoutInMillSec = remainingMilliseconds - backoffTime.toMillis();
-            timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
-                : Duration.ofMillis(RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS);
-
-            logger.debug("Received RetryWithException, will retry, ", exception);
-
-            // For RetryWithException, prevent the caller
-            // from refreshing any caches.
-            return Mono.just(ShouldRetryResult.retryAfter(backoffTime,
-                Quadruple.with(false, true, timeout, currentRetryAttemptCount)));
-        }
-
-        @Override
-        public RetryContext getRetryContext() {
-            return this.retryContext;
-        }
-    }
 }

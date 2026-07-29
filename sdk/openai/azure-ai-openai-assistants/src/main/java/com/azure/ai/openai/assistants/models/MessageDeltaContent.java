@@ -98,10 +98,10 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("image_file".equals(discriminatorValue)) {
-                    return MessageDeltaImageFileContent.fromJson(readerToUse.reset());
-                } else if ("text".equals(discriminatorValue)) {
+                if ("text".equals(discriminatorValue)) {
                     return MessageDeltaTextContentObject.fromJson(readerToUse.reset());
+                } else if ("image_file".equals(discriminatorValue)) {
+                    return MessageDeltaImageFileContent.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

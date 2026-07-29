@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteFiltersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteFilterDelete.json
+     * x-ms-original-file: 2025-07-01/RouteFilterDelete.json
      */
     /**
      * Sample code: RouteFilterDelete.

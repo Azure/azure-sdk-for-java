@@ -67,7 +67,10 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     @Override
     public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
+        replicaClient.getTracingInfo().resetAiConfigurationTracing();
+
         List<String> labels = new ArrayList<>(Arrays.asList(labelFilters));
+
         // Reverse labels so they have the right priority order.
         Collections.reverse(labels);
 
@@ -88,6 +91,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
+            replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
                 keyPrefixTrimValues.add(keyFilter.substring(0, keyFilter.length() - 1));

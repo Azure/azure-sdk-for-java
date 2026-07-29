@@ -11,6 +11,6 @@ public final class SupportedFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedFeature model
-            = BinaryData.fromString("{\"name\":\"hqyikvy\",\"status\":\"Enabled\"}").toObject(SupportedFeature.class);
+            = BinaryData.fromString("{\"name\":\"uxrkjp\",\"status\":\"Enabled\"}").toObject(SupportedFeature.class);
     }
 }

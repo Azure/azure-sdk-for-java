@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class UsersGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/MongoClusters_UserGet.json
+     * x-ms-original-file: 2026-06-01/MongoClusters_UserGet.json
      */
     /**
      * Sample code: Gets a user on a Mongo Cluster resource.

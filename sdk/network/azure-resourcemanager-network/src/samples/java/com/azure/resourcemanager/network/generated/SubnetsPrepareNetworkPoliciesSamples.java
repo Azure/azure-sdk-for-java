@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
  */
 public final class SubnetsPrepareNetworkPoliciesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SubnetPrepareNetworkPolicies.json
+     * x-ms-original-file: 2025-07-01/SubnetPrepareNetworkPolicies.json
      */
     /**
      * Sample code: Prepare Network Policies.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayDelete.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayDelete.json
      */
     /**
      * Sample code: Delete ApplicationGateway.

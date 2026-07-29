@@ -122,7 +122,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String singletonResource = "swap";
         final String accept = "application/json";
         return FluxUtil
@@ -161,7 +161,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String singletonResource = "swap";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -254,7 +254,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String singletonResource = "swap";
         final String contentType = "application/json";
         return FluxUtil
@@ -299,7 +299,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String singletonResource = "swap";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
@@ -485,7 +485,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -523,7 +523,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,

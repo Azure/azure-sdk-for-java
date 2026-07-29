@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnSource.
@@ -48,7 +48,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnDestination.
@@ -79,7 +79,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnDestination.
@@ -103,7 +103,7 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: 2026-04-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnSource.

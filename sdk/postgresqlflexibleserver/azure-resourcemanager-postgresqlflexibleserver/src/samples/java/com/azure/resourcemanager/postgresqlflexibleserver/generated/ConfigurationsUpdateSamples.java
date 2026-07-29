@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
  */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ConfigurationsUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/ConfigurationsUpdate.json
      */
     /**
      * Sample code: Update the value assigned to a specific modifiable configuration (also known as server parameter) of

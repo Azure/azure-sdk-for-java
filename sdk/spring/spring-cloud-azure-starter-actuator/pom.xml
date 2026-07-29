@@ -69,7 +69,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -110,7 +110,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

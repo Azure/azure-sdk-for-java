@@ -22,7 +22,7 @@ public final class FeaturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"id\":\"a\",\"name\":\"a\",\"type\":\"hrzayvvtpgvdf\"}";
+            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"id\":\"ryocfsfksymdd\",\"name\":\"stkiiuxhqyud\",\"type\":\"o\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class FeaturesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Feature response = manager.features()
-            .getWithResponse("ciwqvhk", "ixuigdtopbobj", com.azure.core.util.Context.NONE)
+            .getWithResponse("uaxbezyiuokkt", "hrdxwzywqsmbs", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(FeatureState.ENABLED, response.properties().state());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetLifeCycleHookEventsListSamples {
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
+     * x-ms-original-file: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
      */
     /**
      * Sample code: Gets a list of all lifecycle hook events in a virtual machine scale set.

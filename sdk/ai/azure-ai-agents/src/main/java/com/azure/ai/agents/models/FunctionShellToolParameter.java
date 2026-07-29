@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Shell tool
@@ -81,6 +82,7 @@ public final class FunctionShellToolParameter extends Tool {
         jsonWriter.writeJsonField("environment", this.environment);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +110,9 @@ public final class FunctionShellToolParameter extends Tool {
                     deserializedFunctionShellToolParameter.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedFunctionShellToolParameter.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedFunctionShellToolParameter.toolConfigs = toolConfigs;
                 } else {
                     reader.skipChildren();
                 }
@@ -117,19 +122,25 @@ public final class FunctionShellToolParameter extends Tool {
     }
 
     /*
-     * Optional user-defined name for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String name;
 
     /*
-     * Optional user-defined description for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String description;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the name value.
      */
@@ -139,7 +150,7 @@ public final class FunctionShellToolParameter extends Tool {
     }
 
     /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param name the name value to set.
      * @return the FunctionShellToolParameter object itself.
@@ -151,7 +162,7 @@ public final class FunctionShellToolParameter extends Tool {
     }
 
     /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the description value.
      */
@@ -161,7 +172,7 @@ public final class FunctionShellToolParameter extends Tool {
     }
 
     /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param description the description value to set.
      * @return the FunctionShellToolParameter object itself.
@@ -169,6 +180,28 @@ public final class FunctionShellToolParameter extends Tool {
     @Generated
     public FunctionShellToolParameter setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the FunctionShellToolParameter object itself.
+     */
+    @Generated
+    public FunctionShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

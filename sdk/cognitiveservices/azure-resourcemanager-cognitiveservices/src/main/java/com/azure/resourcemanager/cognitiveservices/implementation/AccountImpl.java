@@ -12,6 +12,8 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesRequest;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesResponse;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
@@ -177,6 +179,16 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public ApiKeys regenerateKey(RegenerateKeyParameters parameters) {
         return serviceManager.accounts().regenerateKey(resourceGroupName, accountName, parameters);
+    }
+
+    public Response<EvaluateDeploymentPoliciesResponse>
+        evaluateDeploymentPoliciesWithResponse(EvaluateDeploymentPoliciesRequest body, Context context) {
+        return serviceManager.accounts()
+            .evaluateDeploymentPoliciesWithResponse(resourceGroupName, accountName, body, context);
+    }
+
+    public EvaluateDeploymentPoliciesResponse evaluateDeploymentPolicies(EvaluateDeploymentPoliciesRequest body) {
+        return serviceManager.accounts().evaluateDeploymentPolicies(resourceGroupName, accountName, body);
     }
 
     public AccountImpl withRegion(Region location) {

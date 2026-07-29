@@ -6,12 +6,17 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
+
+import java.util.List;
+
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
+import com.azure.communication.callautomation.models.MoveParticipantsOptions;
+import com.azure.communication.callautomation.models.MoveParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
@@ -222,6 +227,35 @@ public final class CallConnection {
     public Response<RemoveParticipantResult>
         removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
         return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param targetParticipants participants to move.
+     * @param fromCall The CallConnectionId for the call you want to move the participant from.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MoveParticipantsResult moveParticipants(List<CommunicationIdentifier> targetParticipants, String fromCall) {
+        return callConnectionAsync.moveParticipants(targetParticipants, fromCall).block();
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param moveParticipantsOptions Options bag for moveParticipants
+     * @param context A {@link Context} representing the request context.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MoveParticipantsResult>
+        moveParticipantsWithResponse(MoveParticipantsOptions moveParticipantsOptions, Context context) {
+        return callConnectionAsync.moveParticipantsWithResponseInternal(moveParticipantsOptions, context).block();
     }
 
     /**

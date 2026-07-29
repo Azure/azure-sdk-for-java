@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkManagerRoutingConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingConfigurationDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingConfigurationDelete.json
      */
     /**
      * Sample code: Delete network manager routing configuration.

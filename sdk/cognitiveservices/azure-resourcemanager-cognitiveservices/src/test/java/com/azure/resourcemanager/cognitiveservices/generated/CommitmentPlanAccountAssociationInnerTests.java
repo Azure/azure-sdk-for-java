@@ -14,21 +14,20 @@ public final class CommitmentPlanAccountAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountId\":\"xmubyyntwlrbq\"},\"etag\":\"oievseotgqrlltm\",\"tags\":{\"efuzmuvpbttd\":\"auwzizxbmpgc\",\"pglkf\":\"morppxebmnzbtbh\",\"phsdyhto\":\"ohdneuel\",\"v\":\"fikdowwqu\"},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"}")
+            "{\"properties\":{\"accountId\":\"v\"},\"etag\":\"k\",\"tags\":{\"vblm\":\"qwjygvja\",\"byrqufeg\":\"vkzuhbxvvyhgso\",\"mctlpdngitv\":\"uvwzfbnh\",\"grhbpn\":\"bmhrixkwmyijejv\"},\"id\":\"xexccbdreaxhcexd\",\"name\":\"rvqahqkghtpwi\",\"type\":\"nhyjsv\"}")
             .toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("auwzizxbmpgc", model.tags().get("efuzmuvpbttd"));
-        Assertions.assertEquals("xmubyyntwlrbq", model.accountId());
+        Assertions.assertEquals("qwjygvja", model.tags().get("vblm"));
+        Assertions.assertEquals("v", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAccountAssociationInner model = new CommitmentPlanAccountAssociationInner()
-            .withTags(mapOf("efuzmuvpbttd", "auwzizxbmpgc", "pglkf", "morppxebmnzbtbh", "phsdyhto", "ohdneuel", "v",
-                "fikdowwqu"))
-            .withAccountId("xmubyyntwlrbq");
+        CommitmentPlanAccountAssociationInner model
+            = new CommitmentPlanAccountAssociationInner().withTags(mapOf("vblm", "qwjygvja", "byrqufeg",
+                "vkzuhbxvvyhgso", "mctlpdngitv", "uvwzfbnh", "grhbpn", "bmhrixkwmyijejv")).withAccountId("v");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("auwzizxbmpgc", model.tags().get("efuzmuvpbttd"));
-        Assertions.assertEquals("xmubyyntwlrbq", model.accountId());
+        Assertions.assertEquals("qwjygvja", model.tags().get("vblm"));
+        Assertions.assertEquals("v", model.accountId());
     }
 
     // Use "Map.of" if available

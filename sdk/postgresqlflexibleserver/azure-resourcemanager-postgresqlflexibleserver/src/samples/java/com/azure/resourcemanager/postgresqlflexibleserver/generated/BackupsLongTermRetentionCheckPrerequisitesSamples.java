@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrPreBackupReq
  */
 public final class BackupsLongTermRetentionCheckPrerequisitesSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
+     * x-ms-original-file: 2026-04-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
      */
     /**
      * Sample code: Perform all checks required for a long term retention backup operation to succeed.

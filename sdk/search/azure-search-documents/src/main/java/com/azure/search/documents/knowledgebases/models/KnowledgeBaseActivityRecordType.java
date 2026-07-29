@@ -78,4 +78,64 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
      */
     @Generated
     public static final KnowledgeBaseActivityRecordType MODEL_WEB_SUMMARIZATION = fromString("modelWebSummarization");
+
+    /**
+     * Indexed SharePoint retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType INDEXED_SHARE_POINT = fromString("indexedSharePoint");
+
+    /**
+     * Remote SharePoint retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType REMOTE_SHARE_POINT = fromString("remoteSharePoint");
+
+    /**
+     * WorkIQ retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType WORK_IQ = fromString("workIQ");
+
+    /**
+     * Fabric Data Agent retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType FABRIC_DATA_AGENT = fromString("fabricDataAgent");
+
+    /**
+     * Fabric Ontology retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType FABRIC_ONTOLOGY = fromString("fabricOntology");
+
+    /**
+     * LLM query planning activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MODEL_QUERY_PLANNING = fromString("modelQueryPlanning");
+
+    /**
+     * LLM answer synthesis activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MODEL_ANSWER_SYNTHESIS = fromString("modelAnswerSynthesis");
+
+    /**
+     * MCP server retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType MCP_SERVER = fromString("mcpServer");
+
+    /**
+     * File retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType FILE = fromString("file");
+
+    /**
+     * Indexed SQL retrieval activity.
+     */
+    @Generated
+    public static final KnowledgeBaseActivityRecordType INDEXED_SQL = fromString("indexedSql");
 }

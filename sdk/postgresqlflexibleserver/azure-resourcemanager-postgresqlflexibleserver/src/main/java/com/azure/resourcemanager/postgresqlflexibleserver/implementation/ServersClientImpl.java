@@ -37,9 +37,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrateNetworkStatusInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.StartMajorVersionUpgradePrecheckResponseInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.models.ServerList;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -256,6 +258,24 @@ public final class ServersClientImpl implements ServersClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/startMajorVersionUpgradePrecheck")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startMajorVersionUpgradePrecheck(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StartMajorVersionUpgradePrecheckRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/startMajorVersionUpgradePrecheck")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startMajorVersionUpgradePrecheckSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StartMajorVersionUpgradePrecheckRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1551,16 +1571,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation along with {@link Response} on successful completion of
+     * @return status of a network migration operation along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1574,16 +1592,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation along with {@link Response}.
+     * @return status of a network migration operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateNetworkModeWithResponse(String resourceGroupName, String serverName) {
@@ -1593,9 +1609,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1603,7 +1617,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation along with {@link Response}.
+     * @return status of a network migration operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateNetworkModeWithResponse(String resourceGroupName, String serverName,
@@ -1614,16 +1628,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the status of a network migration operation.
+     * @return the {@link PollerFlux} for polling of status of a network migration operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MigrateNetworkStatusInner>, MigrateNetworkStatusInner>
@@ -1635,16 +1647,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of a network migration operation.
+     * @return the {@link SyncPoller} for polling of status of a network migration operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateNetworkStatusInner>, MigrateNetworkStatusInner>
@@ -1655,9 +1665,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1665,7 +1673,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of a network migration operation.
+     * @return the {@link SyncPoller} for polling of status of a network migration operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MigrateNetworkStatusInner>, MigrateNetworkStatusInner>
@@ -1676,16 +1684,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation on successful completion of {@link Mono}.
+     * @return status of a network migration operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateNetworkStatusInner> migrateNetworkModeAsync(String resourceGroupName, String serverName) {
@@ -1694,16 +1700,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation.
+     * @return status of a network migration operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateNetworkStatusInner migrateNetworkMode(String resourceGroupName, String serverName) {
@@ -1711,9 +1715,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Migrates the network configuration of a PostgreSQL flexible server from customer owned VNET to Microsoft owned
-     * VNET with support for private endpoints, or from Microsoft owned VNET with no support for private endpoints to
-     * Microsoft owned VNET with support for private endpoints.
+     * Migrates an Azure Database for PostgreSQL server from VNet integration to a Private Link network model.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1721,11 +1723,202 @@ public final class ServersClientImpl implements ServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a network migration operation.
+     * @return status of a network migration operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateNetworkStatusInner migrateNetworkMode(String resourceGroupName, String serverName, Context context) {
         return beginMigrateNetworkMode(resourceGroupName, serverName, context).getFinalResult();
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startMajorVersionUpgradePrecheckWithResponseAsync(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.startMajorVersionUpgradePrecheck(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, serverName,
+                contentType, accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startMajorVersionUpgradePrecheckWithResponse(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.startMajorVersionUpgradePrecheckSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, body, Context.NONE);
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startMajorVersionUpgradePrecheckWithResponse(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.startMajorVersionUpgradePrecheckSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, body, context);
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response model for starting a major version upgrade precheck.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<StartMajorVersionUpgradePrecheckResponseInner>, StartMajorVersionUpgradePrecheckResponseInner>
+        beginStartMajorVersionUpgradePrecheckAsync(String resourceGroupName, String serverName,
+            StartMajorVersionUpgradePrecheckRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startMajorVersionUpgradePrecheckWithResponseAsync(resourceGroupName, serverName, body);
+        return this.client
+            .<StartMajorVersionUpgradePrecheckResponseInner, StartMajorVersionUpgradePrecheckResponseInner>getLroResult(
+                mono, this.client.getHttpPipeline(), StartMajorVersionUpgradePrecheckResponseInner.class,
+                StartMajorVersionUpgradePrecheckResponseInner.class, this.client.getContext());
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response model for starting a major version upgrade precheck.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<StartMajorVersionUpgradePrecheckResponseInner>, StartMajorVersionUpgradePrecheckResponseInner>
+        beginStartMajorVersionUpgradePrecheck(String resourceGroupName, String serverName,
+            StartMajorVersionUpgradePrecheckRequest body) {
+        Response<BinaryData> response
+            = startMajorVersionUpgradePrecheckWithResponse(resourceGroupName, serverName, body);
+        return this.client
+            .<StartMajorVersionUpgradePrecheckResponseInner, StartMajorVersionUpgradePrecheckResponseInner>getLroResult(
+                response, StartMajorVersionUpgradePrecheckResponseInner.class,
+                StartMajorVersionUpgradePrecheckResponseInner.class, Context.NONE);
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response model for starting a major version upgrade precheck.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<StartMajorVersionUpgradePrecheckResponseInner>, StartMajorVersionUpgradePrecheckResponseInner>
+        beginStartMajorVersionUpgradePrecheck(String resourceGroupName, String serverName,
+            StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        Response<BinaryData> response
+            = startMajorVersionUpgradePrecheckWithResponse(resourceGroupName, serverName, body, context);
+        return this.client
+            .<StartMajorVersionUpgradePrecheckResponseInner, StartMajorVersionUpgradePrecheckResponseInner>getLroResult(
+                response, StartMajorVersionUpgradePrecheckResponseInner.class,
+                StartMajorVersionUpgradePrecheckResponseInner.class, context);
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartMajorVersionUpgradePrecheckResponseInner> startMajorVersionUpgradePrecheckAsync(
+        String resourceGroupName, String serverName, StartMajorVersionUpgradePrecheckRequest body) {
+        return beginStartMajorVersionUpgradePrecheckAsync(resourceGroupName, serverName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartMajorVersionUpgradePrecheckResponseInner startMajorVersionUpgradePrecheck(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body) {
+        return beginStartMajorVersionUpgradePrecheck(resourceGroupName, serverName, body).getFinalResult();
+    }
+
+    /**
+     * Start Major Version Upgrade Prechecks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for starting a major version upgrade precheck.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartMajorVersionUpgradePrecheckResponseInner startMajorVersionUpgradePrecheck(String resourceGroupName,
+        String serverName, StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        return beginStartMajorVersionUpgradePrecheck(resourceGroupName, serverName, body, context).getFinalResult();
     }
 
     /**

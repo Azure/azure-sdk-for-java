@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtractionOptions;
+import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
 import com.azure.search.documents.indexes.models.EntityCategory;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
@@ -69,6 +70,7 @@ import static com.azure.search.documents.TestHelpers.ifMatch;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -90,9 +92,6 @@ public class SkillsetManagementTests extends SearchTestBase {
         // Disable `("$..source")` sanitizer
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3423");
-            // interceptorManager.addSanitizers(new TestProxySanitizer("$..cognitiveServices.key",
-            //     TestProxyUtils.HOST_NAME_REGEX, "REDACTED", TestProxySanitizerType.BODY_KEY));
-
         }
         client = getSearchIndexerClientBuilder(true)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -979,6 +978,61 @@ public class SkillsetManagementTests extends SearchTestBase {
     //            || ex.getMessage().contains("unsupported")
     //            || ex.getMessage().contains("not supported"));
     //    }
+
+    @Test
+    public void contentUnderstandingSkillWithSemanticChunkingSerializesCorrectly() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.SEMANTIC)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.TOKENS)
+                    .setMaximumLength(500));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"@odata.type\":\"#Microsoft.Skills.Util.ContentUnderstandingSkill\""));
+        assertTrue(json.contains("\"method\":\"semantic\""));
+        assertTrue(json.contains("\"unit\":\"tokens\""));
+        assertTrue(json.contains("\"maximumLength\":500"));
+    }
+
+    @Test
+    public void contentUnderstandingSkillWithFixedSizeMethodSerializesCorrectly() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.FIXED_SIZE)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(2000)
+                    .setOverlapLength(200));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"method\":\"fixedSize\""));
+        assertTrue(json.contains("\"unit\":\"characters\""));
+        assertTrue(json.contains("\"maximumLength\":2000"));
+        assertTrue(json.contains("\"overlapLength\":200"));
+    }
+
+    @Test
+    public void contentUnderstandingSkillSemanticChunkingDoesNotIncludeOverlapLength() throws IOException {
+        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
+                    .setMethod(ContentUnderstandingSkillChunkingMethod.SEMANTIC)
+                    .setUnit(ContentUnderstandingSkillChunkingUnit.TOKENS)
+                    .setMaximumLength(500));
+
+        String json = skill.toJsonString();
+
+        assertTrue(json.contains("\"method\":\"semantic\""));
+        assertTrue(json.contains("\"unit\":\"tokens\""));
+        assertTrue(json.contains("\"maximumLength\":500"));
+        assertFalse(json.contains("\"overlapLength\""));
+    }
 
     private static InputFieldMappingEntry simpleInputFieldMappingEntry(String name, String source) {
         return new InputFieldMappingEntry(name).setSource(source);

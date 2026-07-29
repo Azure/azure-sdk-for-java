@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.HyperVGenerationType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InterconnectInstanceView;
 import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
@@ -114,6 +115,11 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
      * [Preview Feature] Specifies whether the VM is currently in or out of the Standby Pool.
      */
     private Boolean isVMInStandbyPool;
+
+    /*
+     * The Interconnect runtime view of the Virtual Machine. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectInstanceView interconnectInstanceView;
 
     /**
      * Creates an instance of VirtualMachineInstanceViewInner class.
@@ -437,6 +443,16 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
     }
 
     /**
+     * Get the interconnectInstanceView property: The Interconnect runtime view of the Virtual Machine. Minimum
+     * api-version: 2026-03-01.
+     * 
+     * @return the interconnectInstanceView value.
+     */
+    public InterconnectInstanceView interconnectInstanceView() {
+        return this.interconnectInstanceView;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -465,6 +481,9 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
         }
         if (patchStatus() != null) {
             patchStatus().validate();
+        }
+        if (interconnectInstanceView() != null) {
+            interconnectInstanceView().validate();
         }
     }
 
@@ -555,6 +574,9 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
                 } else if ("isVMInStandbyPool".equals(fieldName)) {
                     deserializedVirtualMachineInstanceViewInner.isVMInStandbyPool
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("interconnectInstanceView".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceViewInner.interconnectInstanceView
+                        = InterconnectInstanceView.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

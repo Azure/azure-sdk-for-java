@@ -12,42 +12,42 @@ import java.util.Collection;
  */
 public final class PostgresMajorVersion extends ExpandableStringEnum<PostgresMajorVersion> {
     /**
-     * Static value 18 for PostgresMajorVersion.
+     * PostgreSQL 18.
      */
     public static final PostgresMajorVersion ONE_EIGHT = fromString("18");
 
     /**
-     * Static value 17 for PostgresMajorVersion.
+     * PostgreSQL 17.
      */
     public static final PostgresMajorVersion ONE_SEVEN = fromString("17");
 
     /**
-     * Static value 16 for PostgresMajorVersion.
+     * PostgreSQL 16.
      */
     public static final PostgresMajorVersion ONE_SIX = fromString("16");
 
     /**
-     * Static value 15 for PostgresMajorVersion.
+     * PostgreSQL 15.
      */
     public static final PostgresMajorVersion ONE_FIVE = fromString("15");
 
     /**
-     * Static value 14 for PostgresMajorVersion.
+     * PostgreSQL 14.
      */
     public static final PostgresMajorVersion ONE_FOUR = fromString("14");
 
     /**
-     * Static value 13 for PostgresMajorVersion.
+     * PostgreSQL 13.
      */
     public static final PostgresMajorVersion ONE_THREE = fromString("13");
 
     /**
-     * Static value 12 for PostgresMajorVersion.
+     * PostgreSQL 12.
      */
     public static final PostgresMajorVersion ONE_TWO = fromString("12");
 
     /**
-     * Static value 11 for PostgresMajorVersion.
+     * PostgreSQL 11.
      */
     public static final PostgresMajorVersion ONE_ONE = fromString("11");
 

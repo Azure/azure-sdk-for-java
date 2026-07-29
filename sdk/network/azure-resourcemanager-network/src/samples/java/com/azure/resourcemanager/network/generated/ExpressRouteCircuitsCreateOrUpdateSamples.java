@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitCreate.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit.
@@ -43,7 +43,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRoutePort.

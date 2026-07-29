@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnGatewaysResetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnGatewayReset.json
+     * x-ms-original-file: 2025-07-01/VpnGatewayReset.json
      */
     /**
      * Sample code: ResetVpnGateway.

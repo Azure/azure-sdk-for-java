@@ -5,12 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.util.Beta;
 
 /***
  * Represents the http2 connection config associated with Cosmos Client in the Azure Cosmos DB database service.
  */
-@Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class Http2ConnectionConfig {
     private Integer maxConnectionPoolSize;
     private Integer minConnectionPoolSize;
@@ -20,7 +18,6 @@ public class Http2ConnectionConfig {
     /***
      * The constructor of Http2ConnectionConfig.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig() {
     }
 
@@ -29,7 +26,6 @@ public class Http2ConnectionConfig {
      *
      * @return the configured max number of live connections to keep in the pool.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
@@ -47,7 +43,6 @@ public class Http2ConnectionConfig {
      * If null, the default value `1000` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConnectionPoolSize(Integer maxConnectionPoolSize) {
         this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
@@ -57,7 +52,6 @@ public class Http2ConnectionConfig {
      * Get the maximum number of the concurrent streams that can be opened to the remote peer.
      * @return the maximum number of the concurrent streams that can be opened to the remote peer.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getMaxConcurrentStreams() {
         return maxConcurrentStreams;
     }
@@ -76,7 +70,6 @@ public class Http2ConnectionConfig {
      * If null, the default value `30` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMaxConcurrentStreams(Integer maxConcurrentStreams) {
         this.maxConcurrentStreams = maxConcurrentStreams;
         return this;
@@ -86,7 +79,6 @@ public class Http2ConnectionConfig {
      * Get the minimum number of live connections to keep in the pool (can be the best effort).
      * @return the minimum number of live connections to keep in the pool (can be the best effort).
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getMinConnectionPoolSize() {
         return minConnectionPoolSize;
     }
@@ -102,7 +94,6 @@ public class Http2ConnectionConfig {
      * If null, the default value `1` will be applied for http/2.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setMinConnectionPoolSize(Integer minConnectionPoolSize) {
         this.minConnectionPoolSize = minConnectionPoolSize;
 
@@ -113,7 +104,6 @@ public class Http2ConnectionConfig {
      * return the flag to indicate whether http2 is enabled.
      * @return the flag to indicate whether http2 is enabled.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Boolean isEnabled() {
         return enabled;
     }
@@ -129,7 +119,6 @@ public class Http2ConnectionConfig {
      * @param enabled the flag to indicate whether http2 is enabled.
      * @return the current {@link Http2ConnectionConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;

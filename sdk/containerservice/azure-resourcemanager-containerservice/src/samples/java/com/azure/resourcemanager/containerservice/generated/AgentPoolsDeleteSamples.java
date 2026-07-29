@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+     * x-ms-original-file: 2026-04-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
      */
     /**
      * Sample code: Delete Agent Pool by ignoring PodDisruptionBudget.
@@ -24,7 +24,7 @@ public final class AgentPoolsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-02-preview/AgentPoolsDelete.json
+     * x-ms-original-file: 2026-04-02-preview/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.

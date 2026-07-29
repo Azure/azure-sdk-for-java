@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class FileSharesGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesGet_Stats.json
+     * x-ms-original-file: 2026-04-01/FileSharesGet_Stats.json
      */
     /**
      * Sample code: GetShareStats.
@@ -23,7 +23,7 @@ public final class FileSharesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesGet_PaidBursting.json
+     * x-ms-original-file: 2026-04-01/FileSharesGet_PaidBursting.json
      */
     /**
      * Sample code: GetSharePaidBursting.
@@ -37,7 +37,7 @@ public final class FileSharesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesGet_ProvisionedV2.json
+     * x-ms-original-file: 2026-04-01/FileSharesGet_ProvisionedV2.json
      */
     /**
      * Sample code: GetShareProvisionedV2.
@@ -51,7 +51,7 @@ public final class FileSharesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileSharesGet.json
+     * x-ms-original-file: 2026-04-01/FileSharesGet.json
      */
     /**
      * Sample code: GetShares.

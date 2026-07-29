@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,11 +10,22 @@
 
 ### Other Changes
 
+## 2.12.0 (2026-06-08)
+
+### Features Added
+
 - Added support for reading the `com.microsoft:max-message-batch-size` AMQP vendor property from
   sender link remote properties, with fallback to `max-message-size` when the property is absent.
   Allows downstream messaging packages to size message batches against the broker-enforced batch
   limit, which can be smaller than `max-message-size` on Premium large-message entities.
   ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
 
 ## 2.11.4 (2026-04-28)
 

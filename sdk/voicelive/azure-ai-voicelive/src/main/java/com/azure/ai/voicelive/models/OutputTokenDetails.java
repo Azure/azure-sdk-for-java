@@ -17,48 +17,16 @@ import java.io.IOException;
 @Immutable
 public final class OutputTokenDetails implements JsonSerializable<OutputTokenDetails> {
 
-    /*
-     * Number of text tokens generated in the output.
-     */
-    @Generated
-    private final int textTokens;
-
-    /*
-     * Number of audio tokens generated in the output.
-     */
-    @Generated
-    private final int audioTokens;
-
     /**
      * Creates an instance of OutputTokenDetails class.
      *
-     * @param textTokens the textTokens value to set.
-     * @param audioTokens the audioTokens value to set.
+     * @param textTokenCount the textTokenCount value to set.
+     * @param audioTokenCount the audioTokenCount value to set.
      */
     @Generated
-    private OutputTokenDetails(int textTokens, int audioTokens) {
-        this.textTokens = textTokens;
-        this.audioTokens = audioTokens;
-    }
-
-    /**
-     * Get the textTokens property: Number of text tokens generated in the output.
-     *
-     * @return the textTokens value.
-     */
-    @Generated
-    public int getTextTokens() {
-        return this.textTokens;
-    }
-
-    /**
-     * Get the audioTokens property: Number of audio tokens generated in the output.
-     *
-     * @return the audioTokens value.
-     */
-    @Generated
-    public int getAudioTokens() {
-        return this.audioTokens;
+    private OutputTokenDetails(int textTokenCount, int audioTokenCount) {
+        this.textTokenCount = textTokenCount;
+        this.audioTokenCount = audioTokenCount;
     }
 
     /**
@@ -68,9 +36,9 @@ public final class OutputTokenDetails implements JsonSerializable<OutputTokenDet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("text_tokens", this.textTokens);
-        jsonWriter.writeIntField("audio_tokens", this.audioTokens);
-        jsonWriter.writeNumberField("reasoning_tokens", this.reasoningTokens);
+        jsonWriter.writeIntField("text_tokens", this.textTokenCount);
+        jsonWriter.writeIntField("audio_tokens", this.audioTokenCount);
+        jsonWriter.writeNumberField("reasoning_tokens", this.reasoningTokenCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,41 +54,73 @@ public final class OutputTokenDetails implements JsonSerializable<OutputTokenDet
     @Generated
     public static OutputTokenDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int textTokens = 0;
-            int audioTokens = 0;
-            Integer reasoningTokens = null;
+            int textTokenCount = 0;
+            int audioTokenCount = 0;
+            Integer reasoningTokenCount = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text_tokens".equals(fieldName)) {
-                    textTokens = reader.getInt();
+                    textTokenCount = reader.getInt();
                 } else if ("audio_tokens".equals(fieldName)) {
-                    audioTokens = reader.getInt();
+                    audioTokenCount = reader.getInt();
                 } else if ("reasoning_tokens".equals(fieldName)) {
-                    reasoningTokens = reader.getNullable(JsonReader::getInt);
+                    reasoningTokenCount = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            OutputTokenDetails deserializedOutputTokenDetails = new OutputTokenDetails(textTokens, audioTokens);
-            deserializedOutputTokenDetails.reasoningTokens = reasoningTokens;
+            OutputTokenDetails deserializedOutputTokenDetails = new OutputTokenDetails(textTokenCount, audioTokenCount);
+            deserializedOutputTokenDetails.reasoningTokenCount = reasoningTokenCount;
             return deserializedOutputTokenDetails;
         });
     }
 
     /*
+     * Number of text tokens generated in the output.
+     */
+    @Generated
+    private final int textTokenCount;
+
+    /*
+     * Number of audio tokens generated in the output.
+     */
+    @Generated
+    private final int audioTokenCount;
+
+    /*
      * Number of reasoning tokens generated in the output.
      */
     @Generated
-    private Integer reasoningTokens;
+    private Integer reasoningTokenCount;
 
     /**
-     * Get the reasoningTokens property: Number of reasoning tokens generated in the output.
+     * Get the textTokenCount property: Number of text tokens generated in the output.
      *
-     * @return the reasoningTokens value.
+     * @return the textTokenCount value.
      */
     @Generated
-    public Integer getReasoningTokens() {
-        return this.reasoningTokens;
+    public int getTextTokenCount() {
+        return this.textTokenCount;
+    }
+
+    /**
+     * Get the audioTokenCount property: Number of audio tokens generated in the output.
+     *
+     * @return the audioTokenCount value.
+     */
+    @Generated
+    public int getAudioTokenCount() {
+        return this.audioTokenCount;
+    }
+
+    /**
+     * Get the reasoningTokenCount property: Number of reasoning tokens generated in the output.
+     *
+     * @return the reasoningTokenCount value.
+     */
+    @Generated
+    public Integer getReasoningTokenCount() {
+        return this.reasoningTokenCount;
     }
 }

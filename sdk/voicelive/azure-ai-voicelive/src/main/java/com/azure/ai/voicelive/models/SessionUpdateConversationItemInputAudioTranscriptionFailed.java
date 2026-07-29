@@ -16,7 +16,7 @@ import java.io.IOException;
  * `error` events so that the client can identify the related Item.
  */
 @Immutable
-public final class SessionUpdateConversationItemInputAudioTranscriptionFailed extends SessionUpdate {
+public final class SessionUpdateConversationItemInputAudioTranscriptionFailed extends SessionServerEvent {
 
     /*
      * The type of event.

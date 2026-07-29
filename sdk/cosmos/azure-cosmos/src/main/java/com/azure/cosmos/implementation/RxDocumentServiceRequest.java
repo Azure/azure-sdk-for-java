@@ -968,6 +968,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isExecuteStoredProcedureBasedRequest() {
+        return this.resourceType == ResourceType.StoredProcedure && this.operationType == OperationType.ExecuteJavaScript;
+    }
+
     public boolean isAllVersionsAndDeletesChangeFeedMode() {
         String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
@@ -1050,8 +1054,18 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
+        // Deep-copy headers so availability-strategy / hedging clones do not share
+        // the same HashMap reference with their parent. The shared-reference pattern
+        // was previously safe-by-convention (assumption: no mutation after clone),
+        // but resolveEffectiveConsistencyHeaders mutates the map on every request,
+        // which races with concurrent hedged clones. A racing put can trigger HashMap
+        // resize and corrupt the map (lost inserts, null reads of unrelated keys).
+        // Same defensive-copy pattern already used for requestContext and
+        // faultInjectionRequestContext below.
+        Map<String, String> sourceHeaders = this.getHeaders();
+        Map<String, String> clonedHeaders = sourceHeaders != null ? new HashMap<>(sourceHeaders) : null;
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
-            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
+            this.resourceId, this.isNameBased, this.getResourceType(), clonedHeaders);
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());

@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -83,6 +84,31 @@ public class ConnectionsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetConnectionWithResponseWithoutCredentials(HttpClient httpClient,
+        AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        // Discover a real connection name from the list
+        String connectionName = null;
+        for (Connection c : connectionsClient.listConnections()) {
+            connectionName = c.getName();
+            break;
+        }
+        Assertions.assertNotNull(connectionName, "Expected at least one connection to test getConnection");
+
+        Connection connection = connectionsClient.getConnectionWithResponse(connectionName, false, new RequestOptions())
+            .getValue()
+            .toObject(Connection.class);
+
+        // Verify the connection properties
+        assertValidConnection(connection, connectionName, null, null);
+        Assertions.assertNotNull(connection.getCredential().getType());
+
+        System.out.println("Connection retrieved successfully: " + connection.getName());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testGetConnectionWithCredentials(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
@@ -96,6 +122,33 @@ public class ConnectionsClientTest extends ClientTestBase {
             "Expected at least one connection to test getConnectionWithCredentials");
 
         Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+
+        // Verify the connection properties
+        assertValidConnection(connection, connectionName, null, null);
+        Assertions.assertNotNull(connection.getCredential().getType());
+
+        System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
+        System.out.println("Credential type: " + connection.getCredential().getType());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetConnectionWithResponseWithCredentials(HttpClient httpClient,
+        AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        // Discover a real connection name from the list
+        String connectionName = null;
+        for (Connection c : connectionsClient.listConnections()) {
+            connectionName = c.getName();
+            break;
+        }
+        Assertions.assertNotNull(connectionName,
+            "Expected at least one connection to test getConnectionWithCredentials");
+
+        Connection connection = connectionsClient.getConnectionWithResponse(connectionName, true, new RequestOptions())
+            .getValue()
+            .toObject(Connection.class);
 
         // Verify the connection properties
         assertValidConnection(connection, connectionName, null, null);

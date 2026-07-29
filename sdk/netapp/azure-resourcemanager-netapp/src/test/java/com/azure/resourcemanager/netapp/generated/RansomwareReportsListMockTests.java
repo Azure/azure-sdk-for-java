@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-08-13T22:15:03Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":1510283924,\"reportedCount\":115970163,\"suspects\":[{\"extension\":\"flrmymyi\",\"resolution\":\"PotentialThreat\",\"fileCount\":521943782,\"suspectFiles\":[{}]},{\"extension\":\"wslmiiiovgqcg\",\"resolution\":\"FalsePositive\",\"fileCount\":1331750565,\"suspectFiles\":[{},{},{}]},{\"extension\":\"otiowlxteqd\",\"resolution\":\"FalsePositive\",\"fileCount\":857680137,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ukranblw\",\"resolution\":\"FalsePositive\",\"fileCount\":1668357779,\"suspectFiles\":[{}]}],\"provisioningState\":\"zgygqwahoiulwgni\"},\"id\":\"rglvaw\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-06-30T19:43:06Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":600768127,\"reportedCount\":302933656,\"suspects\":[{\"extension\":\"iipsnawwlqkz\",\"resolution\":\"PotentialThreat\",\"fileCount\":1702274407,\"suspectFiles\":[{},{},{}]},{\"extension\":\"icctkw\",\"resolution\":\"FalsePositive\",\"fileCount\":553363157,\"suspectFiles\":[{},{}]},{\"extension\":\"eiyglesrwvaexhdc\",\"resolution\":\"FalsePositive\",\"fileCount\":1314607825,\"suspectFiles\":[{},{}]},{\"extension\":\"rupobehd\",\"resolution\":\"FalsePositive\",\"fileCount\":1917475194,\"suspectFiles\":[{}]}],\"provisioningState\":\"me\"},\"id\":\"pbibn\",\"name\":\"pphepifexl\",\"type\":\"qirccj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("utznabaobns", "ujdjltymkmvg", "ihywartspph", "ixkykxd", com.azure.core.util.Context.NONE);
+            .list("uavkrmukm", "jmkxettcslojf", "qid", "qtoqxjhqxcsq", com.azure.core.util.Context.NONE);
 
     }
 }

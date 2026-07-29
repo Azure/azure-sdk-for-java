@@ -7,9 +7,10 @@ import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.ai.agents.models.ToolboxPolicies;
+import com.azure.ai.agents.models.ToolboxSkill;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -52,7 +53,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -64,7 +67,20 @@ public final class ToolboxesAsyncClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -91,7 +107,20 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -103,7 +132,7 @@ public final class ToolboxesAsyncClient {
      * }
      * </pre>
      *
-     * @param toolboxName The name of the toolbox. If the toolbox does not exist, it will be created.
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -114,14 +143,16 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createToolboxVersionWithResponse(String toolboxName,
+    public Mono<Response<BinaryData>> createToolboxVersionWithResponse(String name,
         BinaryData createToolboxVersionRequest, RequestOptions requestOptions) {
-        return this.serviceClient.createToolboxVersionWithResponseAsync(toolboxName, createToolboxVersionRequest,
+        return this.serviceClient.createToolboxVersionWithResponseAsync(name, createToolboxVersionRequest,
             requestOptions);
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     *
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -134,7 +165,7 @@ public final class ToolboxesAsyncClient {
      * }
      * </pre>
      *
-     * @param toolboxName The name of the toolbox to retrieve.
+     * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -145,12 +176,14 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getToolboxWithResponse(String toolboxName, RequestOptions requestOptions) {
-        return this.serviceClient.getToolboxWithResponseAsync(toolboxName, requestOptions);
+    public Mono<Response<BinaryData>> getToolboxWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getToolboxWithResponseAsync(name, requestOptions);
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -197,7 +230,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -233,7 +268,20 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -245,7 +293,7 @@ public final class ToolboxesAsyncClient {
      * }
      * </pre>
      *
-     * @param toolboxName The name of the toolbox to list versions for.
+     * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -255,12 +303,14 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listToolboxVersions(String toolboxName, RequestOptions requestOptions) {
-        return this.serviceClient.listToolboxVersionsAsync(toolboxName, requestOptions);
+    public PagedFlux<BinaryData> listToolboxVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listToolboxVersionsAsync(name, requestOptions);
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     *
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -276,7 +326,20 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     skills (Optional): [
+     *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     policies (Optional): {
@@ -288,7 +351,7 @@ public final class ToolboxesAsyncClient {
      * }
      * </pre>
      *
-     * @param toolboxName The name of the toolbox.
+     * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -299,13 +362,15 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getToolboxVersionWithResponse(String toolboxName, String version,
+    public Mono<Response<BinaryData>> getToolboxVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.getToolboxVersionWithResponseAsync(toolboxName, version, requestOptions);
+        return this.serviceClient.getToolboxVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     *
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -328,7 +393,7 @@ public final class ToolboxesAsyncClient {
      * }
      * </pre>
      *
-     * @param toolboxName The name of the toolbox to update.
+     * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -340,15 +405,17 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateToolboxWithResponse(String toolboxName, BinaryData updateToolboxRequest,
+    public Mono<Response<BinaryData>> updateToolboxWithResponse(String name, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateToolboxWithResponseAsync(toolboxName, updateToolboxRequest, requestOptions);
+        return this.serviceClient.updateToolboxWithResponseAsync(name, updateToolboxRequest, requestOptions);
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
      *
-     * @param toolboxName The name of the toolbox to delete.
+     * Removes the specified toolbox along with all of its versions.
+     *
+     * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -358,14 +425,16 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteToolboxWithResponse(String toolboxName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteToolboxWithResponseAsync(toolboxName, requestOptions);
+    public Mono<Response<Void>> deleteToolboxWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteToolboxWithResponseAsync(name, requestOptions);
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
      *
-     * @param toolboxName The name of the toolbox.
+     * Removes the specified version of a toolbox.
+     *
+     * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -376,18 +445,22 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteToolboxVersionWithResponse(String toolboxName, String version,
+    public Mono<Response<Void>> deleteToolboxVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteToolboxVersionWithResponseAsync(toolboxName, version, requestOptions);
+        return this.serviceClient.deleteToolboxVersionWithResponseAsync(name, version, requestOptions);
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
      *
-     * @param toolboxName The name of the toolbox. If the toolbox does not exist, it will be created.
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
+     *
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
      * @param description A human-readable description of the toolbox.
      * @param metadata Arbitrary key-value metadata to associate with the toolbox.
+     * @param skills The list of skill sources to include in this version. A skill reference specifies a skill name and
+     * optionally a version. If version is omitted, the skill's default version is used.
      * @param policies Policy configuration for this toolbox version.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -399,24 +472,27 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String toolboxName, List<Tool> tools, String description,
-        Map<String, String> metadata, ToolboxPolicies policies) {
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<ToolboxTool> tools, String description,
+        Map<String, String> metadata, List<ToolboxSkill> skills, ToolboxPolicies policies) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateToolboxVersionRequest createToolboxVersionRequestObj
             = new CreateToolboxVersionRequest(tools).setDescription(description)
                 .setMetadata(metadata)
+                .setSkills(skills)
                 .setPolicies(policies);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
-        return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions)
+        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
      *
-     * @param toolboxName The name of the toolbox. If the toolbox does not exist, it will be created.
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
+     *
+     * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -428,20 +504,22 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> createToolboxVersion(String toolboxName, List<Tool> tools) {
+    public Mono<ToolboxVersionDetails> createToolboxVersion(String name, List<ToolboxTool> tools) {
         // Generated convenience method for createToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateToolboxVersionRequest createToolboxVersionRequestObj = new CreateToolboxVersionRequest(tools);
         BinaryData createToolboxVersionRequest = BinaryData.fromObject(createToolboxVersionRequestObj);
-        return createToolboxVersionWithResponse(toolboxName, createToolboxVersionRequest, requestOptions)
+        return createToolboxVersionWithResponse(name, createToolboxVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
      *
-     * @param toolboxName The name of the toolbox to retrieve.
+     * Retrieves the specified toolbox and its current configuration.
+     *
+     * @param name The name of the toolbox to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -452,15 +530,17 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxDetails> getToolbox(String toolboxName) {
+    public Mono<ToolboxDetails> getToolbox(String name) {
         // Generated convenience method for getToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getToolboxWithResponse(toolboxName, requestOptions).flatMap(FluxUtil::toMono)
+        return getToolboxWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class));
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -513,7 +593,9 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -543,9 +625,11 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
      *
-     * @param toolboxName The name of the toolbox to list versions for.
+     * Returns the available versions for the specified toolbox.
+     *
+     * @param name The name of the toolbox to list versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -566,7 +650,7 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String toolboxName, Integer limit, PageOrder order,
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name, Integer limit, PageOrder order,
         String after, String before) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
@@ -582,7 +666,7 @@ public final class ToolboxesAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(toolboxName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -599,9 +683,11 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
      *
-     * @param toolboxName The name of the toolbox to list versions for.
+     * Returns the available versions for the specified toolbox.
+     *
+     * @param name The name of the toolbox to list versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -612,10 +698,10 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String toolboxName) {
+    public PagedFlux<ToolboxVersionDetails> listToolboxVersions(String name) {
         // Generated convenience method for listToolboxVersions
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(toolboxName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listToolboxVersions(name, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -632,9 +718,11 @@ public final class ToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
      *
-     * @param toolboxName The name of the toolbox.
+     * Retrieves the specified version of a toolbox by name and version identifier.
+     *
+     * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -646,17 +734,19 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxVersionDetails> getToolboxVersion(String toolboxName, String version) {
+    public Mono<ToolboxVersionDetails> getToolboxVersion(String name, String version) {
         // Generated convenience method for getToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getToolboxVersionWithResponse(toolboxName, version, requestOptions).flatMap(FluxUtil::toMono)
+        return getToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxVersionDetails.class));
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
      *
-     * @param toolboxName The name of the toolbox to update.
+     * Updates the toolbox's default version pointer to the specified version.
+     *
+     * @param name The name of the toolbox to update.
      * @param defaultVersion The version identifier that the toolbox should point to. When set, the toolbox's default
      * version will resolve to this version instead of the latest.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,19 +759,21 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ToolboxDetails> updateToolbox(String toolboxName, String defaultVersion) {
+    public Mono<ToolboxDetails> updateToolbox(String name, String defaultVersion) {
         // Generated convenience method for updateToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateToolboxRequest updateToolboxRequestObj = new UpdateToolboxRequest(defaultVersion);
         BinaryData updateToolboxRequest = BinaryData.fromObject(updateToolboxRequestObj);
-        return updateToolboxWithResponse(toolboxName, updateToolboxRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return updateToolboxWithResponse(name, updateToolboxRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ToolboxDetails.class));
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
      *
-     * @param toolboxName The name of the toolbox to delete.
+     * Removes the specified toolbox along with all of its versions.
+     *
+     * @param name The name of the toolbox to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -692,16 +784,18 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteToolbox(String toolboxName) {
+    public Mono<Void> deleteToolbox(String name) {
         // Generated convenience method for deleteToolboxWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteToolboxWithResponse(toolboxName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteToolboxWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
      *
-     * @param toolboxName The name of the toolbox.
+     * Removes the specified version of a toolbox.
+     *
+     * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -713,9 +807,9 @@ public final class ToolboxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteToolboxVersion(String toolboxName, String version) {
+    public Mono<Void> deleteToolboxVersion(String name, String version) {
         // Generated convenience method for deleteToolboxVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteToolboxVersionWithResponse(toolboxName, version, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteToolboxVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

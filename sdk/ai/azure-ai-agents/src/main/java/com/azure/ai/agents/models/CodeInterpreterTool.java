@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Code interpreter
@@ -68,6 +69,7 @@ public final class CodeInterpreterTool extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         if (this.container != null) {
             jsonWriter.writeFieldName("container");
             this.container.writeTo(jsonWriter);
@@ -96,6 +98,9 @@ public final class CodeInterpreterTool extends Tool {
                     deserializedCodeInterpreterTool.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedCodeInterpreterTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedCodeInterpreterTool.toolConfigs = toolConfigs;
                 } else if ("container".equals(fieldName)) {
                     deserializedCodeInterpreterTool.container
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -192,19 +197,25 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /*
-     * Optional user-defined name for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String name;
 
     /*
-     * Optional user-defined description for this tool or configuration.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private String description;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the name value.
      */
@@ -214,7 +225,7 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param name the name value to set.
      * @return the CodeInterpreterTool object itself.
@@ -226,7 +237,7 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the description value.
      */
@@ -236,7 +247,7 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param description the description value to set.
      * @return the CodeInterpreterTool object itself.
@@ -244,6 +255,28 @@ public final class CodeInterpreterTool extends Tool {
     @Generated
     public CodeInterpreterTool setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    @Generated
+    public CodeInterpreterTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
         return this;
     }
 }

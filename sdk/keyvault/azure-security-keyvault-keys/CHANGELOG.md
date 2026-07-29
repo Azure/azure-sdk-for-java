@@ -1,15 +1,27 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.12.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for service version `2025-07-01`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.12.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management). Only supported on Managed HSM with service version `2026-01-01-preview` or newer.
+- Added support for service version `2026-01-01-preview`.
+
+## 4.11.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
 
 ## 4.10.7 (2026-05-05)
 

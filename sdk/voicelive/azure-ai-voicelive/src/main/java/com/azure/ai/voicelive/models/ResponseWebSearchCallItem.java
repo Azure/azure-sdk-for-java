@@ -23,12 +23,6 @@ public final class ResponseWebSearchCallItem extends SessionResponseItem {
     private ItemType type = ItemType.WEB_SEARCH_CALL;
 
     /*
-     * The unique ID of the web search tool call.
-     */
-    @Generated
-    private String id;
-
-    /*
      * The status of the web search tool call.
      */
     @Generated
@@ -56,17 +50,6 @@ public final class ResponseWebSearchCallItem extends SessionResponseItem {
     }
 
     /**
-     * Get the id property: The unique ID of the web search tool call.
-     *
-     * @return the id value.
-     */
-    @Generated
-    @Override
-    public String getId() {
-        return this.id;
-    }
-
-    /**
      * Get the status property: The status of the web search tool call.
      *
      * @return the status value.
@@ -83,10 +66,10 @@ public final class ResponseWebSearchCallItem extends SessionResponseItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("object", getObject() == null ? null : getObject().toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,29 +85,29 @@ public final class ResponseWebSearchCallItem extends SessionResponseItem {
     @Generated
     public static ResponseWebSearchCallItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             ResponseItemObject object = null;
             ResponseWebSearchCallItemStatus status = null;
             ItemType type = ItemType.WEB_SEARCH_CALL;
-            String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("object".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("object".equals(fieldName)) {
                     object = ResponseItemObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = ResponseWebSearchCallItemStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = ItemType.fromString(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             ResponseWebSearchCallItem deserializedResponseWebSearchCallItem = new ResponseWebSearchCallItem(status);
+            deserializedResponseWebSearchCallItem.setId(id);
             deserializedResponseWebSearchCallItem.setObject(object);
             deserializedResponseWebSearchCallItem.type = type;
-            deserializedResponseWebSearchCallItem.id = id;
             return deserializedResponseWebSearchCallItem;
         });
     }

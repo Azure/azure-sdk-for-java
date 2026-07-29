@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class GeographicallyRedundantBackup extends ExpandableStringEnum<GeographicallyRedundantBackup> {
     /**
-     * Static value Enabled for GeographicallyRedundantBackup.
+     * Server is configured to create geographically redundant backups.
      */
     public static final GeographicallyRedundantBackup ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for GeographicallyRedundantBackup.
+     * Server is not configured to create geographically redundant backups.
      */
     public static final GeographicallyRedundantBackup DISABLED = fromString("Disabled");
 

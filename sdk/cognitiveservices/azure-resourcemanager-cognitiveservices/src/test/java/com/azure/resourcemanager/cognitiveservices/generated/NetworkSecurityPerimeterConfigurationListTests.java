@@ -12,21 +12,20 @@ public final class NetworkSecurityPerimeterConfigurationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"kdlpa\",\"provisioningIssues\":[{\"name\":\"x\",\"properties\":{}},{\"name\":\"lc\",\"properties\":{}},{\"name\":\"m\",\"properties\":{}},{\"name\":\"xdfgsftufqobr\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"cgcckknhxkizvyt\",\"perimeterGuid\":\"zvulj\",\"location\":\"aeranokqgukkjqnv\"},\"resourceAssociation\":{\"name\":\"ylaxxulcdi\",\"accessMode\":\"osfjbjsv\"},\"profile\":{\"name\":\"whryvycytdcl\",\"accessRulesVersion\":4919215833349894285,\"accessRules\":[{}],\"diagnosticSettingsVersion\":2808392059508100767,\"enabledLogCategories\":[\"tmvpdvjdhtt\",\"a\",\"fedxihchrphkm\",\"rjdqnsdfzp\"]}},\"id\":\"tg\",\"name\":\"ylkdghrje\",\"type\":\"utlwxezwzhok\"}],\"nextLink\":\"wnhhtqlgehgppip\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"fcttuxuuyilfl\",\"provisioningIssues\":[{\"name\":\"uvr\",\"properties\":{}},{\"name\":\"rnjhvsujztczytqj\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"uunfprnjletlxsm\",\"perimeterGuid\":\"ddoui\",\"location\":\"mowaziynknlqwzdv\"},\"resourceAssociation\":{\"name\":\"hxqszdtmaajquh\",\"accessMode\":\"ylr\"},\"profile\":{\"name\":\"ty\",\"accessRulesVersion\":1747598045330044731,\"accessRules\":[{},{},{}],\"diagnosticSettingsVersion\":3860826521780085029,\"enabledLogCategories\":[\"shck\"]}},\"id\":\"yjpmspbpssdfppyo\",\"name\":\"tieyujtvczkcny\",\"type\":\"rxmunjdxvgln\"},{\"properties\":{\"provisioningState\":\"lxpaglqivbgkcv\",\"provisioningIssues\":[{\"name\":\"vuqd\",\"properties\":{}},{\"name\":\"oniypfpubcpzgp\",\"properties\":{}},{\"name\":\"vhjknidi\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"xgpnr\",\"perimeterGuid\":\"ov\",\"location\":\"pikqmh\"},\"resourceAssociation\":{\"name\":\"wjrmzvuporqzd\",\"accessMode\":\"ydzvkf\"},\"profile\":{\"name\":\"nq\",\"accessRulesVersion\":8747604723179169845,\"accessRules\":[{},{},{}],\"diagnosticSettingsVersion\":6606674883220158301,\"enabledLogCategories\":[\"hl\"]}},\"id\":\"dhbemzqkzszu\",\"name\":\"iwtglxxhljfpg\",\"type\":\"icrmnzh\"},{\"properties\":{\"provisioningState\":\"qgjsxvpqcbfrmbod\",\"provisioningIssues\":[{\"name\":\"qgvriibakcla\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"nxo\",\"perimeterGuid\":\"xauzlwvsgmwohqfz\",\"location\":\"vux\"},\"resourceAssociation\":{\"name\":\"jsvthnwpzteko\",\"accessMode\":\"ribi\"},\"profile\":{\"name\":\"gplucfotangcfhny\",\"accessRulesVersion\":4628609097306866985,\"accessRules\":[{},{},{}],\"diagnosticSettingsVersion\":6502659943132256086,\"enabledLogCategories\":[\"mzqwmvtxnjmxmcu\",\"udtc\",\"clxyn\",\"dkvgfabuiyjibuzp\"]}},\"id\":\"ugneikn\",\"name\":\"gox\",\"type\":\"jiuqhibtozi\"},{\"properties\":{\"provisioningState\":\"jedmurrxxgewp\",\"provisioningIssues\":[{\"name\":\"ylkmqp\",\"properties\":{}},{\"name\":\"hlfbcgwgc\",\"properties\":{}},{\"name\":\"oebqinjipn\",\"properties\":{}},{\"name\":\"ujqlafcbahh\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"foiyjwpfilk\",\"perimeterGuid\":\"kholvd\",\"location\":\"viauogphua\"},\"resourceAssociation\":{\"name\":\"tiuky\",\"accessMode\":\"chnmna\"},\"profile\":{\"name\":\"xhk\",\"accessRulesVersion\":2040685344780205608,\"accessRules\":[{},{}],\"diagnosticSettingsVersion\":6875461100902154029,\"enabledLogCategories\":[\"xffi\",\"hx\"]}},\"id\":\"snewmozqvbub\",\"name\":\"ma\",\"type\":\"hsycxhxzgaz\"}],\"nextLink\":\"abo\"}")
             .toObject(NetworkSecurityPerimeterConfigurationList.class);
-        Assertions.assertEquals("x", model.value().get(0).properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("cgcckknhxkizvyt", model.value().get(0).properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("zvulj", model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("aeranokqgukkjqnv",
+        Assertions.assertEquals("uvr", model.value().get(0).properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("uunfprnjletlxsm", model.value().get(0).properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("ddoui", model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("mowaziynknlqwzdv",
             model.value().get(0).properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("ylaxxulcdi", model.value().get(0).properties().resourceAssociation().name());
-        Assertions.assertEquals("osfjbjsv", model.value().get(0).properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("whryvycytdcl", model.value().get(0).properties().profile().name());
-        Assertions.assertEquals(4919215833349894285L, model.value().get(0).properties().profile().accessRulesVersion());
-        Assertions.assertEquals(2808392059508100767L,
+        Assertions.assertEquals("hxqszdtmaajquh", model.value().get(0).properties().resourceAssociation().name());
+        Assertions.assertEquals("ylr", model.value().get(0).properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("ty", model.value().get(0).properties().profile().name());
+        Assertions.assertEquals(1747598045330044731L, model.value().get(0).properties().profile().accessRulesVersion());
+        Assertions.assertEquals(3860826521780085029L,
             model.value().get(0).properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("tmvpdvjdhtt",
-            model.value().get(0).properties().profile().enabledLogCategories().get(0));
-        Assertions.assertEquals("wnhhtqlgehgppip", model.nextLink());
+        Assertions.assertEquals("shck", model.value().get(0).properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("abo", model.nextLink());
     }
 }

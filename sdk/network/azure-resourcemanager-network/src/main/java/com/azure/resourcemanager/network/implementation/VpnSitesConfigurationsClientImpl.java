@@ -108,7 +108,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.download(this.client.getEndpoint(), apiVersion,
@@ -151,7 +151,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.download(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

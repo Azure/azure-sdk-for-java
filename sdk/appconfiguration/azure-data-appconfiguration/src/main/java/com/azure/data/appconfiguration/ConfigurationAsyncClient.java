@@ -14,18 +14,17 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
+import com.azure.data.appconfiguration.implementation.ImplBridge;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.Utility;
-import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -295,10 +294,10 @@ import reactor.core.publisher.Mono;
 @ServiceClient(
     builder = ConfigurationClientBuilder.class,
     isAsync = true,
-    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationClientService.class)
 public final class ConfigurationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClient.class);
-    private final AzureAppConfigurationImpl serviceClient;
+    private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
@@ -307,11 +306,11 @@ public final class ConfigurationAsyncClient {
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationAsyncClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationAsyncClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
         this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
@@ -430,9 +429,9 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(), null, ETAG_ANY,
-                toKeyValue(settingInternal), context)
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> ImplBridge
+            .putKeyValueWithResponseAsync(serviceClient, settingInternal.getKey(), settingInternal.getLabel(), null,
+                ETAG_ANY, toKeyValue(settingInternal), context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
@@ -572,8 +571,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> ImplBridge
+            .putKeyValueWithResponseAsync(serviceClient, settingInternal.getKey(), settingInternal.getLabel(),
                 getETag(ifUnchanged, settingInternal), null, toKeyValue(settingInternal), context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
@@ -716,20 +715,19 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged) {
-        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
-                acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, settingInternal),
-                null, context)
-            .onErrorResume(HttpResponseException.class,
-                (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
-                    HttpResponseException e = (HttpResponseException) throwable;
-                    HttpResponse httpResponse = e.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
-                    }
-                    return Mono.error(throwable);
-                })
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> ImplBridge
+            .getKeyValueWithResponseAsync(serviceClient, settingInternal.getKey(), settingInternal.getLabel(),
+                acceptDateTime == null ? null : acceptDateTime.toString(), null /* syncToken */, null /* ifMatch */,
+                getETag(ifChanged, settingInternal) /* ifNoneMatch */, null /* fields */, context)
+            .onErrorResume(HttpResponseException.class, (Function<Throwable, Mono<Response<KeyValue>>>) throwable -> {
+                HttpResponseException e = (HttpResponseException) throwable;
+                HttpResponse httpResponse = e.getResponse();
+                if (httpResponse.getStatusCode() == 304) {
+                    return Mono.just(new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                        httpResponse.getHeaders(), null));
+                }
+                return Mono.error(throwable);
+            })
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
@@ -849,8 +847,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
-            .deleteKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> ImplBridge
+            .deleteKeyValueWithResponseAsync(serviceClient, settingInternal.getKey(), settingInternal.getLabel(),
                 getETag(ifUnchanged, settingInternal), context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
@@ -1000,8 +998,8 @@ public final class ConfigurationAsyncClient {
             final String key = settingInternal.getKey();
             final String label = settingInternal.getLabel();
             return (isReadOnly
-                ? serviceClient.putLockWithResponseAsync(key, label, null, null, context)
-                : serviceClient.deleteLockWithResponseAsync(key, label, null, null, context))
+                ? ImplBridge.putLockWithResponseAsync(serviceClient, key, label, null, null, context)
+                : ImplBridge.deleteLockWithResponseAsync(serviceClient, key, label, null, null, context))
                     .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse);
         }));
     }
@@ -1037,14 +1035,14 @@ public final class ConfigurationAsyncClient {
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedFlux<>(() -> withContext(context -> serviceClient
-            .getKeyValuesSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+        return new PagedFlux<>(() -> withContext(context -> ImplBridge
+            .getKeyValuesSinglePageAsync(serviceClient, keyFilter, labelFilter, null, acceptDateTime, settingFields,
+                null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
-            nextLink -> withContext(context -> serviceClient
-                .getKeyValuesNextSinglePageAsync(nextLink, acceptDateTime, null,
+            nextLink -> withContext(context -> ImplBridge
+                .getKeyValuesNextSinglePageAsync(serviceClient, nextLink, acceptDateTime, null,
                     getPageETag(matchConditionsList, pageETagIndex), context)
                 .onErrorResume(HttpResponseException.class,
                     (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
@@ -1086,15 +1084,15 @@ public final class ConfigurationAsyncClient {
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedFlux<>(() -> withContext(context -> serviceClient
-            .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+        return new PagedFlux<>(() -> withContext(context -> ImplBridge
+            .checkKeyValuesWithResponseAsync(serviceClient, keyFilter, labelFilter, null, acceptDateTime, settingFields,
+                null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
             .map(Utility::toHeadPagedResponse)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)),
-            afterToken -> withContext(context -> serviceClient
-                .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, afterToken, acceptDateTime, settingFields,
-                    null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            afterToken -> withContext(context -> ImplBridge
+                .checkKeyValuesWithResponseAsync(serviceClient, keyFilter, labelFilter, afterToken, acceptDateTime,
+                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
                 .map(Utility::toHeadPagedResponse)
                 .onErrorResume(HttpResponseException.class,
                     (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)));
@@ -1156,12 +1154,13 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
         List<SettingFields> fields) {
         return new PagedFlux<>(
-            () -> withContext(context -> serviceClient
-                .getKeyValuesSinglePageAsync(null, null, null, null, fields, snapshotName, null, null, null, context)
+            () -> withContext(context -> ImplBridge
+                .getKeyValuesSinglePageAsync(serviceClient, null, null, null, null, fields, snapshotName, null, null,
+                    null, context)
                 .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
-            nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(nextLink, null, null, null, context)
-                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
+            nextLink -> withContext(context -> ImplBridge
+                .getKeyValuesNextSinglePageAsync(serviceClient, nextLink, null, null, null, context)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1198,11 +1197,12 @@ public final class ConfigurationAsyncClient {
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         List<String> tags = selector == null ? null : selector.getTagsFilter();
         return new PagedFlux<>(
-            () -> withContext(context -> serviceClient
-                .getRevisionsSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, tags, context)
+            () -> withContext(context -> ImplBridge
+                .getRevisionsSinglePageAsync(serviceClient, keyFilter, labelFilter, null, acceptDateTime, settingFields,
+                    tags, context)
                 .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(
-                context -> serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime, context)
+                context -> ImplBridge.getRevisionsNextSinglePageAsync(serviceClient, nextLink, acceptDateTime, context)
                     .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
@@ -1299,8 +1299,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSnapshot>> getSnapshotWithResponse(String snapshotName,
         List<SnapshotFields> fields) {
-        return serviceClient.getSnapshotWithResponseAsync(snapshotName, null, null, fields, Context.NONE)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+        return ImplBridge.getSnapshotWithResponseAsync(serviceClient, snapshotName, null, null, fields, Context.NONE);
     }
 
     /**
@@ -1449,11 +1448,12 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> serviceClient.getSnapshotsSinglePageAsync(
+                () -> withContext(context -> ImplBridge.getSnapshotsSinglePageAsync(serviceClient,
                     selector == null ? null : selector.getNameFilter(), null,
                     selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
                     context)),
-                nextLink -> withContext(context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, context)));
+                nextLink -> withContext(
+                    context -> ImplBridge.getSnapshotsNextSinglePageAsync(serviceClient, nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
@@ -1511,7 +1511,7 @@ public final class ConfigurationAsyncClient {
             ? null
             : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabelsAsync(labelNameFilter, null, acceptDatetime, labelFields);
+        return ImplBridge.getLabelsAsync(serviceClient, labelNameFilter, null, acceptDatetime, labelFields);
     }
 
     /**

@@ -22,7 +22,7 @@ import java.io.IOException;
  * `instructions`, pass an empty string.
  */
 @Fluent
-public final class ClientEventSessionUpdate extends ClientEvent {
+public final class ClientEventSessionUpdate extends SessionClientEvent {
 
     /*
      * The type of event.

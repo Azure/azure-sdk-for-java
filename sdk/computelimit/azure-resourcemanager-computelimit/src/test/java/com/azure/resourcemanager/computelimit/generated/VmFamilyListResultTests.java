@@ -12,9 +12,9 @@ public final class VmFamilyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmFamilyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"category\":\"oulzndlikwyq\",\"provisioningState\":\"Canceled\"},\"id\":\"ibmadgakeqsrxy\",\"name\":\"zqqedq\",\"type\":\"tbciqfouflmm\"},{\"properties\":{\"category\":\"smodmgloug\",\"provisioningState\":\"Canceled\"},\"id\":\"tmut\",\"name\":\"uqktap\",\"type\":\"pwgcuertu\"},{\"properties\":{\"category\":\"o\",\"provisioningState\":\"Succeeded\"},\"id\":\"hbmdgbbjfdd\",\"name\":\"mbmbexppbh\",\"type\":\"q\"}],\"nextLink\":\"ol\"}")
+            "{\"value\":[{\"properties\":{\"category\":\"qedqytbciqfoufl\",\"provisioningState\":\"Failed\"},\"id\":\"zsm\",\"name\":\"dmgloug\",\"type\":\"b\"},{\"properties\":{\"category\":\"mutduqktaps\",\"provisioningState\":\"Canceled\"},\"id\":\"uertumk\",\"name\":\"o\",\"type\":\"vqwhbmdgbbjfd\"},{\"properties\":{\"category\":\"bmbexppbhtqqro\",\"provisioningState\":\"Succeeded\"},\"id\":\"psalgbqux\",\"name\":\"gjyjgzjaoyfhrtxi\",\"type\":\"n\"},{\"properties\":{\"category\":\"ujysvle\",\"provisioningState\":\"Canceled\"},\"id\":\"qawrlyxwj\",\"name\":\"cpr\",\"type\":\"nwbxgjvtbvpyssz\"}],\"nextLink\":\"rujqg\"}")
             .toObject(VmFamilyListResult.class);
-        Assertions.assertEquals("oulzndlikwyq", model.value().get(0).properties().category());
-        Assertions.assertEquals("ol", model.nextLink());
+        Assertions.assertEquals("qedqytbciqfoufl", model.value().get(0).properties().category());
+        Assertions.assertEquals("rujqg", model.nextLink());
     }
 }

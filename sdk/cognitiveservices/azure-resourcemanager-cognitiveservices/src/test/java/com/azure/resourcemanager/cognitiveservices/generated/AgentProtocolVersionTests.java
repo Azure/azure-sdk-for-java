@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentProtocolVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentProtocolVersion model
-            = BinaryData.fromString("{\"protocol\":\"Responses\",\"version\":\"gkkileplkcsmkn\"}")
-                .toObject(AgentProtocolVersion.class);
+        AgentProtocolVersion model = BinaryData.fromString("{\"protocol\":\"Responses\",\"version\":\"ryeyngjgv\"}")
+            .toObject(AgentProtocolVersion.class);
         Assertions.assertEquals(AgentProtocol.RESPONSES, model.protocol());
-        Assertions.assertEquals("gkkileplkcsmkn", model.version());
+        Assertions.assertEquals("ryeyngjgv", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentProtocolVersion model
-            = new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("gkkileplkcsmkn");
+            = new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("ryeyngjgv");
         model = BinaryData.fromObject(model).toObject(AgentProtocolVersion.class);
         Assertions.assertEquals(AgentProtocol.RESPONSES, model.protocol());
-        Assertions.assertEquals("gkkileplkcsmkn", model.version());
+        Assertions.assertEquals("ryeyngjgv", model.version());
     }
 }

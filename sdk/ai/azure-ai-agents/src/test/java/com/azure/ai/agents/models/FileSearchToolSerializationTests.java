@@ -66,6 +66,8 @@ public class FileSearchToolSerializationTests {
         assertNull(tool.getMaxResults());
         assertNull(tool.getRankingOptions());
         assertNull(tool.getFilters());
+        assertNull(tool.getComparisonFilter());
+        assertNull(tool.getCompoundFilter());
     }
 
     @Test
@@ -86,6 +88,18 @@ public class FileSearchToolSerializationTests {
         assertEquals(0.7, tool.getRankingOptions().getHybridSearch().getEmbeddingWeight());
         assertEquals(0.3, tool.getRankingOptions().getHybridSearch().getTextWeight());
         assertNotNull(tool.getFilters());
+    }
+
+    @Test
+    public void testFilterGettersReturnNullForUnexpectedFilterShape() throws IOException {
+        String json
+            = "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_unknown\"]," + "\"filters\":{\"foo\":\"bar\"}}";
+
+        FileSearchTool tool = deserialize(json);
+
+        assertNotNull(tool.getFilters());
+        assertNull(tool.getComparisonFilter());
+        assertNull(tool.getCompoundFilter());
     }
 
     // -----------------------------------------------------------------------
@@ -139,6 +153,12 @@ public class FileSearchToolSerializationTests {
 
         FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_f1")).setComparisonFilter(filter);
 
+        ComparisonFilter retrievedFilter = tool.getComparisonFilter();
+        assertNotNull(retrievedFilter);
+        assertEquals("category", retrievedFilter.key());
+        assertEquals("science", retrievedFilter.value().asString());
+        assertNull(tool.getCompoundFilter());
+
         String json = serialize(tool);
 
         assertTrue(json.contains("\"key\":\"category\""), "Missing key, got: " + json);
@@ -163,6 +183,11 @@ public class FileSearchToolSerializationTests {
         assertEquals(original.getVectorStoreIds(), deserialized.getVectorStoreIds());
         assertEquals(original.getMaxResults(), deserialized.getMaxResults());
         assertNotNull(deserialized.getFilters());
+        ComparisonFilter deserializedFilter = deserialized.getComparisonFilter();
+        assertNotNull(deserializedFilter);
+        assertEquals("year", deserializedFilter.key());
+        assertEquals(2020.0, deserializedFilter.value().asNumber());
+        assertNull(deserialized.getCompoundFilter());
 
         // Re-serialize and compare JSON
         String reserializedJson = serialize(deserialized);
@@ -217,6 +242,12 @@ public class FileSearchToolSerializationTests {
 
         FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_c1")).setCompoundFilter(filter);
 
+        CompoundFilter retrievedFilter = tool.getCompoundFilter();
+        assertNotNull(retrievedFilter);
+        assertEquals(CompoundFilter.Type.AND, retrievedFilter.type());
+        assertEquals(2, retrievedFilter.filters().size());
+        assertNull(tool.getComparisonFilter());
+
         String json = serialize(tool);
 
         assertTrue(json.contains("\"key\":\"status\""), "Missing status key, got: " + json);
@@ -241,6 +272,11 @@ public class FileSearchToolSerializationTests {
         FileSearchTool deserialized = deserialize(json);
 
         assertNotNull(deserialized.getFilters());
+        CompoundFilter deserializedFilter = deserialized.getCompoundFilter();
+        assertNotNull(deserializedFilter);
+        assertEquals(CompoundFilter.Type.OR, deserializedFilter.type());
+        assertEquals(1, deserializedFilter.filters().size());
+        assertNull(deserialized.getComparisonFilter());
 
         String reserializedJson = serialize(deserialized);
         assertEquals(json, reserializedJson);
