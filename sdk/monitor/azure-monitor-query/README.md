@@ -72,7 +72,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.5.9</version>
+    <version>1.6.0-beta.1</version>
 </dependency>
 ```
 
@@ -93,7 +93,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.1</version>
+    <version>1.18.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

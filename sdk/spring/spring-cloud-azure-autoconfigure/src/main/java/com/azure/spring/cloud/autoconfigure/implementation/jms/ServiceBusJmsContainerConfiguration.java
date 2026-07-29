@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
 import jakarta.jms.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
+    private final AzureServiceBusJmsConnectionFactoryFactory instanceFactory;
     private final Environment environment;
     private final JmsProperties jmsProperties;
 
@@ -79,10 +81,12 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                         ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
+                                        AzureServiceBusJmsConnectionFactoryFactory instanceFactory,
                                         Environment environment,
                                         JmsProperties jmsProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
         this.factoryCustomizers = factoryCustomizers;
+        this.instanceFactory = instanceFactory;
         this.environment = environment;
         this.jmsProperties = jmsProperties;
     }
@@ -154,8 +158,8 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
         if (dedicatedPoolConnectionFactory == null) {
             try {
                 // Use reflection to create JmsPoolConnectionFactory to avoid hard dependency
-                Class<?> poolClass = Class.forName("org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryProperties");
-                Class<?> factoryClass = Class.forName("org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryFactory");
+                Class<?> poolClass = Class.forName("org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties");
+                Class<?> factoryClass = Class.forName("org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactory");
                 Object factoryInstance = factoryClass.getConstructor(poolClass)
                     .newInstance(azureServiceBusJMSProperties.getPool());
                 dedicatedPoolConnectionFactory = (ConnectionFactory) factoryClass
@@ -199,7 +203,8 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
         return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
             azureServiceBusJMSProperties,
-            factoryCustomizers.orderedStream().collect(Collectors.toList()));
+            factoryCustomizers.orderedStream().collect(Collectors.toList()),
+            instanceFactory);
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {

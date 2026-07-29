@@ -13,6 +13,7 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -40,6 +41,7 @@ import static org.awaitility.Awaitility.waitAtMost;
 @TestPropertySource(properties = { "spring.cloud.azure.servicebus.entity-name=queue.1",
     "spring.cloud.azure.servicebus.entity-type=queue" })
 @Testcontainers
+@Tag("docker")
 @Disabled
 class ServiceBusContainerConnectionDetailsFactoryTests {
 

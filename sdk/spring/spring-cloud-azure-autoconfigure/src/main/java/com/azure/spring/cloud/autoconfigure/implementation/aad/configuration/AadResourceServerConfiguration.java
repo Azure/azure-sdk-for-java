@@ -6,10 +6,22 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadResourceServerProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.proc.JWSVerificationKeySelector;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.ResourceRetriever;
+import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import com.nimbusds.jwt.proc.JWTProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,12 +44,15 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
-import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
 
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
@@ -55,13 +70,44 @@ class AadResourceServerConfiguration {
         String tenantId = getTrimmedTenantId(aadAuthenticationProperties);
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
-        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-                .restOperations(createRestTemplate(restTemplateBuilder))
-                .build();
+        NimbusJwtDecoder nimbusJwtDecoder = new NimbusJwtDecoder(
+            createJwtProcessor(createJwkSource(identityEndpoints.getJwkSetEndpoint(), aadAuthenticationProperties)));
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
+    }
+
+    @SuppressWarnings("deprecation")
+    private JWKSource<SecurityContext> createJwkSource(String jwkSetEndpoint,
+                                                       AadAuthenticationProperties aadAuthenticationProperties) {
+        RestTemplateBuilder jwtRestTemplateBuilder = restTemplateBuilder
+            .connectTimeout(aadAuthenticationProperties.getJwtConnectTimeout())
+            .readTimeout(aadAuthenticationProperties.getJwtReadTimeout());
+        ResourceRetriever resourceRetriever = new RestOperationsResourceRetriever(jwtRestTemplateBuilder);
+        JWKSetCache jwkSetCache = new DefaultJWKSetCache(
+            aadAuthenticationProperties.getJwkSetCacheLifespan().toMillis(),
+            aadAuthenticationProperties.getJwkSetCacheRefreshTime().toMillis(),
+            TimeUnit.MILLISECONDS);
+        try {
+            URL jwkSetUrl = URI.create(jwkSetEndpoint).toURL();
+            return new RemoteJWKSet<>(jwkSetUrl, resourceRetriever, jwkSetCache);
+        } catch (IllegalArgumentException | MalformedURLException e) {
+            throw new IllegalStateException("Invalid JWK Set endpoint: " + jwkSetEndpoint, e);
+        }
+    }
+
+    /**
+     * Assembles the JWT processor backed by the given JWK source. Spring Security 6.x does not expose a
+     * {@code NimbusJwtDecoder.withJwkSource(...)} builder, so the processor is wired the same way the
+     * framework does internally: RS256 is the only accepted signature algorithm, and the claim set
+     * verification is delegated to the validator chain configured on the decoder instead of Nimbus.
+     */
+    private static JWTProcessor<SecurityContext> createJwtProcessor(JWKSource<SecurityContext> jwkSource) {
+        ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
+        jwtProcessor.setJWSKeySelector(new JWSVerificationKeySelector<>(JWSAlgorithm.RS256, jwkSource));
+        jwtProcessor.setJWTClaimsSetVerifier((claims, context) -> {
+        });
+        return jwtProcessor;
     }
 
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {

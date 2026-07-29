@@ -38,6 +38,8 @@
     <jacoco.skip>true</jacoco.skip>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <surefire.test.groups/>
+    <surefire.excluded.test.groups>docker</surefire.excluded.test.groups>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
@@ -69,13 +71,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.33.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.35.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.28.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -109,13 +111,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.17</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.19</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.21.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -207,6 +209,15 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.5</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <groups>${surefire.test.groups}</groups>
+          <excludedGroups>${surefire.excluded.test.groups}</excludedGroups>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
@@ -287,6 +298,14 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>docker-tests</id>
+      <properties>
+        <parallelizeTests>same_thread</parallelizeTests>
+        <surefire.test.groups>docker</surefire.test.groups>
+        <surefire.excluded.test.groups/>
+      </properties>
+    </profile>
     <!-- Library cannot build for Java 16 and below -->
     <profile>
       <id>below-java-17</id>

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -34,6 +35,7 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.cloud.azure.eventhubs.event-hub-name=eh1"
 })
 @Testcontainers
+@Tag("docker")
 @Disabled
 class EventHubsContainerConnectionDetailsFactoryTests {
 
