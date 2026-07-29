@@ -35,14 +35,12 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
-    <module>sdk/azureresiliencemanagement</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
-    <module>sdk/billingtrust</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/carbonoptimization</module>
@@ -209,7 +207,7 @@
     <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
-    <module>sdk/portalservices</module>
+    <module>sdk/portalservicescopilot</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
@@ -232,6 +230,7 @@
     <module>sdk/relationships</module>
     <module>sdk/relay</module>
     <module>sdk/reservations</module>
+    <module>sdk/resiliencemanagement</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
