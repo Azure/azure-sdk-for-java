@@ -16,62 +16,50 @@ public final class KubernetesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesProperties model = BinaryData.fromString(
-            "{\"relayConnectionString\":\"ailxqkdyqjvzvcg\",\"serviceBusConnectionString\":\"spzesfkqqxuhvz\",\"extensionPrincipalId\":\"brouszxac\",\"extensionInstanceReleaseTrain\":\"uk\",\"vcName\":\"goojjfuk\",\"namespace\":\"bc\",\"defaultInstanceType\":\"nhgbtzvxxvsbc\",\"instanceTypes\":{\"xsgcemegd\":{\"nodeSelector\":{\"urqmw\":\"fnkcnihkswxm\",\"t\":\"wwp\"},\"resources\":{\"requests\":{\"tzuaedrlhxgcq\":\"ahbqsvnkxm\",\"yftgpqoswgfqv\":\"yrhkvxzzmiem\",\"sornfbmeqagkn\":\"mghpakbqyh\",\"bnyevztnjawrhule\":\"jm\"},\"limits\":{\"itaxju\":\"mbwppxirxbkitzmn\",\"j\":\"l\"}}},\"xhhlbmyphf\":{\"nodeSelector\":{\"jubvfjyzuf\":\"y\",\"aacxauhvc\":\"difnivlutgg\",\"qxtoiyygktsrjyxx\":\"zxhkl\",\"owbebsnbwut\":\"xwfzbkvecnxfxph\"},\"resources\":{\"requests\":{\"jvkyxmmj\":\"msumustihtgrafj\"},\"limits\":{\"ennmkvaeuwqd\":\"ogtder\"}}},\"zzevtzqwczochwb\":{\"nodeSelector\":{\"kx\":\"pdhewokyqs\",\"b\":\"sy\",\"zdmvdd\":\"hqbtodjfyxbvkv\"},\"resources\":{\"requests\":{\"yoz\":\"u\",\"njdvv\":\"za\",\"rkkvxundqzbv\":\"rho\",\"uvqhxtozfgdkw\":\"p\"},\"limits\":{\"utui\":\"rklpiigfuzk\",\"xyll\":\"jclzjwaqdzqydewu\"}}}}}")
+            "{\"relayConnectionString\":\"n\",\"serviceBusConnectionString\":\"dnjyhzfax\",\"extensionPrincipalId\":\"dvuelumodpegqxso\",\"extensionInstanceReleaseTrain\":\"hazrqoxz\",\"vcName\":\"lbeqvh\",\"namespace\":\"b\",\"defaultInstanceType\":\"wxs\",\"instanceTypes\":{\"eykcnhpplzh\":{\"nodeSelector\":{\"fha\":\"fzga\"},\"resources\":{\"requests\":{\"dyttq\":\"buydwiurnicu\",\"txynoflqobfixngx\":\"iuvjplosebmhhtuq\",\"nk\":\"bihex\",\"qcdol\":\"ng\"},\"limits\":{\"dafbncuy\":\"upsjlbsm\"}}}}}")
             .toObject(KubernetesProperties.class);
-        Assertions.assertEquals("ailxqkdyqjvzvcg", model.relayConnectionString());
-        Assertions.assertEquals("spzesfkqqxuhvz", model.serviceBusConnectionString());
-        Assertions.assertEquals("brouszxac", model.extensionPrincipalId());
-        Assertions.assertEquals("uk", model.extensionInstanceReleaseTrain());
-        Assertions.assertEquals("goojjfuk", model.vcName());
-        Assertions.assertEquals("bc", model.namespace());
-        Assertions.assertEquals("nhgbtzvxxvsbc", model.defaultInstanceType());
-        Assertions.assertEquals("fnkcnihkswxm", model.instanceTypes().get("xsgcemegd").nodeSelector().get("urqmw"));
-        Assertions.assertEquals("ahbqsvnkxm",
-            model.instanceTypes().get("xsgcemegd").resources().requests().get("tzuaedrlhxgcq"));
-        Assertions.assertEquals("mbwppxirxbkitzmn",
-            model.instanceTypes().get("xsgcemegd").resources().limits().get("itaxju"));
+        Assertions.assertEquals("n", model.relayConnectionString());
+        Assertions.assertEquals("dnjyhzfax", model.serviceBusConnectionString());
+        Assertions.assertEquals("dvuelumodpegqxso", model.extensionPrincipalId());
+        Assertions.assertEquals("hazrqoxz", model.extensionInstanceReleaseTrain());
+        Assertions.assertEquals("lbeqvh", model.vcName());
+        Assertions.assertEquals("b", model.namespace());
+        Assertions.assertEquals("wxs", model.defaultInstanceType());
+        Assertions.assertEquals("fzga", model.instanceTypes().get("eykcnhpplzh").nodeSelector().get("fha"));
+        Assertions.assertEquals("buydwiurnicu",
+            model.instanceTypes().get("eykcnhpplzh").resources().requests().get("dyttq"));
+        Assertions.assertEquals("upsjlbsm",
+            model.instanceTypes().get("eykcnhpplzh").resources().limits().get("dafbncuy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesProperties model = new KubernetesProperties().withRelayConnectionString("ailxqkdyqjvzvcg")
-            .withServiceBusConnectionString("spzesfkqqxuhvz")
-            .withExtensionPrincipalId("brouszxac")
-            .withExtensionInstanceReleaseTrain("uk")
-            .withVcName("goojjfuk")
-            .withNamespace("bc")
-            .withDefaultInstanceType("nhgbtzvxxvsbc")
-            .withInstanceTypes(mapOf("xsgcemegd",
-                new InstanceTypeSchema().withNodeSelector(mapOf("urqmw", "fnkcnihkswxm", "t", "wwp"))
+        KubernetesProperties model = new KubernetesProperties().withRelayConnectionString("n")
+            .withServiceBusConnectionString("dnjyhzfax")
+            .withExtensionPrincipalId("dvuelumodpegqxso")
+            .withExtensionInstanceReleaseTrain("hazrqoxz")
+            .withVcName("lbeqvh")
+            .withNamespace("b")
+            .withDefaultInstanceType("wxs")
+            .withInstanceTypes(mapOf("eykcnhpplzh",
+                new InstanceTypeSchema().withNodeSelector(mapOf("fha", "fzga"))
                     .withResources(new InstanceTypeSchemaResources()
-                        .withRequests(mapOf("tzuaedrlhxgcq", "ahbqsvnkxm", "yftgpqoswgfqv", "yrhkvxzzmiem",
-                            "sornfbmeqagkn", "mghpakbqyh", "bnyevztnjawrhule", "jm"))
-                        .withLimits(mapOf("itaxju", "mbwppxirxbkitzmn", "j", "l"))),
-                "xhhlbmyphf",
-                new InstanceTypeSchema()
-                    .withNodeSelector(mapOf("jubvfjyzuf", "y", "aacxauhvc", "difnivlutgg", "qxtoiyygktsrjyxx", "zxhkl",
-                        "owbebsnbwut", "xwfzbkvecnxfxph"))
-                    .withResources(new InstanceTypeSchemaResources().withRequests(mapOf("jvkyxmmj", "msumustihtgrafj"))
-                        .withLimits(mapOf("ennmkvaeuwqd", "ogtder"))),
-                "zzevtzqwczochwb",
-                new InstanceTypeSchema()
-                    .withNodeSelector(mapOf("kx", "pdhewokyqs", "b", "sy", "zdmvdd", "hqbtodjfyxbvkv"))
-                    .withResources(new InstanceTypeSchemaResources()
-                        .withRequests(mapOf("yoz", "u", "njdvv", "za", "rkkvxundqzbv", "rho", "uvqhxtozfgdkw", "p"))
-                        .withLimits(mapOf("utui", "rklpiigfuzk", "xyll", "jclzjwaqdzqydewu")))));
+                        .withRequests(mapOf("dyttq", "buydwiurnicu", "txynoflqobfixngx", "iuvjplosebmhhtuq", "nk",
+                            "bihex", "qcdol", "ng"))
+                        .withLimits(mapOf("dafbncuy", "upsjlbsm")))));
         model = BinaryData.fromObject(model).toObject(KubernetesProperties.class);
-        Assertions.assertEquals("ailxqkdyqjvzvcg", model.relayConnectionString());
-        Assertions.assertEquals("spzesfkqqxuhvz", model.serviceBusConnectionString());
-        Assertions.assertEquals("brouszxac", model.extensionPrincipalId());
-        Assertions.assertEquals("uk", model.extensionInstanceReleaseTrain());
-        Assertions.assertEquals("goojjfuk", model.vcName());
-        Assertions.assertEquals("bc", model.namespace());
-        Assertions.assertEquals("nhgbtzvxxvsbc", model.defaultInstanceType());
-        Assertions.assertEquals("fnkcnihkswxm", model.instanceTypes().get("xsgcemegd").nodeSelector().get("urqmw"));
-        Assertions.assertEquals("ahbqsvnkxm",
-            model.instanceTypes().get("xsgcemegd").resources().requests().get("tzuaedrlhxgcq"));
-        Assertions.assertEquals("mbwppxirxbkitzmn",
-            model.instanceTypes().get("xsgcemegd").resources().limits().get("itaxju"));
+        Assertions.assertEquals("n", model.relayConnectionString());
+        Assertions.assertEquals("dnjyhzfax", model.serviceBusConnectionString());
+        Assertions.assertEquals("dvuelumodpegqxso", model.extensionPrincipalId());
+        Assertions.assertEquals("hazrqoxz", model.extensionInstanceReleaseTrain());
+        Assertions.assertEquals("lbeqvh", model.vcName());
+        Assertions.assertEquals("b", model.namespace());
+        Assertions.assertEquals("wxs", model.defaultInstanceType());
+        Assertions.assertEquals("fzga", model.instanceTypes().get("eykcnhpplzh").nodeSelector().get("fha"));
+        Assertions.assertEquals("buydwiurnicu",
+            model.instanceTypes().get("eykcnhpplzh").resources().requests().get("dyttq"));
+        Assertions.assertEquals("upsjlbsm",
+            model.instanceTypes().get("eykcnhpplzh").resources().limits().get("dafbncuy"));
     }
 
     // Use "Map.of" if available

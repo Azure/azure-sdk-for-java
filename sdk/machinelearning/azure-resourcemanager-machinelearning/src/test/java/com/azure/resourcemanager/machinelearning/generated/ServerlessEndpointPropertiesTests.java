@@ -17,25 +17,25 @@ public final class ServerlessEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerlessEndpointProperties model = BinaryData.fromString(
-            "{\"authMode\":\"Key\",\"contentSafety\":{\"contentSafetyLevel\":\"Deferred\",\"contentSafetyStatus\":\"Disabled\"},\"endpointState\":\"Suspending\",\"inferenceEndpoint\":{\"headers\":{\"ruhhqldrdymnswx\":\"rqnjxmvvsduydwnw\",\"jrxgunnq\":\"exqwqnghxnimvy\"},\"uri\":\"ypu\"},\"marketplaceSubscriptionId\":\"ny\",\"modelSettings\":{\"modelId\":\"e\"},\"provisioningState\":\"Updating\"}")
+            "{\"authMode\":\"KeyAndAAD\",\"contentSafety\":{\"contentSafetyLevel\":\"Deferred\",\"contentSafetyStatus\":\"Enabled\"},\"endpointState\":\"DeletionFailed\",\"inferenceEndpoint\":{\"headers\":{\"bqk\":\"kmvldzmxojzsvmai\",\"geecbpergwlckih\":\"hyejt\"},\"uri\":\"amyqso\"},\"marketplaceSubscriptionId\":\"npu\",\"modelSettings\":{\"modelId\":\"wdizc\"},\"provisioningState\":\"Failed\"}")
             .toObject(ServerlessEndpointProperties.class);
-        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY, model.authMode());
+        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD, model.authMode());
         Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.contentSafety().contentSafetyLevel());
-        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafety().contentSafetyStatus());
-        Assertions.assertEquals("e", model.modelSettings().modelId());
+        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafety().contentSafetyStatus());
+        Assertions.assertEquals("wdizc", model.modelSettings().modelId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerlessEndpointProperties model
-            = new ServerlessEndpointProperties().withAuthMode(ServerlessInferenceEndpointAuthMode.KEY)
+            = new ServerlessEndpointProperties().withAuthMode(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD)
                 .withContentSafety(new ContentSafety().withContentSafetyLevel(ContentSafetyLevel.DEFERRED)
-                    .withContentSafetyStatus(ContentSafetyStatus.DISABLED))
-                .withModelSettings(new ModelSettings().withModelId("e"));
+                    .withContentSafetyStatus(ContentSafetyStatus.ENABLED))
+                .withModelSettings(new ModelSettings().withModelId("wdizc"));
         model = BinaryData.fromObject(model).toObject(ServerlessEndpointProperties.class);
-        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY, model.authMode());
+        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD, model.authMode());
         Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.contentSafety().contentSafetyLevel());
-        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafety().contentSafetyStatus());
-        Assertions.assertEquals("e", model.modelSettings().modelId());
+        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafety().contentSafetyStatus());
+        Assertions.assertEquals("wdizc", model.modelSettings().modelId());
     }
 }

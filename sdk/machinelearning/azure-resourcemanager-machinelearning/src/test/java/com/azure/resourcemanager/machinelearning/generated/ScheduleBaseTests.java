@@ -14,21 +14,21 @@ public final class ScheduleBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleBase model
-            = BinaryData.fromString("{\"id\":\"su\",\"provisioningStatus\":\"Provisioning\",\"status\":\"Enabled\"}")
+            = BinaryData.fromString("{\"id\":\"evspsaney\",\"provisioningStatus\":\"Failed\",\"status\":\"Disabled\"}")
                 .toObject(ScheduleBase.class);
-        Assertions.assertEquals("su", model.id());
-        Assertions.assertEquals(ScheduleProvisioningState.PROVISIONING, model.provisioningStatus());
-        Assertions.assertEquals(ScheduleStatus.ENABLED, model.status());
+        Assertions.assertEquals("evspsaney", model.id());
+        Assertions.assertEquals(ScheduleProvisioningState.FAILED, model.provisioningStatus());
+        Assertions.assertEquals(ScheduleStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleBase model = new ScheduleBase().withId("su")
-            .withProvisioningStatus(ScheduleProvisioningState.PROVISIONING)
-            .withStatus(ScheduleStatus.ENABLED);
+        ScheduleBase model = new ScheduleBase().withId("evspsaney")
+            .withProvisioningStatus(ScheduleProvisioningState.FAILED)
+            .withStatus(ScheduleStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleBase.class);
-        Assertions.assertEquals("su", model.id());
-        Assertions.assertEquals(ScheduleProvisioningState.PROVISIONING, model.provisioningStatus());
-        Assertions.assertEquals(ScheduleStatus.ENABLED, model.status());
+        Assertions.assertEquals("evspsaney", model.id());
+        Assertions.assertEquals(ScheduleProvisioningState.FAILED, model.provisioningStatus());
+        Assertions.assertEquals(ScheduleStatus.DISABLED, model.status());
     }
 }

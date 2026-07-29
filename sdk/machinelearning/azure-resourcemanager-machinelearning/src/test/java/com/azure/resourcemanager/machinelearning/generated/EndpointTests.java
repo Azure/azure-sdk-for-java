@@ -13,27 +13,27 @@ public final class EndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Endpoint model = BinaryData.fromString(
-            "{\"protocol\":\"tcp\",\"name\":\"vbvx\",\"target\":1722979379,\"published\":1309768813,\"hostIp\":\"lr\"}")
+            "{\"protocol\":\"tcp\",\"name\":\"fq\",\"target\":2067026522,\"published\":2045280175,\"hostIp\":\"gjwsrer\"}")
             .toObject(Endpoint.class);
         Assertions.assertEquals(Protocol.TCP, model.protocol());
-        Assertions.assertEquals("vbvx", model.name());
-        Assertions.assertEquals(1722979379, model.target());
-        Assertions.assertEquals(1309768813, model.published());
-        Assertions.assertEquals("lr", model.hostIp());
+        Assertions.assertEquals("fq", model.name());
+        Assertions.assertEquals(2067026522, model.target());
+        Assertions.assertEquals(2045280175, model.published());
+        Assertions.assertEquals("gjwsrer", model.hostIp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Endpoint model = new Endpoint().withProtocol(Protocol.TCP)
-            .withName("vbvx")
-            .withTarget(1722979379)
-            .withPublished(1309768813)
-            .withHostIp("lr");
+            .withName("fq")
+            .withTarget(2067026522)
+            .withPublished(2045280175)
+            .withHostIp("gjwsrer");
         model = BinaryData.fromObject(model).toObject(Endpoint.class);
         Assertions.assertEquals(Protocol.TCP, model.protocol());
-        Assertions.assertEquals("vbvx", model.name());
-        Assertions.assertEquals(1722979379, model.target());
-        Assertions.assertEquals(1309768813, model.published());
-        Assertions.assertEquals("lr", model.hostIp());
+        Assertions.assertEquals("fq", model.name());
+        Assertions.assertEquals(2067026522, model.target());
+        Assertions.assertEquals(2045280175, model.published());
+        Assertions.assertEquals("gjwsrer", model.hostIp());
     }
 }

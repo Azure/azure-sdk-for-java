@@ -12,20 +12,20 @@ public final class AutoScalePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoScaleProperties model
-            = BinaryData.fromString("{\"minNodeCount\":871645942,\"enabled\":true,\"maxNodeCount\":1665244989}")
+            = BinaryData.fromString("{\"minNodeCount\":104682209,\"enabled\":true,\"maxNodeCount\":204344826}")
                 .toObject(AutoScaleProperties.class);
-        Assertions.assertEquals(871645942, model.minNodeCount());
+        Assertions.assertEquals(104682209, model.minNodeCount());
         Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals(1665244989, model.maxNodeCount());
+        Assertions.assertEquals(204344826, model.maxNodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoScaleProperties model
-            = new AutoScaleProperties().withMinNodeCount(871645942).withEnabled(true).withMaxNodeCount(1665244989);
+            = new AutoScaleProperties().withMinNodeCount(104682209).withEnabled(true).withMaxNodeCount(204344826);
         model = BinaryData.fromObject(model).toObject(AutoScaleProperties.class);
-        Assertions.assertEquals(871645942, model.minNodeCount());
+        Assertions.assertEquals(104682209, model.minNodeCount());
         Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals(1665244989, model.maxNodeCount());
+        Assertions.assertEquals(204344826, model.maxNodeCount());
     }
 }

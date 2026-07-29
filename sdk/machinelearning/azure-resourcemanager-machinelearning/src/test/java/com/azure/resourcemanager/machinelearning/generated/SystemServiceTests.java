@@ -11,7 +11,7 @@ public final class SystemServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemService model = BinaryData
-            .fromString("{\"systemServiceType\":\"jvxlhmpmh\",\"publicIpAddress\":\"t\",\"version\":\"phqeofy\"}")
+            .fromString("{\"systemServiceType\":\"wbwggijts\",\"publicIpAddress\":\"jnrrhikws\",\"version\":\"r\"}")
             .toObject(SystemService.class);
     }
 }

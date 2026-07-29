@@ -15,27 +15,27 @@ public final class TeacherModelSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeacherModelSettings model = BinaryData.fromString(
-            "{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":27.60362942387595,\"requestBatchSize\":196268442},\"teacherModelInferenceParameters\":{\"c\":\"tfbjampq\",\"nmxynlsuqbwzst\":\"a\",\"gvp\":\"k\",\"i\":\"trgjjkt\"}}")
+            "{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":70.64430217858789,\"requestBatchSize\":581816200},\"teacherModelInferenceParameters\":{\"vcmlaexbzbquf\":\"eglyu\",\"zaymld\":\"nezs\",\"uwdhtq\":\"orhyogzmsimehtc\",\"gi\":\"hyhnimxtns\"}}")
             .toObject(TeacherModelSettings.class);
-        Assertions.assertEquals(27.60362942387595D,
+        Assertions.assertEquals(70.64430217858789D,
             model.teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(196268442, model.teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("tfbjampq", model.teacherModelInferenceParameters().get("c"));
+        Assertions.assertEquals(581816200, model.teacherModelEndpointRequestSettings().requestBatchSize());
+        Assertions.assertEquals("eglyu", model.teacherModelInferenceParameters().get("vcmlaexbzbquf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TeacherModelSettings model = new TeacherModelSettings()
             .withTeacherModelEndpointRequestSettings(
-                new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(27.60362942387595D)
-                    .withRequestBatchSize(196268442))
+                new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(70.64430217858789D)
+                    .withRequestBatchSize(581816200))
             .withTeacherModelInferenceParameters(
-                mapOf("c", "tfbjampq", "nmxynlsuqbwzst", "a", "gvp", "k", "i", "trgjjkt"));
+                mapOf("vcmlaexbzbquf", "eglyu", "zaymld", "nezs", "uwdhtq", "orhyogzmsimehtc", "gi", "hyhnimxtns"));
         model = BinaryData.fromObject(model).toObject(TeacherModelSettings.class);
-        Assertions.assertEquals(27.60362942387595D,
+        Assertions.assertEquals(70.64430217858789D,
             model.teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(196268442, model.teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("tfbjampq", model.teacherModelInferenceParameters().get("c"));
+        Assertions.assertEquals(581816200, model.teacherModelEndpointRequestSettings().requestBatchSize());
+        Assertions.assertEquals("eglyu", model.teacherModelInferenceParameters().get("vcmlaexbzbquf"));
     }
 
     // Use "Map.of" if available

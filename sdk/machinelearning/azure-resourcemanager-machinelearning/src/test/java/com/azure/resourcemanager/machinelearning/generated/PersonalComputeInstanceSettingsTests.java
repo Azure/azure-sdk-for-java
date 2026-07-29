@@ -13,18 +13,18 @@ public final class PersonalComputeInstanceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PersonalComputeInstanceSettings model
-            = BinaryData.fromString("{\"assignedUser\":{\"objectId\":\"knmstbdoprwkamp\",\"tenantId\":\"hwpbldzniu\"}}")
+            = BinaryData.fromString("{\"assignedUser\":{\"objectId\":\"dnxqeonm\",\"tenantId\":\"rjjaojpz\"}}")
                 .toObject(PersonalComputeInstanceSettings.class);
-        Assertions.assertEquals("knmstbdoprwkamp", model.assignedUser().objectId());
-        Assertions.assertEquals("hwpbldzniu", model.assignedUser().tenantId());
+        Assertions.assertEquals("dnxqeonm", model.assignedUser().objectId());
+        Assertions.assertEquals("rjjaojpz", model.assignedUser().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PersonalComputeInstanceSettings model = new PersonalComputeInstanceSettings()
-            .withAssignedUser(new AssignedUser().withObjectId("knmstbdoprwkamp").withTenantId("hwpbldzniu"));
+            .withAssignedUser(new AssignedUser().withObjectId("dnxqeonm").withTenantId("rjjaojpz"));
         model = BinaryData.fromObject(model).toObject(PersonalComputeInstanceSettings.class);
-        Assertions.assertEquals("knmstbdoprwkamp", model.assignedUser().objectId());
-        Assertions.assertEquals("hwpbldzniu", model.assignedUser().tenantId());
+        Assertions.assertEquals("dnxqeonm", model.assignedUser().objectId());
+        Assertions.assertEquals("rjjaojpz", model.assignedUser().tenantId());
     }
 }

@@ -14,26 +14,25 @@ public final class ComputeRecurrenceScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeRecurrenceSchedule model = BinaryData.fromString(
-            "{\"hours\":[1321949703,1045878056,1866033442,1713357433],\"minutes\":[1878703955,2039873540],\"monthDays\":[2131133390,1099788002,2077180464,1254468072],\"weekDays\":[\"Thursday\",\"Wednesday\",\"Wednesday\",\"Sunday\"]}")
+            "{\"hours\":[1690747307,186833415],\"minutes\":[1244552051,2113394637,109331432],\"monthDays\":[1748755082,235038550,487545221],\"weekDays\":[\"Sunday\",\"Thursday\",\"Sunday\"]}")
             .toObject(ComputeRecurrenceSchedule.class);
-        Assertions.assertEquals(1321949703, model.hours().get(0));
-        Assertions.assertEquals(1878703955, model.minutes().get(0));
-        Assertions.assertEquals(2131133390, model.monthDays().get(0));
-        Assertions.assertEquals(ComputeWeekDay.THURSDAY, model.weekDays().get(0));
+        Assertions.assertEquals(1690747307, model.hours().get(0));
+        Assertions.assertEquals(1244552051, model.minutes().get(0));
+        Assertions.assertEquals(1748755082, model.monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.SUNDAY, model.weekDays().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ComputeRecurrenceSchedule model
-            = new ComputeRecurrenceSchedule().withHours(Arrays.asList(1321949703, 1045878056, 1866033442, 1713357433))
-                .withMinutes(Arrays.asList(1878703955, 2039873540))
-                .withMonthDays(Arrays.asList(2131133390, 1099788002, 2077180464, 1254468072))
-                .withWeekDays(Arrays.asList(ComputeWeekDay.THURSDAY, ComputeWeekDay.WEDNESDAY, ComputeWeekDay.WEDNESDAY,
-                    ComputeWeekDay.SUNDAY));
+            = new ComputeRecurrenceSchedule().withHours(Arrays.asList(1690747307, 186833415))
+                .withMinutes(Arrays.asList(1244552051, 2113394637, 109331432))
+                .withMonthDays(Arrays.asList(1748755082, 235038550, 487545221))
+                .withWeekDays(Arrays.asList(ComputeWeekDay.SUNDAY, ComputeWeekDay.THURSDAY, ComputeWeekDay.SUNDAY));
         model = BinaryData.fromObject(model).toObject(ComputeRecurrenceSchedule.class);
-        Assertions.assertEquals(1321949703, model.hours().get(0));
-        Assertions.assertEquals(1878703955, model.minutes().get(0));
-        Assertions.assertEquals(2131133390, model.monthDays().get(0));
-        Assertions.assertEquals(ComputeWeekDay.THURSDAY, model.weekDays().get(0));
+        Assertions.assertEquals(1690747307, model.hours().get(0));
+        Assertions.assertEquals(1244552051, model.minutes().get(0));
+        Assertions.assertEquals(1748755082, model.monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.SUNDAY, model.weekDays().get(0));
     }
 }

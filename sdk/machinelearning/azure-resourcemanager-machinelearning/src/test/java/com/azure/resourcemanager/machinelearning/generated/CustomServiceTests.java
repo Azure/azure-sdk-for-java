@@ -28,132 +28,124 @@ public final class CustomServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomService model = BinaryData.fromString(
-            "{\"name\":\"ryclo\",\"image\":{\"type\":\"docker\",\"reference\":\"wxvjele\",\"version\":\"qhdxtwwulkryb\",\"hsfoulborcx\":\"\\\"datavykbyjecrqkwakk\\\"\"},\"environmentVariables\":{\"iuvflgzhcwjgwahc\":{\"type\":\"local\",\"value\":\"bdy\",\"jqlqfbleruf\":\"\\\"dataectsmwpgweoqh\\\"\",\"bymjjvtpne\":\"\\\"datallcshjuci\\\"\",\"lhbimyii\":\"\\\"dataxvjeazrah\\\"\",\"osizk\":\"\\\"dataqamcthtpqgfz\\\"\"},\"yyopoaytwwgw\":{\"type\":\"local\",\"value\":\"g\",\"zivxpmh\":\"\\\"datavnpcc\\\"\",\"vnnjd\":\"\\\"dataghhh\\\"\",\"zstqlf\":\"\\\"dataujqzvhnjvpmxnht\\\"\",\"wequfl\":\"\\\"dataolrwvtlgxyfj\\\"\"},\"clhsiigeeuw\":{\"type\":\"local\",\"value\":\"tbvufrkwjiemim\",\"reeedddrftfquul\":\"\\\"datapowewjs\\\"\"}},\"docker\":{\"privileged\":false,\"dqnetdqwynx\":\"\\\"dataf\\\"\",\"y\":\"\\\"dataqgvbzpggpwm\\\"\",\"a\":\"\\\"databqajejir\\\"\"},\"endpoints\":[{\"protocol\":\"http\",\"name\":\"o\",\"target\":1580551551,\"published\":547743018,\"hostIp\":\"vlnhx\"},{\"protocol\":\"tcp\",\"name\":\"hinaegesbxnepq\",\"target\":1829398059,\"published\":281969820,\"hostIp\":\"ukfyk\"},{\"protocol\":\"http\",\"name\":\"ovadkrmjx\",\"target\":1469393037,\"published\":28862474,\"hostIp\":\"esjqbzkqmxvporiw\"},{\"protocol\":\"http\",\"name\":\"ijtspzjnrrhikwsb\",\"target\":361082418,\"published\":415171727,\"hostIp\":\"quhtr\"}],\"volumes\":[{\"type\":\"bind\",\"readOnly\":true,\"source\":\"hrjhiycbauseqn\",\"target\":\"kv\",\"consistency\":\"vtuwyjsqwzszosz\",\"bind\":{\"propagation\":\"unkfnyskwwun\",\"createHostPath\":false,\"selinux\":\"avoj\"},\"volume\":{\"nocopy\":true},\"tmpfs\":{\"size\":2078901091}},{\"type\":\"tmpfs\",\"readOnly\":false,\"source\":\"jpxprr\",\"target\":\"hyluqalpcufj\",\"consistency\":\"xtiztqdstahh\",\"bind\":{\"propagation\":\"axxsritr\",\"createHostPath\":false,\"selinux\":\"aesyyefm\"},\"volume\":{\"nocopy\":true},\"tmpfs\":{\"size\":946526502}}],\"kernel\":{\"argv\":[\"gpasrvrmtisty\",\"kjhorlxkpy\",\"k\"],\"displayName\":\"nycntr\",\"language\":\"xwtdmbqjtsuhqh\"},\"x\":\"\\\"datatdyqav\\\"\",\"npaami\":\"\\\"dataqmzxsyaks\\\"\",\"hvwt\":\"\\\"datawb\\\"\",\"kiy\":\"\\\"datapbgchcgsfzhb\\\"\"}")
+            "{\"name\":\"nfpgh\",\"image\":{\"type\":\"azureml\",\"reference\":\"kimskhn\",\"version\":\"hb\",\"uthrvybnzbnvms\":\"\\\"datasmhrcmelycpgo\\\"\",\"xlvzcgulaebxiauq\":\"\\\"datafuzzlapy\\\"\"},\"environmentVariables\":{\"eyozvrcw\":{\"type\":\"local\",\"value\":\"sjlwjtatpvbl\",\"cj\":\"\\\"datagxqaygaslkvcvwpv\\\"\",\"onbwhi\":\"\\\"datavyezjwjk\\\"\"},\"gvkdlhuduk\":{\"type\":\"local\",\"value\":\"wnbcgqefgzjvbx\",\"xtuuci\":\"\\\"datagoa\\\"\"}},\"docker\":{\"privileged\":true,\"narseiancsqoacb\":\"\\\"datamjfexulvoep\\\"\",\"szglvyakesz\":\"\\\"dataqdgsapleqfgkxen\\\"\",\"aqcwggchxvlqgf\":\"\\\"datauuvu\\\"\"},\"endpoints\":[{\"protocol\":\"udp\",\"name\":\"c\",\"target\":469356269,\"published\":886000626,\"hostIp\":\"rlzbipi\"},{\"protocol\":\"http\",\"name\":\"pkwzzzkueruwcj\",\"target\":2132855841,\"published\":803041518,\"hostIp\":\"kaujttwykoxv\"}],\"volumes\":[{\"type\":\"npipe\",\"readOnly\":false,\"source\":\"lrelfkvgahcbtuxl\",\"target\":\"xrhrfjenraz\",\"consistency\":\"fiktlhqa\",\"bind\":{\"propagation\":\"ostjixyz\",\"createHostPath\":false,\"selinux\":\"gzzdwjtacfvvtdp\"},\"volume\":{\"nocopy\":true},\"tmpfs\":{\"size\":1943002336}},{\"type\":\"tmpfs\",\"readOnly\":true,\"source\":\"brhfiwltkfysunte\",\"target\":\"klx\",\"consistency\":\"cvasyyh\",\"bind\":{\"propagation\":\"k\",\"createHostPath\":true,\"selinux\":\"rkix\"},\"volume\":{\"nocopy\":false},\"tmpfs\":{\"size\":25760238}},{\"type\":\"tmpfs\",\"readOnly\":false,\"source\":\"syilpzzbrwnrzoz\",\"target\":\"agysokl\",\"consistency\":\"ksybvrrbnhylsb\",\"bind\":{\"propagation\":\"cydyllmxv\",\"createHostPath\":true,\"selinux\":\"zsyqagqllcbrvaid\"},\"volume\":{\"nocopy\":false},\"tmpfs\":{\"size\":536739646}}],\"kernel\":{\"argv\":[\"fyybptmjj\"],\"displayName\":\"ogykugdlavsav\",\"language\":\"hk\"},\"zb\":\"\\\"dataeuufk\\\"\",\"csbto\":\"\\\"databxjblajybdnb\\\"\"}")
             .toObject(CustomService.class);
-        Assertions.assertEquals("ryclo", model.name());
-        Assertions.assertEquals(ImageType.DOCKER, model.image().type());
-        Assertions.assertEquals("wxvjele", model.image().reference());
-        Assertions.assertEquals("qhdxtwwulkryb", model.image().version());
-        Assertions.assertEquals(EnvironmentVariableType.LOCAL,
-            model.environmentVariables().get("iuvflgzhcwjgwahc").type());
-        Assertions.assertEquals("bdy", model.environmentVariables().get("iuvflgzhcwjgwahc").value());
-        Assertions.assertFalse(model.docker().privileged());
-        Assertions.assertEquals(Protocol.HTTP, model.endpoints().get(0).protocol());
-        Assertions.assertEquals("o", model.endpoints().get(0).name());
-        Assertions.assertEquals(1580551551, model.endpoints().get(0).target());
-        Assertions.assertEquals(547743018, model.endpoints().get(0).published());
-        Assertions.assertEquals("vlnhx", model.endpoints().get(0).hostIp());
-        Assertions.assertEquals(VolumeDefinitionType.BIND, model.volumes().get(0).type());
-        Assertions.assertTrue(model.volumes().get(0).readOnly());
-        Assertions.assertEquals("hrjhiycbauseqn", model.volumes().get(0).source());
-        Assertions.assertEquals("kv", model.volumes().get(0).target());
-        Assertions.assertEquals("vtuwyjsqwzszosz", model.volumes().get(0).consistency());
-        Assertions.assertEquals("unkfnyskwwun", model.volumes().get(0).bind().propagation());
+        Assertions.assertEquals("nfpgh", model.name());
+        Assertions.assertEquals(ImageType.AZUREML, model.image().type());
+        Assertions.assertEquals("kimskhn", model.image().reference());
+        Assertions.assertEquals("hb", model.image().version());
+        Assertions.assertEquals(EnvironmentVariableType.LOCAL, model.environmentVariables().get("eyozvrcw").type());
+        Assertions.assertEquals("sjlwjtatpvbl", model.environmentVariables().get("eyozvrcw").value());
+        Assertions.assertTrue(model.docker().privileged());
+        Assertions.assertEquals(Protocol.UDP, model.endpoints().get(0).protocol());
+        Assertions.assertEquals("c", model.endpoints().get(0).name());
+        Assertions.assertEquals(469356269, model.endpoints().get(0).target());
+        Assertions.assertEquals(886000626, model.endpoints().get(0).published());
+        Assertions.assertEquals("rlzbipi", model.endpoints().get(0).hostIp());
+        Assertions.assertEquals(VolumeDefinitionType.NPIPE, model.volumes().get(0).type());
+        Assertions.assertFalse(model.volumes().get(0).readOnly());
+        Assertions.assertEquals("lrelfkvgahcbtuxl", model.volumes().get(0).source());
+        Assertions.assertEquals("xrhrfjenraz", model.volumes().get(0).target());
+        Assertions.assertEquals("fiktlhqa", model.volumes().get(0).consistency());
+        Assertions.assertEquals("ostjixyz", model.volumes().get(0).bind().propagation());
         Assertions.assertFalse(model.volumes().get(0).bind().createHostPath());
-        Assertions.assertEquals("avoj", model.volumes().get(0).bind().selinux());
+        Assertions.assertEquals("gzzdwjtacfvvtdp", model.volumes().get(0).bind().selinux());
         Assertions.assertTrue(model.volumes().get(0).volume().nocopy());
-        Assertions.assertEquals(2078901091, model.volumes().get(0).tmpfs().size());
-        Assertions.assertEquals("gpasrvrmtisty", model.kernel().argv().get(0));
-        Assertions.assertEquals("nycntr", model.kernel().displayName());
-        Assertions.assertEquals("xwtdmbqjtsuhqh", model.kernel().language());
+        Assertions.assertEquals(1943002336, model.volumes().get(0).tmpfs().size());
+        Assertions.assertEquals("fyybptmjj", model.kernel().argv().get(0));
+        Assertions.assertEquals("ogykugdlavsav", model.kernel().displayName());
+        Assertions.assertEquals("hk", model.kernel().language());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomService model = new CustomService().withName("ryclo")
-            .withImage(new Image().withType(ImageType.DOCKER)
-                .withReference("wxvjele")
-                .withVersion("qhdxtwwulkryb")
-                .withAdditionalProperties(mapOf("hsfoulborcx", "\"datavykbyjecrqkwakk\"")))
-            .withEnvironmentVariables(mapOf("iuvflgzhcwjgwahc",
-                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                    .withValue("bdy")
-                    .withAdditionalProperties(mapOf("bymjjvtpne", "\"datallcshjuci\"", "lhbimyii", "\"dataxvjeazrah\"",
-                        "osizk", "\"dataqamcthtpqgfz\"", "jqlqfbleruf", "\"dataectsmwpgweoqh\"")),
-                "yyopoaytwwgw",
-                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                    .withValue("g")
-                    .withAdditionalProperties(mapOf("vnnjd", "\"dataghhh\"", "zivxpmh", "\"datavnpcc\"", "zstqlf",
-                        "\"dataujqzvhnjvpmxnht\"", "wequfl", "\"dataolrwvtlgxyfj\"")),
-                "clhsiigeeuw",
-                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                    .withValue("tbvufrkwjiemim")
-                    .withAdditionalProperties(mapOf("reeedddrftfquul", "\"datapowewjs\""))))
-            .withDocker(new Docker().withPrivileged(false)
+        CustomService model = new CustomService().withName("nfpgh")
+            .withImage(new Image().withType(ImageType.AZUREML)
+                .withReference("kimskhn")
+                .withVersion("hb")
                 .withAdditionalProperties(
-                    mapOf("a", "\"databqajejir\"", "y", "\"dataqgvbzpggpwm\"", "dqnetdqwynx", "\"dataf\"")))
+                    mapOf("xlvzcgulaebxiauq", "\"datafuzzlapy\"", "uthrvybnzbnvms", "\"datasmhrcmelycpgo\"")))
+            .withEnvironmentVariables(mapOf("eyozvrcw",
+                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                    .withValue("sjlwjtatpvbl")
+                    .withAdditionalProperties(mapOf("onbwhi", "\"datavyezjwjk\"", "cj", "\"datagxqaygaslkvcvwpv\"")),
+                "gvkdlhuduk",
+                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                    .withValue("wnbcgqefgzjvbx")
+                    .withAdditionalProperties(mapOf("xtuuci", "\"datagoa\""))))
+            .withDocker(new Docker().withPrivileged(true)
+                .withAdditionalProperties(mapOf("aqcwggchxvlqgf", "\"datauuvu\"", "szglvyakesz",
+                    "\"dataqdgsapleqfgkxen\"", "narseiancsqoacb", "\"datamjfexulvoep\"")))
             .withEndpoints(Arrays.asList(
+                new Endpoint().withProtocol(Protocol.UDP)
+                    .withName("c")
+                    .withTarget(469356269)
+                    .withPublished(886000626)
+                    .withHostIp("rlzbipi"),
                 new Endpoint().withProtocol(Protocol.HTTP)
-                    .withName("o")
-                    .withTarget(1580551551)
-                    .withPublished(547743018)
-                    .withHostIp("vlnhx"),
-                new Endpoint().withProtocol(Protocol.TCP)
-                    .withName("hinaegesbxnepq")
-                    .withTarget(1829398059)
-                    .withPublished(281969820)
-                    .withHostIp("ukfyk"),
-                new Endpoint().withProtocol(Protocol.HTTP)
-                    .withName("ovadkrmjx")
-                    .withTarget(1469393037)
-                    .withPublished(28862474)
-                    .withHostIp("esjqbzkqmxvporiw"),
-                new Endpoint().withProtocol(Protocol.HTTP)
-                    .withName("ijtspzjnrrhikwsb")
-                    .withTarget(361082418)
-                    .withPublished(415171727)
-                    .withHostIp("quhtr")))
+                    .withName("pkwzzzkueruwcj")
+                    .withTarget(2132855841)
+                    .withPublished(803041518)
+                    .withHostIp("kaujttwykoxv")))
             .withVolumes(Arrays.asList(
-                new VolumeDefinition().withType(VolumeDefinitionType.BIND)
-                    .withReadOnly(true)
-                    .withSource("hrjhiycbauseqn")
-                    .withTarget("kv")
-                    .withConsistency("vtuwyjsqwzszosz")
-                    .withBind(
-                        new BindOptions().withPropagation("unkfnyskwwun").withCreateHostPath(false).withSelinux("avoj"))
+                new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
+                    .withReadOnly(false)
+                    .withSource("lrelfkvgahcbtuxl")
+                    .withTarget("xrhrfjenraz")
+                    .withConsistency("fiktlhqa")
+                    .withBind(new BindOptions().withPropagation("ostjixyz")
+                        .withCreateHostPath(false)
+                        .withSelinux("gzzdwjtacfvvtdp"))
                     .withVolume(new VolumeOptions().withNocopy(true))
-                    .withTmpfs(new TmpfsOptions().withSize(2078901091)),
+                    .withTmpfs(new TmpfsOptions().withSize(1943002336)),
+                new VolumeDefinition().withType(VolumeDefinitionType.TMPFS)
+                    .withReadOnly(true)
+                    .withSource("brhfiwltkfysunte")
+                    .withTarget("klx")
+                    .withConsistency("cvasyyh")
+                    .withBind(new BindOptions().withPropagation("k").withCreateHostPath(true).withSelinux("rkix"))
+                    .withVolume(new VolumeOptions().withNocopy(false))
+                    .withTmpfs(new TmpfsOptions().withSize(25760238)),
                 new VolumeDefinition().withType(VolumeDefinitionType.TMPFS)
                     .withReadOnly(false)
-                    .withSource("jpxprr")
-                    .withTarget("hyluqalpcufj")
-                    .withConsistency("xtiztqdstahh")
-                    .withBind(
-                        new BindOptions().withPropagation("axxsritr").withCreateHostPath(false).withSelinux("aesyyefm"))
-                    .withVolume(new VolumeOptions().withNocopy(true))
-                    .withTmpfs(new TmpfsOptions().withSize(946526502))))
-            .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("gpasrvrmtisty", "kjhorlxkpy", "k"))
-                .withDisplayName("nycntr")
-                .withLanguage("xwtdmbqjtsuhqh"))
-            .withAdditionalProperties(mapOf("npaami", "\"dataqmzxsyaks\"", "x", "\"datatdyqav\"", "hvwt", "\"datawb\"",
-                "kiy", "\"datapbgchcgsfzhb\""));
+                    .withSource("syilpzzbrwnrzoz")
+                    .withTarget("agysokl")
+                    .withConsistency("ksybvrrbnhylsb")
+                    .withBind(new BindOptions().withPropagation("cydyllmxv")
+                        .withCreateHostPath(true)
+                        .withSelinux("zsyqagqllcbrvaid"))
+                    .withVolume(new VolumeOptions().withNocopy(false))
+                    .withTmpfs(new TmpfsOptions().withSize(536739646))))
+            .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("fyybptmjj"))
+                .withDisplayName("ogykugdlavsav")
+                .withLanguage("hk"))
+            .withAdditionalProperties(mapOf("csbto", "\"databxjblajybdnb\"", "zb", "\"dataeuufk\""));
         model = BinaryData.fromObject(model).toObject(CustomService.class);
-        Assertions.assertEquals("ryclo", model.name());
-        Assertions.assertEquals(ImageType.DOCKER, model.image().type());
-        Assertions.assertEquals("wxvjele", model.image().reference());
-        Assertions.assertEquals("qhdxtwwulkryb", model.image().version());
-        Assertions.assertEquals(EnvironmentVariableType.LOCAL,
-            model.environmentVariables().get("iuvflgzhcwjgwahc").type());
-        Assertions.assertEquals("bdy", model.environmentVariables().get("iuvflgzhcwjgwahc").value());
-        Assertions.assertFalse(model.docker().privileged());
-        Assertions.assertEquals(Protocol.HTTP, model.endpoints().get(0).protocol());
-        Assertions.assertEquals("o", model.endpoints().get(0).name());
-        Assertions.assertEquals(1580551551, model.endpoints().get(0).target());
-        Assertions.assertEquals(547743018, model.endpoints().get(0).published());
-        Assertions.assertEquals("vlnhx", model.endpoints().get(0).hostIp());
-        Assertions.assertEquals(VolumeDefinitionType.BIND, model.volumes().get(0).type());
-        Assertions.assertTrue(model.volumes().get(0).readOnly());
-        Assertions.assertEquals("hrjhiycbauseqn", model.volumes().get(0).source());
-        Assertions.assertEquals("kv", model.volumes().get(0).target());
-        Assertions.assertEquals("vtuwyjsqwzszosz", model.volumes().get(0).consistency());
-        Assertions.assertEquals("unkfnyskwwun", model.volumes().get(0).bind().propagation());
+        Assertions.assertEquals("nfpgh", model.name());
+        Assertions.assertEquals(ImageType.AZUREML, model.image().type());
+        Assertions.assertEquals("kimskhn", model.image().reference());
+        Assertions.assertEquals("hb", model.image().version());
+        Assertions.assertEquals(EnvironmentVariableType.LOCAL, model.environmentVariables().get("eyozvrcw").type());
+        Assertions.assertEquals("sjlwjtatpvbl", model.environmentVariables().get("eyozvrcw").value());
+        Assertions.assertTrue(model.docker().privileged());
+        Assertions.assertEquals(Protocol.UDP, model.endpoints().get(0).protocol());
+        Assertions.assertEquals("c", model.endpoints().get(0).name());
+        Assertions.assertEquals(469356269, model.endpoints().get(0).target());
+        Assertions.assertEquals(886000626, model.endpoints().get(0).published());
+        Assertions.assertEquals("rlzbipi", model.endpoints().get(0).hostIp());
+        Assertions.assertEquals(VolumeDefinitionType.NPIPE, model.volumes().get(0).type());
+        Assertions.assertFalse(model.volumes().get(0).readOnly());
+        Assertions.assertEquals("lrelfkvgahcbtuxl", model.volumes().get(0).source());
+        Assertions.assertEquals("xrhrfjenraz", model.volumes().get(0).target());
+        Assertions.assertEquals("fiktlhqa", model.volumes().get(0).consistency());
+        Assertions.assertEquals("ostjixyz", model.volumes().get(0).bind().propagation());
         Assertions.assertFalse(model.volumes().get(0).bind().createHostPath());
-        Assertions.assertEquals("avoj", model.volumes().get(0).bind().selinux());
+        Assertions.assertEquals("gzzdwjtacfvvtdp", model.volumes().get(0).bind().selinux());
         Assertions.assertTrue(model.volumes().get(0).volume().nocopy());
-        Assertions.assertEquals(2078901091, model.volumes().get(0).tmpfs().size());
-        Assertions.assertEquals("gpasrvrmtisty", model.kernel().argv().get(0));
-        Assertions.assertEquals("nycntr", model.kernel().displayName());
-        Assertions.assertEquals("xwtdmbqjtsuhqh", model.kernel().language());
+        Assertions.assertEquals(1943002336, model.volumes().get(0).tmpfs().size());
+        Assertions.assertEquals("fyybptmjj", model.kernel().argv().get(0));
+        Assertions.assertEquals("ogykugdlavsav", model.kernel().displayName());
+        Assertions.assertEquals("hk", model.kernel().language());
     }
 
     // Use "Map.of" if available

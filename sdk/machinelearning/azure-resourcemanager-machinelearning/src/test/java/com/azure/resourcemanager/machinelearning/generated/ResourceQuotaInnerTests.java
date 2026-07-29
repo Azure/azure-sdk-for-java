@@ -11,7 +11,7 @@ public final class ResourceQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceQuotaInner model = BinaryData.fromString(
-            "{\"id\":\"kw\",\"amlWorkspaceLocation\":\"obp\",\"type\":\"cidpda\",\"name\":{\"value\":\"mn\",\"localizedValue\":\"lirqqcls\"},\"limit\":6252566658276405112,\"unit\":\"Count\"}")
+            "{\"id\":\"mlnxrca\",\"amlWorkspaceLocation\":\"uhske\",\"type\":\"kvvii\",\"name\":{\"value\":\"shoxfzzjd\",\"localizedValue\":\"pbusxy\"},\"limit\":2248032701642810088,\"unit\":\"Count\"}")
             .toObject(ResourceQuotaInner.class);
     }
 }

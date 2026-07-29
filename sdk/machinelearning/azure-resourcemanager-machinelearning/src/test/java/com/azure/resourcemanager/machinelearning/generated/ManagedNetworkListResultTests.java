@@ -16,17 +16,17 @@ public final class ManagedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNetworkListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowInternetOutbound\",\"AllowInternetOutbound\",\"Disabled\",\"AllowOnlyApprovedOutbound\"],\"enableNetworkMonitor\":true,\"isolationMode\":\"Disabled\",\"networkId\":\"icgvpzgyxccnp\",\"outboundRules\":{\"m\":{\"type\":\"OutboundRule\"}},\"status\":{\"sparkReady\":true,\"status\":\"Inactive\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"nbrysgktfmocnqbb\"},\"provisioningState\":\"Updating\"},\"id\":\"ofzghfuifwxu\",\"name\":\"ynohocqxug\",\"type\":\"xugdcrrfb\"},{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"Disabled\",\"AllowOnlyApprovedOutbound\",\"AllowOnlyApprovedOutbound\"],\"enableNetworkMonitor\":false,\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"bdmddg\",\"outboundRules\":{\"uyaorservpv\":{\"type\":\"OutboundRule\"},\"sorsbegcl\":{\"type\":\"OutboundRule\"},\"ex\":{\"type\":\"OutboundRule\"}},\"status\":{\"sparkReady\":true,\"status\":\"Inactive\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"vtuqvirl\"},\"provisioningState\":\"Deleted\"},\"id\":\"kydigt\",\"name\":\"jx\",\"type\":\"ocsvjekejchxzj\"},{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"AllowInternetOutbound\"],\"enableNetworkMonitor\":false,\"isolationMode\":\"Disabled\",\"networkId\":\"ecmasjnfgngxaoje\",\"outboundRules\":{\"fxbfckmo\":{\"type\":\"OutboundRule\"}},\"status\":{\"sparkReady\":true,\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"zhvojyffwflbk\"},\"provisioningState\":\"Succeeded\"},\"id\":\"uiygtcyzcjefpub\",\"name\":\"ldjcgldryvlrlkb\",\"type\":\"zirmxcauj\"},{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\"],\"enableNetworkMonitor\":true,\"isolationMode\":\"AllowInternetOutbound\",\"networkId\":\"xefppq\",\"outboundRules\":{\"nnjjthpsnxebycy\":{\"type\":\"OutboundRule\"},\"pohxubn\":{\"type\":\"OutboundRule\"}},\"status\":{\"sparkReady\":false,\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"spdyzssj\"},\"provisioningState\":\"Deleting\"},\"id\":\"dygjvgspjlfz\",\"name\":\"j\",\"type\":\"g\"}],\"nextLink\":\"xcrbcrgyoimm\"}")
+            "{\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\"],\"enableNetworkMonitor\":false,\"isolationMode\":\"Disabled\",\"networkId\":\"lorxz\",\"outboundRules\":{\"itudc\":{\"type\":\"OutboundRule\"}},\"status\":{\"sparkReady\":false,\"status\":\"Inactive\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"wtkehl\"},\"provisioningState\":\"Succeeded\"},\"id\":\"sxvbbwsgikkmibnm\",\"name\":\"pid\",\"type\":\"pwtgzwmzhcmrloqa\"}],\"nextLink\":\"tyzavkyjjl\"}")
             .toObject(ManagedNetworkListResult.class);
-        Assertions.assertTrue(model.value().get(0).properties().managedNetwork().enableNetworkMonitor());
+        Assertions.assertFalse(model.value().get(0).properties().managedNetwork().enableNetworkMonitor());
         Assertions.assertEquals(IsolationMode.DISABLED,
             model.value().get(0).properties().managedNetwork().isolationMode());
-        Assertions.assertTrue(model.value().get(0).properties().managedNetwork().status().sparkReady());
+        Assertions.assertFalse(model.value().get(0).properties().managedNetwork().status().sparkReady());
         Assertions.assertEquals(ManagedNetworkStatus.INACTIVE,
             model.value().get(0).properties().managedNetwork().status().status());
-        Assertions.assertEquals(FirewallSku.BASIC, model.value().get(0).properties().managedNetwork().firewallSku());
+        Assertions.assertEquals(FirewallSku.STANDARD, model.value().get(0).properties().managedNetwork().firewallSku());
         Assertions.assertEquals(ManagedNetworkKind.V1,
             model.value().get(0).properties().managedNetwork().managedNetworkKind());
-        Assertions.assertEquals("xcrbcrgyoimm", model.nextLink());
+        Assertions.assertEquals("tyzavkyjjl", model.nextLink());
     }
 }

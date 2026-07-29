@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CommandJobLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommandJobLimits model = BinaryData.fromString("{\"jobLimitsType\":\"Command\",\"timeout\":\"PT17H54M3S\"}")
+        CommandJobLimits model = BinaryData.fromString("{\"jobLimitsType\":\"Command\",\"timeout\":\"PT130H14M47S\"}")
             .toObject(CommandJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT17H54M3S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT130H14M47S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommandJobLimits model = new CommandJobLimits().withTimeout(Duration.parse("PT17H54M3S"));
+        CommandJobLimits model = new CommandJobLimits().withTimeout(Duration.parse("PT130H14M47S"));
         model = BinaryData.fromObject(model).toObject(CommandJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT17H54M3S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT130H14M47S"), model.timeout());
     }
 }

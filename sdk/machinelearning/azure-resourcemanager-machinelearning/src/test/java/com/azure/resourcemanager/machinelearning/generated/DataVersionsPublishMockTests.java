@@ -29,10 +29,10 @@ public final class DataVersionsPublishMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.dataVersions()
-            .publish("vvvjmfjjfexuv", "veamseau", "uvhxiohglmufzuuy", "zhaeemty",
-                new DestinationAsset().withDestinationName("dpxtsdywf")
-                    .withDestinationVersion("fvwgwphwxiav")
-                    .withRegistryName("ixaqgfpuhhzwr"),
+            .publish("hcynnmvaizvkw", "qpw", "idsjqc", "yzm",
+                new DestinationAsset().withDestinationName("fdlgpryy")
+                    .withDestinationVersion("ik")
+                    .withRegistryName("bcyuwahwzagv"),
                 com.azure.core.util.Context.NONE);
 
     }

@@ -27,7 +27,8 @@ public final class InferencePoolsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.inferencePools().delete("izvsihsmtx", "cajh", "juqqtzrnubo", com.azure.core.util.Context.NONE);
+        manager.inferencePools()
+            .delete("crzbtlrbzqt", "hgajfayftohdlpc", "xpxxnyhivhyujqx", com.azure.core.util.Context.NONE);
 
     }
 }

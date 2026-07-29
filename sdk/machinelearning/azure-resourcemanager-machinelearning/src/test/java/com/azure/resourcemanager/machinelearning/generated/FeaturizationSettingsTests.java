@@ -12,14 +12,14 @@ public final class FeaturizationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeaturizationSettings model
-            = BinaryData.fromString("{\"datasetLanguage\":\"isvpztdivykpxkqe\"}").toObject(FeaturizationSettings.class);
-        Assertions.assertEquals("isvpztdivykpxkqe", model.datasetLanguage());
+            = BinaryData.fromString("{\"datasetLanguage\":\"rqaqotn\"}").toObject(FeaturizationSettings.class);
+        Assertions.assertEquals("rqaqotn", model.datasetLanguage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeaturizationSettings model = new FeaturizationSettings().withDatasetLanguage("isvpztdivykpxkqe");
+        FeaturizationSettings model = new FeaturizationSettings().withDatasetLanguage("rqaqotn");
         model = BinaryData.fromObject(model).toObject(FeaturizationSettings.class);
-        Assertions.assertEquals("isvpztdivykpxkqe", model.datasetLanguage());
+        Assertions.assertEquals("rqaqotn", model.datasetLanguage());
     }
 }

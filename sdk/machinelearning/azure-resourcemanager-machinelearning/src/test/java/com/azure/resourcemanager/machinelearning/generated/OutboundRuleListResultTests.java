@@ -14,10 +14,10 @@ public final class OutboundRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Inactive\",\"errorInformation\":\"wynbfvvc\",\"parentRuleNames\":[\"rkm\",\"ufavvlnpbso\",\"m\",\"nklnmrz\"]},\"id\":\"tvrkkfcwxizkstx\",\"name\":\"eykeipxutcbvriuv\",\"type\":\"fazxt\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Provisioning\",\"errorInformation\":\"eiivjq\",\"parentRuleNames\":[\"jwrvewojoqfxqetx\",\"dqiuspguzljvgji\",\"zq\"]},\"id\":\"ljsazmjsisfq\",\"name\":\"hcmecags\",\"type\":\"feiirpnjygllfkc\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"zzcajl\",\"parentRuleNames\":[\"cyca\",\"aamkkh\"]},\"id\":\"pmkxdujkxpu\",\"name\":\"zdyoqywsu\",\"type\":\"rpzhr\"}],\"nextLink\":\"ezxiz\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"pshaezc\",\"parentRuleNames\":[\"ck\",\"novqdmhcejs\",\"fsmacjakg\"]},\"id\":\"wxqd\",\"name\":\"oqzh\",\"type\":\"wdjox\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"obvcnsbioez\",\"parentRuleNames\":[\"hn\",\"z\"]},\"id\":\"fzqyugtkxnc\",\"name\":\"dytnlrlcmwbejy\",\"type\":\"wwvnhwwkr\"}],\"nextLink\":\"evrhhafqfu\"}")
             .toObject(OutboundRuleListResult.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.value().get(0).properties().category());
-        Assertions.assertEquals(RuleStatus.INACTIVE, model.value().get(0).properties().status());
-        Assertions.assertEquals("ezxiz", model.nextLink());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.value().get(0).properties().category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.value().get(0).properties().status());
+        Assertions.assertEquals("evrhhafqfu", model.nextLink());
     }
 }

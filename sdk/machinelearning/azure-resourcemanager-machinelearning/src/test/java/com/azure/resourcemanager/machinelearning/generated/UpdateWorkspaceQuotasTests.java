@@ -12,8 +12,8 @@ public final class UpdateWorkspaceQuotasTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateWorkspaceQuotas model = BinaryData.fromString(
-            "{\"id\":\"n\",\"type\":\"akeqnitromlc\",\"limit\":1592017672547136125,\"unit\":\"Count\",\"status\":\"Failure\"}")
+            "{\"id\":\"wrybi\",\"type\":\"wot\",\"limit\":5017599197348467410,\"unit\":\"Count\",\"status\":\"Failure\"}")
             .toObject(UpdateWorkspaceQuotas.class);
-        Assertions.assertEquals(1592017672547136125L, model.limit());
+        Assertions.assertEquals(5017599197348467410L, model.limit());
     }
 }

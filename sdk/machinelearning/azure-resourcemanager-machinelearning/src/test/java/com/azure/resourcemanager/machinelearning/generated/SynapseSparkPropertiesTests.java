@@ -14,50 +14,50 @@ public final class SynapseSparkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SynapseSparkProperties model = BinaryData.fromString(
-            "{\"autoScaleProperties\":{\"minNodeCount\":1717985540,\"enabled\":false,\"maxNodeCount\":1605492433},\"autoPauseProperties\":{\"delayInMinutes\":1730858261,\"enabled\":false},\"sparkVersion\":\"nacgdnx\",\"nodeCount\":1337134016,\"nodeSize\":\"mzrjj\",\"nodeSizeFamily\":\"jpzngdrzigecw\",\"subscriptionId\":\"dsqyuddkhwqdm\",\"resourceGroup\":\"heuyuunxmyevyi\",\"workspaceName\":\"eip\",\"poolName\":\"izej\"}")
+            "{\"autoScaleProperties\":{\"minNodeCount\":1083198172,\"enabled\":true,\"maxNodeCount\":885544179},\"autoPauseProperties\":{\"delayInMinutes\":1331689026,\"enabled\":false},\"sparkVersion\":\"camnsbqoitwhm\",\"nodeCount\":2091959721,\"nodeSize\":\"uhcxy\",\"nodeSizeFamily\":\"hyklelyqdvpqf\",\"subscriptionId\":\"gycudusdmt\",\"resourceGroup\":\"lefnoheywvfo\",\"workspaceName\":\"yllre\",\"poolName\":\"nj\"}")
             .toObject(SynapseSparkProperties.class);
-        Assertions.assertEquals(1717985540, model.autoScaleProperties().minNodeCount());
-        Assertions.assertFalse(model.autoScaleProperties().enabled());
-        Assertions.assertEquals(1605492433, model.autoScaleProperties().maxNodeCount());
-        Assertions.assertEquals(1730858261, model.autoPauseProperties().delayInMinutes());
+        Assertions.assertEquals(1083198172, model.autoScaleProperties().minNodeCount());
+        Assertions.assertTrue(model.autoScaleProperties().enabled());
+        Assertions.assertEquals(885544179, model.autoScaleProperties().maxNodeCount());
+        Assertions.assertEquals(1331689026, model.autoPauseProperties().delayInMinutes());
         Assertions.assertFalse(model.autoPauseProperties().enabled());
-        Assertions.assertEquals("nacgdnx", model.sparkVersion());
-        Assertions.assertEquals(1337134016, model.nodeCount());
-        Assertions.assertEquals("mzrjj", model.nodeSize());
-        Assertions.assertEquals("jpzngdrzigecw", model.nodeSizeFamily());
-        Assertions.assertEquals("dsqyuddkhwqdm", model.subscriptionId());
-        Assertions.assertEquals("heuyuunxmyevyi", model.resourceGroup());
-        Assertions.assertEquals("eip", model.workspaceName());
-        Assertions.assertEquals("izej", model.poolName());
+        Assertions.assertEquals("camnsbqoitwhm", model.sparkVersion());
+        Assertions.assertEquals(2091959721, model.nodeCount());
+        Assertions.assertEquals("uhcxy", model.nodeSize());
+        Assertions.assertEquals("hyklelyqdvpqf", model.nodeSizeFamily());
+        Assertions.assertEquals("gycudusdmt", model.subscriptionId());
+        Assertions.assertEquals("lefnoheywvfo", model.resourceGroup());
+        Assertions.assertEquals("yllre", model.workspaceName());
+        Assertions.assertEquals("nj", model.poolName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SynapseSparkProperties model = new SynapseSparkProperties()
             .withAutoScaleProperties(
-                new AutoScaleProperties().withMinNodeCount(1717985540).withEnabled(false).withMaxNodeCount(1605492433))
-            .withAutoPauseProperties(new AutoPauseProperties().withDelayInMinutes(1730858261).withEnabled(false))
-            .withSparkVersion("nacgdnx")
-            .withNodeCount(1337134016)
-            .withNodeSize("mzrjj")
-            .withNodeSizeFamily("jpzngdrzigecw")
-            .withSubscriptionId("dsqyuddkhwqdm")
-            .withResourceGroup("heuyuunxmyevyi")
-            .withWorkspaceName("eip")
-            .withPoolName("izej");
+                new AutoScaleProperties().withMinNodeCount(1083198172).withEnabled(true).withMaxNodeCount(885544179))
+            .withAutoPauseProperties(new AutoPauseProperties().withDelayInMinutes(1331689026).withEnabled(false))
+            .withSparkVersion("camnsbqoitwhm")
+            .withNodeCount(2091959721)
+            .withNodeSize("uhcxy")
+            .withNodeSizeFamily("hyklelyqdvpqf")
+            .withSubscriptionId("gycudusdmt")
+            .withResourceGroup("lefnoheywvfo")
+            .withWorkspaceName("yllre")
+            .withPoolName("nj");
         model = BinaryData.fromObject(model).toObject(SynapseSparkProperties.class);
-        Assertions.assertEquals(1717985540, model.autoScaleProperties().minNodeCount());
-        Assertions.assertFalse(model.autoScaleProperties().enabled());
-        Assertions.assertEquals(1605492433, model.autoScaleProperties().maxNodeCount());
-        Assertions.assertEquals(1730858261, model.autoPauseProperties().delayInMinutes());
+        Assertions.assertEquals(1083198172, model.autoScaleProperties().minNodeCount());
+        Assertions.assertTrue(model.autoScaleProperties().enabled());
+        Assertions.assertEquals(885544179, model.autoScaleProperties().maxNodeCount());
+        Assertions.assertEquals(1331689026, model.autoPauseProperties().delayInMinutes());
         Assertions.assertFalse(model.autoPauseProperties().enabled());
-        Assertions.assertEquals("nacgdnx", model.sparkVersion());
-        Assertions.assertEquals(1337134016, model.nodeCount());
-        Assertions.assertEquals("mzrjj", model.nodeSize());
-        Assertions.assertEquals("jpzngdrzigecw", model.nodeSizeFamily());
-        Assertions.assertEquals("dsqyuddkhwqdm", model.subscriptionId());
-        Assertions.assertEquals("heuyuunxmyevyi", model.resourceGroup());
-        Assertions.assertEquals("eip", model.workspaceName());
-        Assertions.assertEquals("izej", model.poolName());
+        Assertions.assertEquals("camnsbqoitwhm", model.sparkVersion());
+        Assertions.assertEquals(2091959721, model.nodeCount());
+        Assertions.assertEquals("uhcxy", model.nodeSize());
+        Assertions.assertEquals("hyklelyqdvpqf", model.nodeSizeFamily());
+        Assertions.assertEquals("gycudusdmt", model.subscriptionId());
+        Assertions.assertEquals("lefnoheywvfo", model.resourceGroup());
+        Assertions.assertEquals("yllre", model.workspaceName());
+        Assertions.assertEquals("nj", model.poolName());
     }
 }

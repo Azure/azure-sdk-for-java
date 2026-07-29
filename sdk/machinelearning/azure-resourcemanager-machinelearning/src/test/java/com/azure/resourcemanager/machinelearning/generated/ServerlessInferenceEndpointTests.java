@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.ServerlessInferenceEndpo
 public final class ServerlessInferenceEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerlessInferenceEndpoint model = BinaryData
-            .fromString("{\"headers\":{\"nwg\":\"mmuebsn\",\"azisvbr\":\"qufmjxcyoseq\"},\"uri\":\"gcyjpgawepk\"}")
+        ServerlessInferenceEndpoint model = BinaryData.fromString(
+            "{\"headers\":{\"rswksykk\":\"kcsexg\",\"xbbwlmnwz\":\"xk\",\"qddlggbq\":\"knv\",\"gcmfnsffetpkmixw\":\"olgzubakdlkv\"},\"uri\":\"w\"}")
             .toObject(ServerlessInferenceEndpoint.class);
     }
 }

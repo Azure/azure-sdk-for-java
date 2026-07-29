@@ -26,7 +26,7 @@ public final class ServerlessEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authMode\":\"AAD\",\"contentSafety\":{\"contentSafetyLevel\":\"Blocking\",\"contentSafetyStatus\":\"Enabled\"},\"endpointState\":\"Online\",\"inferenceEndpoint\":{\"headers\":{\"xzicurufngp\":\"ocvetzkcolbclspq\",\"hzixranb\":\"vdlkpzdkiywwenvx\"},\"uri\":\"qejfq\"},\"marketplaceSubscriptionId\":\"gadrvxbcye\",\"modelSettings\":{\"modelId\":\"bcb\"},\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"jlakam\",\"tenantId\":\"qluicrqxqjzmosml\",\"type\":\"None\",\"userAssignedIdentities\":{\"hdeml\":{\"principalId\":\"gtnsxdjhztn\",\"clientId\":\"kpmdlttm\"},\"cbtyor\":{\"principalId\":\"aiqyxlr\",\"clientId\":\"xpebsxcnhq\"},\"wqmkakgwlqz\":{\"principalId\":\"damyumrobbaxnym\",\"clientId\":\"g\"},\"oxe\":{\"principalId\":\"bsdgyheyayktutf\",\"clientId\":\"e\"}}},\"kind\":\"ahmdco\",\"sku\":{\"name\":\"xwgzszjq\",\"tier\":\"Standard\",\"size\":\"h\",\"family\":\"ihkhjldw\",\"capacity\":284149795},\"location\":\"jhtgncfbjvmdkgvu\",\"tags\":{\"uiaizzjotm\":\"lsuuhwuox\",\"xxcruleimswxoi\":\"gzjrkslqbafdb\",\"pgzetuvfps\":\"nqumj\"},\"id\":\"jpmeptnqsnpa\",\"name\":\"ks\",\"type\":\"rrvjwbeeolmob\"}";
+            = "{\"properties\":{\"authMode\":\"AAD\",\"contentSafety\":{\"contentSafetyLevel\":\"Blocking\",\"contentSafetyStatus\":\"Enabled\"},\"endpointState\":\"Deleting\",\"inferenceEndpoint\":{\"headers\":{\"gcz\":\"emzrwpgvg\",\"cr\":\"cmokmkwddgyqen\"},\"uri\":\"namlrtcb\"},\"marketplaceSubscriptionId\":\"fcrnxstowvgwvfv\",\"modelSettings\":{\"modelId\":\"yahlaoqkcitnbuz\"},\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"rznwhictsauvprq\",\"tenantId\":\"fpbxljd\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nsekazxewnlpc\":{\"principalId\":\"zsy\",\"clientId\":\"kcld\"}}},\"kind\":\"czqmdxmyfrmfc\",\"sku\":{\"name\":\"yncjyafzzcboh\",\"tier\":\"Free\",\"size\":\"oderd\",\"family\":\"b\",\"capacity\":1061255083},\"location\":\"rb\",\"tags\":{\"pc\":\"szbvhxnjor\"},\"id\":\"xdlp\",\"name\":\"uknnm\",\"type\":\"pclnm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,23 +36,23 @@ public final class ServerlessEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServerlessEndpoint response = manager.serverlessEndpoints()
-            .getWithResponse("nds", "zgnyfhqyli", "gnbhz", com.azure.core.util.Context.NONE)
+            .getWithResponse("rjmsabnmu", "lthyxryvwn", "hsigddgbcnqvbn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jhtgncfbjvmdkgvu", response.location());
-        Assertions.assertEquals("lsuuhwuox", response.tags().get("uiaizzjotm"));
+        Assertions.assertEquals("rb", response.location());
+        Assertions.assertEquals("szbvhxnjor", response.tags().get("pc"));
         Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.AAD, response.properties().authMode());
         Assertions.assertEquals(ContentSafetyLevel.BLOCKING,
             response.properties().contentSafety().contentSafetyLevel());
         Assertions.assertEquals(ContentSafetyStatus.ENABLED,
             response.properties().contentSafety().contentSafetyStatus());
-        Assertions.assertEquals("bcb", response.properties().modelSettings().modelId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("ahmdco", response.kind());
-        Assertions.assertEquals("xwgzszjq", response.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals("h", response.sku().size());
-        Assertions.assertEquals("ihkhjldw", response.sku().family());
-        Assertions.assertEquals(284149795, response.sku().capacity());
+        Assertions.assertEquals("yahlaoqkcitnbuz", response.properties().modelSettings().modelId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("czqmdxmyfrmfc", response.kind());
+        Assertions.assertEquals("yncjyafzzcboh", response.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.sku().tier());
+        Assertions.assertEquals("oderd", response.sku().size());
+        Assertions.assertEquals("b", response.sku().family());
+        Assertions.assertEquals(1061255083, response.sku().capacity());
     }
 }

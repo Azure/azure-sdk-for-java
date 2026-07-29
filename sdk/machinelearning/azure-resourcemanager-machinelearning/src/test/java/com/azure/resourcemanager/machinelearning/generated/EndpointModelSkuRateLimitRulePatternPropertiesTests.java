@@ -12,9 +12,9 @@ public final class EndpointModelSkuRateLimitRulePatternPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointModelSkuRateLimitRulePatternProperties model
-            = BinaryData.fromString("{\"method\":\"klphxwwwlojkbgnf\",\"path\":\"zj\"}")
+            = BinaryData.fromString("{\"method\":\"rejyoyb\",\"path\":\"ftusdwmnrt\"}")
                 .toObject(EndpointModelSkuRateLimitRulePatternProperties.class);
-        Assertions.assertEquals("klphxwwwlojkbgnf", model.method());
-        Assertions.assertEquals("zj", model.path());
+        Assertions.assertEquals("rejyoyb", model.method());
+        Assertions.assertEquals("ftusdwmnrt", model.path());
     }
 }

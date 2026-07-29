@@ -19,19 +19,19 @@ public final class DataGenerationVerticalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataGenerationVertical model = BinaryData.fromString(
-            "{\"dataGenerationType\":\"DataGenerationVertical\",\"dataGenerationTaskType\":\"Summarization\",\"promptSettings\":{\"enableChainOfDensity\":false,\"enableChainOfThought\":false,\"maxLenSummary\":264936574},\"teacherModelEndpoint\":{\"endpointName\":\"blfs\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":85.21366048341534,\"requestBatchSize\":1847938019},\"teacherModelInferenceParameters\":{\"lxiz\":\"cvvfxrdytzf\"}}}")
+            "{\"dataGenerationType\":\"DataGenerationVertical\",\"dataGenerationTaskType\":\"Summarization\",\"promptSettings\":{\"enableChainOfDensity\":false,\"enableChainOfThought\":true,\"maxLenSummary\":330824536},\"teacherModelEndpoint\":{\"endpointName\":\"anduew\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":5.357488923573095,\"requestBatchSize\":1490718727},\"teacherModelInferenceParameters\":{\"dckixspsaigavkmv\":\"bfjzabbwzgvzuaix\"}}}")
             .toObject(DataGenerationVertical.class);
         Assertions.assertEquals(DataGenerationTaskType.SUMMARIZATION, model.dataGenerationTaskType());
         Assertions.assertFalse(model.promptSettings().enableChainOfDensity());
-        Assertions.assertFalse(model.promptSettings().enableChainOfThought());
-        Assertions.assertEquals(264936574, model.promptSettings().maxLenSummary());
-        Assertions.assertEquals("blfs", model.teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(85.21366048341534D,
+        Assertions.assertTrue(model.promptSettings().enableChainOfThought());
+        Assertions.assertEquals(330824536, model.promptSettings().maxLenSummary());
+        Assertions.assertEquals("anduew", model.teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(5.357488923573095D,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(1847938019,
+        Assertions.assertEquals(1490718727,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("cvvfxrdytzf",
-            model.teacherModelSettings().teacherModelInferenceParameters().get("lxiz"));
+        Assertions.assertEquals("bfjzabbwzgvzuaix",
+            model.teacherModelSettings().teacherModelInferenceParameters().get("dckixspsaigavkmv"));
     }
 
     @org.junit.jupiter.api.Test
@@ -39,26 +39,26 @@ public final class DataGenerationVerticalTests {
         DataGenerationVertical model
             = new DataGenerationVertical().withDataGenerationTaskType(DataGenerationTaskType.SUMMARIZATION)
                 .withPromptSettings(new PromptSettings().withEnableChainOfDensity(false)
-                    .withEnableChainOfThought(false)
-                    .withMaxLenSummary(264936574))
-                .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("blfs"))
+                    .withEnableChainOfThought(true)
+                    .withMaxLenSummary(330824536))
+                .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("anduew"))
                 .withTeacherModelSettings(new TeacherModelSettings()
                     .withTeacherModelEndpointRequestSettings(
-                        new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(85.21366048341534D)
-                            .withRequestBatchSize(1847938019))
-                    .withTeacherModelInferenceParameters(mapOf("lxiz", "cvvfxrdytzf")));
+                        new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(5.357488923573095D)
+                            .withRequestBatchSize(1490718727))
+                    .withTeacherModelInferenceParameters(mapOf("dckixspsaigavkmv", "bfjzabbwzgvzuaix")));
         model = BinaryData.fromObject(model).toObject(DataGenerationVertical.class);
         Assertions.assertEquals(DataGenerationTaskType.SUMMARIZATION, model.dataGenerationTaskType());
         Assertions.assertFalse(model.promptSettings().enableChainOfDensity());
-        Assertions.assertFalse(model.promptSettings().enableChainOfThought());
-        Assertions.assertEquals(264936574, model.promptSettings().maxLenSummary());
-        Assertions.assertEquals("blfs", model.teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(85.21366048341534D,
+        Assertions.assertTrue(model.promptSettings().enableChainOfThought());
+        Assertions.assertEquals(330824536, model.promptSettings().maxLenSummary());
+        Assertions.assertEquals("anduew", model.teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(5.357488923573095D,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(1847938019,
+        Assertions.assertEquals(1490718727,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("cvvfxrdytzf",
-            model.teacherModelSettings().teacherModelInferenceParameters().get("lxiz"));
+        Assertions.assertEquals("bfjzabbwzgvzuaix",
+            model.teacherModelSettings().teacherModelInferenceParameters().get("dckixspsaigavkmv"));
     }
 
     // Use "Map.of" if available

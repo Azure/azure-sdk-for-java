@@ -15,19 +15,20 @@ public final class FinetuningDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FinetuningDetails model = BinaryData.fromString(
-            "{\"hyperParameters\":{\"uookrjfls\":\"culwkqic\"},\"studentModel\":{\"jobInputType\":\"JobInput\",\"description\":\"ojbtqpqsd\"}}")
+            "{\"hyperParameters\":{\"cjixxf\":\"ghojovkeyym\",\"xijtebdveywet\":\"fpcrtnuguef\"},\"studentModel\":{\"jobInputType\":\"JobInput\",\"description\":\"hlolmc\"}}")
             .toObject(FinetuningDetails.class);
-        Assertions.assertEquals("culwkqic", model.hyperParameters().get("uookrjfls"));
-        Assertions.assertEquals("ojbtqpqsd", model.studentModel().description());
+        Assertions.assertEquals("ghojovkeyym", model.hyperParameters().get("cjixxf"));
+        Assertions.assertEquals("hlolmc", model.studentModel().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FinetuningDetails model = new FinetuningDetails().withHyperParameters(mapOf("uookrjfls", "culwkqic"))
-            .withStudentModel(new JobInput().withDescription("ojbtqpqsd"));
+        FinetuningDetails model = new FinetuningDetails()
+            .withHyperParameters(mapOf("cjixxf", "ghojovkeyym", "xijtebdveywet", "fpcrtnuguef"))
+            .withStudentModel(new JobInput().withDescription("hlolmc"));
         model = BinaryData.fromObject(model).toObject(FinetuningDetails.class);
-        Assertions.assertEquals("culwkqic", model.hyperParameters().get("uookrjfls"));
-        Assertions.assertEquals("ojbtqpqsd", model.studentModel().description());
+        Assertions.assertEquals("ghojovkeyym", model.hyperParameters().get("cjixxf"));
+        Assertions.assertEquals("hlolmc", model.studentModel().description());
     }
 
     // Use "Map.of" if available

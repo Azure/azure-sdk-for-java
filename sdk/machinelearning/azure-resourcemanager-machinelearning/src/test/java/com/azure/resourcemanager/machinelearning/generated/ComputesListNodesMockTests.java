@@ -21,7 +21,7 @@ public final class ComputesListNodesMockTests {
     @Test
     public void testListNodes() throws Exception {
         String responseStr
-            = "{\"nodes\":[{\"nodeId\":\"xjttnurkmerqza\",\"privateIpAddress\":\"womevqvv\",\"publicIpAddress\":\"wdlduvimgtceor\",\"port\":121478755,\"nodeState\":\"running\",\"runId\":\"p\"}]}";
+            = "{\"nodes\":[{\"nodeId\":\"wxsxbxdkmixurce\",\"privateIpAddress\":\"qmjqqau\",\"publicIpAddress\":\"gh\",\"port\":1717563366,\"nodeState\":\"leaving\",\"runId\":\"cnkghkrbirshlh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ComputesListNodesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AmlComputeNodeInformation> response
-            = manager.computes().listNodes("tkbzwgjupjbdqmn", "ia", "qssh", com.azure.core.util.Context.NONE);
+        PagedIterable<AmlComputeNodeInformation> response = manager.computes()
+            .listNodes("ipshhetagwm", "gvnojgmobkaligoi", "kehpdssvlubdp", com.azure.core.util.Context.NONE);
 
     }
 }

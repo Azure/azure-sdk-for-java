@@ -17,42 +17,42 @@ public final class ComputeInstanceDataMountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceDataMount model = BinaryData.fromString(
-            "{\"source\":\"tizsyqagqllc\",\"sourceType\":\"URI\",\"mountName\":\"idylky\",\"mountAction\":\"Unmount\",\"mountMode\":\"ReadWrite\",\"createdBy\":\"fyybptmjj\",\"mountPath\":\"ogykugdlavsav\",\"mountState\":\"UnmountRequested\",\"mountedOn\":\"2021-04-26T12:39:14Z\",\"error\":\"geuufkb\"}")
+            "{\"source\":\"wrsofxcacrm\",\"sourceType\":\"Datastore\",\"mountName\":\"r\",\"mountAction\":\"Mount\",\"mountMode\":\"ReadWrite\",\"createdBy\":\"prel\",\"mountPath\":\"fk\",\"mountState\":\"UnmountRequested\",\"mountedOn\":\"2021-03-28T03:16:51Z\",\"error\":\"jv\"}")
             .toObject(ComputeInstanceDataMount.class);
-        Assertions.assertEquals("tizsyqagqllc", model.source());
-        Assertions.assertEquals(SourceType.URI, model.sourceType());
-        Assertions.assertEquals("idylky", model.mountName());
-        Assertions.assertEquals(MountAction.UNMOUNT, model.mountAction());
+        Assertions.assertEquals("wrsofxcacrm", model.source());
+        Assertions.assertEquals(SourceType.DATASTORE, model.sourceType());
+        Assertions.assertEquals("r", model.mountName());
+        Assertions.assertEquals(MountAction.MOUNT, model.mountAction());
         Assertions.assertEquals(MountMode.READ_WRITE, model.mountMode());
-        Assertions.assertEquals("fyybptmjj", model.createdBy());
-        Assertions.assertEquals("ogykugdlavsav", model.mountPath());
+        Assertions.assertEquals("prel", model.createdBy());
+        Assertions.assertEquals("fk", model.mountPath());
         Assertions.assertEquals(MountState.UNMOUNT_REQUESTED, model.mountState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T12:39:14Z"), model.mountedOn());
-        Assertions.assertEquals("geuufkb", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T03:16:51Z"), model.mountedOn());
+        Assertions.assertEquals("jv", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeInstanceDataMount model = new ComputeInstanceDataMount().withSource("tizsyqagqllc")
-            .withSourceType(SourceType.URI)
-            .withMountName("idylky")
-            .withMountAction(MountAction.UNMOUNT)
+        ComputeInstanceDataMount model = new ComputeInstanceDataMount().withSource("wrsofxcacrm")
+            .withSourceType(SourceType.DATASTORE)
+            .withMountName("r")
+            .withMountAction(MountAction.MOUNT)
             .withMountMode(MountMode.READ_WRITE)
-            .withCreatedBy("fyybptmjj")
-            .withMountPath("ogykugdlavsav")
+            .withCreatedBy("prel")
+            .withMountPath("fk")
             .withMountState(MountState.UNMOUNT_REQUESTED)
-            .withMountedOn(OffsetDateTime.parse("2021-04-26T12:39:14Z"))
-            .withError("geuufkb");
+            .withMountedOn(OffsetDateTime.parse("2021-03-28T03:16:51Z"))
+            .withError("jv");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceDataMount.class);
-        Assertions.assertEquals("tizsyqagqllc", model.source());
-        Assertions.assertEquals(SourceType.URI, model.sourceType());
-        Assertions.assertEquals("idylky", model.mountName());
-        Assertions.assertEquals(MountAction.UNMOUNT, model.mountAction());
+        Assertions.assertEquals("wrsofxcacrm", model.source());
+        Assertions.assertEquals(SourceType.DATASTORE, model.sourceType());
+        Assertions.assertEquals("r", model.mountName());
+        Assertions.assertEquals(MountAction.MOUNT, model.mountAction());
         Assertions.assertEquals(MountMode.READ_WRITE, model.mountMode());
-        Assertions.assertEquals("fyybptmjj", model.createdBy());
-        Assertions.assertEquals("ogykugdlavsav", model.mountPath());
+        Assertions.assertEquals("prel", model.createdBy());
+        Assertions.assertEquals("fk", model.mountPath());
         Assertions.assertEquals(MountState.UNMOUNT_REQUESTED, model.mountState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T12:39:14Z"), model.mountedOn());
-        Assertions.assertEquals("geuufkb", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T03:16:51Z"), model.mountedOn());
+        Assertions.assertEquals("jv", model.error());
     }
 }

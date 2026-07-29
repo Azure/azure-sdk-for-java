@@ -12,21 +12,21 @@ public final class PromptSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PromptSettings model = BinaryData
-            .fromString("{\"enableChainOfDensity\":true,\"enableChainOfThought\":false,\"maxLenSummary\":2045670323}")
+            .fromString("{\"enableChainOfDensity\":false,\"enableChainOfThought\":false,\"maxLenSummary\":1179275566}")
             .toObject(PromptSettings.class);
-        Assertions.assertTrue(model.enableChainOfDensity());
+        Assertions.assertFalse(model.enableChainOfDensity());
         Assertions.assertFalse(model.enableChainOfThought());
-        Assertions.assertEquals(2045670323, model.maxLenSummary());
+        Assertions.assertEquals(1179275566, model.maxLenSummary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PromptSettings model = new PromptSettings().withEnableChainOfDensity(true)
+        PromptSettings model = new PromptSettings().withEnableChainOfDensity(false)
             .withEnableChainOfThought(false)
-            .withMaxLenSummary(2045670323);
+            .withMaxLenSummary(1179275566);
         model = BinaryData.fromObject(model).toObject(PromptSettings.class);
-        Assertions.assertTrue(model.enableChainOfDensity());
+        Assertions.assertFalse(model.enableChainOfDensity());
         Assertions.assertFalse(model.enableChainOfThought());
-        Assertions.assertEquals(2045670323, model.maxLenSummary());
+        Assertions.assertEquals(1179275566, model.maxLenSummary());
     }
 }

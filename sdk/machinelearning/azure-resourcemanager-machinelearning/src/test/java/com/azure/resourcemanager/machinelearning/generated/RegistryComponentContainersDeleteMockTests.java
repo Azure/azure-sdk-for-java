@@ -27,7 +27,8 @@ public final class RegistryComponentContainersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.registryComponentContainers().delete("hsc", "omfo", "jkerdujfnb", com.azure.core.util.Context.NONE);
+        manager.registryComponentContainers()
+            .delete("tsovoz", "epkrncjrqhugu", "obqqnwhcmvdowlq", com.azure.core.util.Context.NONE);
 
     }
 }

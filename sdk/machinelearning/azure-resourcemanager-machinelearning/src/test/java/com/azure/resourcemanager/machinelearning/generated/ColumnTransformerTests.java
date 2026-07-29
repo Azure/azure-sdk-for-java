@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ColumnTransformerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ColumnTransformer model = BinaryData
-            .fromString(
-                "{\"fields\":[\"j\",\"ojiunrlshxuknsyk\",\"toiboancdr\"],\"parameters\":\"\\\"dataanvxuldxonckb\\\"\"}")
-            .toObject(ColumnTransformer.class);
-        Assertions.assertEquals("j", model.fields().get(0));
+        ColumnTransformer model
+            = BinaryData.fromString("{\"fields\":[\"olousdvrg\",\"tqm\"],\"parameters\":\"\\\"datazjdrp\\\"\"}")
+                .toObject(ColumnTransformer.class);
+        Assertions.assertEquals("olousdvrg", model.fields().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ColumnTransformer model
-            = new ColumnTransformer().withFields(Arrays.asList("j", "ojiunrlshxuknsyk", "toiboancdr"))
-                .withParameters("\"dataanvxuldxonckb\"");
+            = new ColumnTransformer().withFields(Arrays.asList("olousdvrg", "tqm")).withParameters("\"datazjdrp\"");
         model = BinaryData.fromObject(model).toObject(ColumnTransformer.class);
-        Assertions.assertEquals("j", model.fields().get(0));
+        Assertions.assertEquals("olousdvrg", model.fields().get(0));
     }
 }

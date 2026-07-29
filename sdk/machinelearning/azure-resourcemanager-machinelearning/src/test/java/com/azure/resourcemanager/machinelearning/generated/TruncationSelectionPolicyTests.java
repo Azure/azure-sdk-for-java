@@ -12,21 +12,21 @@ public final class TruncationSelectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TruncationSelectionPolicy model = BinaryData.fromString(
-            "{\"policyType\":\"TruncationSelection\",\"truncationPercentage\":1652520089,\"delayEvaluation\":355610537,\"evaluationInterval\":1675470439}")
+            "{\"policyType\":\"TruncationSelection\",\"truncationPercentage\":635730395,\"delayEvaluation\":1265513467,\"evaluationInterval\":1929102863}")
             .toObject(TruncationSelectionPolicy.class);
-        Assertions.assertEquals(355610537, model.delayEvaluation());
-        Assertions.assertEquals(1675470439, model.evaluationInterval());
-        Assertions.assertEquals(1652520089, model.truncationPercentage());
+        Assertions.assertEquals(1265513467, model.delayEvaluation());
+        Assertions.assertEquals(1929102863, model.evaluationInterval());
+        Assertions.assertEquals(635730395, model.truncationPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TruncationSelectionPolicy model = new TruncationSelectionPolicy().withDelayEvaluation(355610537)
-            .withEvaluationInterval(1675470439)
-            .withTruncationPercentage(1652520089);
+        TruncationSelectionPolicy model = new TruncationSelectionPolicy().withDelayEvaluation(1265513467)
+            .withEvaluationInterval(1929102863)
+            .withTruncationPercentage(635730395);
         model = BinaryData.fromObject(model).toObject(TruncationSelectionPolicy.class);
-        Assertions.assertEquals(355610537, model.delayEvaluation());
-        Assertions.assertEquals(1675470439, model.evaluationInterval());
-        Assertions.assertEquals(1652520089, model.truncationPercentage());
+        Assertions.assertEquals(1265513467, model.delayEvaluation());
+        Assertions.assertEquals(1929102863, model.evaluationInterval());
+        Assertions.assertEquals(635730395, model.truncationPercentage());
     }
 }

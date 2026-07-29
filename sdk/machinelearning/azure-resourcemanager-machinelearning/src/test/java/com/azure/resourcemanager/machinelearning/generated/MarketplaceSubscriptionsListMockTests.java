@@ -22,7 +22,7 @@ public final class MarketplaceSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"marketplacePlan\":{\"offerId\":\"j\",\"planId\":\"derkvbdvlazkx\",\"publisherId\":\"jjryztghd\"},\"marketplaceSubscriptionStatus\":\"Unsubscribed\",\"modelId\":\"ffjpws\",\"provisioningState\":\"Canceled\"},\"id\":\"ftgaetcpl\",\"name\":\"idiuxzzhld\",\"type\":\"xv\"}]}";
+            = "{\"value\":[{\"properties\":{\"marketplacePlan\":{\"offerId\":\"xzicurufngp\",\"planId\":\"dlkpzdkiywwenvx\",\"publisherId\":\"zixranbtqejfqgh\"},\"marketplaceSubscriptionStatus\":\"Subscribed\",\"modelId\":\"rvxbcyehajbcbr\",\"provisioningState\":\"Creating\"},\"id\":\"jlakam\",\"name\":\"dql\",\"type\":\"icrqxqjzmosmlhc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class MarketplaceSubscriptionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<MarketplaceSubscription> response = manager.marketplaceSubscriptions()
-            .list("jopbgtzrgyrldoa", "ldglz", "k", com.azure.core.util.Context.NONE);
+        PagedIterable<MarketplaceSubscription> response
+            = manager.marketplaceSubscriptions().list("agaocv", "tzkcol", "cls", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ffjpws", response.iterator().next().properties().modelId());
+        Assertions.assertEquals("rvxbcyehajbcbr", response.iterator().next().properties().modelId());
     }
 }

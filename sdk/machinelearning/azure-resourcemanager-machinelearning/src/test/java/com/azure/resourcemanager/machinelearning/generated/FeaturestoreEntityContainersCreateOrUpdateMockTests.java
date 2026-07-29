@@ -24,7 +24,7 @@ public final class FeaturestoreEntityContainersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"lhjeuewaauxkvrur\",\"nextVersion\":\"qytaqjho\",\"description\":\"ijgh\",\"properties\":{\"tbwyarqthb\":\"qpxkikd\",\"fqw\":\"blh\"},\"tags\":{\"lnbxoucsddplgjfh\":\"xtpzdgyilwuiklb\",\"t\":\"iahokeacmadyo\",\"cctwbe\":\"dauo\"}},\"id\":\"ntoe\",\"name\":\"eufgdg\",\"type\":\"zftsb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"ixsdxxflwfvahbwh\",\"nextVersion\":\"uqetvbqhyszfl\",\"description\":\"zdciwxlggrtpa\",\"properties\":{\"gshbkdpt\":\"l\",\"ofiykloeqxccpqb\":\"msqznvkhjtrashn\"},\"tags\":{\"af\":\"ehzipy\",\"oqqseoinxkot\":\"uu\",\"wdcz\":\"rnlgnwwjikg\",\"bpj\":\"kz\"}},\"id\":\"h\",\"name\":\"ofcnyzqznldd\",\"type\":\"gqwmlleguc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,17 @@ public final class FeaturestoreEntityContainersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeaturestoreEntityContainer response = manager.featurestoreEntityContainers()
-            .define("pufhwpkpejfszw")
-            .withExistingWorkspace("ohsymgkirfzvtz", "qoilipmuufsekz")
-            .withProperties(new FeaturestoreEntityContainerProperties().withDescription("ka")
-                .withProperties(
-                    mapOf("dc", "fj", "frzqwytgggidr", "qja", "cpqkpgbssjqj", "dykjchzcz", "pbko", "tcvdzytsd"))
-                .withTags(mapOf("vmfsfruenqfn", "jcrppnjzb"))
-                .withIsArchived(true))
+            .define("foiavpg")
+            .withExistingWorkspace("xdlup", "tptmndz")
+            .withProperties(new FeaturestoreEntityContainerProperties().withDescription("mhenqn")
+                .withProperties(mapOf("bxvexusjfjuphjju", "mk", "atl", "ksvjtgpy", "xqmmxjdk", "si"))
+                .withTags(mapOf("k", "ilrlfgowvvxjqru", "wgmkcaya", "bqyfecnsqeewf", "zwcfdtxkurppw", "ibhwybwmebm"))
+                .withIsArchived(false))
             .create();
 
-        Assertions.assertEquals("ijgh", response.properties().description());
-        Assertions.assertEquals("qpxkikd", response.properties().properties().get("tbwyarqthb"));
-        Assertions.assertEquals("xtpzdgyilwuiklb", response.properties().tags().get("lnbxoucsddplgjfh"));
+        Assertions.assertEquals("zdciwxlggrtpa", response.properties().description());
+        Assertions.assertEquals("l", response.properties().properties().get("gshbkdpt"));
+        Assertions.assertEquals("ehzipy", response.properties().tags().get("af"));
         Assertions.assertTrue(response.properties().isArchived());
     }
 

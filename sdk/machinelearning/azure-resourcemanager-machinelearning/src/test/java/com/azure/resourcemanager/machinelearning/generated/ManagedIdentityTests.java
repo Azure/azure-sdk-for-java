@@ -12,20 +12,20 @@ public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentity model = BinaryData.fromString(
-            "{\"identityType\":\"Managed\",\"clientId\":\"hhylx\",\"objectId\":\"vfiyymot\",\"resourceId\":\"bybwjmtftcvelnir\"}")
+            "{\"identityType\":\"Managed\",\"clientId\":\"yxmkhmqyncgaul\",\"objectId\":\"styygjq\",\"resourceId\":\"lmwqg\"}")
             .toObject(ManagedIdentity.class);
-        Assertions.assertEquals("hhylx", model.clientId());
-        Assertions.assertEquals("vfiyymot", model.objectId());
-        Assertions.assertEquals("bybwjmtftcvelnir", model.resourceId());
+        Assertions.assertEquals("yxmkhmqyncgaul", model.clientId());
+        Assertions.assertEquals("styygjq", model.objectId());
+        Assertions.assertEquals("lmwqg", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedIdentity model
-            = new ManagedIdentity().withClientId("hhylx").withObjectId("vfiyymot").withResourceId("bybwjmtftcvelnir");
+            = new ManagedIdentity().withClientId("yxmkhmqyncgaul").withObjectId("styygjq").withResourceId("lmwqg");
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals("hhylx", model.clientId());
-        Assertions.assertEquals("vfiyymot", model.objectId());
-        Assertions.assertEquals("bybwjmtftcvelnir", model.resourceId());
+        Assertions.assertEquals("yxmkhmqyncgaul", model.clientId());
+        Assertions.assertEquals("styygjq", model.objectId());
+        Assertions.assertEquals("lmwqg", model.resourceId());
     }
 }

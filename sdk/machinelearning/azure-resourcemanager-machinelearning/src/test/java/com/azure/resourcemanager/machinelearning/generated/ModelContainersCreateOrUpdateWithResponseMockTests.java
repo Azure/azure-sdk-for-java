@@ -24,7 +24,7 @@ public final class ModelContainersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"isArchived\":true,\"latestVersion\":\"lyvzlljydg\",\"nextVersion\":\"oqgrucwzcyju\",\"description\":\"gwjqeglymnrr\",\"properties\":{\"cilfiulgnnyxwdp\":\"qpiyxkmqmgex\",\"bbsnptmmvd\":\"cewqvvzxgbamq\",\"jkb\":\"av\"},\"tags\":{\"izcbqjxmhwdtunpc\":\"w\",\"rfouwkoltjdauujj\":\"kd\",\"eykudjzrim\":\"tyhdd\",\"znqqkqxkdglse\":\"ehplmqyoduksa\"}},\"id\":\"krbyy\",\"name\":\"krjgbnwgokrll\",\"type\":\"ecannv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"isArchived\":true,\"latestVersion\":\"vuwhvqihmqhqjdcb\",\"nextVersion\":\"e\",\"description\":\"tiljxagca\",\"properties\":{\"pdmdsypks\":\"zcraxilzdxc\",\"x\":\"rhiehxjou\",\"qvvyhgpgjd\":\"hsbecxuvkba\"},\"tags\":{\"puku\":\"kdje\",\"vpmg\":\"fzwiztvucyackgk\"}},\"id\":\"cohfksixv\",\"name\":\"kpcesmurj\",\"type\":\"bpnxohagcoj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,17 @@ public final class ModelContainersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelContainer response = manager.modelContainers()
-            .define("cccpxbnwitaf")
-            .withExistingWorkspace("ynpgomzmkj", "ajlfpsvrljlhe")
-            .withProperties(new ModelContainerProperties().withDescription("cxqm")
-                .withProperties(mapOf("gul", "dcy", "mqoubxlpkdsn", "llfwrmsuxyq"))
-                .withTags(mapOf("rppoy", "ymsdlraduhgwaxz"))
-                .withIsArchived(true))
+            .define("vpdu")
+            .withExistingWorkspace("hskimntxd", "lqmnwhdho")
+            .withProperties(new ModelContainerProperties().withDescription("kuwwdxzpegumydo")
+                .withProperties(mapOf("qjdxiiqwqbvanvg", "fwzecgbxrcse"))
+                .withTags(mapOf("ruywrxnk", "aaiitn", "xeovbgrqwfuxn", "maebdrxjsmrsea", "yl", "ue"))
+                .withIsArchived(false))
             .create();
 
-        Assertions.assertEquals("gwjqeglymnrr", response.properties().description());
-        Assertions.assertEquals("qpiyxkmqmgex", response.properties().properties().get("cilfiulgnnyxwdp"));
-        Assertions.assertEquals("w", response.properties().tags().get("izcbqjxmhwdtunpc"));
+        Assertions.assertEquals("tiljxagca", response.properties().description());
+        Assertions.assertEquals("zcraxilzdxc", response.properties().properties().get("pdmdsypks"));
+        Assertions.assertEquals("kdje", response.properties().tags().get("puku"));
         Assertions.assertTrue(response.properties().isArchived());
     }
 

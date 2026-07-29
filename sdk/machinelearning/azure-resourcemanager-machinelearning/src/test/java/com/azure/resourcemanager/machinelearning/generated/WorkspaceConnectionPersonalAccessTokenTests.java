@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceConnectionPersonalAccessTokenTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceConnectionPersonalAccessToken model = BinaryData.fromString("{\"pat\":\"zdnuehxwltss\"}")
-            .toObject(WorkspaceConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("zdnuehxwltss", model.pat());
+        WorkspaceConnectionPersonalAccessToken model
+            = BinaryData.fromString("{\"pat\":\"ypkcpwsrqnn\"}").toObject(WorkspaceConnectionPersonalAccessToken.class);
+        Assertions.assertEquals("ypkcpwsrqnn", model.pat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceConnectionPersonalAccessToken model
-            = new WorkspaceConnectionPersonalAccessToken().withPat("zdnuehxwltss");
+            = new WorkspaceConnectionPersonalAccessToken().withPat("ypkcpwsrqnn");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("zdnuehxwltss", model.pat());
+        Assertions.assertEquals("ypkcpwsrqnn", model.pat());
     }
 }

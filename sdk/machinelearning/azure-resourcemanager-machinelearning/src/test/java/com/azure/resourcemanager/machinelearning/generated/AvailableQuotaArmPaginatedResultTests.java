@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableQuotaArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableQuotaArmPaginatedResult model = BinaryData
-            .fromString(
-                "{\"value\":[{\"properties\":{\"total\":2035182710805451187}}],\"nextLink\":\"klsuffpxeswctlfy\"}")
+        AvailableQuotaArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"total\":2332215538258833864}},{\"properties\":{\"total\":6021713796347614499}},{\"properties\":{\"total\":4357566233332507822}}],\"nextLink\":\"zonzsurqcojasfz\"}")
             .toObject(AvailableQuotaArmPaginatedResult.class);
-        Assertions.assertEquals(2035182710805451187L, model.value().get(0).properties().total());
-        Assertions.assertEquals("klsuffpxeswctlfy", model.nextLink());
+        Assertions.assertEquals(2332215538258833864L, model.value().get(0).properties().total());
+        Assertions.assertEquals("zonzsurqcojasfz", model.nextLink());
     }
 }

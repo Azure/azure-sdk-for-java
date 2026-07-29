@@ -15,40 +15,40 @@ public final class OpenAIEndpointResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OpenAIEndpointResourceProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"Azure.OpenAI\",\"associatedResourceId\":\"inqxdhnpjnezj\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"umltpmrzwv\",\"provisioningState\":\"Creating\"},\"id\":\"ffuxvfhuqh\",\"name\":\"gqqxjbs\",\"type\":\"toclmrttujydea\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"xpxbxedhxbb\",\"provisioningState\":\"Scaling\"},\"id\":\"sramqc\",\"name\":\"l\",\"type\":\"gfnlvvkswurxd\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"vhauimnntfkqp\",\"provisioningState\":\"Succeeded\"},\"id\":\"bnwivlqcwyzhn\",\"name\":\"qkzstzpze\",\"type\":\"dl\"}],\"endpointUri\":\"irtahtu\",\"failureReason\":\"imt\",\"location\":\"umviudzpsjqrm\",\"name\":\"jmtunlo\",\"provisioningState\":\"Creating\",\"shouldCreateAiServicesEndpoint\":true}")
+            "{\"endpointType\":\"Azure.OpenAI\",\"associatedResourceId\":\"npbgcesfddfclmow\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"ofkbcjzzww\",\"provisioningState\":\"NotStarted\"},\"id\":\"btd\",\"name\":\"zhixccnkf\",\"type\":\"og\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"oxmyqzyqep\",\"provisioningState\":\"Canceled\"},\"id\":\"dsluokcevoxd\",\"name\":\"dpwmgwxwukfjvqg\",\"type\":\"axseisvv\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"yphheovejkp\",\"provisioningState\":\"Failed\"},\"id\":\"ztlthrtzpuvfs\",\"name\":\"rgrqefn\",\"type\":\"uo\"}],\"endpointUri\":\"ouurmu\",\"failureReason\":\"mbqqiehdhj\",\"location\":\"ywwnaxoxlorxgs\",\"name\":\"c\",\"provisioningState\":\"Scaling\",\"shouldCreateAiServicesEndpoint\":false}")
             .toObject(OpenAIEndpointResourceProperties.class);
-        Assertions.assertEquals("inqxdhnpjnezj", model.associatedResourceId());
-        Assertions.assertEquals("umltpmrzwv", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("irtahtu", model.endpointUri());
-        Assertions.assertEquals("imt", model.failureReason());
-        Assertions.assertEquals("umviudzpsjqrm", model.location());
-        Assertions.assertEquals("jmtunlo", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("npbgcesfddfclmow", model.associatedResourceId());
+        Assertions.assertEquals("ofkbcjzzww", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("ouurmu", model.endpointUri());
+        Assertions.assertEquals("mbqqiehdhj", model.failureReason());
+        Assertions.assertEquals("ywwnaxoxlorxgs", model.location());
+        Assertions.assertEquals("c", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OpenAIEndpointResourceProperties model
-            = new OpenAIEndpointResourceProperties().withAssociatedResourceId("inqxdhnpjnezj")
+            = new OpenAIEndpointResourceProperties().withAssociatedResourceId("npbgcesfddfclmow")
                 .withDeployments(Arrays.asList(
                     new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("umltpmrzwv")),
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("ofkbcjzzww")),
                     new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("xpxbxedhxbb")),
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("oxmyqzyqep")),
                     new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("vhauimnntfkqp"))))
-                .withEndpointUri("irtahtu")
-                .withFailureReason("imt")
-                .withLocation("umviudzpsjqrm")
-                .withName("jmtunlo")
-                .withShouldCreateAiServicesEndpoint(true);
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("yphheovejkp"))))
+                .withEndpointUri("ouurmu")
+                .withFailureReason("mbqqiehdhj")
+                .withLocation("ywwnaxoxlorxgs")
+                .withName("c")
+                .withShouldCreateAiServicesEndpoint(false);
         model = BinaryData.fromObject(model).toObject(OpenAIEndpointResourceProperties.class);
-        Assertions.assertEquals("inqxdhnpjnezj", model.associatedResourceId());
-        Assertions.assertEquals("umltpmrzwv", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("irtahtu", model.endpointUri());
-        Assertions.assertEquals("imt", model.failureReason());
-        Assertions.assertEquals("umviudzpsjqrm", model.location());
-        Assertions.assertEquals("jmtunlo", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("npbgcesfddfclmow", model.associatedResourceId());
+        Assertions.assertEquals("ofkbcjzzww", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("ouurmu", model.endpointUri());
+        Assertions.assertEquals("mbqqiehdhj", model.failureReason());
+        Assertions.assertEquals("ywwnaxoxlorxgs", model.location());
+        Assertions.assertEquals("c", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
     }
 }

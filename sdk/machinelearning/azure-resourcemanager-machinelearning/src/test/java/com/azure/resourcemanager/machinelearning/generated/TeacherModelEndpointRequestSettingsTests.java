@@ -12,19 +12,19 @@ public final class TeacherModelEndpointRequestSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeacherModelEndpointRequestSettings model
-            = BinaryData.fromString("{\"minEndpointSuccessRatio\":66.82604785150804,\"requestBatchSize\":890603813}")
+            = BinaryData.fromString("{\"minEndpointSuccessRatio\":18.354309871177843,\"requestBatchSize\":196695741}")
                 .toObject(TeacherModelEndpointRequestSettings.class);
-        Assertions.assertEquals(66.82604785150804D, model.minEndpointSuccessRatio());
-        Assertions.assertEquals(890603813, model.requestBatchSize());
+        Assertions.assertEquals(18.354309871177843D, model.minEndpointSuccessRatio());
+        Assertions.assertEquals(196695741, model.requestBatchSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TeacherModelEndpointRequestSettings model
-            = new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(66.82604785150804D)
-                .withRequestBatchSize(890603813);
+            = new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(18.354309871177843D)
+                .withRequestBatchSize(196695741);
         model = BinaryData.fromObject(model).toObject(TeacherModelEndpointRequestSettings.class);
-        Assertions.assertEquals(66.82604785150804D, model.minEndpointSuccessRatio());
-        Assertions.assertEquals(890603813, model.requestBatchSize());
+        Assertions.assertEquals(18.354309871177843D, model.minEndpointSuccessRatio());
+        Assertions.assertEquals(196695741, model.requestBatchSize());
     }
 }

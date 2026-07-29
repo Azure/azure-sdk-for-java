@@ -12,10 +12,10 @@ public final class AmlUserFeatureInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlUserFeatureInner model
-            = BinaryData.fromString("{\"id\":\"obqzwjalwrso\",\"displayName\":\"c\",\"description\":\"rmvjfmrsuyd\"}")
+            = BinaryData.fromString("{\"id\":\"dzt\",\"displayName\":\"rfbg\",\"description\":\"zfwvzdteqjmy\"}")
                 .toObject(AmlUserFeatureInner.class);
-        Assertions.assertEquals("obqzwjalwrso", model.id());
-        Assertions.assertEquals("c", model.displayName());
-        Assertions.assertEquals("rmvjfmrsuyd", model.description());
+        Assertions.assertEquals("dzt", model.id());
+        Assertions.assertEquals("rfbg", model.displayName());
+        Assertions.assertEquals("zfwvzdteqjmy", model.description());
     }
 }

@@ -15,24 +15,24 @@ public final class ClusterUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"properties\":{\"scaleSettings\":{\"maxNodeCount\":487305723,\"minNodeCount\":37155283,\"nodeIdleTimeBeforeScaleDown\":\"PT239H46M31S\"}}}}")
+            "{\"properties\":{\"properties\":{\"scaleSettings\":{\"maxNodeCount\":1965751831,\"minNodeCount\":117305787,\"nodeIdleTimeBeforeScaleDown\":\"PT175H5M30S\"}}}}")
             .toObject(ClusterUpdateParameters.class);
-        Assertions.assertEquals(487305723, model.properties().scaleSettings().maxNodeCount());
-        Assertions.assertEquals(37155283, model.properties().scaleSettings().minNodeCount());
-        Assertions.assertEquals(Duration.parse("PT239H46M31S"),
+        Assertions.assertEquals(1965751831, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(117305787, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT175H5M30S"),
             model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterUpdateParameters model = new ClusterUpdateParameters().withProperties(
-            new ScaleSettingsInformation().withScaleSettings(new ScaleSettings().withMaxNodeCount(487305723)
-                .withMinNodeCount(37155283)
-                .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT239H46M31S"))));
+            new ScaleSettingsInformation().withScaleSettings(new ScaleSettings().withMaxNodeCount(1965751831)
+                .withMinNodeCount(117305787)
+                .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT175H5M30S"))));
         model = BinaryData.fromObject(model).toObject(ClusterUpdateParameters.class);
-        Assertions.assertEquals(487305723, model.properties().scaleSettings().maxNodeCount());
-        Assertions.assertEquals(37155283, model.properties().scaleSettings().minNodeCount());
-        Assertions.assertEquals(Duration.parse("PT239H46M31S"),
+        Assertions.assertEquals(1965751831, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(117305787, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT175H5M30S"),
             model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 }

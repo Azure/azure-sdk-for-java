@@ -23,7 +23,7 @@ public final class ComponentVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentSpec\":\"\\\"datarfxfeiqbas\\\"\",\"provisioningState\":\"Creating\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"svnonij\",\"properties\":{\"qqbt\":\"jozzjkugp\"},\"tags\":{\"hwettohgpzwx\":\"ocuzxllbpwa\"}},\"id\":\"tkzbhizxp\",\"name\":\"sddmwnfhmju\",\"type\":\"uqnkushvl\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentSpec\":\"\\\"dataezxevltfe\\\"\",\"provisioningState\":\"Canceled\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"qakpstif\",\"properties\":{\"fofuadcjqne\":\"wrphmriipz\",\"bargeeynqlsnrga\":\"qkgt\",\"yxhsppv\":\"oyvgjjp\",\"geqeapaseq\":\"sduouoqtenqsomu\"},\"tags\":{\"yvtoiqo\":\"ypfreuwvzhn\",\"xzuhel\":\"zttqgtllwy\",\"lxeomebz\":\"itpqvpivrsgqbm\",\"sfoyacgihnal\":\"tvxx\"}},\"id\":\"ue\",\"name\":\"ybk\",\"type\":\"gdwbmivzikatywed\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ComponentVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ComponentVersion> response = manager.componentVersions()
-            .list("kcdnzoxl", "buxtwgbawshra", "q", "ugqcglmadfztof", 2001431374, "qlauuagwayf", ListViewType.ALL,
+            .list("nst", "eurd", "xklr", "atsiznymwz", 1264805827, "pkihqhnfubevwa", ListViewType.ALL,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("svnonij", response.iterator().next().properties().description());
-        Assertions.assertEquals("jozzjkugp", response.iterator().next().properties().properties().get("qqbt"));
-        Assertions.assertEquals("ocuzxllbpwa", response.iterator().next().properties().tags().get("hwettohgpzwx"));
-        Assertions.assertTrue(response.iterator().next().properties().isAnonymous());
+        Assertions.assertEquals("qakpstif", response.iterator().next().properties().description());
+        Assertions.assertEquals("wrphmriipz", response.iterator().next().properties().properties().get("fofuadcjqne"));
+        Assertions.assertEquals("ypfreuwvzhn", response.iterator().next().properties().tags().get("yvtoiqo"));
+        Assertions.assertFalse(response.iterator().next().properties().isAnonymous());
         Assertions.assertTrue(response.iterator().next().properties().isArchived());
     }
 }

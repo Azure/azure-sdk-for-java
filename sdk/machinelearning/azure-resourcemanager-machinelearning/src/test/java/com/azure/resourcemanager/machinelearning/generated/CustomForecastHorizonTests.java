@@ -12,14 +12,14 @@ public final class CustomForecastHorizonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomForecastHorizon model
-            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":974021063}").toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(974021063, model.value());
+            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":499625965}").toObject(CustomForecastHorizon.class);
+        Assertions.assertEquals(499625965, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomForecastHorizon model = new CustomForecastHorizon().withValue(974021063);
+        CustomForecastHorizon model = new CustomForecastHorizon().withValue(499625965);
         model = BinaryData.fromObject(model).toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(974021063, model.value());
+        Assertions.assertEquals(499625965, model.value());
     }
 }

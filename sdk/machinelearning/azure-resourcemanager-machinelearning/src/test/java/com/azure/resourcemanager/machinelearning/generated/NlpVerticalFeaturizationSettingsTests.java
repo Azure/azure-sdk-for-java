@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NlpVerticalFeaturizationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NlpVerticalFeaturizationSettings model = BinaryData.fromString("{\"datasetLanguage\":\"tzqzcloy\"}")
+        NlpVerticalFeaturizationSettings model = BinaryData.fromString("{\"datasetLanguage\":\"bprnqujywzcqygg\"}")
             .toObject(NlpVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("tzqzcloy", model.datasetLanguage());
+        Assertions.assertEquals("bprnqujywzcqygg", model.datasetLanguage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NlpVerticalFeaturizationSettings model = new NlpVerticalFeaturizationSettings().withDatasetLanguage("tzqzcloy");
+        NlpVerticalFeaturizationSettings model
+            = new NlpVerticalFeaturizationSettings().withDatasetLanguage("bprnqujywzcqygg");
         model = BinaryData.fromObject(model).toObject(NlpVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("tzqzcloy", model.datasetLanguage());
+        Assertions.assertEquals("bprnqujywzcqygg", model.datasetLanguage());
     }
 }

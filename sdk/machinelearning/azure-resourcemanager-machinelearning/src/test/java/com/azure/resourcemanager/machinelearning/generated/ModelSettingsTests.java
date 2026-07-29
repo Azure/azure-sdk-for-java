@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ModelSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ModelSettings model = BinaryData.fromString("{\"modelId\":\"nrzpghlrdtbg\"}").toObject(ModelSettings.class);
-        Assertions.assertEquals("nrzpghlrdtbg", model.modelId());
+        ModelSettings model = BinaryData.fromString("{\"modelId\":\"s\"}").toObject(ModelSettings.class);
+        Assertions.assertEquals("s", model.modelId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ModelSettings model = new ModelSettings().withModelId("nrzpghlrdtbg");
+        ModelSettings model = new ModelSettings().withModelId("s");
         model = BinaryData.fromObject(model).toObject(ModelSettings.class);
-        Assertions.assertEquals("nrzpghlrdtbg", model.modelId());
+        Assertions.assertEquals("s", model.modelId());
     }
 }

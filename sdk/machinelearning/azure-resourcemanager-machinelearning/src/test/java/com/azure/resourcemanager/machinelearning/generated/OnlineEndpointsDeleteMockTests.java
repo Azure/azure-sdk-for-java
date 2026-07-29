@@ -27,7 +27,8 @@ public final class OnlineEndpointsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.onlineEndpoints().delete("xmspjqafsxv", "quazo", "lxxksputizpvvihg", com.azure.core.util.Context.NONE);
+        manager.onlineEndpoints()
+            .delete("wmivazfnbzcjms", "orjbyyxkcvah", "bysxtjivw", com.azure.core.util.Context.NONE);
 
     }
 }

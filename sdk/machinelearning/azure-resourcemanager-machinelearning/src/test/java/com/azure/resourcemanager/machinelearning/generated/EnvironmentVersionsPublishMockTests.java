@@ -29,10 +29,10 @@ public final class EnvironmentVersionsPublishMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.environmentVersions()
-            .publish("vxmtsmgk", "etsn", "rceulbyzzcxsyg", "oy",
-                new DestinationAsset().withDestinationName("ck")
-                    .withDestinationVersion("z")
-                    .withRegistryName("xbmljrjyfjleuxix"),
+            .publish("ak", "xgwwm", "vllpfjguzsy", "wamhm",
+                new DestinationAsset().withDestinationName("xxb")
+                    .withDestinationVersion("gwnompvy")
+                    .withRegistryName("cnzcu"),
                 com.azure.core.util.Context.NONE);
 
     }

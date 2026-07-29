@@ -28,7 +28,7 @@ public final class RegistryEnvironmentContainersDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.registryEnvironmentContainers()
-            .delete("yseyvagakfqpaexl", "tmekkaeigrhrdns", "vsrtqltawjkra", com.azure.core.util.Context.NONE);
+            .delete("jwjhmtca", "wmabehrf", "skzw", com.azure.core.util.Context.NONE);
 
     }
 }

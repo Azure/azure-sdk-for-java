@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineImage model = BinaryData.fromString("{\"id\":\"sb\"}").toObject(VirtualMachineImage.class);
-        Assertions.assertEquals("sb", model.id());
+        VirtualMachineImage model
+            = BinaryData.fromString("{\"id\":\"zvmxtcwghndae\"}").toObject(VirtualMachineImage.class);
+        Assertions.assertEquals("zvmxtcwghndae", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineImage model = new VirtualMachineImage().withId("sb");
+        VirtualMachineImage model = new VirtualMachineImage().withId("zvmxtcwghndae");
         model = BinaryData.fromObject(model).toObject(VirtualMachineImage.class);
-        Assertions.assertEquals("sb", model.id());
+        Assertions.assertEquals("zvmxtcwghndae", model.id());
     }
 }

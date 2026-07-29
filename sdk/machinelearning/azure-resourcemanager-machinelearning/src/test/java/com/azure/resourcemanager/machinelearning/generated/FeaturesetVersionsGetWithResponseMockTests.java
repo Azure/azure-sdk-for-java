@@ -25,7 +25,7 @@ public final class FeaturesetVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"entities\":[\"hhbogxwngpym\"],\"materializationSettings\":{\"notification\":{\"emailOn\":[\"JobFailed\",\"JobCompleted\"],\"emails\":[\"outj\",\"iw\"],\"webhooks\":{\"dkgbzjoyyptn\":{\"webhookType\":\"Webhook\"},\"kdoqxkzeowizvjej\":{\"webhookType\":\"Webhook\"},\"xkflzqwkxxbo\":{\"webhookType\":\"Webhook\"},\"uvkkcowgnwhldc\":{\"webhookType\":\"Webhook\"}}},\"resource\":{\"instanceType\":\"chuqmdy\"},\"schedule\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Hour\",\"interval\":426344478,\"schedule\":{\"hours\":[879586661,1716978607,1084900907,1081939064],\"minutes\":[1624078266,1612577579],\"monthDays\":[1021718239,1187334907,947531234,664503995],\"weekDays\":[\"Saturday\"]},\"endTime\":\"wxw\",\"startTime\":\"dkdlxd\",\"timeZone\":\"talzcjaw\"},\"sparkConfiguration\":{\"sxiaj\":\"ownoypqu\",\"lop\":\"crsdgtj\",\"tpprszehijlw\":\"cca\",\"hjmg\":\"feabzjp\"},\"storeType\":\"Online\"},\"provisioningState\":\"Canceled\",\"specification\":{\"path\":\"sfxl\"},\"stage\":\"i\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"vnhsfjxt\",\"properties\":{\"tsppgt\":\"jxpuokkd\",\"sjwnwn\":\"lonalpwaulkwuy\",\"nfgtmupblh\":\"d\"},\"tags\":{\"kxufuw\":\"vzz\"}},\"id\":\"jyezlkuiveftugi\",\"name\":\"svlfpm\",\"type\":\"p\"}";
+            = "{\"properties\":{\"entities\":[\"ykkpnfvzbvtxgsnu\"],\"materializationSettings\":{\"notification\":{\"emailOn\":[\"JobFailed\",\"JobCompleted\",\"JobCancelled\"],\"emails\":[\"mlcbmhsfgax\",\"vaejyaf\",\"zxnzjxvd\"],\"webhooks\":{\"dlptulwgpdzlfx\":{\"webhookType\":\"Webhook\"}}},\"resource\":{\"instanceType\":\"wgm\"},\"schedule\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Hour\",\"interval\":167556923,\"schedule\":{\"hours\":[2117719452],\"minutes\":[1661419347],\"monthDays\":[1356128078,1352697647],\"weekDays\":[\"Thursday\",\"Wednesday\"]},\"endTime\":\"gxjtuhid\",\"startTime\":\"szxmcqenyjwadvf\",\"timeZone\":\"vtymncwjdmjdph\"},\"sparkConfiguration\":{\"bfima\":\"jrbnzbemr\",\"neprhxs\":\"eiq\"},\"storeType\":\"OnlineAndOffline\"},\"provisioningState\":\"Updating\",\"specification\":{\"path\":\"mevszbjnqk\"},\"stage\":\"kcjckmz\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"nhinnkakq\",\"properties\":{\"zznocrbtazopf\":\"zxltjsfxxkgx\"},\"tags\":{\"knppucfvx\":\"fmhm\",\"dumiuxxmrnt\":\"rmxcrhzecn\",\"jabzs\":\"hyjueddtkpysmal\"}},\"id\":\"uza\",\"name\":\"mkuthooai\",\"type\":\"mszcwwvbxvibiv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,39 +35,41 @@ public final class FeaturesetVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeaturesetVersion response = manager.featuresetVersions()
-            .getWithResponse("nsicucqteciexsc", "hzh", "jlypwgwbycfam", "ikisppygothi",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("x", "byvbdvgztjtzs", "enbdqxf", "ejcng", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vnhsfjxt", response.properties().description());
-        Assertions.assertEquals("jxpuokkd", response.properties().properties().get("tsppgt"));
-        Assertions.assertEquals("vzz", response.properties().tags().get("kxufuw"));
+        Assertions.assertEquals("nhinnkakq", response.properties().description());
+        Assertions.assertEquals("zxltjsfxxkgx", response.properties().properties().get("zznocrbtazopf"));
+        Assertions.assertEquals("fmhm", response.properties().tags().get("knppucfvx"));
         Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals("hhbogxwngpym", response.properties().entities().get(0));
+        Assertions.assertEquals("ykkpnfvzbvtxgsnu", response.properties().entities().get(0));
         Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED,
             response.properties().materializationSettings().notification().emailOn().get(0));
-        Assertions.assertEquals("outj", response.properties().materializationSettings().notification().emails().get(0));
-        Assertions.assertEquals("chuqmdy", response.properties().materializationSettings().resource().instanceType());
-        Assertions.assertEquals("wxw", response.properties().materializationSettings().schedule().endTime());
-        Assertions.assertEquals("dkdlxd", response.properties().materializationSettings().schedule().startTime());
-        Assertions.assertEquals("talzcjaw", response.properties().materializationSettings().schedule().timeZone());
+        Assertions.assertEquals("mlcbmhsfgax",
+            response.properties().materializationSettings().notification().emails().get(0));
+        Assertions.assertEquals("wgm", response.properties().materializationSettings().resource().instanceType());
+        Assertions.assertEquals("gxjtuhid", response.properties().materializationSettings().schedule().endTime());
+        Assertions.assertEquals("szxmcqenyjwadvf",
+            response.properties().materializationSettings().schedule().startTime());
+        Assertions.assertEquals("vtymncwjdmjdph",
+            response.properties().materializationSettings().schedule().timeZone());
         Assertions.assertEquals(RecurrenceFrequency.HOUR,
             response.properties().materializationSettings().schedule().frequency());
-        Assertions.assertEquals(426344478, response.properties().materializationSettings().schedule().interval());
-        Assertions.assertEquals(879586661,
+        Assertions.assertEquals(167556923, response.properties().materializationSettings().schedule().interval());
+        Assertions.assertEquals(2117719452,
             response.properties().materializationSettings().schedule().schedule().hours().get(0));
-        Assertions.assertEquals(1624078266,
+        Assertions.assertEquals(1661419347,
             response.properties().materializationSettings().schedule().schedule().minutes().get(0));
-        Assertions.assertEquals(1021718239,
+        Assertions.assertEquals(1356128078,
             response.properties().materializationSettings().schedule().schedule().monthDays().get(0));
-        Assertions.assertEquals(WeekDay.SATURDAY,
+        Assertions.assertEquals(WeekDay.THURSDAY,
             response.properties().materializationSettings().schedule().schedule().weekDays().get(0));
-        Assertions.assertEquals("ownoypqu",
-            response.properties().materializationSettings().sparkConfiguration().get("sxiaj"));
-        Assertions.assertEquals(MaterializationStoreType.ONLINE,
+        Assertions.assertEquals("jrbnzbemr",
+            response.properties().materializationSettings().sparkConfiguration().get("bfima"));
+        Assertions.assertEquals(MaterializationStoreType.ONLINE_AND_OFFLINE,
             response.properties().materializationSettings().storeType());
-        Assertions.assertEquals("sfxl", response.properties().specification().path());
-        Assertions.assertEquals("i", response.properties().stage());
+        Assertions.assertEquals("mevszbjnqk", response.properties().specification().path());
+        Assertions.assertEquals("kcjckmz", response.properties().stage());
     }
 }

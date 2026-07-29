@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerlessEndpointContentSafetyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerlessEndpointContentSafety model = BinaryData.fromString("{\"contentSafetyStatus\":\"Disabled\"}")
+        ServerlessEndpointContentSafety model = BinaryData.fromString("{\"contentSafetyStatus\":\"Enabled\"}")
             .toObject(ServerlessEndpointContentSafety.class);
-        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafetyStatus());
+        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafetyStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerlessEndpointContentSafety model
-            = new ServerlessEndpointContentSafety().withContentSafetyStatus(ContentSafetyStatus.DISABLED);
+            = new ServerlessEndpointContentSafety().withContentSafetyStatus(ContentSafetyStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ServerlessEndpointContentSafety.class);
-        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafetyStatus());
+        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafetyStatus());
     }
 }

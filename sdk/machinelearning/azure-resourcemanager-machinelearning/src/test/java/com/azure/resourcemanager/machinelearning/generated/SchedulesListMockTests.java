@@ -23,7 +23,7 @@ public final class SchedulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"aavjk\",\"isEnabled\":false,\"provisioningState\":\"Creating\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"viysbvoliviankl\",\"startTime\":\"l\",\"timeZone\":\"pneouxpdnlbpnb\"},\"description\":\"ohnroa\",\"properties\":{\"ur\":\"kg\",\"yuofegrz\":\"xfspxghwf\",\"idlodcqs\":\"sfulookwnzotjbvh\",\"uegym\":\"lkkqvmmmweljc\"},\"tags\":{\"hlbibwodayi\":\"smnjitxu\",\"pvbvfchfux\":\"gshkioecmbyo\",\"xnzapzibmst\":\"qpddebokzdshhhd\",\"jhvpktbnmhxt\":\"zzkzvfywspaja\"}},\"id\":\"zpa\",\"name\":\"tsrvsbkn\",\"type\":\"ouytsajjgvu\"}]}";
+            = "{\"value\":[{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"bttk\",\"isEnabled\":true,\"provisioningState\":\"Canceled\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"ueilixzjvkqj\",\"startTime\":\"blhcmxx\",\"timeZone\":\"nkxcljnkmsfsqux\"},\"description\":\"cimnchvk\",\"properties\":{\"dgt\":\"ivagcsmrtepsy\",\"jdcokbpbpqelmszo\":\"ozys\",\"rd\":\"tneltnbyvb\",\"bia\":\"umududwecds\"},\"tags\":{\"kreki\":\"xdkwvceqlyxbyqqo\",\"ntaovlyyk\":\"jusmdodkuky\",\"vswlhj\":\"yfpkdsldywr\",\"qygszhpnatltj\":\"b\"}},\"id\":\"qz\",\"name\":\"wlkyrnmgsbu\",\"type\":\"zfayyuq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,16 @@ public final class SchedulesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Schedule> response = manager.schedules()
-            .list("pf", "taaq", "xkloabc", ScheduleListViewType.ALL, com.azure.core.util.Context.NONE);
+            .list("lzbdimt", "ohjxfqyyu", "cilxz", ScheduleListViewType.DISABLED_ONLY,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ohnroa", response.iterator().next().properties().description());
-        Assertions.assertEquals("kg", response.iterator().next().properties().properties().get("ur"));
-        Assertions.assertEquals("smnjitxu", response.iterator().next().properties().tags().get("hlbibwodayi"));
-        Assertions.assertEquals("aavjk", response.iterator().next().properties().displayName());
-        Assertions.assertFalse(response.iterator().next().properties().isEnabled());
-        Assertions.assertEquals("viysbvoliviankl", response.iterator().next().properties().trigger().endTime());
-        Assertions.assertEquals("l", response.iterator().next().properties().trigger().startTime());
-        Assertions.assertEquals("pneouxpdnlbpnb", response.iterator().next().properties().trigger().timeZone());
+        Assertions.assertEquals("cimnchvk", response.iterator().next().properties().description());
+        Assertions.assertEquals("ivagcsmrtepsy", response.iterator().next().properties().properties().get("dgt"));
+        Assertions.assertEquals("xdkwvceqlyxbyqqo", response.iterator().next().properties().tags().get("kreki"));
+        Assertions.assertEquals("bttk", response.iterator().next().properties().displayName());
+        Assertions.assertTrue(response.iterator().next().properties().isEnabled());
+        Assertions.assertEquals("ueilixzjvkqj", response.iterator().next().properties().trigger().endTime());
+        Assertions.assertEquals("blhcmxx", response.iterator().next().properties().trigger().startTime());
+        Assertions.assertEquals("nkxcljnkmsfsqux", response.iterator().next().properties().trigger().timeZone());
     }
 }

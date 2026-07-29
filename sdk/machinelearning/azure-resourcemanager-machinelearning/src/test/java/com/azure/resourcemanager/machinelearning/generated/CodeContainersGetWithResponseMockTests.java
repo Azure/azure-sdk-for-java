@@ -21,7 +21,7 @@ public final class CodeContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"dclt\",\"nextVersion\":\"ieileemw\",\"description\":\"ehldopj\",\"properties\":{\"sgikkmibnmdpid\":\"bb\"},\"tags\":{\"qa\":\"tgzwmzhcmrl\",\"nmbj\":\"styzavkyjjlu\",\"optythctoxo\":\"bngzldvvd\"}},\"id\":\"mqnerwh\",\"name\":\"mvidsssfzsgzgusp\",\"type\":\"jomeq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":true,\"latestVersion\":\"qdvfj\",\"nextVersion\":\"qephtoshqt\",\"description\":\"rjwgujr\",\"properties\":{\"ypyqoizfyasydd\":\"a\",\"miflrvfe\":\"bwscjwyye\",\"vauznw\":\"wctshwfrhhasa\"},\"tags\":{\"bwtpwbjlpfwuq\":\"kbpgci\"}},\"id\":\"pdgitenyuksl\",\"name\":\"zmpnxghamrplanch\",\"type\":\"otmmxlmxejwyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class CodeContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeContainer response = manager.codeContainers()
-            .getWithResponse("xznirnygti", "kg", "obmkphvdlorxz", com.azure.core.util.Context.NONE)
+            .getWithResponse("xtigukfkbsyc", "dymbnpeenlq", "qyv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ehldopj", response.properties().description());
-        Assertions.assertEquals("bb", response.properties().properties().get("sgikkmibnmdpid"));
-        Assertions.assertEquals("tgzwmzhcmrl", response.properties().tags().get("qa"));
+        Assertions.assertEquals("rjwgujr", response.properties().description());
+        Assertions.assertEquals("a", response.properties().properties().get("ypyqoizfyasydd"));
+        Assertions.assertEquals("kbpgci", response.properties().tags().get("bwtpwbjlpfwuq"));
         Assertions.assertTrue(response.properties().isArchived());
     }
 }

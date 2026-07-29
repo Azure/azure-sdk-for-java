@@ -28,7 +28,7 @@ public final class EnvironmentContainersDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.environmentContainers()
-            .deleteWithResponse("slqreofzrkrzt", "yaymhx", "nmwaxsymnrtvqmim", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("kdg", "seuqkrbyyakrjgb", "wgokrllbecannvxo", com.azure.core.util.Context.NONE);
 
     }
 }

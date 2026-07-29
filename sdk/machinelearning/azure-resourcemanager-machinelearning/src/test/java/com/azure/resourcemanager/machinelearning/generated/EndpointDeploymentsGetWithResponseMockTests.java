@@ -21,7 +21,7 @@ public final class EndpointDeploymentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"aatvogpyceinha\",\"provisioningState\":\"Canceled\"},\"id\":\"xsbyplskhwfjud\",\"name\":\"pbqp\",\"type\":\"ez\"}";
+            = "{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"bvvequzy\",\"provisioningState\":\"Creating\"},\"id\":\"zd\",\"name\":\"zbjecdsysxnkuhv\",\"type\":\"nlsevzcrrwnkk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class EndpointDeploymentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EndpointDeploymentResourcePropertiesBasicResource response = manager.endpointDeployments()
-            .getWithResponse("dhypngocbdxvriv", "tbc", "suzg", "zukekytkzvt", com.azure.core.util.Context.NONE)
+            .getWithResponse("lnlx", "feszunbua", "moub", "kqmierzr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("aatvogpyceinha", response.properties().failureReason());
+        Assertions.assertEquals("bvvequzy", response.properties().failureReason());
     }
 }

@@ -34,48 +34,48 @@ public final class ComputesUpdateDataMountsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.computes()
-            .updateDataMountsWithResponse("vc", "pydnujgblski", "pr",
+            .updateDataMountsWithResponse("lfxejpo", "sgigs", "b",
                 Arrays.asList(
-                    new ComputeInstanceDataMount().withSource("a")
-                        .withSourceType(SourceType.DATASTORE)
-                        .withMountName("drgxpuxpzsl")
-                        .withMountAction(MountAction.MOUNT)
-                        .withMountMode(MountMode.READ_WRITE)
-                        .withCreatedBy("rycchqzkfgesdzgs")
-                        .withMountPath("hekbmdhchiojsr")
-                        .withMountState(MountState.MOUNT_FAILED)
-                        .withMountedOn(OffsetDateTime.parse("2021-08-12T13:38Z"))
-                        .withError("euvwysbme"),
-                    new ComputeInstanceDataMount().withSource("g")
-                        .withSourceType(SourceType.DATASET)
-                        .withMountName("ihbkupae")
-                        .withMountAction(MountAction.UNMOUNT)
-                        .withMountMode(MountMode.READ_WRITE)
-                        .withCreatedBy("yzuyqzj")
-                        .withMountPath("bn")
-                        .withMountState(MountState.MOUNT_REQUESTED)
-                        .withMountedOn(OffsetDateTime.parse("2021-07-12T03:18:01Z"))
-                        .withError("scyzvv"),
-                    new ComputeInstanceDataMount().withSource("my")
+                    new ComputeInstanceDataMount().withSource("dyjwmglgstr")
                         .withSourceType(SourceType.URI)
-                        .withMountName("bs")
+                        .withMountName("hdzovkbcb")
                         .withMountAction(MountAction.UNMOUNT)
                         .withMountMode(MountMode.READ_WRITE)
-                        .withCreatedBy("az")
-                        .withMountPath("mmjaigaxwq")
+                        .withCreatedBy("mfhml")
+                        .withMountPath("mkgfvzv")
                         .withMountState(MountState.MOUNTED)
-                        .withMountedOn(OffsetDateTime.parse("2021-07-20T12:51:57Z"))
-                        .withError("she"),
-                    new ComputeInstanceDataMount().withSource("tdvhokxxfawh")
-                        .withSourceType(SourceType.DATASTORE)
-                        .withMountName("solh")
+                        .withMountedOn(OffsetDateTime.parse("2021-11-26T07:17:54Z"))
+                        .withError("giszxdbglceetuiv"),
+                    new ComputeInstanceDataMount().withSource("ugizwy")
+                        .withSourceType(SourceType.DATASET)
+                        .withMountName("ptbdxtv")
                         .withMountAction(MountAction.MOUNT)
-                        .withMountMode(MountMode.READ_WRITE)
-                        .withCreatedBy("jbgiq")
-                        .withMountPath("pelnud")
+                        .withMountMode(MountMode.READ_ONLY)
+                        .withCreatedBy("lfiuzytxeaqigmq")
+                        .withMountPath("ute")
+                        .withMountState(MountState.MOUNTED)
+                        .withMountedOn(OffsetDateTime.parse("2021-04-07T16:51:06Z"))
+                        .withError("dbrjwiwoue"),
+                    new ComputeInstanceDataMount().withSource("qnfyhgrcmcqpp")
+                        .withSourceType(SourceType.DATASTORE)
+                        .withMountName("yecttub")
+                        .withMountAction(MountAction.MOUNT)
+                        .withMountMode(MountMode.READ_ONLY)
+                        .withCreatedBy("rvdz")
+                        .withMountPath("pxpscw")
                         .withMountState(MountState.UNMOUNTED)
-                        .withMountedOn(OffsetDateTime.parse("2021-01-17T06:37:22Z"))
-                        .withError("xorsdvu")),
+                        .withMountedOn(OffsetDateTime.parse("2021-04-07T22:41:42Z"))
+                        .withError("ccya"),
+                    new ComputeInstanceDataMount().withSource("sfmndrdqqjkegbm")
+                        .withSourceType(SourceType.DATASET)
+                        .withMountName("iherzkhiovhjkw")
+                        .withMountAction(MountAction.UNMOUNT)
+                        .withMountMode(MountMode.READ_WRITE)
+                        .withCreatedBy("epahvoiranx")
+                        .withMountPath("zss")
+                        .withMountState(MountState.UNMOUNTED)
+                        .withMountedOn(OffsetDateTime.parse("2021-03-03T01:01:27Z"))
+                        .withError("ykzmwdoqrejltr")),
                 com.azure.core.util.Context.NONE);
 
     }

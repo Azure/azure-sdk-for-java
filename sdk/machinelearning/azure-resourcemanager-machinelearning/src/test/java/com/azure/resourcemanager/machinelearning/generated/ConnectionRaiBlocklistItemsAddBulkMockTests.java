@@ -25,7 +25,7 @@ public final class ConnectionRaiBlocklistItemsAddBulkMockTests {
     @Test
     public void testAddBulk() throws Exception {
         String responseStr
-            = "[{\"properties\":{\"isRegex\":false,\"pattern\":\"qgmjjprd\"},\"id\":\"blonlhtgexwjhicu\",\"name\":\"qavimxnhyl\",\"type\":\"ogtvlrbgd\"}]";
+            = "[{\"properties\":{\"isRegex\":true,\"pattern\":\"lbbukbdtmrijtuzf\"},\"id\":\"bpvizuuluilgmova\",\"name\":\"ntjsmjxgqs\",\"type\":\"jcvaaruvbz\"},{\"properties\":{\"isRegex\":false,\"pattern\":\"zxtlrmrtdznvj\"},\"id\":\"vyqpppswleptta\",\"name\":\"rkntfwxkeu\",\"type\":\"xgpcrvvmrdlckp\"},{\"properties\":{\"isRegex\":false,\"pattern\":\"eabwpaiqikzy\"},\"id\":\"harsw\",\"name\":\"qmrpdx\",\"type\":\"rdvtvt\"},{\"properties\":{\"isRegex\":false,\"pattern\":\"hnndf\"},\"id\":\"ks\",\"name\":\"iehrajba\",\"type\":\"gmxkoltsnq\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,13 @@ public final class ConnectionRaiBlocklistItemsAddBulkMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<RaiBlocklistItemPropertiesBasicResource> response = manager.connectionRaiBlocklistItems()
-            .addBulk("bylvrofh", "it", "hhuavwrcuahl", "mblls", Arrays.asList(
-                new RaiBlocklistItemBulkRequest().withName("drimoopfrdfjjrh")
-                    .withProperties(new RaiBlocklistItemProperties().withIsRegex(false).withPattern("oqpobwarsdxkwmq")),
-                new RaiBlocklistItemBulkRequest().withName("xbqyavcxjols")
-                    .withProperties(new RaiBlocklistItemProperties().withIsRegex(false).withPattern("pnms")),
-                new RaiBlocklistItemBulkRequest().withName("ntakr")
-                    .withProperties(new RaiBlocklistItemProperties().withIsRegex(false).withPattern("fsuwcmzpwkca"))),
+            .addBulk("jecjixc", "aiki", "trdbtrkvluu", "ssuuzfrwmct",
+                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("jqcksfbkrt")
+                    .withProperties(
+                        new RaiBlocklistItemProperties().withIsRegex(true).withPattern("eyqsiniejjbvvvtx"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertFalse(response.get(0).properties().isRegex());
-        Assertions.assertEquals("qgmjjprd", response.get(0).properties().pattern());
+        Assertions.assertTrue(response.get(0).properties().isRegex());
+        Assertions.assertEquals("lbbukbdtmrijtuzf", response.get(0).properties().pattern());
     }
 }

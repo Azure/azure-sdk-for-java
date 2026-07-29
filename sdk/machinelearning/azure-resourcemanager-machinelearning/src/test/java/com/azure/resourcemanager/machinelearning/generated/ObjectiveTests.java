@@ -13,16 +13,16 @@ public final class ObjectiveTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Objective model
-            = BinaryData.fromString("{\"goal\":\"Maximize\",\"primaryMetric\":\"ow\"}").toObject(Objective.class);
+            = BinaryData.fromString("{\"goal\":\"Maximize\",\"primaryMetric\":\"ywqnpfyd\"}").toObject(Objective.class);
         Assertions.assertEquals(Goal.MAXIMIZE, model.goal());
-        Assertions.assertEquals("ow", model.primaryMetric());
+        Assertions.assertEquals("ywqnpfyd", model.primaryMetric());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Objective model = new Objective().withGoal(Goal.MAXIMIZE).withPrimaryMetric("ow");
+        Objective model = new Objective().withGoal(Goal.MAXIMIZE).withPrimaryMetric("ywqnpfyd");
         model = BinaryData.fromObject(model).toObject(Objective.class);
         Assertions.assertEquals(Goal.MAXIMIZE, model.goal());
-        Assertions.assertEquals("ow", model.primaryMetric());
+        Assertions.assertEquals("ywqnpfyd", model.primaryMetric());
     }
 }

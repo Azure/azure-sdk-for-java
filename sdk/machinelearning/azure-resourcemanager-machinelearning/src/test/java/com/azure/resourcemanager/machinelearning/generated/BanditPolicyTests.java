@@ -12,24 +12,24 @@ public final class BanditPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BanditPolicy model = BinaryData.fromString(
-            "{\"policyType\":\"Bandit\",\"slackAmount\":57.73833058052216,\"slackFactor\":43.52126437970535,\"delayEvaluation\":484486985,\"evaluationInterval\":549678913}")
+            "{\"policyType\":\"Bandit\",\"slackAmount\":50.66404937129098,\"slackFactor\":60.323909142078676,\"delayEvaluation\":584581367,\"evaluationInterval\":1565743832}")
             .toObject(BanditPolicy.class);
-        Assertions.assertEquals(484486985, model.delayEvaluation());
-        Assertions.assertEquals(549678913, model.evaluationInterval());
-        Assertions.assertEquals(57.73833058052216D, model.slackAmount());
-        Assertions.assertEquals(43.52126437970535D, model.slackFactor());
+        Assertions.assertEquals(584581367, model.delayEvaluation());
+        Assertions.assertEquals(1565743832, model.evaluationInterval());
+        Assertions.assertEquals(50.66404937129098D, model.slackAmount());
+        Assertions.assertEquals(60.323909142078676D, model.slackFactor());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BanditPolicy model = new BanditPolicy().withDelayEvaluation(484486985)
-            .withEvaluationInterval(549678913)
-            .withSlackAmount(57.73833058052216D)
-            .withSlackFactor(43.52126437970535D);
+        BanditPolicy model = new BanditPolicy().withDelayEvaluation(584581367)
+            .withEvaluationInterval(1565743832)
+            .withSlackAmount(50.66404937129098D)
+            .withSlackFactor(60.323909142078676D);
         model = BinaryData.fromObject(model).toObject(BanditPolicy.class);
-        Assertions.assertEquals(484486985, model.delayEvaluation());
-        Assertions.assertEquals(549678913, model.evaluationInterval());
-        Assertions.assertEquals(57.73833058052216D, model.slackAmount());
-        Assertions.assertEquals(43.52126437970535D, model.slackFactor());
+        Assertions.assertEquals(584581367, model.delayEvaluation());
+        Assertions.assertEquals(1565743832, model.evaluationInterval());
+        Assertions.assertEquals(50.66404937129098D, model.slackAmount());
+        Assertions.assertEquals(60.323909142078676D, model.slackFactor());
     }
 }

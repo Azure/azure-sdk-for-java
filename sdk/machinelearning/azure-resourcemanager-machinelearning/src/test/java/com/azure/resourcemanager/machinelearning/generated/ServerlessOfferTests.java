@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerlessOfferTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerlessOffer model = BinaryData.fromString("{\"offerName\":\"qnnmjundt\",\"publisher\":\"xcltj\"}")
+        ServerlessOffer model = BinaryData.fromString("{\"offerName\":\"wqrzvuxnxauohsh\",\"publisher\":\"u\"}")
             .toObject(ServerlessOffer.class);
-        Assertions.assertEquals("qnnmjundt", model.offerName());
-        Assertions.assertEquals("xcltj", model.publisher());
+        Assertions.assertEquals("wqrzvuxnxauohsh", model.offerName());
+        Assertions.assertEquals("u", model.publisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerlessOffer model = new ServerlessOffer().withOfferName("qnnmjundt").withPublisher("xcltj");
+        ServerlessOffer model = new ServerlessOffer().withOfferName("wqrzvuxnxauohsh").withPublisher("u");
         model = BinaryData.fromObject(model).toObject(ServerlessOffer.class);
-        Assertions.assertEquals("qnnmjundt", model.offerName());
-        Assertions.assertEquals("xcltj", model.publisher());
+        Assertions.assertEquals("wqrzvuxnxauohsh", model.offerName());
+        Assertions.assertEquals("u", model.publisher());
     }
 }

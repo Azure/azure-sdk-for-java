@@ -28,7 +28,7 @@ public final class InferenceEndpointsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.inferenceEndpoints()
-            .delete("iohcjugduoggxs", "m", "xguykrpzpm", "zplcrzdwebs", com.azure.core.util.Context.NONE);
+            .delete("wfdtjpsjwlpcxl", "zzcdrgtu", "oouocafaxvhjrpb", "rolge", com.azure.core.util.Context.NONE);
 
     }
 }

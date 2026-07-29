@@ -16,28 +16,28 @@ public final class CustomModelFineTuningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomModelFineTuning model = BinaryData.fromString(
-            "{\"modelProvider\":\"Custom\",\"hyperParameters\":{\"qwtqszzgyksik\":\"yioqe\"},\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"anvmwdv\"},\"taskType\":\"TextTranslation\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"crbkompnbnfgywe\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"epgcmahiwf\"}}")
+            "{\"modelProvider\":\"Custom\",\"hyperParameters\":{\"jzghximkg\":\"wytb\",\"ot\":\"mxpqkjnpyriwn\",\"jkyjrexw\":\"xmmqmt\"},\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"nbexfted\"},\"taskType\":\"ImageClassification\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"h\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"gzgrnq\"}}")
             .toObject(CustomModelFineTuning.class);
-        Assertions.assertEquals("anvmwdv", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.TEXT_TRANSLATION, model.taskType());
-        Assertions.assertEquals("crbkompnbnfgywe", model.trainingData().description());
-        Assertions.assertEquals("epgcmahiwf", model.validationData().description());
-        Assertions.assertEquals("yioqe", model.hyperParameters().get("qwtqszzgyksik"));
+        Assertions.assertEquals("nbexfted", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.IMAGE_CLASSIFICATION, model.taskType());
+        Assertions.assertEquals("h", model.trainingData().description());
+        Assertions.assertEquals("gzgrnq", model.validationData().description());
+        Assertions.assertEquals("wytb", model.hyperParameters().get("jzghximkg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomModelFineTuning model = new CustomModelFineTuning().withModel(new JobInput().withDescription("anvmwdv"))
-            .withTaskType(FineTuningTaskType.TEXT_TRANSLATION)
-            .withTrainingData(new JobInput().withDescription("crbkompnbnfgywe"))
-            .withValidationData(new JobInput().withDescription("epgcmahiwf"))
-            .withHyperParameters(mapOf("qwtqszzgyksik", "yioqe"));
+        CustomModelFineTuning model = new CustomModelFineTuning().withModel(new JobInput().withDescription("nbexfted"))
+            .withTaskType(FineTuningTaskType.IMAGE_CLASSIFICATION)
+            .withTrainingData(new JobInput().withDescription("h"))
+            .withValidationData(new JobInput().withDescription("gzgrnq"))
+            .withHyperParameters(mapOf("jzghximkg", "wytb", "ot", "mxpqkjnpyriwn", "jkyjrexw", "xmmqmt"));
         model = BinaryData.fromObject(model).toObject(CustomModelFineTuning.class);
-        Assertions.assertEquals("anvmwdv", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.TEXT_TRANSLATION, model.taskType());
-        Assertions.assertEquals("crbkompnbnfgywe", model.trainingData().description());
-        Assertions.assertEquals("epgcmahiwf", model.validationData().description());
-        Assertions.assertEquals("yioqe", model.hyperParameters().get("qwtqszzgyksik"));
+        Assertions.assertEquals("nbexfted", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.IMAGE_CLASSIFICATION, model.taskType());
+        Assertions.assertEquals("h", model.trainingData().description());
+        Assertions.assertEquals("gzgrnq", model.validationData().description());
+        Assertions.assertEquals("wytb", model.hyperParameters().get("jzghximkg"));
     }
 
     // Use "Map.of" if available

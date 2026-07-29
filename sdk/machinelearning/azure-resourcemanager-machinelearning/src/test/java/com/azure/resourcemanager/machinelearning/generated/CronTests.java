@@ -12,21 +12,19 @@ public final class CronTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Cron model = BinaryData
-            .fromString(
-                "{\"startTime\":\"xyzsecigzzd\",\"timeZone\":\"tacfvvtdpcbp\",\"expression\":\"omcsaugbrhfiwltk\"}")
+            .fromString("{\"startTime\":\"xfrmbecxstowag\",\"timeZone\":\"xuihwesr\",\"expression\":\"aqgblkkncyp\"}")
             .toObject(Cron.class);
-        Assertions.assertEquals("xyzsecigzzd", model.startTime());
-        Assertions.assertEquals("tacfvvtdpcbp", model.timeZone());
-        Assertions.assertEquals("omcsaugbrhfiwltk", model.expression());
+        Assertions.assertEquals("xfrmbecxstowag", model.startTime());
+        Assertions.assertEquals("xuihwesr", model.timeZone());
+        Assertions.assertEquals("aqgblkkncyp", model.expression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Cron model
-            = new Cron().withStartTime("xyzsecigzzd").withTimeZone("tacfvvtdpcbp").withExpression("omcsaugbrhfiwltk");
+        Cron model = new Cron().withStartTime("xfrmbecxstowag").withTimeZone("xuihwesr").withExpression("aqgblkkncyp");
         model = BinaryData.fromObject(model).toObject(Cron.class);
-        Assertions.assertEquals("xyzsecigzzd", model.startTime());
-        Assertions.assertEquals("tacfvvtdpcbp", model.timeZone());
-        Assertions.assertEquals("omcsaugbrhfiwltk", model.expression());
+        Assertions.assertEquals("xfrmbecxstowag", model.startTime());
+        Assertions.assertEquals("xuihwesr", model.timeZone());
+        Assertions.assertEquals("aqgblkkncyp", model.expression());
     }
 }

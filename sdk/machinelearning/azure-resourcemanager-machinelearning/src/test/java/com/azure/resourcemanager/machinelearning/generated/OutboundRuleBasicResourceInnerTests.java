@@ -15,18 +15,18 @@ public final class OutboundRuleBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Active\",\"errorInformation\":\"hdmvfoyrxxxffgmc\",\"parentRuleNames\":[\"s\",\"eervgc\"]},\"id\":\"sapvbcqpfu\",\"name\":\"ekijhminen\",\"type\":\"bivpyrkvor\"}")
+            "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Deleting\",\"errorInformation\":\"zmfvm\",\"parentRuleNames\":[\"rtcsrawwhyxfshm\"]},\"id\":\"dmvwn\",\"name\":\"uns\",\"type\":\"dtevzs\"}")
             .toObject(OutboundRuleBasicResourceInner.class);
         Assertions.assertEquals(RuleCategory.USER_DEFINED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.ACTIVE, model.properties().status());
+        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundRuleBasicResourceInner model = new OutboundRuleBasicResourceInner()
-            .withProperties(new OutboundRule().withCategory(RuleCategory.USER_DEFINED).withStatus(RuleStatus.ACTIVE));
+            .withProperties(new OutboundRule().withCategory(RuleCategory.USER_DEFINED).withStatus(RuleStatus.DELETING));
         model = BinaryData.fromObject(model).toObject(OutboundRuleBasicResourceInner.class);
         Assertions.assertEquals(RuleCategory.USER_DEFINED, model.properties().category());
-        Assertions.assertEquals(RuleStatus.ACTIVE, model.properties().status());
+        Assertions.assertEquals(RuleStatus.DELETING, model.properties().status());
     }
 }

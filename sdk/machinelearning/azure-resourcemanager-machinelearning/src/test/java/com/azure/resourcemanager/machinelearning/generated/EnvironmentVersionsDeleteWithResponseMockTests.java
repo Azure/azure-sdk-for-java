@@ -28,7 +28,7 @@ public final class EnvironmentVersionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.environmentVersions()
-            .deleteWithResponse("cz", "tniwfcu", "whxm", "ibxkcegc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("obmgwavz", "qpaa", "widteb", "ed", com.azure.core.util.Context.NONE);
 
     }
 }

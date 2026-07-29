@@ -28,8 +28,7 @@ public final class OnlineDeploymentsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.onlineDeployments()
-            .delete("iegemtnbkevuukyd", "ksncrzbtlrbzqt", "hgajfayftohdlpc", "xpxxnyhivhyujqx",
-                com.azure.core.util.Context.NONE);
+            .delete("yujnrvwjxmwalhlj", "nsnbpiuvqhod", "mortr", "npbsungnjkkmkzfb", com.azure.core.util.Context.NONE);
 
     }
 }

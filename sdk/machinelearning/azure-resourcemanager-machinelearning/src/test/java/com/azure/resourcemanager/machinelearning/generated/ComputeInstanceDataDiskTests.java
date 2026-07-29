@@ -14,11 +14,11 @@ public final class ComputeInstanceDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceDataDisk model = BinaryData.fromString(
-            "{\"caching\":\"ReadWrite\",\"diskSizeGB\":324711,\"lun\":1877948229,\"storageAccountType\":\"Premium_LRS\"}")
+            "{\"caching\":\"ReadWrite\",\"diskSizeGB\":995091583,\"lun\":1242594235,\"storageAccountType\":\"Standard_LRS\"}")
             .toObject(ComputeInstanceDataDisk.class);
         Assertions.assertEquals(Caching.READ_WRITE, model.caching());
-        Assertions.assertEquals(324711, model.diskSizeGB());
-        Assertions.assertEquals(1877948229, model.lun());
-        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals(995091583, model.diskSizeGB());
+        Assertions.assertEquals(1242594235, model.lun());
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.storageAccountType());
     }
 }

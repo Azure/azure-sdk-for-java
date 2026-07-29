@@ -21,7 +21,7 @@ public final class RegistryComponentVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentSpec\":\"\\\"datao\\\"\",\"provisioningState\":\"Canceled\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"obrtaevqafdhpki\",\"properties\":{\"vdtqhrtn\":\"yrobckelowsm\"},\"tags\":{\"skitok\":\"qynu\"}},\"id\":\"amefzzgwjoau\",\"name\":\"dmdpndouylf\",\"type\":\"fgq\"}";
+            = "{\"properties\":{\"componentSpec\":\"\\\"dataqe\\\"\",\"provisioningState\":\"Failed\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"a\",\"properties\":{\"zjnparsulm\":\"ycbigpistpx\",\"khe\":\"wlaw\"},\"tags\":{\"vzycx\":\"qgo\",\"slrprftqhfvou\":\"zattaloomftmxwtw\",\"xabmxoowp\":\"qzhoikemho\"}},\"id\":\"gozercczvpbnkgk\",\"name\":\"uj\",\"type\":\"qqjqafjk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class RegistryComponentVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComponentVersion response = manager.registryComponentVersions()
-            .getWithResponse("xlfxsetvdz", "dldm", "fqftywbbanzhd", "iuxotbvflgkkiu", com.azure.core.util.Context.NONE)
+            .getWithResponse("uozarrqppyzryj", "kv", "cvoyqnrjdrctar", "zewoghbpzx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("obrtaevqafdhpki", response.properties().description());
-        Assertions.assertEquals("yrobckelowsm", response.properties().properties().get("vdtqhrtn"));
-        Assertions.assertEquals("qynu", response.properties().tags().get("skitok"));
+        Assertions.assertEquals("a", response.properties().description());
+        Assertions.assertEquals("ycbigpistpx", response.properties().properties().get("zjnparsulm"));
+        Assertions.assertEquals("qgo", response.properties().tags().get("vzycx"));
         Assertions.assertTrue(response.properties().isAnonymous());
-        Assertions.assertTrue(response.properties().isArchived());
+        Assertions.assertFalse(response.properties().isArchived());
     }
 }

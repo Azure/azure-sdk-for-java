@@ -14,24 +14,24 @@ public final class FineTuningVerticalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FineTuningVertical model = BinaryData.fromString(
-            "{\"modelProvider\":\"FineTuningVertical\",\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"gs\"},\"taskType\":\"VideoMultiObjectTracking\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"yv\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"gngc\"}}")
+            "{\"modelProvider\":\"FineTuningVertical\",\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"osmbngkqlgxz\"},\"taskType\":\"ImageInstanceSegmentation\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"xdmxexat\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"nr\"}}")
             .toObject(FineTuningVertical.class);
-        Assertions.assertEquals("gs", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.VIDEO_MULTI_OBJECT_TRACKING, model.taskType());
-        Assertions.assertEquals("yv", model.trainingData().description());
-        Assertions.assertEquals("gngc", model.validationData().description());
+        Assertions.assertEquals("osmbngkqlgxz", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.IMAGE_INSTANCE_SEGMENTATION, model.taskType());
+        Assertions.assertEquals("xdmxexat", model.trainingData().description());
+        Assertions.assertEquals("nr", model.validationData().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FineTuningVertical model = new FineTuningVertical().withModel(new JobInput().withDescription("gs"))
-            .withTaskType(FineTuningTaskType.VIDEO_MULTI_OBJECT_TRACKING)
-            .withTrainingData(new JobInput().withDescription("yv"))
-            .withValidationData(new JobInput().withDescription("gngc"));
+        FineTuningVertical model = new FineTuningVertical().withModel(new JobInput().withDescription("osmbngkqlgxz"))
+            .withTaskType(FineTuningTaskType.IMAGE_INSTANCE_SEGMENTATION)
+            .withTrainingData(new JobInput().withDescription("xdmxexat"))
+            .withValidationData(new JobInput().withDescription("nr"));
         model = BinaryData.fromObject(model).toObject(FineTuningVertical.class);
-        Assertions.assertEquals("gs", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.VIDEO_MULTI_OBJECT_TRACKING, model.taskType());
-        Assertions.assertEquals("yv", model.trainingData().description());
-        Assertions.assertEquals("gngc", model.validationData().description());
+        Assertions.assertEquals("osmbngkqlgxz", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.IMAGE_INSTANCE_SEGMENTATION, model.taskType());
+        Assertions.assertEquals("xdmxexat", model.trainingData().description());
+        Assertions.assertEquals("nr", model.validationData().description());
     }
 }

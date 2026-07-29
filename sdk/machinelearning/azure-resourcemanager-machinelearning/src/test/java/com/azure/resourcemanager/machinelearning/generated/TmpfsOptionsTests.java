@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class TmpfsOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TmpfsOptions model = BinaryData.fromString("{\"size\":1519640068}").toObject(TmpfsOptions.class);
-        Assertions.assertEquals(1519640068, model.size());
+        TmpfsOptions model = BinaryData.fromString("{\"size\":631471801}").toObject(TmpfsOptions.class);
+        Assertions.assertEquals(631471801, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TmpfsOptions model = new TmpfsOptions().withSize(1519640068);
+        TmpfsOptions model = new TmpfsOptions().withSize(631471801);
         model = BinaryData.fromObject(model).toObject(TmpfsOptions.class);
-        Assertions.assertEquals(1519640068, model.size());
+        Assertions.assertEquals(631471801, model.size());
     }
 }

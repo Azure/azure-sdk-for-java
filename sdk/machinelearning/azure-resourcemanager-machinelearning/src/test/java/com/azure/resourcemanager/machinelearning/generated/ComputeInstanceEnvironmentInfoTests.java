@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeInstanceEnvironmentInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceEnvironmentInfo model = BinaryData.fromString("{\"name\":\"bnhyl\",\"version\":\"hujc\"}")
-            .toObject(ComputeInstanceEnvironmentInfo.class);
-        Assertions.assertEquals("bnhyl", model.name());
-        Assertions.assertEquals("hujc", model.version());
+        ComputeInstanceEnvironmentInfo model
+            = BinaryData.fromString("{\"name\":\"xzsshxliqmsckwh\",\"version\":\"doi\"}")
+                .toObject(ComputeInstanceEnvironmentInfo.class);
+        Assertions.assertEquals("xzsshxliqmsckwh", model.name());
+        Assertions.assertEquals("doi", model.version());
     }
 }

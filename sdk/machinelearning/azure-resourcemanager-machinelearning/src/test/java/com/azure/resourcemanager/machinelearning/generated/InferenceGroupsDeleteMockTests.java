@@ -28,7 +28,7 @@ public final class InferenceGroupsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.inferenceGroups()
-            .delete("zcevf", "iekydkjdk", "fkneckvyrvdszri", "pejhyrzzxqtcg", com.azure.core.util.Context.NONE);
+            .delete("b", "wqwwte", "feugcwtsztxoswv", "rymqqfksqfcxdle", com.azure.core.util.Context.NONE);
 
     }
 }

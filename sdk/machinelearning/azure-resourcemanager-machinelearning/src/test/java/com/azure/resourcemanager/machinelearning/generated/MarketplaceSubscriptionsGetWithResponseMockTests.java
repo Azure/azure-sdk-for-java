@@ -21,7 +21,7 @@ public final class MarketplaceSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"marketplacePlan\":{\"offerId\":\"jikgp\",\"planId\":\"czzkzi\",\"publisherId\":\"jnhhiofcnyz\"},\"marketplaceSubscriptionStatus\":\"Suspended\",\"modelId\":\"lddngqwmlleg\",\"provisioningState\":\"Updating\"},\"id\":\"agsyljwwp\",\"name\":\"qh\",\"type\":\"hlajmikqvnrj\"}";
+            = "{\"properties\":{\"marketplacePlan\":{\"offerId\":\"yznbbc\",\"planId\":\"xz\",\"publisherId\":\"oaksjwiswzn\"},\"marketplaceSubscriptionStatus\":\"Unsubscribed\",\"modelId\":\"htleiwfizbehvqag\",\"provisioningState\":\"Failed\"},\"id\":\"dsazgnyfhqyli\",\"name\":\"gnbhz\",\"type\":\"eninaf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class MarketplaceSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MarketplaceSubscription response = manager.marketplaceSubscriptions()
-            .getWithResponse("oube", "zipyiafsuuv", "qqseoinxkothrnlg", com.azure.core.util.Context.NONE)
+            .getWithResponse("j", "fdwaupjo", "gryocgwkp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lddngqwmlleg", response.properties().modelId());
+        Assertions.assertEquals("htleiwfizbehvqag", response.properties().modelId());
     }
 }

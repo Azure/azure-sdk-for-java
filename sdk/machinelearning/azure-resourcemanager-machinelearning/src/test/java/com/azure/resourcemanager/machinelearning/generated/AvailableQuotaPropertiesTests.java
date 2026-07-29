@@ -12,7 +12,7 @@ public final class AvailableQuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableQuotaProperties model
-            = BinaryData.fromString("{\"total\":9020769989862593078}").toObject(AvailableQuotaProperties.class);
-        Assertions.assertEquals(9020769989862593078L, model.total());
+            = BinaryData.fromString("{\"total\":7535834933406077289}").toObject(AvailableQuotaProperties.class);
+        Assertions.assertEquals(7535834933406077289L, model.total());
     }
 }

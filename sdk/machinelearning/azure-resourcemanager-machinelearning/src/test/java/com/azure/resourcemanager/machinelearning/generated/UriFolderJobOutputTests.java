@@ -13,24 +13,30 @@ public final class UriFolderJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UriFolderJobOutput model = BinaryData.fromString(
-            "{\"jobOutputType\":\"uri_folder\",\"assetName\":\"xnmxgnmguzb\",\"mode\":\"Direct\",\"uri\":\"rbalkjnb\",\"description\":\"dhlltqstqkqsyg\"}")
+            "{\"jobOutputType\":\"uri_folder\",\"assetName\":\"mehjnhjioti\",\"assetVersion\":\"bbcngkeg\",\"mode\":\"Direct\",\"pathOnCompute\":\"xbbfetwil\",\"uri\":\"zox\",\"description\":\"xql\"}")
             .toObject(UriFolderJobOutput.class);
-        Assertions.assertEquals("dhlltqstqkqsyg", model.description());
-        Assertions.assertEquals("xnmxgnmguzb", model.assetName());
+        Assertions.assertEquals("xql", model.description());
+        Assertions.assertEquals("mehjnhjioti", model.assetName());
+        Assertions.assertEquals("bbcngkeg", model.assetVersion());
         Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("rbalkjnb", model.uri());
+        Assertions.assertEquals("xbbfetwil", model.pathOnCompute());
+        Assertions.assertEquals("zox", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UriFolderJobOutput model = new UriFolderJobOutput().withDescription("dhlltqstqkqsyg")
-            .withAssetName("xnmxgnmguzb")
+        UriFolderJobOutput model = new UriFolderJobOutput().withDescription("xql")
+            .withAssetName("mehjnhjioti")
+            .withAssetVersion("bbcngkeg")
             .withMode(OutputDeliveryMode.DIRECT)
-            .withUri("rbalkjnb");
+            .withPathOnCompute("xbbfetwil")
+            .withUri("zox");
         model = BinaryData.fromObject(model).toObject(UriFolderJobOutput.class);
-        Assertions.assertEquals("dhlltqstqkqsyg", model.description());
-        Assertions.assertEquals("xnmxgnmguzb", model.assetName());
+        Assertions.assertEquals("xql", model.description());
+        Assertions.assertEquals("mehjnhjioti", model.assetName());
+        Assertions.assertEquals("bbcngkeg", model.assetVersion());
         Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("rbalkjnb", model.uri());
+        Assertions.assertEquals("xbbfetwil", model.pathOnCompute());
+        Assertions.assertEquals("zox", model.uri());
     }
 }

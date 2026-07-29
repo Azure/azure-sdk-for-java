@@ -27,7 +27,7 @@ public final class ModelVersionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"flavors\":{\"vfgukrxumwdqwy\":{\"data\":{\"mmpvo\":\"emsd\"}},\"sytidz\":{\"data\":{\"krum\":\"wzeleqpnkq\",\"gwjxatwxiyarfhi\":\"aeqbo\"}},\"pwpuayxtvpiul\":{\"data\":{\"pkplaseylt\":\"dprwruexhgd\",\"ek\":\"xfpfo\",\"eqyjekvzpqrxsi\":\"zdzvhyoidd\",\"vnylfutg\":\"ixo\"}}},\"jobName\":\"b\",\"modelType\":\"mjrsmkjalor\",\"modelUri\":\"egiczrvnezlcvnd\",\"provisioningState\":\"Failed\",\"stage\":\"hfzgkku\",\"datasets\":[{\"name\":\"mgswtwmskuqgneor\",\"id\":\"rkxe\"},{\"name\":\"qvaagnzbkqqbjcda\",\"id\":\"somzvgjynuwcq\"}],\"isAnonymous\":true,\"isArchived\":false,\"description\":\"dm\",\"properties\":{\"wvsqpeavlcb\":\"dpgtblmxblc\"},\"tags\":{\"xjvipehxlbbur\":\"epcgirsfilxusyzc\"}},\"id\":\"ovgjipbnnghs\",\"name\":\"xwjnwgoxenhpyix\",\"type\":\"brsaeuzsojblyygf\"}";
+            = "{\"properties\":{\"flavors\":{\"nbcpiadjslvxs\":{\"data\":{\"hbtdgxgllmde\":\"bovs\",\"mncjhmvvzeaic\":\"ubvfxisw\",\"scgropuqgiscgk\":\"vbsjtfqwlbeqcz\",\"gglqijykckyhxu\":\"ciyikqlyoorme\"}},\"pyo\":{\"data\":{\"gmtbivpzjnrwf\":\"dwbibfviacgh\",\"sr\":\"zzmxqyj\"}},\"fjuvhuo\":{\"data\":{\"zmsyezx\":\"vl\"}},\"wslctilbxnny\":{\"data\":{\"odzdh\":\"twvkuhtdxd\",\"ifuahtkkccrusrzs\":\"knmcvmxiun\",\"ayxnlvt\":\"oqodya\",\"o\":\"p\"}}},\"jobName\":\"tudfhpelzavohvdb\",\"modelType\":\"drchu\",\"modelUri\":\"xliqcbonqjoekcjc\",\"provisioningState\":\"Failed\",\"stage\":\"bctitexrbalv\",\"datasets\":[{\"name\":\"ilpr\",\"id\":\"xfqkqpdyrqlaz\"},{\"name\":\"ltckbjvd\",\"id\":\"yf\"}],\"isAnonymous\":false,\"isArchived\":true,\"description\":\"fdz\",\"properties\":{\"iviniyoizuwwzc\":\"lkqlvbkzaiyrnww\",\"xajsiueai\":\"igbjbelnqalbso\",\"zbwxuypcuri\":\"qjb\"},\"tags\":{\"lwjxrymiysgh\":\"xtclveqdqtzsh\",\"vdulmka\":\"cmqdlkkwbdek\",\"wcxxccf\":\"dnxbssatpialrq\"}},\"id\":\"v\",\"name\":\"za\",\"type\":\"yvrexit\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,40 +37,37 @@ public final class ModelVersionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelVersion response = manager.modelVersions()
-            .define("afqsozawqxnhlv")
-            .withExistingModel("iyapifcjl", "ugnrzowc", "r")
-            .withProperties(new ModelVersionProperties().withDescription("gdqjhzfecjgpjn")
-                .withProperties(
-                    mapOf("vgavnrhrqq", "kgbvsqksrg", "sujcvhclgpexrxy", "wf", "sm", "pw", "dvtwunc", "gebpskbpci"))
-                .withTags(mapOf("kymjdwirglqibj", "yjwjmyubhtmlgjai", "uxbzfhurrw", "vmkaw"))
-                .withIsAnonymous(true)
+            .define("mkkzjsnxzljxaay")
+            .withExistingModel("twnqtjcem", "asichhxqnlmj", "pmsdfibwvhwouhys")
+            .withProperties(new ModelVersionProperties().withDescription("mkwcyeljniadg")
+                .withProperties(mapOf("htvughu", "wnyyihctyukmzozb", "vnfyfyftkvzb", "iql", "ki", "lj"))
+                .withTags(mapOf("twf", "gfyinmajjzpl", "vbzk", "fl"))
+                .withIsAnonymous(false)
                 .withIsArchived(true)
-                .withFlavors(mapOf("haljomgzorprrapt", new FlavorData().withData(mapOf("krzp", "xdwtfmf")), "euyg",
-                    new FlavorData().withData(
-                        mapOf("brsnvofuyzvbploa", "enylg", "e", "ccgh", "oaw", "mmadkbxuip", "kwxzmuzg", "ugpube")),
-                    "sfxqcmejezjcb", new FlavorData().withData(mapOf("l", "auhejmsw", "qzxyyl", "gxxzxwrnqwdjvl"))))
-                .withJobName("uagakmxg")
-                .withModelType("mavllp")
-                .withModelUri("guzsyfwamhm")
-                .withStage("bzagwnompvyis")
-                .withDatasets(Arrays.asList(new DatasetReference().withName("ufysalbjfkjex").withId("zmh"),
-                    new DatasetReference().withName("idipwczjnnmpifj").withId("jen"),
-                    new DatasetReference().withName("upfpllo").withId("djffllrsfghyyeok"),
-                    new DatasetReference().withName("zuddccclsnflcxx").withId("nypktgslkokqa"))))
+                .withFlavors(mapOf("elsrymzvtzyf",
+                    new FlavorData().withData(mapOf("zdbigitra", "gyujkxjge", "bpi", "udyrsir", "ix", "dvbxqxo"))))
+                .withJobName("bayhas")
+                .withModelType("alkiyzlkqyez")
+                .withModelUri("xkrdfdssofux")
+                .withStage("tkqvi")
+                .withDatasets(Arrays.asList(new DatasetReference().withName("qajfwz").withId("fgoqv"),
+                    new DatasetReference().withName("u").withId("ydoqbru"),
+                    new DatasetReference().withName("xptxhednkzjtrjaw").withId("rtseixpkr"))))
             .create();
 
-        Assertions.assertEquals("dm", response.properties().description());
-        Assertions.assertEquals("dpgtblmxblc", response.properties().properties().get("wvsqpeavlcb"));
-        Assertions.assertEquals("epcgirsfilxusyzc", response.properties().tags().get("xjvipehxlbbur"));
-        Assertions.assertTrue(response.properties().isAnonymous());
-        Assertions.assertFalse(response.properties().isArchived());
-        Assertions.assertEquals("emsd", response.properties().flavors().get("vfgukrxumwdqwy").data().get("mmpvo"));
-        Assertions.assertEquals("b", response.properties().jobName());
-        Assertions.assertEquals("mjrsmkjalor", response.properties().modelType());
-        Assertions.assertEquals("egiczrvnezlcvnd", response.properties().modelUri());
-        Assertions.assertEquals("hfzgkku", response.properties().stage());
-        Assertions.assertEquals("mgswtwmskuqgneor", response.properties().datasets().get(0).name());
-        Assertions.assertEquals("rkxe", response.properties().datasets().get(0).id());
+        Assertions.assertEquals("fdz", response.properties().description());
+        Assertions.assertEquals("lkqlvbkzaiyrnww", response.properties().properties().get("iviniyoizuwwzc"));
+        Assertions.assertEquals("xtclveqdqtzsh", response.properties().tags().get("lwjxrymiysgh"));
+        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertTrue(response.properties().isArchived());
+        Assertions.assertEquals("bovs",
+            response.properties().flavors().get("nbcpiadjslvxs").data().get("hbtdgxgllmde"));
+        Assertions.assertEquals("tudfhpelzavohvdb", response.properties().jobName());
+        Assertions.assertEquals("drchu", response.properties().modelType());
+        Assertions.assertEquals("xliqcbonqjoekcjc", response.properties().modelUri());
+        Assertions.assertEquals("bctitexrbalv", response.properties().stage());
+        Assertions.assertEquals("ilpr", response.properties().datasets().get(0).name());
+        Assertions.assertEquals("xfqkqpdyrqlaz", response.properties().datasets().get(0).id());
     }
 
     // Use "Map.of" if available

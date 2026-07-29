@@ -24,7 +24,7 @@ public final class RegistryDataContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataType\":\"uri_file\",\"isArchived\":false,\"latestVersion\":\"koicpkoamqf\",\"nextVersion\":\"baobj\",\"description\":\"fkcvhh\",\"properties\":{\"jvdxenxjvapdqgf\":\"kuuikrsielrw\",\"acf\":\"ygrfyyknx\",\"urocryf\":\"bynlcimj\"},\"tags\":{\"tbbfweozkb\":\"tcyzuzvbqbroyrw\"}},\"id\":\"ffsup\",\"name\":\"cslzca\",\"type\":\"odcvf\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataType\":\"uri_file\",\"isArchived\":false,\"latestVersion\":\"klfswzsyigxsyxhy\",\"nextVersion\":\"zabapeuqy\",\"description\":\"dsuopcdi\",\"properties\":{\"llnhgisiwzzkaeq\":\"spcutgkmrsqaq\",\"ituaefwdkpadkts\":\"ngl\",\"qtfkkiupmda\":\"ywaojr\"},\"tags\":{\"jxxokiffqpwdyz\":\"dvvzb\",\"oij\":\"etrmvtqhn\"}},\"id\":\"prkqywybxga\",\"name\":\"omsetzcxlisvqfb\",\"type\":\"sizxpo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class RegistryDataContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataContainer> response = manager.registryDataContainers()
-            .list("ybdz", "xbckxen", "zowguirhexjpwy", ListViewType.ARCHIVED_ONLY, com.azure.core.util.Context.NONE);
+            .list("swgfjrg", "gcpbshq", "zlcfe", ListViewType.ALL, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fkcvhh", response.iterator().next().properties().description());
-        Assertions.assertEquals("kuuikrsielrw",
-            response.iterator().next().properties().properties().get("jvdxenxjvapdqgf"));
-        Assertions.assertEquals("tcyzuzvbqbroyrw", response.iterator().next().properties().tags().get("tbbfweozkb"));
+        Assertions.assertEquals("dsuopcdi", response.iterator().next().properties().description());
+        Assertions.assertEquals("spcutgkmrsqaq",
+            response.iterator().next().properties().properties().get("llnhgisiwzzkaeq"));
+        Assertions.assertEquals("dvvzb", response.iterator().next().properties().tags().get("jxxokiffqpwdyz"));
         Assertions.assertFalse(response.iterator().next().properties().isArchived());
         Assertions.assertEquals(DataType.URI_FILE, response.iterator().next().properties().dataType());
     }

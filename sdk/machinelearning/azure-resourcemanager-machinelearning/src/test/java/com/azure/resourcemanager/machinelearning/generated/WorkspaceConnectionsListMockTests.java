@@ -25,7 +25,7 @@ public final class WorkspaceConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"AIServices\",\"createdByWorkspaceArmId\":\"ulhfqdgnchahl\",\"error\":\"rpt\",\"expiryTime\":\"2021-07-21T07:56:08Z\",\"group\":\"Azure\",\"isSharedToAll\":true,\"metadata\":{\"zbkrbqpzdpujywjm\":\"o\",\"mcamse\":\"hqzzkpl\",\"gtjgfpqw\":\"auvee\"},\"peRequirement\":\"Required\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"jcewbqaibkyeys\",\"e\",\"hdydyybztlylh\",\"xcjqdvcieqzkuixf\"],\"target\":\"hvecjhbttmhneqd\",\"useWorkspaceManagedIdentity\":false},\"id\":\"yxx\",\"name\":\"dabqlakk\",\"type\":\"aacse\"}]}";
+            = "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"ModelGateway\",\"createdByWorkspaceArmId\":\"qvdhdyyadtxn\",\"error\":\"ubsdinfauyt\",\"expiryTime\":\"2021-09-10T09:03:08Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"xtpbapojknvxantl\":\"kmfotwmxedlcxm\",\"nqpkvvrhoqyv\":\"spiipfg\",\"nruoduexh\":\"d\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"ocrddqxhegcolh\",\"zcklqrunqw\",\"rkkabyxxyfn\",\"pywgjgfbsfsvayg\"],\"target\":\"y\",\"useWorkspaceManagedIdentity\":false},\"id\":\"iptnwpws\",\"name\":\"ckcwymfyxpgvqioq\",\"type\":\"ebwarljplkp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,20 @@ public final class WorkspaceConnectionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> response = manager.workspaceConnections()
-            .list("udjmdayqkgix", "nrneyavld", "vp", "rqcfzokplzliizb", true, com.azure.core.util.Context.NONE);
+            .list("dfqfnftrrhhgwaw", "zhanvcf", "dvkdnf", "ctxu", true, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ConnectionCategory.AISERVICES, response.iterator().next().properties().category());
-        Assertions.assertEquals("rpt", response.iterator().next().properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T07:56:08Z"),
+        Assertions.assertEquals(ConnectionCategory.MODEL_GATEWAY, response.iterator().next().properties().category());
+        Assertions.assertEquals("ubsdinfauyt", response.iterator().next().properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T09:03:08Z"),
             response.iterator().next().properties().expiryTime());
         Assertions.assertTrue(response.iterator().next().properties().isSharedToAll());
-        Assertions.assertEquals("o", response.iterator().next().properties().metadata().get("zbkrbqpzdpujywjm"));
-        Assertions.assertEquals(ManagedPERequirement.REQUIRED, response.iterator().next().properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, response.iterator().next().properties().peStatus());
-        Assertions.assertEquals("jcewbqaibkyeys", response.iterator().next().properties().sharedUserList().get(0));
-        Assertions.assertEquals("hvecjhbttmhneqd", response.iterator().next().properties().target());
+        Assertions.assertEquals("kmfotwmxedlcxm",
+            response.iterator().next().properties().metadata().get("xtpbapojknvxantl"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED,
+            response.iterator().next().properties().peRequirement());
+        Assertions.assertEquals(ManagedPEStatus.ACTIVE, response.iterator().next().properties().peStatus());
+        Assertions.assertEquals("ocrddqxhegcolh", response.iterator().next().properties().sharedUserList().get(0));
+        Assertions.assertEquals("y", response.iterator().next().properties().target());
         Assertions.assertFalse(response.iterator().next().properties().useWorkspaceManagedIdentity());
     }
 }

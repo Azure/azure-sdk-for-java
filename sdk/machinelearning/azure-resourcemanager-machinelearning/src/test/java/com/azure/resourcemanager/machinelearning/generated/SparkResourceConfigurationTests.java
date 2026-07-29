@@ -12,18 +12,18 @@ public final class SparkResourceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkResourceConfiguration model
-            = BinaryData.fromString("{\"instanceType\":\"kykpaxnls\",\"runtimeVersion\":\"nyscaccpt\"}")
+            = BinaryData.fromString("{\"instanceType\":\"vgoo\",\"runtimeVersion\":\"sazmzl\"}")
                 .toObject(SparkResourceConfiguration.class);
-        Assertions.assertEquals("kykpaxnls", model.instanceType());
-        Assertions.assertEquals("nyscaccpt", model.runtimeVersion());
+        Assertions.assertEquals("vgoo", model.instanceType());
+        Assertions.assertEquals("sazmzl", model.runtimeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SparkResourceConfiguration model
-            = new SparkResourceConfiguration().withInstanceType("kykpaxnls").withRuntimeVersion("nyscaccpt");
+            = new SparkResourceConfiguration().withInstanceType("vgoo").withRuntimeVersion("sazmzl");
         model = BinaryData.fromObject(model).toObject(SparkResourceConfiguration.class);
-        Assertions.assertEquals("kykpaxnls", model.instanceType());
-        Assertions.assertEquals("nyscaccpt", model.runtimeVersion());
+        Assertions.assertEquals("vgoo", model.instanceType());
+        Assertions.assertEquals("sazmzl", model.runtimeVersion());
     }
 }

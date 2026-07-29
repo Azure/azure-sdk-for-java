@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ManagedNetworkProvisionsProvisionManagedNetworkMockTests {
     @Test
     public void testProvisionManagedNetwork() throws Exception {
-        String responseStr = "{\"sparkReady\":false,\"status\":\"Active\"}";
+        String responseStr = "{\"sparkReady\":true,\"status\":\"Inactive\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ManagedNetworkProvisionsProvisionManagedNetworkMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedNetworkProvisionStatus response = manager.managedNetworkProvisions()
-            .provisionManagedNetwork("ecttub", "welutrvd", new ManagedNetworkProvisionOptions().withIncludeSpark(false),
+            .provisionManagedNetwork("mxtijssytdp", "ljtw", new ManagedNetworkProvisionOptions().withIncludeSpark(true),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertFalse(response.sparkReady());
-        Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, response.status());
+        Assertions.assertTrue(response.sparkReady());
+        Assertions.assertEquals(ManagedNetworkStatus.INACTIVE, response.status());
     }
 }

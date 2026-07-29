@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 public final class WorkspaceFeaturesListMockTests {
     @Test
     public void testList() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"yww\",\"displayName\":\"ipkhqhvktcztm\",\"description\":\"k\"}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"skb\",\"displayName\":\"cakle\",\"description\":\"gxdhgezyhphao\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +32,10 @@ public final class WorkspaceFeaturesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AmlUserFeature> response
-            = manager.workspaceFeatures().list("aawyy", "zwoeqljlwfq", com.azure.core.util.Context.NONE);
+            = manager.workspaceFeatures().list("drqgionm", "kyjmtdnymbe", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yww", response.iterator().next().id());
-        Assertions.assertEquals("ipkhqhvktcztm", response.iterator().next().displayName());
-        Assertions.assertEquals("k", response.iterator().next().description());
+        Assertions.assertEquals("skb", response.iterator().next().id());
+        Assertions.assertEquals("cakle", response.iterator().next().displayName());
+        Assertions.assertEquals("gxdhgezyhphao", response.iterator().next().description());
     }
 }

@@ -23,7 +23,7 @@ public final class EndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"y\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"apoj\",\"provisioningState\":\"Canceled\"},\"id\":\"antlpsp\",\"name\":\"ipfgdnqp\",\"type\":\"vvrhoqyvqd\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"ruoduexhskh\",\"provisioningState\":\"Accepted\"},\"id\":\"ocrddqxhegcolh\",\"name\":\"zcklqrunqw\",\"type\":\"rkkabyxxyfn\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"ywg\",\"provisioningState\":\"Scaling\"},\"id\":\"sfsvayge\",\"name\":\"y\",\"type\":\"okkiptnwpwskck\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"ymf\",\"provisioningState\":\"Failed\"},\"id\":\"vq\",\"name\":\"oqrebwarljpl\",\"type\":\"pemxcdreqaqvsp\"}],\"endpointUri\":\"v\",\"failureReason\":\"rwtkrbscwbi\",\"location\":\"wmcrhyoestpl\",\"name\":\"t\",\"provisioningState\":\"Disabled\",\"shouldCreateAiServicesEndpoint\":true},\"id\":\"fe\",\"name\":\"hxgstiawywppqxu\",\"type\":\"xbdyczplmljcis\"}]}";
+            = "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"tqkgavgoullxpayl\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"tbkskkziebmw\",\"provisioningState\":\"Scaling\"},\"id\":\"mplgdxdtxbrdbw\",\"name\":\"qtxpf\",\"type\":\"frfvhbbnoevkkr\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"doukqscmdsj\",\"provisioningState\":\"NotStarted\"},\"id\":\"hlg\",\"name\":\"apeqlhhmbyfa\",\"type\":\"expopqykicesqp\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"oxilhpkqiq\",\"provisioningState\":\"Deleting\"},\"id\":\"bemxmuygmrenr\",\"name\":\"ngca\",\"type\":\"mophtkyzsgayng\"}],\"endpointUri\":\"wvcnv\",\"failureReason\":\"qxqhysu\",\"location\":\"dnslroqxrvycjdn\",\"name\":\"mggy\",\"provisioningState\":\"Scaling\",\"shouldCreateAiServicesEndpoint\":true},\"id\":\"cbamto\",\"name\":\"seamoyxdigkggzm\",\"type\":\"lqhqeosxdsx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class EndpointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EndpointResourcePropertiesBasicResource> response = manager.endpoints()
-            .list("yad", "xnepub", EndpointType.MANAGED_ONLINE_ENDPOINT, true, false, true, "auytmqvs",
-                "yqyjkmfotwmxedlc", com.azure.core.util.Context.NONE);
+            .list("wrmujizdmh", "pfjdiwzg", EndpointType.AZURE_CONTENT_SAFETY, false, true, false, "chvqwhscvaqdxgel",
+                "j", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("y", response.iterator().next().properties().associatedResourceId());
-        Assertions.assertEquals("apoj",
+        Assertions.assertEquals("tqkgavgoullxpayl", response.iterator().next().properties().associatedResourceId());
+        Assertions.assertEquals("tbkskkziebmw",
             response.iterator().next().properties().deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("v", response.iterator().next().properties().endpointUri());
-        Assertions.assertEquals("rwtkrbscwbi", response.iterator().next().properties().failureReason());
-        Assertions.assertEquals("wmcrhyoestpl", response.iterator().next().properties().location());
-        Assertions.assertEquals("t", response.iterator().next().properties().name());
+        Assertions.assertEquals("wvcnv", response.iterator().next().properties().endpointUri());
+        Assertions.assertEquals("qxqhysu", response.iterator().next().properties().failureReason());
+        Assertions.assertEquals("dnslroqxrvycjdn", response.iterator().next().properties().location());
+        Assertions.assertEquals("mggy", response.iterator().next().properties().name());
         Assertions.assertTrue(response.iterator().next().properties().shouldCreateAiServicesEndpoint());
     }
 }

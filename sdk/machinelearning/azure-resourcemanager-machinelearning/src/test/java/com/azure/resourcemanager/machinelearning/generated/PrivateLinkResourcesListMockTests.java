@@ -24,7 +24,7 @@ public final class PrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"qf\",\"tenantId\":\"wesqykqfserlsai\",\"type\":\"None\",\"userAssignedIdentities\":{\"ubdppowxsxbxdk\":{\"principalId\":\"tagwmzgvnojgm\",\"clientId\":\"kaligoikkehpdssv\"},\"tbu\":{\"principalId\":\"xurcekcqmjqqau\",\"clientId\":\"gh\"},\"vwnqbpxyofft\":{\"principalId\":\"cnkghkrbirshlh\",\"clientId\":\"yod\"}}},\"location\":\"ovbhqelsslfxejp\",\"properties\":{\"groupId\":\"gigsabt\",\"requiredMembers\":[\"yjwmglgstrzfh\",\"hdzovkbcb\",\"fohnymfhml\"],\"requiredZoneNames\":[\"kgfvzvmtjcxi\",\"iszxdbg\"]},\"sku\":{\"name\":\"eet\",\"tier\":\"Free\",\"size\":\"bugizwy\",\"family\":\"hfptbdxtv\",\"capacity\":944655950},\"tags\":{\"iuzytxeaq\":\"sl\"},\"id\":\"mqntutetdtgci\",\"name\":\"brjwiwouepaqnfy\",\"type\":\"grcmcqppledx\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"rbroeomufaz\",\"tenantId\":\"wzbew\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"bovuvmd\":{\"principalId\":\"exejhwpnj\",\"clientId\":\"ucj\"}}},\"location\":\"qtir\",\"properties\":{\"groupId\":\"jsrdecbowkhma\",\"requiredMembers\":[\"lpdnnsujx\",\"ueqljzkhn\",\"aeykueat\",\"tnprnshln\"],\"requiredZoneNames\":[\"vlzgsqwiub\",\"bltjyis\"]},\"sku\":{\"name\":\"cuwyl\",\"tier\":\"Basic\",\"size\":\"cuxuxaihheg\",\"family\":\"rziryx\",\"capacity\":2020334763},\"tags\":{\"vepo\":\"tmxq\",\"ynvjempvubslwz\":\"tsapfwusfbrnjvz\",\"bupuukp\":\"tbieuqfgkfift\"},\"id\":\"wutdu\",\"name\":\"hcfndijz\",\"type\":\"vckhbu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,19 @@ public final class PrivateLinkResourcesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response
-            = manager.privateLinkResources().list("mztrnniarje", "jh", com.azure.core.util.Context.NONE);
+            = manager.privateLinkResources().list("fqxejjntiqbxze", "udog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("ovbhqelsslfxejp", response.iterator().next().location());
-        Assertions.assertEquals("eet", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("bugizwy", response.iterator().next().sku().size());
-        Assertions.assertEquals("hfptbdxtv", response.iterator().next().sku().family());
-        Assertions.assertEquals(944655950, response.iterator().next().sku().capacity());
-        Assertions.assertEquals("sl", response.iterator().next().tags().get("iuzytxeaq"));
-        Assertions.assertEquals("gigsabt", response.iterator().next().groupId());
-        Assertions.assertEquals("yjwmglgstrzfh", response.iterator().next().requiredMembers().get(0));
-        Assertions.assertEquals("kgfvzvmtjcxi", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("qtir", response.iterator().next().location());
+        Assertions.assertEquals("cuwyl", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().sku().tier());
+        Assertions.assertEquals("cuxuxaihheg", response.iterator().next().sku().size());
+        Assertions.assertEquals("rziryx", response.iterator().next().sku().family());
+        Assertions.assertEquals(2020334763, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("tmxq", response.iterator().next().tags().get("vepo"));
+        Assertions.assertEquals("jsrdecbowkhma", response.iterator().next().groupId());
+        Assertions.assertEquals("lpdnnsujx", response.iterator().next().requiredMembers().get(0));
+        Assertions.assertEquals("vlzgsqwiub", response.iterator().next().requiredZoneNames().get(0));
     }
 }

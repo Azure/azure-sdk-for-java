@@ -21,7 +21,7 @@ public final class FeaturesetContainersGetEntityWithResponseMockTests {
     @Test
     public void testGetEntityWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"isArchived\":false,\"latestVersion\":\"igitra\",\"nextVersion\":\"dy\",\"description\":\"irnbpiddvbxqxoli\",\"properties\":{\"mzvtzyfktba\":\"lsr\",\"zyzxkrdfdssof\":\"hasnjalkiyzlkqy\",\"tkqvi\":\"xyst\"},\"tags\":{\"eiydoqbr\":\"iqajfwzubfgoqvzb\",\"zjtrjawpz\":\"xlxptxhedn\",\"cmkwcyeljni\":\"tseixpkrwgzn\"}},\"id\":\"gzxb\",\"name\":\"nyy\",\"type\":\"hct\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":false,\"latestVersion\":\"babqtjchxsfwey\",\"nextVersion\":\"iyemjipszekdqqw\",\"description\":\"pfhrndqy\",\"properties\":{\"qgs\":\"s\",\"omtkgoynya\":\"qnqqzqdvg\",\"ji\":\"rwphbuzm\",\"paiwhrjw\":\"tlbmfkc\"},\"tags\":{\"nuvjdywpf\":\"uwim\",\"yjdbc\":\"iwjfkmnjtksw\",\"dkcbpkig\":\"nsojtm\",\"dwgussctnppxxeys\":\"vvaitkce\"}},\"id\":\"nfwugonysemunvzm\",\"name\":\"n\",\"type\":\"cklssxuu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class FeaturesetContainersGetEntityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeaturesetContainer response = manager.featuresetContainers()
-            .getEntityWithResponse("kkzjsnxz", "jxaayxpdzvgyuj", "xj", com.azure.core.util.Context.NONE)
+            .getEntityWithResponse("lbkaknivw", "ddnddctkjcq", "xdir", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("irnbpiddvbxqxoli", response.properties().description());
-        Assertions.assertEquals("lsr", response.properties().properties().get("mzvtzyfktba"));
-        Assertions.assertEquals("iqajfwzubfgoqvzb", response.properties().tags().get("eiydoqbr"));
+        Assertions.assertEquals("pfhrndqy", response.properties().description());
+        Assertions.assertEquals("s", response.properties().properties().get("qgs"));
+        Assertions.assertEquals("uwim", response.properties().tags().get("nuvjdywpf"));
         Assertions.assertFalse(response.properties().isArchived());
     }
 }

@@ -12,30 +12,30 @@ public final class RayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Ray model = BinaryData.fromString(
-            "{\"distributionType\":\"Ray\",\"port\":1644474047,\"address\":\"duiolh\",\"includeDashboard\":true,\"dashboardPort\":1281648959,\"headNodeAdditionalArgs\":\"fjpoqzu\",\"workerNodeAdditionalArgs\":\"zluczdq\"}")
+            "{\"distributionType\":\"Ray\",\"port\":938647785,\"address\":\"jmgvsnvbtqdxf\",\"includeDashboard\":false,\"dashboardPort\":1035423713,\"headNodeAdditionalArgs\":\"hjluqllbsupubdx\",\"workerNodeAdditionalArgs\":\"dlhzwhcu\"}")
             .toObject(Ray.class);
-        Assertions.assertEquals(1644474047, model.port());
-        Assertions.assertEquals("duiolh", model.address());
-        Assertions.assertTrue(model.includeDashboard());
-        Assertions.assertEquals(1281648959, model.dashboardPort());
-        Assertions.assertEquals("fjpoqzu", model.headNodeAdditionalArgs());
-        Assertions.assertEquals("zluczdq", model.workerNodeAdditionalArgs());
+        Assertions.assertEquals(938647785, model.port());
+        Assertions.assertEquals("jmgvsnvbtqdxf", model.address());
+        Assertions.assertFalse(model.includeDashboard());
+        Assertions.assertEquals(1035423713, model.dashboardPort());
+        Assertions.assertEquals("hjluqllbsupubdx", model.headNodeAdditionalArgs());
+        Assertions.assertEquals("dlhzwhcu", model.workerNodeAdditionalArgs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Ray model = new Ray().withPort(1644474047)
-            .withAddress("duiolh")
-            .withIncludeDashboard(true)
-            .withDashboardPort(1281648959)
-            .withHeadNodeAdditionalArgs("fjpoqzu")
-            .withWorkerNodeAdditionalArgs("zluczdq");
+        Ray model = new Ray().withPort(938647785)
+            .withAddress("jmgvsnvbtqdxf")
+            .withIncludeDashboard(false)
+            .withDashboardPort(1035423713)
+            .withHeadNodeAdditionalArgs("hjluqllbsupubdx")
+            .withWorkerNodeAdditionalArgs("dlhzwhcu");
         model = BinaryData.fromObject(model).toObject(Ray.class);
-        Assertions.assertEquals(1644474047, model.port());
-        Assertions.assertEquals("duiolh", model.address());
-        Assertions.assertTrue(model.includeDashboard());
-        Assertions.assertEquals(1281648959, model.dashboardPort());
-        Assertions.assertEquals("fjpoqzu", model.headNodeAdditionalArgs());
-        Assertions.assertEquals("zluczdq", model.workerNodeAdditionalArgs());
+        Assertions.assertEquals(938647785, model.port());
+        Assertions.assertEquals("jmgvsnvbtqdxf", model.address());
+        Assertions.assertFalse(model.includeDashboard());
+        Assertions.assertEquals(1035423713, model.dashboardPort());
+        Assertions.assertEquals("hjluqllbsupubdx", model.headNodeAdditionalArgs());
+        Assertions.assertEquals("dlhzwhcu", model.workerNodeAdditionalArgs());
     }
 }

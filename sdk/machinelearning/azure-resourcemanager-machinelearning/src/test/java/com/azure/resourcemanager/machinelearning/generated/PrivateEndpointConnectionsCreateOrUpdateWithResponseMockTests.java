@@ -31,7 +31,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateWithResponseMockTests
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"nvb\",\"subnetArmId\":\"otghxkrrpmgdoli\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"sglavdtt\",\"description\":\"djqomzrqkjqcsh\",\"status\":\"Pending\"},\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"yrcik\",\"tenantId\":\"moufjuq\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"usvp\":{\"principalId\":\"vjy\",\"clientId\":\"zmleuqxhmrilwkc\"}}},\"sku\":{\"name\":\"a\",\"tier\":\"Basic\",\"size\":\"znfxdqqzikvgwqi\",\"family\":\"dhas\",\"capacity\":561322142},\"location\":\"exrzxvff\",\"tags\":{\"t\":\"tdmhr\"},\"id\":\"ulkoepsso\",\"name\":\"dibygrqcidi\",\"type\":\"kxikxiqxlxoks\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"trnakytzcma\",\"subnetArmId\":\"sljkaarqhpxwq\"},\"privateLinkServiceConnectionState\":{\"actionsRequired\":\"xgmgvygmty\",\"description\":\"vbu\",\"status\":\"Rejected\"},\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"klv\",\"tenantId\":\"sxyk\",\"type\":\"None\",\"userAssignedIdentities\":{\"psnnnxhgdnsdxyln\":{\"principalId\":\"dudj\",\"clientId\":\"lq\"},\"ai\":{\"principalId\":\"gaicjkqjz\",\"clientId\":\"khdnpnmrxjdfkql\"},\"pgnapkpaie\":{\"principalId\":\"yvquasvywkbi\",\"clientId\":\"yvakqah\"},\"lrcdi\":{\"principalId\":\"xvoaoavezwclm\",\"clientId\":\"lrvlg\"}}},\"sku\":{\"name\":\"vhcbu\",\"tier\":\"Free\",\"size\":\"fzfjtockgqaawy\",\"family\":\"zwoeqljlwfq\",\"capacity\":547541758},\"location\":\"wzsipkhqh\",\"tags\":{\"emvlyaprj\":\"cztmqdkhohspkg\",\"zbhmxlp\":\"bxxxqfrn\",\"inozsmyvvfa\":\"fauvgt\",\"efcooptmdspddxgu\":\"fbmrwhk\"},\"id\":\"osi\",\"name\":\"golaxu\",\"type\":\"bxjwnyr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,37 +41,36 @@ public final class PrivateEndpointConnectionsCreateOrUpdateWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("npclnmjkydh")
-            .withExistingWorkspace("dlppuk", "n")
-            .withRegion("ovcbdsr")
-            .withTags(
-                mapOf("ingadkrkny", "qlxnbdjt", "fgwbuxqzf", "jngdfzqcjfqm", "xzyj", "gbqsv", "znfokcb", "wiavmqutgxd"))
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("hvtx", new UserAssignedIdentity(), "hdkvkqjjouh",
-                        new UserAssignedIdentity(), "gosrbullqnfzsegu", new UserAssignedIdentity())))
-            .withSku(new Sku().withName("bzmix")
+            .define("gtdvhokx")
+            .withExistingWorkspace("eixazebmmjaigax", "qiparctshe")
+            .withRegion("dnvnooklg")
+            .withTags(mapOf("cbbdokph", "uqsgertxicemgs", "nunpxswmcc", "edbsl", "viaaep", "k", "kz", "lxbofdchboacf"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("vwkynemazgtbynx", new UserAssignedIdentity(), "xkojjp",
+                    new UserAssignedIdentity(), "yhmlp", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("evotucnzbpo")
                 .withTier(SkuTier.FREE)
-                .withSize("nkvtzdvxsgdaajl")
-                .withFamily("suqm")
-                .withCapacity(549392997))
+                .withSize("z")
+                .withFamily("z")
+                .withCapacity(1853893141))
             .withPrivateEndpoint(new WorkspacePrivateEndpointResource())
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withActionsRequired("e")
-                .withDescription("merpbctrwrvn")
-                .withStatus(PrivateEndpointServiceConnectionStatus.DISCONNECTED))
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withActionsRequired("qhjpelnudifie")
+                    .withDescription("xorsdvu")
+                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED))
             .create();
 
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("a", response.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals("znfxdqqzikvgwqi", response.sku().size());
-        Assertions.assertEquals("dhas", response.sku().family());
-        Assertions.assertEquals(561322142, response.sku().capacity());
-        Assertions.assertEquals("exrzxvff", response.location());
-        Assertions.assertEquals("tdmhr", response.tags().get("t"));
-        Assertions.assertEquals("sglavdtt", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("djqomzrqkjqcsh", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("vhcbu", response.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.sku().tier());
+        Assertions.assertEquals("fzfjtockgqaawy", response.sku().size());
+        Assertions.assertEquals("zwoeqljlwfq", response.sku().family());
+        Assertions.assertEquals(547541758, response.sku().capacity());
+        Assertions.assertEquals("wzsipkhqh", response.location());
+        Assertions.assertEquals("cztmqdkhohspkg", response.tags().get("emvlyaprj"));
+        Assertions.assertEquals("xgmgvygmty", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("vbu", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
     }
 

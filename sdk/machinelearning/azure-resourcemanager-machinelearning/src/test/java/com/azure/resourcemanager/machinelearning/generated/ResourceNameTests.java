@@ -10,7 +10,7 @@ import com.azure.resourcemanager.machinelearning.models.ResourceName;
 public final class ResourceNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceName model
-            = BinaryData.fromString("{\"value\":\"ure\",\"localizedValue\":\"i\"}").toObject(ResourceName.class);
+        ResourceName model = BinaryData.fromString("{\"value\":\"xzgzum\",\"localizedValue\":\"tiixkkbygbgi\"}")
+            .toObject(ResourceName.class);
     }
 }

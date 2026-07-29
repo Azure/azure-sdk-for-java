@@ -27,7 +27,7 @@ public final class ManagedNetworkSettingsRulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.managedNetworkSettingsRules().delete("sn", "jcmkpxbc", "jrfkwc", com.azure.core.util.Context.NONE);
+        manager.managedNetworkSettingsRules().delete("eoutqo", "pbtqibq", "ougcwzgd", com.azure.core.util.Context.NONE);
 
     }
 }

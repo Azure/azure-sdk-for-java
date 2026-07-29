@@ -12,15 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomTargetLagsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomTargetLags model = BinaryData.fromString("{\"mode\":\"Custom\",\"values\":[1376925211,1266648434]}")
-            .toObject(CustomTargetLags.class);
-        Assertions.assertEquals(1376925211, model.values().get(0));
+        CustomTargetLags model
+            = BinaryData.fromString("{\"mode\":\"Custom\",\"values\":[1628104377,668970836,1475831412,246154394]}")
+                .toObject(CustomTargetLags.class);
+        Assertions.assertEquals(1628104377, model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomTargetLags model = new CustomTargetLags().withValues(Arrays.asList(1376925211, 1266648434));
+        CustomTargetLags model
+            = new CustomTargetLags().withValues(Arrays.asList(1628104377, 668970836, 1475831412, 246154394));
         model = BinaryData.fromObject(model).toObject(CustomTargetLags.class);
-        Assertions.assertEquals(1376925211, model.values().get(0));
+        Assertions.assertEquals(1628104377, model.values().get(0));
     }
 }

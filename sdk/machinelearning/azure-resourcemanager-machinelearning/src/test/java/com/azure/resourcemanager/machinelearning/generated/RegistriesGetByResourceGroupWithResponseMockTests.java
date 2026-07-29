@@ -23,7 +23,7 @@ public final class RegistriesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"discoveryUrl\":\"atkuhskegd\",\"intellectualPropertyPublisher\":\"vii\",\"managedResourceGroup\":{\"resourceId\":\"shoxfzzjd\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"sxyugozwplxz\"},{\"principalId\":\"umnoti\"},{\"principalId\":\"kkbyg\"}]},\"mlFlowRegistryUri\":\"i\",\"registryPrivateEndpointConnections\":[{\"id\":\"shy\",\"location\":\"nh\",\"properties\":{\"groupIds\":[\"zonzsurqcojasfz\",\"z\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"ciuoxyipdthjfvn\"}},{\"id\":\"sgnspu\",\"location\":\"e\",\"properties\":{\"groupIds\":[\"nufssjgbfbbachxx\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"nfnbphceeivkb\"}},{\"id\":\"lepghcnuqhqp\",\"location\":\"wt\",\"properties\":{\"groupIds\":[\"lggag\",\"gntbfytnhd\",\"ihuzz\",\"uzvwgbzdtor\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"yfzdp\"}}],\"publicNetworkAccess\":\"tsucrxdtejobjz\",\"regionDetails\":[{\"acrDetails\":[{},{}],\"location\":\"cnzalgmpupjh\",\"storageAccountDetails\":[{}]},{\"acrDetails\":[{}],\"location\":\"udvbgvz\",\"storageAccountDetails\":[{},{}]},{\"acrDetails\":[{},{}],\"location\":\"p\",\"storageAccountDetails\":[{},{},{},{}]},{\"acrDetails\":[{},{},{}],\"location\":\"iydpoknseaimb\",\"storageAccountDetails\":[{},{},{}]}]},\"identity\":{\"principalId\":\"kdarl\",\"tenantId\":\"bbvalqwzknyujx\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lleirmtxfqpfi\":{\"principalId\":\"f\",\"clientId\":\"clvildlf\"},\"ylbvj\":{\"principalId\":\"cgbfou\",\"clientId\":\"bpgcryvidbz\"},\"kzb\":{\"principalId\":\"gngwn\",\"clientId\":\"ftecgprzsqmpdqc\"},\"usyrux\":{\"principalId\":\"haa\",\"clientId\":\"xoyxuuco\"}}},\"kind\":\"hhlhrvmgs\",\"sku\":{\"name\":\"gmnc\",\"tier\":\"Standard\",\"size\":\"iforomppzsauq\",\"family\":\"uhplfcmp\",\"capacity\":826160452},\"location\":\"goce\",\"tags\":{\"p\":\"y\",\"urnc\":\"ymwic\"},\"id\":\"unlakgixhqj\",\"name\":\"hgqwbbxiw\",\"type\":\"wfgoclalvemnnzu\"}";
+            = "{\"properties\":{\"discoveryUrl\":\"ujfgtg\",\"intellectualPropertyPublisher\":\"upczegqn\",\"managedResourceGroup\":{\"resourceId\":\"vssvgyoggkztzttj\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"qgzkuobc\"},{\"principalId\":\"bna\"},{\"principalId\":\"iz\"},{\"principalId\":\"iqlyugp\"}]},\"mlFlowRegistryUri\":\"hzjmkffeonmn\",\"registryPrivateEndpointConnections\":[{\"id\":\"yiqywlpxmli\",\"location\":\"degcrunbkilxs\",\"properties\":{\"groupIds\":[\"irhyvsyuvriemor\",\"zffi\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"rvgiog\"}},{\"id\":\"xcsdqoxhdenmj\",\"location\":\"xgrggyciw\",\"properties\":{\"groupIds\":[\"nrsxvvmrnjrdijo\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"sychdcjggcmpncj\"}},{\"id\":\"gbnoqnowvfxe\",\"location\":\"zgwjekyqirvcpoln\",\"properties\":{\"groupIds\":[\"pdilbdvxlfhlzzg\",\"pspxwwblsc\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"uuzywkgouxnroyh\"}}],\"publicNetworkAccess\":\"esywywnvgy\",\"regionDetails\":[{\"acrDetails\":[{},{},{}],\"location\":\"zcwuejmxlfzl\",\"storageAccountDetails\":[{}]}]},\"identity\":{\"principalId\":\"rlhchraunjovlxqt\",\"tenantId\":\"vzpniqwxmrg\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"heqzhehgvmm\":{\"principalId\":\"lhzkrazkioi\",\"clientId\":\"cznvzmsvzn\"},\"xilzvxot\":{\"principalId\":\"yzgnbnypluzypk\",\"clientId\":\"df\"}}},\"kind\":\"ilqcdvhyefqhx\",\"sku\":{\"name\":\"sqmbwcacwaaqa\",\"tier\":\"Standard\",\"size\":\"y\",\"family\":\"xra\",\"capacity\":1062260972},\"location\":\"eqbrcmmdtsh\",\"tags\":{\"bowr\":\"xucznb\"},\"id\":\"yrnmjw\",\"name\":\"owxqzkk\",\"type\":\"gvejhmnaph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,31 +33,30 @@ public final class RegistriesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Registry response = manager.registries()
-            .getByResourceGroupWithResponse("l", "x", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pc", "trm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("goce", response.location());
-        Assertions.assertEquals("y", response.tags().get("p"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("hhlhrvmgs", response.kind());
-        Assertions.assertEquals("gmnc", response.sku().name());
+        Assertions.assertEquals("eqbrcmmdtsh", response.location());
+        Assertions.assertEquals("xucznb", response.tags().get("bowr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ilqcdvhyefqhx", response.kind());
+        Assertions.assertEquals("sqmbwcacwaaqa", response.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
-        Assertions.assertEquals("iforomppzsauq", response.sku().size());
-        Assertions.assertEquals("uhplfcmp", response.sku().family());
-        Assertions.assertEquals(826160452, response.sku().capacity());
-        Assertions.assertEquals("atkuhskegd", response.discoveryUrl());
-        Assertions.assertEquals("vii", response.intellectualPropertyPublisher());
-        Assertions.assertEquals("shoxfzzjd", response.managedResourceGroup().resourceId());
-        Assertions.assertEquals("sxyugozwplxz",
+        Assertions.assertEquals("y", response.sku().size());
+        Assertions.assertEquals("xra", response.sku().family());
+        Assertions.assertEquals(1062260972, response.sku().capacity());
+        Assertions.assertEquals("ujfgtg", response.discoveryUrl());
+        Assertions.assertEquals("upczegqn", response.intellectualPropertyPublisher());
+        Assertions.assertEquals("vssvgyoggkztzttj", response.managedResourceGroup().resourceId());
+        Assertions.assertEquals("qgzkuobc",
             response.managedResourceGroupSettings().assignedIdentities().get(0).principalId());
-        Assertions.assertEquals("i", response.mlFlowRegistryUri());
-        Assertions.assertEquals("shy", response.registryPrivateEndpointConnections().get(0).id());
-        Assertions.assertEquals("nh", response.registryPrivateEndpointConnections().get(0).location());
-        Assertions.assertEquals("zonzsurqcojasfz",
+        Assertions.assertEquals("hzjmkffeonmn", response.mlFlowRegistryUri());
+        Assertions.assertEquals("yiqywlpxmli", response.registryPrivateEndpointConnections().get(0).id());
+        Assertions.assertEquals("degcrunbkilxs", response.registryPrivateEndpointConnections().get(0).location());
+        Assertions.assertEquals("irhyvsyuvriemor",
             response.registryPrivateEndpointConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("ciuoxyipdthjfvn",
-            response.registryPrivateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals("tsucrxdtejobjz", response.publicNetworkAccess());
-        Assertions.assertEquals("cnzalgmpupjh", response.regionDetails().get(0).location());
+        Assertions.assertEquals("rvgiog", response.registryPrivateEndpointConnections().get(0).provisioningState());
+        Assertions.assertEquals("esywywnvgy", response.publicNetworkAccess());
+        Assertions.assertEquals("zcwuejmxlfzl", response.regionDetails().get(0).location());
     }
 }

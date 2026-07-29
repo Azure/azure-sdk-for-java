@@ -12,14 +12,14 @@ public final class ServerlessEndpointModelSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerlessEndpointModelSettings model
-            = BinaryData.fromString("{\"modelId\":\"xfdlypkcpws\"}").toObject(ServerlessEndpointModelSettings.class);
-        Assertions.assertEquals("xfdlypkcpws", model.modelId());
+            = BinaryData.fromString("{\"modelId\":\"z\"}").toObject(ServerlessEndpointModelSettings.class);
+        Assertions.assertEquals("z", model.modelId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerlessEndpointModelSettings model = new ServerlessEndpointModelSettings().withModelId("xfdlypkcpws");
+        ServerlessEndpointModelSettings model = new ServerlessEndpointModelSettings().withModelId("z");
         model = BinaryData.fromObject(model).toObject(ServerlessEndpointModelSettings.class);
-        Assertions.assertEquals("xfdlypkcpws", model.modelId());
+        Assertions.assertEquals("z", model.modelId());
     }
 }

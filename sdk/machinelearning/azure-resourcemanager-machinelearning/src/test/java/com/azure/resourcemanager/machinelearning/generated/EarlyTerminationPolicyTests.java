@@ -12,18 +12,18 @@ public final class EarlyTerminationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EarlyTerminationPolicy model = BinaryData.fromString(
-            "{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1285081578,\"evaluationInterval\":1619750716}")
+            "{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1389523048,\"evaluationInterval\":1169232716}")
             .toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1285081578, model.delayEvaluation());
-        Assertions.assertEquals(1619750716, model.evaluationInterval());
+        Assertions.assertEquals(1389523048, model.delayEvaluation());
+        Assertions.assertEquals(1169232716, model.evaluationInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EarlyTerminationPolicy model
-            = new EarlyTerminationPolicy().withDelayEvaluation(1285081578).withEvaluationInterval(1619750716);
+            = new EarlyTerminationPolicy().withDelayEvaluation(1389523048).withEvaluationInterval(1169232716);
         model = BinaryData.fromObject(model).toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1285081578, model.delayEvaluation());
-        Assertions.assertEquals(1619750716, model.evaluationInterval());
+        Assertions.assertEquals(1389523048, model.delayEvaluation());
+        Assertions.assertEquals(1169232716, model.evaluationInterval());
     }
 }

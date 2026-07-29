@@ -25,7 +25,7 @@ public final class RegistryEnvironmentVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"autoRebuild\":\"OnBaseImageUpdate\",\"build\":{\"contextUri\":\"xr\",\"dockerfilePath\":\"nnla\"},\"condaFile\":\"hdklwzzsi\",\"environmentType\":\"UserCreated\",\"image\":\"sacrnpscfke\",\"imageDetails\":{\"exists\":false,\"image\":{\"digest\":\"famimgjuvjv\",\"hostname\":\"ec\",\"repository\":\"ennledhoukfj\",\"tag\":\"ctdnnqokqeuzs\"},\"vulnerabilityFindings\":{\"assetId\":\"jpuywijnlpe\",\"criticalFindingsCount\":345267859,\"data\":[{},{},{},{}],\"generatedTime\":\"2021-05-23T10:58:34Z\",\"highFindingsCount\":1923329584,\"lastScanDate\":\"2021-06-08T16:53:52Z\",\"scanner\":\"hfcwycmwvphrwu\",\"source\":\"fov\",\"totalFindingsCount\":1840108787}},\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"lekchjdhlskeifw\",\"port\":1906701244},\"readinessRoute\":{\"path\":\"ow\",\"port\":1798948322},\"scoringRoute\":{\"path\":\"wpptvbudbnuj\",\"port\":462950767},\"startupRoute\":{\"path\":\"lyjel\",\"port\":731668603}},\"osType\":\"Linux\",\"provisioningState\":\"Deleting\",\"stage\":\"kofzxkq\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"amahnwg\",\"properties\":{\"lqoxwqlnxvnmrl\":\"blepamvlbaxdaoja\"},\"tags\":{\"z\":\"zyadafecwnufl\"}},\"id\":\"pvh\",\"name\":\"bzpohfejgpefvb\",\"type\":\"xvw\"}]}";
+            = "{\"value\":[{\"properties\":{\"autoRebuild\":\"Disabled\",\"build\":{\"contextUri\":\"fjslehge\",\"dockerfilePath\":\"gsojtzarli\"},\"condaFile\":\"rtvqvidsjhxxx\",\"environmentType\":\"UserCreated\",\"image\":\"munhfarb\",\"imageDetails\":{\"exists\":true,\"image\":{\"digest\":\"uioxhowwerwyw\",\"hostname\":\"hiuwv\",\"repository\":\"gejytqnzrcbh\",\"tag\":\"hctjvlwfnzgz\"},\"vulnerabilityFindings\":{\"assetId\":\"yvytydrdcwbaiaq\",\"criticalFindingsCount\":1899639362,\"data\":[{},{}],\"generatedTime\":\"2021-01-27T06:10:04Z\",\"highFindingsCount\":1500099829,\"lastScanDate\":\"2021-08-21T06:42:51Z\",\"scanner\":\"edusu\",\"source\":\"cvykagsxhz\",\"totalFindingsCount\":734925761}},\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"librolqx\",\"port\":1098340462},\"readinessRoute\":{\"path\":\"djzrvf\",\"port\":991070635},\"scoringRoute\":{\"path\":\"yqbfgwujwowth\",\"port\":1725184386},\"startupRoute\":{\"path\":\"pszz\",\"port\":1873477087}},\"osType\":\"Linux\",\"provisioningState\":\"Creating\",\"stage\":\"y\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"tqt\",\"properties\":{\"wwnxxe\":\"vvnmavfzjw\",\"piwcgcwmsh\":\"nd\",\"pzclkatpuomga\":\"pqxjxhdwjfx\",\"vcfbflyzcqomlybs\":\"vcqnjjfm\"},\"tags\":{\"tvbfpumlobtd\":\"on\"}},\"id\":\"muuqwckapoetdfzj\",\"name\":\"jefclih\",\"type\":\"nawipdqozv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,54 +35,53 @@ public final class RegistryEnvironmentVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EnvironmentVersion> response = manager.registryEnvironmentVersions()
-            .list("rddyriwanvydg", "qscijlf", "lxgnzasvpmwso", "qypvplmyzebvg", 650637823, "oyde", ListViewType.ALL,
+            .list("o", "qzbqy", "gfqqrarolc", "ahbynlbwcnnfp", 292961590, "st", ListViewType.ACTIVE_ONLY,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("amahnwg", response.iterator().next().properties().description());
-        Assertions.assertEquals("blepamvlbaxdaoja",
-            response.iterator().next().properties().properties().get("lqoxwqlnxvnmrl"));
-        Assertions.assertEquals("zyadafecwnufl", response.iterator().next().properties().tags().get("z"));
+        Assertions.assertEquals("tqt", response.iterator().next().properties().description());
+        Assertions.assertEquals("vvnmavfzjw", response.iterator().next().properties().properties().get("wwnxxe"));
+        Assertions.assertEquals("on", response.iterator().next().properties().tags().get("tvbfpumlobtd"));
         Assertions.assertTrue(response.iterator().next().properties().isAnonymous());
         Assertions.assertTrue(response.iterator().next().properties().isArchived());
-        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE,
-            response.iterator().next().properties().autoRebuild());
-        Assertions.assertEquals("xr", response.iterator().next().properties().build().contextUri());
-        Assertions.assertEquals("nnla", response.iterator().next().properties().build().dockerfilePath());
-        Assertions.assertEquals("hdklwzzsi", response.iterator().next().properties().condaFile());
-        Assertions.assertEquals("sacrnpscfke", response.iterator().next().properties().image());
-        Assertions.assertFalse(response.iterator().next().properties().imageDetails().exists());
-        Assertions.assertEquals("famimgjuvjv", response.iterator().next().properties().imageDetails().image().digest());
-        Assertions.assertEquals("ec", response.iterator().next().properties().imageDetails().image().hostname());
-        Assertions.assertEquals("ennledhoukfj",
+        Assertions.assertEquals(AutoRebuildSetting.DISABLED, response.iterator().next().properties().autoRebuild());
+        Assertions.assertEquals("fjslehge", response.iterator().next().properties().build().contextUri());
+        Assertions.assertEquals("gsojtzarli", response.iterator().next().properties().build().dockerfilePath());
+        Assertions.assertEquals("rtvqvidsjhxxx", response.iterator().next().properties().condaFile());
+        Assertions.assertEquals("munhfarb", response.iterator().next().properties().image());
+        Assertions.assertTrue(response.iterator().next().properties().imageDetails().exists());
+        Assertions.assertEquals("uioxhowwerwyw",
+            response.iterator().next().properties().imageDetails().image().digest());
+        Assertions.assertEquals("hiuwv", response.iterator().next().properties().imageDetails().image().hostname());
+        Assertions.assertEquals("gejytqnzrcbh",
             response.iterator().next().properties().imageDetails().image().repository());
-        Assertions.assertEquals("ctdnnqokqeuzs", response.iterator().next().properties().imageDetails().image().tag());
-        Assertions.assertEquals("jpuywijnlpe",
+        Assertions.assertEquals("hctjvlwfnzgz", response.iterator().next().properties().imageDetails().image().tag());
+        Assertions.assertEquals("yvytydrdcwbaiaq",
             response.iterator().next().properties().imageDetails().vulnerabilityFindings().assetId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-23T10:58:34Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T06:10:04Z"),
             response.iterator().next().properties().imageDetails().vulnerabilityFindings().generatedTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T16:53:52Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T06:42:51Z"),
             response.iterator().next().properties().imageDetails().vulnerabilityFindings().lastScanDate());
-        Assertions.assertEquals("hfcwycmwvphrwu",
+        Assertions.assertEquals("edusu",
             response.iterator().next().properties().imageDetails().vulnerabilityFindings().scanner());
-        Assertions.assertEquals("fov",
+        Assertions.assertEquals("cvykagsxhz",
             response.iterator().next().properties().imageDetails().vulnerabilityFindings().source());
-        Assertions.assertEquals("lekchjdhlskeifw",
+        Assertions.assertEquals("librolqx",
             response.iterator().next().properties().inferenceConfig().livenessRoute().path());
-        Assertions.assertEquals(1906701244,
+        Assertions.assertEquals(1098340462,
             response.iterator().next().properties().inferenceConfig().livenessRoute().port());
-        Assertions.assertEquals("ow",
+        Assertions.assertEquals("djzrvf",
             response.iterator().next().properties().inferenceConfig().readinessRoute().path());
-        Assertions.assertEquals(1798948322,
+        Assertions.assertEquals(991070635,
             response.iterator().next().properties().inferenceConfig().readinessRoute().port());
-        Assertions.assertEquals("wpptvbudbnuj",
+        Assertions.assertEquals("yqbfgwujwowth",
             response.iterator().next().properties().inferenceConfig().scoringRoute().path());
-        Assertions.assertEquals(462950767,
+        Assertions.assertEquals(1725184386,
             response.iterator().next().properties().inferenceConfig().scoringRoute().port());
-        Assertions.assertEquals("lyjel",
+        Assertions.assertEquals("pszz",
             response.iterator().next().properties().inferenceConfig().startupRoute().path());
-        Assertions.assertEquals(731668603,
+        Assertions.assertEquals(1873477087,
             response.iterator().next().properties().inferenceConfig().startupRoute().port());
         Assertions.assertEquals(OperatingSystemType.LINUX, response.iterator().next().properties().osType());
-        Assertions.assertEquals("kofzxkq", response.iterator().next().properties().stage());
+        Assertions.assertEquals("y", response.iterator().next().properties().stage());
     }
 }

@@ -13,19 +13,19 @@ public final class StackEnsembleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StackEnsembleSettings model = BinaryData.fromString(
-            "{\"stackMetaLearnerKWargs\":\"\\\"dataxn\\\"\",\"stackMetaLearnerTrainPercentage\":90.39631202467197,\"stackMetaLearnerType\":\"LightGBMRegressor\"}")
+            "{\"stackMetaLearnerKWargs\":\"\\\"dataaaj\\\"\",\"stackMetaLearnerTrainPercentage\":82.52142465680991,\"stackMetaLearnerType\":\"LinearRegression\"}")
             .toObject(StackEnsembleSettings.class);
-        Assertions.assertEquals(90.39631202467197D, model.stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR, model.stackMetaLearnerType());
+        Assertions.assertEquals(82.52142465680991D, model.stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION, model.stackMetaLearnerType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StackEnsembleSettings model = new StackEnsembleSettings().withStackMetaLearnerKWargs("\"dataxn\"")
-            .withStackMetaLearnerTrainPercentage(90.39631202467197D)
-            .withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMREGRESSOR);
+        StackEnsembleSettings model = new StackEnsembleSettings().withStackMetaLearnerKWargs("\"dataaaj\"")
+            .withStackMetaLearnerTrainPercentage(82.52142465680991D)
+            .withStackMetaLearnerType(StackMetaLearnerType.LINEAR_REGRESSION);
         model = BinaryData.fromObject(model).toObject(StackEnsembleSettings.class);
-        Assertions.assertEquals(90.39631202467197D, model.stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR, model.stackMetaLearnerType());
+        Assertions.assertEquals(82.52142465680991D, model.stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LINEAR_REGRESSION, model.stackMetaLearnerType());
     }
 }

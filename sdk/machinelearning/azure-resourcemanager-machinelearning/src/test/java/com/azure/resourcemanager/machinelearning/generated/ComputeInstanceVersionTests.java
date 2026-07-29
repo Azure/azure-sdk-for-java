@@ -12,7 +12,7 @@ public final class ComputeInstanceVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceVersion model
-            = BinaryData.fromString("{\"runtime\":\"fbxjblajybdnb\"}").toObject(ComputeInstanceVersion.class);
-        Assertions.assertEquals("fbxjblajybdnb", model.runtime());
+            = BinaryData.fromString("{\"runtime\":\"vwkiocxoe\"}").toObject(ComputeInstanceVersion.class);
+        Assertions.assertEquals("vwkiocxoe", model.runtime());
     }
 }

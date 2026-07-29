@@ -24,7 +24,7 @@ public final class InferenceGroupsListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"capacity\":{\"default\":879645515,\"maximum\":2008023896,\"minimum\":1061937306,\"scaleType\":\"Manual\"},\"resourceType\":\"xsdxxflwfvahbw\",\"sku\":{\"name\":\"gu\",\"tier\":\"Premium\"}}]}";
+            = "{\"value\":[{\"capacity\":{\"default\":2014133398,\"maximum\":581584256,\"minimum\":1676739886,\"scaleType\":\"Automatic\"},\"resourceType\":\"qjbav\",\"sku\":{\"name\":\"lfefbbv\",\"tier\":\"Premium\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class InferenceGroupsListSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response = manager.inferenceGroups()
-            .listSkus("bhwybwmebmx", "wcf", "txkurp", "wksixhornv", 529646701, "xjkdsqe",
+            .listSkus("edp", "zjqpjzturdiverkw", "afyxo", "akvuted", 33359776, "xokqudjdwcwja",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(879645515, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(2008023896, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(1061937306, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(SkuScaleType.MANUAL, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals("gu", response.iterator().next().sku().name());
+        Assertions.assertEquals(2014133398, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(581584256, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1676739886, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(SkuScaleType.AUTOMATIC, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals("lfefbbv", response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
     }
 }

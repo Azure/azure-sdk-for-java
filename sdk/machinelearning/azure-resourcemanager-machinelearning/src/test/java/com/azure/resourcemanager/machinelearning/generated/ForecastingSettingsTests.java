@@ -21,43 +21,43 @@ public final class ForecastingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForecastingSettings model = BinaryData.fromString(
-            "{\"countryOrRegionForHolidays\":\"kll\",\"cvStepSize\":1781554864,\"featureLags\":\"Auto\",\"forecastHorizon\":{\"mode\":\"ForecastHorizon\"},\"frequency\":\"kig\",\"seasonality\":{\"mode\":\"Seasonality\"},\"shortSeriesHandlingConfig\":\"Auto\",\"targetAggregateFunction\":\"Min\",\"targetLags\":{\"mode\":\"TargetLags\"},\"targetRollingWindowSize\":{\"mode\":\"TargetRollingWindowSize\"},\"timeColumnName\":\"ubhg\",\"timeSeriesIdColumnNames\":[\"etxdqcmyctajqzj\",\"alec\",\"bibiwks\",\"egyxsbfpzvoik\"],\"useStl\":\"None\"}")
+            "{\"countryOrRegionForHolidays\":\"li\",\"cvStepSize\":1223849391,\"featureLags\":\"None\",\"forecastHorizon\":{\"mode\":\"ForecastHorizon\"},\"frequency\":\"plrr\",\"seasonality\":{\"mode\":\"Seasonality\"},\"shortSeriesHandlingConfig\":\"Auto\",\"targetAggregateFunction\":\"Sum\",\"targetLags\":{\"mode\":\"TargetLags\"},\"targetRollingWindowSize\":{\"mode\":\"TargetRollingWindowSize\"},\"timeColumnName\":\"bticuhqv\",\"timeSeriesIdColumnNames\":[\"pbfs\",\"eqbbewfcuqfpy\",\"xmzrmtmvwitu\",\"eyyjshcybwfuppox\"],\"useStl\":\"Season\"}")
             .toObject(ForecastingSettings.class);
-        Assertions.assertEquals("kll", model.countryOrRegionForHolidays());
-        Assertions.assertEquals(1781554864, model.cvStepSize());
-        Assertions.assertEquals(FeatureLags.AUTO, model.featureLags());
-        Assertions.assertEquals("kig", model.frequency());
+        Assertions.assertEquals("li", model.countryOrRegionForHolidays());
+        Assertions.assertEquals(1223849391, model.cvStepSize());
+        Assertions.assertEquals(FeatureLags.NONE, model.featureLags());
+        Assertions.assertEquals("plrr", model.frequency());
         Assertions.assertEquals(ShortSeriesHandlingConfiguration.AUTO, model.shortSeriesHandlingConfig());
-        Assertions.assertEquals(TargetAggregationFunction.MIN, model.targetAggregateFunction());
-        Assertions.assertEquals("ubhg", model.timeColumnName());
-        Assertions.assertEquals("etxdqcmyctajqzj", model.timeSeriesIdColumnNames().get(0));
-        Assertions.assertEquals(UseStl.NONE, model.useStl());
+        Assertions.assertEquals(TargetAggregationFunction.SUM, model.targetAggregateFunction());
+        Assertions.assertEquals("bticuhqv", model.timeColumnName());
+        Assertions.assertEquals("pbfs", model.timeSeriesIdColumnNames().get(0));
+        Assertions.assertEquals(UseStl.SEASON, model.useStl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastingSettings model = new ForecastingSettings().withCountryOrRegionForHolidays("kll")
-            .withCvStepSize(1781554864)
-            .withFeatureLags(FeatureLags.AUTO)
+        ForecastingSettings model = new ForecastingSettings().withCountryOrRegionForHolidays("li")
+            .withCvStepSize(1223849391)
+            .withFeatureLags(FeatureLags.NONE)
             .withForecastHorizon(new ForecastHorizon())
-            .withFrequency("kig")
+            .withFrequency("plrr")
             .withSeasonality(new Seasonality())
             .withShortSeriesHandlingConfig(ShortSeriesHandlingConfiguration.AUTO)
-            .withTargetAggregateFunction(TargetAggregationFunction.MIN)
+            .withTargetAggregateFunction(TargetAggregationFunction.SUM)
             .withTargetLags(new TargetLags())
             .withTargetRollingWindowSize(new TargetRollingWindowSize())
-            .withTimeColumnName("ubhg")
-            .withTimeSeriesIdColumnNames(Arrays.asList("etxdqcmyctajqzj", "alec", "bibiwks", "egyxsbfpzvoik"))
-            .withUseStl(UseStl.NONE);
+            .withTimeColumnName("bticuhqv")
+            .withTimeSeriesIdColumnNames(Arrays.asList("pbfs", "eqbbewfcuqfpy", "xmzrmtmvwitu", "eyyjshcybwfuppox"))
+            .withUseStl(UseStl.SEASON);
         model = BinaryData.fromObject(model).toObject(ForecastingSettings.class);
-        Assertions.assertEquals("kll", model.countryOrRegionForHolidays());
-        Assertions.assertEquals(1781554864, model.cvStepSize());
-        Assertions.assertEquals(FeatureLags.AUTO, model.featureLags());
-        Assertions.assertEquals("kig", model.frequency());
+        Assertions.assertEquals("li", model.countryOrRegionForHolidays());
+        Assertions.assertEquals(1223849391, model.cvStepSize());
+        Assertions.assertEquals(FeatureLags.NONE, model.featureLags());
+        Assertions.assertEquals("plrr", model.frequency());
         Assertions.assertEquals(ShortSeriesHandlingConfiguration.AUTO, model.shortSeriesHandlingConfig());
-        Assertions.assertEquals(TargetAggregationFunction.MIN, model.targetAggregateFunction());
-        Assertions.assertEquals("ubhg", model.timeColumnName());
-        Assertions.assertEquals("etxdqcmyctajqzj", model.timeSeriesIdColumnNames().get(0));
-        Assertions.assertEquals(UseStl.NONE, model.useStl());
+        Assertions.assertEquals(TargetAggregationFunction.SUM, model.targetAggregateFunction());
+        Assertions.assertEquals("bticuhqv", model.timeColumnName());
+        Assertions.assertEquals("pbfs", model.timeSeriesIdColumnNames().get(0));
+        Assertions.assertEquals(UseStl.SEASON, model.useStl());
     }
 }

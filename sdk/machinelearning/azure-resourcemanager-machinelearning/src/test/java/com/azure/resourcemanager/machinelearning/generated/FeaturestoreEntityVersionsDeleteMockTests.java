@@ -28,7 +28,7 @@ public final class FeaturestoreEntityVersionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.featurestoreEntityVersions()
-            .delete("svxbagccvhnoq", "owepcntqos", "rwkkxdnxuyygdoi", "d", com.azure.core.util.Context.NONE);
+            .delete("djsa", "ggdpjjkox", "ccjd", "oyxcozzog", com.azure.core.util.Context.NONE);
 
     }
 }

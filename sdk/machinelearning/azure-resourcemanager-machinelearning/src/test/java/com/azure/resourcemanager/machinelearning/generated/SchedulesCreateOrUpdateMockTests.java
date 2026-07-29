@@ -26,7 +26,7 @@ public final class SchedulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"qpjzt\",\"isEnabled\":true,\"provisioningState\":\"Succeeded\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"rkwmafyxoqak\",\"startTime\":\"t\",\"timeZone\":\"etxokqudjdwcwja\"},\"description\":\"b\",\"properties\":{\"v\":\"hxahnqjb\",\"fufwrerbndr\":\"blfefbbvitlnnp\",\"temvaajyit\":\"zfnstlavmdc\"},\"tags\":{\"swurzaqubryhvbv\":\"gwih\",\"ryocgwkphily\":\"yfdwaupjoz\",\"imxznfoaks\":\"nbb\"}},\"id\":\"i\",\"name\":\"wznlbbhtle\",\"type\":\"wfizbehvqaghl\"}";
+            = "{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"safr\",\"isEnabled\":false,\"provisioningState\":\"Succeeded\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"rvrhwqkfffvgbkle\",\"startTime\":\"ybwh\",\"timeZone\":\"b\"},\"description\":\"vkm\",\"properties\":{\"tzqrm\":\"zilkyvybljqgirp\"},\"tags\":{\"anrk\":\"kurkggqx\",\"jfsvfbjcn\":\"c\"}},\"id\":\"wrbrntvhpp\",\"name\":\"kr\",\"type\":\"zualsvxpolat\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,25 +36,26 @@ public final class SchedulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schedule response = manager.schedules()
-            .define("cmeyaoyzjfg")
-            .withExistingWorkspace("nwichjkwctlsoh", "tgpvvcbtegi")
-            .withProperties(new ScheduleProperties().withDescription("mamdo")
-                .withProperties(mapOf("sfgjbeybdukbgl", "jekh", "jivoexko", "iwvxmysc", "vxkctedhaf", "ciacdloehsm"))
-                .withTags(mapOf("yxy", "ffajniwbyzyj", "dzc", "bbugo"))
+            .define("smvvfpkymqnvvwfa")
+            .withExistingWorkspace("cwrtr", "derzsnfgmohhcgh")
+            .withProperties(new ScheduleProperties().withDescription("ozfjbdyyxhjfzjb")
+                .withProperties(mapOf("ljbhgzffemry", "dlnbklhwrikr", "zcdlccqumvbh", "iaob"))
+                .withTags(mapOf("kwxcaagzlq", "ibxolzinxxjfixr", "hacfiyrywfry", "sgzgsgzlbunm"))
                 .withAction(new ScheduleActionBase())
-                .withDisplayName("au")
+                .withDisplayName("ulboawzplwg")
                 .withIsEnabled(true)
-                .withTrigger(new TriggerBase().withEndTime("rsnfz").withStartTime("hiecu").withTimeZone("azfotrp")))
+                .withTrigger(
+                    new TriggerBase().withEndTime("rmtuprqt").withStartTime("qkohupyajkde").withTimeZone("arjv")))
             .create();
 
-        Assertions.assertEquals("b", response.properties().description());
-        Assertions.assertEquals("hxahnqjb", response.properties().properties().get("v"));
-        Assertions.assertEquals("gwih", response.properties().tags().get("swurzaqubryhvbv"));
-        Assertions.assertEquals("qpjzt", response.properties().displayName());
-        Assertions.assertTrue(response.properties().isEnabled());
-        Assertions.assertEquals("rkwmafyxoqak", response.properties().trigger().endTime());
-        Assertions.assertEquals("t", response.properties().trigger().startTime());
-        Assertions.assertEquals("etxokqudjdwcwja", response.properties().trigger().timeZone());
+        Assertions.assertEquals("vkm", response.properties().description());
+        Assertions.assertEquals("zilkyvybljqgirp", response.properties().properties().get("tzqrm"));
+        Assertions.assertEquals("kurkggqx", response.properties().tags().get("anrk"));
+        Assertions.assertEquals("safr", response.properties().displayName());
+        Assertions.assertFalse(response.properties().isEnabled());
+        Assertions.assertEquals("rvrhwqkfffvgbkle", response.properties().trigger().endTime());
+        Assertions.assertEquals("ybwh", response.properties().trigger().startTime());
+        Assertions.assertEquals("b", response.properties().trigger().timeZone());
     }
 
     // Use "Map.of" if available

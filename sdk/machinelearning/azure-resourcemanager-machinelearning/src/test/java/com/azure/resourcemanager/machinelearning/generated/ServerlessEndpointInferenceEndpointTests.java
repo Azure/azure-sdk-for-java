@@ -11,7 +11,7 @@ public final class ServerlessEndpointInferenceEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerlessEndpointInferenceEndpoint model
-            = BinaryData.fromString("{\"headers\":{\"ogirrpw\":\"qquyhbcee\"},\"uri\":\"qtvuxeujmdssijua\"}")
+            = BinaryData.fromString("{\"headers\":{\"phfvsftsstwlpxca\":\"knckkfxmuqeqkw\"},\"uri\":\"hdtezgfctu\"}")
                 .toObject(ServerlessEndpointInferenceEndpoint.class);
     }
 

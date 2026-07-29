@@ -18,55 +18,57 @@ public final class ManagedOnlineEndpointResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedOnlineEndpointResourceProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"managedOnlineEndpoint\",\"authMode\":\"Key\",\"compute\":\"izmadjrsbgailj\",\"description\":\"vqmxqsxofxqnki\",\"mirrorTraffic\":{\"ltsxooi\":289380204,\"hiebruptls\":624309873,\"qzgaqsosrnjlvgrg\":949478358,\"huoxrqhjninpesw\":819380162},\"scoringUri\":\"hq\",\"traffic\":{\"zq\":745554741,\"csviu\":156493894},\"associatedResourceId\":\"j\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"s\",\"provisioningState\":\"Succeeded\"},\"id\":\"xsxoxvimdvet\",\"name\":\"hdbitq\",\"type\":\"byujs\"}],\"endpointUri\":\"mrihu\",\"failureReason\":\"rmsdbvqxgfyg\",\"location\":\"gxbdpbcehwbdpse\",\"name\":\"oynpytporrvkxtf\",\"provisioningState\":\"Disabled\",\"shouldCreateAiServicesEndpoint\":true}")
+            "{\"endpointType\":\"managedOnlineEndpoint\",\"authMode\":\"Key\",\"compute\":\"jmsbzzj\",\"description\":\"yfowyjzu\",\"mirrorTraffic\":{\"ubeqkitt\":1595749917,\"glhxsoanguhb\":61955111},\"scoringUri\":\"ogsezreneggpdty\",\"traffic\":{\"itwkejmg\":1010300039,\"udupehskvsdfvhry\":1415698684,\"zammpk\":94006775},\"associatedResourceId\":\"vnpeukgnmf\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"nitroml\",\"provisioningState\":\"Creating\"},\"id\":\"tfpsrow\",\"name\":\"hvfxjtx\",\"type\":\"awmv\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"qabjropxfqdmllz\",\"provisioningState\":\"Accepted\"},\"id\":\"uwqlzwgdpvhwiri\",\"name\":\"amqtrhqdoxdegacd\",\"type\":\"dpkwdtobpgdcid\"}],\"endpointUri\":\"aqermnddlir\",\"failureReason\":\"clsaqifepdu\",\"location\":\"evivkigliokl\",\"name\":\"ffpxeswctlfyt\",\"provisioningState\":\"Deleting\",\"shouldCreateAiServicesEndpoint\":false}")
             .toObject(ManagedOnlineEndpointResourceProperties.class);
-        Assertions.assertEquals("j", model.associatedResourceId());
-        Assertions.assertEquals("s", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("mrihu", model.endpointUri());
-        Assertions.assertEquals("rmsdbvqxgfyg", model.failureReason());
-        Assertions.assertEquals("gxbdpbcehwbdpse", model.location());
-        Assertions.assertEquals("oynpytporrvkxtf", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("vnpeukgnmf", model.associatedResourceId());
+        Assertions.assertEquals("nitroml", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("aqermnddlir", model.endpointUri());
+        Assertions.assertEquals("clsaqifepdu", model.failureReason());
+        Assertions.assertEquals("evivkigliokl", model.location());
+        Assertions.assertEquals("ffpxeswctlfyt", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
         Assertions.assertEquals(EndpointAuthMode.KEY, model.authMode());
-        Assertions.assertEquals("izmadjrsbgailj", model.compute());
-        Assertions.assertEquals("vqmxqsxofxqnki", model.description());
-        Assertions.assertEquals(289380204, model.mirrorTraffic().get("ltsxooi"));
-        Assertions.assertEquals("hq", model.scoringUri());
-        Assertions.assertEquals(745554741, model.traffic().get("zq"));
+        Assertions.assertEquals("jmsbzzj", model.compute());
+        Assertions.assertEquals("yfowyjzu", model.description());
+        Assertions.assertEquals(1595749917, model.mirrorTraffic().get("ubeqkitt"));
+        Assertions.assertEquals("ogsezreneggpdty", model.scoringUri());
+        Assertions.assertEquals(1010300039, model.traffic().get("itwkejmg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedOnlineEndpointResourceProperties model
-            = new ManagedOnlineEndpointResourceProperties().withAssociatedResourceId("j")
-                .withDeployments(Arrays.asList(new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("s"))))
-                .withEndpointUri("mrihu")
-                .withFailureReason("rmsdbvqxgfyg")
-                .withLocation("gxbdpbcehwbdpse")
-                .withName("oynpytporrvkxtf")
-                .withShouldCreateAiServicesEndpoint(true)
-                .withAuthMode(EndpointAuthMode.KEY)
-                .withCompute("izmadjrsbgailj")
-                .withDescription("vqmxqsxofxqnki")
-                .withMirrorTraffic(mapOf("ltsxooi", 289380204, "hiebruptls", 624309873, "qzgaqsosrnjlvgrg", 949478358,
-                    "huoxrqhjninpesw", 819380162))
-                .withScoringUri("hq")
-                .withTraffic(mapOf("zq", 745554741, "csviu", 156493894));
+        ManagedOnlineEndpointResourceProperties model = new ManagedOnlineEndpointResourceProperties()
+            .withAssociatedResourceId("vnpeukgnmf")
+            .withDeployments(Arrays.asList(
+                new EndpointDeploymentResourcePropertiesBasicResourceInner()
+                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("nitroml")),
+                new EndpointDeploymentResourcePropertiesBasicResourceInner()
+                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("qabjropxfqdmllz"))))
+            .withEndpointUri("aqermnddlir")
+            .withFailureReason("clsaqifepdu")
+            .withLocation("evivkigliokl")
+            .withName("ffpxeswctlfyt")
+            .withShouldCreateAiServicesEndpoint(false)
+            .withAuthMode(EndpointAuthMode.KEY)
+            .withCompute("jmsbzzj")
+            .withDescription("yfowyjzu")
+            .withMirrorTraffic(mapOf("ubeqkitt", 1595749917, "glhxsoanguhb", 61955111))
+            .withScoringUri("ogsezreneggpdty")
+            .withTraffic(mapOf("itwkejmg", 1010300039, "udupehskvsdfvhry", 1415698684, "zammpk", 94006775));
         model = BinaryData.fromObject(model).toObject(ManagedOnlineEndpointResourceProperties.class);
-        Assertions.assertEquals("j", model.associatedResourceId());
-        Assertions.assertEquals("s", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("mrihu", model.endpointUri());
-        Assertions.assertEquals("rmsdbvqxgfyg", model.failureReason());
-        Assertions.assertEquals("gxbdpbcehwbdpse", model.location());
-        Assertions.assertEquals("oynpytporrvkxtf", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("vnpeukgnmf", model.associatedResourceId());
+        Assertions.assertEquals("nitroml", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("aqermnddlir", model.endpointUri());
+        Assertions.assertEquals("clsaqifepdu", model.failureReason());
+        Assertions.assertEquals("evivkigliokl", model.location());
+        Assertions.assertEquals("ffpxeswctlfyt", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
         Assertions.assertEquals(EndpointAuthMode.KEY, model.authMode());
-        Assertions.assertEquals("izmadjrsbgailj", model.compute());
-        Assertions.assertEquals("vqmxqsxofxqnki", model.description());
-        Assertions.assertEquals(289380204, model.mirrorTraffic().get("ltsxooi"));
-        Assertions.assertEquals("hq", model.scoringUri());
-        Assertions.assertEquals(745554741, model.traffic().get("zq"));
+        Assertions.assertEquals("jmsbzzj", model.compute());
+        Assertions.assertEquals("yfowyjzu", model.description());
+        Assertions.assertEquals(1595749917, model.mirrorTraffic().get("ubeqkitt"));
+        Assertions.assertEquals("ogsezreneggpdty", model.scoringUri());
+        Assertions.assertEquals(1010300039, model.traffic().get("itwkejmg"));
     }
 
     // Use "Map.of" if available

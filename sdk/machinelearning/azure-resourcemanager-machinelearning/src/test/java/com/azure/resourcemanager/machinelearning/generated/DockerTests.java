@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DockerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Docker model = BinaryData
-            .fromString(
-                "{\"privileged\":false,\"rekyjulskwwn\":\"\\\"datargeganihkjcn\\\"\",\"pwxtvc\":\"\\\"datahqlq\\\"\"}")
+        Docker model = BinaryData.fromString(
+            "{\"privileged\":false,\"wlbg\":\"\\\"datawwvmbjec\\\"\",\"lydsnjzpchiypbf\":\"\\\"datankfrwxo\\\"\",\"brsrjzgkbrau\":\"\\\"datamihiktqoze\\\"\"}")
             .toObject(Docker.class);
         Assertions.assertFalse(model.privileged());
     }
@@ -23,7 +22,8 @@ public final class DockerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Docker model = new Docker().withPrivileged(false)
-            .withAdditionalProperties(mapOf("pwxtvc", "\"datahqlq\"", "rekyjulskwwn", "\"datargeganihkjcn\""));
+            .withAdditionalProperties(mapOf("lydsnjzpchiypbf", "\"datankfrwxo\"", "wlbg", "\"datawwvmbjec\"",
+                "brsrjzgkbrau", "\"datamihiktqoze\""));
         model = BinaryData.fromObject(model).toObject(Docker.class);
         Assertions.assertFalse(model.privileged());
     }

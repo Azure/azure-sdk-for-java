@@ -14,13 +14,13 @@ public final class ComputeInstanceContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceContainer model = BinaryData.fromString(
-            "{\"name\":\"lxwhcvasyyhgq\",\"autosave\":\"Remote\",\"gpu\":\"msrkixyxxhwrlq\",\"network\":\"Bridge\",\"environment\":{\"name\":\"yilpzz\",\"version\":\"wnrzozsxa\"},\"services\":[\"\\\"datao\\\"\",\"\\\"dataliiksybv\\\"\"]}")
+            "{\"name\":\"obnhrfbrjokjwqd\",\"autosave\":\"None\",\"gpu\":\"nilppqcai\",\"network\":\"Host\",\"environment\":{\"name\":\"wlrfdj\",\"version\":\"zseodtqfdrslzymq\"},\"services\":[\"\\\"datarwycu\\\"\",\"\\\"dataytjwgetfigw\\\"\",\"\\\"dataeqjxzizebjrahg\\\"\",\"\\\"datastubw\\\"\"]}")
             .toObject(ComputeInstanceContainer.class);
-        Assertions.assertEquals("lxwhcvasyyhgq", model.name());
-        Assertions.assertEquals(Autosave.REMOTE, model.autosave());
-        Assertions.assertEquals("msrkixyxxhwrlq", model.gpu());
-        Assertions.assertEquals(Network.BRIDGE, model.network());
-        Assertions.assertEquals("yilpzz", model.environment().name());
-        Assertions.assertEquals("wnrzozsxa", model.environment().version());
+        Assertions.assertEquals("obnhrfbrjokjwqd", model.name());
+        Assertions.assertEquals(Autosave.NONE, model.autosave());
+        Assertions.assertEquals("nilppqcai", model.gpu());
+        Assertions.assertEquals(Network.HOST, model.network());
+        Assertions.assertEquals("wlrfdj", model.environment().name());
+        Assertions.assertEquals("zseodtqfdrslzymq", model.environment().version());
     }
 }

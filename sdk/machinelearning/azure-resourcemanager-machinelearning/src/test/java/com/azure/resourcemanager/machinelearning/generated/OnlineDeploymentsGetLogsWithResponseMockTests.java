@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class OnlineDeploymentsGetLogsWithResponseMockTests {
     @Test
     public void testGetLogsWithResponse() throws Exception {
-        String responseStr = "{\"content\":\"f\"}";
+        String responseStr = "{\"content\":\"gkxxpkl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,14 @@ public final class OnlineDeploymentsGetLogsWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DeploymentLogs response = manager.onlineDeployments()
-            .getLogsWithResponse("jqdjkonbgegwx", "gkrppmvnoqt", "qciqawhkdk", "aqspbdscotidik",
-                new DeploymentLogsRequest().withContainerType(ContainerType.INFERENCE_SERVER).withTail(1659259913),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        DeploymentLogs response
+            = manager.onlineDeployments()
+                .getLogsWithResponse("y", "gzba", "jckakikkkajmnvb", "gmnkrq",
+                    new DeploymentLogsRequest().withContainerType(ContainerType.STORAGE_INITIALIZER)
+                        .withTail(2027334585),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("f", response.content());
+        Assertions.assertEquals("gkxxpkl", response.content());
     }
 }

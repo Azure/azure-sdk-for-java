@@ -26,9 +26,19 @@ public final class MLFlowModelJobOutput extends JobOutput {
     private String assetName;
 
     /*
+     * Output Asset Version.
+     */
+    private String assetVersion;
+
+    /*
      * Output data delivery mode enums.
      */
     private OutputDeliveryMode mode;
+
+    /*
+     * Output Asset Delivery Path.
+     */
+    private String pathOnCompute;
 
     /*
      * Output Asset URI.
@@ -72,6 +82,26 @@ public final class MLFlowModelJobOutput extends JobOutput {
     }
 
     /**
+     * Get the assetVersion property: Output Asset Version.
+     * 
+     * @return the assetVersion value.
+     */
+    public String assetVersion() {
+        return this.assetVersion;
+    }
+
+    /**
+     * Set the assetVersion property: Output Asset Version.
+     * 
+     * @param assetVersion the assetVersion value to set.
+     * @return the MLFlowModelJobOutput object itself.
+     */
+    public MLFlowModelJobOutput withAssetVersion(String assetVersion) {
+        this.assetVersion = assetVersion;
+        return this;
+    }
+
+    /**
      * Get the mode property: Output data delivery mode enums.
      * 
      * @return the mode value.
@@ -88,6 +118,26 @@ public final class MLFlowModelJobOutput extends JobOutput {
      */
     public MLFlowModelJobOutput withMode(OutputDeliveryMode mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the pathOnCompute property: Output Asset Delivery Path.
+     * 
+     * @return the pathOnCompute value.
+     */
+    public String pathOnCompute() {
+        return this.pathOnCompute;
+    }
+
+    /**
+     * Set the pathOnCompute property: Output Asset Delivery Path.
+     * 
+     * @param pathOnCompute the pathOnCompute value to set.
+     * @return the MLFlowModelJobOutput object itself.
+     */
+    public MLFlowModelJobOutput withPathOnCompute(String pathOnCompute) {
+        this.pathOnCompute = pathOnCompute;
         return this;
     }
 
@@ -129,7 +179,9 @@ public final class MLFlowModelJobOutput extends JobOutput {
         jsonWriter.writeStringField("description", description());
         jsonWriter.writeStringField("jobOutputType", this.jobOutputType == null ? null : this.jobOutputType.toString());
         jsonWriter.writeStringField("assetName", this.assetName);
+        jsonWriter.writeStringField("assetVersion", this.assetVersion);
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("pathOnCompute", this.pathOnCompute);
         jsonWriter.writeStringField("uri", this.uri);
         return jsonWriter.writeEndObject();
     }
@@ -155,8 +207,12 @@ public final class MLFlowModelJobOutput extends JobOutput {
                     deserializedMLFlowModelJobOutput.jobOutputType = JobOutputType.fromString(reader.getString());
                 } else if ("assetName".equals(fieldName)) {
                     deserializedMLFlowModelJobOutput.assetName = reader.getString();
+                } else if ("assetVersion".equals(fieldName)) {
+                    deserializedMLFlowModelJobOutput.assetVersion = reader.getString();
                 } else if ("mode".equals(fieldName)) {
                     deserializedMLFlowModelJobOutput.mode = OutputDeliveryMode.fromString(reader.getString());
+                } else if ("pathOnCompute".equals(fieldName)) {
+                    deserializedMLFlowModelJobOutput.pathOnCompute = reader.getString();
                 } else if ("uri".equals(fieldName)) {
                     deserializedMLFlowModelJobOutput.uri = reader.getString();
                 } else {

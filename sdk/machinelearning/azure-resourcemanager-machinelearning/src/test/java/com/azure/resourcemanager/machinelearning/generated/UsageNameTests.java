@@ -10,7 +10,7 @@ import com.azure.resourcemanager.machinelearning.models.UsageName;
 public final class UsageNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageName model
-            = BinaryData.fromString("{\"value\":\"yckmemfvr\",\"localizedValue\":\"lcl\"}").toObject(UsageName.class);
+        UsageName model = BinaryData.fromString("{\"value\":\"ytqavouymkdeu\",\"localizedValue\":\"lvzp\"}")
+            .toObject(UsageName.class);
     }
 }

@@ -25,7 +25,7 @@ public final class RegistryModelContainersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"hf\",\"nextVersion\":\"mjomuw\",\"description\":\"vjwkpznsfbit\",\"properties\":{\"yyo\":\"gpvdl\",\"nwmgqc\":\"clcuxzl\",\"oxmpgfspwhfh\":\"ggjeq\"},\"tags\":{\"qnwpwrfe\":\"uvgavvzvdfytqzxe\"}},\"id\":\"ggrm\",\"name\":\"ufhkoe\",\"type\":\"nrjmicha\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"vkqijmyqosrsfao\",\"nextVersion\":\"rzrrgdpyohnm\",\"description\":\"vvlwhtfsco\",\"properties\":{\"exdwecvkwwjj\":\"feywbhxhawkwcfkc\",\"v\":\"tfunsduej\",\"i\":\"walekqedofuobxml\"},\"tags\":{\"ib\":\"hlpf\",\"gzy\":\"lmihvzdaycmen\",\"lvgqlexwqwbbell\":\"l\"}},\"id\":\"dotpcvd\",\"name\":\"fmflw\",\"type\":\"xdkpwdpmyga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,16 @@ public final class RegistryModelContainersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelContainer response = manager.registryModelContainers()
-            .createOrUpdate("gjreoac", "oaboozxkdzmt", "mnyufdemrcl",
-                new ModelContainerInner().withProperties(new ModelContainerProperties().withDescription("flkeqgxljsbto")
-                    .withProperties(mapOf("qgehbw", "cv", "lfhhwdajf", "xoczz"))
-                    .withTags(
-                        mapOf("nufqh", "swuomjd", "xbneiobubtpye", "sniobeh", "rdqp", "ppwkry", "hmyh", "qfuvhoiqqz"))
+            .createOrUpdate("omyt", "xrw", "jbyaavfm",
+                new ModelContainerInner().withProperties(new ModelContainerProperties().withDescription("xyhuetztorhu")
+                    .withProperties(mapOf("sewjqg", "yssz", "x", "loorhxduregljqp", "mhvwgc", "aakgdka"))
+                    .withTags(mapOf("goomapcaxno", "bdkq", "jzt", "njfvjqvectoo", "vsrvkzv", "alsnm"))
                     .withIsArchived(false)),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vjwkpznsfbit", response.properties().description());
-        Assertions.assertEquals("gpvdl", response.properties().properties().get("yyo"));
-        Assertions.assertEquals("uvgavvzvdfytqzxe", response.properties().tags().get("qnwpwrfe"));
+        Assertions.assertEquals("vvlwhtfsco", response.properties().description());
+        Assertions.assertEquals("feywbhxhawkwcfkc", response.properties().properties().get("exdwecvkwwjj"));
+        Assertions.assertEquals("hlpf", response.properties().tags().get("ib"));
         Assertions.assertFalse(response.properties().isArchived());
     }
 

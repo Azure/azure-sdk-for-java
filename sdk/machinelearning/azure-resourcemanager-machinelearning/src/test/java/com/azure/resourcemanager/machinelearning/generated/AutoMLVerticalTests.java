@@ -15,27 +15,27 @@ public final class AutoMLVerticalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoMLVertical model = BinaryData.fromString(
-            "{\"taskType\":\"AutoMLVertical\",\"logVerbosity\":\"Warning\",\"targetColumnName\":\"iotiffbbc\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"egxcypx\",\"description\":\"fetwi\"}}")
+            "{\"taskType\":\"AutoMLVertical\",\"logVerbosity\":\"Error\",\"targetColumnName\":\"wmpjprd\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"pcfpcfj\",\"description\":\"zlgzawkgyepey\"}}")
             .toObject(AutoMLVertical.class);
-        Assertions.assertEquals(LogVerbosity.WARNING, model.logVerbosity());
-        Assertions.assertEquals("iotiffbbc", model.targetColumnName());
-        Assertions.assertEquals("fetwi", model.trainingData().description());
+        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
+        Assertions.assertEquals("wmpjprd", model.targetColumnName());
+        Assertions.assertEquals("zlgzawkgyepey", model.trainingData().description());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
-        Assertions.assertEquals("egxcypx", model.trainingData().uri());
+        Assertions.assertEquals("pcfpcfj", model.trainingData().uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoMLVertical model = new AutoMLVertical().withLogVerbosity(LogVerbosity.WARNING)
-            .withTargetColumnName("iotiffbbc")
-            .withTrainingData(new MLTableJobInput().withDescription("fetwi")
+        AutoMLVertical model = new AutoMLVertical().withLogVerbosity(LogVerbosity.ERROR)
+            .withTargetColumnName("wmpjprd")
+            .withTrainingData(new MLTableJobInput().withDescription("zlgzawkgyepey")
                 .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
-                .withUri("egxcypx"));
+                .withUri("pcfpcfj"));
         model = BinaryData.fromObject(model).toObject(AutoMLVertical.class);
-        Assertions.assertEquals(LogVerbosity.WARNING, model.logVerbosity());
-        Assertions.assertEquals("iotiffbbc", model.targetColumnName());
-        Assertions.assertEquals("fetwi", model.trainingData().description());
+        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
+        Assertions.assertEquals("wmpjprd", model.targetColumnName());
+        Assertions.assertEquals("zlgzawkgyepey", model.trainingData().description());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
-        Assertions.assertEquals("egxcypx", model.trainingData().uri());
+        Assertions.assertEquals("pcfpcfj", model.trainingData().uri());
     }
 }

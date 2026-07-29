@@ -23,7 +23,7 @@ public final class EndpointDeploymentsGetInWorkspaceMockTests {
     @Test
     public void testGetInWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"eszthjtryjs\",\"provisioningState\":\"Deleting\"},\"id\":\"l\",\"name\":\"zzuqixpsyb\",\"type\":\"owgvm\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"gbqaucpckx\",\"provisioningState\":\"Disabled\"},\"id\":\"afwmfpgjl\",\"name\":\"xtugpeamet\",\"type\":\"dwxf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class EndpointDeploymentsGetInWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EndpointDeploymentResourcePropertiesBasicResource> response = manager.endpointDeployments()
-            .getInWorkspace("xl", "lnocscygimizlu", EndpointType.MANAGED_ONLINE_ENDPOINT, "bwmgksrlmspp",
+            .getInWorkspace("noskkhbmj", "hlyyuah", EndpointType.AZURE_SPEECH, "eikbvqzr",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eszthjtryjs", response.iterator().next().properties().failureReason());
+        Assertions.assertEquals("gbqaucpckx", response.iterator().next().properties().failureReason());
     }
 }

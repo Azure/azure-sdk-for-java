@@ -21,7 +21,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"gaxloafws\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"rokwm\",\"provisioningState\":\"Creating\"},\"id\":\"ddqlxjrhctbrveg\",\"name\":\"amoyvqfjpkezq\",\"type\":\"izbyczmepcacgvln\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"jb\",\"provisioningState\":\"Updating\"},\"id\":\"ktuvdes\",\"name\":\"arul\",\"type\":\"hbqtvyhsxhcrff\"}],\"endpointUri\":\"exupcuizvx\",\"failureReason\":\"vzhlkeotdscqkxzr\",\"location\":\"oqzmvemli\",\"name\":\"dfqfnftrrhhgwaw\",\"provisioningState\":\"Failed\",\"shouldCreateAiServicesEndpoint\":false},\"id\":\"cfx\",\"name\":\"vkdnfg\",\"type\":\"txultxhqqvdhd\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"dejnemrfq\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"p\",\"provisioningState\":\"Failed\"},\"id\":\"bfgullqpcijyx\",\"name\":\"mq\",\"type\":\"ggk\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"orxejfharph\",\"provisioningState\":\"Canceled\"},\"id\":\"traylxzdu\",\"name\":\"puhbao\",\"type\":\"f\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"kxd\",\"provisioningState\":\"Creating\"},\"id\":\"gysqsmlbzix\",\"name\":\"datvndvwwej\",\"type\":\"qpwyrioqwmhcpu\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"gntxregbs\",\"provisioningState\":\"Succeeded\"},\"id\":\"cyw\",\"name\":\"oqxprsocfx\",\"type\":\"rzjjffliz\"}],\"endpointUri\":\"ljf\",\"failureReason\":\"lwlzekygnep\",\"location\":\"uxqdrph\",\"name\":\"xjqranpztlach\",\"provisioningState\":\"Failed\",\"shouldCreateAiServicesEndpoint\":true},\"id\":\"taapbrwviov\",\"name\":\"yhsorcavkfhyoig\",\"type\":\"wedfteratvpkg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class EndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EndpointResourcePropertiesBasicResource response = manager.endpoints()
-            .getWithResponse("pjmqteirrjj", "vrzfppopwxxdgzhn", "xbuwauytq", com.azure.core.util.Context.NONE)
+            .getWithResponse("kcebzrt", "utmtjsklkwtnqq", "qckmfxldqtm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gaxloafws", response.properties().associatedResourceId());
-        Assertions.assertEquals("rokwm", response.properties().deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("exupcuizvx", response.properties().endpointUri());
-        Assertions.assertEquals("vzhlkeotdscqkxzr", response.properties().failureReason());
-        Assertions.assertEquals("oqzmvemli", response.properties().location());
-        Assertions.assertEquals("dfqfnftrrhhgwaw", response.properties().name());
-        Assertions.assertFalse(response.properties().shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("dejnemrfq", response.properties().associatedResourceId());
+        Assertions.assertEquals("p", response.properties().deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("ljf", response.properties().endpointUri());
+        Assertions.assertEquals("lwlzekygnep", response.properties().failureReason());
+        Assertions.assertEquals("uxqdrph", response.properties().location());
+        Assertions.assertEquals("xjqranpztlach", response.properties().name());
+        Assertions.assertTrue(response.properties().shouldCreateAiServicesEndpoint());
     }
 }

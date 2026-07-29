@@ -22,7 +22,7 @@ public final class MarketplaceSubscriptionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"marketplacePlan\":{\"offerId\":\"rgcufiphnr\",\"planId\":\"zz\",\"publisherId\":\"nybfsoayatqkdzux\"},\"marketplaceSubscriptionStatus\":\"Unsubscribed\",\"modelId\":\"zkv\",\"provisioningState\":\"Succeeded\"},\"id\":\"jsaoggd\",\"name\":\"jjkox\",\"type\":\"ccjd\"}";
+            = "{\"properties\":{\"marketplacePlan\":{\"offerId\":\"tflhe\",\"planId\":\"xefs\",\"publisherId\":\"mdcoeexwgzsz\"},\"marketplaceSubscriptionStatus\":\"Unsubscribed\",\"modelId\":\"mqjhg\",\"provisioningState\":\"Succeeded\"},\"id\":\"hjld\",\"name\":\"xdqtjhtgncfbjv\",\"type\":\"dkgvudyml\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MarketplaceSubscriptionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MarketplaceSubscription response = manager.marketplaceSubscriptions()
-            .define("gi")
-            .withExistingWorkspace("rpuwacfqn", "vrbb")
-            .withProperties(new MarketplaceSubscriptionProperties().withModelId("klywdlxm"))
+            .define("mfhde")
+            .withExistingWorkspace("pfgtnsxdjhztn", "pkpmdlt")
+            .withProperties(new MarketplaceSubscriptionProperties().withModelId("axnym"))
             .create();
 
-        Assertions.assertEquals("zkv", response.properties().modelId());
+        Assertions.assertEquals("mqjhg", response.properties().modelId());
     }
 }

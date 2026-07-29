@@ -24,7 +24,7 @@ public final class QuotasUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"sxds\",\"type\":\"lefiott\",\"limit\":5613422335987697292,\"unit\":\"Count\",\"status\":\"InvalidVMFamilyName\"},{\"id\":\"tttyhypidzjjjf\",\"type\":\"skpnkkxoicb\",\"limit\":1198639288561542489,\"unit\":\"Count\",\"status\":\"Failure\"},{\"id\":\"cqhvtpmvppvgrigj\",\"type\":\"rlgkoqbzrclar\",\"limit\":1973976960199102306,\"unit\":\"Count\",\"status\":\"Success\"}],\"nextLink\":\"bemoramshqvk\"}";
+            = "{\"value\":[{\"id\":\"onu\",\"type\":\"ygxcki\",\"limit\":322807896113501248,\"unit\":\"Count\",\"status\":\"InvalidQuotaExceedsSubscriptionLimit\"},{\"id\":\"sgx\",\"type\":\"jvdajxebmliyrc\",\"limit\":5422130224041072996,\"unit\":\"Count\",\"status\":\"InvalidQuotaExceedsSubscriptionLimit\"},{\"id\":\"aq\",\"type\":\"whwdicntqsrhac\",\"limit\":4140955540935884235,\"unit\":\"Count\",\"status\":\"Success\"}],\"nextLink\":\"fnbiyxq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +34,21 @@ public final class QuotasUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UpdateWorkspaceQuotasResult response = manager.quotas()
-            .updateWithResponse("kqiqsriubem",
+            .updateWithResponse("saqfnbxuw",
                 new QuotaUpdateParameters().withValue(Arrays.asList(
-                    new QuotaBaseProperties().withId("gmrenrbngcafm")
-                        .withType("htkyzsgayngmowv")
-                        .withLimit(3217513276187027362L)
+                    new QuotaBaseProperties().withId("u")
+                        .withType("egtsqzkzworuhhv")
+                        .withLimit(694799680491173916L)
                         .withUnit(QuotaUnit.COUNT),
-                    new QuotaBaseProperties().withId("qhysu")
-                        .withType("dnslroqxrvycjdn")
-                        .withLimit(4205435734359502308L)
+                    new QuotaBaseProperties().withId("hfxb")
+                        .withType("pn")
+                        .withLimit(2824596496721394545L)
                         .withUnit(QuotaUnit.COUNT),
-                    new QuotaBaseProperties().withId("mpm")
-                        .withType("cbamto")
-                        .withLimit(7341216713228763268L)
+                    new QuotaBaseProperties().withId("znbklhwut")
+                        .withType("vuzqtrfziub")
+                        .withLimit(788158793444613990L)
                         .withUnit(QuotaUnit.COUNT)))
-                    .withLocation("xdigkggzmylq"),
+                    .withLocation("bmceplnukdawgzhb"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

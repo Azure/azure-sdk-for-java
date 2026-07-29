@@ -24,7 +24,7 @@ public final class OnlineDeploymentsListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"capacity\":{\"default\":1085682451,\"maximum\":1357446348,\"minimum\":910705207,\"scaleType\":\"Manual\"},\"resourceType\":\"gmt\",\"sku\":{\"name\":\"qcyycxlllk\",\"tier\":\"Free\"}}]}";
+            = "{\"value\":[{\"capacity\":{\"default\":1637426832,\"maximum\":317901147,\"minimum\":1379322468,\"scaleType\":\"None\"},\"resourceType\":\"twdaiexi\",\"sku\":{\"name\":\"pygiioukaff\",\"tier\":\"Standard\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,14 @@ public final class OnlineDeploymentsListSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response = manager.onlineDeployments()
-            .listSkus("rj", "grjsqtirhabh", "pcvsd", "jmbydrg", 1597911039, "nmtjm", com.azure.core.util.Context.NONE);
+            .listSkus("rvbcgsaaday", "xeqedftkigmjnk", "tvzyvzixmusiidi", "b", 1538328742, "tzfliqntnoe",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1085682451, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(1357446348, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(910705207, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(SkuScaleType.MANUAL, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals("qcyycxlllk", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
+        Assertions.assertEquals(1637426832, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(317901147, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1379322468, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(SkuScaleType.NONE, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals("pygiioukaff", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
     }
 }

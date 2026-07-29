@@ -12,15 +12,15 @@ public final class SparkJobScalaEntryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkJobScalaEntry model
-            = BinaryData.fromString("{\"sparkJobEntryType\":\"SparkJobScalaEntry\",\"className\":\"kcjhmmofbnivd\"}")
+            = BinaryData.fromString("{\"sparkJobEntryType\":\"SparkJobScalaEntry\",\"className\":\"xkcajgrbrc\"}")
                 .toObject(SparkJobScalaEntry.class);
-        Assertions.assertEquals("kcjhmmofbnivd", model.className());
+        Assertions.assertEquals("xkcajgrbrc", model.className());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkJobScalaEntry model = new SparkJobScalaEntry().withClassName("kcjhmmofbnivd");
+        SparkJobScalaEntry model = new SparkJobScalaEntry().withClassName("xkcajgrbrc");
         model = BinaryData.fromObject(model).toObject(SparkJobScalaEntry.class);
-        Assertions.assertEquals("kcjhmmofbnivd", model.className());
+        Assertions.assertEquals("xkcajgrbrc", model.className());
     }
 }

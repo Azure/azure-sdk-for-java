@@ -15,32 +15,32 @@ public final class QuotaUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUpdateParameters model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"yjom\",\"type\":\"rvpoipj\",\"limit\":749897299508954230,\"unit\":\"Count\"},{\"id\":\"sewfzvv\",\"type\":\"y\",\"limit\":8245422575175459873,\"unit\":\"Count\"}],\"location\":\"yandblk\"}")
+            "{\"value\":[{\"id\":\"xgb\",\"type\":\"pgo\",\"limit\":5938888142106030427,\"unit\":\"Count\"},{\"id\":\"bmrrmtr\",\"type\":\"jmpdvrjzwaw\",\"limit\":7830787325327936589,\"unit\":\"Count\"}],\"location\":\"sdjuzmuijtickzo\"}")
             .toObject(QuotaUpdateParameters.class);
-        Assertions.assertEquals("yjom", model.value().get(0).id());
-        Assertions.assertEquals("rvpoipj", model.value().get(0).type());
-        Assertions.assertEquals(749897299508954230L, model.value().get(0).limit());
+        Assertions.assertEquals("xgb", model.value().get(0).id());
+        Assertions.assertEquals("pgo", model.value().get(0).type());
+        Assertions.assertEquals(5938888142106030427L, model.value().get(0).limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.value().get(0).unit());
-        Assertions.assertEquals("yandblk", model.location());
+        Assertions.assertEquals("sdjuzmuijtickzo", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaUpdateParameters model = new QuotaUpdateParameters().withValue(Arrays.asList(
-            new QuotaBaseProperties().withId("yjom")
-                .withType("rvpoipj")
-                .withLimit(749897299508954230L)
+            new QuotaBaseProperties().withId("xgb")
+                .withType("pgo")
+                .withLimit(5938888142106030427L)
                 .withUnit(QuotaUnit.COUNT),
-            new QuotaBaseProperties().withId("sewfzvv")
-                .withType("y")
-                .withLimit(8245422575175459873L)
+            new QuotaBaseProperties().withId("bmrrmtr")
+                .withType("jmpdvrjzwaw")
+                .withLimit(7830787325327936589L)
                 .withUnit(QuotaUnit.COUNT)))
-            .withLocation("yandblk");
+            .withLocation("sdjuzmuijtickzo");
         model = BinaryData.fromObject(model).toObject(QuotaUpdateParameters.class);
-        Assertions.assertEquals("yjom", model.value().get(0).id());
-        Assertions.assertEquals("rvpoipj", model.value().get(0).type());
-        Assertions.assertEquals(749897299508954230L, model.value().get(0).limit());
+        Assertions.assertEquals("xgb", model.value().get(0).id());
+        Assertions.assertEquals("pgo", model.value().get(0).type());
+        Assertions.assertEquals(5938888142106030427L, model.value().get(0).limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.value().get(0).unit());
-        Assertions.assertEquals("yandblk", model.location());
+        Assertions.assertEquals("sdjuzmuijtickzo", model.location());
     }
 }

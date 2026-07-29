@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableQuotaInner model = BinaryData.fromString("{\"properties\":{\"total\":3219007734399922031}}")
+        AvailableQuotaInner model = BinaryData.fromString("{\"properties\":{\"total\":5949265954971088896}}")
             .toObject(AvailableQuotaInner.class);
-        Assertions.assertEquals(3219007734399922031L, model.properties().total());
+        Assertions.assertEquals(5949265954971088896L, model.properties().total());
     }
 }

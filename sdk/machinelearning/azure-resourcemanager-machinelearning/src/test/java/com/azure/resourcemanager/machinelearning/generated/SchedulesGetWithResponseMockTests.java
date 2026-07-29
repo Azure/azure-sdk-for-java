@@ -21,7 +21,7 @@ public final class SchedulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"bn\",\"isEnabled\":true,\"provisioningState\":\"Failed\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"zqlyputawdmdikuf\",\"startTime\":\"v\",\"timeZone\":\"ujzofyldxk\"},\"description\":\"vfojcvnhpebuiy\",\"properties\":{\"ldbdnmgui\":\"sgqacbeau\"},\"tags\":{\"jpzauugdarfumit\":\"toxzxb\",\"mokfdybv\":\"aii\",\"jcozrwry\":\"wbgmjrvrsq\",\"wvvnxoqaaqjblwq\":\"cttvxkxgffpvv\"}},\"id\":\"tevfeugcwt\",\"name\":\"ztxos\",\"type\":\"vfrymqqfksqfc\"}";
+            = "{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"vmrnwgeajyifei\",\"isEnabled\":false,\"provisioningState\":\"Failed\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"dnk\",\"startTime\":\"tlxrdepqtz\",\"timeZone\":\"kpkonovfno\"},\"description\":\"whutvcdtgxsyfuh\",\"properties\":{\"wcp\":\"zxpsrlbppjq\",\"talljsoasxjjklmp\":\"aosk\",\"nmbb\":\"grosxfdxrc\",\"zlreiwdskiegta\":\"luvdceouevno\"},\"tags\":{\"qo\":\"leptaa\",\"kmihggv\":\"xaodbhgxbadbor\",\"viynlslgxif\":\"hqwyxbat\"}},\"id\":\"sclqwk\",\"name\":\"dgepuvambzfx\",\"type\":\"shaqfueqfniagz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,16 +31,16 @@ public final class SchedulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schedule response = manager.schedules()
-            .getWithResponse("zxzwinrg", "kqobovqlltql", "ufkr", com.azure.core.util.Context.NONE)
+            .getWithResponse("rxeyzzynxbuvyglf", "fcsbkjhoxtbsybp", "fojpnixdgqj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vfojcvnhpebuiy", response.properties().description());
-        Assertions.assertEquals("sgqacbeau", response.properties().properties().get("ldbdnmgui"));
-        Assertions.assertEquals("toxzxb", response.properties().tags().get("jpzauugdarfumit"));
-        Assertions.assertEquals("bn", response.properties().displayName());
-        Assertions.assertTrue(response.properties().isEnabled());
-        Assertions.assertEquals("zqlyputawdmdikuf", response.properties().trigger().endTime());
-        Assertions.assertEquals("v", response.properties().trigger().startTime());
-        Assertions.assertEquals("ujzofyldxk", response.properties().trigger().timeZone());
+        Assertions.assertEquals("whutvcdtgxsyfuh", response.properties().description());
+        Assertions.assertEquals("zxpsrlbppjq", response.properties().properties().get("wcp"));
+        Assertions.assertEquals("leptaa", response.properties().tags().get("qo"));
+        Assertions.assertEquals("vmrnwgeajyifei", response.properties().displayName());
+        Assertions.assertFalse(response.properties().isEnabled());
+        Assertions.assertEquals("dnk", response.properties().trigger().endTime());
+        Assertions.assertEquals("tlxrdepqtz", response.properties().trigger().startTime());
+        Assertions.assertEquals("kpkonovfno", response.properties().trigger().timeZone());
     }
 }

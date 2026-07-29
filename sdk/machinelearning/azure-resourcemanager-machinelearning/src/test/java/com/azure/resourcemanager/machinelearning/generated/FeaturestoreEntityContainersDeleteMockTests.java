@@ -27,7 +27,7 @@ public final class FeaturestoreEntityContainersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.featurestoreEntityContainers().delete("oe", "jikwsuxrs", "xtx", com.azure.core.util.Context.NONE);
+        manager.featurestoreEntityContainers().delete("lvfzwt", "rmp", "apyq", com.azure.core.util.Context.NONE);
 
     }
 }

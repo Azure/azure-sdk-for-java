@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IdleShutdownSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdleShutdownSetting model = BinaryData.fromString("{\"idleTimeBeforeShutdown\":\"jffzwncvdefxonzt\"}")
-            .toObject(IdleShutdownSetting.class);
-        Assertions.assertEquals("jffzwncvdefxonzt", model.idleTimeBeforeShutdown());
+        IdleShutdownSetting model
+            = BinaryData.fromString("{\"idleTimeBeforeShutdown\":\"tb\"}").toObject(IdleShutdownSetting.class);
+        Assertions.assertEquals("tb", model.idleTimeBeforeShutdown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdleShutdownSetting model = new IdleShutdownSetting().withIdleTimeBeforeShutdown("jffzwncvdefxonzt");
+        IdleShutdownSetting model = new IdleShutdownSetting().withIdleTimeBeforeShutdown("tb");
         model = BinaryData.fromObject(model).toObject(IdleShutdownSetting.class);
-        Assertions.assertEquals("jffzwncvdefxonzt", model.idleTimeBeforeShutdown());
+        Assertions.assertEquals("tb", model.idleTimeBeforeShutdown());
     }
 }

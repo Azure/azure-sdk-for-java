@@ -16,36 +16,36 @@ public final class RecurrenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Recurrence model = BinaryData.fromString(
-            "{\"frequency\":\"Month\",\"interval\":158276505,\"startTime\":\"xv\",\"timeZone\":\"ofxxdplrelfk\",\"schedule\":{\"hours\":[1789995716,2013174426,1390213429],\"minutes\":[568829026,1894018845,1911905134,1796580082],\"monthDays\":[1687325738,2030750446,1009924982],\"weekDays\":[\"Thursday\",\"Friday\"]}}")
+            "{\"frequency\":\"Month\",\"interval\":557003354,\"startTime\":\"ybkisb\",\"timeZone\":\"fmxgl\",\"schedule\":{\"hours\":[884197086],\"minutes\":[298750071,1793309596,2124916368],\"monthDays\":[1954921889],\"weekDays\":[\"Saturday\",\"Tuesday\"]}}")
             .toObject(Recurrence.class);
         Assertions.assertEquals(ComputeRecurrenceFrequency.MONTH, model.frequency());
-        Assertions.assertEquals(158276505, model.interval());
-        Assertions.assertEquals("xv", model.startTime());
-        Assertions.assertEquals("ofxxdplrelfk", model.timeZone());
-        Assertions.assertEquals(1789995716, model.schedule().hours().get(0));
-        Assertions.assertEquals(568829026, model.schedule().minutes().get(0));
-        Assertions.assertEquals(1687325738, model.schedule().monthDays().get(0));
-        Assertions.assertEquals(ComputeWeekDay.THURSDAY, model.schedule().weekDays().get(0));
+        Assertions.assertEquals(557003354, model.interval());
+        Assertions.assertEquals("ybkisb", model.startTime());
+        Assertions.assertEquals("fmxgl", model.timeZone());
+        Assertions.assertEquals(884197086, model.schedule().hours().get(0));
+        Assertions.assertEquals(298750071, model.schedule().minutes().get(0));
+        Assertions.assertEquals(1954921889, model.schedule().monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.SATURDAY, model.schedule().weekDays().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Recurrence model = new Recurrence().withFrequency(ComputeRecurrenceFrequency.MONTH)
-            .withInterval(158276505)
-            .withStartTime("xv")
-            .withTimeZone("ofxxdplrelfk")
-            .withSchedule(new ComputeRecurrenceSchedule().withHours(Arrays.asList(1789995716, 2013174426, 1390213429))
-                .withMinutes(Arrays.asList(568829026, 1894018845, 1911905134, 1796580082))
-                .withMonthDays(Arrays.asList(1687325738, 2030750446, 1009924982))
-                .withWeekDays(Arrays.asList(ComputeWeekDay.THURSDAY, ComputeWeekDay.FRIDAY)));
+            .withInterval(557003354)
+            .withStartTime("ybkisb")
+            .withTimeZone("fmxgl")
+            .withSchedule(new ComputeRecurrenceSchedule().withHours(Arrays.asList(884197086))
+                .withMinutes(Arrays.asList(298750071, 1793309596, 2124916368))
+                .withMonthDays(Arrays.asList(1954921889))
+                .withWeekDays(Arrays.asList(ComputeWeekDay.SATURDAY, ComputeWeekDay.TUESDAY)));
         model = BinaryData.fromObject(model).toObject(Recurrence.class);
         Assertions.assertEquals(ComputeRecurrenceFrequency.MONTH, model.frequency());
-        Assertions.assertEquals(158276505, model.interval());
-        Assertions.assertEquals("xv", model.startTime());
-        Assertions.assertEquals("ofxxdplrelfk", model.timeZone());
-        Assertions.assertEquals(1789995716, model.schedule().hours().get(0));
-        Assertions.assertEquals(568829026, model.schedule().minutes().get(0));
-        Assertions.assertEquals(1687325738, model.schedule().monthDays().get(0));
-        Assertions.assertEquals(ComputeWeekDay.THURSDAY, model.schedule().weekDays().get(0));
+        Assertions.assertEquals(557003354, model.interval());
+        Assertions.assertEquals("ybkisb", model.startTime());
+        Assertions.assertEquals("fmxgl", model.timeZone());
+        Assertions.assertEquals(884197086, model.schedule().hours().get(0));
+        Assertions.assertEquals(298750071, model.schedule().minutes().get(0));
+        Assertions.assertEquals(1954921889, model.schedule().monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.SATURDAY, model.schedule().weekDays().get(0));
     }
 }

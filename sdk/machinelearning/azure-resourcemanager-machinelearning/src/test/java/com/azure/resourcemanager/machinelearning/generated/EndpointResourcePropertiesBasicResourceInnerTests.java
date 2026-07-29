@@ -16,35 +16,35 @@ public final class EndpointResourcePropertiesBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointResourcePropertiesBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"xnavpyxqb\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"bfkihai\",\"provisioningState\":\"Canceled\"},\"id\":\"fkzlxvcozcgo\",\"name\":\"ozlibcbnunzuysaj\",\"type\":\"vqlhony\"}],\"endpointUri\":\"elivgtibtkqjqjca\",\"failureReason\":\"of\",\"location\":\"khhk\",\"name\":\"rvkxeojtdyulg\",\"provisioningState\":\"Updating\",\"shouldCreateAiServicesEndpoint\":false},\"id\":\"uklfqfxspxgogy\",\"name\":\"bztgaex\",\"type\":\"nskvctvuz\"}")
+            "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"vuhzmolhveoln\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"hwdxqupymlh\",\"provisioningState\":\"Failed\"},\"id\":\"jq\",\"name\":\"mqynhitrnwqg\",\"type\":\"rbthbfpiqnrjo\"}],\"endpointUri\":\"gwfv\",\"failureReason\":\"wzrqeia\",\"location\":\"pkhuvnlmdcnut\",\"name\":\"xmi\",\"provisioningState\":\"Creating\",\"shouldCreateAiServicesEndpoint\":false},\"id\":\"vioyn\",\"name\":\"tfqhhvvwzprjaaai\",\"type\":\"ibtvavl\"}")
             .toObject(EndpointResourcePropertiesBasicResourceInner.class);
-        Assertions.assertEquals("xnavpyxqb", model.properties().associatedResourceId());
-        Assertions.assertEquals("bfkihai", model.properties().deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("elivgtibtkqjqjca", model.properties().endpointUri());
-        Assertions.assertEquals("of", model.properties().failureReason());
-        Assertions.assertEquals("khhk", model.properties().location());
-        Assertions.assertEquals("rvkxeojtdyulg", model.properties().name());
+        Assertions.assertEquals("vuhzmolhveoln", model.properties().associatedResourceId());
+        Assertions.assertEquals("hwdxqupymlh", model.properties().deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("gwfv", model.properties().endpointUri());
+        Assertions.assertEquals("wzrqeia", model.properties().failureReason());
+        Assertions.assertEquals("pkhuvnlmdcnut", model.properties().location());
+        Assertions.assertEquals("xmi", model.properties().name());
         Assertions.assertFalse(model.properties().shouldCreateAiServicesEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointResourcePropertiesBasicResourceInner model = new EndpointResourcePropertiesBasicResourceInner()
-            .withProperties(new EndpointResourceProperties().withAssociatedResourceId("xnavpyxqb")
+            .withProperties(new EndpointResourceProperties().withAssociatedResourceId("vuhzmolhveoln")
                 .withDeployments(Arrays.asList(new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("bfkihai"))))
-                .withEndpointUri("elivgtibtkqjqjca")
-                .withFailureReason("of")
-                .withLocation("khhk")
-                .withName("rvkxeojtdyulg")
+                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("hwdxqupymlh"))))
+                .withEndpointUri("gwfv")
+                .withFailureReason("wzrqeia")
+                .withLocation("pkhuvnlmdcnut")
+                .withName("xmi")
                 .withShouldCreateAiServicesEndpoint(false));
         model = BinaryData.fromObject(model).toObject(EndpointResourcePropertiesBasicResourceInner.class);
-        Assertions.assertEquals("xnavpyxqb", model.properties().associatedResourceId());
-        Assertions.assertEquals("bfkihai", model.properties().deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("elivgtibtkqjqjca", model.properties().endpointUri());
-        Assertions.assertEquals("of", model.properties().failureReason());
-        Assertions.assertEquals("khhk", model.properties().location());
-        Assertions.assertEquals("rvkxeojtdyulg", model.properties().name());
+        Assertions.assertEquals("vuhzmolhveoln", model.properties().associatedResourceId());
+        Assertions.assertEquals("hwdxqupymlh", model.properties().deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("gwfv", model.properties().endpointUri());
+        Assertions.assertEquals("wzrqeia", model.properties().failureReason());
+        Assertions.assertEquals("pkhuvnlmdcnut", model.properties().location());
+        Assertions.assertEquals("xmi", model.properties().name());
         Assertions.assertFalse(model.properties().shouldCreateAiServicesEndpoint());
     }
 }

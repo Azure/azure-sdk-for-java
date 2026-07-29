@@ -14,20 +14,20 @@ public final class InstanceTypeSchemaResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceTypeSchemaResources model = BinaryData.fromString(
-            "{\"requests\":{\"he\":\"bdg\",\"zvzuat\":\"onsdunr\",\"bqskgqjbvitptpvs\":\"hgzuyxtrvf\"},\"limits\":{\"fdwfbwxy\":\"vdhpiwrmuwkgjwb\",\"jrzctwymz\":\"dqtmggcpdrmeg\"}}")
+            "{\"requests\":{\"yqz\":\"sazuqznghxh\",\"ffxsfybntmveh\":\"sdkpvnrvzw\"},\"limits\":{\"ydybnairvhpqsv\":\"lyuvbgtzqzqwe\",\"nqnvnc\":\"zeogeatr\",\"vjnkoiz\":\"rfcs\"}}")
             .toObject(InstanceTypeSchemaResources.class);
-        Assertions.assertEquals("bdg", model.requests().get("he"));
-        Assertions.assertEquals("vdhpiwrmuwkgjwb", model.limits().get("fdwfbwxy"));
+        Assertions.assertEquals("sazuqznghxh", model.requests().get("yqz"));
+        Assertions.assertEquals("lyuvbgtzqzqwe", model.limits().get("ydybnairvhpqsv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceTypeSchemaResources model = new InstanceTypeSchemaResources()
-            .withRequests(mapOf("he", "bdg", "zvzuat", "onsdunr", "bqskgqjbvitptpvs", "hgzuyxtrvf"))
-            .withLimits(mapOf("fdwfbwxy", "vdhpiwrmuwkgjwb", "jrzctwymz", "dqtmggcpdrmeg"));
+        InstanceTypeSchemaResources model
+            = new InstanceTypeSchemaResources().withRequests(mapOf("yqz", "sazuqznghxh", "ffxsfybntmveh", "sdkpvnrvzw"))
+                .withLimits(mapOf("ydybnairvhpqsv", "lyuvbgtzqzqwe", "nqnvnc", "zeogeatr", "vjnkoiz", "rfcs"));
         model = BinaryData.fromObject(model).toObject(InstanceTypeSchemaResources.class);
-        Assertions.assertEquals("bdg", model.requests().get("he"));
-        Assertions.assertEquals("vdhpiwrmuwkgjwb", model.limits().get("fdwfbwxy"));
+        Assertions.assertEquals("sazuqznghxh", model.requests().get("yqz"));
+        Assertions.assertEquals("lyuvbgtzqzqwe", model.limits().get("ydybnairvhpqsv"));
     }
 
     // Use "Map.of" if available

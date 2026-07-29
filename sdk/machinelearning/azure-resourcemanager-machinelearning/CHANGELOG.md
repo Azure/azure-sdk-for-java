@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2026-07-23)
+## 1.2.0-beta.1 (2026-07-29)
 
 - Azure Resource Manager Machine Learning client library for Java. This package contains Microsoft Azure SDK for Machine Learning Management SDK. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package api-version 2026-05-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -161,10 +161,10 @@
 #### `models.EstimatedVMPrice` was modified
 
 * `EstimatedVMPrice()` was changed to private access
-* `withOsType(models.VMPriceOSType)` was removed
 * `validate()` was removed
 * `withRetailPrice(double)` was removed
 * `withVmTier(models.VMTier)` was removed
+* `withOsType(models.VMPriceOSType)` was removed
 
 #### `models.ScaleSettingsInformation` was modified
 
@@ -172,19 +172,19 @@
 
 #### `models.WorkspaceConnectionPropertiesV2` was modified
 
-* `valueFormat()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
 * `withValue(java.lang.String)` was removed
 * `validate()` was removed
+* `valueFormat()` was removed
 * `value()` was removed
-* `withValueFormat(models.ValueFormat)` was removed
 
 #### `models.BanditPolicy` was modified
 
-* `validate()` was removed
 * `java.lang.Float slackFactor()` -> `java.lang.Double slackFactor()`
+* `withSlackFactor(java.lang.Float)` was removed
+* `validate()` was removed
 * `java.lang.Float slackAmount()` -> `java.lang.Double slackAmount()`
 * `withSlackAmount(java.lang.Float)` was removed
-* `withSlackFactor(java.lang.Float)` was removed
 
 #### `models.JobResourceConfiguration` was modified
 
@@ -212,8 +212,8 @@
 
 #### `models.AzureBlobDatastore` was modified
 
-* `validate()` was removed
 * `isDefault()` was removed
+* `validate()` was removed
 
 #### `models.AssetContainer` was modified
 
@@ -233,34 +233,34 @@
 
 #### `models.ImageModelSettingsObjectDetection` was modified
 
-* `withWarmupCosineLRCycles(java.lang.Float)` was removed
-* `withValidationIouThreshold(java.lang.Float)` was removed
-* `java.lang.Float tilePredictionsNmsThreshold()` -> `java.lang.Double tilePredictionsNmsThreshold()`
-* `withTileOverlapRatio(java.lang.Float)` was removed
-* `withBoxScoreThreshold(java.lang.Float)` was removed
-* `withWeightDecay(java.lang.Float)` was removed
-* `withStepLRGamma(java.lang.Float)` was removed
-* `withTilePredictionsNmsThreshold(java.lang.Float)` was removed
-* `withMomentum(java.lang.Float)` was removed
-* `withBeta1(java.lang.Float)` was removed
-* `java.lang.Float nmsIouThreshold()` -> `java.lang.Double nmsIouThreshold()`
-* `validate()` was removed
-* `java.lang.Float boxScoreThreshold()` -> `java.lang.Double boxScoreThreshold()`
-* `withBeta2(java.lang.Float)` was removed
-* `withNmsIouThreshold(java.lang.Float)` was removed
 * `withLearningRate(java.lang.Float)` was removed
 * `java.lang.Float tileOverlapRatio()` -> `java.lang.Double tileOverlapRatio()`
+* `java.lang.Float boxScoreThreshold()` -> `java.lang.Double boxScoreThreshold()`
+* `withBoxScoreThreshold(java.lang.Float)` was removed
+* `withMomentum(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
+* `java.lang.Float nmsIouThreshold()` -> `java.lang.Double nmsIouThreshold()`
+* `withWeightDecay(java.lang.Float)` was removed
+* `withStepLRGamma(java.lang.Float)` was removed
+* `withValidationIouThreshold(java.lang.Float)` was removed
 * `java.lang.Float validationIouThreshold()` -> `java.lang.Double validationIouThreshold()`
+* `withTilePredictionsNmsThreshold(java.lang.Float)` was removed
+* `withNmsIouThreshold(java.lang.Float)` was removed
+* `withBeta1(java.lang.Float)` was removed
+* `withTileOverlapRatio(java.lang.Float)` was removed
+* `validate()` was removed
+* `withWarmupCosineLRCycles(java.lang.Float)` was removed
+* `java.lang.Float tilePredictionsNmsThreshold()` -> `java.lang.Double tilePredictionsNmsThreshold()`
 
 #### `models.ManagedIdentityCredential` was modified
 
 * `ManagedIdentityCredential()` was changed to private access
-* `withUserManagedIdentityClientId(java.lang.String)` was removed
-* `withUserManagedIdentityPrincipalId(java.lang.String)` was removed
-* `validate()` was removed
-* `withUserManagedIdentityResourceId(java.lang.String)` was removed
 * `withManagedIdentityType(java.lang.String)` was removed
+* `validate()` was removed
 * `withUserManagedIdentityTenantId(java.lang.String)` was removed
+* `withUserManagedIdentityResourceId(java.lang.String)` was removed
+* `withUserManagedIdentityPrincipalId(java.lang.String)` was removed
+* `withUserManagedIdentityClientId(java.lang.String)` was removed
 
 #### `models.AmlToken` was modified
 
@@ -292,12 +292,12 @@
 
 #### `models.SynapseSpark` was modified
 
-* `provisioningErrors()` was removed
-* `createdOn()` was removed
-* `provisioningState()` was removed
-* `modifiedOn()` was removed
-* `validate()` was removed
 * `isAttachedCompute()` was removed
+* `provisioningErrors()` was removed
+* `modifiedOn()` was removed
+* `provisioningState()` was removed
+* `validate()` was removed
+* `createdOn()` was removed
 
 #### `models.ScheduleProperties` was modified
 
@@ -350,8 +350,8 @@
 #### `models.AcrDetails` was modified
 
 * `userCreatedAcrAccount()` was removed
-* `validate()` was removed
 * `withUserCreatedAcrAccount(models.UserCreatedAcrAccount)` was removed
+* `validate()` was removed
 
 #### `models.CodeConfiguration` was modified
 
@@ -386,12 +386,12 @@
 
 #### `models.Aks` was modified
 
-* `provisioningState()` was removed
 * `isAttachedCompute()` was removed
+* `provisioningState()` was removed
 * `validate()` was removed
 * `createdOn()` was removed
-* `provisioningErrors()` was removed
 * `modifiedOn()` was removed
+* `provisioningErrors()` was removed
 
 #### `models.CustomMetricThreshold` was modified
 
@@ -415,12 +415,12 @@
 
 #### `models.DataLakeAnalytics` was modified
 
-* `isAttachedCompute()` was removed
-* `createdOn()` was removed
 * `provisioningState()` was removed
-* `provisioningErrors()` was removed
 * `modifiedOn()` was removed
+* `createdOn()` was removed
+* `isAttachedCompute()` was removed
 * `validate()` was removed
+* `provisioningErrors()` was removed
 
 #### `models.AutoTargetRollingWindowSize` was modified
 
@@ -550,8 +550,8 @@
 
 #### `models.OneLakeDatastore` was modified
 
-* `isDefault()` was removed
 * `validate()` was removed
+* `isDefault()` was removed
 
 #### `models.AmlComputeNodeInformation` was modified
 
@@ -624,10 +624,10 @@
 
 #### `models.ServicePrincipalAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withValue(java.lang.String)` was removed
 * `withValueFormat(models.ValueFormat)` was removed
-* `validate()` was removed
 * `group()` was removed
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
 * `createdByWorkspaceArmId()` was removed
 
 #### `models.BatchEndpointDefaults` was modified
@@ -661,17 +661,17 @@
 
 #### `models.Workspaces` was modified
 
-* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `list(java.lang.String,com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.Kubernetes` was modified
 
-* `provisioningErrors()` was removed
 * `validate()` was removed
-* `provisioningState()` was removed
-* `modifiedOn()` was removed
-* `createdOn()` was removed
 * `isAttachedCompute()` was removed
+* `provisioningErrors()` was removed
+* `provisioningState()` was removed
+* `createdOn()` was removed
+* `modifiedOn()` was removed
 
 #### `models.AllFeatures` was modified
 
@@ -717,21 +717,21 @@
 
 #### `models.OAuth2AuthTypeWorkspaceConnectionProperties` was modified
 
-* `withValue(java.lang.String)` was removed
-* `group()` was removed
 * `validate()` was removed
 * `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
 * `createdByWorkspaceArmId()` was removed
+* `group()` was removed
 
 #### `models.FeatureProperties` was modified
 
 * `FeatureProperties()` was changed to private access
-* `withProperties(java.util.Map)` was removed
-* `validate()` was removed
-* `withDescription(java.lang.String)` was removed
-* `withFeatureName(java.lang.String)` was removed
-* `withDataType(models.FeatureDataType)` was removed
 * `withTags(java.util.Map)` was removed
+* `withFeatureName(java.lang.String)` was removed
+* `validate()` was removed
+* `withProperties(java.util.Map)` was removed
+* `withDataType(models.FeatureDataType)` was removed
+* `withDescription(java.lang.String)` was removed
 
 #### `models.CustomModelJobInput` was modified
 
@@ -755,8 +755,8 @@
 
 #### `models.RegistryPartialManagedServiceIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 
 #### `models.UriFolderDataVersion` was modified
@@ -786,11 +786,11 @@
 #### `models.ComputeInstanceDataDisk` was modified
 
 * `ComputeInstanceDataDisk()` was changed to private access
-* `validate()` was removed
-* `withCaching(models.Caching)` was removed
-* `withDiskSizeGB(java.lang.Integer)` was removed
 * `withLun(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withDiskSizeGB(java.lang.Integer)` was removed
 * `withStorageAccountType(models.StorageAccountType)` was removed
+* `withCaching(models.Caching)` was removed
 
 #### `models.RegistryPrivateEndpointConnection` was modified
 
@@ -807,32 +807,32 @@
 #### `models.ComputeInstanceApplication` was modified
 
 * `ComputeInstanceApplication()` was changed to private access
-* `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
 * `withEndpointUri(java.lang.String)` was removed
 
 #### `models.PrivateLinkResource` was modified
 
 * `PrivateLinkResource()` was removed
-* `java.lang.String name()` -> `java.lang.String name()`
-* `models.Sku sku()` -> `models.Sku sku()`
-* `java.util.List requiredMembers()` -> `java.util.List requiredMembers()`
-* `withSku(models.Sku)` was removed
-* `java.lang.String type()` -> `java.lang.String type()`
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `java.util.Map tags()` -> `java.util.Map tags()`
-* `java.util.List requiredZoneNames()` -> `java.util.List requiredZoneNames()`
+* `withIdentity(models.ManagedServiceIdentity)` was removed
 * `toJson(com.azure.json.JsonWriter)` was removed
-* `validate()` was removed
-* `java.lang.String groupId()` -> `java.lang.String groupId()`
+* `java.util.List requiredMembers()` -> `java.util.List requiredMembers()`
 * `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+* `java.lang.String groupId()` -> `java.lang.String groupId()`
+* `java.lang.String name()` -> `java.lang.String name()`
+* `withSku(models.Sku)` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `java.lang.String id()` -> `java.lang.String id()`
+* `java.util.Map tags()` -> `java.util.Map tags()`
+* `java.lang.String type()` -> `java.lang.String type()`
+* `withTags(java.util.Map)` was removed
+* `models.Sku sku()` -> `models.Sku sku()`
 * `java.lang.String location()` -> `java.lang.String location()`
 * `withLocation(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-* `java.lang.String id()` -> `java.lang.String id()`
-* `withRequiredZoneNames(java.util.List)` was removed
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `validate()` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.util.List requiredZoneNames()` -> `java.util.List requiredZoneNames()`
 
 #### `models.PipelineJob` was modified
 
@@ -858,9 +858,9 @@
 
 #### `models.StorageAccountDetails` was modified
 
+* `withUserCreatedStorageAccount(models.UserCreatedStorageAccount)` was removed
 * `userCreatedStorageAccount()` was removed
 * `validate()` was removed
-* `withUserCreatedStorageAccount(models.UserCreatedStorageAccount)` was removed
 
 #### `models.PartialMinimalTrackedResource` was modified
 
@@ -904,12 +904,12 @@
 
 #### `models.VirtualMachine` was modified
 
-* `provisioningState()` was removed
 * `provisioningErrors()` was removed
-* `modifiedOn()` was removed
 * `isAttachedCompute()` was removed
+* `modifiedOn()` was removed
 * `validate()` was removed
 * `createdOn()` was removed
+* `provisioningState()` was removed
 
 #### `models.RegressionTrainingSettings` was modified
 
@@ -928,17 +928,17 @@
 
 #### `models.AmlCompute` was modified
 
-* `provisioningState()` was removed
+* `validate()` was removed
 * `createdOn()` was removed
+* `modifiedOn()` was removed
 * `isAttachedCompute()` was removed
 * `provisioningErrors()` was removed
-* `validate()` was removed
-* `modifiedOn()` was removed
+* `provisioningState()` was removed
 
 #### `models.AzureDataLakeGen2Datastore` was modified
 
-* `isDefault()` was removed
 * `validate()` was removed
+* `isDefault()` was removed
 
 #### `models.MonitoringTarget` was modified
 
@@ -946,14 +946,14 @@
 
 #### `models.ImageModelSettingsClassification` was modified
 
-* `withWeightDecay(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
+* `withWarmupCosineLRCycles(java.lang.Float)` was removed
 * `validate()` was removed
 * `withBeta1(java.lang.Float)` was removed
-* `withLearningRate(java.lang.Float)` was removed
-* `withWarmupCosineLRCycles(java.lang.Float)` was removed
-* `withBeta2(java.lang.Float)` was removed
 * `withStepLRGamma(java.lang.Float)` was removed
 * `withMomentum(java.lang.Float)` was removed
+* `withWeightDecay(java.lang.Float)` was removed
+* `withLearningRate(java.lang.Float)` was removed
 
 #### `models.QueueSettings` was modified
 
@@ -974,12 +974,12 @@
 
 #### `models.Databricks` was modified
 
-* `isAttachedCompute()` was removed
-* `modifiedOn()` was removed
 * `provisioningState()` was removed
-* `createdOn()` was removed
+* `isAttachedCompute()` was removed
 * `provisioningErrors()` was removed
 * `validate()` was removed
+* `modifiedOn()` was removed
+* `createdOn()` was removed
 
 #### `models.PrivateEndpointConnection$Update` was modified
 
@@ -1003,11 +1003,11 @@
 
 #### `models.ApiKeyAuthWorkspaceConnectionProperties` was modified
 
-* `withValue(java.lang.String)` was removed
+* `group()` was removed
 * `withValueFormat(models.ValueFormat)` was removed
 * `validate()` was removed
-* `group()` was removed
 * `createdByWorkspaceArmId()` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.UriFileJobInput` was modified
 
@@ -1015,12 +1015,12 @@
 
 #### `models.ComputeInstance` was modified
 
-* `createdOn()` was removed
-* `isAttachedCompute()` was removed
-* `provisioningState()` was removed
 * `modifiedOn()` was removed
 * `provisioningErrors()` was removed
 * `validate()` was removed
+* `provisioningState()` was removed
+* `isAttachedCompute()` was removed
+* `createdOn()` was removed
 
 #### `models.AnonymousAccessCredential` was modified
 
@@ -1030,11 +1030,11 @@
 #### `models.SkuCapacity` was modified
 
 * `SkuCapacity()` was changed to private access
-* `withMaximum(java.lang.Integer)` was removed
-* `validate()` was removed
 * `withDefaultProperty(java.lang.Integer)` was removed
-* `withMinimum(java.lang.Integer)` was removed
+* `withMaximum(java.lang.Integer)` was removed
 * `withScaleType(models.SkuScaleType)` was removed
+* `validate()` was removed
+* `withMinimum(java.lang.Integer)` was removed
 
 #### `models.WorkspaceConnections` was modified
 
@@ -1055,12 +1055,12 @@
 #### `models.ComputeInstanceContainer` was modified
 
 * `ComputeInstanceContainer()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withGpu(java.lang.String)` was removed
-* `withEnvironment(models.ComputeInstanceEnvironmentInfo)` was removed
 * `withAutosave(models.Autosave)` was removed
-* `validate()` was removed
+* `withEnvironment(models.ComputeInstanceEnvironmentInfo)` was removed
 * `withNetwork(models.Network)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.UriFileJobOutput` was modified
 
@@ -1108,18 +1108,18 @@
 
 #### `models.NoneAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withValue(java.lang.String)` was removed
-* `withValueFormat(models.ValueFormat)` was removed
-* `group()` was removed
-* `createdByWorkspaceArmId()` was removed
 * `validate()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
+* `createdByWorkspaceArmId()` was removed
+* `group()` was removed
 
 #### `models.NotebookPreparationError` was modified
 
 * `NotebookPreparationError()` was changed to private access
-* `withErrorMessage(java.lang.String)` was removed
 * `withStatusCode(java.lang.Integer)` was removed
 * `validate()` was removed
+* `withErrorMessage(java.lang.String)` was removed
 
 #### `models.PrivateEndpointDestination` was modified
 
@@ -1156,10 +1156,10 @@
 #### `models.ImageMetadata` was modified
 
 * `ImageMetadata()` was changed to private access
+* `withIsLatestOsImageVersion(java.lang.Boolean)` was removed
+* `withLatestImageVersion(java.lang.String)` was removed
 * `withCurrentImageVersion(java.lang.String)` was removed
 * `validate()` was removed
-* `withLatestImageVersion(java.lang.String)` was removed
-* `withIsLatestOsImageVersion(java.lang.Boolean)` was removed
 
 #### `models.ScheduleActionBase` was modified
 
@@ -1179,18 +1179,18 @@
 
 #### `models.CustomKeysWorkspaceConnectionProperties` was modified
 
-* `validate()` was removed
-* `group()` was removed
 * `withValueFormat(models.ValueFormat)` was removed
 * `createdByWorkspaceArmId()` was removed
 * `withValue(java.lang.String)` was removed
+* `group()` was removed
+* `validate()` was removed
 
 #### `models.CertificateDatastoreCredentials` was modified
 
 * `withClientId(java.util.UUID)` was removed
 * `validate()` was removed
-* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 * `withTenantId(java.util.UUID)` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 
 #### `models.CustomKeys` was modified
@@ -1207,19 +1207,19 @@
 
 #### `models.UsernamePasswordAuthTypeWorkspaceConnectionProperties` was modified
 
-* `validate()` was removed
-* `withValue(java.lang.String)` was removed
-* `withValueFormat(models.ValueFormat)` was removed
 * `createdByWorkspaceArmId()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
 * `group()` was removed
+* `validate()` was removed
 
 #### `models.AccountKeyAuthTypeWorkspaceConnectionProperties` was modified
 
 * `validate()` was removed
-* `withValueFormat(models.ValueFormat)` was removed
-* `withValue(java.lang.String)` was removed
-* `createdByWorkspaceArmId()` was removed
 * `group()` was removed
+* `withValue(java.lang.String)` was removed
+* `withValueFormat(models.ValueFormat)` was removed
+* `createdByWorkspaceArmId()` was removed
 
 #### `models.ServiceManagedResourcesSettings` was modified
 
@@ -1235,8 +1235,8 @@
 
 #### `models.AzureFileDatastore` was modified
 
-* `isDefault()` was removed
 * `validate()` was removed
+* `isDefault()` was removed
 
 #### `models.ManagedNetworkProvisionOptions` was modified
 
@@ -1244,48 +1244,48 @@
 
 #### `models.SparkJob` was modified
 
-* `validate()` was removed
 * `status()` was removed
+* `validate()` was removed
 
 #### `models.WorkspaceUpdateParameters` was modified
 
 * `WorkspaceUpdateParameters()` was removed
-* `withEnableDataIsolation(java.lang.Boolean)` was removed
-* `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()` -> `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()`
-* `withSku(models.Sku)` was removed
-* `java.lang.String containerRegistry()` -> `java.lang.String containerRegistry()`
-* `java.lang.String primaryUserAssignedIdentity()` -> `java.lang.String primaryUserAssignedIdentity()`
-* `java.lang.Boolean enableDataIsolation()` -> `java.lang.Boolean enableDataIsolation()`
-* `models.PublicNetworkAccess publicNetworkAccess()` -> `models.PublicNetworkAccess publicNetworkAccess()`
-* `validate()` was removed
-* `withServerlessComputeSettings(models.ServerlessComputeSettings)` was removed
-* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
-* `models.FeatureStoreSettings featureStoreSettings()` -> `models.FeatureStoreSettings featureStoreSettings()`
-* `withEncryption(models.EncryptionUpdateProperties)` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
 * `withIdentity(models.ManagedServiceIdentity)` was removed
-* `models.EncryptionUpdateProperties encryption()` -> `models.EncryptionUpdateProperties encryption()`
-* `withApplicationInsights(java.lang.String)` was removed
-* `java.lang.String applicationInsights()` -> `java.lang.String applicationInsights()`
-* `withV1LegacyMode(java.lang.Boolean)` was removed
-* `java.lang.Boolean v1LegacyMode()` -> `java.lang.Boolean v1LegacyMode()`
-* `withManagedNetwork(fluent.models.ManagedNetworkSettingsInner)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
-* `withFeatureStoreSettings(models.FeatureStoreSettings)` was removed
-* `java.util.Map tags()` -> `java.util.Map tags()`
-* `fluent.models.ManagedNetworkSettingsInner managedNetwork()` -> `models.ManagedNetworkSettings managedNetwork()`
-* `withContainerRegistry(java.lang.String)` was removed
-* `withImageBuildCompute(java.lang.String)` was removed
-* `withTags(java.util.Map)` was removed
-* `java.lang.String friendlyName()` -> `java.lang.String friendlyName()`
-* `withServiceManagedResourcesSettings(models.ServiceManagedResourcesSettings)` was removed
-* `java.lang.String description()` -> `java.lang.String description()`
+* `withServerlessComputeSettings(models.ServerlessComputeSettings)` was removed
+* `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()` -> `models.ServiceManagedResourcesSettings serviceManagedResourcesSettings()`
 * `withPrimaryUserAssignedIdentity(java.lang.String)` was removed
-* `models.ServerlessComputeSettings serverlessComputeSettings()` -> `models.ServerlessComputeSettings serverlessComputeSettings()`
-* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
-* `toJson(com.azure.json.JsonWriter)` was removed
+* `withV1LegacyMode(java.lang.Boolean)` was removed
+* `java.lang.String friendlyName()` -> `java.lang.String friendlyName()`
+* `models.PublicNetworkAccess publicNetworkAccess()` -> `models.PublicNetworkAccess publicNetworkAccess()`
 * `java.lang.String imageBuildCompute()` -> `java.lang.String imageBuildCompute()`
+* `models.FeatureStoreSettings featureStoreSettings()` -> `models.FeatureStoreSettings featureStoreSettings()`
+* `models.ServerlessComputeSettings serverlessComputeSettings()` -> `models.ServerlessComputeSettings serverlessComputeSettings()`
+* `java.lang.String description()` -> `java.lang.String description()`
+* `validate()` was removed
+* `withEncryption(models.EncryptionUpdateProperties)` was removed
+* `withServiceManagedResourcesSettings(models.ServiceManagedResourcesSettings)` was removed
+* `withManagedNetwork(fluent.models.ManagedNetworkSettingsInner)` was removed
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was removed
+* `java.lang.String primaryUserAssignedIdentity()` -> `java.lang.String primaryUserAssignedIdentity()`
+* `java.lang.String applicationInsights()` -> `java.lang.String applicationInsights()`
+* `models.EncryptionUpdateProperties encryption()` -> `models.EncryptionUpdateProperties encryption()`
+* `withFriendlyName(java.lang.String)` was removed
+* `withImageBuildCompute(java.lang.String)` was removed
+* `withContainerRegistry(java.lang.String)` was removed
+* `withEnableDataIsolation(java.lang.Boolean)` was removed
+* `java.util.Map tags()` -> `java.util.Map tags()`
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `withDescription(java.lang.String)` was removed
+* `java.lang.Boolean enableDataIsolation()` -> `java.lang.Boolean enableDataIsolation()`
+* `withTags(java.util.Map)` was removed
+* `fluent.models.ManagedNetworkSettingsInner managedNetwork()` -> `models.ManagedNetworkSettings managedNetwork()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `java.lang.String containerRegistry()` -> `java.lang.String containerRegistry()`
+* `withApplicationInsights(java.lang.String)` was removed
+* `java.lang.Boolean v1LegacyMode()` -> `java.lang.Boolean v1LegacyMode()`
+* `withSku(models.Sku)` was removed
+* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+* `withFeatureStoreSettings(models.FeatureStoreSettings)` was removed
 * `models.Sku sku()` -> `models.Sku sku()`
 
 #### `models.ComputeRuntimeDto` was modified
@@ -1371,16 +1371,16 @@
 #### `models.DiagnoseResponseResultValue` was modified
 
 * `DiagnoseResponseResultValue()` was changed to private access
-* `withUserDefinedRouteResults(java.util.List)` was removed
-* `withKeyVaultResults(java.util.List)` was removed
-* `withNetworkSecurityRuleResults(java.util.List)` was removed
 * `withContainerRegistryResults(java.util.List)` was removed
-* `withResourceLockResults(java.util.List)` was removed
-* `withApplicationInsightsResults(java.util.List)` was removed
-* `validate()` was removed
-* `withDnsResolutionResults(java.util.List)` was removed
 * `withOtherResults(java.util.List)` was removed
+* `withApplicationInsightsResults(java.util.List)` was removed
 * `withStorageAccountResults(java.util.List)` was removed
+* `withUserDefinedRouteResults(java.util.List)` was removed
+* `withDnsResolutionResults(java.util.List)` was removed
+* `withNetworkSecurityRuleResults(java.util.List)` was removed
+* `validate()` was removed
+* `withKeyVaultResults(java.util.List)` was removed
+* `withResourceLockResults(java.util.List)` was removed
 
 #### `models.SasDatastoreCredentials` was modified
 
@@ -1388,9 +1388,9 @@
 
 #### `models.AccessKeyAuthTypeWorkspaceConnectionProperties` was modified
 
-* `group()` was removed
-* `createdByWorkspaceArmId()` was removed
 * `withValue(java.lang.String)` was removed
+* `createdByWorkspaceArmId()` was removed
+* `group()` was removed
 * `withValueFormat(models.ValueFormat)` was removed
 * `validate()` was removed
 
@@ -1405,8 +1405,8 @@
 #### `models.DatabricksComputeSecrets` was modified
 
 * `DatabricksComputeSecrets()` was changed to private access
-* `withDatabricksAccessToken(java.lang.String)` was removed
 * `validate()` was removed
+* `withDatabricksAccessToken(java.lang.String)` was removed
 
 #### `models.ImageModelDistributionSettings` was modified
 
@@ -1418,19 +1418,19 @@
 
 #### `models.AadAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withValueFormat(models.ValueFormat)` was removed
-* `group()` was removed
 * `withValue(java.lang.String)` was removed
-* `createdByWorkspaceArmId()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
 * `validate()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `group()` was removed
 
 #### `models.BlobReferenceForConsumptionDto` was modified
 
 * `BlobReferenceForConsumptionDto()` was changed to private access
-* `withCredential(models.PendingUploadCredentialDto)` was removed
 * `validate()` was removed
-* `withBlobUri(java.lang.String)` was removed
+* `withCredential(models.PendingUploadCredentialDto)` was removed
 * `withStorageAccountArmId(java.lang.String)` was removed
+* `withBlobUri(java.lang.String)` was removed
 
 #### `models.VolumeDefinition` was modified
 
@@ -1463,17 +1463,17 @@
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `validate()` was removed
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
 
 #### `models.EstimatedVMPrices` was modified
 
 * `EstimatedVMPrices()` was changed to private access
-* `withBillingCurrency(models.BillingCurrency)` was removed
 * `withUnitOfMeasure(models.UnitOfMeasure)` was removed
-* `withValues(java.util.List)` was removed
 * `validate()` was removed
+* `withBillingCurrency(models.BillingCurrency)` was removed
+* `withValues(java.util.List)` was removed
 
 #### `models.ServerlessInferenceEndpoint` was modified
 
@@ -1520,9 +1520,9 @@
 #### `models.VirtualMachineSize` was modified
 
 * `VirtualMachineSize()` was changed to private access
-* `withSupportedComputeTypes(java.util.List)` was removed
-* `withEstimatedVMPrices(models.EstimatedVMPrices)` was removed
 * `validate()` was removed
+* `withEstimatedVMPrices(models.EstimatedVMPrices)` was removed
+* `withSupportedComputeTypes(java.util.List)` was removed
 
 #### `models.ModelSettings` was modified
 
@@ -1607,17 +1607,17 @@
 #### `models.ComputeInstanceEnvironmentInfo` was modified
 
 * `ComputeInstanceEnvironmentInfo()` was changed to private access
+* `withName(java.lang.String)` was removed
 * `validate()` was removed
 * `withVersion(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 
 #### `models.GetBlobReferenceForConsumptionDto` was modified
 
 * `GetBlobReferenceForConsumptionDto()` was changed to private access
-* `withBlobUri(java.lang.String)` was removed
 * `withCredential(models.DataReferenceCredential)` was removed
-* `validate()` was removed
 * `withStorageAccountArmId(java.lang.String)` was removed
+* `withBlobUri(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.SkuSetting` was modified
 
@@ -1664,10 +1664,10 @@
 #### `models.SasAuthTypeWorkspaceConnectionProperties` was modified
 
 * `withValueFormat(models.ValueFormat)` was removed
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
 * `createdByWorkspaceArmId()` was removed
 * `group()` was removed
-* `validate()` was removed
-* `withValue(java.lang.String)` was removed
 
 #### `models.BatchDeploymentConfiguration` was modified
 
@@ -1676,8 +1676,8 @@
 #### `models.SasCredentialDto` was modified
 
 * `SasCredentialDto()` was changed to private access
-* `withSasUri(java.lang.String)` was removed
 * `validate()` was removed
+* `withSasUri(java.lang.String)` was removed
 
 #### `models.ServiceTagOutboundRule` was modified
 
@@ -1695,8 +1695,8 @@
 
 * `FqdnEndpoint()` was changed to private access
 * `withDomainName(java.lang.String)` was removed
-* `validate()` was removed
 * `withEndpointDetails(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.MLTableJobInput` was modified
 
@@ -1712,9 +1712,9 @@
 
 #### `models.WorkspaceConnectionOAuth2` was modified
 
-* `validate()` was removed
 * `withClientId(java.util.UUID)` was removed
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
 
 #### `models.PartialRegistryPartialTrackedResource` was modified
 
@@ -1731,8 +1731,8 @@
 #### `models.EncryptionProperty` was modified
 
 * `validate()` was removed
-* `withKeyVaultProperties(models.EncryptionKeyVaultProperties)` was removed
 * `models.EncryptionKeyVaultProperties keyVaultProperties()` -> `models.KeyVaultProperties keyVaultProperties()`
+* `withKeyVaultProperties(models.EncryptionKeyVaultProperties)` was removed
 
 #### `models.FeaturestoreEntityVersionProperties` was modified
 
@@ -1750,8 +1750,8 @@
 #### `models.ComputeInstanceVersion` was modified
 
 * `ComputeInstanceVersion()` was changed to private access
-* `validate()` was removed
 * `withRuntime(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.IdentityConfiguration` was modified
 
@@ -1759,11 +1759,11 @@
 
 #### `models.ManagedIdentityAuthTypeWorkspaceConnectionProperties` was modified
 
-* `group()` was removed
-* `withValueFormat(models.ValueFormat)` was removed
 * `withValue(java.lang.String)` was removed
+* `group()` was removed
 * `validate()` was removed
 * `createdByWorkspaceArmId()` was removed
+* `withValueFormat(models.ValueFormat)` was removed
 
 #### `models.RegistryListCredentialsResult` was modified
 
@@ -1778,10 +1778,10 @@
 #### `models.ServicePrincipalDatastoreCredentials` was modified
 
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
-* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
-* `withTenantId(java.util.UUID)` was removed
 * `validate()` was removed
+* `withTenantId(java.util.UUID)` was removed
 * `withClientId(java.util.UUID)` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 
 #### `models.ServiceTagDestination` was modified
 
@@ -1805,12 +1805,12 @@
 
 #### `models.DataFactory` was modified
 
-* `modifiedOn()` was removed
-* `createdOn()` was removed
 * `provisioningErrors()` was removed
-* `isAttachedCompute()` was removed
+* `modifiedOn()` was removed
 * `provisioningState()` was removed
+* `createdOn()` was removed
 * `validate()` was removed
+* `isAttachedCompute()` was removed
 
 #### `models.CustomTargetRollingWindowSize` was modified
 
@@ -1838,21 +1838,21 @@
 
 #### `models.ImageModelSettings` was modified
 
-* `java.lang.Float weightDecay()` -> `java.lang.Double weightDecay()`
-* `validate()` was removed
-* `withStepLRGamma(java.lang.Float)` was removed
 * `withWeightDecay(java.lang.Float)` was removed
 * `java.lang.Float momentum()` -> `java.lang.Double momentum()`
-* `java.lang.Float warmupCosineLRCycles()` -> `java.lang.Double warmupCosineLRCycles()`
-* `java.lang.Float beta2()` -> `java.lang.Double beta2()`
-* `withBeta2(java.lang.Float)` was removed
-* `withMomentum(java.lang.Float)` was removed
 * `java.lang.Float beta1()` -> `java.lang.Double beta1()`
+* `java.lang.Float beta2()` -> `java.lang.Double beta2()`
 * `withWarmupCosineLRCycles(java.lang.Float)` was removed
-* `java.lang.Float learningRate()` -> `java.lang.Double learningRate()`
-* `java.lang.Float stepLRGamma()` -> `java.lang.Double stepLRGamma()`
-* `withLearningRate(java.lang.Float)` was removed
+* `validate()` was removed
 * `withBeta1(java.lang.Float)` was removed
+* `withStepLRGamma(java.lang.Float)` was removed
+* `java.lang.Float learningRate()` -> `java.lang.Double learningRate()`
+* `java.lang.Float weightDecay()` -> `java.lang.Double weightDecay()`
+* `java.lang.Float stepLRGamma()` -> `java.lang.Double stepLRGamma()`
+* `java.lang.Float warmupCosineLRCycles()` -> `java.lang.Double warmupCosineLRCycles()`
+* `withLearningRate(java.lang.Float)` was removed
+* `withMomentum(java.lang.Float)` was removed
+* `withBeta2(java.lang.Float)` was removed
 
 #### `models.CustomMonitoringSignal` was modified
 
@@ -1873,10 +1873,10 @@
 #### `models.ManagedIdentity` was modified
 
 * `withObjectId(java.util.UUID)` was removed
-* `validate()` was removed
-* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID objectId()` -> `java.lang.String objectId()`
 * `withClientId(java.util.UUID)` was removed
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 
 #### `models.CreateMonitorAction` was modified
 
@@ -1921,8 +1921,8 @@
 
 #### `models.SweepJob` was modified
 
-* `status()` was removed
 * `validate()` was removed
+* `status()` was removed
 
 #### `models.AutoSeasonality` was modified
 
@@ -2016,16 +2016,16 @@
 #### `models.HDInsight` was modified
 
 * `createdOn()` was removed
-* `isAttachedCompute()` was removed
-* `modifiedOn()` was removed
-* `provisioningState()` was removed
 * `provisioningErrors()` was removed
+* `provisioningState()` was removed
+* `modifiedOn()` was removed
 * `validate()` was removed
+* `isAttachedCompute()` was removed
 
 #### `models.KubernetesOnlineDeployment` was modified
 
-* `validate()` was removed
 * `provisioningState()` was removed
+* `validate()` was removed
 
 #### `models.AccountKeyDatastoreSecrets` was modified
 
@@ -2060,8 +2060,8 @@
 #### `models.FqdnEndpointDetail` was modified
 
 * `FqdnEndpointDetail()` was changed to private access
-* `validate()` was removed
 * `withPort(java.lang.Integer)` was removed
+* `validate()` was removed
 
 #### `models.MonitorComputeIdentityBase` was modified
 
@@ -2074,11 +2074,11 @@
 #### `models.ComputeInstanceLastOperation` was modified
 
 * `ComputeInstanceLastOperation()` was changed to private access
-* `withOperationStatus(models.OperationStatus)` was removed
+* `withOperationTime(java.time.OffsetDateTime)` was removed
 * `withOperationTrigger(models.OperationTrigger)` was removed
 * `validate()` was removed
 * `withOperationName(models.OperationName)` was removed
-* `withOperationTime(java.time.OffsetDateTime)` was removed
+* `withOperationStatus(models.OperationStatus)` was removed
 
 #### `models.ForecastingSettings` was modified
 
@@ -2103,8 +2103,8 @@
 #### `models.RegistryPrivateLinkServiceConnectionState` was modified
 
 * `validate()` was removed
-* `models.EndpointServiceConnectionStatus status()` -> `models.PrivateEndpointServiceConnectionStatus status()`
 * `withStatus(models.EndpointServiceConnectionStatus)` was removed
+* `models.EndpointServiceConnectionStatus status()` -> `models.PrivateEndpointServiceConnectionStatus status()`
 
 #### `models.FixedInputData` was modified
 
@@ -2112,9 +2112,9 @@
 
 #### `models.UserAssignedIdentity` was modified
 
-* `java.util.UUID clientId()` -> `java.lang.String clientId()`
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 
 #### `models.DataLakeAnalyticsSchemaProperties` was modified
 
@@ -2134,11 +2134,11 @@
 
 #### `models.PatAuthTypeWorkspaceConnectionProperties` was modified
 
-* `createdByWorkspaceArmId()` was removed
 * `validate()` was removed
-* `withValue(java.lang.String)` was removed
 * `withValueFormat(models.ValueFormat)` was removed
 * `group()` was removed
+* `createdByWorkspaceArmId()` was removed
+* `withValue(java.lang.String)` was removed
 
 #### `models.ComputeSchedules` was modified
 
@@ -2554,44 +2554,48 @@
 
 #### `models.WorkspaceConnectionPropertiesV2` was modified
 
-* `peRequirement()` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
-* `withPeRequirement(models.ManagedPERequirement)` was added
-* `peStatus()` was added
 * `error()` was added
-* `useWorkspaceManagedIdentity()` was added
 * `withError(java.lang.String)` was added
+* `useWorkspaceManagedIdentity()` was added
+* `peStatus()` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `peRequirement()` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
 
 #### `models.BanditPolicy` was modified
 
-* `withSlackAmount(java.lang.Double)` was added
 * `withSlackFactor(java.lang.Double)` was added
+* `withSlackAmount(java.lang.Double)` was added
 
 #### `models.JobResourceConfiguration` was modified
 
-* `withDockerArgsList(java.util.List)` was added
 * `dockerArgsList()` was added
+* `withDockerArgsList(java.util.List)` was added
 
 #### `models.MLFlowModelJobOutput` was modified
 
-* `assetName()` was added
+* `withPathOnCompute(java.lang.String)` was added
 * `withAssetName(java.lang.String)` was added
+* `pathOnCompute()` was added
+* `withAssetVersion(java.lang.String)` was added
+* `assetVersion()` was added
+* `assetName()` was added
 
 #### `models.ImageModelSettingsObjectDetection` was modified
 
-* `withTilePredictionsNmsThreshold(java.lang.Double)` was added
-* `withMomentum(java.lang.Double)` was added
 * `withWarmupCosineLRCycles(java.lang.Double)` was added
-* `withStepLRGamma(java.lang.Double)` was added
-* `withLearningRate(java.lang.Double)` was added
-* `withBeta2(java.lang.Double)` was added
-* `withBoxScoreThreshold(java.lang.Double)` was added
-* `withWeightDecay(java.lang.Double)` was added
 * `withBeta1(java.lang.Double)` was added
 * `withValidationIouThreshold(java.lang.Double)` was added
-* `withTileOverlapRatio(java.lang.Double)` was added
+* `withTilePredictionsNmsThreshold(java.lang.Double)` was added
+* `withBoxScoreThreshold(java.lang.Double)` was added
+* `withWeightDecay(java.lang.Double)` was added
+* `withBeta2(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
 * `withNmsIouThreshold(java.lang.Double)` was added
+* `withLearningRate(java.lang.Double)` was added
+* `withTileOverlapRatio(java.lang.Double)` was added
+* `withMomentum(java.lang.Double)` was added
 
 #### `models.ComputeInstanceState` was modified
 
@@ -2608,11 +2612,11 @@
 
 #### `models.Workspace$Update` was modified
 
-* `withAllowRoleAssignmentOnRG(java.lang.Boolean)` was added
-* `withEnableSoftwareBillOfMaterials(java.lang.Boolean)` was added
 * `withSoftDeleteRetentionInDays(java.lang.Integer)` was added
-* `withNetworkAcls(models.NetworkAcls)` was added
+* `withAllowRoleAssignmentOnRG(java.lang.Boolean)` was added
 * `withSystemDatastoresAuthMode(models.SystemDatastoresAuthMode)` was added
+* `withNetworkAcls(models.NetworkAcls)` was added
+* `withEnableSoftwareBillOfMaterials(java.lang.Boolean)` was added
 * `withIpAllowlist(java.util.List)` was added
 
 #### `models.Image` was modified
@@ -2626,8 +2630,8 @@
 
 #### `models.ModelVersionProperties` was modified
 
-* `withDatasets(java.util.List)` was added
 * `datasets()` was added
+* `withDatasets(java.util.List)` was added
 
 #### `models.OnlineDeploymentProperties` was modified
 
@@ -2651,8 +2655,8 @@
 
 * `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
-* `withPeRequirement(models.ManagedPERequirement)` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
 
 #### `models.PrivateEndpointOutboundRule` was modified
 
@@ -2661,8 +2665,8 @@
 
 #### `models.Workspaces` was modified
 
-* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `listByResourceGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ManagedOnlineDeployment` was modified
 
@@ -2676,15 +2680,15 @@
 #### `models.Computes` was modified
 
 * `getAllowedResizeSizes(java.lang.String,java.lang.String,java.lang.String)` was added
-* `resize(java.lang.String,java.lang.String,java.lang.String,models.ResizeSchema,com.azure.core.util.Context)` was added
-* `updateIdleShutdownSetting(java.lang.String,java.lang.String,java.lang.String,models.IdleShutdownSetting)` was added
-* `resize(java.lang.String,java.lang.String,java.lang.String,models.ResizeSchema)` was added
-* `updateDataMounts(java.lang.String,java.lang.String,java.lang.String,java.util.List)` was added
-* `updateCustomServices(java.lang.String,java.lang.String,java.lang.String,java.util.List)` was added
-* `updateIdleShutdownSettingWithResponse(java.lang.String,java.lang.String,java.lang.String,models.IdleShutdownSetting,com.azure.core.util.Context)` was added
-* `updateCustomServicesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.List,com.azure.core.util.Context)` was added
 * `getAllowedResizeSizesWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resize(java.lang.String,java.lang.String,java.lang.String,models.ResizeSchema,com.azure.core.util.Context)` was added
+* `updateCustomServicesWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.List,com.azure.core.util.Context)` was added
+* `updateDataMounts(java.lang.String,java.lang.String,java.lang.String,java.util.List)` was added
 * `updateDataMountsWithResponse(java.lang.String,java.lang.String,java.lang.String,java.util.List,com.azure.core.util.Context)` was added
+* `updateIdleShutdownSettingWithResponse(java.lang.String,java.lang.String,java.lang.String,models.IdleShutdownSetting,com.azure.core.util.Context)` was added
+* `resize(java.lang.String,java.lang.String,java.lang.String,models.ResizeSchema)` was added
+* `updateCustomServices(java.lang.String,java.lang.String,java.lang.String,java.util.List)` was added
+* `updateIdleShutdownSetting(java.lang.String,java.lang.String,java.lang.String,models.IdleShutdownSetting)` was added
 
 #### `models.ConnectionAuthType` was modified
 
@@ -2698,26 +2702,26 @@
 
 #### `models.OAuth2AuthTypeWorkspaceConnectionProperties` was modified
 
-* `withPeStatus(models.ManagedPEStatus)` was added
 * `withError(java.lang.String)` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
 
 #### `models.Workspace$Definition` was modified
 
 * `withAllowRoleAssignmentOnRG(java.lang.Boolean)` was added
+* `withExistingWorkspaces(java.util.List)` was added
+* `withContainerRegistries(java.util.List)` was added
+* `withEnableSoftwareBillOfMaterials(java.lang.Boolean)` was added
+* `withNetworkAcls(models.NetworkAcls)` was added
+* `withEnableServiceSideCmkEncryption(java.lang.Boolean)` was added
+* `withKeyVaults(java.util.List)` was added
+* `withEnableSimplifiedCmk(java.lang.Boolean)` was added
+* `withSystemDatastoresAuthMode(models.SystemDatastoresAuthMode)` was added
+* `withProvisionNetworkNow(java.lang.Boolean)` was added
 * `withStorageAccounts(java.util.List)` was added
 * `withSoftDeleteRetentionInDays(java.lang.Integer)` was added
 * `withIpAllowlist(java.util.List)` was added
-* `withExistingWorkspaces(java.util.List)` was added
-* `withNetworkAcls(models.NetworkAcls)` was added
-* `withKeyVaults(java.util.List)` was added
-* `withEnableSimplifiedCmk(java.lang.Boolean)` was added
-* `withEnableServiceSideCmkEncryption(java.lang.Boolean)` was added
-* `withSystemDatastoresAuthMode(models.SystemDatastoresAuthMode)` was added
-* `withContainerRegistries(java.util.List)` was added
-* `withProvisionNetworkNow(java.lang.Boolean)` was added
-* `withEnableSoftwareBillOfMaterials(java.lang.Boolean)` was added
 
 #### `models.Datastores` was modified
 
@@ -2733,13 +2737,13 @@
 
 #### `models.ImageModelSettingsClassification` was modified
 
-* `withWeightDecay(java.lang.Double)` was added
+* `withMomentum(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
+* `withBeta1(java.lang.Double)` was added
 * `withBeta2(java.lang.Double)` was added
 * `withWarmupCosineLRCycles(java.lang.Double)` was added
-* `withMomentum(java.lang.Double)` was added
-* `withBeta1(java.lang.Double)` was added
 * `withLearningRate(java.lang.Double)` was added
-* `withStepLRGamma(java.lang.Double)` was added
+* `withWeightDecay(java.lang.Double)` was added
 
 #### `models.PrivateEndpointConnection$Update` was modified
 
@@ -2747,45 +2751,49 @@
 
 #### `models.ApiKeyAuthWorkspaceConnectionProperties` was modified
 
-* `withError(java.lang.String)` was added
-* `withPeRequirement(models.ManagedPERequirement)` was added
-* `withPeStatus(models.ManagedPEStatus)` was added
 * `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withError(java.lang.String)` was added
 
 #### `models.WorkspaceConnections` was modified
 
-* `testConnection(java.lang.String,java.lang.String,java.lang.String)` was added
 * `testConnection(java.lang.String,java.lang.String,java.lang.String,fluent.models.WorkspaceConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
 * `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `testConnection(java.lang.String,java.lang.String,java.lang.String)` was added
 
 #### `models.ManagedNetworkSettings` was modified
 
-* `managedNetworkKind()` was added
+* `firewallPublicIpAddress()` was added
 * `firewallSku()` was added
 * `enableNetworkMonitor()` was added
-* `firewallPublicIpAddress()` was added
+* `managedNetworkKind()` was added
 
 #### `models.Workspace` was modified
 
+* `enableSoftwareBillOfMaterials()` was added
+* `systemDatastoresAuthMode()` was added
+* `provisionNetworkNow()` was added
+* `allowRoleAssignmentOnRG()` was added
 * `storageAccounts()` was added
 * `keyVaults()` was added
+* `agentsEndpointUri()` was added
 * `enableSimplifiedCmk()` was added
-* `allowRoleAssignmentOnRG()` was added
+* `softDeleteRetentionInDays()` was added
 * `existingWorkspaces()` was added
+* `ipAllowlist()` was added
 * `networkAcls()` was added
 * `containerRegistries()` was added
-* `agentsEndpointUri()` was added
-* `softDeleteRetentionInDays()` was added
 * `enableServiceSideCmkEncryption()` was added
-* `systemDatastoresAuthMode()` was added
-* `ipAllowlist()` was added
-* `enableSoftwareBillOfMaterials()` was added
-* `provisionNetworkNow()` was added
 
 #### `models.UriFileJobOutput` was modified
 
-* `withAssetName(java.lang.String)` was added
 * `assetName()` was added
+* `pathOnCompute()` was added
+* `withAssetVersion(java.lang.String)` was added
+* `withPathOnCompute(java.lang.String)` was added
+* `assetVersion()` was added
+* `withAssetName(java.lang.String)` was added
 
 #### `models.Datastore` was modified
 
@@ -2794,31 +2802,31 @@
 #### `models.NoneAuthTypeWorkspaceConnectionProperties` was modified
 
 * `withPeStatus(models.ManagedPEStatus)` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 
 #### `MachineLearningManager` was modified
 
-* `connectionRaiBlocklists()` was added
-* `endpoints()` was added
-* `raiPolicies()` was added
 * `connectionRaiBlocklistsOperations()` was added
-* `connectionRaiPolicies()` was added
-* `pTUQuotas()` was added
-* `capabilityHosts()` was added
-* `outboundRulesOperations()` was added
-* `inferencePools()` was added
-* `endpointDeployments()` was added
-* `inferenceGroups()` was added
-* `outboundRules()` was added
-* `connectionRaiBlocklistItemsOperations()` was added
-* `managedNetworkSettingsOperations()` was added
 * `connections()` was added
-* `connectionRaiPoliciesOperations()` was added
-* `inferenceEndpoints()` was added
+* `outboundRulesOperations()` was added
 * `connectionRaiBlocklistItems()` was added
 * `raiPoliciesOperations()` was added
+* `managedNetworkSettingsOperations()` was added
+* `raiPolicies()` was added
+* `outboundRules()` was added
+* `inferencePools()` was added
+* `connectionRaiBlocklists()` was added
+* `endpointDeployments()` was added
+* `pTUQuotas()` was added
+* `endpoints()` was added
+* `capabilityHosts()` was added
+* `inferenceGroups()` was added
+* `inferenceEndpoints()` was added
+* `connectionRaiPoliciesOperations()` was added
+* `connectionRaiBlocklistItemsOperations()` was added
+* `connectionRaiPolicies()` was added
 
 #### `models.ImageMetadata` was modified
 
@@ -2826,29 +2834,29 @@
 
 #### `models.CustomKeysWorkspaceConnectionProperties` was modified
 
-* `withPeStatus(models.ManagedPEStatus)` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 
 #### `models.CertificateDatastoreCredentials` was modified
 
-* `withClientId(java.lang.String)` was added
 * `withTenantId(java.lang.String)` was added
+* `withClientId(java.lang.String)` was added
 
 #### `models.UsernamePasswordAuthTypeWorkspaceConnectionProperties` was modified
 
 * `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
-* `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withError(java.lang.String)` was added
 
 #### `models.AccountKeyAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
-* `withError(java.lang.String)` was added
-* `withPeStatus(models.ManagedPEStatus)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 
 #### `models.SparkJob` was modified
 
@@ -2856,27 +2864,31 @@
 
 #### `models.WorkspacePropertiesUpdateParameters` was modified
 
-* `networkAcls()` was added
-* `softDeleteRetentionInDays()` was added
+* `systemDatastoresAuthMode()` was added
 * `allowRoleAssignmentOnRG()` was added
+* `softDeleteRetentionInDays()` was added
 * `enableSoftwareBillOfMaterials()` was added
 * `ipAllowlist()` was added
-* `systemDatastoresAuthMode()` was added
+* `networkAcls()` was added
 
 #### `models.WorkspaceUpdateParameters` was modified
 
 * `systemDatastoresAuthMode()` was added
+* `allowRoleAssignmentOnRG()` was added
+* `networkAcls()` was added
+* `innerModel()` was added
 * `softDeleteRetentionInDays()` was added
 * `enableSoftwareBillOfMaterials()` was added
-* `allowRoleAssignmentOnRG()` was added
-* `innerModel()` was added
 * `ipAllowlist()` was added
-* `networkAcls()` was added
 
 #### `models.UriFolderJobOutput` was modified
 
 * `assetName()` was added
 * `withAssetName(java.lang.String)` was added
+* `assetVersion()` was added
+* `pathOnCompute()` was added
+* `withAssetVersion(java.lang.String)` was added
+* `withPathOnCompute(java.lang.String)` was added
 
 #### `models.RuleStatus` was modified
 
@@ -2886,79 +2898,91 @@
 
 #### `models.MLTableJobOutput` was modified
 
+* `withAssetVersion(java.lang.String)` was added
 * `withAssetName(java.lang.String)` was added
+* `withPathOnCompute(java.lang.String)` was added
+* `assetVersion()` was added
+* `pathOnCompute()` was added
 * `assetName()` was added
 
 #### `models.AccessKeyAuthTypeWorkspaceConnectionProperties` was modified
 
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
 * `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
-* `withPeStatus(models.ManagedPEStatus)` was added
 
 #### `models.CustomService` was modified
 
-* `withKernel(models.JupyterKernelConfig)` was added
 * `kernel()` was added
+* `withKernel(models.JupyterKernelConfig)` was added
 
 #### `models.AadAuthTypeWorkspaceConnectionProperties` was modified
 
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 
 #### `models.TritonModelJobOutput` was modified
 
+* `withAssetVersion(java.lang.String)` was added
+* `withPathOnCompute(java.lang.String)` was added
+* `pathOnCompute()` was added
 * `withAssetName(java.lang.String)` was added
 * `assetName()` was added
+* `assetVersion()` was added
 
 #### `models.WorkspaceConnectionPropertiesV2BasicResource` was modified
 
-* `testConnection()` was added
-* `resourceGroupName()` was added
-* `update()` was added
 * `testConnection(fluent.models.WorkspaceConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
+* `resourceGroupName()` was added
+* `testConnection()` was added
+* `update()` was added
 
 #### `models.WorkspaceProperties` was modified
 
-* `systemDatastoresAuthMode()` was added
 * `containerRegistries()` was added
-* `networkAcls()` was added
-* `existingWorkspaces()` was added
-* `allowRoleAssignmentOnRG()` was added
-* `enableSoftwareBillOfMaterials()` was added
 * `provisionNetworkNow()` was added
-* `softDeleteRetentionInDays()` was added
-* `enableServiceSideCmkEncryption()` was added
-* `keyVaults()` was added
-* `enableSimplifiedCmk()` was added
+* `allowRoleAssignmentOnRG()` was added
 * `storageAccounts()` was added
+* `systemDatastoresAuthMode()` was added
+* `keyVaults()` was added
+* `existingWorkspaces()` was added
+* `networkAcls()` was added
+* `softDeleteRetentionInDays()` was added
+* `enableSimplifiedCmk()` was added
 * `ipAllowlist()` was added
+* `enableSoftwareBillOfMaterials()` was added
 * `agentsEndpointUri()` was added
+* `enableServiceSideCmkEncryption()` was added
 
 #### `models.OutboundRule` was modified
 
-* `errorInformation()` was added
 * `parentRuleNames()` was added
+* `errorInformation()` was added
 
 #### `models.ComputeResource` was modified
 
-* `updateCustomServices(java.util.List)` was added
-* `resize(models.ResizeSchema,com.azure.core.util.Context)` was added
-* `updateIdleShutdownSettingWithResponse(models.IdleShutdownSetting,com.azure.core.util.Context)` was added
-* `getAllowedResizeSizes()` was added
-* `getAllowedResizeSizesWithResponse(com.azure.core.util.Context)` was added
-* `updateIdleShutdownSetting(models.IdleShutdownSetting)` was added
 * `updateCustomServicesWithResponse(java.util.List,com.azure.core.util.Context)` was added
-* `updateDataMounts(java.util.List)` was added
+* `getAllowedResizeSizesWithResponse(com.azure.core.util.Context)` was added
+* `updateCustomServices(java.util.List)` was added
 * `resize(models.ResizeSchema)` was added
+* `updateIdleShutdownSetting(models.IdleShutdownSetting)` was added
+* `updateIdleShutdownSettingWithResponse(models.IdleShutdownSetting,com.azure.core.util.Context)` was added
+* `resize(models.ResizeSchema,com.azure.core.util.Context)` was added
+* `updateDataMounts(java.util.List)` was added
 * `updateDataMountsWithResponse(java.util.List,com.azure.core.util.Context)` was added
+* `getAllowedResizeSizes()` was added
 
 #### `models.CustomModelJobOutput` was modified
 
+* `assetVersion()` was added
 * `assetName()` was added
+* `pathOnCompute()` was added
 * `withAssetName(java.lang.String)` was added
+* `withPathOnCompute(java.lang.String)` was added
+* `withAssetVersion(java.lang.String)` was added
 
 #### `models.PrivateLinkResources` was modified
 
@@ -2966,10 +2990,10 @@
 
 #### `models.SasAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withPeStatus(models.ManagedPEStatus)` was added
-* `withPeRequirement(models.ManagedPERequirement)` was added
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
+* `withPeRequirement(models.ManagedPERequirement)` was added
+* `withPeStatus(models.ManagedPEStatus)` was added
 
 #### `models.WorkspaceConnectionOAuth2` was modified
 
@@ -2977,12 +3001,12 @@
 
 #### `models.EncryptionProperty` was modified
 
+* `storageAccountResourceId()` was added
 * `withStorageAccountResourceId(java.lang.String)` was added
 * `withKeyVaultProperties(models.KeyVaultProperties)` was added
-* `withCosmosDbResourceId(java.lang.String)` was added
 * `cosmosDbResourceId()` was added
-* `storageAccountResourceId()` was added
 * `withSearchAccountResourceId(java.lang.String)` was added
+* `withCosmosDbResourceId(java.lang.String)` was added
 * `searchAccountResourceId()` was added
 
 #### `models.CommandJob` was modified
@@ -2991,8 +3015,8 @@
 
 #### `models.ManagedIdentityAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withError(java.lang.String)` was added
 * `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
 
@@ -3011,33 +3035,33 @@
 
 #### `models.ImageModelSettings` was modified
 
-* `withLearningRate(java.lang.Double)` was added
 * `withWarmupCosineLRCycles(java.lang.Double)` was added
-* `withBeta1(java.lang.Double)` was added
 * `withWeightDecay(java.lang.Double)` was added
-* `withStepLRGamma(java.lang.Double)` was added
 * `withMomentum(java.lang.Double)` was added
+* `withStepLRGamma(java.lang.Double)` was added
 * `withBeta2(java.lang.Double)` was added
+* `withBeta1(java.lang.Double)` was added
+* `withLearningRate(java.lang.Double)` was added
 
 #### `models.ManagedIdentity` was modified
 
-* `withClientId(java.lang.String)` was added
 * `withObjectId(java.lang.String)` was added
+* `withClientId(java.lang.String)` was added
 
 #### `models.ComputeInstanceProperties` was modified
 
+* `withAutologgerSettings(models.ComputeInstanceAutologgerSettings)` was added
+* `autologgerSettings()` was added
+* `withEnableRootAccess(java.lang.Boolean)` was added
+* `withEnableOSPatching(java.lang.Boolean)` was added
+* `enableRootAccess()` was added
+* `releaseQuotaOnStop()` was added
+* `withIdleTimeBeforeShutdown(java.lang.String)` was added
+* `idleTimeBeforeShutdown()` was added
+* `withEnableSSO(java.lang.Boolean)` was added
+* `enableOSPatching()` was added
 * `enableSSO()` was added
 * `withReleaseQuotaOnStop(java.lang.Boolean)` was added
-* `releaseQuotaOnStop()` was added
-* `withAutologgerSettings(models.ComputeInstanceAutologgerSettings)` was added
-* `enableOSPatching()` was added
-* `enableRootAccess()` was added
-* `withEnableSSO(java.lang.Boolean)` was added
-* `idleTimeBeforeShutdown()` was added
-* `withEnableOSPatching(java.lang.Boolean)` was added
-* `withIdleTimeBeforeShutdown(java.lang.String)` was added
-* `withEnableRootAccess(java.lang.Boolean)` was added
-* `autologgerSettings()` was added
 
 #### `models.ServerlessInferenceEndpointAuthMode` was modified
 
@@ -3094,9 +3118,9 @@
 
 #### `models.PatAuthTypeWorkspaceConnectionProperties` was modified
 
-* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
-* `withError(java.lang.String)` was added
 * `withPeRequirement(models.ManagedPERequirement)` was added
+* `withError(java.lang.String)` was added
+* `withUseWorkspaceManagedIdentity(java.lang.Boolean)` was added
 * `withPeStatus(models.ManagedPEStatus)` was added
 
 ## 1.1.0 (2024-08-22)

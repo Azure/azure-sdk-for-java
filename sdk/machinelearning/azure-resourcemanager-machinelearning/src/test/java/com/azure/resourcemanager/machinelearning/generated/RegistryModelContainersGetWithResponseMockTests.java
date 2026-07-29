@@ -21,7 +21,7 @@ public final class RegistryModelContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"isArchived\":true,\"latestVersion\":\"thyebwgesovsvjx\",\"nextVersion\":\"or\",\"description\":\"l\",\"properties\":{\"axtoboafpyi\":\"lyhgiisn\",\"tauskish\":\"ojwczary\",\"rkdme\":\"mtyp\",\"vzds\":\"aunbwcqtig\"},\"tags\":{\"pplrdkcazujvh\":\"hjlploa\",\"elaaexcnxrtlnzd\":\"uzbsxhivnc\"}},\"id\":\"qfeavzzpm\",\"name\":\"zisljxphwynim\",\"type\":\"pfraku\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":true,\"latestVersion\":\"agordbsascntdw\",\"nextVersion\":\"x\",\"description\":\"ltowdwiffagfe\",\"properties\":{\"ltthsuzxyl\":\"bpgc\",\"scobhhblj\":\"iflzsrk\",\"us\":\"vpokvhobygffuzh\",\"vnvrfjg\":\"fffagoovfwzy\"},\"tags\":{\"g\":\"pv\"}},\"id\":\"ovwujearow\",\"name\":\"me\",\"type\":\"ziubkyvcgkoufwk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class RegistryModelContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelContainer response = manager.registryModelContainers()
-            .getWithResponse("lnvfshtujaqp", "upnrcrjeypdky", "cxzsynbdrqi", com.azure.core.util.Context.NONE)
+            .getWithResponse("lqzopvhwmtdbfrj", "q", "uv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("l", response.properties().description());
-        Assertions.assertEquals("lyhgiisn", response.properties().properties().get("axtoboafpyi"));
-        Assertions.assertEquals("hjlploa", response.properties().tags().get("pplrdkcazujvh"));
+        Assertions.assertEquals("ltowdwiffagfe", response.properties().description());
+        Assertions.assertEquals("bpgc", response.properties().properties().get("ltthsuzxyl"));
+        Assertions.assertEquals("pv", response.properties().tags().get("g"));
         Assertions.assertTrue(response.properties().isArchived());
     }
 }

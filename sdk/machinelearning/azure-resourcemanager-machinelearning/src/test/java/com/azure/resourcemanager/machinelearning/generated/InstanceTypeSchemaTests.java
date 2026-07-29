@@ -15,23 +15,25 @@ public final class InstanceTypeSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceTypeSchema model = BinaryData.fromString(
-            "{\"nodeSelector\":{\"kyvnhiysdhork\":\"uynf\",\"qki\":\"lhr\",\"qwmwqoguflteat\":\"lwkffl\"},\"resources\":{\"requests\":{\"bgysibthnvxw\":\"fzjxnjt\"},\"limits\":{\"kxunsaujqgbb\":\"tcbjdbtqy\",\"hgjsmbcsloy\":\"vovoa\"}}}")
+            "{\"nodeSelector\":{\"uwkkfzzetlvhdy\":\"xjziuucrlnew\",\"v\":\"zlvwyw\"},\"resources\":{\"requests\":{\"bcdwhslx\":\"pwwlzpddar\",\"tbdoprwkampy\":\"bajadknm\",\"iudrcycmwhuzym\":\"wpbldz\"},\"limits\":{\"knlvk\":\"ih\",\"zkopai\":\"n\",\"fpgvedrobujnjgyb\":\"ldcpudkhquxsyj\",\"skgrhnyt\":\"xmqxigidullnjgc\"}}}")
             .toObject(InstanceTypeSchema.class);
-        Assertions.assertEquals("uynf", model.nodeSelector().get("kyvnhiysdhork"));
-        Assertions.assertEquals("fzjxnjt", model.resources().requests().get("bgysibthnvxw"));
-        Assertions.assertEquals("tcbjdbtqy", model.resources().limits().get("kxunsaujqgbb"));
+        Assertions.assertEquals("xjziuucrlnew", model.nodeSelector().get("uwkkfzzetlvhdy"));
+        Assertions.assertEquals("pwwlzpddar", model.resources().requests().get("bcdwhslx"));
+        Assertions.assertEquals("ih", model.resources().limits().get("knlvk"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InstanceTypeSchema model = new InstanceTypeSchema()
-            .withNodeSelector(mapOf("kyvnhiysdhork", "uynf", "qki", "lhr", "qwmwqoguflteat", "lwkffl"))
-            .withResources(new InstanceTypeSchemaResources().withRequests(mapOf("bgysibthnvxw", "fzjxnjt"))
-                .withLimits(mapOf("kxunsaujqgbb", "tcbjdbtqy", "hgjsmbcsloy", "vovoa")));
+            .withNodeSelector(mapOf("uwkkfzzetlvhdy", "xjziuucrlnew", "v", "zlvwyw"))
+            .withResources(new InstanceTypeSchemaResources()
+                .withRequests(mapOf("bcdwhslx", "pwwlzpddar", "tbdoprwkampy", "bajadknm", "iudrcycmwhuzym", "wpbldz"))
+                .withLimits(mapOf("knlvk", "ih", "zkopai", "n", "fpgvedrobujnjgyb", "ldcpudkhquxsyj", "skgrhnyt",
+                    "xmqxigidullnjgc")));
         model = BinaryData.fromObject(model).toObject(InstanceTypeSchema.class);
-        Assertions.assertEquals("uynf", model.nodeSelector().get("kyvnhiysdhork"));
-        Assertions.assertEquals("fzjxnjt", model.resources().requests().get("bgysibthnvxw"));
-        Assertions.assertEquals("tcbjdbtqy", model.resources().limits().get("kxunsaujqgbb"));
+        Assertions.assertEquals("xjziuucrlnew", model.nodeSelector().get("uwkkfzzetlvhdy"));
+        Assertions.assertEquals("pwwlzpddar", model.resources().requests().get("bcdwhslx"));
+        Assertions.assertEquals("ih", model.resources().limits().get("knlvk"));
     }
 
     // Use "Map.of" if available

@@ -28,7 +28,7 @@ public final class RegistryEnvironmentVersionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.registryEnvironmentVersions()
-            .delete("lpsa", "loe", "himvlocdxvhkobi", "hhipn", com.azure.core.util.Context.NONE);
+            .delete("dnlodkqrqnkptixa", "oyzgaevrygggcc", "zmhoplqtzgt", "sbymnfc", com.azure.core.util.Context.NONE);
 
     }
 }

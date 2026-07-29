@@ -12,19 +12,19 @@ public final class BindOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BindOptions model
-            = BinaryData.fromString("{\"propagation\":\"dnjyhzfax\",\"createHostPath\":true,\"selinux\":\"u\"}")
+            = BinaryData.fromString("{\"propagation\":\"hypw\",\"createHostPath\":false,\"selinux\":\"jjy\"}")
                 .toObject(BindOptions.class);
-        Assertions.assertEquals("dnjyhzfax", model.propagation());
-        Assertions.assertTrue(model.createHostPath());
-        Assertions.assertEquals("u", model.selinux());
+        Assertions.assertEquals("hypw", model.propagation());
+        Assertions.assertFalse(model.createHostPath());
+        Assertions.assertEquals("jjy", model.selinux());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BindOptions model = new BindOptions().withPropagation("dnjyhzfax").withCreateHostPath(true).withSelinux("u");
+        BindOptions model = new BindOptions().withPropagation("hypw").withCreateHostPath(false).withSelinux("jjy");
         model = BinaryData.fromObject(model).toObject(BindOptions.class);
-        Assertions.assertEquals("dnjyhzfax", model.propagation());
-        Assertions.assertTrue(model.createHostPath());
-        Assertions.assertEquals("u", model.selinux());
+        Assertions.assertEquals("hypw", model.propagation());
+        Assertions.assertFalse(model.createHostPath());
+        Assertions.assertEquals("jjy", model.selinux());
     }
 }

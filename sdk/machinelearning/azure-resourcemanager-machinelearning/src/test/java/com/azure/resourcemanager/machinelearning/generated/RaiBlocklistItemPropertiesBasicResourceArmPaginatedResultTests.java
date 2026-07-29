@@ -12,10 +12,10 @@ public final class RaiBlocklistItemPropertiesBasicResourceArmPaginatedResultTest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemPropertiesBasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"isRegex\":true,\"pattern\":\"uqr\"},\"id\":\"dxfu\",\"name\":\"e\",\"type\":\"ewxatktwjrppi\"}],\"nextLink\":\"yrqvelrmd\"}")
+            "{\"value\":[{\"properties\":{\"isRegex\":true,\"pattern\":\"si\"},\"id\":\"fmugykwuycuo\",\"name\":\"enndzgthdzit\",\"type\":\"zffpherwj\"},{\"properties\":{\"isRegex\":false,\"pattern\":\"twonadezmzxvfybx\"},\"id\":\"rvnuvq\",\"name\":\"rrsguogk\",\"type\":\"brotpya\"},{\"properties\":{\"isRegex\":false,\"pattern\":\"jflwpftvvqtmvif\"},\"id\":\"vsimalbmti\",\"name\":\"xgosnxa\",\"type\":\"ptcd\"},{\"properties\":{\"isRegex\":true,\"pattern\":\"aox\"},\"id\":\"mvj\",\"name\":\"nn\",\"type\":\"sbnuc\"}],\"nextLink\":\"hpaq\"}")
             .toObject(RaiBlocklistItemPropertiesBasicResourceArmPaginatedResult.class);
         Assertions.assertTrue(model.value().get(0).properties().isRegex());
-        Assertions.assertEquals("uqr", model.value().get(0).properties().pattern());
-        Assertions.assertEquals("yrqvelrmd", model.nextLink());
+        Assertions.assertEquals("si", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("hpaq", model.nextLink());
     }
 }

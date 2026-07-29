@@ -23,7 +23,7 @@ public final class ModelVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"flavors\":{\"rvjhwgkynxlwrj\":{\"data\":{\"erlurgipvnbxle\":\"mwh\",\"gpxd\":\"smc\",\"ihrfcowla\":\"gcqmguvdko\",\"wxjjylaqhxevfd\":\"ewif\"}}},\"jobName\":\"td\",\"modelType\":\"cktkalhpiybfnky\",\"modelUri\":\"rignqlwogqn\",\"provisioningState\":\"Failed\",\"stage\":\"iuv\",\"datasets\":[{\"name\":\"bnkivexiath\",\"id\":\"ryywyfcenkbfxqc\"},{\"name\":\"ggeciradmxokbutb\",\"id\":\"cxzayvcse\"}],\"isAnonymous\":true,\"isArchived\":true,\"description\":\"yiitreddj\",\"properties\":{\"xm\":\"ppybseckg\",\"tfstdwqdvzc\":\"aszji\",\"jtkreisojhusw\":\"lkvw\",\"avzmqpaa\":\"grbkobmg\"},\"tags\":{\"ikzppgijncuba\":\"dtebwedj\",\"ssbmgersd\":\"cxepgaxpydemccq\"}},\"id\":\"hnhsmnfgzmxtxfuh\",\"name\":\"yksfyzevcknglffn\",\"type\":\"zzf\"}]}";
+            = "{\"value\":[{\"properties\":{\"flavors\":{\"dlfe\":{\"data\":{\"mgzsytmpfslrxvsq\":\"oadtedxzgyhb\",\"ijxefydckffkz\":\"bqrqbpiqfstkdlyj\",\"xnnitrugotf\":\"chrkiwpadnhf\"}}},\"jobName\":\"xbrvbdyriyr\",\"modelType\":\"bigksnijclfdpre\",\"modelUri\":\"xzxeigy\",\"provisioningState\":\"Creating\",\"stage\":\"n\",\"datasets\":[{\"name\":\"rzypcralwvcn\",\"id\":\"bizxq\"},{\"name\":\"mhzbcuj\",\"id\":\"l\"},{\"name\":\"ermjemnyuhoqpbf\",\"id\":\"cbweab\"}],\"isAnonymous\":false,\"isArchived\":true,\"description\":\"qu\",\"properties\":{\"uclopn\":\"vnomlcldoyohua\",\"lwsmdoowfrgdmbg\":\"ms\",\"hlgrrsk\":\"htpomiustkqywa\",\"dxgdjudek\":\"tzbkeeohpf\"},\"tags\":{\"hcdfdxt\":\"wzm\",\"hzkwvuewe\":\"qnztukirdedij\",\"zbcxdfsgwigyiwbw\":\"vajelswlxdknxctg\",\"fvn\":\"udx\"}},\"id\":\"c\",\"name\":\"fchnqiyevjehtsea\",\"type\":\"xxseh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,21 @@ public final class ModelVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ModelVersion> response = manager.modelVersions()
-            .list("zfjd", "kfthsydphdb", "zet", "gkzqbvhvdulymkgj", "ryhxf", 1256241884, "a", "npftkgm", 351668958,
-                "vxbiu", "zghpsotbameir", "usnaqsvruuh", ListViewType.ARCHIVED_ONLY, com.azure.core.util.Context.NONE);
+            .list("niauks", "txim", "ztasflgme", "weo", "lerpt", 708426466, "vzapybdeeagigbp", "bacpleirjrkakm",
+                2043978006, "dubmazlx", "bdukid", "qeyqrlgpkypb", ListViewType.ALL, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yiitreddj", response.iterator().next().properties().description());
-        Assertions.assertEquals("ppybseckg", response.iterator().next().properties().properties().get("xm"));
-        Assertions.assertEquals("dtebwedj", response.iterator().next().properties().tags().get("ikzppgijncuba"));
-        Assertions.assertTrue(response.iterator().next().properties().isAnonymous());
+        Assertions.assertEquals("qu", response.iterator().next().properties().description());
+        Assertions.assertEquals("vnomlcldoyohua", response.iterator().next().properties().properties().get("uclopn"));
+        Assertions.assertEquals("wzm", response.iterator().next().properties().tags().get("hcdfdxt"));
+        Assertions.assertFalse(response.iterator().next().properties().isAnonymous());
         Assertions.assertTrue(response.iterator().next().properties().isArchived());
-        Assertions.assertEquals("mwh",
-            response.iterator().next().properties().flavors().get("rvjhwgkynxlwrj").data().get("erlurgipvnbxle"));
-        Assertions.assertEquals("td", response.iterator().next().properties().jobName());
-        Assertions.assertEquals("cktkalhpiybfnky", response.iterator().next().properties().modelType());
-        Assertions.assertEquals("rignqlwogqn", response.iterator().next().properties().modelUri());
-        Assertions.assertEquals("iuv", response.iterator().next().properties().stage());
-        Assertions.assertEquals("bnkivexiath", response.iterator().next().properties().datasets().get(0).name());
-        Assertions.assertEquals("ryywyfcenkbfxqc", response.iterator().next().properties().datasets().get(0).id());
+        Assertions.assertEquals("oadtedxzgyhb",
+            response.iterator().next().properties().flavors().get("dlfe").data().get("mgzsytmpfslrxvsq"));
+        Assertions.assertEquals("xbrvbdyriyr", response.iterator().next().properties().jobName());
+        Assertions.assertEquals("bigksnijclfdpre", response.iterator().next().properties().modelType());
+        Assertions.assertEquals("xzxeigy", response.iterator().next().properties().modelUri());
+        Assertions.assertEquals("n", response.iterator().next().properties().stage());
+        Assertions.assertEquals("rzypcralwvcn", response.iterator().next().properties().datasets().get(0).name());
+        Assertions.assertEquals("bizxq", response.iterator().next().properties().datasets().get(0).id());
     }
 }

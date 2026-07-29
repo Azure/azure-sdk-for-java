@@ -27,7 +27,7 @@ public final class JobsCancelMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.jobs().cancel("hqqozhesb", "qwnmfjktd", "d", com.azure.core.util.Context.NONE);
+        manager.jobs().cancel("reozp", "fkcamzcbzgi", "lqpegcgdndpb", com.azure.core.util.Context.NONE);
 
     }
 }

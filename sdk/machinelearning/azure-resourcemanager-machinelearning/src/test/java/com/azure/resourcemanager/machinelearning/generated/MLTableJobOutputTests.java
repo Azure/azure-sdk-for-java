@@ -13,24 +13,30 @@ public final class MLTableJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MLTableJobOutput model = BinaryData.fromString(
-            "{\"jobOutputType\":\"mltable\",\"assetName\":\"nnin\",\"mode\":\"Direct\",\"uri\":\"rzfr\",\"description\":\"ztiucwviql\"}")
+            "{\"jobOutputType\":\"mltable\",\"assetName\":\"qxgcbvzarmqcbpo\",\"assetVersion\":\"tsin\",\"mode\":\"ReadWriteMount\",\"pathOnCompute\":\"vjyhdrxbrdvc\",\"uri\":\"qwh\",\"description\":\"xnmxgnmguzb\"}")
             .toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("ztiucwviql", model.description());
-        Assertions.assertEquals("nnin", model.assetName());
-        Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("rzfr", model.uri());
+        Assertions.assertEquals("xnmxgnmguzb", model.description());
+        Assertions.assertEquals("qxgcbvzarmqcbpo", model.assetName());
+        Assertions.assertEquals("tsin", model.assetVersion());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
+        Assertions.assertEquals("vjyhdrxbrdvc", model.pathOnCompute());
+        Assertions.assertEquals("qwh", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MLTableJobOutput model = new MLTableJobOutput().withDescription("ztiucwviql")
-            .withAssetName("nnin")
-            .withMode(OutputDeliveryMode.DIRECT)
-            .withUri("rzfr");
+        MLTableJobOutput model = new MLTableJobOutput().withDescription("xnmxgnmguzb")
+            .withAssetName("qxgcbvzarmqcbpo")
+            .withAssetVersion("tsin")
+            .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
+            .withPathOnCompute("vjyhdrxbrdvc")
+            .withUri("qwh");
         model = BinaryData.fromObject(model).toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("ztiucwviql", model.description());
-        Assertions.assertEquals("nnin", model.assetName());
-        Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("rzfr", model.uri());
+        Assertions.assertEquals("xnmxgnmguzb", model.description());
+        Assertions.assertEquals("qxgcbvzarmqcbpo", model.assetName());
+        Assertions.assertEquals("tsin", model.assetVersion());
+        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
+        Assertions.assertEquals("vjyhdrxbrdvc", model.pathOnCompute());
+        Assertions.assertEquals("qwh", model.uri());
     }
 }

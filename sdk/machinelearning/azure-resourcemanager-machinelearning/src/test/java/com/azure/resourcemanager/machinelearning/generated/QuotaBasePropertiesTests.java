@@ -12,25 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaBaseProperties model = BinaryData
-            .fromString("{\"id\":\"tcvpvdfmo\",\"type\":\"ctfvxuos\",\"limit\":3268468815407857146,\"unit\":\"Count\"}")
-            .toObject(QuotaBaseProperties.class);
-        Assertions.assertEquals("tcvpvdfmo", model.id());
-        Assertions.assertEquals("ctfvxuos", model.type());
-        Assertions.assertEquals(3268468815407857146L, model.limit());
+        QuotaBaseProperties model
+            = BinaryData.fromString("{\"id\":\"u\",\"type\":\"r\",\"limit\":8604706949495971486,\"unit\":\"Count\"}")
+                .toObject(QuotaBaseProperties.class);
+        Assertions.assertEquals("u", model.id());
+        Assertions.assertEquals("r", model.type());
+        Assertions.assertEquals(8604706949495971486L, model.limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaBaseProperties model = new QuotaBaseProperties().withId("tcvpvdfmo")
-            .withType("ctfvxuos")
-            .withLimit(3268468815407857146L)
+        QuotaBaseProperties model = new QuotaBaseProperties().withId("u")
+            .withType("r")
+            .withLimit(8604706949495971486L)
             .withUnit(QuotaUnit.COUNT);
         model = BinaryData.fromObject(model).toObject(QuotaBaseProperties.class);
-        Assertions.assertEquals("tcvpvdfmo", model.id());
-        Assertions.assertEquals("ctfvxuos", model.type());
-        Assertions.assertEquals(3268468815407857146L, model.limit());
+        Assertions.assertEquals("u", model.id());
+        Assertions.assertEquals("r", model.type());
+        Assertions.assertEquals(8604706949495971486L, model.limit());
         Assertions.assertEquals(QuotaUnit.COUNT, model.unit());
     }
 }

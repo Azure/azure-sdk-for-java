@@ -11,7 +11,7 @@ public final class AmlComputeNodesInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlComputeNodesInformation model = BinaryData.fromString(
-            "{\"nodes\":[{\"nodeId\":\"bfzetjizwh\",\"privateIpAddress\":\"bm\",\"publicIpAddress\":\"vvyxtvvxnakzi\",\"port\":517649630,\"nodeState\":\"preparing\",\"runId\":\"fm\"}],\"nextLink\":\"gfwhrmvlaknujmwx\"}")
+            "{\"nodes\":[{\"nodeId\":\"ih\",\"privateIpAddress\":\"wbywaazba\",\"publicIpAddress\":\"ekfz\",\"port\":237713050,\"nodeState\":\"leaving\",\"runId\":\"bbt\"}],\"nextLink\":\"noljdkxhmewy\"}")
             .toObject(AmlComputeNodesInformation.class);
     }
 }

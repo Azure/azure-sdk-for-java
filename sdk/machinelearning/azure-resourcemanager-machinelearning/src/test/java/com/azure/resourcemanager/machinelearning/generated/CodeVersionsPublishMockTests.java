@@ -29,10 +29,10 @@ public final class CodeVersionsPublishMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.codeVersions()
-            .publish("hgykzovstvymdqa", "mqm", "rnzgubqkfnox", "voyjdgfkrq",
-                new DestinationAsset().withDestinationName("rvpa")
-                    .withDestinationVersion("rdeexwejuguvnxb")
-                    .withRegistryName("pzurnzoy"),
+            .publish("lixa", "phkgminhecjgdj", "jmsngmluyr", "kpismmrmrj",
+                new DestinationAsset().withDestinationName("thizsabcylzzie")
+                    .withDestinationVersion("mzen")
+                    .withRegistryName("drue"),
                 com.azure.core.util.Context.NONE);
 
     }

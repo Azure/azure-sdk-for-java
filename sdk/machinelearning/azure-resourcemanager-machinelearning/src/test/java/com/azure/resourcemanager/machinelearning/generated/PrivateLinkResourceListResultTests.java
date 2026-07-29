@@ -14,20 +14,20 @@ public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"identity\":{\"principalId\":\"haevlah\",\"tenantId\":\"zywywuah\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mggewdqbxexfy\":{\"principalId\":\"wcnnaax\",\"clientId\":\"fdajrfgim\"},\"yzqbye\":{\"principalId\":\"vussuqks\",\"clientId\":\"sfx\"},\"fbgynzfwv\":{\"principalId\":\"pmoh\",\"clientId\":\"tlikffydztkq\"},\"wrrlccklyf\":{\"principalId\":\"teqjmyqxuhgk\",\"clientId\":\"nyprijyoxxjxbs\"}}},\"location\":\"ms\",\"properties\":{\"groupId\":\"emqom\",\"requiredMembers\":[\"lknuyapvibzicyvi\",\"hcaptkhjx\",\"rkbn\",\"fcck\"],\"requiredZoneNames\":[\"znfgvlx\"]},\"sku\":{\"name\":\"mnctigp\",\"tier\":\"Premium\",\"size\":\"icklktgkdprtq\",\"family\":\"tdcf\",\"capacity\":42621527},\"tags\":{\"xc\":\"dwbvjsbgmlamo\"},\"id\":\"tnpkvbpblt\",\"name\":\"wsexheeocnqou\",\"type\":\"vepvlryszfhdxyf\"},{\"identity\":{\"principalId\":\"hzbzhhavz\",\"tenantId\":\"xnvkdslcofuvtfue\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"spmjvailfauyv\":{\"principalId\":\"aklhjfddxqfuss\",\"clientId\":\"z\"},\"dwvog\":{\"principalId\":\"q\",\"clientId\":\"kqdgwbztrth\"},\"hcnsdyl\":{\"principalId\":\"fjdhgslorm\",\"clientId\":\"tofcvxky\"}}},\"location\":\"qunkygb\",\"properties\":{\"groupId\":\"s\",\"requiredMembers\":[\"edw\",\"xtzhgbgbhud\",\"rpjimvrrqfi\",\"pkwmamrlfizjud\"],\"requiredZoneNames\":[\"ih\"]},\"sku\":{\"name\":\"ngy\",\"tier\":\"Free\",\"size\":\"yafewcmodxw\",\"family\":\"ytxnxrqx\",\"capacity\":524714647},\"tags\":{\"dhweigny\":\"rgvfvkhbjhmvpjx\",\"vmwgvconyse\":\"ffqcwwynepk\",\"ouoxfalo\":\"jijfhpxni\",\"ynieunbydlgfaphw\":\"bskkypor\"},\"id\":\"bwtsaynrt\",\"name\":\"jfqreeo\",\"type\":\"vqjmrnblihs\"},{\"identity\":{\"principalId\":\"bmdivixzhpjgq\",\"tenantId\":\"iaoaweacfxa\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"rrjsurnowobw\":{\"principalId\":\"uetcnx\",\"clientId\":\"qzzdckhsq\"},\"huv\":{\"principalId\":\"xmyokohlsfjf\",\"clientId\":\"qjpzhe\"},\"ly\":{\"principalId\":\"xqkvadmjhymudjma\",\"clientId\":\"zdebhserm\"},\"ybloccu\":{\"principalId\":\"wu\",\"clientId\":\"qkaaptbssvkbcbpt\"}}},\"location\":\"lxzbnsshvqn\",\"properties\":{\"groupId\":\"beuybutcdzjf\",\"requiredMembers\":[\"peyxdyuxurxr\",\"tqmmijgpqfkwna\",\"ikczscymqfv\",\"g\"],\"requiredZoneNames\":[\"nyumzapdokezvp\",\"zk\"]},\"sku\":{\"name\":\"zqnzbflbqm\",\"tier\":\"Basic\",\"size\":\"xxvwedhagq\",\"family\":\"seseayuflms\",\"capacity\":1997750118},\"tags\":{\"sb\":\"rolrz\",\"ivt\":\"mphzkymunw\",\"wdalisd\":\"uszbdjrdfeuj\"},\"id\":\"n\",\"name\":\"caydzinlooulp\",\"type\":\"zmdahyclxrs\"}],\"nextLink\":\"oebld\"}")
+            "{\"value\":[{\"identity\":{\"principalId\":\"n\",\"tenantId\":\"ovomepxwsic\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wrhry\":{\"principalId\":\"csfshennm\",\"clientId\":\"pywdibugvnrgal\"},\"gtdow\":{\"principalId\":\"rbknuubxcwojtupq\",\"clientId\":\"npyeevffifu\"}}},\"location\":\"mwefcbyb\",\"properties\":{\"groupId\":\"rtczwjcujyznvyrj\",\"requiredMembers\":[\"lgkuirxxeuwi\",\"ircvnfgbdv\"],\"requiredZoneNames\":[\"ohktxagfujdbqjny\",\"xbvxgx\",\"q\"]},\"sku\":{\"name\":\"sfeooqftpv\",\"tier\":\"Free\",\"size\":\"rphklqlii\",\"family\":\"anuwgjnofg\",\"capacity\":147882975},\"tags\":{\"zmwyw\":\"sebjuymtevae\"},\"id\":\"jk\",\"name\":\"jvaedogz\",\"type\":\"ugxbxxgjogcph\"},{\"identity\":{\"principalId\":\"hrm\",\"tenantId\":\"nfdv\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nmwtqiljkn\":{\"principalId\":\"ywusrjzhdtr\",\"clientId\":\"fezfsmyljdzyyr\"},\"avh\":{\"principalId\":\"ynkstdtfwhjfphf\",\"clientId\":\"qjyihjcwwvaosck\"}}},\"location\":\"psp\",\"properties\":{\"groupId\":\"ifdyfaoex\",\"requiredMembers\":[\"wnrdp\",\"zlaihsujtg\"],\"requiredZoneNames\":[\"szamijxejpd\",\"liqwzutiyelrnhh\"]},\"sku\":{\"name\":\"vhqsz\",\"tier\":\"Premium\",\"size\":\"vqmq\",\"family\":\"dp\",\"capacity\":354536525},\"tags\":{\"kjthl\":\"nf\",\"kngejjxumowy\":\"kmxwawfu\"},\"id\":\"mo\",\"name\":\"zmxuktdrsjtmnk\",\"type\":\"jouwfzcfdt\"}],\"nextLink\":\"iaxtyrnuh\"}")
             .toObject(PrivateLinkResourceListResult.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             model.value().get(0).identity().type());
-        Assertions.assertEquals("ms", model.value().get(0).location());
-        Assertions.assertEquals("mnctigp", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
-        Assertions.assertEquals("icklktgkdprtq", model.value().get(0).sku().size());
-        Assertions.assertEquals("tdcf", model.value().get(0).sku().family());
-        Assertions.assertEquals(42621527, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("dwbvjsbgmlamo", model.value().get(0).tags().get("xc"));
-        Assertions.assertEquals("emqom", model.value().get(0).groupId());
-        Assertions.assertEquals("lknuyapvibzicyvi", model.value().get(0).requiredMembers().get(0));
-        Assertions.assertEquals("znfgvlx", model.value().get(0).requiredZoneNames().get(0));
-        Assertions.assertEquals("oebld", model.nextLink());
+        Assertions.assertEquals("mwefcbyb", model.value().get(0).location());
+        Assertions.assertEquals("sfeooqftpv", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("rphklqlii", model.value().get(0).sku().size());
+        Assertions.assertEquals("anuwgjnofg", model.value().get(0).sku().family());
+        Assertions.assertEquals(147882975, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("sebjuymtevae", model.value().get(0).tags().get("zmwyw"));
+        Assertions.assertEquals("rtczwjcujyznvyrj", model.value().get(0).groupId());
+        Assertions.assertEquals("lgkuirxxeuwi", model.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("ohktxagfujdbqjny", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("iaxtyrnuh", model.nextLink());
     }
 }

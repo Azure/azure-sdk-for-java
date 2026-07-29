@@ -21,7 +21,7 @@ public final class QuotasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"e\",\"amlWorkspaceLocation\":\"igozjrc\",\"type\":\"qugjalmzpfylq\",\"name\":{\"value\":\"wvznpdxcizropz\",\"localizedValue\":\"leecffbhqkvb\"},\"limit\":5328863446862891029,\"unit\":\"Count\"}]}";
+            = "{\"value\":[{\"id\":\"ljtrmlxrqllug\",\"amlWorkspaceLocation\":\"mbwdkziwwb\",\"type\":\"kjithx\",\"name\":{\"value\":\"pkv\",\"localizedValue\":\"iwcfshhck\"},\"limit\":1992259607641499615,\"unit\":\"Count\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class QuotasListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ResourceQuota> response
-            = manager.quotas().list("qkzvzqhvzjdsnvt", com.azure.core.util.Context.NONE);
+        PagedIterable<ResourceQuota> response = manager.quotas().list("cuyffkay", com.azure.core.util.Context.NONE);
 
     }
 }

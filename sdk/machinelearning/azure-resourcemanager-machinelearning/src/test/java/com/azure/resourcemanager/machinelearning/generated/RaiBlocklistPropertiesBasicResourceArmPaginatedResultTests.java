@@ -12,9 +12,9 @@ public final class RaiBlocklistPropertiesBasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistPropertiesBasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"dyvfxnzpfdfup\"},\"id\":\"wpdpsegivytab\",\"name\":\"bbkfl\",\"type\":\"wgsltutbuve\"},{\"properties\":{\"description\":\"uuqbm\"},\"id\":\"xcqsxwclykcru\",\"name\":\"ekkbnj\",\"type\":\"evmp\"}],\"nextLink\":\"deuenthsh\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"gvuqzgbjwvrudmp\"},\"id\":\"wpm\",\"name\":\"ol\",\"type\":\"aj\"},{\"properties\":{\"description\":\"esgyzwph\"},\"id\":\"kscecmbaajdfwrd\",\"name\":\"qlvzk\",\"type\":\"ekdesbpj\"}],\"nextLink\":\"llbhjjpduib\"}")
             .toObject(RaiBlocklistPropertiesBasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals("dyvfxnzpfdfup", model.value().get(0).properties().description());
-        Assertions.assertEquals("deuenthsh", model.nextLink());
+        Assertions.assertEquals("gvuqzgbjwvrudmp", model.value().get(0).properties().description());
+        Assertions.assertEquals("llbhjjpduib", model.nextLink());
     }
 }

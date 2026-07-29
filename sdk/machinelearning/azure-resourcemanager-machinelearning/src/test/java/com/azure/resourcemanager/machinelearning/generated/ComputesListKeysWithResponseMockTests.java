@@ -29,7 +29,7 @@ public final class ComputesListKeysWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComputeSecrets response = manager.computes()
-            .listKeysWithResponse("fbj", "bkj", "gzkcpt", com.azure.core.util.Context.NONE)
+            .listKeysWithResponse("ayod", "vwnqbpxyofft", "zovbhqels", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

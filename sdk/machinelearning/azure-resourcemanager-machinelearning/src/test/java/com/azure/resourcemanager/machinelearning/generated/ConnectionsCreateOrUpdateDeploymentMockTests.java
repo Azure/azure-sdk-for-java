@@ -23,7 +23,7 @@ public final class ConnectionsCreateOrUpdateDeploymentMockTests {
     @Test
     public void testCreateOrUpdateDeployment() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"yltornv\",\"provisioningState\":\"Succeeded\"},\"id\":\"olwifbdwy\",\"name\":\"vcy\",\"type\":\"bbvkthre\"}";
+            = "{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"dswfnomciwhu\",\"provisioningState\":\"Succeeded\"},\"id\":\"hfndsjpuilfvr\",\"name\":\"bcgdp\",\"type\":\"fxoffckejxomngu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class ConnectionsCreateOrUpdateDeploymentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EndpointDeploymentResourcePropertiesBasicResource response = manager.connections()
-            .createOrUpdateDeployment("nc", "qcocc", "dxjrrbyrbnkqps", "uoup",
+            .createOrUpdateDeployment("dpn", "ouylfcfgqinaokx", "uknzhmza", "srsqzuk",
                 new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("gdtuhdoimojcm")),
+                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("txtdmutd")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yltornv", response.properties().failureReason());
+        Assertions.assertEquals("dswfnomciwhu", response.properties().failureReason());
     }
 }

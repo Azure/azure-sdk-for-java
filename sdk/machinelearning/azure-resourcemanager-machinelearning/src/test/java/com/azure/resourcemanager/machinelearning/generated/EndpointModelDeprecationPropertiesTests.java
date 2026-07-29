@@ -13,9 +13,9 @@ public final class EndpointModelDeprecationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointModelDeprecationProperties model
-            = BinaryData.fromString("{\"fineTune\":\"2021-10-02T05:20:28Z\",\"inference\":\"2021-02-25T12:39:17Z\"}")
+            = BinaryData.fromString("{\"fineTune\":\"2021-08-21T19:39:54Z\",\"inference\":\"2021-05-04T18:43:14Z\"}")
                 .toObject(EndpointModelDeprecationProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T05:20:28Z"), model.fineTune());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T12:39:17Z"), model.inference());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T19:39:54Z"), model.fineTune());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T18:43:14Z"), model.inference());
     }
 }

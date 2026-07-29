@@ -16,11 +16,11 @@ public final class ComputeInstanceLastOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceLastOperation model = BinaryData.fromString(
-            "{\"operationName\":\"Start\",\"operationTime\":\"2021-08-31T12:14:29Z\",\"operationStatus\":\"StartFailed\",\"operationTrigger\":\"User\"}")
+            "{\"operationName\":\"Start\",\"operationTime\":\"2021-10-15T11:11:59Z\",\"operationStatus\":\"CreateFailed\",\"operationTrigger\":\"User\"}")
             .toObject(ComputeInstanceLastOperation.class);
         Assertions.assertEquals(OperationName.START, model.operationName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T12:14:29Z"), model.operationTime());
-        Assertions.assertEquals(OperationStatus.START_FAILED, model.operationStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T11:11:59Z"), model.operationTime());
+        Assertions.assertEquals(OperationStatus.CREATE_FAILED, model.operationStatus());
         Assertions.assertEquals(OperationTrigger.USER, model.operationTrigger());
     }
 }

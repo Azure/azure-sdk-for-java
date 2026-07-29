@@ -28,8 +28,7 @@ public final class CodeVersionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.codeVersions()
-            .deleteWithResponse("xqwqykmvugf", "hdho", "urhcnnkvth", "tamvmbgyvxhfmuhk",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("gbyytsazl", "cxlubrukhq", "uoyrbdkgqdm", "vvj", com.azure.core.util.Context.NONE);
 
     }
 }

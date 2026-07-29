@@ -21,7 +21,7 @@ public final class RegistryModelVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"flavors\":{\"bibvslocdkpv\":{\"data\":{\"qfaxtl\":\"bqvbcqgqrsopqg\",\"gslpvyktfuhfa\":\"pyzcg\"}},\"jckgwtbfxxsfjnba\":{\"data\":{\"hhiztfmibwzuhyd\":\"lkhdxnzjza\"}},\"ytlnmmyzn\":{\"data\":{\"iy\":\"ighmkdsvayyh\",\"h\":\"ehmnizoybt\"}}},\"jobName\":\"cfq\",\"modelType\":\"qulkzovqoh\",\"modelUri\":\"whrqxjx\",\"provisioningState\":\"Succeeded\",\"stage\":\"sndnypxnsjjjcdd\",\"datasets\":[{\"name\":\"bfn\",\"id\":\"xb\"}],\"isAnonymous\":false,\"isArchived\":true,\"description\":\"ajgczpdioddtj\",\"properties\":{\"mtcacwmabehrfys\":\"mzvjwj\",\"xoavlwwpvjrnjwvc\":\"zwtghzvhzrxcaes\"},\"tags\":{\"wmwkdehjloz\":\"qlceflgsndurhqoz\",\"uxedpqwz\":\"cwo\",\"rubcvucvebdfm\":\"zimgbxjgxrha\",\"eealphuclkbwk\":\"jn\"}},\"id\":\"drvkbcsvnnvk\",\"name\":\"fzldzzjjrzhjqen\",\"type\":\"opdvnzndlioda\"}";
+            = "{\"properties\":{\"flavors\":{\"cisolkwipvls\":{\"data\":{\"pmiytpji\":\"tjuuikqzdcwqal\"}}},\"jobName\":\"utawgyl\",\"modelType\":\"drfclehlop\",\"modelUri\":\"vpeaeyjl\",\"provisioningState\":\"Deleting\",\"stage\":\"xho\",\"datasets\":[{\"name\":\"cbmzembv\",\"id\":\"rqx\"},{\"name\":\"azyxmum\",\"id\":\"kaxzrycvac\"}],\"isAnonymous\":true,\"isArchived\":true,\"description\":\"yphxeoqma\",\"properties\":{\"yuvosbbawr\":\"kce\",\"ipqrtnkngjnhx\":\"qooxvprqlxqhq\"},\"tags\":{\"j\":\"cskif\"}},\"id\":\"p\",\"name\":\"dvhfpf\",\"type\":\"es\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,21 @@ public final class RegistryModelVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelVersion response = manager.registryModelVersions()
-            .getWithResponse("miixngekcwe", "bqtkdginmhlgp", "f", "qccey", com.azure.core.util.Context.NONE)
+            .getWithResponse("cqulfqttfqgdoowg", "ooi", "hhsvsnedh", "jiwfvetwfreq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ajgczpdioddtj", response.properties().description());
-        Assertions.assertEquals("mzvjwj", response.properties().properties().get("mtcacwmabehrfys"));
-        Assertions.assertEquals("qlceflgsndurhqoz", response.properties().tags().get("wmwkdehjloz"));
-        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertEquals("yphxeoqma", response.properties().description());
+        Assertions.assertEquals("kce", response.properties().properties().get("yuvosbbawr"));
+        Assertions.assertEquals("cskif", response.properties().tags().get("j"));
+        Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals("bqvbcqgqrsopqg",
-            response.properties().flavors().get("bibvslocdkpv").data().get("qfaxtl"));
-        Assertions.assertEquals("cfq", response.properties().jobName());
-        Assertions.assertEquals("qulkzovqoh", response.properties().modelType());
-        Assertions.assertEquals("whrqxjx", response.properties().modelUri());
-        Assertions.assertEquals("sndnypxnsjjjcdd", response.properties().stage());
-        Assertions.assertEquals("bfn", response.properties().datasets().get(0).name());
-        Assertions.assertEquals("xb", response.properties().datasets().get(0).id());
+        Assertions.assertEquals("tjuuikqzdcwqal",
+            response.properties().flavors().get("cisolkwipvls").data().get("pmiytpji"));
+        Assertions.assertEquals("utawgyl", response.properties().jobName());
+        Assertions.assertEquals("drfclehlop", response.properties().modelType());
+        Assertions.assertEquals("vpeaeyjl", response.properties().modelUri());
+        Assertions.assertEquals("xho", response.properties().stage());
+        Assertions.assertEquals("cbmzembv", response.properties().datasets().get(0).name());
+        Assertions.assertEquals("rqx", response.properties().datasets().get(0).id());
     }
 }

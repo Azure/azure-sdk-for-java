@@ -12,14 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class JobResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobResources model = BinaryData.fromString("{\"instanceTypes\":[\"p\"]}").toObject(JobResources.class);
-        Assertions.assertEquals("p", model.instanceTypes().get(0));
+        JobResources model
+            = BinaryData.fromString("{\"instanceTypes\":[\"pfgsvbbvaqdljnp\",\"tlrnrdet\",\"wevxeh\",\"e\"]}")
+                .toObject(JobResources.class);
+        Assertions.assertEquals("pfgsvbbvaqdljnp", model.instanceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResources model = new JobResources().withInstanceTypes(Arrays.asList("p"));
+        JobResources model
+            = new JobResources().withInstanceTypes(Arrays.asList("pfgsvbbvaqdljnp", "tlrnrdet", "wevxeh", "e"));
         model = BinaryData.fromObject(model).toObject(JobResources.class);
-        Assertions.assertEquals("p", model.instanceTypes().get(0));
+        Assertions.assertEquals("pfgsvbbvaqdljnp", model.instanceTypes().get(0));
     }
 }

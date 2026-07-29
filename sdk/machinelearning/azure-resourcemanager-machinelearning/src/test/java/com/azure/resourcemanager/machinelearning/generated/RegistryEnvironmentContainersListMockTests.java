@@ -23,7 +23,7 @@ public final class RegistryEnvironmentContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"isArchived\":true,\"latestVersion\":\"bxe\",\"nextVersion\":\"alhbrwaltvky\",\"description\":\"jopqtegkrjo\",\"properties\":{\"ismrnneklfi\":\"eghakss\"},\"tags\":{\"odwqzbiuk\":\"sfclxtf\",\"vyzaofaiwlnfvexi\":\"mfy\"}},\"id\":\"qafolseyxpgkm\",\"name\":\"njluaywgcjq\",\"type\":\"fafpyglnfwjs\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"isArchived\":true,\"latestVersion\":\"kdehjloz\",\"nextVersion\":\"wokuxedpqwzzzi\",\"description\":\"bxjgxrhajr\",\"properties\":{\"a\":\"vucvebdfmdjnfe\"},\"tags\":{\"mwdrvkbcsvn\":\"uclkbw\"}},\"id\":\"khfzldzzjjrz\",\"name\":\"jq\",\"type\":\"ngopdvnzndliodaj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class RegistryEnvironmentContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EnvironmentContainer> response = manager.registryEnvironmentContainers()
-            .list("e", "lpy", "sb", ListViewType.ACTIVE_ONLY, com.azure.core.util.Context.NONE);
+            .list("ghzvhzrxcaesoxo", "vlwwpvjrnjwv", "iarqlceflgsndurh", ListViewType.ACTIVE_ONLY,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jopqtegkrjo", response.iterator().next().properties().description());
-        Assertions.assertEquals("eghakss", response.iterator().next().properties().properties().get("ismrnneklfi"));
-        Assertions.assertEquals("sfclxtf", response.iterator().next().properties().tags().get("odwqzbiuk"));
+        Assertions.assertEquals("bxjgxrhajr", response.iterator().next().properties().description());
+        Assertions.assertEquals("vucvebdfmdjnfe", response.iterator().next().properties().properties().get("a"));
+        Assertions.assertEquals("uclkbw", response.iterator().next().properties().tags().get("mwdrvkbcsvn"));
         Assertions.assertTrue(response.iterator().next().properties().isArchived());
     }
 }

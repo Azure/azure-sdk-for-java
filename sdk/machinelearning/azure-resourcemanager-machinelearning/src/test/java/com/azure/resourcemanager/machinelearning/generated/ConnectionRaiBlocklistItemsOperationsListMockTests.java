@@ -22,7 +22,7 @@ public final class ConnectionRaiBlocklistItemsOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"isRegex\":false,\"pattern\":\"hqdl\"},\"id\":\"wqngpvvnbuknvku\",\"name\":\"lszxuuqbuv\",\"type\":\"beswg\"}]}";
+            = "{\"value\":[{\"properties\":{\"isRegex\":false,\"pattern\":\"bdvsorvhbygw\"},\"id\":\"xqlzzkbx\",\"name\":\"ncggamxbtqizydai\",\"type\":\"lnkkghlexvqhbn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class ConnectionRaiBlocklistItemsOperationsListMockTests {
 
         PagedIterable<RaiBlocklistItemPropertiesBasicResource> response
             = manager.connectionRaiBlocklistItemsOperations()
-                .list("rzijggbpdp", "gvqfznxzaliicr", "tyhmflvxil", "ytjywfqz", com.azure.core.util.Context.NONE);
+                .list("tlb", "uemqetmotuvhhed", "oyl", "crldwcc", com.azure.core.util.Context.NONE);
 
         Assertions.assertFalse(response.iterator().next().properties().isRegex());
-        Assertions.assertEquals("hqdl", response.iterator().next().properties().pattern());
+        Assertions.assertEquals("bdvsorvhbygw", response.iterator().next().properties().pattern());
     }
 }

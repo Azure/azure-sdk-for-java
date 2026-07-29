@@ -16,40 +16,40 @@ public final class VolumeDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeDefinition model = BinaryData.fromString(
-            "{\"type\":\"bind\",\"readOnly\":false,\"source\":\"vguy\",\"target\":\"nxelrjkfzcde\",\"consistency\":\"wwezhyfkdilb\",\"bind\":{\"propagation\":\"qacsf\",\"createHostPath\":true,\"selinux\":\"tyb\"},\"volume\":{\"nocopy\":true},\"tmpfs\":{\"size\":1206586214}}")
+            "{\"type\":\"npipe\",\"readOnly\":false,\"source\":\"ri\",\"target\":\"kwkjxlaace\",\"consistency\":\"kq\",\"bind\":{\"propagation\":\"s\",\"createHostPath\":true,\"selinux\":\"evgb\"},\"volume\":{\"nocopy\":true},\"tmpfs\":{\"size\":790130012}}")
             .toObject(VolumeDefinition.class);
-        Assertions.assertEquals(VolumeDefinitionType.BIND, model.type());
+        Assertions.assertEquals(VolumeDefinitionType.NPIPE, model.type());
         Assertions.assertFalse(model.readOnly());
-        Assertions.assertEquals("vguy", model.source());
-        Assertions.assertEquals("nxelrjkfzcde", model.target());
-        Assertions.assertEquals("wwezhyfkdilb", model.consistency());
-        Assertions.assertEquals("qacsf", model.bind().propagation());
+        Assertions.assertEquals("ri", model.source());
+        Assertions.assertEquals("kwkjxlaace", model.target());
+        Assertions.assertEquals("kq", model.consistency());
+        Assertions.assertEquals("s", model.bind().propagation());
         Assertions.assertTrue(model.bind().createHostPath());
-        Assertions.assertEquals("tyb", model.bind().selinux());
+        Assertions.assertEquals("evgb", model.bind().selinux());
         Assertions.assertTrue(model.volume().nocopy());
-        Assertions.assertEquals(1206586214, model.tmpfs().size());
+        Assertions.assertEquals(790130012, model.tmpfs().size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeDefinition model = new VolumeDefinition().withType(VolumeDefinitionType.BIND)
+        VolumeDefinition model = new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
             .withReadOnly(false)
-            .withSource("vguy")
-            .withTarget("nxelrjkfzcde")
-            .withConsistency("wwezhyfkdilb")
-            .withBind(new BindOptions().withPropagation("qacsf").withCreateHostPath(true).withSelinux("tyb"))
+            .withSource("ri")
+            .withTarget("kwkjxlaace")
+            .withConsistency("kq")
+            .withBind(new BindOptions().withPropagation("s").withCreateHostPath(true).withSelinux("evgb"))
             .withVolume(new VolumeOptions().withNocopy(true))
-            .withTmpfs(new TmpfsOptions().withSize(1206586214));
+            .withTmpfs(new TmpfsOptions().withSize(790130012));
         model = BinaryData.fromObject(model).toObject(VolumeDefinition.class);
-        Assertions.assertEquals(VolumeDefinitionType.BIND, model.type());
+        Assertions.assertEquals(VolumeDefinitionType.NPIPE, model.type());
         Assertions.assertFalse(model.readOnly());
-        Assertions.assertEquals("vguy", model.source());
-        Assertions.assertEquals("nxelrjkfzcde", model.target());
-        Assertions.assertEquals("wwezhyfkdilb", model.consistency());
-        Assertions.assertEquals("qacsf", model.bind().propagation());
+        Assertions.assertEquals("ri", model.source());
+        Assertions.assertEquals("kwkjxlaace", model.target());
+        Assertions.assertEquals("kq", model.consistency());
+        Assertions.assertEquals("s", model.bind().propagation());
         Assertions.assertTrue(model.bind().createHostPath());
-        Assertions.assertEquals("tyb", model.bind().selinux());
+        Assertions.assertEquals("evgb", model.bind().selinux());
         Assertions.assertTrue(model.volume().nocopy());
-        Assertions.assertEquals(1206586214, model.tmpfs().size());
+        Assertions.assertEquals(790130012, model.tmpfs().size());
     }
 }

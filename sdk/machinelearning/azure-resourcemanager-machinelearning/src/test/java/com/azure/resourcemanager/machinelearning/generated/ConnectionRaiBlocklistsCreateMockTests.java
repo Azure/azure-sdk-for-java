@@ -22,7 +22,7 @@ public final class ConnectionRaiBlocklistsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"badkzpqctuplpkje\"},\"id\":\"nrnzl\",\"name\":\"lu\",\"type\":\"oeftrbxomaa\"}";
+            = "{\"properties\":{\"description\":\"iyc\"},\"id\":\"jswedkfofyfwpu\",\"name\":\"wpcutzlvx\",\"type\":\"olvedzrjkrpor\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ConnectionRaiBlocklistsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistPropertiesBasicResource response = manager.connectionRaiBlocklists()
-            .define("iptudw")
-            .withExistingConnection("ztgduwun", "wva", "lfgvtczzvqzhtme")
-            .withProperties(new RaiBlocklistProperties().withDescription("srpsjkqfabju"))
+            .define("snozjn")
+            .withExistingConnection("gmxqaupypxg", "ypokoo", "yf")
+            .withProperties(new RaiBlocklistProperties().withDescription("ucmhonojese"))
             .create();
 
-        Assertions.assertEquals("badkzpqctuplpkje", response.properties().description());
+        Assertions.assertEquals("iyc", response.properties().description());
     }
 }

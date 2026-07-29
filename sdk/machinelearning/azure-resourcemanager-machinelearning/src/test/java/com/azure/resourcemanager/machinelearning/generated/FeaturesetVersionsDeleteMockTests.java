@@ -28,7 +28,7 @@ public final class FeaturesetVersionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.featuresetVersions()
-            .delete("rgnx", "rfufzaysfzuvuo", "zyfqcjclvbqo", "kzueytphnaz", com.azure.core.util.Context.NONE);
+            .delete("jryppmmtqxqiq", "e", "ugqfcorajdb", "lkffgyfehjs", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -15,16 +15,16 @@ public final class TrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrainingSettings model = BinaryData.fromString(
-            "{\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":true,\"enableStackEnsemble\":false,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT56H51M36S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"dataim\\\"\",\"stackMetaLearnerTrainPercentage\":23.355892277748282,\"stackMetaLearnerType\":\"LogisticRegressionCV\"}}")
+            "{\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT13H29M1S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datakvyhzokpoyu\\\"\",\"stackMetaLearnerTrainPercentage\":25.03455036261909,\"stackMetaLearnerType\":\"LightGBMClassifier\"}}")
             .toObject(TrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertFalse(model.enableModelExplainability());
-        Assertions.assertTrue(model.enableOnnxCompatibleModels());
-        Assertions.assertFalse(model.enableStackEnsemble());
-        Assertions.assertFalse(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT56H51M36S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(23.355892277748282D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
+        Assertions.assertFalse(model.enableOnnxCompatibleModels());
+        Assertions.assertTrue(model.enableStackEnsemble());
+        Assertions.assertTrue(model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT13H29M1S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(25.03455036261909D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMCLASSIFIER,
             model.stackEnsembleSettings().stackMetaLearnerType());
     }
 
@@ -32,22 +32,22 @@ public final class TrainingSettingsTests {
     public void testSerialize() throws Exception {
         TrainingSettings model = new TrainingSettings().withEnableDnnTraining(false)
             .withEnableModelExplainability(false)
-            .withEnableOnnxCompatibleModels(true)
-            .withEnableStackEnsemble(false)
-            .withEnableVoteEnsemble(false)
-            .withEnsembleModelDownloadTimeout(Duration.parse("PT56H51M36S"))
-            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"dataim\"")
-                .withStackMetaLearnerTrainPercentage(23.355892277748282D)
-                .withStackMetaLearnerType(StackMetaLearnerType.LOGISTIC_REGRESSION_CV));
+            .withEnableOnnxCompatibleModels(false)
+            .withEnableStackEnsemble(true)
+            .withEnableVoteEnsemble(true)
+            .withEnsembleModelDownloadTimeout(Duration.parse("PT13H29M1S"))
+            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datakvyhzokpoyu\"")
+                .withStackMetaLearnerTrainPercentage(25.03455036261909D)
+                .withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMCLASSIFIER));
         model = BinaryData.fromObject(model).toObject(TrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertFalse(model.enableModelExplainability());
-        Assertions.assertTrue(model.enableOnnxCompatibleModels());
-        Assertions.assertFalse(model.enableStackEnsemble());
-        Assertions.assertFalse(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT56H51M36S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(23.355892277748282D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
+        Assertions.assertFalse(model.enableOnnxCompatibleModels());
+        Assertions.assertTrue(model.enableStackEnsemble());
+        Assertions.assertTrue(model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT13H29M1S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(25.03455036261909D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMCLASSIFIER,
             model.stackEnsembleSettings().stackMetaLearnerType());
     }
 }

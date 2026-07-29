@@ -23,7 +23,7 @@ public final class RegistryDataVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"bwyeyrnbuby\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"uuhlwbgvzuxfsmfp\",\"properties\":{\"mfjylh\":\"oqpzwfvnoy\",\"kejyavk\":\"pljzrqwjtswemot\"},\"tags\":{\"paeyklxsvcbr\":\"ctqaqczr\",\"phhnsfrunkc\":\"zltvmmdsngoaofm\"}},\"id\":\"nhacexibomrrj\",\"name\":\"oepfba\",\"type\":\"bffxansgntjmnl\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"zzlfhhwd\",\"isAnonymous\":false,\"isArchived\":false,\"description\":\"swuomjd\",\"properties\":{\"qsniobehxxb\":\"fq\",\"wkryzrdqpkqfuv\":\"eiobubtpyemp\"},\"tags\":{\"mfyernc\":\"qqzbhmyhj\"}},\"id\":\"gwiquka\",\"name\":\"iokeolz\",\"type\":\"zf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class RegistryDataVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataVersionBase> response = manager.registryDataVersions()
-            .list("muutkwwt", "mbccmwsyfsgi", "gcbjclfbpfdsatr", "q", 2067217593, "uxwtdazebifktnx", "gi",
+            .list("tkmnyufdemrcl", "xgpkyetm", "kh", "hixisdvyf", 1018229494, "eqgxljsbtosiw", "veqgehbwlxo",
                 ListViewType.ACTIVE_ONLY, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uuhlwbgvzuxfsmfp", response.iterator().next().properties().description());
-        Assertions.assertEquals("oqpzwfvnoy", response.iterator().next().properties().properties().get("mfjylh"));
-        Assertions.assertEquals("ctqaqczr", response.iterator().next().properties().tags().get("paeyklxsvcbr"));
-        Assertions.assertTrue(response.iterator().next().properties().isAnonymous());
-        Assertions.assertTrue(response.iterator().next().properties().isArchived());
-        Assertions.assertEquals("bwyeyrnbuby", response.iterator().next().properties().dataUri());
+        Assertions.assertEquals("swuomjd", response.iterator().next().properties().description());
+        Assertions.assertEquals("fq", response.iterator().next().properties().properties().get("qsniobehxxb"));
+        Assertions.assertEquals("qqzbhmyhj", response.iterator().next().properties().tags().get("mfyernc"));
+        Assertions.assertFalse(response.iterator().next().properties().isAnonymous());
+        Assertions.assertFalse(response.iterator().next().properties().isArchived());
+        Assertions.assertEquals("zzlfhhwd", response.iterator().next().properties().dataUri());
     }
 }

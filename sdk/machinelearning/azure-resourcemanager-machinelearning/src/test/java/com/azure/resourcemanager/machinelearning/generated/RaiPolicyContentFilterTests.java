@@ -14,27 +14,27 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"allowedContentLevel\":\"High\",\"blocking\":true,\"enabled\":false,\"name\":\"ewlsuxpcbwkdwjy\",\"source\":\"Prompt\"}")
+            "{\"allowedContentLevel\":\"Low\",\"blocking\":true,\"enabled\":true,\"name\":\"vuoikdlp\",\"source\":\"Prompt\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals(AllowedContentLevel.HIGH, model.allowedContentLevel());
+        Assertions.assertEquals(AllowedContentLevel.LOW, model.allowedContentLevel());
         Assertions.assertTrue(model.blocking());
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("ewlsuxpcbwkdwjy", model.name());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("vuoikdlp", model.name());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.HIGH)
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.LOW)
             .withBlocking(true)
-            .withEnabled(false)
-            .withName("ewlsuxpcbwkdwjy")
+            .withEnabled(true)
+            .withName("vuoikdlp")
             .withSource(RaiPolicyContentSource.PROMPT);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals(AllowedContentLevel.HIGH, model.allowedContentLevel());
+        Assertions.assertEquals(AllowedContentLevel.LOW, model.allowedContentLevel());
         Assertions.assertTrue(model.blocking());
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("ewlsuxpcbwkdwjy", model.name());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("vuoikdlp", model.name());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 }

@@ -21,7 +21,7 @@ public final class DataVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"nowxhyvdbrdvsv\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"vlkusgi\",\"properties\":{\"mrdiscsdvkymkt\":\"rcthypepxs\"},\"tags\":{\"a\":\"ivoxgzegnglafnf\"}},\"id\":\"ghddc\",\"name\":\"zwxuxorrutuhvem\",\"type\":\"xlssolqypvw\"}";
+            = "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"sxblmnxrxkuly\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"qon\",\"properties\":{\"ozbgodywxjikf\":\"y\"},\"tags\":{\"nkzimqa\":\"lused\"}},\"id\":\"mvmycvjpaxjdqvvy\",\"name\":\"ehyv\",\"type\":\"f\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class DataVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataVersionBase response = manager.dataVersions()
-            .getWithResponse("sypxmul", "hfrerkqpyfjxkb", "ws", "uqfmxbdjkmnxsg", com.azure.core.util.Context.NONE)
+            .getWithResponse("swrjyb", "vsobamtarirdzdgv", "oflzuk", "gougxpypbmz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vlkusgi", response.properties().description());
-        Assertions.assertEquals("rcthypepxs", response.properties().properties().get("mrdiscsdvkymkt"));
-        Assertions.assertEquals("ivoxgzegnglafnf", response.properties().tags().get("a"));
-        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertEquals("qon", response.properties().description());
+        Assertions.assertEquals("y", response.properties().properties().get("ozbgodywxjikf"));
+        Assertions.assertEquals("lused", response.properties().tags().get("nkzimqa"));
+        Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals("nowxhyvdbrdvsv", response.properties().dataUri());
+        Assertions.assertEquals("sxblmnxrxkuly", response.properties().dataUri());
     }
 }

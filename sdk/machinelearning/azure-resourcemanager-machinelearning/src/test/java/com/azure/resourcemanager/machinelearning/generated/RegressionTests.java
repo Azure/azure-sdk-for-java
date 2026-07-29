@@ -30,156 +30,163 @@ public final class RegressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Regression model = BinaryData.fromString(
-            "{\"taskType\":\"Regression\",\"cvSplitColumnNames\":[\"ndslvrqoemwsie\"],\"featurizationSettings\":{\"blockedTransformers\":[\"NaiveBayes\",\"CountVectorizer\",\"TfIdf\"],\"columnNameAndTypes\":{\"g\":\"fydeotmfxlkd\"},\"enableDnnFeaturization\":true,\"mode\":\"Custom\",\"transformerParams\":{\"cfmfzcfasfodro\":[{\"fields\":[\"uyuafixlxicw\"],\"parameters\":\"\\\"datath\\\"\"}],\"zewxtrlqbpxy\":[{\"fields\":[\"ngtwyuskwgq\"],\"parameters\":\"\\\"datataumd\\\"\"},{\"fields\":[\"lv\",\"rkegtyczu\",\"piyxlzmiydd\",\"eqzqvabmhvs\"],\"parameters\":\"\\\"dataduetbapf\\\"\"}]},\"datasetLanguage\":\"kjpirgzxvbczw\"},\"limitSettings\":{\"enableEarlyTermination\":false,\"exitScore\":69.58924620583065,\"maxConcurrentTrials\":966257553,\"maxCoresPerTrial\":122092654,\"maxTrials\":2144215723,\"timeout\":\"PT98H43M3S\",\"trialTimeout\":\"PT172H12M16S\"},\"nCrossValidations\":{\"mode\":\"NCrossValidations\"},\"testData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"ozfvualjt\",\"description\":\"ivsdw\"},\"testDataSize\":27.603326022840115,\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"EvalDownload\",\"uri\":\"hscj\",\"description\":\"kmhzbh\"},\"validationDataSize\":6.782156655388494,\"weightColumnName\":\"wihbnnxemv\",\"primaryMetric\":\"SpearmanCorrelation\",\"trainingSettings\":{\"allowedTrainingAlgorithms\":[\"LightGBM\",\"LightGBM\"],\"blockedTrainingAlgorithms\":[\"DecisionTree\",\"ExtremeRandomTrees\"],\"enableDnnTraining\":false,\"enableModelExplainability\":true,\"enableOnnxCompatibleModels\":true,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT149H25M53S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datarletndqlmf\\\"\",\"stackMetaLearnerTrainPercentage\":98.06462680890994,\"stackMetaLearnerType\":\"ElasticNet\"}},\"logVerbosity\":\"NotSet\",\"targetColumnName\":\"wovvv\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"Direct\",\"uri\":\"eevnoqayreh\",\"description\":\"q\"}}")
+            "{\"taskType\":\"Regression\",\"cvSplitColumnNames\":[\"wyuskwgqrnta\"],\"featurizationSettings\":{\"blockedTransformers\":[\"HashOneHotEncoder\",\"TextTargetEncoder\",\"NaiveBayes\",\"HashOneHotEncoder\"],\"columnNameAndTypes\":{\"uppiyxlzm\":\"kegtyc\",\"vab\":\"yddeeqz\",\"zewxtrlqbpxy\":\"hvsexduetbapf\"},\"enableDnnFeaturization\":true,\"mode\":\"Off\",\"transformerParams\":{\"nnx\":[{\"fields\":[\"vbczwhyegb\"],\"parameters\":\"\\\"datamsritjbuiggr\\\"\"},{\"fields\":[\"zfv\",\"aljthoivsdwsn\",\"krfihscjv\"],\"parameters\":\"\\\"datamhzbhwahfbwih\\\"\"}],\"oklf\":[{\"fields\":[\"nuqqkotauratnicp\",\"fzs\",\"le\",\"yrletndqlmf\"],\"parameters\":\"\\\"datagnbbuypwovvvsfle\\\"\"},{\"fields\":[\"oqayrehjuqwv\",\"pxrl\",\"hpzihacenqqzlx\",\"qzubfonfd\"],\"parameters\":\"\\\"datamkfw\\\"\"},{\"fields\":[\"wtewf\",\"xwyrkbrehzlr\",\"njpchamkaeplr\",\"jub\"],\"parameters\":\"\\\"datauywevtjrieikmwl\\\"\"}]},\"datasetLanguage\":\"syx\"},\"limitSettings\":{\"enableEarlyTermination\":true,\"exitScore\":74.76239070040106,\"maxConcurrentTrials\":1456116229,\"maxCoresPerTrial\":118940548,\"maxTrials\":691575719,\"timeout\":\"PT221H40M34S\",\"trialTimeout\":\"PT135H35M55S\"},\"nCrossValidations\":{\"mode\":\"NCrossValidations\"},\"testData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"tzrxzhcle\",\"description\":\"wtzqzcloyhy\"},\"testDataSize\":10.97168806936757,\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"gyresgzsd\",\"description\":\"wbyorjplbchych\"},\"validationDataSize\":52.773574935369695,\"weightColumnName\":\"fbqvumkxqj\",\"primaryMetric\":\"SpearmanCorrelation\",\"trainingSettings\":{\"allowedTrainingAlgorithms\":[\"ElasticNet\"],\"blockedTrainingAlgorithms\":[\"SGD\",\"GradientBoosting\"],\"enableDnnTraining\":true,\"enableModelExplainability\":true,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":false,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT7H28M55S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datal\\\"\",\"stackMetaLearnerTrainPercentage\":23.801733477518063,\"stackMetaLearnerType\":\"ElasticNetCV\"}},\"logVerbosity\":\"Critical\",\"targetColumnName\":\"fcaeooifqdyw\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"Direct\",\"uri\":\"obhahqmomf\",\"description\":\"o\"}}")
             .toObject(Regression.class);
-        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
-        Assertions.assertEquals("wovvv", model.targetColumnName());
-        Assertions.assertEquals("q", model.trainingData().description());
+        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
+        Assertions.assertEquals("fcaeooifqdyw", model.targetColumnName());
+        Assertions.assertEquals("o", model.trainingData().description());
         Assertions.assertEquals(InputDeliveryMode.DIRECT, model.trainingData().mode());
-        Assertions.assertEquals("eevnoqayreh", model.trainingData().uri());
-        Assertions.assertEquals("ndslvrqoemwsie", model.cvSplitColumnNames().get(0));
-        Assertions.assertEquals("kjpirgzxvbczw", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(BlockedTransformers.NAIVE_BAYES,
+        Assertions.assertEquals("obhahqmomf", model.trainingData().uri());
+        Assertions.assertEquals("wyuskwgqrnta", model.cvSplitColumnNames().get(0));
+        Assertions.assertEquals("syx", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals(BlockedTransformers.HASH_ONE_HOT_ENCODER,
             model.featurizationSettings().blockedTransformers().get(0));
-        Assertions.assertEquals("fydeotmfxlkd", model.featurizationSettings().columnNameAndTypes().get("g"));
+        Assertions.assertEquals("kegtyc", model.featurizationSettings().columnNameAndTypes().get("uppiyxlzm"));
         Assertions.assertTrue(model.featurizationSettings().enableDnnFeaturization());
-        Assertions.assertEquals(FeaturizationMode.CUSTOM, model.featurizationSettings().mode());
-        Assertions.assertEquals("uyuafixlxicw",
-            model.featurizationSettings().transformerParams().get("cfmfzcfasfodro").get(0).fields().get(0));
-        Assertions.assertFalse(model.limitSettings().enableEarlyTermination());
-        Assertions.assertEquals(69.58924620583065D, model.limitSettings().exitScore());
-        Assertions.assertEquals(966257553, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(122092654, model.limitSettings().maxCoresPerTrial());
-        Assertions.assertEquals(2144215723, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT98H43M3S"), model.limitSettings().timeout());
-        Assertions.assertEquals(Duration.parse("PT172H12M16S"), model.limitSettings().trialTimeout());
-        Assertions.assertEquals("ivsdw", model.testData().description());
+        Assertions.assertEquals(FeaturizationMode.OFF, model.featurizationSettings().mode());
+        Assertions.assertEquals("vbczwhyegb",
+            model.featurizationSettings().transformerParams().get("nnx").get(0).fields().get(0));
+        Assertions.assertTrue(model.limitSettings().enableEarlyTermination());
+        Assertions.assertEquals(74.76239070040106D, model.limitSettings().exitScore());
+        Assertions.assertEquals(1456116229, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(118940548, model.limitSettings().maxCoresPerTrial());
+        Assertions.assertEquals(691575719, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT221H40M34S"), model.limitSettings().timeout());
+        Assertions.assertEquals(Duration.parse("PT135H35M55S"), model.limitSettings().trialTimeout());
+        Assertions.assertEquals("wtzqzcloyhy", model.testData().description());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.testData().mode());
-        Assertions.assertEquals("ozfvualjt", model.testData().uri());
-        Assertions.assertEquals(27.603326022840115D, model.testDataSize());
-        Assertions.assertEquals("kmhzbh", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("hscj", model.validationData().uri());
-        Assertions.assertEquals(6.782156655388494D, model.validationDataSize());
-        Assertions.assertEquals("wihbnnxemv", model.weightColumnName());
+        Assertions.assertEquals("tzrxzhcle", model.testData().uri());
+        Assertions.assertEquals(10.97168806936757D, model.testDataSize());
+        Assertions.assertEquals("wbyorjplbchych", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("gyresgzsd", model.validationData().uri());
+        Assertions.assertEquals(52.773574935369695D, model.validationDataSize());
+        Assertions.assertEquals("fbqvumkxqj", model.weightColumnName());
         Assertions.assertEquals(RegressionPrimaryMetrics.SPEARMAN_CORRELATION, model.primaryMetric());
-        Assertions.assertFalse(model.trainingSettings().enableDnnTraining());
+        Assertions.assertTrue(model.trainingSettings().enableDnnTraining());
         Assertions.assertTrue(model.trainingSettings().enableModelExplainability());
-        Assertions.assertTrue(model.trainingSettings().enableOnnxCompatibleModels());
-        Assertions.assertTrue(model.trainingSettings().enableStackEnsemble());
-        Assertions.assertTrue(model.trainingSettings().enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT149H25M53S"),
-            model.trainingSettings().ensembleModelDownloadTimeout());
-        Assertions.assertEquals(98.06462680890994D,
+        Assertions.assertFalse(model.trainingSettings().enableOnnxCompatibleModels());
+        Assertions.assertFalse(model.trainingSettings().enableStackEnsemble());
+        Assertions.assertFalse(model.trainingSettings().enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT7H28M55S"), model.trainingSettings().ensembleModelDownloadTimeout());
+        Assertions.assertEquals(23.801733477518063D,
             model.trainingSettings().stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.ELASTIC_NET,
+        Assertions.assertEquals(StackMetaLearnerType.ELASTIC_NET_CV,
             model.trainingSettings().stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(RegressionModels.LIGHT_GBM,
+        Assertions.assertEquals(RegressionModels.ELASTIC_NET,
             model.trainingSettings().allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(RegressionModels.DECISION_TREE,
-            model.trainingSettings().blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.SGD, model.trainingSettings().blockedTrainingAlgorithms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Regression model = new Regression().withLogVerbosity(LogVerbosity.NOT_SET)
-            .withTargetColumnName("wovvv")
-            .withTrainingData(
-                new MLTableJobInput().withDescription("q").withMode(InputDeliveryMode.DIRECT).withUri("eevnoqayreh"))
-            .withCvSplitColumnNames(Arrays.asList("ndslvrqoemwsie"))
-            .withFeaturizationSettings(new TableVerticalFeaturizationSettings().withDatasetLanguage("kjpirgzxvbczw")
-                .withBlockedTransformers(Arrays.asList(BlockedTransformers.NAIVE_BAYES,
-                    BlockedTransformers.COUNT_VECTORIZER, BlockedTransformers.TF_IDF))
-                .withColumnNameAndTypes(mapOf("g", "fydeotmfxlkd"))
-                .withEnableDnnFeaturization(true)
-                .withMode(FeaturizationMode.CUSTOM)
-                .withTransformerParams(mapOf("cfmfzcfasfodro",
-                    Arrays.asList(
-                        new ColumnTransformer().withFields(Arrays.asList("uyuafixlxicw")).withParameters("\"datath\"")),
-                    "zewxtrlqbpxy",
-                    Arrays.asList(
-                        new ColumnTransformer().withFields(Arrays.asList("ngtwyuskwgq"))
-                            .withParameters("\"datataumd\""),
-                        new ColumnTransformer()
-                            .withFields(Arrays.asList("lv", "rkegtyczu", "piyxlzmiydd", "eqzqvabmhvs"))
-                            .withParameters("\"dataduetbapf\"")))))
-            .withLimitSettings(new TableVerticalLimitSettings().withEnableEarlyTermination(false)
-                .withExitScore(69.58924620583065D)
-                .withMaxConcurrentTrials(966257553)
-                .withMaxCoresPerTrial(122092654)
-                .withMaxTrials(2144215723)
-                .withTimeout(Duration.parse("PT98H43M3S"))
-                .withTrialTimeout(Duration.parse("PT172H12M16S")))
-            .withNCrossValidations(new NCrossValidations())
-            .withTestData(new MLTableJobInput().withDescription("ivsdw")
-                .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
-                .withUri("ozfvualjt"))
-            .withTestDataSize(27.603326022840115D)
-            .withValidationData(new MLTableJobInput().withDescription("kmhzbh")
-                .withMode(InputDeliveryMode.EVAL_DOWNLOAD)
-                .withUri("hscj"))
-            .withValidationDataSize(6.782156655388494D)
-            .withWeightColumnName("wihbnnxemv")
-            .withPrimaryMetric(RegressionPrimaryMetrics.SPEARMAN_CORRELATION)
-            .withTrainingSettings(new RegressionTrainingSettings().withEnableDnnTraining(false)
-                .withEnableModelExplainability(true)
-                .withEnableOnnxCompatibleModels(true)
-                .withEnableStackEnsemble(true)
-                .withEnableVoteEnsemble(true)
-                .withEnsembleModelDownloadTimeout(Duration.parse("PT149H25M53S"))
-                .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datarletndqlmf\"")
-                    .withStackMetaLearnerTrainPercentage(98.06462680890994D)
-                    .withStackMetaLearnerType(StackMetaLearnerType.ELASTIC_NET))
-                .withAllowedTrainingAlgorithms(Arrays.asList(RegressionModels.LIGHT_GBM, RegressionModels.LIGHT_GBM))
-                .withBlockedTrainingAlgorithms(
-                    Arrays.asList(RegressionModels.DECISION_TREE, RegressionModels.EXTREME_RANDOM_TREES)));
+        Regression model
+            = new Regression().withLogVerbosity(LogVerbosity.CRITICAL)
+                .withTargetColumnName("fcaeooifqdyw")
+                .withTrainingData(
+                    new MLTableJobInput().withDescription("o").withMode(InputDeliveryMode.DIRECT).withUri("obhahqmomf"))
+                .withCvSplitColumnNames(Arrays.asList("wyuskwgqrnta"))
+                .withFeaturizationSettings(
+                    new TableVerticalFeaturizationSettings().withDatasetLanguage("syx")
+                        .withBlockedTransformers(Arrays.asList(BlockedTransformers.HASH_ONE_HOT_ENCODER,
+                            BlockedTransformers.TEXT_TARGET_ENCODER, BlockedTransformers.NAIVE_BAYES,
+                            BlockedTransformers.HASH_ONE_HOT_ENCODER))
+                        .withColumnNameAndTypes(
+                            mapOf("uppiyxlzm", "kegtyc", "vab", "yddeeqz", "zewxtrlqbpxy", "hvsexduetbapf"))
+                        .withEnableDnnFeaturization(true)
+                        .withMode(FeaturizationMode.OFF)
+                        .withTransformerParams(
+                            mapOf("nnx", Arrays.asList(
+                                new ColumnTransformer().withFields(Arrays.asList("vbczwhyegb"))
+                                    .withParameters("\"datamsritjbuiggr\""),
+                                new ColumnTransformer().withFields(Arrays.asList("zfv", "aljthoivsdwsn", "krfihscjv"))
+                                    .withParameters("\"datamhzbhwahfbwih\"")),
+                                "oklf",
+                                Arrays.asList(new ColumnTransformer()
+                                    .withFields(Arrays.asList("nuqqkotauratnicp", "fzs", "le", "yrletndqlmf"))
+                                    .withParameters("\"datagnbbuypwovvvsfle\""),
+                                    new ColumnTransformer()
+                                        .withFields(
+                                            Arrays.asList("oqayrehjuqwv", "pxrl", "hpzihacenqqzlx", "qzubfonfd"))
+                                        .withParameters("\"datamkfw\""),
+                                    new ColumnTransformer()
+                                        .withFields(Arrays.asList("wtewf", "xwyrkbrehzlr", "njpchamkaeplr", "jub"))
+                                        .withParameters("\"datauywevtjrieikmwl\"")))))
+                .withLimitSettings(new TableVerticalLimitSettings().withEnableEarlyTermination(true)
+                    .withExitScore(74.76239070040106D)
+                    .withMaxConcurrentTrials(1456116229)
+                    .withMaxCoresPerTrial(118940548)
+                    .withMaxTrials(691575719)
+                    .withTimeout(Duration.parse("PT221H40M34S"))
+                    .withTrialTimeout(Duration.parse("PT135H35M55S")))
+                .withNCrossValidations(new NCrossValidations())
+                .withTestData(new MLTableJobInput().withDescription("wtzqzcloyhy")
+                    .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
+                    .withUri("tzrxzhcle"))
+                .withTestDataSize(10.97168806936757D)
+                .withValidationData(new MLTableJobInput().withDescription("wbyorjplbchych")
+                    .withMode(InputDeliveryMode.READ_WRITE_MOUNT)
+                    .withUri("gyresgzsd"))
+                .withValidationDataSize(52.773574935369695D)
+                .withWeightColumnName("fbqvumkxqj")
+                .withPrimaryMetric(RegressionPrimaryMetrics.SPEARMAN_CORRELATION)
+                .withTrainingSettings(new RegressionTrainingSettings().withEnableDnnTraining(true)
+                    .withEnableModelExplainability(true)
+                    .withEnableOnnxCompatibleModels(false)
+                    .withEnableStackEnsemble(false)
+                    .withEnableVoteEnsemble(false)
+                    .withEnsembleModelDownloadTimeout(Duration.parse("PT7H28M55S"))
+                    .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datal\"")
+                        .withStackMetaLearnerTrainPercentage(23.801733477518063D)
+                        .withStackMetaLearnerType(StackMetaLearnerType.ELASTIC_NET_CV))
+                    .withAllowedTrainingAlgorithms(Arrays.asList(RegressionModels.ELASTIC_NET))
+                    .withBlockedTrainingAlgorithms(
+                        Arrays.asList(RegressionModels.SGD, RegressionModels.GRADIENT_BOOSTING)));
         model = BinaryData.fromObject(model).toObject(Regression.class);
-        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
-        Assertions.assertEquals("wovvv", model.targetColumnName());
-        Assertions.assertEquals("q", model.trainingData().description());
+        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
+        Assertions.assertEquals("fcaeooifqdyw", model.targetColumnName());
+        Assertions.assertEquals("o", model.trainingData().description());
         Assertions.assertEquals(InputDeliveryMode.DIRECT, model.trainingData().mode());
-        Assertions.assertEquals("eevnoqayreh", model.trainingData().uri());
-        Assertions.assertEquals("ndslvrqoemwsie", model.cvSplitColumnNames().get(0));
-        Assertions.assertEquals("kjpirgzxvbczw", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(BlockedTransformers.NAIVE_BAYES,
+        Assertions.assertEquals("obhahqmomf", model.trainingData().uri());
+        Assertions.assertEquals("wyuskwgqrnta", model.cvSplitColumnNames().get(0));
+        Assertions.assertEquals("syx", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals(BlockedTransformers.HASH_ONE_HOT_ENCODER,
             model.featurizationSettings().blockedTransformers().get(0));
-        Assertions.assertEquals("fydeotmfxlkd", model.featurizationSettings().columnNameAndTypes().get("g"));
+        Assertions.assertEquals("kegtyc", model.featurizationSettings().columnNameAndTypes().get("uppiyxlzm"));
         Assertions.assertTrue(model.featurizationSettings().enableDnnFeaturization());
-        Assertions.assertEquals(FeaturizationMode.CUSTOM, model.featurizationSettings().mode());
-        Assertions.assertEquals("uyuafixlxicw",
-            model.featurizationSettings().transformerParams().get("cfmfzcfasfodro").get(0).fields().get(0));
-        Assertions.assertFalse(model.limitSettings().enableEarlyTermination());
-        Assertions.assertEquals(69.58924620583065D, model.limitSettings().exitScore());
-        Assertions.assertEquals(966257553, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(122092654, model.limitSettings().maxCoresPerTrial());
-        Assertions.assertEquals(2144215723, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT98H43M3S"), model.limitSettings().timeout());
-        Assertions.assertEquals(Duration.parse("PT172H12M16S"), model.limitSettings().trialTimeout());
-        Assertions.assertEquals("ivsdw", model.testData().description());
+        Assertions.assertEquals(FeaturizationMode.OFF, model.featurizationSettings().mode());
+        Assertions.assertEquals("vbczwhyegb",
+            model.featurizationSettings().transformerParams().get("nnx").get(0).fields().get(0));
+        Assertions.assertTrue(model.limitSettings().enableEarlyTermination());
+        Assertions.assertEquals(74.76239070040106D, model.limitSettings().exitScore());
+        Assertions.assertEquals(1456116229, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(118940548, model.limitSettings().maxCoresPerTrial());
+        Assertions.assertEquals(691575719, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT221H40M34S"), model.limitSettings().timeout());
+        Assertions.assertEquals(Duration.parse("PT135H35M55S"), model.limitSettings().trialTimeout());
+        Assertions.assertEquals("wtzqzcloyhy", model.testData().description());
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.testData().mode());
-        Assertions.assertEquals("ozfvualjt", model.testData().uri());
-        Assertions.assertEquals(27.603326022840115D, model.testDataSize());
-        Assertions.assertEquals("kmhzbh", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("hscj", model.validationData().uri());
-        Assertions.assertEquals(6.782156655388494D, model.validationDataSize());
-        Assertions.assertEquals("wihbnnxemv", model.weightColumnName());
+        Assertions.assertEquals("tzrxzhcle", model.testData().uri());
+        Assertions.assertEquals(10.97168806936757D, model.testDataSize());
+        Assertions.assertEquals("wbyorjplbchych", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("gyresgzsd", model.validationData().uri());
+        Assertions.assertEquals(52.773574935369695D, model.validationDataSize());
+        Assertions.assertEquals("fbqvumkxqj", model.weightColumnName());
         Assertions.assertEquals(RegressionPrimaryMetrics.SPEARMAN_CORRELATION, model.primaryMetric());
-        Assertions.assertFalse(model.trainingSettings().enableDnnTraining());
+        Assertions.assertTrue(model.trainingSettings().enableDnnTraining());
         Assertions.assertTrue(model.trainingSettings().enableModelExplainability());
-        Assertions.assertTrue(model.trainingSettings().enableOnnxCompatibleModels());
-        Assertions.assertTrue(model.trainingSettings().enableStackEnsemble());
-        Assertions.assertTrue(model.trainingSettings().enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT149H25M53S"),
-            model.trainingSettings().ensembleModelDownloadTimeout());
-        Assertions.assertEquals(98.06462680890994D,
+        Assertions.assertFalse(model.trainingSettings().enableOnnxCompatibleModels());
+        Assertions.assertFalse(model.trainingSettings().enableStackEnsemble());
+        Assertions.assertFalse(model.trainingSettings().enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT7H28M55S"), model.trainingSettings().ensembleModelDownloadTimeout());
+        Assertions.assertEquals(23.801733477518063D,
             model.trainingSettings().stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.ELASTIC_NET,
+        Assertions.assertEquals(StackMetaLearnerType.ELASTIC_NET_CV,
             model.trainingSettings().stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(RegressionModels.LIGHT_GBM,
+        Assertions.assertEquals(RegressionModels.ELASTIC_NET,
             model.trainingSettings().allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(RegressionModels.DECISION_TREE,
-            model.trainingSettings().blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.SGD, model.trainingSettings().blockedTrainingAlgorithms().get(0));
     }
 
     // Use "Map.of" if available

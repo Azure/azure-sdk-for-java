@@ -15,21 +15,21 @@ public final class EnvironmentVariableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentVariable model = BinaryData.fromString(
-            "{\"type\":\"local\",\"value\":\"cm\",\"atvyrkljqkqws\":\"\\\"datadrp\\\"\",\"bypnkteiidlbov\":\"\\\"datajtvjkowggxawwd\\\"\"}")
+            "{\"type\":\"local\",\"value\":\"xxsdyafwtydsmmab\",\"adj\":\"\\\"datalejqzhpvhxp\\\"\",\"qscjpvqerqxk\":\"\\\"dataeullgfyog\\\"\",\"zlhcu\":\"\\\"datamwdz\\\"\"}")
             .toObject(EnvironmentVariable.class);
         Assertions.assertEquals(EnvironmentVariableType.LOCAL, model.type());
-        Assertions.assertEquals("cm", model.value());
+        Assertions.assertEquals("xxsdyafwtydsmmab", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentVariable model = new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-            .withValue("cm")
+            .withValue("xxsdyafwtydsmmab")
             .withAdditionalProperties(
-                mapOf("bypnkteiidlbov", "\"datajtvjkowggxawwd\"", "atvyrkljqkqws", "\"datadrp\""));
+                mapOf("zlhcu", "\"datamwdz\"", "adj", "\"datalejqzhpvhxp\"", "qscjpvqerqxk", "\"dataeullgfyog\""));
         model = BinaryData.fromObject(model).toObject(EnvironmentVariable.class);
         Assertions.assertEquals(EnvironmentVariableType.LOCAL, model.type());
-        Assertions.assertEquals("cm", model.value());
+        Assertions.assertEquals("xxsdyafwtydsmmab", model.value());
     }
 
     // Use "Map.of" if available

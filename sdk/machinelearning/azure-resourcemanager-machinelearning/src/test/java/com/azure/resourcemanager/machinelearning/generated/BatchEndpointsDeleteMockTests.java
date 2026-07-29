@@ -27,7 +27,7 @@ public final class BatchEndpointsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.batchEndpoints().delete("qvatst", "voivcktjsc", "kexybxyrc", com.azure.core.util.Context.NONE);
+        manager.batchEndpoints().delete("d", "ysmzgbogdj", "uybcp", com.azure.core.util.Context.NONE);
 
     }
 }

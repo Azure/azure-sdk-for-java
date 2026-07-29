@@ -12,8 +12,8 @@ public final class ListWorkspaceQuotasTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListWorkspaceQuotas model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"shvfxjtxlawmvdyq\",\"amlWorkspaceLocation\":\"jropxfqdm\",\"type\":\"znyjyu\",\"name\":{\"value\":\"zwgdpvhwiril\",\"localizedValue\":\"qtr\"},\"limit\":6245186789143678875,\"unit\":\"Count\"}],\"nextLink\":\"gacde\"}")
+            "{\"value\":[{\"id\":\"dlxbaeyocpkv\",\"amlWorkspaceLocation\":\"jfdzfmnpbdrcibj\",\"type\":\"nnoztnhvdtuoamqo\",\"name\":{\"value\":\"hspshtisyzfeoc\",\"localizedValue\":\"zjwnz\"},\"limit\":4173391392625867201,\"unit\":\"Count\"}],\"nextLink\":\"bvwdxgyypmxq\"}")
             .toObject(ListWorkspaceQuotas.class);
-        Assertions.assertEquals("gacde", model.nextLink());
+        Assertions.assertEquals("bvwdxgyypmxq", model.nextLink());
     }
 }

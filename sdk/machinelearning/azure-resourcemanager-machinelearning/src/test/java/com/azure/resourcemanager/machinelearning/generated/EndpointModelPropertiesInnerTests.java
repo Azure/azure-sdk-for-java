@@ -14,25 +14,25 @@ public final class EndpointModelPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointModelPropertiesInner model = BinaryData.fromString(
-            "{\"capabilities\":{\"krdp\":\"clz\",\"tpoenefnoafpcnrx\":\"yytbpkrpkhq\",\"ufcmuajwblxp\":\"yrxowv\"},\"deprecation\":{\"fineTune\":\"2021-06-17T15:44:22Z\",\"inference\":\"2020-12-24T06:55:03Z\"},\"finetuneCapabilities\":{\"tib\":\"wtnnsvrfajyni\",\"ctblfehb\":\"fgzqzhl\",\"rcmeqljxdumhycx\":\"cgyo\",\"d\":\"nebldxag\"},\"format\":\"wcn\",\"isDefaultVersion\":false,\"lifecycleStatus\":\"Preview\",\"maxCapacity\":423824164,\"name\":\"uvohufzdtsrp\",\"skus\":[{\"capacity\":{\"default\":1281488754,\"maximum\":381760812},\"connectionIds\":[\"nsbylgmgbh\",\"qczouanbfulvcxgl\",\"oqwb\"],\"deprecationDate\":\"2021-02-24T01:13:37Z\",\"name\":\"qbzbwbgwzh\",\"rateLimits\":[{\"count\":98.53002813045974,\"renewalPeriod\":11.899729490540867,\"rules\":[{},{},{},{}]}],\"usageName\":\"vnlhrwyakz\"},{\"capacity\":{\"default\":707987603,\"maximum\":162803375},\"connectionIds\":[\"vdeatjiobnirg\",\"extqd\",\"wtgntimznupb\"],\"deprecationDate\":\"2021-02-02T09:23:35Z\",\"name\":\"etkod\",\"rateLimits\":[{\"count\":72.94962092733219,\"renewalPeriod\":44.37851693433005,\"rules\":[{}]}],\"usageName\":\"rzmmmjyvdhdg\"},{\"capacity\":{\"default\":232449352,\"maximum\":1594962511},\"connectionIds\":[\"mfetqjisjmo\",\"zcaqfkakhgk\",\"vt\",\"ycvytv\"],\"deprecationDate\":\"2021-10-10T09:22:58Z\",\"name\":\"awfus\",\"rateLimits\":[{\"count\":87.53194408991634,\"renewalPeriod\":88.08633112106621,\"rules\":[{}]}],\"usageName\":\"bb\"}],\"version\":\"jbozv\"}")
+            "{\"capabilities\":{\"peyxdyuxurxr\":\"uybutcdzjfjt\",\"ikczscymqfv\":\"tqmmijgpqfkwna\"},\"deprecation\":{\"fineTune\":\"2021-12-09T06:51:08Z\",\"inference\":\"2021-07-12T02:19:22Z\"},\"finetuneCapabilities\":{\"pe\":\"mzapdokez\"},\"format\":\"nfzqnzbflbqmh\",\"isDefaultVersion\":true,\"lifecycleStatus\":\"GenerallyAvailable\",\"maxCapacity\":687070375,\"name\":\"dhagqbbsese\",\"skus\":[{\"capacity\":{\"default\":1081755710,\"maximum\":1731665637},\"connectionIds\":[\"dcrolrze\",\"bo\",\"phzkymu\",\"wjivtbuszbdjrdfe\"],\"deprecationDate\":\"2021-01-29T19:05:07Z\",\"name\":\"dalisdeqn\",\"rateLimits\":[{\"count\":8.175801934275306,\"renewalPeriod\":25.046258493870877,\"rules\":[{},{},{}]},{\"count\":87.14353451268296,\"renewalPeriod\":65.88033656182336,\"rules\":[{},{},{},{}]},{\"count\":36.74591051154377,\"renewalPeriod\":19.31079645106347,\"rules\":[{}]}],\"usageName\":\"oebld\"}],\"version\":\"affjkrtnh\"}")
             .toObject(EndpointModelPropertiesInner.class);
-        Assertions.assertEquals("clz", model.capabilities().get("krdp"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T15:44:22Z"), model.deprecation().fineTune());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T06:55:03Z"), model.deprecation().inference());
-        Assertions.assertEquals("wtnnsvrfajyni", model.finetuneCapabilities().get("tib"));
-        Assertions.assertEquals("wcn", model.format());
-        Assertions.assertFalse(model.isDefaultVersion());
-        Assertions.assertEquals(ModelLifecycleStatus.PREVIEW, model.lifecycleStatus());
-        Assertions.assertEquals(423824164, model.maxCapacity());
-        Assertions.assertEquals("uvohufzdtsrp", model.name());
-        Assertions.assertEquals(1281488754, model.skus().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(381760812, model.skus().get(0).capacity().maximum());
-        Assertions.assertEquals("nsbylgmgbh", model.skus().get(0).connectionIds().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T01:13:37Z"), model.skus().get(0).deprecationDate());
-        Assertions.assertEquals("qbzbwbgwzh", model.skus().get(0).name());
-        Assertions.assertEquals(98.53002813045974D, model.skus().get(0).rateLimits().get(0).count());
-        Assertions.assertEquals(11.899729490540867D, model.skus().get(0).rateLimits().get(0).renewalPeriod());
-        Assertions.assertEquals("vnlhrwyakz", model.skus().get(0).usageName());
-        Assertions.assertEquals("jbozv", model.version());
+        Assertions.assertEquals("uybutcdzjfjt", model.capabilities().get("peyxdyuxurxr"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-09T06:51:08Z"), model.deprecation().fineTune());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T02:19:22Z"), model.deprecation().inference());
+        Assertions.assertEquals("mzapdokez", model.finetuneCapabilities().get("pe"));
+        Assertions.assertEquals("nfzqnzbflbqmh", model.format());
+        Assertions.assertTrue(model.isDefaultVersion());
+        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE, model.lifecycleStatus());
+        Assertions.assertEquals(687070375, model.maxCapacity());
+        Assertions.assertEquals("dhagqbbsese", model.name());
+        Assertions.assertEquals(1081755710, model.skus().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(1731665637, model.skus().get(0).capacity().maximum());
+        Assertions.assertEquals("dcrolrze", model.skus().get(0).connectionIds().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T19:05:07Z"), model.skus().get(0).deprecationDate());
+        Assertions.assertEquals("dalisdeqn", model.skus().get(0).name());
+        Assertions.assertEquals(8.175801934275306D, model.skus().get(0).rateLimits().get(0).count());
+        Assertions.assertEquals(25.046258493870877D, model.skus().get(0).rateLimits().get(0).renewalPeriod());
+        Assertions.assertEquals("oebld", model.skus().get(0).usageName());
+        Assertions.assertEquals("affjkrtnh", model.version());
     }
 }

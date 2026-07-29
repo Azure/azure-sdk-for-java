@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ResizeSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResizeSchema model = BinaryData.fromString("{\"targetVMSize\":\"aneyvae\"}").toObject(ResizeSchema.class);
-        Assertions.assertEquals("aneyvae", model.targetVMSize());
+        ResizeSchema model = BinaryData.fromString("{\"targetVMSize\":\"jrzvlc\"}").toObject(ResizeSchema.class);
+        Assertions.assertEquals("jrzvlc", model.targetVMSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResizeSchema model = new ResizeSchema().withTargetVMSize("aneyvae");
+        ResizeSchema model = new ResizeSchema().withTargetVMSize("jrzvlc");
         model = BinaryData.fromObject(model).toObject(ResizeSchema.class);
-        Assertions.assertEquals("aneyvae", model.targetVMSize());
+        Assertions.assertEquals("jrzvlc", model.targetVMSize());
     }
 }

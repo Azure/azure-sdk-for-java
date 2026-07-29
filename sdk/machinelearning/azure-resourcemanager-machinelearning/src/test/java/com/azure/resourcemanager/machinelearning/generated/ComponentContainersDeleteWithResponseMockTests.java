@@ -28,7 +28,7 @@ public final class ComponentContainersDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.componentContainers()
-            .deleteWithResponse("ydlkrnpsbnm", "mhkipjardv", "pfgwdxmiaelnpbi", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("wqsni", "xwdqzu", "vukszkmxbh", com.azure.core.util.Context.NONE);
 
     }
 }

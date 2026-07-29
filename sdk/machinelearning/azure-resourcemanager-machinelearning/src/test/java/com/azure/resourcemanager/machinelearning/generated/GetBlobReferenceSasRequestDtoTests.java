@@ -12,18 +12,18 @@ public final class GetBlobReferenceSasRequestDtoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetBlobReferenceSasRequestDto model
-            = BinaryData.fromString("{\"assetId\":\"jzhdtrsyfezf\",\"blobUri\":\"yljdzyyrwnmwt\"}")
+            = BinaryData.fromString("{\"assetId\":\"bvbbdledff\",\"blobUri\":\"vsluazzxfjv\"}")
                 .toObject(GetBlobReferenceSasRequestDto.class);
-        Assertions.assertEquals("jzhdtrsyfezf", model.assetId());
-        Assertions.assertEquals("yljdzyyrwnmwt", model.blobUri());
+        Assertions.assertEquals("bvbbdledff", model.assetId());
+        Assertions.assertEquals("vsluazzxfjv", model.blobUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetBlobReferenceSasRequestDto model
-            = new GetBlobReferenceSasRequestDto().withAssetId("jzhdtrsyfezf").withBlobUri("yljdzyyrwnmwt");
+            = new GetBlobReferenceSasRequestDto().withAssetId("bvbbdledff").withBlobUri("vsluazzxfjv");
         model = BinaryData.fromObject(model).toObject(GetBlobReferenceSasRequestDto.class);
-        Assertions.assertEquals("jzhdtrsyfezf", model.assetId());
-        Assertions.assertEquals("yljdzyyrwnmwt", model.blobUri());
+        Assertions.assertEquals("bvbbdledff", model.assetId());
+        Assertions.assertEquals("vsluazzxfjv", model.blobUri());
     }
 }

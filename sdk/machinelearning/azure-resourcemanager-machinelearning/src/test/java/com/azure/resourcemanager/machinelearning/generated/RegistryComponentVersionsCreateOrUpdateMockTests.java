@@ -25,7 +25,7 @@ public final class RegistryComponentVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentSpec\":\"\\\"dataqxejjnti\\\"\",\"provisioningState\":\"Succeeded\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"o\",\"properties\":{\"zacw\":\"crbroeomuf\"},\"tags\":{\"hw\":\"wpbsspexe\"}},\"id\":\"j\",\"name\":\"oucjzbovuvmdzdqt\",\"type\":\"rguajsrdecbowkhm\"}";
+            = "{\"properties\":{\"componentSpec\":\"\\\"dataqzbiukzmfyfv\\\"\",\"provisioningState\":\"Succeeded\",\"isAnonymous\":false,\"isArchived\":false,\"description\":\"lnfvexiuuqafo\",\"properties\":{\"mln\":\"yxpg\",\"pyglnfw\":\"luaywgcjqnfa\"},\"tags\":{\"xblucpmqwkf\":\"wv\"}},\"id\":\"kpv\",\"name\":\"kstzqz\",\"type\":\"dwrcaj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,19 @@ public final class RegistryComponentVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComponentVersion response = manager.registryComponentVersions()
-            .createOrUpdate("naokxouknz", "mzassr", "qzuk", "btxtdmutdrrqq",
-                new ComponentVersionInner().withProperties(new ComponentVersionProperties().withDescription("wfnom")
-                    .withProperties(mapOf("u", "humngihfndsj", "offckejx", "lfvrpbcgdptf", "qwxxynttrn", "mng",
-                        "xuyzrnngnmfhmw", "svximgnsiy"))
-                    .withTags(mapOf("o", "mm"))
-                    .withIsAnonymous(true)
-                    .withIsArchived(true)
-                    .withComponentSpec("\"datahklttliuwdrtwq\"")),
+            .createOrUpdate("j", "ogvfnwqzolvazk", "kycge", "g",
+                new ComponentVersionInner().withProperties(new ComponentVersionProperties().withDescription("ymyddzjtx")
+                    .withProperties(mapOf("paexllt", "slmglyseyvagakf", "grhrdnsgvsrtqlt", "ekkae"))
+                    .withTags(mapOf("wrubxeyralhb", "kraleglpynsblnw", "qt", "waltvkylwjo", "ghaks", "gkrjolba"))
+                    .withIsAnonymous(false)
+                    .withIsArchived(false)
+                    .withComponentSpec("\"datahjybboqyxi\"")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.properties().description());
-        Assertions.assertEquals("crbroeomuf", response.properties().properties().get("zacw"));
-        Assertions.assertEquals("wpbsspexe", response.properties().tags().get("hw"));
-        Assertions.assertTrue(response.properties().isAnonymous());
+        Assertions.assertEquals("lnfvexiuuqafo", response.properties().description());
+        Assertions.assertEquals("yxpg", response.properties().properties().get("mln"));
+        Assertions.assertEquals("wv", response.properties().tags().get("xblucpmqwkf"));
+        Assertions.assertFalse(response.properties().isAnonymous());
         Assertions.assertFalse(response.properties().isArchived());
     }
 

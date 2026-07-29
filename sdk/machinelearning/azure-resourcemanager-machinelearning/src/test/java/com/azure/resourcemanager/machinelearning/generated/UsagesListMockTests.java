@@ -21,7 +21,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"gbssqthcywyoqxp\",\"amlWorkspaceLocation\":\"ocfxlrzjjff\",\"type\":\"zm\",\"unit\":\"Count\",\"currentValue\":6143248396808627628,\"limit\":619309832671473796,\"name\":{\"value\":\"kygnepjyux\",\"localizedValue\":\"rphiyxjqranp\"}}]}";
+            = "{\"value\":[{\"id\":\"mlozjyovrllvhbgk\",\"amlWorkspaceLocation\":\"piezthflgpsalyn\",\"type\":\"mwzpfbiqjrz\",\"unit\":\"Count\",\"currentValue\":4830186606784076707,\"limit\":8108971264657907741,\"name\":{\"value\":\"lybx\",\"localizedValue\":\"zknkffzdy\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class UsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Usage> response = manager.usages().list("oqwmhcpujygntx", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response = manager.usages().list("wohkromzs", com.azure.core.util.Context.NONE);
 
     }
 }

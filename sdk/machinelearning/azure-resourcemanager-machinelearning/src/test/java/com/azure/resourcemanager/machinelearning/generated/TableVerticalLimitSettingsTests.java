@@ -13,33 +13,33 @@ public final class TableVerticalLimitSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableVerticalLimitSettings model = BinaryData.fromString(
-            "{\"enableEarlyTermination\":true,\"exitScore\":54.441076694847645,\"maxConcurrentTrials\":1858466374,\"maxCoresPerTrial\":1361315831,\"maxTrials\":1192184138,\"timeout\":\"PT175H32M54S\",\"trialTimeout\":\"PT68H53M36S\"}")
+            "{\"enableEarlyTermination\":false,\"exitScore\":2.5345968160215393,\"maxConcurrentTrials\":1247721200,\"maxCoresPerTrial\":529673442,\"maxTrials\":982582830,\"timeout\":\"PT120H10M11S\",\"trialTimeout\":\"PT225H45M10S\"}")
             .toObject(TableVerticalLimitSettings.class);
-        Assertions.assertTrue(model.enableEarlyTermination());
-        Assertions.assertEquals(54.441076694847645D, model.exitScore());
-        Assertions.assertEquals(1858466374, model.maxConcurrentTrials());
-        Assertions.assertEquals(1361315831, model.maxCoresPerTrial());
-        Assertions.assertEquals(1192184138, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT175H32M54S"), model.timeout());
-        Assertions.assertEquals(Duration.parse("PT68H53M36S"), model.trialTimeout());
+        Assertions.assertFalse(model.enableEarlyTermination());
+        Assertions.assertEquals(2.5345968160215393D, model.exitScore());
+        Assertions.assertEquals(1247721200, model.maxConcurrentTrials());
+        Assertions.assertEquals(529673442, model.maxCoresPerTrial());
+        Assertions.assertEquals(982582830, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT120H10M11S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT225H45M10S"), model.trialTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableVerticalLimitSettings model = new TableVerticalLimitSettings().withEnableEarlyTermination(true)
-            .withExitScore(54.441076694847645D)
-            .withMaxConcurrentTrials(1858466374)
-            .withMaxCoresPerTrial(1361315831)
-            .withMaxTrials(1192184138)
-            .withTimeout(Duration.parse("PT175H32M54S"))
-            .withTrialTimeout(Duration.parse("PT68H53M36S"));
+        TableVerticalLimitSettings model = new TableVerticalLimitSettings().withEnableEarlyTermination(false)
+            .withExitScore(2.5345968160215393D)
+            .withMaxConcurrentTrials(1247721200)
+            .withMaxCoresPerTrial(529673442)
+            .withMaxTrials(982582830)
+            .withTimeout(Duration.parse("PT120H10M11S"))
+            .withTrialTimeout(Duration.parse("PT225H45M10S"));
         model = BinaryData.fromObject(model).toObject(TableVerticalLimitSettings.class);
-        Assertions.assertTrue(model.enableEarlyTermination());
-        Assertions.assertEquals(54.441076694847645D, model.exitScore());
-        Assertions.assertEquals(1858466374, model.maxConcurrentTrials());
-        Assertions.assertEquals(1361315831, model.maxCoresPerTrial());
-        Assertions.assertEquals(1192184138, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT175H32M54S"), model.timeout());
-        Assertions.assertEquals(Duration.parse("PT68H53M36S"), model.trialTimeout());
+        Assertions.assertFalse(model.enableEarlyTermination());
+        Assertions.assertEquals(2.5345968160215393D, model.exitScore());
+        Assertions.assertEquals(1247721200, model.maxConcurrentTrials());
+        Assertions.assertEquals(529673442, model.maxCoresPerTrial());
+        Assertions.assertEquals(982582830, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT120H10M11S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT225H45M10S"), model.trialTimeout());
     }
 }

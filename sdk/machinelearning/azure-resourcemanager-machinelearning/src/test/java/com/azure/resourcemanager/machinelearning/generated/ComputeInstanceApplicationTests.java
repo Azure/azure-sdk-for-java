@@ -12,9 +12,9 @@ public final class ComputeInstanceApplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceApplication model
-            = BinaryData.fromString("{\"displayName\":\"tlvhdyxzl\",\"endpointUri\":\"ywj\"}")
+            = BinaryData.fromString("{\"displayName\":\"vsk\",\"endpointUri\":\"tlynkwfsaangfg\"}")
                 .toObject(ComputeInstanceApplication.class);
-        Assertions.assertEquals("tlvhdyxzl", model.displayName());
-        Assertions.assertEquals("ywj", model.endpointUri());
+        Assertions.assertEquals("vsk", model.displayName());
+        Assertions.assertEquals("tlynkwfsaangfg", model.endpointUri());
     }
 }

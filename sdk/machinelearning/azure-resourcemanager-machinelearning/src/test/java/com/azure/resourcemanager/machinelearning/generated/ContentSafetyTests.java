@@ -14,18 +14,18 @@ public final class ContentSafetyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentSafety model
-            = BinaryData.fromString("{\"contentSafetyLevel\":\"Deferred\",\"contentSafetyStatus\":\"Enabled\"}")
+            = BinaryData.fromString("{\"contentSafetyLevel\":\"Blocking\",\"contentSafetyStatus\":\"Disabled\"}")
                 .toObject(ContentSafety.class);
-        Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.contentSafetyLevel());
-        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafetyStatus());
+        Assertions.assertEquals(ContentSafetyLevel.BLOCKING, model.contentSafetyLevel());
+        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafetyStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentSafety model = new ContentSafety().withContentSafetyLevel(ContentSafetyLevel.DEFERRED)
-            .withContentSafetyStatus(ContentSafetyStatus.ENABLED);
+        ContentSafety model = new ContentSafety().withContentSafetyLevel(ContentSafetyLevel.BLOCKING)
+            .withContentSafetyStatus(ContentSafetyStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ContentSafety.class);
-        Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.contentSafetyLevel());
-        Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.contentSafetyStatus());
+        Assertions.assertEquals(ContentSafetyLevel.BLOCKING, model.contentSafetyLevel());
+        Assertions.assertEquals(ContentSafetyStatus.DISABLED, model.contentSafetyStatus());
     }
 }

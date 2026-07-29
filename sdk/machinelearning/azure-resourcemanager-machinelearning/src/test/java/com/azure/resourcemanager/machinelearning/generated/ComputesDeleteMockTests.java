@@ -29,8 +29,7 @@ public final class ComputesDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.computes()
-            .delete("lowuthfwphnmllb", "jehwhxxuo", "neaqahzkvnapxht", UnderlyingResourceAction.DETACH,
-                com.azure.core.util.Context.NONE);
+            .delete("xxbkqmagpdsuyy", "n", "qg", UnderlyingResourceAction.DELETE, com.azure.core.util.Context.NONE);
 
     }
 }

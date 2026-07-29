@@ -21,7 +21,7 @@ public final class InferenceGroupsGetStatusWithResponseMockTests {
     @Test
     public void testGetStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"actualCapacityInfo\":{\"total\":969808172,\"succeeded\":1295514727,\"failed\":1065671612,\"outdatedSucceeded\":430211364,\"outdatedFailed\":1923526752},\"endpointCount\":666757100,\"requestedCapacity\":659953867}";
+            = "{\"actualCapacityInfo\":{\"total\":1615014461,\"succeeded\":1484172198,\"failed\":1078010177,\"outdatedSucceeded\":750093703,\"outdatedFailed\":10502349},\"endpointCount\":595059406,\"requestedCapacity\":1232378973}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,16 @@ public final class InferenceGroupsGetStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupStatus response = manager.inferenceGroups()
-            .getStatusWithResponse("yzil", "lfgow", "vx", "qruskmbqyfecns", com.azure.core.util.Context.NONE)
+            .getStatusWithResponse("iacdloehsmvvxkc", "edhaftniffajniwb", "zyjuyxylb", "ugojdzcluyos",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(969808172, response.actualCapacityInfo().total());
-        Assertions.assertEquals(1295514727, response.actualCapacityInfo().succeeded());
-        Assertions.assertEquals(1065671612, response.actualCapacityInfo().failed());
-        Assertions.assertEquals(430211364, response.actualCapacityInfo().outdatedSucceeded());
-        Assertions.assertEquals(1923526752, response.actualCapacityInfo().outdatedFailed());
-        Assertions.assertEquals(666757100, response.endpointCount());
-        Assertions.assertEquals(659953867, response.requestedCapacity());
+        Assertions.assertEquals(1615014461, response.actualCapacityInfo().total());
+        Assertions.assertEquals(1484172198, response.actualCapacityInfo().succeeded());
+        Assertions.assertEquals(1078010177, response.actualCapacityInfo().failed());
+        Assertions.assertEquals(750093703, response.actualCapacityInfo().outdatedSucceeded());
+        Assertions.assertEquals(10502349, response.actualCapacityInfo().outdatedFailed());
+        Assertions.assertEquals(595059406, response.endpointCount());
+        Assertions.assertEquals(1232378973, response.requestedCapacity());
     }
 }

@@ -23,7 +23,7 @@ public final class ManagedNetworkSettingsRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Inactive\",\"errorInformation\":\"zy\",\"parentRuleNames\":[\"ars\",\"hqmrpdxnrdvtvty\"]},\"id\":\"thnndfplksdieh\",\"name\":\"ajb\",\"type\":\"tgmxkol\"}";
+            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Failed\",\"errorInformation\":\"eyxt\",\"parentRuleNames\":[\"xttobosjxbnyt\",\"e\"]},\"id\":\"uditumyycvtya\",\"name\":\"lyimhspj\",\"type\":\"hivxblqvwhjgtbh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ManagedNetworkSettingsRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundRuleBasicResource response = manager.managedNetworkSettingsRules()
-            .getWithResponse("rkntfwxkeu", "xgpcrvvmrdlckp", "noveabw", com.azure.core.util.Context.NONE)
+            .getWithResponse("xmksxxbdtjvvngn", "kkzulmqx", "ic", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(RuleCategory.USER_DEFINED, response.properties().category());
-        Assertions.assertEquals(RuleStatus.INACTIVE, response.properties().status());
+        Assertions.assertEquals(RuleStatus.FAILED, response.properties().status());
     }
 }

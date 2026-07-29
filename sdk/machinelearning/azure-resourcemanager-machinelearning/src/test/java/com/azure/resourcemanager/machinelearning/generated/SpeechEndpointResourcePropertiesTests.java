@@ -15,39 +15,40 @@ public final class SpeechEndpointResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpeechEndpointResourceProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"Azure.Speech\",\"associatedResourceId\":\"cycg\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"sihxvtac\",\"provisioningState\":\"Scaling\"},\"id\":\"pxpry\",\"name\":\"nsbubwhzqqgugwlu\",\"type\":\"ahtqmmk\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"wqcqwe\",\"provisioningState\":\"Scaling\"},\"id\":\"fpkeph\",\"name\":\"jeucosvkkeergvy\",\"type\":\"a\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"jpyillgnue\",\"provisioningState\":\"Failed\"},\"id\":\"ffbuqxknvm\",\"name\":\"g\",\"type\":\"bg\"}],\"endpointUri\":\"ojfchicpa\",\"failureReason\":\"xzoksgqhbooj\",\"location\":\"ilozblkc\",\"name\":\"l\",\"provisioningState\":\"Failed\",\"shouldCreateAiServicesEndpoint\":true}")
+            "{\"endpointType\":\"Azure.Speech\",\"associatedResourceId\":\"dbvmjdhypn\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"dxvrivptbczs\",\"provisioningState\":\"Disabled\"},\"id\":\"zukekytkzvt\",\"name\":\"maatvogpyc\",\"type\":\"inha\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"bdxs\",\"provisioningState\":\"Creating\"},\"id\":\"s\",\"name\":\"hwfjudapbqpsezsg\",\"type\":\"dpftfcbrtsr\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"lqdyzacia\",\"provisioningState\":\"Deleting\"},\"id\":\"guzliyv\",\"name\":\"bfsin\",\"type\":\"abdjuljgxotu\"}],\"endpointUri\":\"mkiyaosthulzug\",\"failureReason\":\"gspxldlnoc\",\"location\":\"ygimiz\",\"name\":\"kjbwmgksrlmspppo\",\"provisioningState\":\"NotStarted\",\"shouldCreateAiServicesEndpoint\":false}")
             .toObject(SpeechEndpointResourceProperties.class);
-        Assertions.assertEquals("cycg", model.associatedResourceId());
-        Assertions.assertEquals("sihxvtac", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("ojfchicpa", model.endpointUri());
-        Assertions.assertEquals("xzoksgqhbooj", model.failureReason());
-        Assertions.assertEquals("ilozblkc", model.location());
-        Assertions.assertEquals("l", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("dbvmjdhypn", model.associatedResourceId());
+        Assertions.assertEquals("dxvrivptbczs", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("mkiyaosthulzug", model.endpointUri());
+        Assertions.assertEquals("gspxldlnoc", model.failureReason());
+        Assertions.assertEquals("ygimiz", model.location());
+        Assertions.assertEquals("kjbwmgksrlmspppo", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpeechEndpointResourceProperties model = new SpeechEndpointResourceProperties().withAssociatedResourceId("cycg")
-            .withDeployments(Arrays.asList(
-                new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("sihxvtac")),
-                new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("wqcqwe")),
-                new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                    .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("jpyillgnue"))))
-            .withEndpointUri("ojfchicpa")
-            .withFailureReason("xzoksgqhbooj")
-            .withLocation("ilozblkc")
-            .withName("l")
-            .withShouldCreateAiServicesEndpoint(true);
+        SpeechEndpointResourceProperties model
+            = new SpeechEndpointResourceProperties().withAssociatedResourceId("dbvmjdhypn")
+                .withDeployments(Arrays.asList(
+                    new EndpointDeploymentResourcePropertiesBasicResourceInner()
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("dxvrivptbczs")),
+                    new EndpointDeploymentResourcePropertiesBasicResourceInner()
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("bdxs")),
+                    new EndpointDeploymentResourcePropertiesBasicResourceInner()
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("lqdyzacia"))))
+                .withEndpointUri("mkiyaosthulzug")
+                .withFailureReason("gspxldlnoc")
+                .withLocation("ygimiz")
+                .withName("kjbwmgksrlmspppo")
+                .withShouldCreateAiServicesEndpoint(false);
         model = BinaryData.fromObject(model).toObject(SpeechEndpointResourceProperties.class);
-        Assertions.assertEquals("cycg", model.associatedResourceId());
-        Assertions.assertEquals("sihxvtac", model.deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("ojfchicpa", model.endpointUri());
-        Assertions.assertEquals("xzoksgqhbooj", model.failureReason());
-        Assertions.assertEquals("ilozblkc", model.location());
-        Assertions.assertEquals("l", model.name());
-        Assertions.assertTrue(model.shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("dbvmjdhypn", model.associatedResourceId());
+        Assertions.assertEquals("dxvrivptbczs", model.deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("mkiyaosthulzug", model.endpointUri());
+        Assertions.assertEquals("gspxldlnoc", model.failureReason());
+        Assertions.assertEquals("ygimiz", model.location());
+        Assertions.assertEquals("kjbwmgksrlmspppo", model.name());
+        Assertions.assertFalse(model.shouldCreateAiServicesEndpoint());
     }
 }

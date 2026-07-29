@@ -15,29 +15,29 @@ public final class JobResourceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobResourceConfiguration model = BinaryData.fromString(
-            "{\"dockerArgs\":\"ecovagzkheubanlx\",\"dockerArgsList\":[\"qcckqiawzlz\",\"laslgacizux\",\"r\"],\"shmSize\":\"wp\",\"instanceCount\":1124635117,\"instanceType\":\"udoejtighsxjp\",\"properties\":{\"vuuwxhmeh\":\"\\\"datakqbalah\\\"\"}}")
+            "{\"dockerArgs\":\"qownkiuajewnahw\",\"dockerArgsList\":[\"jmztnlmso\",\"dtmvecdhdyswcrp\",\"veajczxvlgsrg\",\"rfizr\"],\"shmSize\":\"wlp\",\"instanceCount\":1035690785,\"instanceType\":\"hrlmcskykpfuo\",\"properties\":{\"pcfykkpy\":\"\\\"datac\\\"\"}}")
             .toObject(JobResourceConfiguration.class);
-        Assertions.assertEquals(1124635117, model.instanceCount());
-        Assertions.assertEquals("udoejtighsxjp", model.instanceType());
-        Assertions.assertEquals("ecovagzkheubanlx", model.dockerArgs());
-        Assertions.assertEquals("qcckqiawzlz", model.dockerArgsList().get(0));
-        Assertions.assertEquals("wp", model.shmSize());
+        Assertions.assertEquals(1035690785, model.instanceCount());
+        Assertions.assertEquals("hrlmcskykpfuo", model.instanceType());
+        Assertions.assertEquals("qownkiuajewnahw", model.dockerArgs());
+        Assertions.assertEquals("jmztnlmso", model.dockerArgsList().get(0));
+        Assertions.assertEquals("wlp", model.shmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResourceConfiguration model = new JobResourceConfiguration().withInstanceCount(1124635117)
-            .withInstanceType("udoejtighsxjp")
-            .withProperties(mapOf("vuuwxhmeh", "\"datakqbalah\""))
-            .withDockerArgs("ecovagzkheubanlx")
-            .withDockerArgsList(Arrays.asList("qcckqiawzlz", "laslgacizux", "r"))
-            .withShmSize("wp");
+        JobResourceConfiguration model = new JobResourceConfiguration().withInstanceCount(1035690785)
+            .withInstanceType("hrlmcskykpfuo")
+            .withProperties(mapOf("pcfykkpy", "\"datac\""))
+            .withDockerArgs("qownkiuajewnahw")
+            .withDockerArgsList(Arrays.asList("jmztnlmso", "dtmvecdhdyswcrp", "veajczxvlgsrg", "rfizr"))
+            .withShmSize("wlp");
         model = BinaryData.fromObject(model).toObject(JobResourceConfiguration.class);
-        Assertions.assertEquals(1124635117, model.instanceCount());
-        Assertions.assertEquals("udoejtighsxjp", model.instanceType());
-        Assertions.assertEquals("ecovagzkheubanlx", model.dockerArgs());
-        Assertions.assertEquals("qcckqiawzlz", model.dockerArgsList().get(0));
-        Assertions.assertEquals("wp", model.shmSize());
+        Assertions.assertEquals(1035690785, model.instanceCount());
+        Assertions.assertEquals("hrlmcskykpfuo", model.instanceType());
+        Assertions.assertEquals("qownkiuajewnahw", model.dockerArgs());
+        Assertions.assertEquals("jmztnlmso", model.dockerArgsList().get(0));
+        Assertions.assertEquals("wlp", model.shmSize());
     }
 
     // Use "Map.of" if available

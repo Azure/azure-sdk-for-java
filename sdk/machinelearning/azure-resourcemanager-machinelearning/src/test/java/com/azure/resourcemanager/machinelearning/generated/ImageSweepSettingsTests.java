@@ -14,22 +14,22 @@ public final class ImageSweepSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageSweepSettings model = BinaryData.fromString(
-            "{\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":55620701,\"evaluationInterval\":288544736},\"samplingAlgorithm\":\"Bayesian\"}")
+            "{\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1289942050,\"evaluationInterval\":345450514},\"samplingAlgorithm\":\"Grid\"}")
             .toObject(ImageSweepSettings.class);
-        Assertions.assertEquals(55620701, model.earlyTermination().delayEvaluation());
-        Assertions.assertEquals(288544736, model.earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.BAYESIAN, model.samplingAlgorithm());
+        Assertions.assertEquals(1289942050, model.earlyTermination().delayEvaluation());
+        Assertions.assertEquals(345450514, model.earlyTermination().evaluationInterval());
+        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.samplingAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageSweepSettings model = new ImageSweepSettings()
             .withEarlyTermination(
-                new EarlyTerminationPolicy().withDelayEvaluation(55620701).withEvaluationInterval(288544736))
-            .withSamplingAlgorithm(SamplingAlgorithmType.BAYESIAN);
+                new EarlyTerminationPolicy().withDelayEvaluation(1289942050).withEvaluationInterval(345450514))
+            .withSamplingAlgorithm(SamplingAlgorithmType.GRID);
         model = BinaryData.fromObject(model).toObject(ImageSweepSettings.class);
-        Assertions.assertEquals(55620701, model.earlyTermination().delayEvaluation());
-        Assertions.assertEquals(288544736, model.earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.BAYESIAN, model.samplingAlgorithm());
+        Assertions.assertEquals(1289942050, model.earlyTermination().delayEvaluation());
+        Assertions.assertEquals(345450514, model.earlyTermination().evaluationInterval());
+        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.samplingAlgorithm());
     }
 }

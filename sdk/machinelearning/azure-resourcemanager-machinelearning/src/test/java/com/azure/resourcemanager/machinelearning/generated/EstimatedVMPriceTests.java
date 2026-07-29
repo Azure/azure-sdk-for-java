@@ -14,10 +14,10 @@ public final class EstimatedVMPriceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EstimatedVMPrice model = BinaryData
-            .fromString("{\"retailPrice\":51.20405351507187,\"osType\":\"Windows\",\"vmTier\":\"Standard\"}")
+            .fromString("{\"retailPrice\":1.5425099164021572,\"osType\":\"Windows\",\"vmTier\":\"LowPriority\"}")
             .toObject(EstimatedVMPrice.class);
-        Assertions.assertEquals(51.20405351507187, model.retailPrice());
+        Assertions.assertEquals(1.5425099164021572, model.retailPrice());
         Assertions.assertEquals(VMPriceOSType.WINDOWS, model.osType());
-        Assertions.assertEquals(VMTier.STANDARD, model.vmTier());
+        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.vmTier());
     }
 }

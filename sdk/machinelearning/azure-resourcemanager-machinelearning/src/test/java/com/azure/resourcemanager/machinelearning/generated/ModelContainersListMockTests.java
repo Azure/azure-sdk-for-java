@@ -23,7 +23,7 @@ public final class ModelContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"isArchived\":true,\"latestVersion\":\"bjfpxo\",\"nextVersion\":\"nm\",\"description\":\"iqw\",\"properties\":{\"sstnwvravntvk\":\"yxfknj\"},\"tags\":{\"nlpaymketotk\":\"qi\",\"wlkryzmpgqqdh\":\"dme\",\"zjohdhczh\":\"ctxxregykjmpad\",\"xgjqqbactffxd\":\"xitydljgrpqua\"}},\"id\":\"sihumwafapctglj\",\"name\":\"pizqqihvbkufq\",\"type\":\"qdd\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"xdiibj\",\"nextVersion\":\"uekhh\",\"description\":\"hxhuhhnrmmfzfkh\",\"properties\":{\"edlqvp\":\"jffajhtvbskgc\"},\"tags\":{\"msrwlfg\":\"l\",\"chjtps\":\"uu\",\"lauzrpespeb\":\"cawfupnypluivrjs\"}},\"id\":\"gzx\",\"name\":\"usa\",\"type\":\"vflyqauu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ModelContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ModelContainer> response = manager.modelContainers()
-            .list("texnzhdmcgvjbryb", "arkhkoqcud", "wmoyhd", 817830914, ListViewType.ARCHIVED_ONLY,
+            .list("h", "ujkqaxbejhxope", "el", 1550569981, ListViewType.ARCHIVED_ONLY,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iqw", response.iterator().next().properties().description());
-        Assertions.assertEquals("yxfknj", response.iterator().next().properties().properties().get("sstnwvravntvk"));
-        Assertions.assertEquals("qi", response.iterator().next().properties().tags().get("nlpaymketotk"));
+        Assertions.assertEquals("hxhuhhnrmmfzfkh", response.iterator().next().properties().description());
+        Assertions.assertEquals("jffajhtvbskgc", response.iterator().next().properties().properties().get("edlqvp"));
+        Assertions.assertEquals("l", response.iterator().next().properties().tags().get("msrwlfg"));
         Assertions.assertTrue(response.iterator().next().properties().isArchived());
     }
 }

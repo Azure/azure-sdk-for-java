@@ -33,135 +33,145 @@ public final class DistillationJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DistillationJob model = BinaryData.fromString(
-            "{\"jobType\":\"Distillation\",\"dataGenerationDetails\":{\"dataGenerationType\":\"DataGenerationVertical\",\"dataGenerationTaskType\":\"Conversation\",\"promptSettings\":{\"enableChainOfDensity\":false,\"enableChainOfThought\":false,\"maxLenSummary\":995537555},\"teacherModelEndpoint\":{\"endpointName\":\"yggmnwsvh\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":59.51022629513917,\"requestBatchSize\":922925689},\"teacherModelInferenceParameters\":{\"r\":\"ob\",\"jhhlwtpkvegeat\":\"pnrehkunsb\",\"nwqsttewu\":\"bzkgtz\"}}},\"finetuningDetails\":{\"hyperParameters\":{\"tfnonpi\":\"sjeufjxflpd\",\"qflvtlrvbst\":\"uxlvrhprrvbwonl\"},\"studentModel\":{\"jobInputType\":\"JobInput\",\"description\":\"uy\"}},\"outputs\":{\"ttlnrjdszdb\":{\"jobOutputType\":\"JobOutput\",\"description\":\"i\"},\"vgp\":{\"jobOutputType\":\"JobOutput\",\"description\":\"iciqppo\"},\"wjnoxuo\":{\"jobOutputType\":\"JobOutput\",\"description\":\"wuhw\"},\"fepgcknc\":{\"jobOutputType\":\"JobOutput\",\"description\":\"fnres\"}},\"queueSettings\":{\"jobTier\":\"Spot\"},\"resources\":{\"instanceTypes\":[\"btqdxfmjymjnhj\"]},\"componentId\":\"qllbsupubdxc\",\"computeId\":\"lhzwh\",\"displayName\":\"kvbos\",\"experimentName\":\"fdizhrjq\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":false,\"notificationSetting\":{\"emailOn\":[\"JobFailed\",\"JobCancelled\"],\"emails\":[\"cgniuarlc\"],\"webhooks\":{\"cwdgujjgnf\":{\"webhookType\":\"Webhook\",\"eventType\":\"sxfai\"}}},\"parentJobName\":\"zxbarcbpae\",\"services\":{\"zdojqyvzesipiys\":{\"endpoint\":\"ymjwenjcyt\",\"errorMessage\":\"mfucrtfod\",\"jobServiceType\":\"uauzmz\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":524698783,\"properties\":{\"mahswtvdkxbqssgf\":\"zhhezvhjudxdyyru\",\"dxbvwf\":\"nf\",\"dmuvardlmz\":\"jchivdrijanx\",\"lxiwyo\":\"otprrmuhcuhtu\"},\"status\":\"arpfctwrap\"}},\"status\":\"CancelRequested\",\"description\":\"owa\",\"properties\":{\"dtsewkaupwhlzyc\":\"ndazabu\"},\"tags\":{\"svdorsirx\":\"mgjl\",\"prfvmkinwteyrqsh\":\"hyrkqakofajfr\"}}")
+            "{\"jobType\":\"Distillation\",\"dataGenerationDetails\":{\"dataGenerationType\":\"DataGenerationVertical\",\"dataGenerationTaskType\":\"NluQa\",\"promptSettings\":{\"enableChainOfDensity\":true,\"enableChainOfThought\":false,\"maxLenSummary\":1189124637},\"teacherModelEndpoint\":{\"endpointName\":\"cgniuarlc\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":31.223575643613778,\"requestBatchSize\":1195741963},\"teacherModelInferenceParameters\":{\"rzxbarcbp\":\"cwdgujjgnf\",\"ymjwenjcyt\":\"efzq\"}}},\"finetuningDetails\":{\"hyperParameters\":{\"tfodq\":\"fuc\",\"vrtrfz\":\"uauzmz\",\"udma\":\"hezvhjudxdyy\"},\"studentModel\":{\"jobInputType\":\"JobInput\",\"description\":\"wtvdkxb\"}},\"outputs\":{\"dxbvwf\":{\"jobOutputType\":\"JobOutput\",\"description\":\"gfenf\"},\"rdlmzjotprrmu\":{\"jobOutputType\":\"JobOutput\",\"description\":\"chivdrijanxndmuv\"},\"xiwy\":{\"jobOutputType\":\"JobOutput\",\"description\":\"uhtuz\"},\"ctwrapcz\":{\"jobOutputType\":\"JobOutput\",\"description\":\"garp\"}},\"queueSettings\":{\"jobTier\":\"Premium\"},\"resources\":{\"instanceTypes\":[\"esipiysnjq\"]},\"componentId\":\"waadc\",\"computeId\":\"azab\",\"displayName\":\"dtsewkaupwhlzyc\",\"experimentName\":\"emgjlm\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":false,\"notificationSetting\":{\"emailOn\":[\"JobCompleted\",\"JobCancelled\",\"JobCancelled\"],\"emails\":[\"rkqakofajf\",\"epr\"],\"webhooks\":{\"xbcejop\":{\"webhookType\":\"Webhook\",\"eventType\":\"inwteyrqsh\"},\"rrwcsp\":{\"webhookType\":\"Webhook\",\"eventType\":\"blfs\"},\"vfxrdytz\":{\"webhookType\":\"Webhook\",\"eventType\":\"tc\"}}},\"parentJobName\":\"lxiz\",\"services\":{\"nxuprrxy\":{\"endpoint\":\"mgobliqemc\",\"errorMessage\":\"iisklbonxx\",\"jobServiceType\":\"jxvtrkfkgenjqnnp\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":398435176,\"properties\":{\"jcxgdqmrlhnzkwo\":\"yxigfou\"},\"status\":\"wny\"},\"tfbjampq\":{\"endpoint\":\"j\",\"errorMessage\":\"bf\",\"jobServiceType\":\"lo\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1539434217,\"properties\":{\"ftrsv\":\"pv\",\"isepk\":\"mnsvujnjktvolefc\"},\"status\":\"x\"},\"flmcdsgxc\":{\"endpoint\":\"lannmxynlsuqbw\",\"errorMessage\":\"trkt\",\"jobServiceType\":\"patr\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":2016687082,\"properties\":{\"fhok\":\"i\",\"cru\":\"mmculwkq\",\"flsgaoj\":\"okr\"},\"status\":\"qpqsdoctpzpuj\"}},\"status\":\"NotResponding\",\"description\":\"iswlluunxhfw\",\"properties\":{\"knecexkgrv\":\"zfwugeup\",\"yt\":\"psjdmng\",\"yxcnwawox\":\"pdz\",\"jqfbifop\":\"gzb\"},\"tags\":{\"fcuuugtjigpg\":\"dwdrpazqjkrfmbwo\",\"ecjjkmq\":\"yiawohfmhnnz\",\"vslvivqsuvwten\":\"nhaidzrpvsgloi\",\"cyoaqxukui\":\"gpijpk\"}}")
             .toObject(DistillationJob.class);
-        Assertions.assertEquals("owa", model.description());
-        Assertions.assertEquals("ndazabu", model.properties().get("dtsewkaupwhlzyc"));
-        Assertions.assertEquals("mgjl", model.tags().get("svdorsirx"));
-        Assertions.assertEquals("qllbsupubdxc", model.componentId());
-        Assertions.assertEquals("lhzwh", model.computeId());
-        Assertions.assertEquals("kvbos", model.displayName());
-        Assertions.assertEquals("fdizhrjq", model.experimentName());
+        Assertions.assertEquals("iswlluunxhfw", model.description());
+        Assertions.assertEquals("zfwugeup", model.properties().get("knecexkgrv"));
+        Assertions.assertEquals("dwdrpazqjkrfmbwo", model.tags().get("fcuuugtjigpg"));
+        Assertions.assertEquals("waadc", model.componentId());
+        Assertions.assertEquals("azab", model.computeId());
+        Assertions.assertEquals("dtsewkaupwhlzyc", model.displayName());
+        Assertions.assertEquals("emgjlm", model.experimentName());
         Assertions.assertFalse(model.isArchived());
-        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED, model.notificationSetting().emailOn().get(0));
-        Assertions.assertEquals("cgniuarlc", model.notificationSetting().emails().get(0));
-        Assertions.assertEquals("sxfai", model.notificationSetting().webhooks().get("cwdgujjgnf").eventType());
-        Assertions.assertEquals("zxbarcbpae", model.parentJobName());
-        Assertions.assertEquals("ymjwenjcyt", model.services().get("zdojqyvzesipiys").endpoint());
-        Assertions.assertEquals("uauzmz", model.services().get("zdojqyvzesipiys").jobServiceType());
-        Assertions.assertEquals(524698783, model.services().get("zdojqyvzesipiys").port());
-        Assertions.assertEquals("zhhezvhjudxdyyru",
-            model.services().get("zdojqyvzesipiys").properties().get("mahswtvdkxbqssgf"));
-        Assertions.assertEquals(DataGenerationTaskType.CONVERSATION,
-            model.dataGenerationDetails().dataGenerationTaskType());
-        Assertions.assertFalse(model.dataGenerationDetails().promptSettings().enableChainOfDensity());
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_COMPLETED,
+            model.notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("rkqakofajf", model.notificationSetting().emails().get(0));
+        Assertions.assertEquals("inwteyrqsh", model.notificationSetting().webhooks().get("xbcejop").eventType());
+        Assertions.assertEquals("lxiz", model.parentJobName());
+        Assertions.assertEquals("mgobliqemc", model.services().get("nxuprrxy").endpoint());
+        Assertions.assertEquals("jxvtrkfkgenjqnnp", model.services().get("nxuprrxy").jobServiceType());
+        Assertions.assertEquals(398435176, model.services().get("nxuprrxy").port());
+        Assertions.assertEquals("yxigfou", model.services().get("nxuprrxy").properties().get("jcxgdqmrlhnzkwo"));
+        Assertions.assertEquals(DataGenerationTaskType.NLU_QA, model.dataGenerationDetails().dataGenerationTaskType());
+        Assertions.assertTrue(model.dataGenerationDetails().promptSettings().enableChainOfDensity());
         Assertions.assertFalse(model.dataGenerationDetails().promptSettings().enableChainOfThought());
-        Assertions.assertEquals(995537555, model.dataGenerationDetails().promptSettings().maxLenSummary());
-        Assertions.assertEquals("yggmnwsvh", model.dataGenerationDetails().teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(59.51022629513917D,
+        Assertions.assertEquals(1189124637, model.dataGenerationDetails().promptSettings().maxLenSummary());
+        Assertions.assertEquals("cgniuarlc", model.dataGenerationDetails().teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(31.223575643613778D,
             model.dataGenerationDetails()
                 .teacherModelSettings()
                 .teacherModelEndpointRequestSettings()
                 .minEndpointSuccessRatio());
-        Assertions.assertEquals(922925689,
+        Assertions.assertEquals(1195741963,
             model.dataGenerationDetails()
                 .teacherModelSettings()
                 .teacherModelEndpointRequestSettings()
                 .requestBatchSize());
-        Assertions.assertEquals("ob",
-            model.dataGenerationDetails().teacherModelSettings().teacherModelInferenceParameters().get("r"));
-        Assertions.assertEquals("sjeufjxflpd", model.finetuningDetails().hyperParameters().get("tfnonpi"));
-        Assertions.assertEquals("uy", model.finetuningDetails().studentModel().description());
-        Assertions.assertEquals("i", model.outputs().get("ttlnrjdszdb").description());
-        Assertions.assertEquals(JobTier.SPOT, model.queueSettings().jobTier());
-        Assertions.assertEquals("btqdxfmjymjnhj", model.resources().instanceTypes().get(0));
+        Assertions.assertEquals("cwdgujjgnf",
+            model.dataGenerationDetails().teacherModelSettings().teacherModelInferenceParameters().get("rzxbarcbp"));
+        Assertions.assertEquals("fuc", model.finetuningDetails().hyperParameters().get("tfodq"));
+        Assertions.assertEquals("wtvdkxb", model.finetuningDetails().studentModel().description());
+        Assertions.assertEquals("gfenf", model.outputs().get("dxbvwf").description());
+        Assertions.assertEquals(JobTier.PREMIUM, model.queueSettings().jobTier());
+        Assertions.assertEquals("esipiysnjq", model.resources().instanceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DistillationJob model = new DistillationJob().withDescription("owa")
-            .withProperties(mapOf("dtsewkaupwhlzyc", "ndazabu"))
-            .withTags(mapOf("svdorsirx", "mgjl", "prfvmkinwteyrqsh", "hyrkqakofajfr"))
-            .withComponentId("qllbsupubdxc")
-            .withComputeId("lhzwh")
-            .withDisplayName("kvbos")
-            .withExperimentName("fdizhrjq")
+        DistillationJob model = new DistillationJob().withDescription("iswlluunxhfw")
+            .withProperties(mapOf("knecexkgrv", "zfwugeup", "yt", "psjdmng", "yxcnwawox", "pdz", "jqfbifop", "gzb"))
+            .withTags(mapOf("fcuuugtjigpg", "dwdrpazqjkrfmbwo", "ecjjkmq", "yiawohfmhnnz", "vslvivqsuvwten",
+                "nhaidzrpvsgloi", "cyoaqxukui", "gpijpk"))
+            .withComponentId("waadc")
+            .withComputeId("azab")
+            .withDisplayName("dtsewkaupwhlzyc")
+            .withExperimentName("emgjlm")
             .withIdentity(new IdentityConfiguration())
             .withIsArchived(false)
             .withNotificationSetting(new NotificationSetting()
-                .withEmailOn(
-                    Arrays.asList(EmailNotificationEnableType.JOB_FAILED, EmailNotificationEnableType.JOB_CANCELLED))
-                .withEmails(Arrays.asList("cgniuarlc"))
-                .withWebhooks(mapOf("cwdgujjgnf", new Webhook().withEventType("sxfai"))))
-            .withParentJobName("zxbarcbpae")
-            .withServices(mapOf("zdojqyvzesipiys",
-                new JobService().withEndpoint("ymjwenjcyt")
-                    .withJobServiceType("uauzmz")
+                .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_COMPLETED,
+                    EmailNotificationEnableType.JOB_CANCELLED, EmailNotificationEnableType.JOB_CANCELLED))
+                .withEmails(Arrays.asList("rkqakofajf", "epr"))
+                .withWebhooks(mapOf("xbcejop", new Webhook().withEventType("inwteyrqsh"), "rrwcsp",
+                    new Webhook().withEventType("blfs"), "vfxrdytz", new Webhook().withEventType("tc"))))
+            .withParentJobName("lxiz")
+            .withServices(mapOf("nxuprrxy",
+                new JobService().withEndpoint("mgobliqemc")
+                    .withJobServiceType("jxvtrkfkgenjqnnp")
                     .withNodes(new Nodes())
-                    .withPort(524698783)
-                    .withProperties(mapOf("mahswtvdkxbqssgf", "zhhezvhjudxdyyru", "dxbvwf", "nf", "dmuvardlmz",
-                        "jchivdrijanx", "lxiwyo", "otprrmuhcuhtu"))))
+                    .withPort(398435176)
+                    .withProperties(mapOf("jcxgdqmrlhnzkwo", "yxigfou")),
+                "tfbjampq",
+                new JobService().withEndpoint("j")
+                    .withJobServiceType("lo")
+                    .withNodes(new Nodes())
+                    .withPort(1539434217)
+                    .withProperties(mapOf("ftrsv", "pv", "isepk", "mnsvujnjktvolefc")),
+                "flmcdsgxc",
+                new JobService().withEndpoint("lannmxynlsuqbw")
+                    .withJobServiceType("patr")
+                    .withNodes(new Nodes())
+                    .withPort(2016687082)
+                    .withProperties(mapOf("fhok", "i", "cru", "mmculwkq", "flsgaoj", "okr"))))
             .withDataGenerationDetails(
-                new DataGenerationVertical().withDataGenerationTaskType(DataGenerationTaskType.CONVERSATION)
-                    .withPromptSettings(new PromptSettings().withEnableChainOfDensity(false)
+                new DataGenerationVertical().withDataGenerationTaskType(DataGenerationTaskType.NLU_QA)
+                    .withPromptSettings(new PromptSettings().withEnableChainOfDensity(true)
                         .withEnableChainOfThought(false)
-                        .withMaxLenSummary(995537555))
-                    .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("yggmnwsvh"))
+                        .withMaxLenSummary(1189124637))
+                    .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("cgniuarlc"))
                     .withTeacherModelSettings(new TeacherModelSettings()
                         .withTeacherModelEndpointRequestSettings(
-                            new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(59.51022629513917D)
-                                .withRequestBatchSize(922925689))
-                        .withTeacherModelInferenceParameters(
-                            mapOf("r", "ob", "jhhlwtpkvegeat", "pnrehkunsb", "nwqsttewu", "bzkgtz"))))
+                            new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(31.223575643613778D)
+                                .withRequestBatchSize(1195741963))
+                        .withTeacherModelInferenceParameters(mapOf("rzxbarcbp", "cwdgujjgnf", "ymjwenjcyt", "efzq"))))
             .withFinetuningDetails(new FinetuningDetails()
-                .withHyperParameters(mapOf("tfnonpi", "sjeufjxflpd", "qflvtlrvbst", "uxlvrhprrvbwonl"))
-                .withStudentModel(new JobInput().withDescription("uy")))
-            .withOutputs(mapOf("ttlnrjdszdb", new JobOutput().withDescription("i"), "vgp",
-                new JobOutput().withDescription("iciqppo"), "wjnoxuo", new JobOutput().withDescription("wuhw"),
-                "fepgcknc", new JobOutput().withDescription("fnres")))
-            .withQueueSettings(new QueueSettings().withJobTier(JobTier.SPOT))
-            .withResources(new JobResources().withInstanceTypes(Arrays.asList("btqdxfmjymjnhj")));
+                .withHyperParameters(mapOf("tfodq", "fuc", "vrtrfz", "uauzmz", "udma", "hezvhjudxdyy"))
+                .withStudentModel(new JobInput().withDescription("wtvdkxb")))
+            .withOutputs(mapOf("dxbvwf", new JobOutput().withDescription("gfenf"), "rdlmzjotprrmu",
+                new JobOutput().withDescription("chivdrijanxndmuv"), "xiwy", new JobOutput().withDescription("uhtuz"),
+                "ctwrapcz", new JobOutput().withDescription("garp")))
+            .withQueueSettings(new QueueSettings().withJobTier(JobTier.PREMIUM))
+            .withResources(new JobResources().withInstanceTypes(Arrays.asList("esipiysnjq")));
         model = BinaryData.fromObject(model).toObject(DistillationJob.class);
-        Assertions.assertEquals("owa", model.description());
-        Assertions.assertEquals("ndazabu", model.properties().get("dtsewkaupwhlzyc"));
-        Assertions.assertEquals("mgjl", model.tags().get("svdorsirx"));
-        Assertions.assertEquals("qllbsupubdxc", model.componentId());
-        Assertions.assertEquals("lhzwh", model.computeId());
-        Assertions.assertEquals("kvbos", model.displayName());
-        Assertions.assertEquals("fdizhrjq", model.experimentName());
+        Assertions.assertEquals("iswlluunxhfw", model.description());
+        Assertions.assertEquals("zfwugeup", model.properties().get("knecexkgrv"));
+        Assertions.assertEquals("dwdrpazqjkrfmbwo", model.tags().get("fcuuugtjigpg"));
+        Assertions.assertEquals("waadc", model.componentId());
+        Assertions.assertEquals("azab", model.computeId());
+        Assertions.assertEquals("dtsewkaupwhlzyc", model.displayName());
+        Assertions.assertEquals("emgjlm", model.experimentName());
         Assertions.assertFalse(model.isArchived());
-        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED, model.notificationSetting().emailOn().get(0));
-        Assertions.assertEquals("cgniuarlc", model.notificationSetting().emails().get(0));
-        Assertions.assertEquals("sxfai", model.notificationSetting().webhooks().get("cwdgujjgnf").eventType());
-        Assertions.assertEquals("zxbarcbpae", model.parentJobName());
-        Assertions.assertEquals("ymjwenjcyt", model.services().get("zdojqyvzesipiys").endpoint());
-        Assertions.assertEquals("uauzmz", model.services().get("zdojqyvzesipiys").jobServiceType());
-        Assertions.assertEquals(524698783, model.services().get("zdojqyvzesipiys").port());
-        Assertions.assertEquals("zhhezvhjudxdyyru",
-            model.services().get("zdojqyvzesipiys").properties().get("mahswtvdkxbqssgf"));
-        Assertions.assertEquals(DataGenerationTaskType.CONVERSATION,
-            model.dataGenerationDetails().dataGenerationTaskType());
-        Assertions.assertFalse(model.dataGenerationDetails().promptSettings().enableChainOfDensity());
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_COMPLETED,
+            model.notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("rkqakofajf", model.notificationSetting().emails().get(0));
+        Assertions.assertEquals("inwteyrqsh", model.notificationSetting().webhooks().get("xbcejop").eventType());
+        Assertions.assertEquals("lxiz", model.parentJobName());
+        Assertions.assertEquals("mgobliqemc", model.services().get("nxuprrxy").endpoint());
+        Assertions.assertEquals("jxvtrkfkgenjqnnp", model.services().get("nxuprrxy").jobServiceType());
+        Assertions.assertEquals(398435176, model.services().get("nxuprrxy").port());
+        Assertions.assertEquals("yxigfou", model.services().get("nxuprrxy").properties().get("jcxgdqmrlhnzkwo"));
+        Assertions.assertEquals(DataGenerationTaskType.NLU_QA, model.dataGenerationDetails().dataGenerationTaskType());
+        Assertions.assertTrue(model.dataGenerationDetails().promptSettings().enableChainOfDensity());
         Assertions.assertFalse(model.dataGenerationDetails().promptSettings().enableChainOfThought());
-        Assertions.assertEquals(995537555, model.dataGenerationDetails().promptSettings().maxLenSummary());
-        Assertions.assertEquals("yggmnwsvh", model.dataGenerationDetails().teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(59.51022629513917D,
+        Assertions.assertEquals(1189124637, model.dataGenerationDetails().promptSettings().maxLenSummary());
+        Assertions.assertEquals("cgniuarlc", model.dataGenerationDetails().teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(31.223575643613778D,
             model.dataGenerationDetails()
                 .teacherModelSettings()
                 .teacherModelEndpointRequestSettings()
                 .minEndpointSuccessRatio());
-        Assertions.assertEquals(922925689,
+        Assertions.assertEquals(1195741963,
             model.dataGenerationDetails()
                 .teacherModelSettings()
                 .teacherModelEndpointRequestSettings()
                 .requestBatchSize());
-        Assertions.assertEquals("ob",
-            model.dataGenerationDetails().teacherModelSettings().teacherModelInferenceParameters().get("r"));
-        Assertions.assertEquals("sjeufjxflpd", model.finetuningDetails().hyperParameters().get("tfnonpi"));
-        Assertions.assertEquals("uy", model.finetuningDetails().studentModel().description());
-        Assertions.assertEquals("i", model.outputs().get("ttlnrjdszdb").description());
-        Assertions.assertEquals(JobTier.SPOT, model.queueSettings().jobTier());
-        Assertions.assertEquals("btqdxfmjymjnhj", model.resources().instanceTypes().get(0));
+        Assertions.assertEquals("cwdgujjgnf",
+            model.dataGenerationDetails().teacherModelSettings().teacherModelInferenceParameters().get("rzxbarcbp"));
+        Assertions.assertEquals("fuc", model.finetuningDetails().hyperParameters().get("tfodq"));
+        Assertions.assertEquals("wtvdkxb", model.finetuningDetails().studentModel().description());
+        Assertions.assertEquals("gfenf", model.outputs().get("dxbvwf").description());
+        Assertions.assertEquals(JobTier.PREMIUM, model.queueSettings().jobTier());
+        Assertions.assertEquals("esipiysnjq", model.resources().instanceTypes().get(0));
     }
 
     // Use "Map.of" if available

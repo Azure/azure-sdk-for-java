@@ -23,7 +23,7 @@ public final class EndpointsGetModelsMockTests {
     @Test
     public void testGetModels() throws Exception {
         String responseStr
-            = "{\"value\":[{\"capabilities\":{\"ikzvnghtknr\":\"btuvwzjycgcieag\"},\"deprecation\":{\"fineTune\":\"2021-01-06T00:28:01Z\",\"inference\":\"2021-05-17T04:44:06Z\"},\"finetuneCapabilities\":{\"lcnrapxwttpxoe\":\"uvf\",\"iytfwk\":\"fobehrcfglojjc\",\"nkms\":\"irmbrdognqa\",\"dzvuhw\":\"ybh\"},\"format\":\"nazjvyiiezdnez\",\"isDefaultVersion\":false,\"lifecycleStatus\":\"Preview\",\"maxCapacity\":480646611,\"name\":\"yut\",\"skus\":[{\"capacity\":{\"default\":194185344,\"maximum\":759076292},\"connectionIds\":[\"kuz\"],\"deprecationDate\":\"2021-10-25T16:46:19Z\",\"name\":\"gyztzh\",\"rateLimits\":[{\"count\":82.36688352627408,\"renewalPeriod\":6.249883571379133,\"rules\":[{},{},{}]},{\"count\":18.116101658379858,\"renewalPeriod\":69.75340233515215,\"rules\":[{},{}]}],\"usageName\":\"h\"},{\"capacity\":{\"default\":509558719,\"maximum\":1339856418},\"connectionIds\":[\"kjwsszyetwoukdh\",\"f\",\"rdg\",\"jihnzvoeh\"],\"deprecationDate\":\"2021-03-24T01:52:12Z\",\"name\":\"gcnkghgczjx\",\"rateLimits\":[{\"count\":90.34412895403683,\"renewalPeriod\":37.90579203297132,\"rules\":[{},{}]},{\"count\":72.20282602712696,\"renewalPeriod\":38.07891238938539,\"rules\":[{},{}]},{\"count\":11.80929761415993,\"renewalPeriod\":56.50761869279165,\"rules\":[{},{},{},{}]},{\"count\":44.43796387165791,\"renewalPeriod\":6.610439322587725,\"rules\":[{},{}]}],\"usageName\":\"ecfyusfkcwfpoa\"},{\"capacity\":{\"default\":1455014405,\"maximum\":796469987},\"connectionIds\":[\"q\",\"vvfkqbgkssygdv\"],\"deprecationDate\":\"2021-01-17T23:24:43Z\",\"name\":\"dfulvhpwpsxygrn\",\"rateLimits\":[{\"count\":31.77336258194472,\"renewalPeriod\":91.27477098632542,\"rules\":[{},{},{}]},{\"count\":20.590713315769747,\"renewalPeriod\":17.689668690443973,\"rules\":[{}]},{\"count\":91.28756269920166,\"renewalPeriod\":94.75479701312629,\"rules\":[{},{}]},{\"count\":16.66556302195914,\"renewalPeriod\":20.849765678437127,\"rules\":[{},{},{},{}]}],\"usageName\":\"yymyy\"}],\"version\":\"dkjykvez\"}]}";
+            = "{\"value\":[{\"capabilities\":{\"z\":\"shqvkuqkzvzqh\",\"xaqugjalmzpfylq\":\"dsnvtdbeanigozjr\"},\"deprecation\":{\"fineTune\":\"2021-08-03T10:33:46Z\",\"inference\":\"2021-04-30T21:07:21Z\"},\"finetuneCapabilities\":{\"cf\":\"dxcizropzgjle\",\"qwnpegoupdq\":\"bhqkvbins\",\"xo\":\"flvdfaqcql\"},\"format\":\"ekzyebpatwbbfjdf\",\"isDefaultVersion\":true,\"lifecycleStatus\":\"GenerallyAvailable\",\"maxCapacity\":1444522810,\"name\":\"ahhfuydgdhitavg\",\"skus\":[{\"capacity\":{\"default\":1549838242,\"maximum\":912852875},\"connectionIds\":[\"bpduzeebde\",\"epwkhruzzwgbbo\",\"ivfoyqvnlhsxe\"],\"deprecationDate\":\"2021-10-28T18:17:04Z\",\"name\":\"qquvvsc\",\"rateLimits\":[{\"count\":94.41905978379594,\"renewalPeriod\":28.583096003018447,\"rules\":[{},{}]}],\"usageName\":\"yibwuzvmors\"},{\"capacity\":{\"default\":257795054,\"maximum\":2135994636},\"connectionIds\":[\"ubo\",\"gorwpbbjzdv\",\"qoilgkzn\",\"zpvjwego\"],\"deprecationDate\":\"2021-08-09T12:47:30Z\",\"name\":\"qyrajdvvs\",\"rateLimits\":[{\"count\":20.027932428118977,\"renewalPeriod\":33.1829386426045,\"rules\":[{},{},{}]},{\"count\":48.17961350516957,\"renewalPeriod\":40.051530449107666,\"rules\":[{}]},{\"count\":19.7266375543674,\"renewalPeriod\":40.74199656169357,\"rules\":[{},{},{}]},{\"count\":25.073837413225785,\"renewalPeriod\":88.4256906581179,\"rules\":[{}]}],\"usageName\":\"xxefzliguwqos\"}],\"version\":\"fmynl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,31 +32,31 @@ public final class EndpointsGetModelsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EndpointModelProperties> response
-            = manager.endpoints().getModels("jvlzqsyvr", "oleqikcorkem", "bobx", com.azure.core.util.Context.NONE);
+        PagedIterable<EndpointModelProperties> response = manager.endpoints()
+            .getModels("hvtpmvppvgrigje", "rlgkoqbzrclar", "tfmfkuvybemo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("btuvwzjycgcieag", response.iterator().next().capabilities().get("ikzvnghtknr"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T00:28:01Z"),
+        Assertions.assertEquals("shqvkuqkzvzqh", response.iterator().next().capabilities().get("z"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T10:33:46Z"),
             response.iterator().next().deprecation().fineTune());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T04:44:06Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T21:07:21Z"),
             response.iterator().next().deprecation().inference());
-        Assertions.assertEquals("uvf", response.iterator().next().finetuneCapabilities().get("lcnrapxwttpxoe"));
-        Assertions.assertEquals("nazjvyiiezdnez", response.iterator().next().format());
-        Assertions.assertFalse(response.iterator().next().isDefaultVersion());
-        Assertions.assertEquals(ModelLifecycleStatus.PREVIEW, response.iterator().next().lifecycleStatus());
-        Assertions.assertEquals(480646611, response.iterator().next().maxCapacity());
-        Assertions.assertEquals("yut", response.iterator().next().name());
-        Assertions.assertEquals(194185344, response.iterator().next().skus().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(759076292, response.iterator().next().skus().get(0).capacity().maximum());
-        Assertions.assertEquals("kuz", response.iterator().next().skus().get(0).connectionIds().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T16:46:19Z"),
+        Assertions.assertEquals("dxcizropzgjle", response.iterator().next().finetuneCapabilities().get("cf"));
+        Assertions.assertEquals("ekzyebpatwbbfjdf", response.iterator().next().format());
+        Assertions.assertTrue(response.iterator().next().isDefaultVersion());
+        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE, response.iterator().next().lifecycleStatus());
+        Assertions.assertEquals(1444522810, response.iterator().next().maxCapacity());
+        Assertions.assertEquals("ahhfuydgdhitavg", response.iterator().next().name());
+        Assertions.assertEquals(1549838242, response.iterator().next().skus().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(912852875, response.iterator().next().skus().get(0).capacity().maximum());
+        Assertions.assertEquals("bpduzeebde", response.iterator().next().skus().get(0).connectionIds().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T18:17:04Z"),
             response.iterator().next().skus().get(0).deprecationDate());
-        Assertions.assertEquals("gyztzh", response.iterator().next().skus().get(0).name());
-        Assertions.assertEquals(82.36688352627408D,
+        Assertions.assertEquals("qquvvsc", response.iterator().next().skus().get(0).name());
+        Assertions.assertEquals(94.41905978379594D,
             response.iterator().next().skus().get(0).rateLimits().get(0).count());
-        Assertions.assertEquals(6.249883571379133D,
+        Assertions.assertEquals(28.583096003018447D,
             response.iterator().next().skus().get(0).rateLimits().get(0).renewalPeriod());
-        Assertions.assertEquals("h", response.iterator().next().skus().get(0).usageName());
-        Assertions.assertEquals("dkjykvez", response.iterator().next().version());
+        Assertions.assertEquals("yibwuzvmors", response.iterator().next().skus().get(0).usageName());
+        Assertions.assertEquals("fmynl", response.iterator().next().version());
     }
 }

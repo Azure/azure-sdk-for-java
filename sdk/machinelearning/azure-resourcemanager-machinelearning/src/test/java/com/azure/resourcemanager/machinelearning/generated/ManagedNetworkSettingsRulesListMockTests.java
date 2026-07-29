@@ -24,7 +24,7 @@ public final class ManagedNetworkSettingsRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Active\",\"errorInformation\":\"psteuvj\",\"parentRuleNames\":[\"ocyvymvn\",\"a\",\"hitxo\"]},\"id\":\"fomohcyno\",\"name\":\"hhbvbqxtktkeuapo\",\"type\":\"oofbnbhpt\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Failed\",\"errorInformation\":\"jhlxoljbpoeo\",\"parentRuleNames\":[\"khhavwhrivvzrccy\"]},\"id\":\"xlsypwu\",\"name\":\"eearbbxaneviqk\",\"type\":\"upvidzhjcppq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ManagedNetworkSettingsRulesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<OutboundRuleBasicResource> response = manager.managedNetworkSettingsRules()
-            .list("qmyowddhtwaxob", "zatqocvrdj", com.azure.core.util.Context.NONE);
+        PagedIterable<OutboundRuleBasicResource> response
+            = manager.managedNetworkSettingsRules().list("drdxoutkgezuln", "tp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, response.iterator().next().properties().category());
-        Assertions.assertEquals(RuleStatus.ACTIVE, response.iterator().next().properties().status());
+        Assertions.assertEquals(RuleCategory.USER_DEFINED, response.iterator().next().properties().category());
+        Assertions.assertEquals(RuleStatus.FAILED, response.iterator().next().properties().status());
     }
 }

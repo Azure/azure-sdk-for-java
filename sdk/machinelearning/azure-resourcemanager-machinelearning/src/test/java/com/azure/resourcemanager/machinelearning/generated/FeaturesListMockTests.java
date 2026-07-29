@@ -24,7 +24,7 @@ public final class FeaturesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataType\":\"Integer\",\"featureName\":\"anlvo\",\"description\":\"vzhdncqcuwt\",\"properties\":{\"egxlzd\":\"gqlnolspvxp\",\"smnwsffia\":\"atptzkmfvdrkcw\"},\"tags\":{\"zhrhki\":\"frzzxirxxkmozkd\",\"uuzny\":\"vpyznjwm\",\"xorhsxcsoaxcme\":\"bzzwsesqytktvof\",\"xynkubwk\":\"kpxt\"}},\"id\":\"hslnbyiowet\",\"name\":\"wjvxycygcvgebfe\",\"type\":\"tyantecvttkgopdj\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataType\":\"Datetime\",\"featureName\":\"tyafcv\",\"description\":\"sovxmioo\",\"properties\":{\"sngltlbsnlfplxjr\":\"zxqr\",\"orhwuujymyjvkoy\":\"kwh\",\"rqmc\":\"gtou\",\"qmkjsvxbagcc\":\"lhzngmwemz\"},\"tags\":{\"cntqoszrwkkxdnxu\":\"oqlowe\"}},\"id\":\"gdoi\",\"name\":\"d\",\"type\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class FeaturesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Feature> response = manager.features()
-            .list("kcwauylkbdskrp", "frtlukaf", "zylemp", "hyuxxeike", "npw", "nhqafuvvys", "hjkxg", "mesxjeqqfy",
-                ListViewType.ACTIVE_ONLY, 1347712591, com.azure.core.util.Context.NONE);
+            .list("f", "gthcdbzoxho", "ogpbogpbwe", "oxlzrijpkbrvm", "up", "krqeqjtzaw", "nrvgitzdjixk",
+                "pladohnizvvekpq", ListViewType.ACTIVE_ONLY, 2001935077, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vzhdncqcuwt", response.iterator().next().properties().description());
-        Assertions.assertEquals("gqlnolspvxp", response.iterator().next().properties().properties().get("egxlzd"));
-        Assertions.assertEquals("frzzxirxxkmozkd", response.iterator().next().properties().tags().get("zhrhki"));
-        Assertions.assertEquals(FeatureDataType.INTEGER, response.iterator().next().properties().dataType());
-        Assertions.assertEquals("anlvo", response.iterator().next().properties().featureName());
+        Assertions.assertEquals("sovxmioo", response.iterator().next().properties().description());
+        Assertions.assertEquals("zxqr", response.iterator().next().properties().properties().get("sngltlbsnlfplxjr"));
+        Assertions.assertEquals("oqlowe", response.iterator().next().properties().tags().get("cntqoszrwkkxdnxu"));
+        Assertions.assertEquals(FeatureDataType.DATETIME, response.iterator().next().properties().dataType());
+        Assertions.assertEquals("tyafcv", response.iterator().next().properties().featureName());
     }
 }

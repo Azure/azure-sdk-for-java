@@ -22,7 +22,7 @@ public final class ConnectionRaiBlocklistsOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"tbss\"},\"id\":\"jw\",\"name\":\"e\",\"type\":\"xrftt\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"nywwkdxqqgysxpa\"},\"id\":\"mthdqvcifwknlyt\",\"name\":\"x\",\"type\":\"tocadtnmqr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class ConnectionRaiBlocklistsOperationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiBlocklistPropertiesBasicResource> response = manager.connectionRaiBlocklistsOperations()
-            .list("varfqverxelquqze", "gvjmllzykalbaumm", "dwqiucpj", com.azure.core.util.Context.NONE);
+            .list("vddwgozr", "glkmgcxmkrldfo", "dyhcwcgvyuuse", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tbss", response.iterator().next().properties().description());
+        Assertions.assertEquals("nywwkdxqqgysxpa", response.iterator().next().properties().description());
     }
 }

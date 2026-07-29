@@ -25,7 +25,7 @@ public final class RegistryDataVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"wltozxdzoldwv\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"terjjuzarege\",\"properties\":{\"uggdh\":\"zpuda\",\"keculxvkuxvccpda\":\"ttg\"},\"tags\":{\"swjwbhtawb\":\"sidityvvgxejhq\"}},\"id\":\"ybneuzueikadhusg\",\"name\":\"kbgljcywyr\",\"type\":\"xipxhlxxkviyjruq\"}";
+            = "{\"properties\":{\"dataType\":\"DataVersionBaseProperties\",\"dataUri\":\"lnvfshtujaqp\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"rje\",\"properties\":{\"nbdrqirnihg\":\"kyscxzs\",\"sorsola\":\"thyebwgesovsvjx\",\"afpyil\":\"hlyhgiisnfaxtob\",\"ry\":\"jwcz\"},\"tags\":{\"hm\":\"uskis\",\"kdmezaunbw\":\"ypg\",\"jlploaepplrd\":\"qtigavzdsnrj\"}},\"id\":\"azujvhuuzbsxh\",\"name\":\"vncuelaaexcnxrtl\",\"type\":\"zdkbqfeavzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +35,22 @@ public final class RegistryDataVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataVersionBase response = manager.registryDataVersions()
-            .createOrUpdate("jcwuzanpoyrqjoni", "nyhzestt", "cloq", "gzdbonep",
-                new DataVersionBaseInner().withProperties(new DataVersionBaseProperties().withDescription("zyto")
-                    .withProperties(mapOf("qafnvjgix", "cthgqyvaoazfkykk", "inpyekslllzsqolc", "j", "bnnhwp", "whgn"))
-                    .withTags(mapOf("ohfvxavhfhlx", "ifxz"))
-                    .withIsAnonymous(true)
+            .createOrUpdate("nmzkqydthfcwycm", "vphr", "ufnfovyl", "sqlekchjdh",
+                new DataVersionBaseInner().withProperties(new DataVersionBaseProperties().withDescription("ow")
+                    .withProperties(mapOf("mllyjelnhm", "wpptvbudbnuj", "kqsleokbamahnwgc", "zhxkofz", "amv", "gble",
+                        "lqoxwqlnxvnmrl", "baxdaoja"))
+                    .withTags(mapOf("z", "zyadafecwnufl"))
+                    .withIsAnonymous(false)
                     .withIsArchived(false)
-                    .withDataUri("hfmzeufjzqaqeqc")),
+                    .withDataUri("ske")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("terjjuzarege", response.properties().description());
-        Assertions.assertEquals("zpuda", response.properties().properties().get("uggdh"));
-        Assertions.assertEquals("sidityvvgxejhq", response.properties().tags().get("swjwbhtawb"));
-        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertEquals("rje", response.properties().description());
+        Assertions.assertEquals("kyscxzs", response.properties().properties().get("nbdrqirnihg"));
+        Assertions.assertEquals("uskis", response.properties().tags().get("hm"));
+        Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals("wltozxdzoldwv", response.properties().dataUri());
+        Assertions.assertEquals("lnvfshtujaqp", response.properties().dataUri());
     }
 
     // Use "Map.of" if available

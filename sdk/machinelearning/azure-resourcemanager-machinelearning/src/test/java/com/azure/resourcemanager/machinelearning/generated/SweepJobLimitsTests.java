@@ -13,24 +13,24 @@ public final class SweepJobLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SweepJobLimits model = BinaryData.fromString(
-            "{\"jobLimitsType\":\"Sweep\",\"maxConcurrentTrials\":28688418,\"maxTotalTrials\":1470986104,\"trialTimeout\":\"PT65H17M27S\",\"timeout\":\"PT32M27S\"}")
+            "{\"jobLimitsType\":\"Sweep\",\"maxConcurrentTrials\":1379953892,\"maxTotalTrials\":1991949846,\"trialTimeout\":\"PT151H56M17S\",\"timeout\":\"PT69H32M51S\"}")
             .toObject(SweepJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT32M27S"), model.timeout());
-        Assertions.assertEquals(28688418, model.maxConcurrentTrials());
-        Assertions.assertEquals(1470986104, model.maxTotalTrials());
-        Assertions.assertEquals(Duration.parse("PT65H17M27S"), model.trialTimeout());
+        Assertions.assertEquals(Duration.parse("PT69H32M51S"), model.timeout());
+        Assertions.assertEquals(1379953892, model.maxConcurrentTrials());
+        Assertions.assertEquals(1991949846, model.maxTotalTrials());
+        Assertions.assertEquals(Duration.parse("PT151H56M17S"), model.trialTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SweepJobLimits model = new SweepJobLimits().withTimeout(Duration.parse("PT32M27S"))
-            .withMaxConcurrentTrials(28688418)
-            .withMaxTotalTrials(1470986104)
-            .withTrialTimeout(Duration.parse("PT65H17M27S"));
+        SweepJobLimits model = new SweepJobLimits().withTimeout(Duration.parse("PT69H32M51S"))
+            .withMaxConcurrentTrials(1379953892)
+            .withMaxTotalTrials(1991949846)
+            .withTrialTimeout(Duration.parse("PT151H56M17S"));
         model = BinaryData.fromObject(model).toObject(SweepJobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT32M27S"), model.timeout());
-        Assertions.assertEquals(28688418, model.maxConcurrentTrials());
-        Assertions.assertEquals(1470986104, model.maxTotalTrials());
-        Assertions.assertEquals(Duration.parse("PT65H17M27S"), model.trialTimeout());
+        Assertions.assertEquals(Duration.parse("PT69H32M51S"), model.timeout());
+        Assertions.assertEquals(1379953892, model.maxConcurrentTrials());
+        Assertions.assertEquals(1991949846, model.maxTotalTrials());
+        Assertions.assertEquals(Duration.parse("PT151H56M17S"), model.trialTimeout());
     }
 }

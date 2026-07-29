@@ -12,24 +12,24 @@ public final class ScriptReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptReference model = BinaryData.fromString(
-            "{\"scriptSource\":\"iznzs\",\"scriptData\":\"ibaaugicovjtm\",\"scriptArguments\":\"rmjxyvuodnxc\",\"timeout\":\"assqfy\"}")
+            "{\"scriptSource\":\"nujmwxnrzb\",\"scriptData\":\"nahhs\",\"scriptArguments\":\"ndcbs\",\"timeout\":\"ludzjkk\"}")
             .toObject(ScriptReference.class);
-        Assertions.assertEquals("iznzs", model.scriptSource());
-        Assertions.assertEquals("ibaaugicovjtm", model.scriptData());
-        Assertions.assertEquals("rmjxyvuodnxc", model.scriptArguments());
-        Assertions.assertEquals("assqfy", model.timeout());
+        Assertions.assertEquals("nujmwxnrzb", model.scriptSource());
+        Assertions.assertEquals("nahhs", model.scriptData());
+        Assertions.assertEquals("ndcbs", model.scriptArguments());
+        Assertions.assertEquals("ludzjkk", model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptReference model = new ScriptReference().withScriptSource("iznzs")
-            .withScriptData("ibaaugicovjtm")
-            .withScriptArguments("rmjxyvuodnxc")
-            .withTimeout("assqfy");
+        ScriptReference model = new ScriptReference().withScriptSource("nujmwxnrzb")
+            .withScriptData("nahhs")
+            .withScriptArguments("ndcbs")
+            .withTimeout("ludzjkk");
         model = BinaryData.fromObject(model).toObject(ScriptReference.class);
-        Assertions.assertEquals("iznzs", model.scriptSource());
-        Assertions.assertEquals("ibaaugicovjtm", model.scriptData());
-        Assertions.assertEquals("rmjxyvuodnxc", model.scriptArguments());
-        Assertions.assertEquals("assqfy", model.timeout());
+        Assertions.assertEquals("nujmwxnrzb", model.scriptSource());
+        Assertions.assertEquals("nahhs", model.scriptData());
+        Assertions.assertEquals("ndcbs", model.scriptArguments());
+        Assertions.assertEquals("ludzjkk", model.timeout());
     }
 }

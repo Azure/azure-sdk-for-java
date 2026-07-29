@@ -21,7 +21,7 @@ public final class ModelVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"flavors\":{\"fycigcbmayhdtj\":{\"data\":{\"iqcypmonfcorcn\":\"eylszrtn\"}},\"rplfqqnwojsrg\":{\"data\":{\"wrfrm\":\"onajzdjqzb\",\"rb\":\"oufo\",\"unnik\":\"vojcksirsn\",\"pnsvkyq\":\"yxdeggnzadqmvpe\"}},\"itqzqnbseujcmtci\":{\"data\":{\"tuecmguk\":\"nsvbkhhaqs\",\"xkr\":\"wdpuowlc\"}},\"m\":{\"data\":{\"nxhcxct\":\"b\",\"ylx\":\"hxoeftfo\",\"wkjzvqpsymt\":\"k\",\"nqhyefnak\":\"pyjtrxxzwd\"}}},\"jobName\":\"jksdlulytjxh\",\"modelType\":\"tittlnvukvupupl\",\"modelUri\":\"ulynvpdvctqdapy\",\"provisioningState\":\"Succeeded\",\"stage\":\"zpjbsilbn\",\"datasets\":[{\"name\":\"ehy\",\"id\":\"zm\"},{\"name\":\"gfbmpsz\",\"id\":\"bcstz\"}],\"isAnonymous\":false,\"isArchived\":false,\"description\":\"smaxdwxr\",\"properties\":{\"akxy\":\"bvwsd\",\"u\":\"lkgjhomywlypghhu\",\"b\":\"yfvgpqwgiqmbrisk\"},\"tags\":{\"vyqmmczuguvlieeg\":\"tq\",\"jscgqcr\":\"nqwhfjoxse\",\"uhffjjqvjyqmpmsk\":\"aucftotedhjxdl\",\"udpypboqlefxf\":\"axrhljwqu\"}},\"id\":\"majvwfi\",\"name\":\"f\",\"type\":\"jjrvsvhmsmrihdd\"}";
+            = "{\"properties\":{\"flavors\":{\"wujobdqiup\":{\"data\":{\"fykgmwurcxxj\":\"iweyuigyzsebk\",\"nypfkvjgovbbnc\":\"xy\",\"b\":\"xrwaqgmztlr\",\"airoog\":\"kwoupmqffgjsqq\"}}},\"jobName\":\"v\",\"modelType\":\"vijpmeg\",\"modelUri\":\"rvtf\",\"provisioningState\":\"Canceled\",\"stage\":\"r\",\"datasets\":[{\"name\":\"fatezdxqhjephg\",\"id\":\"yomje\"},{\"name\":\"gnieeqjdf\",\"id\":\"xnnduxkepgamrij\"}],\"isAnonymous\":true,\"isArchived\":false,\"description\":\"futerrcanlpfqd\",\"properties\":{\"gueefrxzwvcvtjdq\":\"pgcqawupqkvm\"},\"tags\":{\"vp\":\"wxjafb\",\"dbjzxrpxji\":\"d\"}},\"id\":\"upirvdonka\",\"name\":\"ngvgjgcwwuusjjht\",\"type\":\"yz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,21 @@ public final class ModelVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ModelVersion response = manager.modelVersions()
-            .getWithResponse("ouhdcftptfcjap", "fwxmcxhwkgihif", "yocmgadh", "qyuf", com.azure.core.util.Context.NONE)
+            .getWithResponse("my", "jdgm", "ehrq", "gd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("smaxdwxr", response.properties().description());
-        Assertions.assertEquals("bvwsd", response.properties().properties().get("akxy"));
-        Assertions.assertEquals("tq", response.properties().tags().get("vyqmmczuguvlieeg"));
-        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertEquals("futerrcanlpfqd", response.properties().description());
+        Assertions.assertEquals("pgcqawupqkvm", response.properties().properties().get("gueefrxzwvcvtjdq"));
+        Assertions.assertEquals("wxjafb", response.properties().tags().get("vp"));
+        Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertFalse(response.properties().isArchived());
-        Assertions.assertEquals("eylszrtn",
-            response.properties().flavors().get("fycigcbmayhdtj").data().get("iqcypmonfcorcn"));
-        Assertions.assertEquals("jksdlulytjxh", response.properties().jobName());
-        Assertions.assertEquals("tittlnvukvupupl", response.properties().modelType());
-        Assertions.assertEquals("ulynvpdvctqdapy", response.properties().modelUri());
-        Assertions.assertEquals("zpjbsilbn", response.properties().stage());
-        Assertions.assertEquals("ehy", response.properties().datasets().get(0).name());
-        Assertions.assertEquals("zm", response.properties().datasets().get(0).id());
+        Assertions.assertEquals("iweyuigyzsebk",
+            response.properties().flavors().get("wujobdqiup").data().get("fykgmwurcxxj"));
+        Assertions.assertEquals("v", response.properties().jobName());
+        Assertions.assertEquals("vijpmeg", response.properties().modelType());
+        Assertions.assertEquals("rvtf", response.properties().modelUri());
+        Assertions.assertEquals("r", response.properties().stage());
+        Assertions.assertEquals("fatezdxqhjephg", response.properties().datasets().get(0).name());
+        Assertions.assertEquals("yomje", response.properties().datasets().get(0).id());
     }
 }

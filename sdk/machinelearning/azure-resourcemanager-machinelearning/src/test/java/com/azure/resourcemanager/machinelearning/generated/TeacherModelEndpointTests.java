@@ -12,14 +12,14 @@ public final class TeacherModelEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeacherModelEndpoint model
-            = BinaryData.fromString("{\"endpointName\":\"svujnjktvolefcj\"}").toObject(TeacherModelEndpoint.class);
-        Assertions.assertEquals("svujnjktvolefcj", model.endpointName());
+            = BinaryData.fromString("{\"endpointName\":\"ifjua\"}").toObject(TeacherModelEndpoint.class);
+        Assertions.assertEquals("ifjua", model.endpointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TeacherModelEndpoint model = new TeacherModelEndpoint().withEndpointName("svujnjktvolefcj");
+        TeacherModelEndpoint model = new TeacherModelEndpoint().withEndpointName("ifjua");
         model = BinaryData.fromObject(model).toObject(TeacherModelEndpoint.class);
-        Assertions.assertEquals("svujnjktvolefcj", model.endpointName());
+        Assertions.assertEquals("ifjua", model.endpointName());
     }
 }

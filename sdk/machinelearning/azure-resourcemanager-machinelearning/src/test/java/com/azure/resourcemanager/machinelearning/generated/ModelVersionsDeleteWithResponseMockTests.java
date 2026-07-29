@@ -28,7 +28,7 @@ public final class ModelVersionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.modelVersions()
-            .deleteWithResponse("bwlbqn", "dderrxyiwuzpsvcm", "sfstyyy", "qnwnlc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rhighnxh", "mfrnktsv", "qdarjteqluj", "m", com.azure.core.util.Context.NONE);
 
     }
 }

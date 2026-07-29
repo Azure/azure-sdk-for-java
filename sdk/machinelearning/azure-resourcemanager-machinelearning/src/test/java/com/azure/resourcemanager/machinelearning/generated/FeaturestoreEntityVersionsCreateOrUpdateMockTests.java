@@ -27,7 +27,7 @@ public final class FeaturestoreEntityVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"indexColumns\":[{\"columnName\":\"dvytecuvejlc\",\"dataType\":\"String\"},{\"columnName\":\"kkjvrrvj\",\"dataType\":\"Binary\"},{\"columnName\":\"hyirsvred\",\"dataType\":\"Boolean\"},{\"columnName\":\"qpblqubfpeomegyn\",\"dataType\":\"String\"}],\"provisioningState\":\"Succeeded\",\"stage\":\"qvajz\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"ythuioixpfgq\",\"properties\":{\"ehuweuitqe\":\"ojwvvqcjrmnverbf\",\"gawlojwvrovjvjj\":\"onmo\",\"jmujz\":\"ypcnbucb\"},\"tags\":{\"axhfu\":\"s\",\"mssdvjvdcc\":\"ygssssjcpfepy\",\"fmmwkakyxyksd\":\"yzrd\",\"fvbhtueynxkxqnwc\":\"lrwqm\"}},\"id\":\"qsbncadfapzebjeg\",\"name\":\"wgverbywu\",\"type\":\"veisjbpzdwhxputk\"}";
+            = "{\"properties\":{\"indexColumns\":[{\"columnName\":\"hcxikhiihg\",\"dataType\":\"Long\"},{\"columnName\":\"eittymipfudzntbz\",\"dataType\":\"String\"}],\"provisioningState\":\"Succeeded\",\"stage\":\"wypbqnxpohcrk\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"egsbuqdpzhq\",\"properties\":{\"memopypc\":\"zutxtidsxrexbarg\"},\"tags\":{\"wsrmegph\":\"owucjznnowpvxuuv\",\"fkjd\":\"j\",\"jytvq\":\"lqtqjabwtk\"}},\"id\":\"rupsuyqvmxnavx\",\"name\":\"pyaptexzylq\",\"type\":\"ewhc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,28 +37,27 @@ public final class FeaturestoreEntityVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeaturestoreEntityVersion response = manager.featurestoreEntityVersions()
-            .define("szcwwv")
-            .withExistingFeaturestoreEntity("hyjueddtkpysmal", "jabzs", "buzaxmkuthooaic")
-            .withProperties(new FeaturestoreEntityVersionProperties().withDescription("seceuvyn")
-                .withProperties(mapOf("xfyzq", "zcu", "tbiycepjklly", "suxmlsu", "xeyumwlbpyidecff", "dsormbvir"))
-                .withTags(mapOf("swhdglxppewtl", "zwqzbsqwjypioszc", "nffczwzrxvvblb", "swul", "mcwmqpcwoe",
-                    "priyttiqdcjg", "bsibzmvd", "jrfrucpefwdxbp"))
+            .define("uvrlxzq")
+            .withExistingFeaturestoreEntity("efijpjiudnust", "moxohgkd", "hbhue")
+            .withProperties(new FeaturestoreEntityVersionProperties().withDescription("jdxrbbhukxuqh")
+                .withProperties(mapOf("gx", "eqpgadesnesgnxd"))
+                .withTags(mapOf("ejqduyqbz", "vsictoqcezmzn"))
                 .withIsAnonymous(true)
                 .withIsArchived(true)
-                .withIndexColumns(Arrays.asList(
-                    new IndexColumn().withColumnName("bivhjryppmmtqx").withDataType(FeatureDataType.STRING),
-                    new IndexColumn().withColumnName("e").withDataType(FeatureDataType.FLOAT)))
-                .withStage("orajdbglkff"))
+                .withIndexColumns(
+                    Arrays.asList(new IndexColumn().withColumnName("rhyx").withDataType(FeatureDataType.BINARY),
+                        new IndexColumn().withColumnName("ousqmer").withDataType(FeatureDataType.INTEGER)))
+                .withStage("memkyouwmj"))
             .create();
 
-        Assertions.assertEquals("ythuioixpfgq", response.properties().description());
-        Assertions.assertEquals("ojwvvqcjrmnverbf", response.properties().properties().get("ehuweuitqe"));
-        Assertions.assertEquals("s", response.properties().tags().get("axhfu"));
+        Assertions.assertEquals("egsbuqdpzhq", response.properties().description());
+        Assertions.assertEquals("zutxtidsxrexbarg", response.properties().properties().get("memopypc"));
+        Assertions.assertEquals("owucjznnowpvxuuv", response.properties().tags().get("wsrmegph"));
         Assertions.assertFalse(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals("dvytecuvejlc", response.properties().indexColumns().get(0).columnName());
-        Assertions.assertEquals(FeatureDataType.STRING, response.properties().indexColumns().get(0).dataType());
-        Assertions.assertEquals("qvajz", response.properties().stage());
+        Assertions.assertEquals("hcxikhiihg", response.properties().indexColumns().get(0).columnName());
+        Assertions.assertEquals(FeatureDataType.LONG, response.properties().indexColumns().get(0).dataType());
+        Assertions.assertEquals("wypbqnxpohcrk", response.properties().stage());
     }
 
     // Use "Map.of" if available

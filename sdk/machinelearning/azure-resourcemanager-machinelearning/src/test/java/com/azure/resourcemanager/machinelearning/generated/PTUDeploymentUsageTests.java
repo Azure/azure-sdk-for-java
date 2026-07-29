@@ -12,12 +12,12 @@ public final class PTUDeploymentUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PTUDeploymentUsage model = BinaryData.fromString(
-            "{\"collectionQuotaUsage\":7580814837725485922,\"deploymentName\":\"rkn\",\"resourceGroup\":\"kfxmuqeqkwq\",\"usage\":4033093669982948942,\"workspaceName\":\"fts\"}")
+            "{\"collectionQuotaUsage\":6642722636760557558,\"deploymentName\":\"ccaflgzwkopxdkbt\",\"resourceGroup\":\"qhgppwxnikfzr\",\"usage\":363109536363955338,\"workspaceName\":\"uvqzjnnuwwvjzrfx\"}")
             .toObject(PTUDeploymentUsage.class);
-        Assertions.assertEquals(7580814837725485922L, model.collectionQuotaUsage());
-        Assertions.assertEquals("rkn", model.deploymentName());
-        Assertions.assertEquals("kfxmuqeqkwq", model.resourceGroup());
-        Assertions.assertEquals(4033093669982948942L, model.usage());
-        Assertions.assertEquals("fts", model.workspaceName());
+        Assertions.assertEquals(6642722636760557558L, model.collectionQuotaUsage());
+        Assertions.assertEquals("ccaflgzwkopxdkbt", model.deploymentName());
+        Assertions.assertEquals("qhgppwxnikfzr", model.resourceGroup());
+        Assertions.assertEquals(363109536363955338L, model.usage());
+        Assertions.assertEquals("uvqzjnnuwwvjzrfx", model.workspaceName());
     }
 }

@@ -25,7 +25,7 @@ public final class ConnectionRaiPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"basePolicyName\":\"cesvcsbyimy\",\"completionBlocklists\":[{\"blocking\":true,\"blocklistName\":\"pdnbzqweohmlkzhx\"},{\"blocking\":false,\"blocklistName\":\"uanxzrqtmh\"}],\"contentFilters\":[{\"allowedContentLevel\":\"High\",\"blocking\":false,\"enabled\":false,\"name\":\"rkhjjbw\",\"source\":\"Completion\"}],\"mode\":\"Deferred\",\"promptBlocklists\":[{\"blocking\":false,\"blocklistName\":\"oguypmselwszqve\"}],\"type\":\"SystemManaged\"},\"id\":\"xljjzdbzkmw\",\"name\":\"wvk\",\"type\":\"jshcsnkiygpqxqe\"}";
+            = "{\"properties\":{\"basePolicyName\":\"yffu\",\"completionBlocklists\":[{\"blocking\":false,\"blocklistName\":\"x\"},{\"blocking\":true,\"blocklistName\":\"dyvayhvxhwex\"}],\"contentFilters\":[{\"allowedContentLevel\":\"Low\",\"blocking\":false,\"enabled\":true,\"name\":\"cvnmgqlsh\",\"source\":\"Prompt\"},{\"allowedContentLevel\":\"Medium\",\"blocking\":true,\"enabled\":false,\"name\":\"cfh\",\"source\":\"Completion\"}],\"mode\":\"Default\",\"promptBlocklists\":[{\"blocking\":true,\"blocklistName\":\"lqwbgl\"},{\"blocking\":true,\"blocklistName\":\"ttkhyr\"}],\"type\":\"UserManaged\"},\"id\":\"puoa\",\"name\":\"r\",\"type\":\"pizybpjypqatkzgh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,21 @@ public final class ConnectionRaiPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiPolicyPropertiesBasicResource response = manager.connectionRaiPolicies()
-            .getWithResponse("reozp", "fkcamzcbzgi", "lqpegcgdndpb", "ieymmcbiktetzv", com.azure.core.util.Context.NONE)
+            .getWithResponse("mokzx", "ltbpqjfoujeiagny", "e", "jssay", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cesvcsbyimy", response.properties().basePolicyName());
-        Assertions.assertTrue(response.properties().completionBlocklists().get(0).blocking());
-        Assertions.assertEquals("pdnbzqweohmlkzhx",
-            response.properties().completionBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(AllowedContentLevel.HIGH,
+        Assertions.assertEquals("yffu", response.properties().basePolicyName());
+        Assertions.assertFalse(response.properties().completionBlocklists().get(0).blocking());
+        Assertions.assertEquals("x", response.properties().completionBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(AllowedContentLevel.LOW,
             response.properties().contentFilters().get(0).allowedContentLevel());
         Assertions.assertFalse(response.properties().contentFilters().get(0).blocking());
-        Assertions.assertFalse(response.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals("rkhjjbw", response.properties().contentFilters().get(0).name());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
-            response.properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiPolicyMode.DEFERRED, response.properties().mode());
-        Assertions.assertFalse(response.properties().promptBlocklists().get(0).blocking());
-        Assertions.assertEquals("oguypmselwszqve", response.properties().promptBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(RaiPolicyType.SYSTEM_MANAGED, response.properties().type());
+        Assertions.assertTrue(response.properties().contentFilters().get(0).enabled());
+        Assertions.assertEquals("cvnmgqlsh", response.properties().contentFilters().get(0).name());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, response.properties().contentFilters().get(0).source());
+        Assertions.assertEquals(RaiPolicyMode.DEFAULT, response.properties().mode());
+        Assertions.assertTrue(response.properties().promptBlocklists().get(0).blocking());
+        Assertions.assertEquals("lqwbgl", response.properties().promptBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(RaiPolicyType.USER_MANAGED, response.properties().type());
     }
 }

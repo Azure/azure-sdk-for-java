@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomNCrossValidationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomNCrossValidations model = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":321355787}")
+        CustomNCrossValidations model = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":687847520}")
             .toObject(CustomNCrossValidations.class);
-        Assertions.assertEquals(321355787, model.value());
+        Assertions.assertEquals(687847520, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomNCrossValidations model = new CustomNCrossValidations().withValue(321355787);
+        CustomNCrossValidations model = new CustomNCrossValidations().withValue(687847520);
         model = BinaryData.fromObject(model).toObject(CustomNCrossValidations.class);
-        Assertions.assertEquals(321355787, model.value());
+        Assertions.assertEquals(687847520, model.value());
     }
 }

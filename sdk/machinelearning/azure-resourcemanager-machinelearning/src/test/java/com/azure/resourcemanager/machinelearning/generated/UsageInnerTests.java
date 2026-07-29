@@ -11,7 +11,7 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"id\":\"tztkajqhsnse\",\"amlWorkspaceLocation\":\"lislxyljzbkd\",\"type\":\"fjwxgvtkjctvrpea\",\"unit\":\"Count\",\"currentValue\":6670297569680675535,\"limit\":3669150342182756800,\"name\":{\"value\":\"qxsphtraitrmsuk\",\"localizedValue\":\"uytgcptctxpo\"}}")
+            "{\"id\":\"cdikqnxydgzfoiqz\",\"amlWorkspaceLocation\":\"spa\",\"type\":\"vs\",\"unit\":\"Count\",\"currentValue\":2383970002819105364,\"limit\":6590823437232008212,\"name\":{\"value\":\"xf\",\"localizedValue\":\"wd\"}}")
             .toObject(UsageInner.class);
     }
 }

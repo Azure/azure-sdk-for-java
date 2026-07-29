@@ -11,7 +11,7 @@ public final class ComputeInstanceConnectivityEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceConnectivityEndpoints model
-            = BinaryData.fromString("{\"publicIpAddress\":\"zxjziuu\",\"privateIpAddress\":\"lnewnuwkkfz\"}")
+            = BinaryData.fromString("{\"publicIpAddress\":\"sqtzng\",\"privateIpAddress\":\"salewguxcmmhi\"}")
                 .toObject(ComputeInstanceConnectivityEndpoints.class);
     }
 }

@@ -28,114 +28,97 @@ public final class FineTuningJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FineTuningJob model = BinaryData.fromString(
-            "{\"jobType\":\"FineTuning\",\"fineTuningDetails\":{\"modelProvider\":\"FineTuningVertical\",\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"ujzflmcd\"},\"taskType\":\"QuestionAnswering\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"celuj\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"lluunxh\"}},\"outputs\":{\"u\":{\"jobOutputType\":\"JobOutput\",\"description\":\"fxzf\"},\"jdmngsytqpdzfyxc\":{\"jobOutputType\":\"JobOutput\",\"description\":\"upcknecexkgrvfp\"}},\"queueSettings\":{\"jobTier\":\"Standard\"},\"resources\":{\"instanceTypes\":[\"gzb\"]},\"componentId\":\"qfbifo\",\"computeId\":\"jxdwdrpazqjkr\",\"displayName\":\"bwotfcuuugtji\",\"experimentName\":\"gayiawohfmhnn\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":true,\"notificationSetting\":{\"emailOn\":[\"JobCancelled\",\"JobCompleted\"],\"emails\":[\"haidzrpvsg\",\"oiovslvivq\",\"uvwtenbgpi\",\"pkhc\"],\"webhooks\":{\"anduew\":{\"webhookType\":\"Webhook\",\"eventType\":\"xukuicjuftekio\"},\"abbwzgvzu\":{\"webhookType\":\"Webhook\",\"eventType\":\"vpxjhxzubfj\"},\"gavkmv\":{\"webhookType\":\"Webhook\",\"eventType\":\"xcdckixspsa\"},\"pzjbyetjxryo\":{\"webhookType\":\"Webhook\",\"eventType\":\"zerejr\"}}},\"parentJobName\":\"ae\",\"services\":{\"ogzmsimehtcuuwdh\":{\"endpoint\":\"lbecgihzbpemnrr\",\"errorMessage\":\"ovrwwx\",\"jobServiceType\":\"pjhspb\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":737215091,\"properties\":{\"uajxwwvcmmpeg\":\"pskpeswyhhmif\",\"qvcml\":\"y\",\"m\":\"exbzbqufpnezsjza\"},\"status\":\"rorh\"},\"dveywetkrhlol\":{\"endpoint\":\"qhyhni\",\"errorMessage\":\"tnsugisno\",\"jobServiceType\":\"nwnghojov\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1993383284,\"properties\":{\"fpcrtnuguef\":\"cjixxf\"},\"status\":\"ijte\"},\"kdzdzffzjw\":{\"endpoint\":\"nwepfgsvbbv\",\"errorMessage\":\"dljnpetl\",\"jobServiceType\":\"rdetawevxehuekdx\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1658177350,\"properties\":{\"dd\":\"vbrblerlprdaqc\",\"xwbpwyykdig\":\"bnygdjc\",\"dasdni\":\"zlrz\",\"tgkiqlarh\":\"mjqmv\"},\"status\":\"wvcaz\"},\"ddhgajkrdyd\":{\"endpoint\":\"smpc\",\"errorMessage\":\"gryelgfyat\",\"jobServiceType\":\"fgfrrkdknc\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1584228857,\"properties\":{\"hqvbkarbpyh\":\"nvojtvmdevd\",\"kpkpkocmacc\":\"srl\",\"yicyvspeslhwy\":\"bxxo\"},\"status\":\"gvrccpu\"}},\"status\":\"Running\",\"description\":\"c\",\"properties\":{\"qnxhgk\":\"afnbfbqve\",\"ejpec\":\"rdw\",\"udayprldidwmtf\":\"zvcmbpwd\"},\"tags\":{\"zch\":\"tzl\",\"igvlghfrbzakpjtc\":\"bagwnlzu\",\"jpsucmxi\":\"raqp\",\"xyn\":\"cw\"}}")
+            "{\"jobType\":\"FineTuning\",\"fineTuningDetails\":{\"modelProvider\":\"FineTuningVertical\",\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"xljzvdovbrbl\"},\"taskType\":\"QuestionAnswering\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"prdaqcc\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"bnygdjc\"}},\"outputs\":{\"gq\":{\"jobOutputType\":\"JobOutput\",\"description\":\"bpwyykd\"},\"gkiqla\":{\"jobOutputType\":\"JobOutput\",\"description\":\"rzndasdnidmjqmvy\"},\"f\":{\"jobOutputType\":\"JobOutput\",\"description\":\"qtwvcazekdzdz\"}},\"queueSettings\":{\"jobTier\":\"Null\"},\"resources\":{\"instanceTypes\":[\"pchggryelgfy\"]},\"componentId\":\"igfgfrrkdkncz\",\"computeId\":\"rywnvo\",\"displayName\":\"vmd\",\"experimentName\":\"dlhqvbkarbpyhssr\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":false,\"notificationSetting\":{\"emailOn\":[\"JobCompleted\"],\"emails\":[\"ac\",\"ebxxopyic\",\"vspeslhwyykgvr\"],\"webhooks\":{\"ddtpfcudv\":{\"webhookType\":\"Webhook\",\"eventType\":\"mddhgajkrd\"},\"ordwzejpec\":{\"webhookType\":\"Webhook\",\"eventType\":\"nbfbqvenqnxhg\"}}},\"parentJobName\":\"vcmbpwdlud\",\"services\":{\"jbj\":{\"endpoint\":\"ldidwmtffb\",\"errorMessage\":\"zldzchubagwnl\",\"jobServiceType\":\"vig\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":482125528,\"properties\":{\"tcqraq\":\"bzakp\",\"imcwqxynqjgsa\":\"ojpsucm\",\"hirc\":\"kyvscbgngcrus\"},\"status\":\"cvsvk\"},\"jqcrbk\":{\"endpoint\":\"pyoklkvuz\",\"errorMessage\":\"dvhml\",\"jobServiceType\":\"oi\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":646692612,\"properties\":{\"w\":\"htpsyioqem\",\"yksik\":\"qszz\"},\"status\":\"anvmwdv\"}},\"status\":\"Provisioning\",\"description\":\"b\",\"properties\":{\"o\":\"yw\",\"w\":\"bepgcmahiwfry\"},\"tags\":{\"bjepzwhj\":\"kapitskshfyftt\",\"bggcj\":\"nfd\",\"hsudymymb\":\"zhblivw\"}}")
             .toObject(FineTuningJob.class);
-        Assertions.assertEquals("c", model.description());
-        Assertions.assertEquals("afnbfbqve", model.properties().get("qnxhgk"));
-        Assertions.assertEquals("tzl", model.tags().get("zch"));
-        Assertions.assertEquals("qfbifo", model.componentId());
-        Assertions.assertEquals("jxdwdrpazqjkr", model.computeId());
-        Assertions.assertEquals("bwotfcuuugtji", model.displayName());
-        Assertions.assertEquals("gayiawohfmhnn", model.experimentName());
-        Assertions.assertTrue(model.isArchived());
-        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
+        Assertions.assertEquals("b", model.description());
+        Assertions.assertEquals("yw", model.properties().get("o"));
+        Assertions.assertEquals("kapitskshfyftt", model.tags().get("bjepzwhj"));
+        Assertions.assertEquals("igfgfrrkdkncz", model.componentId());
+        Assertions.assertEquals("rywnvo", model.computeId());
+        Assertions.assertEquals("vmd", model.displayName());
+        Assertions.assertEquals("dlhqvbkarbpyhssr", model.experimentName());
+        Assertions.assertFalse(model.isArchived());
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_COMPLETED,
             model.notificationSetting().emailOn().get(0));
-        Assertions.assertEquals("haidzrpvsg", model.notificationSetting().emails().get(0));
-        Assertions.assertEquals("xukuicjuftekio", model.notificationSetting().webhooks().get("anduew").eventType());
-        Assertions.assertEquals("ae", model.parentJobName());
-        Assertions.assertEquals("lbecgihzbpemnrr", model.services().get("ogzmsimehtcuuwdh").endpoint());
-        Assertions.assertEquals("pjhspb", model.services().get("ogzmsimehtcuuwdh").jobServiceType());
-        Assertions.assertEquals(737215091, model.services().get("ogzmsimehtcuuwdh").port());
-        Assertions.assertEquals("pskpeswyhhmif",
-            model.services().get("ogzmsimehtcuuwdh").properties().get("uajxwwvcmmpeg"));
-        Assertions.assertEquals("ujzflmcd", model.fineTuningDetails().model().description());
+        Assertions.assertEquals("ac", model.notificationSetting().emails().get(0));
+        Assertions.assertEquals("mddhgajkrd", model.notificationSetting().webhooks().get("ddtpfcudv").eventType());
+        Assertions.assertEquals("vcmbpwdlud", model.parentJobName());
+        Assertions.assertEquals("ldidwmtffb", model.services().get("jbj").endpoint());
+        Assertions.assertEquals("vig", model.services().get("jbj").jobServiceType());
+        Assertions.assertEquals(482125528, model.services().get("jbj").port());
+        Assertions.assertEquals("bzakp", model.services().get("jbj").properties().get("tcqraq"));
+        Assertions.assertEquals("xljzvdovbrbl", model.fineTuningDetails().model().description());
         Assertions.assertEquals(FineTuningTaskType.QUESTION_ANSWERING, model.fineTuningDetails().taskType());
-        Assertions.assertEquals("celuj", model.fineTuningDetails().trainingData().description());
-        Assertions.assertEquals("lluunxh", model.fineTuningDetails().validationData().description());
-        Assertions.assertEquals("fxzf", model.outputs().get("u").description());
-        Assertions.assertEquals(JobTier.STANDARD, model.queueSettings().jobTier());
-        Assertions.assertEquals("gzb", model.resources().instanceTypes().get(0));
+        Assertions.assertEquals("prdaqcc", model.fineTuningDetails().trainingData().description());
+        Assertions.assertEquals("bnygdjc", model.fineTuningDetails().validationData().description());
+        Assertions.assertEquals("bpwyykd", model.outputs().get("gq").description());
+        Assertions.assertEquals(JobTier.NULL, model.queueSettings().jobTier());
+        Assertions.assertEquals("pchggryelgfy", model.resources().instanceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FineTuningJob model = new FineTuningJob().withDescription("c")
-            .withProperties(mapOf("qnxhgk", "afnbfbqve", "ejpec", "rdw", "udayprldidwmtf", "zvcmbpwd"))
-            .withTags(mapOf("zch", "tzl", "igvlghfrbzakpjtc", "bagwnlzu", "jpsucmxi", "raqp", "xyn", "cw"))
-            .withComponentId("qfbifo")
-            .withComputeId("jxdwdrpazqjkr")
-            .withDisplayName("bwotfcuuugtji")
-            .withExperimentName("gayiawohfmhnn")
+        FineTuningJob model = new FineTuningJob().withDescription("b")
+            .withProperties(mapOf("o", "yw", "w", "bepgcmahiwfry"))
+            .withTags(mapOf("bjepzwhj", "kapitskshfyftt", "bggcj", "nfd", "hsudymymb", "zhblivw"))
+            .withComponentId("igfgfrrkdkncz")
+            .withComputeId("rywnvo")
+            .withDisplayName("vmd")
+            .withExperimentName("dlhqvbkarbpyhssr")
             .withIdentity(new IdentityConfiguration())
-            .withIsArchived(true)
-            .withNotificationSetting(new NotificationSetting()
-                .withEmailOn(
-                    Arrays.asList(EmailNotificationEnableType.JOB_CANCELLED, EmailNotificationEnableType.JOB_COMPLETED))
-                .withEmails(Arrays.asList("haidzrpvsg", "oiovslvivq", "uvwtenbgpi", "pkhc"))
-                .withWebhooks(mapOf("anduew", new Webhook().withEventType("xukuicjuftekio"), "abbwzgvzu",
-                    new Webhook().withEventType("vpxjhxzubfj"), "gavkmv", new Webhook().withEventType("xcdckixspsa"),
-                    "pzjbyetjxryo", new Webhook().withEventType("zerejr"))))
-            .withParentJobName("ae")
-            .withServices(mapOf("ogzmsimehtcuuwdh",
-                new JobService().withEndpoint("lbecgihzbpemnrr")
-                    .withJobServiceType("pjhspb")
+            .withIsArchived(false)
+            .withNotificationSetting(
+                new NotificationSetting().withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_COMPLETED))
+                    .withEmails(Arrays.asList("ac", "ebxxopyic", "vspeslhwyykgvr"))
+                    .withWebhooks(mapOf("ddtpfcudv", new Webhook().withEventType("mddhgajkrd"), "ordwzejpec",
+                        new Webhook().withEventType("nbfbqvenqnxhg"))))
+            .withParentJobName("vcmbpwdlud")
+            .withServices(mapOf("jbj",
+                new JobService().withEndpoint("ldidwmtffb")
+                    .withJobServiceType("vig")
                     .withNodes(new Nodes())
-                    .withPort(737215091)
-                    .withProperties(mapOf("uajxwwvcmmpeg", "pskpeswyhhmif", "qvcml", "y", "m", "exbzbqufpnezsjza")),
-                "dveywetkrhlol",
-                new JobService().withEndpoint("qhyhni")
-                    .withJobServiceType("nwnghojov")
+                    .withPort(482125528)
+                    .withProperties(mapOf("tcqraq", "bzakp", "imcwqxynqjgsa", "ojpsucm", "hirc", "kyvscbgngcrus")),
+                "jqcrbk",
+                new JobService().withEndpoint("pyoklkvuz")
+                    .withJobServiceType("oi")
                     .withNodes(new Nodes())
-                    .withPort(1993383284)
-                    .withProperties(mapOf("fpcrtnuguef", "cjixxf")),
-                "kdzdzffzjw",
-                new JobService().withEndpoint("nwepfgsvbbv")
-                    .withJobServiceType("rdetawevxehuekdx")
-                    .withNodes(new Nodes())
-                    .withPort(1658177350)
-                    .withProperties(mapOf(
-                        "dd", "vbrblerlprdaqc", "xwbpwyykdig", "bnygdjc", "dasdni", "zlrz", "tgkiqlarh", "mjqmv")),
-                "ddhgajkrdyd",
-                new JobService().withEndpoint("smpc")
-                    .withJobServiceType("fgfrrkdknc")
-                    .withNodes(new Nodes())
-                    .withPort(1584228857)
-                    .withProperties(
-                        mapOf("hqvbkarbpyh", "nvojtvmdevd", "kpkpkocmacc", "srl", "yicyvspeslhwy", "bxxo"))))
-            .withFineTuningDetails(new FineTuningVertical().withModel(new JobInput().withDescription("ujzflmcd"))
+                    .withPort(646692612)
+                    .withProperties(mapOf("w", "htpsyioqem", "yksik", "qszz"))))
+            .withFineTuningDetails(new FineTuningVertical().withModel(new JobInput().withDescription("xljzvdovbrbl"))
                 .withTaskType(FineTuningTaskType.QUESTION_ANSWERING)
-                .withTrainingData(new JobInput().withDescription("celuj"))
-                .withValidationData(new JobInput().withDescription("lluunxh")))
-            .withOutputs(mapOf("u", new JobOutput().withDescription("fxzf"), "jdmngsytqpdzfyxc",
-                new JobOutput().withDescription("upcknecexkgrvfp")))
-            .withQueueSettings(new QueueSettings().withJobTier(JobTier.STANDARD))
-            .withResources(new JobResources().withInstanceTypes(Arrays.asList("gzb")));
+                .withTrainingData(new JobInput().withDescription("prdaqcc"))
+                .withValidationData(new JobInput().withDescription("bnygdjc")))
+            .withOutputs(mapOf("gq", new JobOutput().withDescription("bpwyykd"), "gkiqla",
+                new JobOutput().withDescription("rzndasdnidmjqmvy"), "f",
+                new JobOutput().withDescription("qtwvcazekdzdz")))
+            .withQueueSettings(new QueueSettings().withJobTier(JobTier.NULL))
+            .withResources(new JobResources().withInstanceTypes(Arrays.asList("pchggryelgfy")));
         model = BinaryData.fromObject(model).toObject(FineTuningJob.class);
-        Assertions.assertEquals("c", model.description());
-        Assertions.assertEquals("afnbfbqve", model.properties().get("qnxhgk"));
-        Assertions.assertEquals("tzl", model.tags().get("zch"));
-        Assertions.assertEquals("qfbifo", model.componentId());
-        Assertions.assertEquals("jxdwdrpazqjkr", model.computeId());
-        Assertions.assertEquals("bwotfcuuugtji", model.displayName());
-        Assertions.assertEquals("gayiawohfmhnn", model.experimentName());
-        Assertions.assertTrue(model.isArchived());
-        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
+        Assertions.assertEquals("b", model.description());
+        Assertions.assertEquals("yw", model.properties().get("o"));
+        Assertions.assertEquals("kapitskshfyftt", model.tags().get("bjepzwhj"));
+        Assertions.assertEquals("igfgfrrkdkncz", model.componentId());
+        Assertions.assertEquals("rywnvo", model.computeId());
+        Assertions.assertEquals("vmd", model.displayName());
+        Assertions.assertEquals("dlhqvbkarbpyhssr", model.experimentName());
+        Assertions.assertFalse(model.isArchived());
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_COMPLETED,
             model.notificationSetting().emailOn().get(0));
-        Assertions.assertEquals("haidzrpvsg", model.notificationSetting().emails().get(0));
-        Assertions.assertEquals("xukuicjuftekio", model.notificationSetting().webhooks().get("anduew").eventType());
-        Assertions.assertEquals("ae", model.parentJobName());
-        Assertions.assertEquals("lbecgihzbpemnrr", model.services().get("ogzmsimehtcuuwdh").endpoint());
-        Assertions.assertEquals("pjhspb", model.services().get("ogzmsimehtcuuwdh").jobServiceType());
-        Assertions.assertEquals(737215091, model.services().get("ogzmsimehtcuuwdh").port());
-        Assertions.assertEquals("pskpeswyhhmif",
-            model.services().get("ogzmsimehtcuuwdh").properties().get("uajxwwvcmmpeg"));
-        Assertions.assertEquals("ujzflmcd", model.fineTuningDetails().model().description());
+        Assertions.assertEquals("ac", model.notificationSetting().emails().get(0));
+        Assertions.assertEquals("mddhgajkrd", model.notificationSetting().webhooks().get("ddtpfcudv").eventType());
+        Assertions.assertEquals("vcmbpwdlud", model.parentJobName());
+        Assertions.assertEquals("ldidwmtffb", model.services().get("jbj").endpoint());
+        Assertions.assertEquals("vig", model.services().get("jbj").jobServiceType());
+        Assertions.assertEquals(482125528, model.services().get("jbj").port());
+        Assertions.assertEquals("bzakp", model.services().get("jbj").properties().get("tcqraq"));
+        Assertions.assertEquals("xljzvdovbrbl", model.fineTuningDetails().model().description());
         Assertions.assertEquals(FineTuningTaskType.QUESTION_ANSWERING, model.fineTuningDetails().taskType());
-        Assertions.assertEquals("celuj", model.fineTuningDetails().trainingData().description());
-        Assertions.assertEquals("lluunxh", model.fineTuningDetails().validationData().description());
-        Assertions.assertEquals("fxzf", model.outputs().get("u").description());
-        Assertions.assertEquals(JobTier.STANDARD, model.queueSettings().jobTier());
-        Assertions.assertEquals("gzb", model.resources().instanceTypes().get(0));
+        Assertions.assertEquals("prdaqcc", model.fineTuningDetails().trainingData().description());
+        Assertions.assertEquals("bnygdjc", model.fineTuningDetails().validationData().description());
+        Assertions.assertEquals("bpwyykd", model.outputs().get("gq").description());
+        Assertions.assertEquals(JobTier.NULL, model.queueSettings().jobTier());
+        Assertions.assertEquals("pchggryelgfy", model.resources().instanceTypes().get(0));
     }
 
     // Use "Map.of" if available

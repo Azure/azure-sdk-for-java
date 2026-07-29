@@ -11,7 +11,7 @@ public final class UpdateWorkspaceQuotasResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateWorkspaceQuotasResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"m\",\"type\":\"zzjsnyfo\",\"limit\":1984029344419433302,\"unit\":\"Count\",\"status\":\"InvalidQuotaBelowClusterMinimum\"},{\"id\":\"ubeqkitt\",\"type\":\"glhxsoanguhb\",\"limit\":7472051440250061564,\"unit\":\"Count\",\"status\":\"InvalidVMFamilyName\"},{\"id\":\"neg\",\"type\":\"dtyzpx\",\"limit\":429340601940949834,\"unit\":\"Count\",\"status\":\"Undefined\"},{\"id\":\"em\",\"type\":\"upehs\",\"limit\":8802394955410834816,\"unit\":\"Count\",\"status\":\"OperationNotEnabledForRegion\"}],\"nextLink\":\"pezammpkapvnpeu\"}")
+            "{\"value\":[{\"id\":\"xkopqlrz\",\"type\":\"ocjzfppexuva\",\"limit\":3695265835376714657,\"unit\":\"Count\",\"status\":\"OperationNotSupportedForSku\"},{\"id\":\"it\",\"type\":\"cmimbmswskbbbjo\",\"limit\":5068353632918552086,\"unit\":\"Count\",\"status\":\"Undefined\"},{\"id\":\"bkpo\",\"type\":\"fsobggvalcrqaxl\",\"limit\":3883742384393156182,\"unit\":\"Count\",\"status\":\"InvalidQuotaBelowClusterMinimum\"},{\"id\":\"mlplgtlayyxhx\",\"type\":\"oysxaqq\",\"limit\":978186750349077622,\"unit\":\"Count\",\"status\":\"InvalidQuotaBelowClusterMinimum\"}],\"nextLink\":\"qnjcsbozvcdqwssy\"}")
             .toObject(UpdateWorkspaceQuotasResultInner.class);
     }
 }

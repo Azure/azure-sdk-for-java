@@ -22,7 +22,7 @@ public final class ConnectionRaiBlocklistItemsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isRegex\":false,\"pattern\":\"adgyhqrasxe\"},\"id\":\"jqqhbkxiu\",\"name\":\"iafbhzdj\",\"type\":\"d\"}";
+            = "{\"properties\":{\"isRegex\":false,\"pattern\":\"ykekmgpsea\"},\"id\":\"dqpwhp\",\"name\":\"wdosfgbvsoz\",\"type\":\"fnpwxcjci\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ConnectionRaiBlocklistItemsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItemPropertiesBasicResource response = manager.connectionRaiBlocklistItems()
-            .define("wevlohuahl")
-            .withExistingRaiBlocklist("nawc", "aarboxaluoadmc", "v", "jnpef")
-            .withProperties(new RaiBlocklistItemProperties().withIsRegex(true).withPattern("oxgp"))
+            .define("ozcuhunmfzbmwp")
+            .withExistingRaiBlocklist("aljcqp", "pmathiydmkyvsx", "divghajpd", "gfoznmfmkpjoe")
+            .withProperties(new RaiBlocklistItemProperties().withIsRegex(false).withPattern("ruyknoiumux"))
             .create();
 
         Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("adgyhqrasxe", response.properties().pattern());
+        Assertions.assertEquals("ykekmgpsea", response.properties().pattern());
     }
 }

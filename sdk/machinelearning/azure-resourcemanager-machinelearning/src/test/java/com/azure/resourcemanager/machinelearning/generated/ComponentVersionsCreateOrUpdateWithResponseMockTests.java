@@ -24,7 +24,7 @@ public final class ComponentVersionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentSpec\":\"\\\"dataqvvketydg\\\"\",\"provisioningState\":\"Updating\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"vqxerxrmhr\",\"properties\":{\"ihylrxsiyzsyiu\":\"gbbjl\",\"fvernnk\":\"titlqy\"},\"tags\":{\"gdr\":\"ayqivb\",\"ppwp\":\"gzetboyztgnmu\",\"bdwrjencofe\":\"fmgrmtgwhz\",\"tpljonmaj\":\"iewib\"}},\"id\":\"bxxcdkhxjwtkftg\",\"name\":\"ljuepme\",\"type\":\"sjpgbmlbxjhgvte\"}";
+            = "{\"properties\":{\"componentSpec\":\"\\\"datattqhpvaru\\\"\",\"provisioningState\":\"Deleting\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"qfpqqllavzlh\",\"properties\":{\"vtniwfcubwhxmyib\":\"rodblapqrac\"},\"tags\":{\"ttgxkxt\":\"eg\"}},\"id\":\"bbjbeyqohvia\",\"name\":\"pjfkr\",\"type\":\"rerdlgbvtpxowg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,20 +34,21 @@ public final class ComponentVersionsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComponentVersion response = manager.componentVersions()
-            .define("ktkdpcz")
-            .withExistingComponent("vmlkwkzlinv", "mtykxszdekfxcsqm", "do")
-            .withProperties(new ComponentVersionProperties().withDescription("hvqpkedaxku")
-                .withProperties(mapOf("weogavfyih", "fjidqod", "zw", "zsbpwnyfjcyp"))
-                .withTags(mapOf("grlw", "dlzgkoo", "qadewhuwxk", "amesit", "naif", "xiatfam"))
+            .define("etsluqfgk")
+            .withExistingComponent("cquajpoipdjxy", "tgvraxhntoiwfsz", "rlkosjwr")
+            .withProperties(new ComponentVersionProperties().withDescription("wbngeuwhdqng")
+                .withProperties(mapOf("mgg", "h"))
+                .withTags(mapOf("qzaffzqodokst", "ne", "ccydbjghunqnttrw", "vomdqxnoyzqipapi", "phxmwwvxcaicb",
+                    "cbzvvxd", "amiyfgunrukcyyaa", "cbogsfovk"))
                 .withIsAnonymous(true)
                 .withIsArchived(false)
-                .withComponentSpec("\"datahp\""))
+                .withComponentSpec("\"dataiimi\""))
             .create();
 
-        Assertions.assertEquals("vqxerxrmhr", response.properties().description());
-        Assertions.assertEquals("gbbjl", response.properties().properties().get("ihylrxsiyzsyiu"));
-        Assertions.assertEquals("ayqivb", response.properties().tags().get("gdr"));
-        Assertions.assertFalse(response.properties().isAnonymous());
+        Assertions.assertEquals("qfpqqllavzlh", response.properties().description());
+        Assertions.assertEquals("rodblapqrac", response.properties().properties().get("vtniwfcubwhxmyib"));
+        Assertions.assertEquals("eg", response.properties().tags().get("ttgxkxt"));
+        Assertions.assertTrue(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
     }
 

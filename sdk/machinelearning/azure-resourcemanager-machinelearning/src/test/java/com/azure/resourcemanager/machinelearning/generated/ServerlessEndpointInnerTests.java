@@ -25,53 +25,57 @@ public final class ServerlessEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerlessEndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"authMode\":\"AAD\",\"contentSafety\":{\"contentSafetyLevel\":\"Deferred\",\"contentSafetyStatus\":\"Enabled\"},\"endpointState\":\"Unknown\",\"inferenceEndpoint\":{\"headers\":{\"tm\":\"mzlpcx\"},\"uri\":\"xxr\"},\"marketplaceSubscriptionId\":\"cf\",\"modelSettings\":{\"modelId\":\"wjdth\"},\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"yoafinmp\",\"tenantId\":\"updkjrzfwkyl\",\"type\":\"None\",\"userAssignedIdentities\":{\"ay\":{\"principalId\":\"whqdcc\",\"clientId\":\"vqsru\"}}},\"kind\":\"vwbzmfxlrymf\",\"sku\":{\"name\":\"lpiywqnpfydrfbg\",\"tier\":\"Free\",\"size\":\"byxmkhmqyncgaull\",\"family\":\"tyygjq\",\"capacity\":1323021844},\"location\":\"wqgmhmqmiwxz\",\"tags\":{\"qfgufjnbxw\":\"zu\",\"hg\":\"mwdukinhl\",\"dwcgldo\":\"ekekzouyvewwpz\"},\"id\":\"gcandxfhhhtes\",\"name\":\"dqtdnnc\",\"type\":\"kpljdshvvfkdxc\"}")
+            "{\"properties\":{\"authMode\":\"KeyAndAAD\",\"contentSafety\":{\"contentSafetyLevel\":\"Deferred\",\"contentSafetyStatus\":\"Enabled\"},\"endpointState\":\"Creating\",\"inferenceEndpoint\":{\"headers\":{\"tf\":\"dffetevr\"},\"uri\":\"nwacycsy\"},\"marketplaceSubscriptionId\":\"ctkhfh\",\"modelSettings\":{\"modelId\":\"tvc\"},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"nmizhv\",\"tenantId\":\"hqqwcubl\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dvucfvvra\":{\"principalId\":\"lobzgott\",\"clientId\":\"sadzighmmtb\"},\"ftaspmcr\":{\"principalId\":\"eurdeewlsuxp\",\"clientId\":\"wkdwjyjiznioroof\"},\"ghminuwqx\":{\"principalId\":\"huf\",\"clientId\":\"n\"},\"vzjowzug\":{\"principalId\":\"grobgwfmsxj\",\"clientId\":\"ylwx\"}}},\"kind\":\"rclbl\",\"sku\":{\"name\":\"hpwachyeu\",\"tier\":\"Standard\",\"size\":\"vwryvd\",\"family\":\"kiikgpruccwmecbt\",\"capacity\":922193129},\"location\":\"rtexegwmrqjyw\",\"tags\":{\"oqkajwjuriarsbc\":\"vycfjncindi\",\"dygzkztxfexwac\":\"lanhzcknjxizba\",\"uiiu\":\"yjmlxppdndzkfe\"},\"id\":\"ibfkcjytq\",\"name\":\"cizeqqfopvnopm\",\"type\":\"tdsfh\"}")
             .toObject(ServerlessEndpointInner.class);
-        Assertions.assertEquals("wqgmhmqmiwxz", model.location());
-        Assertions.assertEquals("zu", model.tags().get("qfgufjnbxw"));
-        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.AAD, model.properties().authMode());
+        Assertions.assertEquals("rtexegwmrqjyw", model.location());
+        Assertions.assertEquals("vycfjncindi", model.tags().get("oqkajwjuriarsbc"));
+        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD, model.properties().authMode());
         Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.properties().contentSafety().contentSafetyLevel());
         Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.properties().contentSafety().contentSafetyStatus());
-        Assertions.assertEquals("wjdth", model.properties().modelSettings().modelId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("vwbzmfxlrymf", model.kind());
-        Assertions.assertEquals("lpiywqnpfydrfbg", model.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("byxmkhmqyncgaull", model.sku().size());
-        Assertions.assertEquals("tyygjq", model.sku().family());
-        Assertions.assertEquals(1323021844, model.sku().capacity());
+        Assertions.assertEquals("tvc", model.properties().modelSettings().modelId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("rclbl", model.kind());
+        Assertions.assertEquals("hpwachyeu", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("vwryvd", model.sku().size());
+        Assertions.assertEquals("kiikgpruccwmecbt", model.sku().family());
+        Assertions.assertEquals(922193129, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerlessEndpointInner model = new ServerlessEndpointInner().withLocation("wqgmhmqmiwxz")
-            .withTags(mapOf("qfgufjnbxw", "zu", "hg", "mwdukinhl", "dwcgldo", "ekekzouyvewwpz"))
-            .withProperties(new ServerlessEndpointProperties().withAuthMode(ServerlessInferenceEndpointAuthMode.AAD)
-                .withContentSafety(new ContentSafety().withContentSafetyLevel(ContentSafetyLevel.DEFERRED)
-                    .withContentSafetyStatus(ContentSafetyStatus.ENABLED))
-                .withModelSettings(new ModelSettings().withModelId("wjdth")))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("ay", new UserAssignedIdentity())))
-            .withKind("vwbzmfxlrymf")
-            .withSku(new Sku().withName("lpiywqnpfydrfbg")
-                .withTier(SkuTier.FREE)
-                .withSize("byxmkhmqyncgaull")
-                .withFamily("tyygjq")
-                .withCapacity(1323021844));
+        ServerlessEndpointInner model = new ServerlessEndpointInner().withLocation("rtexegwmrqjyw")
+            .withTags(
+                mapOf("oqkajwjuriarsbc", "vycfjncindi", "dygzkztxfexwac", "lanhzcknjxizba", "uiiu", "yjmlxppdndzkfe"))
+            .withProperties(
+                new ServerlessEndpointProperties().withAuthMode(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD)
+                    .withContentSafety(new ContentSafety().withContentSafetyLevel(ContentSafetyLevel.DEFERRED)
+                        .withContentSafetyStatus(ContentSafetyStatus.ENABLED))
+                    .withModelSettings(new ModelSettings().withModelId("tvc")))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("dvucfvvra", new UserAssignedIdentity(), "ftaspmcr", new UserAssignedIdentity(), "ghminuwqx",
+                        new UserAssignedIdentity(), "vzjowzug", new UserAssignedIdentity())))
+            .withKind("rclbl")
+            .withSku(new Sku().withName("hpwachyeu")
+                .withTier(SkuTier.STANDARD)
+                .withSize("vwryvd")
+                .withFamily("kiikgpruccwmecbt")
+                .withCapacity(922193129));
         model = BinaryData.fromObject(model).toObject(ServerlessEndpointInner.class);
-        Assertions.assertEquals("wqgmhmqmiwxz", model.location());
-        Assertions.assertEquals("zu", model.tags().get("qfgufjnbxw"));
-        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.AAD, model.properties().authMode());
+        Assertions.assertEquals("rtexegwmrqjyw", model.location());
+        Assertions.assertEquals("vycfjncindi", model.tags().get("oqkajwjuriarsbc"));
+        Assertions.assertEquals(ServerlessInferenceEndpointAuthMode.KEY_AND_AAD, model.properties().authMode());
         Assertions.assertEquals(ContentSafetyLevel.DEFERRED, model.properties().contentSafety().contentSafetyLevel());
         Assertions.assertEquals(ContentSafetyStatus.ENABLED, model.properties().contentSafety().contentSafetyStatus());
-        Assertions.assertEquals("wjdth", model.properties().modelSettings().modelId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("vwbzmfxlrymf", model.kind());
-        Assertions.assertEquals("lpiywqnpfydrfbg", model.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("byxmkhmqyncgaull", model.sku().size());
-        Assertions.assertEquals("tyygjq", model.sku().family());
-        Assertions.assertEquals(1323021844, model.sku().capacity());
+        Assertions.assertEquals("tvc", model.properties().modelSettings().modelId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("rclbl", model.kind());
+        Assertions.assertEquals("hpwachyeu", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("vwryvd", model.sku().size());
+        Assertions.assertEquals("kiikgpruccwmecbt", model.sku().family());
+        Assertions.assertEquals(922193129, model.sku().capacity());
     }
 
     // Use "Map.of" if available

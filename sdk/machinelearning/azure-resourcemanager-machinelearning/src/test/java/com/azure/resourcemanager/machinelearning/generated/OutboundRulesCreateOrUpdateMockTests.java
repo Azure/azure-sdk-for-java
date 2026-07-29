@@ -25,7 +25,7 @@ public final class OutboundRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"iezbmhsqy\",\"parentRuleNames\":[\"bzhafcoayuqwnt\",\"hjm\",\"jmmjnxhy\"]},\"id\":\"tsemnid\",\"name\":\"aykvlrsbrn\",\"type\":\"ocyo\"}";
+            = "{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"bbrnda\",\"parentRuleNames\":[\"vufrfwa\",\"hssosowavpy\"]},\"id\":\"eyeblkgupgnstq\",\"name\":\"jxfmh\",\"type\":\"oartvkhufktqgtjf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class OutboundRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundRuleBasicResource response = manager.outboundRules()
-            .createOrUpdate("in", "mvcvnmgqls", "glym", "elazvcfhiayro",
+            .createOrUpdate("aawry", "tzslfrztpnry", "xxa", "rvcighlhddvnobes",
                 new OutboundRuleBasicResourceInner().withProperties(
-                    new OutboundRule().withCategory(RuleCategory.USER_DEFINED).withStatus(RuleStatus.PROVISIONING)),
+                    new OutboundRule().withCategory(RuleCategory.RECOMMENDED).withStatus(RuleStatus.PROVISIONING)),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(RuleCategory.DEPENDENCY, response.properties().category());

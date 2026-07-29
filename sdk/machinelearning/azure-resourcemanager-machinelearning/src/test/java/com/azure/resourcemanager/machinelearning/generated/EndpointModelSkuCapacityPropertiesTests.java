@@ -12,9 +12,9 @@ public final class EndpointModelSkuCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointModelSkuCapacityProperties model
-            = BinaryData.fromString("{\"default\":823723509,\"maximum\":1393781191}")
+            = BinaryData.fromString("{\"default\":938762115,\"maximum\":427775871}")
                 .toObject(EndpointModelSkuCapacityProperties.class);
-        Assertions.assertEquals(823723509, model.defaultProperty());
-        Assertions.assertEquals(1393781191, model.maximum());
+        Assertions.assertEquals(938762115, model.defaultProperty());
+        Assertions.assertEquals(427775871, model.maximum());
     }
 }

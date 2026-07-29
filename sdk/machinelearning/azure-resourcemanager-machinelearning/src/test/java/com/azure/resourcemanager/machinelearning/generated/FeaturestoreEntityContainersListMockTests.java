@@ -23,7 +23,7 @@ public final class FeaturestoreEntityContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"isArchived\":false,\"latestVersion\":\"meyoncxjevmawxr\",\"nextVersion\":\"tynqbhhfhi\",\"description\":\"wkhiyubykxz\",\"properties\":{\"anzolqqpanzpzmo\":\"ttyihpsrjzpvojw\",\"yowisqfifmit\":\"upqlusxkzdnot\"},\"tags\":{\"bceims\":\"pkiqloue\",\"wqmraih\":\"otynaehl\"}},\"id\":\"cjvzlgclia\",\"name\":\"qwxvihyirp\",\"type\":\"oxexvt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":true,\"latestVersion\":\"jllatbldhcf\",\"nextVersion\":\"nithxnainssv\",\"description\":\"z\",\"properties\":{\"cpbmyghq\":\"lioguwshr\",\"kqztqrnreyjfm\":\"thsbbl\",\"dclugvs\":\"rweevtun\",\"iwmkljhkgxcew\":\"fpsyqvgaaymfkex\"},\"tags\":{\"ktcr\":\"xz\",\"edzyzbvsjut\":\"ct\"}},\"id\":\"ysefilncyqnkpxe\",\"name\":\"m\",\"type\":\"zdwerjck\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,12 @@ public final class FeaturestoreEntityContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FeaturestoreEntityContainer> response = manager.featurestoreEntityContainers()
-            .list("uypdcgx", "kbwv", "wbbzcm", "b", ListViewType.ACTIVE_ONLY, 1340845429, "gclksmrgjf", "fmjckct",
-                "bhsgqi", com.azure.core.util.Context.NONE);
+            .list("esginpixhulf", "lmw", "vj", "kwrvtflotjizvi", ListViewType.ACTIVE_ONLY, 297086108, "xlvnwznfxap",
+                "lsl", "bdtrwkpely", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wkhiyubykxz", response.iterator().next().properties().description());
-        Assertions.assertEquals("ttyihpsrjzpvojw",
-            response.iterator().next().properties().properties().get("anzolqqpanzpzmo"));
-        Assertions.assertEquals("pkiqloue", response.iterator().next().properties().tags().get("bceims"));
-        Assertions.assertFalse(response.iterator().next().properties().isArchived());
+        Assertions.assertEquals("z", response.iterator().next().properties().description());
+        Assertions.assertEquals("lioguwshr", response.iterator().next().properties().properties().get("cpbmyghq"));
+        Assertions.assertEquals("xz", response.iterator().next().properties().tags().get("ktcr"));
+        Assertions.assertTrue(response.iterator().next().properties().isArchived());
     }
 }

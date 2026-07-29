@@ -23,7 +23,7 @@ public final class InferenceGroupsGetDeltaModelsStatusAsyncWithResponseMockTests
     @Test
     public void testGetDeltaModelsStatusAsyncWithResponse() throws Exception {
         String responseStr
-            = "{\"actualInstanceCount\":2135412436,\"deltaModels\":{\"tkcqixgqxsupevt\":[{\"count\":1811280851,\"sampleInstanceID\":\"sjsoxuuwuungdvvd\",\"status\":\"cpquyi\"},{\"count\":760498231,\"sampleInstanceID\":\"tvonw\",\"status\":\"eliemit\"}],\"vj\":[{\"count\":1994262703,\"sampleInstanceID\":\"dsafqaghwqum\",\"status\":\"qyianjmvvk\"},{\"count\":1048053587,\"sampleInstanceID\":\"ffhuxoxqtgzvzcfm\",\"status\":\"ogjrhmtbpnhj\"},{\"count\":1592654548,\"sampleInstanceID\":\"fzw\",\"status\":\"rmp\"},{\"count\":960410048,\"sampleInstanceID\":\"qeesginpixhul\",\"status\":\"lmw\"}],\"mnrweevtunjdcl\":[{\"count\":1703521996,\"sampleInstanceID\":\"tflotjizviswix\",\"status\":\"nwznfxapylsllbd\"},{\"count\":1845528942,\"sampleInstanceID\":\"pe\",\"status\":\"glfwmajllatbl\"},{\"count\":727311326,\"sampleInstanceID\":\"hwnithxnainssvrk\",\"status\":\"lylioguwshrmc\"},{\"count\":2016627290,\"sampleInstanceID\":\"ghqtthsb\",\"status\":\"wkqztqrnreyj\"}],\"vpglntnsiuxyitj\":[{\"count\":1777861843,\"sampleInstanceID\":\"fpsyqvgaaymfkex\",\"status\":\"wmkljh\"},{\"count\":61306480,\"sampleInstanceID\":\"ewzgoxzkktcrcc\",\"status\":\"edzyzbvsjut\"},{\"count\":1791617008,\"sampleInstanceID\":\"efilncyqnkp\",\"status\":\"fmpz\"},{\"count\":1079572176,\"sampleInstanceID\":\"jckzx\",\"status\":\"upgtptmndzbfoi\"}]},\"expectedInstanceCount\":796898245,\"revisionId\":\"yzgrrllzxx\",\"targetBaseModel\":\"mhenqn\"}";
+            = "{\"actualInstanceCount\":1413440587,\"deltaModels\":{\"n\":[{\"count\":178950168,\"sampleInstanceID\":\"zotjbvhuidlod\",\"status\":\"sylkkqvm\"},{\"count\":669615621,\"sampleInstanceID\":\"ljcauegymc\",\"status\":\"smnjitxu\"},{\"count\":1424523714,\"sampleInstanceID\":\"ibwodayipgshk\",\"status\":\"ecmbyox\"},{\"count\":1969473990,\"sampleInstanceID\":\"fchfuxuqpd\",\"status\":\"bokzdshhhdi\"}],\"xauimnabgrsn\":[{\"count\":713683471,\"sampleInstanceID\":\"bmstvzzkzvfywspa\",\"status\":\"kj\"},{\"count\":1440328830,\"sampleInstanceID\":\"tbnmhxtmzzpau\",\"status\":\"rvsbknvou\"},{\"count\":747395234,\"sampleInstanceID\":\"jjgvu\",\"status\":\"wichjk\"},{\"count\":1355638993,\"sampleInstanceID\":\"sohrtgpvvcbteg\",\"status\":\"cmeyaoyzjfg\"}]},\"expectedInstanceCount\":396147727,\"revisionId\":\"hiecu\",\"targetBaseModel\":\"azfotrp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,20 @@ public final class InferenceGroupsGetDeltaModelsStatusAsyncWithResponseMockTests
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DeltaModelStatusResponse response = manager.inferenceGroups()
-            .getDeltaModelsStatusAsyncWithResponse("e", "xaeiue", "k", "grmwdw",
-                new DeltaModelStatusRequest().withDeltaModels(Arrays.asList("eplpfrecri", "kabafdlsi"))
-                    .withTargetBaseModel("ob"),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        DeltaModelStatusResponse response
+            = manager.inferenceGroups()
+                .getDeltaModelsStatusAsyncWithResponse("clftpneou", "pd", "lbpnbcko", "nroaqzekggurwxf",
+                    new DeltaModelStatusRequest().withDeltaModels(Arrays.asList("ghwfiy"))
+                        .withTargetBaseModel("fegrzf"),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(2135412436, response.actualInstanceCount());
-        Assertions.assertEquals(1811280851, response.deltaModels().get("tkcqixgqxsupevt").get(0).count());
-        Assertions.assertEquals("sjsoxuuwuungdvvd",
-            response.deltaModels().get("tkcqixgqxsupevt").get(0).sampleInstanceID());
-        Assertions.assertEquals("cpquyi", response.deltaModels().get("tkcqixgqxsupevt").get(0).status());
-        Assertions.assertEquals(796898245, response.expectedInstanceCount());
-        Assertions.assertEquals("yzgrrllzxx", response.revisionId());
-        Assertions.assertEquals("mhenqn", response.targetBaseModel());
+        Assertions.assertEquals(1413440587, response.actualInstanceCount());
+        Assertions.assertEquals(178950168, response.deltaModels().get("n").get(0).count());
+        Assertions.assertEquals("zotjbvhuidlod", response.deltaModels().get("n").get(0).sampleInstanceID());
+        Assertions.assertEquals("sylkkqvm", response.deltaModels().get("n").get(0).status());
+        Assertions.assertEquals(396147727, response.expectedInstanceCount());
+        Assertions.assertEquals("hiecu", response.revisionId());
+        Assertions.assertEquals("azfotrp", response.targetBaseModel());
     }
 }

@@ -27,7 +27,8 @@ public final class ModelContainersDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.modelContainers().deleteWithResponse("nbfvkiwmqnwmytc", "ti", "gy", com.azure.core.util.Context.NONE);
+        manager.modelContainers()
+            .deleteWithResponse("roksay", "hfzzipyqt", "dhbctkgmwxzl", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -31,7 +31,7 @@ public final class JobsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"zmy\",\"computeId\":\"n\",\"displayName\":\"ajxv\",\"experimentName\":\"idlwmewrgu\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":true,\"notificationSetting\":{\"emailOn\":[\"JobFailed\",\"JobFailed\"],\"emails\":[\"up\",\"nnvmguzqmx\",\"wm\",\"kmsnmfjbefszf\"],\"webhooks\":{\"ypxcqmdeecd\":{\"webhookType\":\"Webhook\",\"eventType\":\"w\"},\"mykgrtwh\":{\"webhookType\":\"Webhook\",\"eventType\":\"jsizyhp\"},\"f\":{\"webhookType\":\"Webhook\",\"eventType\":\"dhismwjkq\"}}},\"parentJobName\":\"ygybshchxu\",\"services\":{\"foabmahuwx\":{\"endpoint\":\"zg\",\"errorMessage\":\"wq\",\"jobServiceType\":\"btkrhc\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":616596214,\"properties\":{\"sq\":\"sew\",\"xyrtec\":\"pkrrppmwozwji\",\"cee\":\"vzslttkpirku\"},\"status\":\"hsd\"},\"llfwxdouuyzpa\":{\"endpoint\":\"ddqzewrr\",\"errorMessage\":\"gso\",\"jobServiceType\":\"kdclbzq\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1743446853,\"properties\":{\"cbhezau\":\"mp\",\"upvqjkqlafiaywm\":\"uaysxh\",\"ifgyxkgqwmpgh\":\"ipuyefhhdrmg\"},\"status\":\"cxqcbnkxhcodhxsb\"},\"nnvd\":{\"endpoint\":\"ahjxgedtmzhofhkt\",\"errorMessage\":\"tacguki\",\"jobServiceType\":\"dqrfassiiilcmrg\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":98905805,\"properties\":{\"znx\":\"yxgcgbvieqonsbu\",\"xtkmknacnfzcy\":\"ivqopxuno\",\"ggzfeyexbgdfyos\":\"bhdjpagwszm\",\"acqjgedxpb\":\"wigvqgc\"},\"status\":\"w\"},\"iwxhc\":{\"endpoint\":\"aodiytxqsohehh\",\"errorMessage\":\"twvijdr\",\"jobServiceType\":\"yqvhz\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":720149400,\"properties\":{\"pmkpcmtsbandesa\":\"enozlgxqfghlosh\",\"stzvtfyqeogw\":\"vuewrljmlo\"},\"status\":\"y\"}},\"status\":\"Finalizing\",\"description\":\"qmdba\",\"properties\":{\"tbwapoy\":\"rgaos\",\"l\":\"ni\",\"gyvwxubgul\":\"dsdmacydqa\"},\"tags\":{\"pprohuabdufh\":\"kas\",\"npuaptpuwek\":\"so\"}},\"id\":\"l\",\"name\":\"c\",\"type\":\"tcljopivtwxvc\"}";
+            = "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"w\",\"computeId\":\"jsfgkwrcbgxypr\",\"displayName\":\"pywe\",\"experimentName\":\"oizabjbh\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":false,\"notificationSetting\":{\"emailOn\":[\"JobCancelled\"],\"emails\":[\"igiseeplzrerx\",\"dsom\",\"ncearkjtmpa\",\"zkjk\"],\"webhooks\":{\"uwmfdylvpyhh\":{\"webhookType\":\"Webhook\",\"eventType\":\"rwtpesfanmjmpc\"},\"qjekol\":{\"webhookType\":\"Webhook\",\"eventType\":\"yszjuijzhve\"}}},\"parentJobName\":\"lpykjpakaouyaan\",\"services\":{\"ttbetzy\":{\"endpoint\":\"cheycak\",\"errorMessage\":\"naydpdwyhad\",\"jobServiceType\":\"xaanhwuqew\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1272691619,\"properties\":{\"fkeeqofwbekpe\":\"fbk\",\"mrpdjrylfpdudx\":\"rwssw\",\"banfsqfhatqssnge\":\"igeurieh\",\"hj\":\"iyffgoh\"},\"status\":\"syhdapynpvgya\"}},\"status\":\"Starting\",\"description\":\"vnczfpoyb\",\"properties\":{\"bfkaqlpuz\":\"okajkyrhu\"},\"tags\":{\"otmge\":\"ronbqakt\",\"ccmosqvojgolm\":\"obcqvzmywvsyn\"}},\"id\":\"lz\",\"name\":\"b\",\"type\":\"uvnclntaoidjhoy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,51 +40,60 @@ public final class JobsCreateOrUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        JobBase response = manager.jobs()
-            .define("tu")
-            .withExistingWorkspace("lkztaluuupcdao", "tzvajwvxhefm")
-            .withProperties(new JobBaseProperties().withDescription("mhookefdgfexakct")
-                .withProperties(mapOf("k", "szdnccouuqxmdie", "iheh", "rsoho"))
-                .withTags(mapOf("mwdfypsypmth", "uqqmdxcwxfm", "xdldhhkdeviwp", "vszlaf"))
-                .withComponentId("ilmazg")
-                .withComputeId("orppso")
-                .withDisplayName("cvywty")
-                .withExperimentName("ln")
-                .withIdentity(new IdentityConfiguration())
-                .withIsArchived(true)
-                .withNotificationSetting(new NotificationSetting()
-                    .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_COMPLETED))
-                    .withEmails(Arrays.asList("dxsgwd"))
-                    .withWebhooks(mapOf("jjvyintgkveogel", new Webhook().withEventType("lvvvz"), "kbiibobkxiujaagf",
-                        new Webhook().withEventType("mb"), "vqegmpfzbrhaq", new Webhook().withEventType("wuuxqwmzms"))))
-                .withParentJobName("tkrsjspziiev")
-                .withServices(mapOf("thxzrvjfsmfkdh",
-                    new JobService().withEndpoint("zca")
-                        .withJobServiceType("sdeequovanag")
-                        .withNodes(new Nodes())
-                        .withPort(1417689989)
-                        .withProperties(mapOf("qkuxgyumoamqxwl", "bmbtce", "obknfpdilhzgjje", "slxytiobjledjxb",
-                            "ccypxsrhbqlbnufl", "mctbg", "xhbpyoqfbj", "zawkkz")))))
-            .create();
+        JobBase response
+            = manager.jobs()
+                .define("gswduzpdnbzqwe")
+                .withExistingWorkspace("ieymmcbiktetzv", "tcesvcsbyim")
+                .withProperties(
+                    new JobBaseProperties().withDescription("rgelgodue")
+                        .withProperties(mapOf("fr", "d"))
+                        .withTags(mapOf("tqpwqzvqtnozwp", "vkqt", "ohbzbbjxkamitgvq", "kaqracvcbrtlt"))
+                        .withComponentId("mlkzhxadm")
+                        .withComputeId("a")
+                        .withDisplayName("zrqtmhaerhxd")
+                        .withExperimentName("kbrkhjj")
+                        .withIdentity(new IdentityConfiguration())
+                        .withIsArchived(true)
+                        .withNotificationSetting(new NotificationSetting()
+                            .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_CANCELLED,
+                                EmailNotificationEnableType.JOB_COMPLETED))
+                            .withEmails(Arrays.asList("moguypmselws"))
+                            .withWebhooks(mapOf("k", new Webhook().withEventType("akddxljjzdb"))))
+                        .withParentJobName("gw")
+                        .withServices(mapOf("muaeokympwquutlz",
+                            new JobService().withEndpoint("shc")
+                                .withJobServiceType("gpqxqevt")
+                                .withNodes(new Nodes())
+                                .withPort(162699698)
+                                .withProperties(mapOf("gsa", "jkjirvj")),
+                            "vv",
+                            new JobService().withEndpoint("u")
+                                .withJobServiceType("ro")
+                                .withNodes(new Nodes())
+                                .withPort(1444334871)
+                                .withProperties(mapOf("qihgibog", "sdtqzxjbxolmehq", "lxcwrszwa", "ojupenoupc", "sk",
+                                    "esisdkcuhq")))))
+                .create();
 
-        Assertions.assertEquals("qmdba", response.properties().description());
-        Assertions.assertEquals("rgaos", response.properties().properties().get("tbwapoy"));
-        Assertions.assertEquals("kas", response.properties().tags().get("pprohuabdufh"));
-        Assertions.assertEquals("zmy", response.properties().componentId());
-        Assertions.assertEquals("n", response.properties().computeId());
-        Assertions.assertEquals("ajxv", response.properties().displayName());
-        Assertions.assertEquals("idlwmewrgu", response.properties().experimentName());
-        Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals(EmailNotificationEnableType.JOB_FAILED,
+        Assertions.assertEquals("vnczfpoyb", response.properties().description());
+        Assertions.assertEquals("okajkyrhu", response.properties().properties().get("bfkaqlpuz"));
+        Assertions.assertEquals("ronbqakt", response.properties().tags().get("otmge"));
+        Assertions.assertEquals("w", response.properties().componentId());
+        Assertions.assertEquals("jsfgkwrcbgxypr", response.properties().computeId());
+        Assertions.assertEquals("pywe", response.properties().displayName());
+        Assertions.assertEquals("oizabjbh", response.properties().experimentName());
+        Assertions.assertFalse(response.properties().isArchived());
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_CANCELLED,
             response.properties().notificationSetting().emailOn().get(0));
-        Assertions.assertEquals("up", response.properties().notificationSetting().emails().get(0));
-        Assertions.assertEquals("w",
-            response.properties().notificationSetting().webhooks().get("ypxcqmdeecd").eventType());
-        Assertions.assertEquals("ygybshchxu", response.properties().parentJobName());
-        Assertions.assertEquals("zg", response.properties().services().get("foabmahuwx").endpoint());
-        Assertions.assertEquals("btkrhc", response.properties().services().get("foabmahuwx").jobServiceType());
-        Assertions.assertEquals(616596214, response.properties().services().get("foabmahuwx").port());
-        Assertions.assertEquals("sew", response.properties().services().get("foabmahuwx").properties().get("sq"));
+        Assertions.assertEquals("igiseeplzrerx", response.properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals("rwtpesfanmjmpc",
+            response.properties().notificationSetting().webhooks().get("uwmfdylvpyhh").eventType());
+        Assertions.assertEquals("lpykjpakaouyaan", response.properties().parentJobName());
+        Assertions.assertEquals("cheycak", response.properties().services().get("ttbetzy").endpoint());
+        Assertions.assertEquals("xaanhwuqew", response.properties().services().get("ttbetzy").jobServiceType());
+        Assertions.assertEquals(1272691619, response.properties().services().get("ttbetzy").port());
+        Assertions.assertEquals("fbk",
+            response.properties().services().get("ttbetzy").properties().get("fkeeqofwbekpe"));
     }
 
     // Use "Map.of" if available

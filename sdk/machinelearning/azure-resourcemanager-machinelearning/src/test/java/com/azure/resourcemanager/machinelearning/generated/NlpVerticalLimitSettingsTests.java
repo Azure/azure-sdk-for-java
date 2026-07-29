@@ -13,21 +13,21 @@ public final class NlpVerticalLimitSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NlpVerticalLimitSettings model = BinaryData
-            .fromString("{\"maxConcurrentTrials\":15717829,\"maxTrials\":471230426,\"timeout\":\"PT117H9M50S\"}")
+            .fromString("{\"maxConcurrentTrials\":933914255,\"maxTrials\":998462436,\"timeout\":\"PT184H52M45S\"}")
             .toObject(NlpVerticalLimitSettings.class);
-        Assertions.assertEquals(15717829, model.maxConcurrentTrials());
-        Assertions.assertEquals(471230426, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT117H9M50S"), model.timeout());
+        Assertions.assertEquals(933914255, model.maxConcurrentTrials());
+        Assertions.assertEquals(998462436, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT184H52M45S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NlpVerticalLimitSettings model = new NlpVerticalLimitSettings().withMaxConcurrentTrials(15717829)
-            .withMaxTrials(471230426)
-            .withTimeout(Duration.parse("PT117H9M50S"));
+        NlpVerticalLimitSettings model = new NlpVerticalLimitSettings().withMaxConcurrentTrials(933914255)
+            .withMaxTrials(998462436)
+            .withTimeout(Duration.parse("PT184H52M45S"));
         model = BinaryData.fromObject(model).toObject(NlpVerticalLimitSettings.class);
-        Assertions.assertEquals(15717829, model.maxConcurrentTrials());
-        Assertions.assertEquals(471230426, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT117H9M50S"), model.timeout());
+        Assertions.assertEquals(933914255, model.maxConcurrentTrials());
+        Assertions.assertEquals(998462436, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT184H52M45S"), model.timeout());
     }
 }

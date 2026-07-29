@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiBlocklistPropertiesBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiBlocklistPropertiesBasicResourceInner model = BinaryData
-            .fromString(
-                "{\"properties\":{\"description\":\"zkwh\"},\"id\":\"sq\",\"name\":\"haefefvvk\",\"type\":\"dbnmcv\"}")
+        RaiBlocklistPropertiesBasicResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"i\"},\"id\":\"qbvxqtolpwbopv\",\"name\":\"cbtzaprjxcon\",\"type\":\"ick\"}")
             .toObject(RaiBlocklistPropertiesBasicResourceInner.class);
-        Assertions.assertEquals("zkwh", model.properties().description());
+        Assertions.assertEquals("i", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistPropertiesBasicResourceInner model = new RaiBlocklistPropertiesBasicResourceInner()
-            .withProperties(new RaiBlocklistProperties().withDescription("zkwh"));
+            .withProperties(new RaiBlocklistProperties().withDescription("i"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistPropertiesBasicResourceInner.class);
-        Assertions.assertEquals("zkwh", model.properties().description());
+        Assertions.assertEquals("i", model.properties().description());
     }
 }

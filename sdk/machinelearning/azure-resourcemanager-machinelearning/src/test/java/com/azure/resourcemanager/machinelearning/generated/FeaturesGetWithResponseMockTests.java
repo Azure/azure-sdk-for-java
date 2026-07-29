@@ -22,7 +22,7 @@ public final class FeaturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"Binary\",\"featureName\":\"tclveqdqtzsh\",\"description\":\"wjxry\",\"properties\":{\"wbd\":\"sghhcmqdlk\",\"ulmka\":\"kbv\",\"wcxxccf\":\"dnxbssatpialrq\",\"iyvrexitpz\":\"fvoz\"},\"tags\":{\"awbncljkhmsobua\":\"nosclujywwumbus\",\"t\":\"okiclrmmudvo\",\"ttlizdoys\":\"scidkwzn\"}},\"id\":\"gbogdjwuybcppdv\",\"name\":\"o\",\"type\":\"kvkbpmkupb\"}";
+            = "{\"properties\":{\"dataType\":\"Binary\",\"featureName\":\"vruryyq\",\"description\":\"aqjhokhijghpv\",\"properties\":{\"ikda\":\"x\"},\"tags\":{\"irnxtpzdgy\":\"yarqthbjblhefq\",\"u\":\"lwuiklbjlnbx\",\"hviahoke\":\"sddplgj\"}},\"id\":\"madyoctmdauoscc\",\"name\":\"wbestntoeteu\",\"type\":\"gdgbzftsbpef\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class FeaturesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Feature response = manager.features()
-            .getWithResponse("zuwwzc", "igbjbelnqalbso", "xajsiueai", "qjb", "zbwxuypcuri",
+            .getWithResponse("m", "sfruenqfnzw", "ppnularnupprd", "fepsoz", "zxoyanlhjeuewa",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wjxry", response.properties().description());
-        Assertions.assertEquals("sghhcmqdlk", response.properties().properties().get("wbd"));
-        Assertions.assertEquals("nosclujywwumbus", response.properties().tags().get("awbncljkhmsobua"));
+        Assertions.assertEquals("aqjhokhijghpv", response.properties().description());
+        Assertions.assertEquals("x", response.properties().properties().get("ikda"));
+        Assertions.assertEquals("yarqthbjblhefq", response.properties().tags().get("irnxtpzdgy"));
         Assertions.assertEquals(FeatureDataType.BINARY, response.properties().dataType());
-        Assertions.assertEquals("tclveqdqtzsh", response.properties().featureName());
+        Assertions.assertEquals("vruryyq", response.properties().featureName());
     }
 }

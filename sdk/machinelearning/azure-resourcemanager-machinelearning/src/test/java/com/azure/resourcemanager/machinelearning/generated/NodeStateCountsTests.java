@@ -11,7 +11,7 @@ public final class NodeStateCountsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeStateCounts model = BinaryData.fromString(
-            "{\"idleNodeCount\":1970809898,\"runningNodeCount\":1654938944,\"preparingNodeCount\":195233131,\"unusableNodeCount\":2114305274,\"leavingNodeCount\":1711262872,\"preemptedNodeCount\":1465968202}")
+            "{\"idleNodeCount\":510356749,\"runningNodeCount\":1597456969,\"preparingNodeCount\":1424337121,\"unusableNodeCount\":1054708312,\"leavingNodeCount\":569782692,\"preemptedNodeCount\":2031183465}")
             .toObject(NodeStateCounts.class);
     }
 }

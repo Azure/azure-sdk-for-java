@@ -12,14 +12,14 @@ public final class UsageAndQuotaDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageAndQuotaDetailsInner model = BinaryData.fromString(
-            "{\"modelCollection\":\"b\",\"quota\":820474150750382708,\"usageDetails\":[{\"collectionQuotaUsage\":2774829349106216787,\"deploymentName\":\"ncoqxtvytzq\",\"resourceGroup\":\"ldjvzmxy\",\"usage\":1994826426981889746,\"workspaceName\":\"tjvcszbdbr\"},{\"collectionQuotaUsage\":2715654813664756569,\"deploymentName\":\"tyolacbibt\",\"resourceGroup\":\"iecup\",\"usage\":6676206532374764182,\"workspaceName\":\"okrlnrpeylfiiuld\"},{\"collectionQuotaUsage\":5108611953185344776,\"deploymentName\":\"nhcx\",\"resourceGroup\":\"wvunknsgvx\",\"usage\":4736734738144059666,\"workspaceName\":\"atrtcqyfjvifbmo\"},{\"collectionQuotaUsage\":4884948259037745861,\"deploymentName\":\"yoytrcoufkqmbhuk\",\"resourceGroup\":\"pknvkivoz\",\"usage\":1634997084259945031,\"workspaceName\":\"meo\"}]}")
+            "{\"modelCollection\":\"yruxrzhhlh\",\"quota\":8469166166344665505,\"usageDetails\":[{\"collectionQuotaUsage\":4268874981907082145,\"deploymentName\":\"crvtp\",\"resourceGroup\":\"oromppzsauqmeu\",\"usage\":9052588958402861147,\"workspaceName\":\"mpuai\"},{\"collectionQuotaUsage\":7939796649066182028,\"deploymentName\":\"q\",\"resourceGroup\":\"y\",\"usage\":8197938829479788847,\"workspaceName\":\"wiccurncfu\"},{\"collectionQuotaUsage\":275402021027019029,\"deploymentName\":\"ixhqjqhgqw\",\"resourceGroup\":\"xiwtwf\",\"usage\":9100257386185676140,\"workspaceName\":\"lvemnnzugabk\"},{\"collectionQuotaUsage\":6874867413044147890,\"deploymentName\":\"w\",\"resourceGroup\":\"hlmtsnvonvb\",\"usage\":6664136414873077224,\"workspaceName\":\"dopnsep\"}]}")
             .toObject(UsageAndQuotaDetailsInner.class);
-        Assertions.assertEquals("b", model.modelCollection());
-        Assertions.assertEquals(820474150750382708L, model.quota());
-        Assertions.assertEquals(2774829349106216787L, model.usageDetails().get(0).collectionQuotaUsage());
-        Assertions.assertEquals("ncoqxtvytzq", model.usageDetails().get(0).deploymentName());
-        Assertions.assertEquals("ldjvzmxy", model.usageDetails().get(0).resourceGroup());
-        Assertions.assertEquals(1994826426981889746L, model.usageDetails().get(0).usage());
-        Assertions.assertEquals("tjvcszbdbr", model.usageDetails().get(0).workspaceName());
+        Assertions.assertEquals("yruxrzhhlh", model.modelCollection());
+        Assertions.assertEquals(8469166166344665505L, model.quota());
+        Assertions.assertEquals(4268874981907082145L, model.usageDetails().get(0).collectionQuotaUsage());
+        Assertions.assertEquals("crvtp", model.usageDetails().get(0).deploymentName());
+        Assertions.assertEquals("oromppzsauqmeu", model.usageDetails().get(0).resourceGroup());
+        Assertions.assertEquals(9052588958402861147L, model.usageDetails().get(0).usage());
+        Assertions.assertEquals("mpuai", model.usageDetails().get(0).workspaceName());
     }
 }

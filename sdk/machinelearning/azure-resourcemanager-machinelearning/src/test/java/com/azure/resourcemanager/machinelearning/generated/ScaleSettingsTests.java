@@ -13,21 +13,21 @@ public final class ScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleSettings model = BinaryData.fromString(
-            "{\"maxNodeCount\":1349953913,\"minNodeCount\":1806728694,\"nodeIdleTimeBeforeScaleDown\":\"PT47H20M14S\"}")
+            "{\"maxNodeCount\":189964599,\"minNodeCount\":1820374777,\"nodeIdleTimeBeforeScaleDown\":\"PT46H29M52S\"}")
             .toObject(ScaleSettings.class);
-        Assertions.assertEquals(1349953913, model.maxNodeCount());
-        Assertions.assertEquals(1806728694, model.minNodeCount());
-        Assertions.assertEquals(Duration.parse("PT47H20M14S"), model.nodeIdleTimeBeforeScaleDown());
+        Assertions.assertEquals(189964599, model.maxNodeCount());
+        Assertions.assertEquals(1820374777, model.minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT46H29M52S"), model.nodeIdleTimeBeforeScaleDown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScaleSettings model = new ScaleSettings().withMaxNodeCount(1349953913)
-            .withMinNodeCount(1806728694)
-            .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT47H20M14S"));
+        ScaleSettings model = new ScaleSettings().withMaxNodeCount(189964599)
+            .withMinNodeCount(1820374777)
+            .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT46H29M52S"));
         model = BinaryData.fromObject(model).toObject(ScaleSettings.class);
-        Assertions.assertEquals(1349953913, model.maxNodeCount());
-        Assertions.assertEquals(1806728694, model.minNodeCount());
-        Assertions.assertEquals(Duration.parse("PT47H20M14S"), model.nodeIdleTimeBeforeScaleDown());
+        Assertions.assertEquals(189964599, model.maxNodeCount());
+        Assertions.assertEquals(1820374777, model.minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT46H29M52S"), model.nodeIdleTimeBeforeScaleDown());
     }
 }

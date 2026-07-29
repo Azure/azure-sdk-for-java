@@ -12,22 +12,21 @@ public final class AzureOpenAiHyperParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureOpenAiHyperParameters model = BinaryData
-            .fromString(
-                "{\"batchSize\":1423889561,\"learningRateMultiplier\":83.37863585914364,\"nEpochs\":1141326175}")
+            .fromString("{\"batchSize\":134792663,\"learningRateMultiplier\":44.308621421281394,\"nEpochs\":960769540}")
             .toObject(AzureOpenAiHyperParameters.class);
-        Assertions.assertEquals(1423889561, model.batchSize());
-        Assertions.assertEquals(83.37863585914364D, model.learningRateMultiplier());
-        Assertions.assertEquals(1141326175, model.nEpochs());
+        Assertions.assertEquals(134792663, model.batchSize());
+        Assertions.assertEquals(44.308621421281394D, model.learningRateMultiplier());
+        Assertions.assertEquals(960769540, model.nEpochs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureOpenAiHyperParameters model = new AzureOpenAiHyperParameters().withBatchSize(1423889561)
-            .withLearningRateMultiplier(83.37863585914364D)
-            .withNEpochs(1141326175);
+        AzureOpenAiHyperParameters model = new AzureOpenAiHyperParameters().withBatchSize(134792663)
+            .withLearningRateMultiplier(44.308621421281394D)
+            .withNEpochs(960769540);
         model = BinaryData.fromObject(model).toObject(AzureOpenAiHyperParameters.class);
-        Assertions.assertEquals(1423889561, model.batchSize());
-        Assertions.assertEquals(83.37863585914364D, model.learningRateMultiplier());
-        Assertions.assertEquals(1141326175, model.nEpochs());
+        Assertions.assertEquals(134792663, model.batchSize());
+        Assertions.assertEquals(44.308621421281394D, model.learningRateMultiplier());
+        Assertions.assertEquals(960769540, model.nEpochs());
     }
 }

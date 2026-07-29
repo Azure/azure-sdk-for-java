@@ -29,449 +29,367 @@ public final class ImageInstanceSegmentationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageInstanceSegmentation model = BinaryData.fromString(
-            "{\"taskType\":\"ImageInstanceSegmentation\",\"modelSettings\":{\"boxDetectionsPerImage\":1048824603,\"boxScoreThreshold\":0.2884703102192798,\"imageSize\":1257209908,\"maxSize\":1819948805,\"minSize\":678358747,\"modelSize\":\"Medium\",\"multiScale\":true,\"nmsIouThreshold\":53.75663912809028,\"tileGridSize\":\"hddwvmq\",\"tileOverlapRatio\":88.3875406251191,\"tilePredictionsNmsThreshold\":75.86010684965314,\"validationIouThreshold\":72.51763005833334,\"validationMetricType\":\"None\",\"advancedSettings\":\"zxbyp\",\"amsGradient\":true,\"augmentations\":\"aix\",\"beta1\":68.96778772052667,\"beta2\":29.150347392984244,\"checkpointFrequency\":718822712,\"checkpointModel\":{\"jobInputType\":\"mlflow_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"wqikwepwogggic\",\"description\":\"xhtfmcqbsudzpgch\"},\"checkpointRunId\":\"gfqumjdjxhzghgo\",\"distributed\":true,\"earlyStopping\":true,\"earlyStoppingDelay\":1115788732,\"earlyStoppingPatience\":692917453,\"enableOnnxNormalization\":true,\"evaluationFrequency\":1079705023,\"gradientAccumulationStep\":310773327,\"layersToFreeze\":2084268912,\"learningRate\":36.33336121041546,\"learningRateScheduler\":\"None\",\"modelName\":\"u\",\"momentum\":41.29688743508849,\"nesterov\":false,\"numberOfEpochs\":166266985,\"numberOfWorkers\":1582360616,\"optimizer\":\"Sgd\",\"randomSeed\":523175956,\"stepLRGamma\":65.56632967981633,\"stepLRStepSize\":2129348995,\"trainingBatchSize\":2096198255,\"validationBatchSize\":976273842,\"warmupCosineLRCycles\":27.832768944817033,\"warmupCosineLRWarmupEpochs\":1858184868,\"weightDecay\":22.774498846249447},\"searchSpace\":[{\"boxDetectionsPerImage\":\"xga\",\"boxScoreThreshold\":\"dtkwppth\",\"imageSize\":\"dprmimrljdpoqf\",\"maxSize\":\"emhkftbaewht\",\"minSize\":\"loamfmxtllfltym\",\"modelSize\":\"nrrfijhggabqb\",\"multiScale\":\"mkli\",\"nmsIouThreshold\":\"rwdvffhsdpzou\",\"tileGridSize\":\"tqrxqwqnjxrdf\",\"tileOverlapRatio\":\"t\",\"tilePredictionsNmsThreshold\":\"lygtavczcxdfweap\",\"validationIouThreshold\":\"mlx\",\"validationMetricType\":\"jphrasp\",\"amsGradient\":\"leimixlmdbgicehf\",\"augmentations\":\"mdrjuqbpxt\",\"beta1\":\"lj\",\"beta2\":\"znpaxwfqtyyqiprc\",\"distributed\":\"ungbsoljc\",\"earlyStopping\":\"iigz\",\"earlyStoppingDelay\":\"uck\",\"earlyStoppingPatience\":\"dsk\",\"enableOnnxNormalization\":\"tiiqqcqikclsmaln\",\"evaluationFrequency\":\"woykdnonaaxwm\",\"gradientAccumulationStep\":\"ru\",\"layersToFreeze\":\"qcwnynl\",\"learningRate\":\"iqbcbgv\",\"learningRateScheduler\":\"t\",\"modelName\":\"rtoxadhxuvjhxm\",\"momentum\":\"qstjc\",\"nesterov\":\"twmlg\",\"numberOfEpochs\":\"vnpvvd\",\"numberOfWorkers\":\"jnaqyq\",\"optimizer\":\"slz\",\"randomSeed\":\"cdsvmwbitek\",\"stepLRGamma\":\"fobvfiybxqich\",\"stepLRStepSize\":\"bfzdqekiv\",\"trainingBatchSize\":\"p\",\"validationBatchSize\":\"vdizulrqtbh\",\"warmupCosineLRCycles\":\"ezp\",\"warmupCosineLRWarmupEpochs\":\"pryfmxmdutzfkgi\",\"weightDecay\":\"oudccgndjg\"},{\"boxDetectionsPerImage\":\"r\",\"boxScoreThreshold\":\"gqqyeqfcbuulpyuf\",\"imageSize\":\"jfshtujcyo\",\"maxSize\":\"gimwdcsklkqnqv\",\"minSize\":\"xn\",\"modelSize\":\"zmec\",\"multiScale\":\"rzwimbzayspz\",\"nmsIouThreshold\":\"i\",\"tileGridSize\":\"vfph\",\"tileOverlapRatio\":\"zxplgtpvdvatlz\",\"tilePredictionsNmsThreshold\":\"schnzrsbkkzov\",\"validationIouThreshold\":\"dmnfmfws\",\"validationMetricType\":\"fo\",\"amsGradient\":\"worimmovzwdehk\",\"augmentations\":\"vh\",\"beta1\":\"ovanyrva\",\"beta2\":\"tgelgwewikfy\",\"distributed\":\"a\",\"earlyStopping\":\"mymnqoqjumovsf\",\"earlyStoppingDelay\":\"bvzo\",\"earlyStoppingPatience\":\"x\",\"enableOnnxNormalization\":\"m\",\"evaluationFrequency\":\"mcwoxfaxd\",\"gradientAccumulationStep\":\"qi\",\"layersToFreeze\":\"satroia\",\"learningRate\":\"sugmocpcjyc\",\"learningRateScheduler\":\"elrgttwfldsiuo\",\"modelName\":\"nikcedpk\",\"momentum\":\"iwm\",\"nesterov\":\"mqr\",\"numberOfEpochs\":\"zqv\",\"numberOfWorkers\":\"czyayubtgmbxi\",\"optimizer\":\"hragpxmib\",\"randomSeed\":\"nupoyryefqmwovyz\",\"stepLRGamma\":\"lnomfpb\",\"stepLRStepSize\":\"eegvyieztkutnj\",\"trainingBatchSize\":\"l\",\"validationBatchSize\":\"krehyhtmj\",\"warmupCosineLRCycles\":\"uif\",\"warmupCosineLRWarmupEpochs\":\"lxfary\",\"weightDecay\":\"jlgdez\"},{\"boxDetectionsPerImage\":\"qwahoy\",\"boxScoreThreshold\":\"axqvjweiwtczkddn\",\"imageSize\":\"vbooqbmdqrxy\",\"maxSize\":\"ae\",\"minSize\":\"cflwtjdtlr\",\"modelSize\":\"fooy\",\"multiScale\":\"uxdtzcq\",\"nmsIouThreshold\":\"sdudgcoz\",\"tileGridSize\":\"meh\",\"tileOverlapRatio\":\"antolamlbijuxkq\",\"tilePredictionsNmsThreshold\":\"czipvwdtgck\",\"validationIouThreshold\":\"qiqdlratrkwxoau\",\"validationMetricType\":\"suykznhrfgsl\",\"amsGradient\":\"hpryjfzihuioa\",\"augmentations\":\"cpajtfe\",\"beta1\":\"kbdgddkrh\",\"beta2\":\"cxbeuuqutkzwtjww\",\"distributed\":\"zytijcx\",\"earlyStopping\":\"ondegjdydhqkkk\",\"earlyStoppingDelay\":\"uckcatuqbhpow\",\"earlyStoppingPatience\":\"xtpzdlyse\",\"enableOnnxNormalization\":\"toakatprytgrhz\",\"evaluationFrequency\":\"fdpfawrptvcsht\",\"gradientAccumulationStep\":\"tzc\",\"layersToFreeze\":\"bqgdird\",\"learningRate\":\"m\",\"learningRateScheduler\":\"jgcf\",\"modelName\":\"xtbw\",\"momentum\":\"irmu\",\"nesterov\":\"gftt\",\"numberOfEpochs\":\"ofgeoagf\",\"numberOfWorkers\":\"ftnxodwxmdajwiy\",\"optimizer\":\"gsevmdm\",\"randomSeed\":\"nlrstgf\",\"stepLRGamma\":\"ljdncidtjvamy\",\"stepLRStepSize\":\"n\",\"trainingBatchSize\":\"gcdogcvucgy\",\"validationBatchSize\":\"xuwhttn\",\"warmupCosineLRCycles\":\"s\",\"warmupCosineLRWarmupEpochs\":\"mebgszplu\",\"weightDecay\":\"ekpdzzmssg\"},{\"boxDetectionsPerImage\":\"vokyejidbdqzsqun\",\"boxScoreThreshold\":\"wztlvvwsnmrkky\",\"imageSize\":\"repwpwfkcaux\",\"maxSize\":\"avcpfpdofuckclbt\",\"minSize\":\"ue\",\"modelSize\":\"ol\",\"multiScale\":\"ilfngo\",\"nmsIouThreshold\":\"sqeb\",\"tileGridSize\":\"xjxhfxfj\",\"tileOverlapRatio\":\"dkktpmbmxbmbrwgz\",\"tilePredictionsNmsThreshold\":\"ljbkhxsdplau\",\"validationIouThreshold\":\"dmhweqjfyxydgto\",\"validationMetricType\":\"qbvwglgw\",\"amsGradient\":\"vxakglh\",\"augmentations\":\"esrfgamqiydvx\",\"beta1\":\"d\",\"beta2\":\"hgoqgsoyqyxyj\",\"distributed\":\"b\",\"earlyStopping\":\"bispglqjoxtdah\",\"earlyStoppingDelay\":\"aoovtyjzti\",\"earlyStoppingPatience\":\"wjlofzekfsrm\",\"enableOnnxNormalization\":\"klajvcfocz\",\"evaluationFrequency\":\"pejovt\",\"gradientAccumulationStep\":\"xnhwh\",\"layersToFreeze\":\"oyrzaaoe\",\"learningRate\":\"pmjen\",\"learningRateScheduler\":\"eat\",\"modelName\":\"xxcrxoxdjxld\",\"momentum\":\"ryyinz\",\"nesterov\":\"olrndwdb\",\"numberOfEpochs\":\"vzaledoyqxlunk\",\"numberOfWorkers\":\"hmcxqqxmyzkl\",\"optimizer\":\"a\",\"randomSeed\":\"ohrvmz\",\"stepLRGamma\":\"razadivznllaslks\",\"stepLRStepSize\":\"jqjpv\",\"trainingBatchSize\":\"ihxjtgzgtai\",\"validationBatchSize\":\"b\",\"warmupCosineLRCycles\":\"roigbsfsgsaenwld\",\"warmupCosineLRWarmupEpochs\":\"hljqlxsp\",\"weightDecay\":\"jc\"}],\"limitSettings\":{\"maxConcurrentTrials\":153451931,\"maxTrials\":698214399,\"timeout\":\"PT224H14M52S\"},\"sweepSettings\":{\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1788525665,\"evaluationInterval\":162424717},\"samplingAlgorithm\":\"Random\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"EvalDownload\",\"uri\":\"gsdaluyckh\",\"description\":\"rbhseuerbgpxebjl\"},\"validationDataSize\":87.50039173567666,\"primaryMetric\":\"MeanAveragePrecision\",\"logVerbosity\":\"Error\",\"targetColumnName\":\"axdtpryjmgt\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"wou\",\"description\":\"yms\"}}")
+            "{\"taskType\":\"ImageInstanceSegmentation\",\"modelSettings\":{\"boxDetectionsPerImage\":887260516,\"boxScoreThreshold\":76.66363471145104,\"imageSize\":1149190984,\"maxSize\":259637389,\"minSize\":682120608,\"modelSize\":\"Large\",\"multiScale\":true,\"nmsIouThreshold\":47.86652197612106,\"tileGridSize\":\"obvfiybx\",\"tileOverlapRatio\":23.962400838257658,\"tilePredictionsNmsThreshold\":75.28211259931373,\"validationIouThreshold\":84.34960808929361,\"validationMetricType\":\"CocoVoc\",\"advancedSettings\":\"ivycpzcvdi\",\"amsGradient\":true,\"augmentations\":\"qtbhtr\",\"beta1\":14.903605246794505,\"beta2\":91.5593139339048,\"checkpointFrequency\":75969708,\"checkpointModel\":{\"jobInputType\":\"mlflow_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"dutzfkg\",\"description\":\"no\"},\"checkpointRunId\":\"ccgndjgdprig\",\"distributed\":true,\"earlyStopping\":true,\"earlyStoppingDelay\":22794596,\"earlyStoppingPatience\":595135013,\"enableOnnxNormalization\":false,\"evaluationFrequency\":1998233015,\"gradientAccumulationStep\":643163117,\"layersToFreeze\":370390186,\"learningRate\":60.674506685245724,\"learningRateScheduler\":\"None\",\"modelName\":\"ujcyohigimwdc\",\"momentum\":17.402094347732167,\"nesterov\":true,\"numberOfEpochs\":968713520,\"numberOfWorkers\":1511718281,\"optimizer\":\"Adam\",\"randomSeed\":1475754097,\"stepLRGamma\":62.43292287921462,\"stepLRStepSize\":1169362849,\"trainingBatchSize\":998584052,\"validationBatchSize\":937014234,\"warmupCosineLRCycles\":82.81578066893066,\"warmupCosineLRWarmupEpochs\":493160850,\"weightDecay\":85.2231290647608},\"searchSpace\":[{\"boxDetectionsPerImage\":\"i\",\"boxScoreThreshold\":\"vfph\",\"imageSize\":\"zxplgtpvdvatlz\",\"maxSize\":\"schnzrsbkkzov\",\"minSize\":\"dmnfmfws\",\"modelSize\":\"fo\",\"multiScale\":\"worimmovzwdehk\",\"nmsIouThreshold\":\"vh\",\"tileGridSize\":\"ovanyrva\",\"tileOverlapRatio\":\"tgelgwewikfy\",\"tilePredictionsNmsThreshold\":\"a\",\"validationIouThreshold\":\"mymnqoqjumovsf\",\"validationMetricType\":\"bvzo\",\"amsGradient\":\"x\",\"augmentations\":\"m\",\"beta1\":\"mcwoxfaxd\",\"beta2\":\"qi\",\"distributed\":\"satroia\",\"earlyStopping\":\"sugmocpcjyc\",\"earlyStoppingDelay\":\"elrgttwfldsiuo\",\"earlyStoppingPatience\":\"nikcedpk\",\"enableOnnxNormalization\":\"iwm\",\"evaluationFrequency\":\"mqr\",\"gradientAccumulationStep\":\"zqv\",\"layersToFreeze\":\"czyayubtgmbxi\",\"learningRate\":\"hragpxmib\",\"learningRateScheduler\":\"nupoyryefqmwovyz\",\"modelName\":\"lnomfpb\",\"momentum\":\"eegvyieztkutnj\",\"nesterov\":\"l\",\"numberOfEpochs\":\"krehyhtmj\",\"numberOfWorkers\":\"uif\",\"optimizer\":\"lxfary\",\"randomSeed\":\"jlgdez\",\"stepLRGamma\":\"qwahoy\",\"stepLRStepSize\":\"axqvjweiwtczkddn\",\"trainingBatchSize\":\"vbooqbmdqrxy\",\"validationBatchSize\":\"ae\",\"warmupCosineLRCycles\":\"cflwtjdtlr\",\"warmupCosineLRWarmupEpochs\":\"fooy\",\"weightDecay\":\"uxdtzcq\"},{\"boxDetectionsPerImage\":\"sdudgcoz\",\"boxScoreThreshold\":\"meh\",\"imageSize\":\"antolamlbijuxkq\",\"maxSize\":\"czipvwdtgck\",\"minSize\":\"qiqdlratrkwxoau\",\"modelSize\":\"suykznhrfgsl\",\"multiScale\":\"hpryjfzihuioa\",\"nmsIouThreshold\":\"cpajtfe\",\"tileGridSize\":\"kbdgddkrh\",\"tileOverlapRatio\":\"cxbeuuqutkzwtjww\",\"tilePredictionsNmsThreshold\":\"zytijcx\",\"validationIouThreshold\":\"ondegjdydhqkkk\",\"validationMetricType\":\"uckcatuqbhpow\",\"amsGradient\":\"xtpzdlyse\",\"augmentations\":\"toakatprytgrhz\",\"beta1\":\"fdpfawrptvcsht\",\"beta2\":\"tzc\",\"distributed\":\"bqgdird\",\"earlyStopping\":\"m\",\"earlyStoppingDelay\":\"jgcf\",\"earlyStoppingPatience\":\"xtbw\",\"enableOnnxNormalization\":\"irmu\",\"evaluationFrequency\":\"gftt\",\"gradientAccumulationStep\":\"ofgeoagf\",\"layersToFreeze\":\"ftnxodwxmdajwiy\",\"learningRate\":\"gsevmdm\",\"learningRateScheduler\":\"nlrstgf\",\"modelName\":\"ljdncidtjvamy\",\"momentum\":\"n\",\"nesterov\":\"gcdogcvucgy\",\"numberOfEpochs\":\"xuwhttn\",\"numberOfWorkers\":\"s\",\"optimizer\":\"mebgszplu\",\"randomSeed\":\"ekpdzzmssg\",\"stepLRGamma\":\"vokyejidbdqzsqun\",\"stepLRStepSize\":\"wztlvvwsnmrkky\",\"trainingBatchSize\":\"repwpwfkcaux\",\"validationBatchSize\":\"avcpfpdofuckclbt\",\"warmupCosineLRCycles\":\"ue\",\"warmupCosineLRWarmupEpochs\":\"ol\",\"weightDecay\":\"ilfngo\"}],\"limitSettings\":{\"maxConcurrentTrials\":875073899,\"maxTrials\":1778622177,\"timeout\":\"PT165H53M59S\"},\"sweepSettings\":{\"earlyTermination\":{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1067377422,\"evaluationInterval\":1488992039},\"samplingAlgorithm\":\"Grid\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"pdkktpmbmxbmbr\",\"description\":\"zzxljbkhxsdpla\"},\"validationDataSize\":0.07296190898538057,\"primaryMetric\":\"MeanAveragePrecision\",\"logVerbosity\":\"Info\",\"targetColumnName\":\"jf\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"dgtokvqbvwg\",\"description\":\"w\"}}")
             .toObject(ImageInstanceSegmentation.class);
-        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
-        Assertions.assertEquals("axdtpryjmgt", model.targetColumnName());
-        Assertions.assertEquals("yms", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
-        Assertions.assertEquals("wou", model.trainingData().uri());
-        Assertions.assertEquals("zxbyp", model.modelSettings().advancedSettings());
+        Assertions.assertEquals(LogVerbosity.INFO, model.logVerbosity());
+        Assertions.assertEquals("jf", model.targetColumnName());
+        Assertions.assertEquals("w", model.trainingData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("dgtokvqbvwg", model.trainingData().uri());
+        Assertions.assertEquals("ivycpzcvdi", model.modelSettings().advancedSettings());
         Assertions.assertTrue(model.modelSettings().amsGradient());
-        Assertions.assertEquals("aix", model.modelSettings().augmentations());
-        Assertions.assertEquals(68.96778772052667D, model.modelSettings().beta1());
-        Assertions.assertEquals(29.150347392984244D, model.modelSettings().beta2());
-        Assertions.assertEquals(718822712, model.modelSettings().checkpointFrequency());
-        Assertions.assertEquals("xhtfmcqbsudzpgch", model.modelSettings().checkpointModel().description());
+        Assertions.assertEquals("qtbhtr", model.modelSettings().augmentations());
+        Assertions.assertEquals(14.903605246794505D, model.modelSettings().beta1());
+        Assertions.assertEquals(91.5593139339048D, model.modelSettings().beta2());
+        Assertions.assertEquals(75969708, model.modelSettings().checkpointFrequency());
+        Assertions.assertEquals("no", model.modelSettings().checkpointModel().description());
         Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.modelSettings().checkpointModel().mode());
-        Assertions.assertEquals("wqikwepwogggic", model.modelSettings().checkpointModel().uri());
-        Assertions.assertEquals("gfqumjdjxhzghgo", model.modelSettings().checkpointRunId());
+        Assertions.assertEquals("dutzfkg", model.modelSettings().checkpointModel().uri());
+        Assertions.assertEquals("ccgndjgdprig", model.modelSettings().checkpointRunId());
         Assertions.assertTrue(model.modelSettings().distributed());
         Assertions.assertTrue(model.modelSettings().earlyStopping());
-        Assertions.assertEquals(1115788732, model.modelSettings().earlyStoppingDelay());
-        Assertions.assertEquals(692917453, model.modelSettings().earlyStoppingPatience());
-        Assertions.assertTrue(model.modelSettings().enableOnnxNormalization());
-        Assertions.assertEquals(1079705023, model.modelSettings().evaluationFrequency());
-        Assertions.assertEquals(310773327, model.modelSettings().gradientAccumulationStep());
-        Assertions.assertEquals(2084268912, model.modelSettings().layersToFreeze());
-        Assertions.assertEquals(36.33336121041546D, model.modelSettings().learningRate());
+        Assertions.assertEquals(22794596, model.modelSettings().earlyStoppingDelay());
+        Assertions.assertEquals(595135013, model.modelSettings().earlyStoppingPatience());
+        Assertions.assertFalse(model.modelSettings().enableOnnxNormalization());
+        Assertions.assertEquals(1998233015, model.modelSettings().evaluationFrequency());
+        Assertions.assertEquals(643163117, model.modelSettings().gradientAccumulationStep());
+        Assertions.assertEquals(370390186, model.modelSettings().layersToFreeze());
+        Assertions.assertEquals(60.674506685245724D, model.modelSettings().learningRate());
         Assertions.assertEquals(LearningRateScheduler.NONE, model.modelSettings().learningRateScheduler());
-        Assertions.assertEquals("u", model.modelSettings().modelName());
-        Assertions.assertEquals(41.29688743508849D, model.modelSettings().momentum());
-        Assertions.assertFalse(model.modelSettings().nesterov());
-        Assertions.assertEquals(166266985, model.modelSettings().numberOfEpochs());
-        Assertions.assertEquals(1582360616, model.modelSettings().numberOfWorkers());
-        Assertions.assertEquals(StochasticOptimizer.SGD, model.modelSettings().optimizer());
-        Assertions.assertEquals(523175956, model.modelSettings().randomSeed());
-        Assertions.assertEquals(65.56632967981633D, model.modelSettings().stepLRGamma());
-        Assertions.assertEquals(2129348995, model.modelSettings().stepLRStepSize());
-        Assertions.assertEquals(2096198255, model.modelSettings().trainingBatchSize());
-        Assertions.assertEquals(976273842, model.modelSettings().validationBatchSize());
-        Assertions.assertEquals(27.832768944817033D, model.modelSettings().warmupCosineLRCycles());
-        Assertions.assertEquals(1858184868, model.modelSettings().warmupCosineLRWarmupEpochs());
-        Assertions.assertEquals(22.774498846249447D, model.modelSettings().weightDecay());
-        Assertions.assertEquals(1048824603, model.modelSettings().boxDetectionsPerImage());
-        Assertions.assertEquals(0.2884703102192798D, model.modelSettings().boxScoreThreshold());
-        Assertions.assertEquals(1257209908, model.modelSettings().imageSize());
-        Assertions.assertEquals(1819948805, model.modelSettings().maxSize());
-        Assertions.assertEquals(678358747, model.modelSettings().minSize());
-        Assertions.assertEquals(ModelSize.MEDIUM, model.modelSettings().modelSize());
+        Assertions.assertEquals("ujcyohigimwdc", model.modelSettings().modelName());
+        Assertions.assertEquals(17.402094347732167D, model.modelSettings().momentum());
+        Assertions.assertTrue(model.modelSettings().nesterov());
+        Assertions.assertEquals(968713520, model.modelSettings().numberOfEpochs());
+        Assertions.assertEquals(1511718281, model.modelSettings().numberOfWorkers());
+        Assertions.assertEquals(StochasticOptimizer.ADAM, model.modelSettings().optimizer());
+        Assertions.assertEquals(1475754097, model.modelSettings().randomSeed());
+        Assertions.assertEquals(62.43292287921462D, model.modelSettings().stepLRGamma());
+        Assertions.assertEquals(1169362849, model.modelSettings().stepLRStepSize());
+        Assertions.assertEquals(998584052, model.modelSettings().trainingBatchSize());
+        Assertions.assertEquals(937014234, model.modelSettings().validationBatchSize());
+        Assertions.assertEquals(82.81578066893066D, model.modelSettings().warmupCosineLRCycles());
+        Assertions.assertEquals(493160850, model.modelSettings().warmupCosineLRWarmupEpochs());
+        Assertions.assertEquals(85.2231290647608D, model.modelSettings().weightDecay());
+        Assertions.assertEquals(887260516, model.modelSettings().boxDetectionsPerImage());
+        Assertions.assertEquals(76.66363471145104D, model.modelSettings().boxScoreThreshold());
+        Assertions.assertEquals(1149190984, model.modelSettings().imageSize());
+        Assertions.assertEquals(259637389, model.modelSettings().maxSize());
+        Assertions.assertEquals(682120608, model.modelSettings().minSize());
+        Assertions.assertEquals(ModelSize.LARGE, model.modelSettings().modelSize());
         Assertions.assertTrue(model.modelSettings().multiScale());
-        Assertions.assertEquals(53.75663912809028D, model.modelSettings().nmsIouThreshold());
-        Assertions.assertEquals("hddwvmq", model.modelSettings().tileGridSize());
-        Assertions.assertEquals(88.3875406251191D, model.modelSettings().tileOverlapRatio());
-        Assertions.assertEquals(75.86010684965314D, model.modelSettings().tilePredictionsNmsThreshold());
-        Assertions.assertEquals(72.51763005833334D, model.modelSettings().validationIouThreshold());
-        Assertions.assertEquals(ValidationMetricType.NONE, model.modelSettings().validationMetricType());
-        Assertions.assertEquals("leimixlmdbgicehf", model.searchSpace().get(0).amsGradient());
-        Assertions.assertEquals("mdrjuqbpxt", model.searchSpace().get(0).augmentations());
-        Assertions.assertEquals("lj", model.searchSpace().get(0).beta1());
-        Assertions.assertEquals("znpaxwfqtyyqiprc", model.searchSpace().get(0).beta2());
-        Assertions.assertEquals("ungbsoljc", model.searchSpace().get(0).distributed());
-        Assertions.assertEquals("iigz", model.searchSpace().get(0).earlyStopping());
-        Assertions.assertEquals("uck", model.searchSpace().get(0).earlyStoppingDelay());
-        Assertions.assertEquals("dsk", model.searchSpace().get(0).earlyStoppingPatience());
-        Assertions.assertEquals("tiiqqcqikclsmaln", model.searchSpace().get(0).enableOnnxNormalization());
-        Assertions.assertEquals("woykdnonaaxwm", model.searchSpace().get(0).evaluationFrequency());
-        Assertions.assertEquals("ru", model.searchSpace().get(0).gradientAccumulationStep());
-        Assertions.assertEquals("qcwnynl", model.searchSpace().get(0).layersToFreeze());
-        Assertions.assertEquals("iqbcbgv", model.searchSpace().get(0).learningRate());
-        Assertions.assertEquals("t", model.searchSpace().get(0).learningRateScheduler());
-        Assertions.assertEquals("rtoxadhxuvjhxm", model.searchSpace().get(0).modelName());
-        Assertions.assertEquals("qstjc", model.searchSpace().get(0).momentum());
-        Assertions.assertEquals("twmlg", model.searchSpace().get(0).nesterov());
-        Assertions.assertEquals("vnpvvd", model.searchSpace().get(0).numberOfEpochs());
-        Assertions.assertEquals("jnaqyq", model.searchSpace().get(0).numberOfWorkers());
-        Assertions.assertEquals("slz", model.searchSpace().get(0).optimizer());
-        Assertions.assertEquals("cdsvmwbitek", model.searchSpace().get(0).randomSeed());
-        Assertions.assertEquals("fobvfiybxqich", model.searchSpace().get(0).stepLRGamma());
-        Assertions.assertEquals("bfzdqekiv", model.searchSpace().get(0).stepLRStepSize());
-        Assertions.assertEquals("p", model.searchSpace().get(0).trainingBatchSize());
-        Assertions.assertEquals("vdizulrqtbh", model.searchSpace().get(0).validationBatchSize());
-        Assertions.assertEquals("ezp", model.searchSpace().get(0).warmupCosineLRCycles());
-        Assertions.assertEquals("pryfmxmdutzfkgi", model.searchSpace().get(0).warmupCosineLRWarmupEpochs());
-        Assertions.assertEquals("oudccgndjg", model.searchSpace().get(0).weightDecay());
-        Assertions.assertEquals("xga", model.searchSpace().get(0).boxDetectionsPerImage());
-        Assertions.assertEquals("dtkwppth", model.searchSpace().get(0).boxScoreThreshold());
-        Assertions.assertEquals("dprmimrljdpoqf", model.searchSpace().get(0).imageSize());
-        Assertions.assertEquals("emhkftbaewht", model.searchSpace().get(0).maxSize());
-        Assertions.assertEquals("loamfmxtllfltym", model.searchSpace().get(0).minSize());
-        Assertions.assertEquals("nrrfijhggabqb", model.searchSpace().get(0).modelSize());
-        Assertions.assertEquals("mkli", model.searchSpace().get(0).multiScale());
-        Assertions.assertEquals("rwdvffhsdpzou", model.searchSpace().get(0).nmsIouThreshold());
-        Assertions.assertEquals("tqrxqwqnjxrdf", model.searchSpace().get(0).tileGridSize());
-        Assertions.assertEquals("t", model.searchSpace().get(0).tileOverlapRatio());
-        Assertions.assertEquals("lygtavczcxdfweap", model.searchSpace().get(0).tilePredictionsNmsThreshold());
-        Assertions.assertEquals("mlx", model.searchSpace().get(0).validationIouThreshold());
-        Assertions.assertEquals("jphrasp", model.searchSpace().get(0).validationMetricType());
-        Assertions.assertEquals(153451931, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(698214399, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT224H14M52S"), model.limitSettings().timeout());
-        Assertions.assertEquals(1788525665, model.sweepSettings().earlyTermination().delayEvaluation());
-        Assertions.assertEquals(162424717, model.sweepSettings().earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.RANDOM, model.sweepSettings().samplingAlgorithm());
-        Assertions.assertEquals("rbhseuerbgpxebjl", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("gsdaluyckh", model.validationData().uri());
-        Assertions.assertEquals(87.50039173567666D, model.validationDataSize());
+        Assertions.assertEquals(47.86652197612106D, model.modelSettings().nmsIouThreshold());
+        Assertions.assertEquals("obvfiybx", model.modelSettings().tileGridSize());
+        Assertions.assertEquals(23.962400838257658D, model.modelSettings().tileOverlapRatio());
+        Assertions.assertEquals(75.28211259931373D, model.modelSettings().tilePredictionsNmsThreshold());
+        Assertions.assertEquals(84.34960808929361D, model.modelSettings().validationIouThreshold());
+        Assertions.assertEquals(ValidationMetricType.COCO_VOC, model.modelSettings().validationMetricType());
+        Assertions.assertEquals("x", model.searchSpace().get(0).amsGradient());
+        Assertions.assertEquals("m", model.searchSpace().get(0).augmentations());
+        Assertions.assertEquals("mcwoxfaxd", model.searchSpace().get(0).beta1());
+        Assertions.assertEquals("qi", model.searchSpace().get(0).beta2());
+        Assertions.assertEquals("satroia", model.searchSpace().get(0).distributed());
+        Assertions.assertEquals("sugmocpcjyc", model.searchSpace().get(0).earlyStopping());
+        Assertions.assertEquals("elrgttwfldsiuo", model.searchSpace().get(0).earlyStoppingDelay());
+        Assertions.assertEquals("nikcedpk", model.searchSpace().get(0).earlyStoppingPatience());
+        Assertions.assertEquals("iwm", model.searchSpace().get(0).enableOnnxNormalization());
+        Assertions.assertEquals("mqr", model.searchSpace().get(0).evaluationFrequency());
+        Assertions.assertEquals("zqv", model.searchSpace().get(0).gradientAccumulationStep());
+        Assertions.assertEquals("czyayubtgmbxi", model.searchSpace().get(0).layersToFreeze());
+        Assertions.assertEquals("hragpxmib", model.searchSpace().get(0).learningRate());
+        Assertions.assertEquals("nupoyryefqmwovyz", model.searchSpace().get(0).learningRateScheduler());
+        Assertions.assertEquals("lnomfpb", model.searchSpace().get(0).modelName());
+        Assertions.assertEquals("eegvyieztkutnj", model.searchSpace().get(0).momentum());
+        Assertions.assertEquals("l", model.searchSpace().get(0).nesterov());
+        Assertions.assertEquals("krehyhtmj", model.searchSpace().get(0).numberOfEpochs());
+        Assertions.assertEquals("uif", model.searchSpace().get(0).numberOfWorkers());
+        Assertions.assertEquals("lxfary", model.searchSpace().get(0).optimizer());
+        Assertions.assertEquals("jlgdez", model.searchSpace().get(0).randomSeed());
+        Assertions.assertEquals("qwahoy", model.searchSpace().get(0).stepLRGamma());
+        Assertions.assertEquals("axqvjweiwtczkddn", model.searchSpace().get(0).stepLRStepSize());
+        Assertions.assertEquals("vbooqbmdqrxy", model.searchSpace().get(0).trainingBatchSize());
+        Assertions.assertEquals("ae", model.searchSpace().get(0).validationBatchSize());
+        Assertions.assertEquals("cflwtjdtlr", model.searchSpace().get(0).warmupCosineLRCycles());
+        Assertions.assertEquals("fooy", model.searchSpace().get(0).warmupCosineLRWarmupEpochs());
+        Assertions.assertEquals("uxdtzcq", model.searchSpace().get(0).weightDecay());
+        Assertions.assertEquals("i", model.searchSpace().get(0).boxDetectionsPerImage());
+        Assertions.assertEquals("vfph", model.searchSpace().get(0).boxScoreThreshold());
+        Assertions.assertEquals("zxplgtpvdvatlz", model.searchSpace().get(0).imageSize());
+        Assertions.assertEquals("schnzrsbkkzov", model.searchSpace().get(0).maxSize());
+        Assertions.assertEquals("dmnfmfws", model.searchSpace().get(0).minSize());
+        Assertions.assertEquals("fo", model.searchSpace().get(0).modelSize());
+        Assertions.assertEquals("worimmovzwdehk", model.searchSpace().get(0).multiScale());
+        Assertions.assertEquals("vh", model.searchSpace().get(0).nmsIouThreshold());
+        Assertions.assertEquals("ovanyrva", model.searchSpace().get(0).tileGridSize());
+        Assertions.assertEquals("tgelgwewikfy", model.searchSpace().get(0).tileOverlapRatio());
+        Assertions.assertEquals("a", model.searchSpace().get(0).tilePredictionsNmsThreshold());
+        Assertions.assertEquals("mymnqoqjumovsf", model.searchSpace().get(0).validationIouThreshold());
+        Assertions.assertEquals("bvzo", model.searchSpace().get(0).validationMetricType());
+        Assertions.assertEquals(875073899, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(1778622177, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT165H53M59S"), model.limitSettings().timeout());
+        Assertions.assertEquals(1067377422, model.sweepSettings().earlyTermination().delayEvaluation());
+        Assertions.assertEquals(1488992039, model.sweepSettings().earlyTermination().evaluationInterval());
+        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.sweepSettings().samplingAlgorithm());
+        Assertions.assertEquals("zzxljbkhxsdpla", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("pdkktpmbmxbmbr", model.validationData().uri());
+        Assertions.assertEquals(0.07296190898538057D, model.validationDataSize());
         Assertions.assertEquals(InstanceSegmentationPrimaryMetrics.MEAN_AVERAGE_PRECISION, model.primaryMetric());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageInstanceSegmentation model = new ImageInstanceSegmentation().withLogVerbosity(LogVerbosity.ERROR)
-            .withTargetColumnName("axdtpryjmgt")
-            .withTrainingData(new MLTableJobInput().withDescription("yms")
-                .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
-                .withUri("wou"))
-            .withModelSettings(new ImageModelSettingsObjectDetection().withAdvancedSettings("zxbyp")
+        ImageInstanceSegmentation model = new ImageInstanceSegmentation().withLogVerbosity(LogVerbosity.INFO)
+            .withTargetColumnName("jf")
+            .withTrainingData(new MLTableJobInput().withDescription("w")
+                .withMode(InputDeliveryMode.READ_WRITE_MOUNT)
+                .withUri("dgtokvqbvwg"))
+            .withModelSettings(new ImageModelSettingsObjectDetection().withAdvancedSettings("ivycpzcvdi")
                 .withAmsGradient(true)
-                .withAugmentations("aix")
-                .withBeta1(68.96778772052667D)
-                .withBeta2(29.150347392984244D)
-                .withCheckpointFrequency(718822712)
-                .withCheckpointModel(new MLFlowModelJobInput().withDescription("xhtfmcqbsudzpgch")
+                .withAugmentations("qtbhtr")
+                .withBeta1(14.903605246794505D)
+                .withBeta2(91.5593139339048D)
+                .withCheckpointFrequency(75969708)
+                .withCheckpointModel(new MLFlowModelJobInput().withDescription("no")
                     .withMode(InputDeliveryMode.READ_WRITE_MOUNT)
-                    .withUri("wqikwepwogggic"))
-                .withCheckpointRunId("gfqumjdjxhzghgo")
+                    .withUri("dutzfkg"))
+                .withCheckpointRunId("ccgndjgdprig")
                 .withDistributed(true)
                 .withEarlyStopping(true)
-                .withEarlyStoppingDelay(1115788732)
-                .withEarlyStoppingPatience(692917453)
-                .withEnableOnnxNormalization(true)
-                .withEvaluationFrequency(1079705023)
-                .withGradientAccumulationStep(310773327)
-                .withLayersToFreeze(2084268912)
-                .withLearningRate(36.33336121041546D)
+                .withEarlyStoppingDelay(22794596)
+                .withEarlyStoppingPatience(595135013)
+                .withEnableOnnxNormalization(false)
+                .withEvaluationFrequency(1998233015)
+                .withGradientAccumulationStep(643163117)
+                .withLayersToFreeze(370390186)
+                .withLearningRate(60.674506685245724D)
                 .withLearningRateScheduler(LearningRateScheduler.NONE)
-                .withModelName("u")
-                .withMomentum(41.29688743508849D)
-                .withNesterov(false)
-                .withNumberOfEpochs(166266985)
-                .withNumberOfWorkers(1582360616)
-                .withOptimizer(StochasticOptimizer.SGD)
-                .withRandomSeed(523175956)
-                .withStepLRGamma(65.56632967981633D)
-                .withStepLRStepSize(2129348995)
-                .withTrainingBatchSize(2096198255)
-                .withValidationBatchSize(976273842)
-                .withWarmupCosineLRCycles(27.832768944817033D)
-                .withWarmupCosineLRWarmupEpochs(1858184868)
-                .withWeightDecay(22.774498846249447D)
-                .withBoxDetectionsPerImage(1048824603)
-                .withBoxScoreThreshold(0.2884703102192798D)
-                .withImageSize(1257209908)
-                .withMaxSize(1819948805)
-                .withMinSize(678358747)
-                .withModelSize(ModelSize.MEDIUM)
+                .withModelName("ujcyohigimwdc")
+                .withMomentum(17.402094347732167D)
+                .withNesterov(true)
+                .withNumberOfEpochs(968713520)
+                .withNumberOfWorkers(1511718281)
+                .withOptimizer(StochasticOptimizer.ADAM)
+                .withRandomSeed(1475754097)
+                .withStepLRGamma(62.43292287921462D)
+                .withStepLRStepSize(1169362849)
+                .withTrainingBatchSize(998584052)
+                .withValidationBatchSize(937014234)
+                .withWarmupCosineLRCycles(82.81578066893066D)
+                .withWarmupCosineLRWarmupEpochs(493160850)
+                .withWeightDecay(85.2231290647608D)
+                .withBoxDetectionsPerImage(887260516)
+                .withBoxScoreThreshold(76.66363471145104D)
+                .withImageSize(1149190984)
+                .withMaxSize(259637389)
+                .withMinSize(682120608)
+                .withModelSize(ModelSize.LARGE)
                 .withMultiScale(true)
-                .withNmsIouThreshold(53.75663912809028D)
-                .withTileGridSize("hddwvmq")
-                .withTileOverlapRatio(88.3875406251191D)
-                .withTilePredictionsNmsThreshold(75.86010684965314D)
-                .withValidationIouThreshold(72.51763005833334D)
-                .withValidationMetricType(ValidationMetricType.NONE))
+                .withNmsIouThreshold(47.86652197612106D)
+                .withTileGridSize("obvfiybx")
+                .withTileOverlapRatio(23.962400838257658D)
+                .withTilePredictionsNmsThreshold(75.28211259931373D)
+                .withValidationIouThreshold(84.34960808929361D)
+                .withValidationMetricType(ValidationMetricType.COCO_VOC))
             .withSearchSpace(Arrays.asList(
-                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("leimixlmdbgicehf")
-                    .withAugmentations("mdrjuqbpxt")
-                    .withBeta1("lj")
-                    .withBeta2("znpaxwfqtyyqiprc")
-                    .withDistributed("ungbsoljc")
-                    .withEarlyStopping("iigz")
-                    .withEarlyStoppingDelay("uck")
-                    .withEarlyStoppingPatience("dsk")
-                    .withEnableOnnxNormalization("tiiqqcqikclsmaln")
-                    .withEvaluationFrequency("woykdnonaaxwm")
-                    .withGradientAccumulationStep("ru")
-                    .withLayersToFreeze("qcwnynl")
-                    .withLearningRate("iqbcbgv")
-                    .withLearningRateScheduler("t")
-                    .withModelName("rtoxadhxuvjhxm")
-                    .withMomentum("qstjc")
-                    .withNesterov("twmlg")
-                    .withNumberOfEpochs("vnpvvd")
-                    .withNumberOfWorkers("jnaqyq")
-                    .withOptimizer("slz")
-                    .withRandomSeed("cdsvmwbitek")
-                    .withStepLRGamma("fobvfiybxqich")
-                    .withStepLRStepSize("bfzdqekiv")
-                    .withTrainingBatchSize("p")
-                    .withValidationBatchSize("vdizulrqtbh")
-                    .withWarmupCosineLRCycles("ezp")
-                    .withWarmupCosineLRWarmupEpochs("pryfmxmdutzfkgi")
-                    .withWeightDecay("oudccgndjg")
-                    .withBoxDetectionsPerImage("xga")
-                    .withBoxScoreThreshold("dtkwppth")
-                    .withImageSize("dprmimrljdpoqf")
-                    .withMaxSize("emhkftbaewht")
-                    .withMinSize("loamfmxtllfltym")
-                    .withModelSize("nrrfijhggabqb")
-                    .withMultiScale("mkli")
-                    .withNmsIouThreshold("rwdvffhsdpzou")
-                    .withTileGridSize("tqrxqwqnjxrdf")
-                    .withTileOverlapRatio("t")
-                    .withTilePredictionsNmsThreshold("lygtavczcxdfweap")
-                    .withValidationIouThreshold("mlx")
-                    .withValidationMetricType("jphrasp"),
-                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("worimmovzwdehk")
-                    .withAugmentations("vh")
-                    .withBeta1("ovanyrva")
-                    .withBeta2("tgelgwewikfy")
-                    .withDistributed("a")
-                    .withEarlyStopping("mymnqoqjumovsf")
-                    .withEarlyStoppingDelay("bvzo")
-                    .withEarlyStoppingPatience("x")
-                    .withEnableOnnxNormalization("m")
-                    .withEvaluationFrequency("mcwoxfaxd")
-                    .withGradientAccumulationStep("qi")
-                    .withLayersToFreeze("satroia")
-                    .withLearningRate("sugmocpcjyc")
-                    .withLearningRateScheduler("elrgttwfldsiuo")
-                    .withModelName("nikcedpk")
-                    .withMomentum("iwm")
-                    .withNesterov("mqr")
-                    .withNumberOfEpochs("zqv")
-                    .withNumberOfWorkers("czyayubtgmbxi")
-                    .withOptimizer("hragpxmib")
-                    .withRandomSeed("nupoyryefqmwovyz")
-                    .withStepLRGamma("lnomfpb")
-                    .withStepLRStepSize("eegvyieztkutnj")
-                    .withTrainingBatchSize("l")
-                    .withValidationBatchSize("krehyhtmj")
-                    .withWarmupCosineLRCycles("uif")
-                    .withWarmupCosineLRWarmupEpochs("lxfary")
-                    .withWeightDecay("jlgdez")
-                    .withBoxDetectionsPerImage("r")
-                    .withBoxScoreThreshold("gqqyeqfcbuulpyuf")
-                    .withImageSize("jfshtujcyo")
-                    .withMaxSize("gimwdcsklkqnqv")
-                    .withMinSize("xn")
-                    .withModelSize("zmec")
-                    .withMultiScale("rzwimbzayspz")
-                    .withNmsIouThreshold("i")
-                    .withTileGridSize("vfph")
-                    .withTileOverlapRatio("zxplgtpvdvatlz")
-                    .withTilePredictionsNmsThreshold("schnzrsbkkzov")
-                    .withValidationIouThreshold("dmnfmfws")
-                    .withValidationMetricType("fo"),
-                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("hpryjfzihuioa")
-                    .withAugmentations("cpajtfe")
-                    .withBeta1("kbdgddkrh")
-                    .withBeta2("cxbeuuqutkzwtjww")
-                    .withDistributed("zytijcx")
-                    .withEarlyStopping("ondegjdydhqkkk")
-                    .withEarlyStoppingDelay("uckcatuqbhpow")
-                    .withEarlyStoppingPatience("xtpzdlyse")
-                    .withEnableOnnxNormalization("toakatprytgrhz")
-                    .withEvaluationFrequency("fdpfawrptvcsht")
-                    .withGradientAccumulationStep("tzc")
-                    .withLayersToFreeze("bqgdird")
-                    .withLearningRate("m")
-                    .withLearningRateScheduler("jgcf")
-                    .withModelName("xtbw")
-                    .withMomentum("irmu")
-                    .withNesterov("gftt")
-                    .withNumberOfEpochs("ofgeoagf")
-                    .withNumberOfWorkers("ftnxodwxmdajwiy")
-                    .withOptimizer("gsevmdm")
-                    .withRandomSeed("nlrstgf")
-                    .withStepLRGamma("ljdncidtjvamy")
-                    .withStepLRStepSize("n")
-                    .withTrainingBatchSize("gcdogcvucgy")
-                    .withValidationBatchSize("xuwhttn")
-                    .withWarmupCosineLRCycles("s")
-                    .withWarmupCosineLRWarmupEpochs("mebgszplu")
-                    .withWeightDecay("ekpdzzmssg")
-                    .withBoxDetectionsPerImage("qwahoy")
-                    .withBoxScoreThreshold("axqvjweiwtczkddn")
-                    .withImageSize("vbooqbmdqrxy")
-                    .withMaxSize("ae")
-                    .withMinSize("cflwtjdtlr")
-                    .withModelSize("fooy")
-                    .withMultiScale("uxdtzcq")
-                    .withNmsIouThreshold("sdudgcoz")
-                    .withTileGridSize("meh")
-                    .withTileOverlapRatio("antolamlbijuxkq")
-                    .withTilePredictionsNmsThreshold("czipvwdtgck")
-                    .withValidationIouThreshold("qiqdlratrkwxoau")
-                    .withValidationMetricType("suykznhrfgsl"),
-                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("vxakglh")
-                    .withAugmentations("esrfgamqiydvx")
-                    .withBeta1("d")
-                    .withBeta2("hgoqgsoyqyxyj")
-                    .withDistributed("b")
-                    .withEarlyStopping("bispglqjoxtdah")
-                    .withEarlyStoppingDelay("aoovtyjzti")
-                    .withEarlyStoppingPatience("wjlofzekfsrm")
-                    .withEnableOnnxNormalization("klajvcfocz")
-                    .withEvaluationFrequency("pejovt")
-                    .withGradientAccumulationStep("xnhwh")
-                    .withLayersToFreeze("oyrzaaoe")
-                    .withLearningRate("pmjen")
-                    .withLearningRateScheduler("eat")
-                    .withModelName("xxcrxoxdjxld")
-                    .withMomentum("ryyinz")
-                    .withNesterov("olrndwdb")
-                    .withNumberOfEpochs("vzaledoyqxlunk")
-                    .withNumberOfWorkers("hmcxqqxmyzkl")
-                    .withOptimizer("a")
-                    .withRandomSeed("ohrvmz")
-                    .withStepLRGamma("razadivznllaslks")
-                    .withStepLRStepSize("jqjpv")
-                    .withTrainingBatchSize("ihxjtgzgtai")
-                    .withValidationBatchSize("b")
-                    .withWarmupCosineLRCycles("roigbsfsgsaenwld")
-                    .withWarmupCosineLRWarmupEpochs("hljqlxsp")
-                    .withWeightDecay("jc")
-                    .withBoxDetectionsPerImage("vokyejidbdqzsqun")
-                    .withBoxScoreThreshold("wztlvvwsnmrkky")
-                    .withImageSize("repwpwfkcaux")
-                    .withMaxSize("avcpfpdofuckclbt")
-                    .withMinSize("ue")
-                    .withModelSize("ol")
-                    .withMultiScale("ilfngo")
-                    .withNmsIouThreshold("sqeb")
-                    .withTileGridSize("xjxhfxfj")
-                    .withTileOverlapRatio("dkktpmbmxbmbrwgz")
-                    .withTilePredictionsNmsThreshold("ljbkhxsdplau")
-                    .withValidationIouThreshold("dmhweqjfyxydgto")
-                    .withValidationMetricType("qbvwglgw")))
-            .withLimitSettings(new ImageLimitSettings().withMaxConcurrentTrials(153451931)
-                .withMaxTrials(698214399)
-                .withTimeout(Duration.parse("PT224H14M52S")))
+                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("x")
+                    .withAugmentations("m")
+                    .withBeta1("mcwoxfaxd")
+                    .withBeta2("qi")
+                    .withDistributed("satroia")
+                    .withEarlyStopping("sugmocpcjyc")
+                    .withEarlyStoppingDelay("elrgttwfldsiuo")
+                    .withEarlyStoppingPatience("nikcedpk")
+                    .withEnableOnnxNormalization("iwm")
+                    .withEvaluationFrequency("mqr")
+                    .withGradientAccumulationStep("zqv")
+                    .withLayersToFreeze("czyayubtgmbxi")
+                    .withLearningRate("hragpxmib")
+                    .withLearningRateScheduler("nupoyryefqmwovyz")
+                    .withModelName("lnomfpb")
+                    .withMomentum("eegvyieztkutnj")
+                    .withNesterov("l")
+                    .withNumberOfEpochs("krehyhtmj")
+                    .withNumberOfWorkers("uif")
+                    .withOptimizer("lxfary")
+                    .withRandomSeed("jlgdez")
+                    .withStepLRGamma("qwahoy")
+                    .withStepLRStepSize("axqvjweiwtczkddn")
+                    .withTrainingBatchSize("vbooqbmdqrxy")
+                    .withValidationBatchSize("ae")
+                    .withWarmupCosineLRCycles("cflwtjdtlr")
+                    .withWarmupCosineLRWarmupEpochs("fooy")
+                    .withWeightDecay("uxdtzcq")
+                    .withBoxDetectionsPerImage("i")
+                    .withBoxScoreThreshold("vfph")
+                    .withImageSize("zxplgtpvdvatlz")
+                    .withMaxSize("schnzrsbkkzov")
+                    .withMinSize("dmnfmfws")
+                    .withModelSize("fo")
+                    .withMultiScale("worimmovzwdehk")
+                    .withNmsIouThreshold("vh")
+                    .withTileGridSize("ovanyrva")
+                    .withTileOverlapRatio("tgelgwewikfy")
+                    .withTilePredictionsNmsThreshold("a")
+                    .withValidationIouThreshold("mymnqoqjumovsf")
+                    .withValidationMetricType("bvzo"),
+                new ImageModelDistributionSettingsObjectDetection().withAmsGradient("xtpzdlyse")
+                    .withAugmentations("toakatprytgrhz")
+                    .withBeta1("fdpfawrptvcsht")
+                    .withBeta2("tzc")
+                    .withDistributed("bqgdird")
+                    .withEarlyStopping("m")
+                    .withEarlyStoppingDelay("jgcf")
+                    .withEarlyStoppingPatience("xtbw")
+                    .withEnableOnnxNormalization("irmu")
+                    .withEvaluationFrequency("gftt")
+                    .withGradientAccumulationStep("ofgeoagf")
+                    .withLayersToFreeze("ftnxodwxmdajwiy")
+                    .withLearningRate("gsevmdm")
+                    .withLearningRateScheduler("nlrstgf")
+                    .withModelName("ljdncidtjvamy")
+                    .withMomentum("n")
+                    .withNesterov("gcdogcvucgy")
+                    .withNumberOfEpochs("xuwhttn")
+                    .withNumberOfWorkers("s")
+                    .withOptimizer("mebgszplu")
+                    .withRandomSeed("ekpdzzmssg")
+                    .withStepLRGamma("vokyejidbdqzsqun")
+                    .withStepLRStepSize("wztlvvwsnmrkky")
+                    .withTrainingBatchSize("repwpwfkcaux")
+                    .withValidationBatchSize("avcpfpdofuckclbt")
+                    .withWarmupCosineLRCycles("ue")
+                    .withWarmupCosineLRWarmupEpochs("ol")
+                    .withWeightDecay("ilfngo")
+                    .withBoxDetectionsPerImage("sdudgcoz")
+                    .withBoxScoreThreshold("meh")
+                    .withImageSize("antolamlbijuxkq")
+                    .withMaxSize("czipvwdtgck")
+                    .withMinSize("qiqdlratrkwxoau")
+                    .withModelSize("suykznhrfgsl")
+                    .withMultiScale("hpryjfzihuioa")
+                    .withNmsIouThreshold("cpajtfe")
+                    .withTileGridSize("kbdgddkrh")
+                    .withTileOverlapRatio("cxbeuuqutkzwtjww")
+                    .withTilePredictionsNmsThreshold("zytijcx")
+                    .withValidationIouThreshold("ondegjdydhqkkk")
+                    .withValidationMetricType("uckcatuqbhpow")))
+            .withLimitSettings(new ImageLimitSettings().withMaxConcurrentTrials(875073899)
+                .withMaxTrials(1778622177)
+                .withTimeout(Duration.parse("PT165H53M59S")))
             .withSweepSettings(new ImageSweepSettings()
                 .withEarlyTermination(
-                    new EarlyTerminationPolicy().withDelayEvaluation(1788525665).withEvaluationInterval(162424717))
-                .withSamplingAlgorithm(SamplingAlgorithmType.RANDOM))
-            .withValidationData(new MLTableJobInput().withDescription("rbhseuerbgpxebjl")
-                .withMode(InputDeliveryMode.EVAL_DOWNLOAD)
-                .withUri("gsdaluyckh"))
-            .withValidationDataSize(87.50039173567666D)
+                    new EarlyTerminationPolicy().withDelayEvaluation(1067377422).withEvaluationInterval(1488992039))
+                .withSamplingAlgorithm(SamplingAlgorithmType.GRID))
+            .withValidationData(new MLTableJobInput().withDescription("zzxljbkhxsdpla")
+                .withMode(InputDeliveryMode.READ_WRITE_MOUNT)
+                .withUri("pdkktpmbmxbmbr"))
+            .withValidationDataSize(0.07296190898538057D)
             .withPrimaryMetric(InstanceSegmentationPrimaryMetrics.MEAN_AVERAGE_PRECISION);
         model = BinaryData.fromObject(model).toObject(ImageInstanceSegmentation.class);
-        Assertions.assertEquals(LogVerbosity.ERROR, model.logVerbosity());
-        Assertions.assertEquals("axdtpryjmgt", model.targetColumnName());
-        Assertions.assertEquals("yms", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
-        Assertions.assertEquals("wou", model.trainingData().uri());
-        Assertions.assertEquals("zxbyp", model.modelSettings().advancedSettings());
+        Assertions.assertEquals(LogVerbosity.INFO, model.logVerbosity());
+        Assertions.assertEquals("jf", model.targetColumnName());
+        Assertions.assertEquals("w", model.trainingData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("dgtokvqbvwg", model.trainingData().uri());
+        Assertions.assertEquals("ivycpzcvdi", model.modelSettings().advancedSettings());
         Assertions.assertTrue(model.modelSettings().amsGradient());
-        Assertions.assertEquals("aix", model.modelSettings().augmentations());
-        Assertions.assertEquals(68.96778772052667D, model.modelSettings().beta1());
-        Assertions.assertEquals(29.150347392984244D, model.modelSettings().beta2());
-        Assertions.assertEquals(718822712, model.modelSettings().checkpointFrequency());
-        Assertions.assertEquals("xhtfmcqbsudzpgch", model.modelSettings().checkpointModel().description());
+        Assertions.assertEquals("qtbhtr", model.modelSettings().augmentations());
+        Assertions.assertEquals(14.903605246794505D, model.modelSettings().beta1());
+        Assertions.assertEquals(91.5593139339048D, model.modelSettings().beta2());
+        Assertions.assertEquals(75969708, model.modelSettings().checkpointFrequency());
+        Assertions.assertEquals("no", model.modelSettings().checkpointModel().description());
         Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.modelSettings().checkpointModel().mode());
-        Assertions.assertEquals("wqikwepwogggic", model.modelSettings().checkpointModel().uri());
-        Assertions.assertEquals("gfqumjdjxhzghgo", model.modelSettings().checkpointRunId());
+        Assertions.assertEquals("dutzfkg", model.modelSettings().checkpointModel().uri());
+        Assertions.assertEquals("ccgndjgdprig", model.modelSettings().checkpointRunId());
         Assertions.assertTrue(model.modelSettings().distributed());
         Assertions.assertTrue(model.modelSettings().earlyStopping());
-        Assertions.assertEquals(1115788732, model.modelSettings().earlyStoppingDelay());
-        Assertions.assertEquals(692917453, model.modelSettings().earlyStoppingPatience());
-        Assertions.assertTrue(model.modelSettings().enableOnnxNormalization());
-        Assertions.assertEquals(1079705023, model.modelSettings().evaluationFrequency());
-        Assertions.assertEquals(310773327, model.modelSettings().gradientAccumulationStep());
-        Assertions.assertEquals(2084268912, model.modelSettings().layersToFreeze());
-        Assertions.assertEquals(36.33336121041546D, model.modelSettings().learningRate());
+        Assertions.assertEquals(22794596, model.modelSettings().earlyStoppingDelay());
+        Assertions.assertEquals(595135013, model.modelSettings().earlyStoppingPatience());
+        Assertions.assertFalse(model.modelSettings().enableOnnxNormalization());
+        Assertions.assertEquals(1998233015, model.modelSettings().evaluationFrequency());
+        Assertions.assertEquals(643163117, model.modelSettings().gradientAccumulationStep());
+        Assertions.assertEquals(370390186, model.modelSettings().layersToFreeze());
+        Assertions.assertEquals(60.674506685245724D, model.modelSettings().learningRate());
         Assertions.assertEquals(LearningRateScheduler.NONE, model.modelSettings().learningRateScheduler());
-        Assertions.assertEquals("u", model.modelSettings().modelName());
-        Assertions.assertEquals(41.29688743508849D, model.modelSettings().momentum());
-        Assertions.assertFalse(model.modelSettings().nesterov());
-        Assertions.assertEquals(166266985, model.modelSettings().numberOfEpochs());
-        Assertions.assertEquals(1582360616, model.modelSettings().numberOfWorkers());
-        Assertions.assertEquals(StochasticOptimizer.SGD, model.modelSettings().optimizer());
-        Assertions.assertEquals(523175956, model.modelSettings().randomSeed());
-        Assertions.assertEquals(65.56632967981633D, model.modelSettings().stepLRGamma());
-        Assertions.assertEquals(2129348995, model.modelSettings().stepLRStepSize());
-        Assertions.assertEquals(2096198255, model.modelSettings().trainingBatchSize());
-        Assertions.assertEquals(976273842, model.modelSettings().validationBatchSize());
-        Assertions.assertEquals(27.832768944817033D, model.modelSettings().warmupCosineLRCycles());
-        Assertions.assertEquals(1858184868, model.modelSettings().warmupCosineLRWarmupEpochs());
-        Assertions.assertEquals(22.774498846249447D, model.modelSettings().weightDecay());
-        Assertions.assertEquals(1048824603, model.modelSettings().boxDetectionsPerImage());
-        Assertions.assertEquals(0.2884703102192798D, model.modelSettings().boxScoreThreshold());
-        Assertions.assertEquals(1257209908, model.modelSettings().imageSize());
-        Assertions.assertEquals(1819948805, model.modelSettings().maxSize());
-        Assertions.assertEquals(678358747, model.modelSettings().minSize());
-        Assertions.assertEquals(ModelSize.MEDIUM, model.modelSettings().modelSize());
+        Assertions.assertEquals("ujcyohigimwdc", model.modelSettings().modelName());
+        Assertions.assertEquals(17.402094347732167D, model.modelSettings().momentum());
+        Assertions.assertTrue(model.modelSettings().nesterov());
+        Assertions.assertEquals(968713520, model.modelSettings().numberOfEpochs());
+        Assertions.assertEquals(1511718281, model.modelSettings().numberOfWorkers());
+        Assertions.assertEquals(StochasticOptimizer.ADAM, model.modelSettings().optimizer());
+        Assertions.assertEquals(1475754097, model.modelSettings().randomSeed());
+        Assertions.assertEquals(62.43292287921462D, model.modelSettings().stepLRGamma());
+        Assertions.assertEquals(1169362849, model.modelSettings().stepLRStepSize());
+        Assertions.assertEquals(998584052, model.modelSettings().trainingBatchSize());
+        Assertions.assertEquals(937014234, model.modelSettings().validationBatchSize());
+        Assertions.assertEquals(82.81578066893066D, model.modelSettings().warmupCosineLRCycles());
+        Assertions.assertEquals(493160850, model.modelSettings().warmupCosineLRWarmupEpochs());
+        Assertions.assertEquals(85.2231290647608D, model.modelSettings().weightDecay());
+        Assertions.assertEquals(887260516, model.modelSettings().boxDetectionsPerImage());
+        Assertions.assertEquals(76.66363471145104D, model.modelSettings().boxScoreThreshold());
+        Assertions.assertEquals(1149190984, model.modelSettings().imageSize());
+        Assertions.assertEquals(259637389, model.modelSettings().maxSize());
+        Assertions.assertEquals(682120608, model.modelSettings().minSize());
+        Assertions.assertEquals(ModelSize.LARGE, model.modelSettings().modelSize());
         Assertions.assertTrue(model.modelSettings().multiScale());
-        Assertions.assertEquals(53.75663912809028D, model.modelSettings().nmsIouThreshold());
-        Assertions.assertEquals("hddwvmq", model.modelSettings().tileGridSize());
-        Assertions.assertEquals(88.3875406251191D, model.modelSettings().tileOverlapRatio());
-        Assertions.assertEquals(75.86010684965314D, model.modelSettings().tilePredictionsNmsThreshold());
-        Assertions.assertEquals(72.51763005833334D, model.modelSettings().validationIouThreshold());
-        Assertions.assertEquals(ValidationMetricType.NONE, model.modelSettings().validationMetricType());
-        Assertions.assertEquals("leimixlmdbgicehf", model.searchSpace().get(0).amsGradient());
-        Assertions.assertEquals("mdrjuqbpxt", model.searchSpace().get(0).augmentations());
-        Assertions.assertEquals("lj", model.searchSpace().get(0).beta1());
-        Assertions.assertEquals("znpaxwfqtyyqiprc", model.searchSpace().get(0).beta2());
-        Assertions.assertEquals("ungbsoljc", model.searchSpace().get(0).distributed());
-        Assertions.assertEquals("iigz", model.searchSpace().get(0).earlyStopping());
-        Assertions.assertEquals("uck", model.searchSpace().get(0).earlyStoppingDelay());
-        Assertions.assertEquals("dsk", model.searchSpace().get(0).earlyStoppingPatience());
-        Assertions.assertEquals("tiiqqcqikclsmaln", model.searchSpace().get(0).enableOnnxNormalization());
-        Assertions.assertEquals("woykdnonaaxwm", model.searchSpace().get(0).evaluationFrequency());
-        Assertions.assertEquals("ru", model.searchSpace().get(0).gradientAccumulationStep());
-        Assertions.assertEquals("qcwnynl", model.searchSpace().get(0).layersToFreeze());
-        Assertions.assertEquals("iqbcbgv", model.searchSpace().get(0).learningRate());
-        Assertions.assertEquals("t", model.searchSpace().get(0).learningRateScheduler());
-        Assertions.assertEquals("rtoxadhxuvjhxm", model.searchSpace().get(0).modelName());
-        Assertions.assertEquals("qstjc", model.searchSpace().get(0).momentum());
-        Assertions.assertEquals("twmlg", model.searchSpace().get(0).nesterov());
-        Assertions.assertEquals("vnpvvd", model.searchSpace().get(0).numberOfEpochs());
-        Assertions.assertEquals("jnaqyq", model.searchSpace().get(0).numberOfWorkers());
-        Assertions.assertEquals("slz", model.searchSpace().get(0).optimizer());
-        Assertions.assertEquals("cdsvmwbitek", model.searchSpace().get(0).randomSeed());
-        Assertions.assertEquals("fobvfiybxqich", model.searchSpace().get(0).stepLRGamma());
-        Assertions.assertEquals("bfzdqekiv", model.searchSpace().get(0).stepLRStepSize());
-        Assertions.assertEquals("p", model.searchSpace().get(0).trainingBatchSize());
-        Assertions.assertEquals("vdizulrqtbh", model.searchSpace().get(0).validationBatchSize());
-        Assertions.assertEquals("ezp", model.searchSpace().get(0).warmupCosineLRCycles());
-        Assertions.assertEquals("pryfmxmdutzfkgi", model.searchSpace().get(0).warmupCosineLRWarmupEpochs());
-        Assertions.assertEquals("oudccgndjg", model.searchSpace().get(0).weightDecay());
-        Assertions.assertEquals("xga", model.searchSpace().get(0).boxDetectionsPerImage());
-        Assertions.assertEquals("dtkwppth", model.searchSpace().get(0).boxScoreThreshold());
-        Assertions.assertEquals("dprmimrljdpoqf", model.searchSpace().get(0).imageSize());
-        Assertions.assertEquals("emhkftbaewht", model.searchSpace().get(0).maxSize());
-        Assertions.assertEquals("loamfmxtllfltym", model.searchSpace().get(0).minSize());
-        Assertions.assertEquals("nrrfijhggabqb", model.searchSpace().get(0).modelSize());
-        Assertions.assertEquals("mkli", model.searchSpace().get(0).multiScale());
-        Assertions.assertEquals("rwdvffhsdpzou", model.searchSpace().get(0).nmsIouThreshold());
-        Assertions.assertEquals("tqrxqwqnjxrdf", model.searchSpace().get(0).tileGridSize());
-        Assertions.assertEquals("t", model.searchSpace().get(0).tileOverlapRatio());
-        Assertions.assertEquals("lygtavczcxdfweap", model.searchSpace().get(0).tilePredictionsNmsThreshold());
-        Assertions.assertEquals("mlx", model.searchSpace().get(0).validationIouThreshold());
-        Assertions.assertEquals("jphrasp", model.searchSpace().get(0).validationMetricType());
-        Assertions.assertEquals(153451931, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(698214399, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT224H14M52S"), model.limitSettings().timeout());
-        Assertions.assertEquals(1788525665, model.sweepSettings().earlyTermination().delayEvaluation());
-        Assertions.assertEquals(162424717, model.sweepSettings().earlyTermination().evaluationInterval());
-        Assertions.assertEquals(SamplingAlgorithmType.RANDOM, model.sweepSettings().samplingAlgorithm());
-        Assertions.assertEquals("rbhseuerbgpxebjl", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("gsdaluyckh", model.validationData().uri());
-        Assertions.assertEquals(87.50039173567666D, model.validationDataSize());
+        Assertions.assertEquals(47.86652197612106D, model.modelSettings().nmsIouThreshold());
+        Assertions.assertEquals("obvfiybx", model.modelSettings().tileGridSize());
+        Assertions.assertEquals(23.962400838257658D, model.modelSettings().tileOverlapRatio());
+        Assertions.assertEquals(75.28211259931373D, model.modelSettings().tilePredictionsNmsThreshold());
+        Assertions.assertEquals(84.34960808929361D, model.modelSettings().validationIouThreshold());
+        Assertions.assertEquals(ValidationMetricType.COCO_VOC, model.modelSettings().validationMetricType());
+        Assertions.assertEquals("x", model.searchSpace().get(0).amsGradient());
+        Assertions.assertEquals("m", model.searchSpace().get(0).augmentations());
+        Assertions.assertEquals("mcwoxfaxd", model.searchSpace().get(0).beta1());
+        Assertions.assertEquals("qi", model.searchSpace().get(0).beta2());
+        Assertions.assertEquals("satroia", model.searchSpace().get(0).distributed());
+        Assertions.assertEquals("sugmocpcjyc", model.searchSpace().get(0).earlyStopping());
+        Assertions.assertEquals("elrgttwfldsiuo", model.searchSpace().get(0).earlyStoppingDelay());
+        Assertions.assertEquals("nikcedpk", model.searchSpace().get(0).earlyStoppingPatience());
+        Assertions.assertEquals("iwm", model.searchSpace().get(0).enableOnnxNormalization());
+        Assertions.assertEquals("mqr", model.searchSpace().get(0).evaluationFrequency());
+        Assertions.assertEquals("zqv", model.searchSpace().get(0).gradientAccumulationStep());
+        Assertions.assertEquals("czyayubtgmbxi", model.searchSpace().get(0).layersToFreeze());
+        Assertions.assertEquals("hragpxmib", model.searchSpace().get(0).learningRate());
+        Assertions.assertEquals("nupoyryefqmwovyz", model.searchSpace().get(0).learningRateScheduler());
+        Assertions.assertEquals("lnomfpb", model.searchSpace().get(0).modelName());
+        Assertions.assertEquals("eegvyieztkutnj", model.searchSpace().get(0).momentum());
+        Assertions.assertEquals("l", model.searchSpace().get(0).nesterov());
+        Assertions.assertEquals("krehyhtmj", model.searchSpace().get(0).numberOfEpochs());
+        Assertions.assertEquals("uif", model.searchSpace().get(0).numberOfWorkers());
+        Assertions.assertEquals("lxfary", model.searchSpace().get(0).optimizer());
+        Assertions.assertEquals("jlgdez", model.searchSpace().get(0).randomSeed());
+        Assertions.assertEquals("qwahoy", model.searchSpace().get(0).stepLRGamma());
+        Assertions.assertEquals("axqvjweiwtczkddn", model.searchSpace().get(0).stepLRStepSize());
+        Assertions.assertEquals("vbooqbmdqrxy", model.searchSpace().get(0).trainingBatchSize());
+        Assertions.assertEquals("ae", model.searchSpace().get(0).validationBatchSize());
+        Assertions.assertEquals("cflwtjdtlr", model.searchSpace().get(0).warmupCosineLRCycles());
+        Assertions.assertEquals("fooy", model.searchSpace().get(0).warmupCosineLRWarmupEpochs());
+        Assertions.assertEquals("uxdtzcq", model.searchSpace().get(0).weightDecay());
+        Assertions.assertEquals("i", model.searchSpace().get(0).boxDetectionsPerImage());
+        Assertions.assertEquals("vfph", model.searchSpace().get(0).boxScoreThreshold());
+        Assertions.assertEquals("zxplgtpvdvatlz", model.searchSpace().get(0).imageSize());
+        Assertions.assertEquals("schnzrsbkkzov", model.searchSpace().get(0).maxSize());
+        Assertions.assertEquals("dmnfmfws", model.searchSpace().get(0).minSize());
+        Assertions.assertEquals("fo", model.searchSpace().get(0).modelSize());
+        Assertions.assertEquals("worimmovzwdehk", model.searchSpace().get(0).multiScale());
+        Assertions.assertEquals("vh", model.searchSpace().get(0).nmsIouThreshold());
+        Assertions.assertEquals("ovanyrva", model.searchSpace().get(0).tileGridSize());
+        Assertions.assertEquals("tgelgwewikfy", model.searchSpace().get(0).tileOverlapRatio());
+        Assertions.assertEquals("a", model.searchSpace().get(0).tilePredictionsNmsThreshold());
+        Assertions.assertEquals("mymnqoqjumovsf", model.searchSpace().get(0).validationIouThreshold());
+        Assertions.assertEquals("bvzo", model.searchSpace().get(0).validationMetricType());
+        Assertions.assertEquals(875073899, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(1778622177, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT165H53M59S"), model.limitSettings().timeout());
+        Assertions.assertEquals(1067377422, model.sweepSettings().earlyTermination().delayEvaluation());
+        Assertions.assertEquals(1488992039, model.sweepSettings().earlyTermination().evaluationInterval());
+        Assertions.assertEquals(SamplingAlgorithmType.GRID, model.sweepSettings().samplingAlgorithm());
+        Assertions.assertEquals("zzxljbkhxsdpla", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("pdkktpmbmxbmbr", model.validationData().uri());
+        Assertions.assertEquals(0.07296190898538057D, model.validationDataSize());
         Assertions.assertEquals(InstanceSegmentationPrimaryMetrics.MEAN_AVERAGE_PRECISION, model.primaryMetric());
     }
 }

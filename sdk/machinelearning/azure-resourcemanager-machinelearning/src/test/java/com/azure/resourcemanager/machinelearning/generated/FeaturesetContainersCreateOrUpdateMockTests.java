@@ -24,7 +24,7 @@ public final class FeaturesetContainersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"bctitexrbalv\",\"nextVersion\":\"dqilp\",\"description\":\"hxf\",\"properties\":{\"ckbjvdxhyf\":\"pdyrqlazfjl\"},\"tags\":{\"fdz\":\"de\"}},\"id\":\"alkqlvbkz\",\"name\":\"iyrnwwoivin\",\"type\":\"yo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"xvtnohsym\",\"nextVersion\":\"irfzvtzr\",\"description\":\"ilipmuu\",\"properties\":{\"ufhwpkpej\":\"kzs\",\"rsm\":\"szwrqmsw\",\"cnzfajpt\":\"w\",\"afjcdccqjaefrzq\":\"hwrnwrakap\"},\"tags\":{\"dykjchzcz\":\"gggidr\",\"tcvdzytsd\":\"cpqkpgbssjqj\"}},\"id\":\"bkorpu\",\"name\":\"crppn\",\"type\":\"zbu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class FeaturesetContainersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeaturesetContainer response = manager.featuresetContainers()
-            .define("bibfviacghygmt")
-            .withExistingWorkspace("nbcpiadjslvxs", "lcd")
-            .withProperties(new FeaturesetContainerProperties().withDescription("w")
-                .withProperties(
-                    mapOf("fjuvhuo", "zmsyezx", "zdheknmcvm", "fotwvkuhtdxdco", "kccru", "iundifuaht", "foqody", "rz"))
-                .withTags(mapOf("lvtiploaws", "yx", "ynjtudfhpelza", "ctilbxn"))
+            .define("hgvj")
+            .withExistingWorkspace("zezeew", "rblksddb")
+            .withProperties(new FeaturesetContainerProperties().withDescription("uypdcgx")
+                .withProperties(mapOf("bzcmpbymsgcl", "wvuw", "mjckctybhsg", "smrgjfy", "xjev", "iumktslmeyon"))
+                .withTags(mapOf("ihwwkhiyubykxzcv", "xrgwtynqbhhf", "anzolqqpanzpzmo", "ttyihpsrjzpvojw",
+                    "yowisqfifmit", "upqlusxkzdnot", "msc", "vypkiqlouezbce"))
                 .withIsArchived(true))
             .create();
 
-        Assertions.assertEquals("hxf", response.properties().description());
-        Assertions.assertEquals("pdyrqlazfjl", response.properties().properties().get("ckbjvdxhyf"));
-        Assertions.assertEquals("de", response.properties().tags().get("fdz"));
+        Assertions.assertEquals("ilipmuu", response.properties().description());
+        Assertions.assertEquals("kzs", response.properties().properties().get("ufhwpkpej"));
+        Assertions.assertEquals("gggidr", response.properties().tags().get("dykjchzcz"));
         Assertions.assertFalse(response.properties().isArchived());
     }
 

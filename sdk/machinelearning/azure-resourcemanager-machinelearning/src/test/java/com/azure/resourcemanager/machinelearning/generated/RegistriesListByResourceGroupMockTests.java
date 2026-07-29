@@ -24,7 +24,7 @@ public final class RegistriesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"discoveryUrl\":\"bftswcd\",\"intellectualPropertyPublisher\":\"nseptvdtic\",\"managedResourceGroup\":{\"resourceId\":\"lgzwkopxdkb\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"gppwxni\"},{\"principalId\":\"zrxxfnduvqzjnnu\"},{\"principalId\":\"vjzrfxajtbcqjk\"},{\"principalId\":\"jcurxrjwyzrie\"}]},\"mlFlowRegistryUri\":\"qmlzuwtbdz\",\"registryPrivateEndpointConnections\":[{\"id\":\"kmpebfhlgeehb\",\"location\":\"gplnl\",\"properties\":{\"groupIds\":[\"szunbuafm\",\"ubukqmierzrnob\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"uzyt\"}},{\"id\":\"gzdhzbjec\",\"location\":\"ysxnku\",\"properties\":{\"groupIds\":[\"lsevzc\",\"rwn\",\"kgdwqym\",\"sfqeaxdqel\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"aqh\"}}],\"publicNetworkAccess\":\"awgqrwuh\",\"regionDetails\":[{\"acrDetails\":[{},{},{}],\"location\":\"fgpbcbkc\",\"storageAccountDetails\":[{}]}]},\"identity\":{\"principalId\":\"jieask\",\"tenantId\":\"qclnfusrgnoskkhb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yeikbv\":{\"principalId\":\"yy\",\"clientId\":\"h\"},\"pgjl\":{\"principalId\":\"rurgbqaucpck\",\"clientId\":\"nohafwm\"}}},\"kind\":\"tugpeametsdwxfa\",\"sku\":{\"name\":\"xccfegsav\",\"tier\":\"Free\",\"size\":\"ucv\",\"family\":\"ndh\",\"capacity\":745172301},\"location\":\"azkmqfwbgdmfv\",\"tags\":{\"trcodbqeogldmxxb\":\"mpotalopfigrx\",\"gqrpl\":\"hspvamsxrwqlwdf\"},\"id\":\"eqzvdbb\",\"name\":\"ffgxtaelxtpfc\",\"type\":\"atbx\"}]}";
+            = "{\"value\":[{\"properties\":{\"discoveryUrl\":\"rjlijkkvbfaehjji\",\"intellectualPropertyPublisher\":\"jqxavqmdmracfsf\",\"managedResourceGroup\":{\"resourceId\":\"alihhss\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"hcvlavyrjlnd\"},{\"principalId\":\"myzvtiojtpdr\"},{\"principalId\":\"xaxoyj\"}]},\"mlFlowRegistryUri\":\"utwe\",\"registryPrivateEndpointConnections\":[{\"id\":\"vktecc\",\"location\":\"nat\",\"properties\":{\"groupIds\":[\"axbqpmfhjikqcn\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"tghnmelzvrchm\"}},{\"id\":\"cgrmwyvhd\",\"location\":\"plgqqqgrbr\",\"properties\":{\"groupIds\":[\"pgtipaaoylwh\",\"mkbweasgyp\",\"ixdmoba\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"qeuwdvclsxdqdch\"}},{\"id\":\"i\",\"location\":\"xr\",\"properties\":{\"groupIds\":[\"x\",\"qkwargcbgdgos\",\"jiqex\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"kmvugflhd\"}},{\"id\":\"xurhcnnkvthwtamv\",\"location\":\"gyvxhfmuhkezuucq\",\"properties\":{\"groupIds\":[\"dxvbeqzjdwxt\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"wnee\"}}],\"publicNetworkAccess\":\"ytlxugjr\",\"regionDetails\":[{\"acrDetails\":[{},{},{}],\"location\":\"ofkvfruxz\",\"storageAccountDetails\":[{}]},{\"acrDetails\":[{},{},{},{}],\"location\":\"ykzovstvymdqa\",\"storageAccountDetails\":[{},{},{}]},{\"acrDetails\":[{},{},{}],\"location\":\"nzg\",\"storageAccountDetails\":[{},{},{},{}]},{\"acrDetails\":[{},{}],\"location\":\"oxhvoyjdgf\",\"storageAccountDetails\":[{}]}]},\"identity\":{\"principalId\":\"rvpa\",\"tenantId\":\"rdeexwejuguvnxb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wseacbtaxd\":{\"principalId\":\"rnzoytkbe\",\"clientId\":\"yfenrozoijoxcbpk\"},\"qy\":{\"principalId\":\"anhsxwh\",\"clientId\":\"ztdacrqcwkk\"},\"xk\":{\"principalId\":\"ajmmczupdcbgr\",\"clientId\":\"sdbk\"},\"sceylaulpuexyigx\":{\"principalId\":\"umgsiv\",\"clientId\":\"kscwbshfihvl\"}}},\"kind\":\"yecxdslspgn\",\"sku\":{\"name\":\"efyhsbyhwlvsvsy\",\"tier\":\"Standard\",\"size\":\"rqtfkmvzrkpm\",\"family\":\"xdwfcu\",\"capacity\":2083397371},\"location\":\"tfvqukkmvzene\",\"tags\":{\"semjhhxlsu\":\"qrjylwq\",\"tdpfz\":\"ehztbejrdzwy\",\"jkykqf\":\"ufifnjwjh\",\"ndnrihpjaxhcb\":\"kmcykxmysmk\"},\"id\":\"ejnoignyd\",\"name\":\"krnp\",\"type\":\"bnmrmhkipjardvdp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,32 +34,32 @@ public final class RegistriesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Registry> response
-            = manager.registries().listByResourceGroup("mtsnvo", com.azure.core.util.Context.NONE);
+            = manager.registries().listByResourceGroup("eyrftxytjayp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("azkmqfwbgdmfv", response.iterator().next().location());
-        Assertions.assertEquals("mpotalopfigrx", response.iterator().next().tags().get("trcodbqeogldmxxb"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("tugpeametsdwxfa", response.iterator().next().kind());
-        Assertions.assertEquals("xccfegsav", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("ucv", response.iterator().next().sku().size());
-        Assertions.assertEquals("ndh", response.iterator().next().sku().family());
-        Assertions.assertEquals(745172301, response.iterator().next().sku().capacity());
-        Assertions.assertEquals("bftswcd", response.iterator().next().discoveryUrl());
-        Assertions.assertEquals("nseptvdtic", response.iterator().next().intellectualPropertyPublisher());
-        Assertions.assertEquals("lgzwkopxdkb", response.iterator().next().managedResourceGroup().resourceId());
-        Assertions.assertEquals("gppwxni",
+        Assertions.assertEquals("tfvqukkmvzene", response.iterator().next().location());
+        Assertions.assertEquals("qrjylwq", response.iterator().next().tags().get("semjhhxlsu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("yecxdslspgn", response.iterator().next().kind());
+        Assertions.assertEquals("efyhsbyhwlvsvsy", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("rqtfkmvzrkpm", response.iterator().next().sku().size());
+        Assertions.assertEquals("xdwfcu", response.iterator().next().sku().family());
+        Assertions.assertEquals(2083397371, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("rjlijkkvbfaehjji", response.iterator().next().discoveryUrl());
+        Assertions.assertEquals("jqxavqmdmracfsf", response.iterator().next().intellectualPropertyPublisher());
+        Assertions.assertEquals("alihhss", response.iterator().next().managedResourceGroup().resourceId());
+        Assertions.assertEquals("hcvlavyrjlnd",
             response.iterator().next().managedResourceGroupSettings().assignedIdentities().get(0).principalId());
-        Assertions.assertEquals("qmlzuwtbdz", response.iterator().next().mlFlowRegistryUri());
-        Assertions.assertEquals("kmpebfhlgeehb",
-            response.iterator().next().registryPrivateEndpointConnections().get(0).id());
-        Assertions.assertEquals("gplnl",
+        Assertions.assertEquals("utwe", response.iterator().next().mlFlowRegistryUri());
+        Assertions.assertEquals("vktecc", response.iterator().next().registryPrivateEndpointConnections().get(0).id());
+        Assertions.assertEquals("nat",
             response.iterator().next().registryPrivateEndpointConnections().get(0).location());
-        Assertions.assertEquals("szunbuafm",
+        Assertions.assertEquals("axbqpmfhjikqcn",
             response.iterator().next().registryPrivateEndpointConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("uzyt",
+        Assertions.assertEquals("tghnmelzvrchm",
             response.iterator().next().registryPrivateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals("awgqrwuh", response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("fgpbcbkc", response.iterator().next().regionDetails().get(0).location());
+        Assertions.assertEquals("ytlxugjr", response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("ofkvfruxz", response.iterator().next().regionDetails().get(0).location());
     }
 }

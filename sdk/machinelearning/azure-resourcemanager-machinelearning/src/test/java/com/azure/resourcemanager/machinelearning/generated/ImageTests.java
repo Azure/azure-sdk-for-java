@@ -15,24 +15,24 @@ public final class ImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Image model = BinaryData.fromString(
-            "{\"type\":\"docker\",\"reference\":\"sdjpgxe\",\"version\":\"gwkcfferzn\",\"fpohimgckycjpeeb\":\"\\\"dataivoveomkhfeqcoop\\\"\",\"xsuloutnpb\":\"\\\"datanbz\\\"\",\"pfhsldqdza\":\"\\\"dataxooqohgpncdmwkh\\\"\",\"kswhcamwuynfxk\":\"\\\"dataiunyevdyzdsytc\\\"\"}")
+            "{\"type\":\"azureml\",\"reference\":\"dj\",\"version\":\"fsvpzxg\",\"fj\":\"\\\"dataxuym\\\"\",\"qregfurdpagknx\":\"\\\"datamgwtmszcfyzqp\\\"\",\"kycjcg\":\"\\\"dataaovrgihlnzffewv\\\"\"}")
             .toObject(Image.class);
-        Assertions.assertEquals(ImageType.DOCKER, model.type());
-        Assertions.assertEquals("sdjpgxe", model.reference());
-        Assertions.assertEquals("gwkcfferzn", model.version());
+        Assertions.assertEquals(ImageType.AZUREML, model.type());
+        Assertions.assertEquals("dj", model.reference());
+        Assertions.assertEquals("fsvpzxg", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Image model = new Image().withType(ImageType.DOCKER)
-            .withReference("sdjpgxe")
-            .withVersion("gwkcfferzn")
-            .withAdditionalProperties(mapOf("xsuloutnpb", "\"datanbz\"", "fpohimgckycjpeeb", "\"dataivoveomkhfeqcoop\"",
-                "kswhcamwuynfxk", "\"dataiunyevdyzdsytc\"", "pfhsldqdza", "\"dataxooqohgpncdmwkh\""));
+        Image model = new Image().withType(ImageType.AZUREML)
+            .withReference("dj")
+            .withVersion("fsvpzxg")
+            .withAdditionalProperties(mapOf("fj", "\"dataxuym\"", "kycjcg", "\"dataaovrgihlnzffewv\"", "qregfurdpagknx",
+                "\"datamgwtmszcfyzqp\""));
         model = BinaryData.fromObject(model).toObject(Image.class);
-        Assertions.assertEquals(ImageType.DOCKER, model.type());
-        Assertions.assertEquals("sdjpgxe", model.reference());
-        Assertions.assertEquals("gwkcfferzn", model.version());
+        Assertions.assertEquals(ImageType.AZUREML, model.type());
+        Assertions.assertEquals("dj", model.reference());
+        Assertions.assertEquals("fsvpzxg", model.version());
     }
 
     // Use "Map.of" if available

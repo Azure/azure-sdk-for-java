@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class PTUQuotasGetAvailableWithResponseMockTests {
     @Test
     public void testGetAvailableWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"total\":8450583645374854728}}";
+        String responseStr = "{\"properties\":{\"total\":5938898917035886188}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class PTUQuotasGetAvailableWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvailableQuota response
-            = manager.pTUQuotas().getAvailableWithResponse("bfjdfl", com.azure.core.util.Context.NONE).getValue();
+            = manager.pTUQuotas().getAvailableWithResponse("bwgmznvlwcnj", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(8450583645374854728L, response.properties().total());
+        Assertions.assertEquals(5938898917035886188L, response.properties().total());
     }
 }

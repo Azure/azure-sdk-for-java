@@ -25,7 +25,7 @@ public final class RegistryComponentContainersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"wsxnyockpcssus\",\"nextVersion\":\"gzmmrzw\",\"description\":\"btkcvola\",\"properties\":{\"u\":\"kgov\",\"xiyhmjwsnwk\":\"ndcqox\"},\"tags\":{\"gbouvzjodi\":\"vaeqi\",\"ajbenf\":\"gudarc\",\"ikffczwaew\":\"uufvo\"}},\"id\":\"lsuhsghdovcp\",\"name\":\"wfnapgagvhsix\",\"type\":\"cdaukhtw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"gikokjwgejaku\",\"nextVersion\":\"zwnqhcpkj\",\"description\":\"yszdtgwmqcutkkpr\",\"properties\":{\"utckfhmdcv\":\"tmccdejtoypluxv\"},\"tags\":{\"xwkkbnhmdtj\":\"rezvujpbmzcxlgmu\"}},\"id\":\"pfoispchhvvmvs\",\"name\":\"gyqdhazm\",\"type\":\"ug\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,21 @@ public final class RegistryComponentContainersCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ComponentContainer response = manager.registryComponentContainers()
-            .createOrUpdate("byqxeyzq", "upsipc", "xvaovssibn",
-                new ComponentContainerInner().withProperties(new ComponentContainerProperties().withDescription("iyo")
-                    .withProperties(mapOf("ndwcfmzmqmgdlg", "ualrixzdbntopba", "pstwcyigrhf", "xkyboysquygok",
-                        "hhvoowr", "vxypqukcojy"))
-                    .withTags(mapOf("otawyiq", "u", "bhzukrpfbhihddi", "jnxzvjnmpvsblud", "yfku", "uexy"))
-                    .withIsArchived(false)),
-                com.azure.core.util.Context.NONE);
+        ComponentContainer response
+            = manager.registryComponentContainers()
+                .createOrUpdate("rbwyey", "nbubya", "towbuuhlwbgvzuxf",
+                    new ComponentContainerInner().withProperties(new ComponentContainerProperties()
+                        .withDescription("ylhvpljzrqwjt")
+                        .withProperties(
+                            mapOf("jkejya", "mo", "wpa", "kyjvctqaqcz", "brszltvmmdsngoa", "yklxsv", "hhnsf", "fmr"))
+                        .withTags(mapOf("jooep", "kcgdnhacexibomr"))
+                        .withIsArchived(true)),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("btkcvola", response.properties().description());
-        Assertions.assertEquals("kgov", response.properties().properties().get("u"));
-        Assertions.assertEquals("vaeqi", response.properties().tags().get("gbouvzjodi"));
-        Assertions.assertFalse(response.properties().isArchived());
+        Assertions.assertEquals("yszdtgwmqcutkkpr", response.properties().description());
+        Assertions.assertEquals("tmccdejtoypluxv", response.properties().properties().get("utckfhmdcv"));
+        Assertions.assertEquals("rezvujpbmzcxlgmu", response.properties().tags().get("xwkkbnhmdtj"));
+        Assertions.assertTrue(response.properties().isArchived());
     }
 
     // Use "Map.of" if available

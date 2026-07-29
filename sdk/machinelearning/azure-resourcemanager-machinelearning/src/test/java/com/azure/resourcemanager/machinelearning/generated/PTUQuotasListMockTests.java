@@ -22,7 +22,7 @@ public final class PTUQuotasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"modelCollection\":\"yuspz\",\"quota\":3744808428124007895,\"usageDetails\":[{\"collectionQuotaUsage\":5388495685553834688,\"deploymentName\":\"ebdefep\",\"resourceGroup\":\"hruzzwgbboziv\",\"usage\":7864567325910111064,\"workspaceName\":\"nlhsxeasxsqq\"},{\"collectionQuotaUsage\":8731553491150594339,\"deploymentName\":\"b\",\"resourceGroup\":\"mohdukprqyi\",\"usage\":2955206883854919785,\"workspaceName\":\"morsyirfkxazuboi\"}]}]}";
+            = "{\"value\":[{\"modelCollection\":\"nbxqkbe\",\"quota\":1638717646762861551,\"usageDetails\":[{\"collectionQuotaUsage\":4493480735029386719,\"deploymentName\":\"ewkssxp\",\"resourceGroup\":\"hlhprjcfy\",\"usage\":1631961180929203481,\"workspaceName\":\"ilxlonzifdf\"},{\"collectionQuotaUsage\":5824495087060215021,\"deploymentName\":\"dnghdnrtyd\",\"resourceGroup\":\"kariatx\",\"usage\":6704897624530669902,\"workspaceName\":\"rajoghgxgzbzsa\"},{\"collectionQuotaUsage\":5877899158137545868,\"deploymentName\":\"wet\",\"resourceGroup\":\"sgcwadv\",\"usage\":7754357602121995931,\"workspaceName\":\"e\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class PTUQuotasListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageAndQuotaDetails> response
-            = manager.pTUQuotas().list("lcahhfuydgdhit", "v", com.azure.core.util.Context.NONE);
+            = manager.pTUQuotas().list("yqpubwzzxetx", "cjrbsq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yuspz", response.iterator().next().modelCollection());
-        Assertions.assertEquals(3744808428124007895L, response.iterator().next().quota());
-        Assertions.assertEquals(5388495685553834688L,
+        Assertions.assertEquals("nbxqkbe", response.iterator().next().modelCollection());
+        Assertions.assertEquals(1638717646762861551L, response.iterator().next().quota());
+        Assertions.assertEquals(4493480735029386719L,
             response.iterator().next().usageDetails().get(0).collectionQuotaUsage());
-        Assertions.assertEquals("ebdefep", response.iterator().next().usageDetails().get(0).deploymentName());
-        Assertions.assertEquals("hruzzwgbboziv", response.iterator().next().usageDetails().get(0).resourceGroup());
-        Assertions.assertEquals(7864567325910111064L, response.iterator().next().usageDetails().get(0).usage());
-        Assertions.assertEquals("nlhsxeasxsqq", response.iterator().next().usageDetails().get(0).workspaceName());
+        Assertions.assertEquals("ewkssxp", response.iterator().next().usageDetails().get(0).deploymentName());
+        Assertions.assertEquals("hlhprjcfy", response.iterator().next().usageDetails().get(0).resourceGroup());
+        Assertions.assertEquals(1631961180929203481L, response.iterator().next().usageDetails().get(0).usage());
+        Assertions.assertEquals("ilxlonzifdf", response.iterator().next().usageDetails().get(0).workspaceName());
     }
 }

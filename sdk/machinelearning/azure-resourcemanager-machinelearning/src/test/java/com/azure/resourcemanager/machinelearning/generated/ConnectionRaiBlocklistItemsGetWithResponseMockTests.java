@@ -21,7 +21,7 @@ public final class ConnectionRaiBlocklistItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isRegex\":false,\"pattern\":\"zcxkuusbahca\"},\"id\":\"qeybdnzeyakgrko\",\"name\":\"fqmxzkicx\",\"type\":\"umq\"}";
+            = "{\"properties\":{\"isRegex\":false,\"pattern\":\"hitxo\"},\"id\":\"fomohcyno\",\"name\":\"hhbvbqxtktkeuapo\",\"type\":\"oofbnbhpt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ConnectionRaiBlocklistItemsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItemPropertiesBasicResource response = manager.connectionRaiBlocklistItems()
-            .getWithResponse("rtnhdxlfn", "dclkmg", "nzlfyxaiaf", "lmx", "kfvycvhwduoa",
+            .getWithResponse("cmkpxbckjrfkwc", "qmyowddhtwaxob", "zatqocvrdj", "vsclwpsteuvjdnh", "cyvymv",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("zcxkuusbahca", response.properties().pattern());
+        Assertions.assertEquals("hitxo", response.properties().pattern());
     }
 }

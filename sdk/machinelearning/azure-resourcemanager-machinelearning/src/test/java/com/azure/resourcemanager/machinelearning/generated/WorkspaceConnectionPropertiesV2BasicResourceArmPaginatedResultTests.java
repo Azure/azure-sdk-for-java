@@ -16,20 +16,19 @@ public final class WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResul
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"AzureDatabricksDeltaLake\",\"createdByWorkspaceArmId\":\"lydp\",\"error\":\"ensbmz\",\"expiryTime\":\"2021-01-09T08:26:41Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":false,\"metadata\":{\"xwjoqfzwand\":\"hbfexmizz\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"olxtqmric\",\"s\",\"lzbki\",\"mjfgoxedrmra\"],\"target\":\"vchvvoy\",\"useWorkspaceManagedIdentity\":true},\"id\":\"ntnwzruzso\",\"name\":\"wxcsmx\",\"type\":\"lcappnvcebspci\"}],\"nextLink\":\"omhkdwuwedupb\"}")
+            "{\"value\":[{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"AppConfig\",\"createdByWorkspaceArmId\":\"m\",\"error\":\"ftshfgmuxuqiag\",\"expiryTime\":\"2021-03-17T05:39:52Z\",\"group\":\"NoSQL\",\"isSharedToAll\":true,\"metadata\":{\"wkgvnlfueyxfzibr\":\"hskxpa\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Active\",\"sharedUserList\":[\"ebpiu\",\"enbvrllldfknb\",\"zwi\",\"sxryiqjzlwrdux\"],\"target\":\"p\",\"useWorkspaceManagedIdentity\":false},\"id\":\"jahy\",\"name\":\"fwfctqvey\",\"type\":\"bkqynlzx\"},{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"RemoteTool\",\"createdByWorkspaceArmId\":\"upjckiehdm\",\"error\":\"o\",\"expiryTime\":\"2021-03-15T10:21:05Z\",\"group\":\"NoSQL\",\"isSharedToAll\":false,\"metadata\":{\"eervgc\":\"cuans\",\"kijhmine\":\"csapvbcqpfus\",\"ivp\":\"k\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"fqmljewynb\"],\"target\":\"vcwvurkmjufavvln\",\"useWorkspaceManagedIdentity\":true},\"id\":\"tmyn\",\"name\":\"lnmrznmtvr\",\"type\":\"kfcwxizkstxneyk\"},{\"properties\":{\"authType\":\"WorkspaceConnectionPropertiesV2\",\"category\":\"Zoho\",\"createdByWorkspaceArmId\":\"utcbvriuvnfazx\",\"error\":\"sayyaeiivjqkqtjw\",\"expiryTime\":\"2021-05-21T21:01:11Z\",\"group\":\"Azure\",\"isSharedToAll\":true,\"metadata\":{\"guz\":\"xqetxtdqius\",\"ijzqjhljsa\":\"jvg\",\"ecagsbfeiirpn\":\"mjsisfqqhc\",\"jlwmqc\":\"ygllfkchhgsjuzzc\"},\"peRequirement\":\"Required\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"kkhdhpmkxdu\",\"kxpu\",\"zdyoqywsu\",\"rpzhr\"],\"target\":\"ezxiz\",\"useWorkspaceManagedIdentity\":false},\"id\":\"bfjilbuazccouhw\",\"name\":\"vkdf\",\"type\":\"jsk\"}],\"nextLink\":\"bxzepirtv\"}")
             .toObject(WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals(ConnectionCategory.AZURE_DATABRICKS_DELTA_LAKE,
-            model.value().get(0).properties().category());
-        Assertions.assertEquals("ensbmz", model.value().get(0).properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T08:26:41Z"),
+        Assertions.assertEquals(ConnectionCategory.APP_CONFIG, model.value().get(0).properties().category());
+        Assertions.assertEquals("ftshfgmuxuqiag", model.value().get(0).properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T05:39:52Z"),
             model.value().get(0).properties().expiryTime());
-        Assertions.assertFalse(model.value().get(0).properties().isSharedToAll());
-        Assertions.assertEquals("hbfexmizz", model.value().get(0).properties().metadata().get("xwjoqfzwand"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.value().get(0).properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.INACTIVE, model.value().get(0).properties().peStatus());
-        Assertions.assertEquals("olxtqmric", model.value().get(0).properties().sharedUserList().get(0));
-        Assertions.assertEquals("vchvvoy", model.value().get(0).properties().target());
-        Assertions.assertTrue(model.value().get(0).properties().useWorkspaceManagedIdentity());
-        Assertions.assertEquals("omhkdwuwedupb", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("hskxpa", model.value().get(0).properties().metadata().get("wkgvnlfueyxfzibr"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.value().get(0).properties().peRequirement());
+        Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.value().get(0).properties().peStatus());
+        Assertions.assertEquals("ebpiu", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("p", model.value().get(0).properties().target());
+        Assertions.assertFalse(model.value().get(0).properties().useWorkspaceManagedIdentity());
+        Assertions.assertEquals("bxzepirtv", model.nextLink());
     }
 }

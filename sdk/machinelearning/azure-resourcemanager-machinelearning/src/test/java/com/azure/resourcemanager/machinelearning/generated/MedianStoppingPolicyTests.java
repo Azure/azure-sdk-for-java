@@ -13,18 +13,18 @@ public final class MedianStoppingPolicyTests {
     public void testDeserialize() throws Exception {
         MedianStoppingPolicy model = BinaryData
             .fromString(
-                "{\"policyType\":\"MedianStopping\",\"delayEvaluation\":1657701466,\"evaluationInterval\":833506508}")
+                "{\"policyType\":\"MedianStopping\",\"delayEvaluation\":1021707486,\"evaluationInterval\":757456202}")
             .toObject(MedianStoppingPolicy.class);
-        Assertions.assertEquals(1657701466, model.delayEvaluation());
-        Assertions.assertEquals(833506508, model.evaluationInterval());
+        Assertions.assertEquals(1021707486, model.delayEvaluation());
+        Assertions.assertEquals(757456202, model.evaluationInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MedianStoppingPolicy model
-            = new MedianStoppingPolicy().withDelayEvaluation(1657701466).withEvaluationInterval(833506508);
+            = new MedianStoppingPolicy().withDelayEvaluation(1021707486).withEvaluationInterval(757456202);
         model = BinaryData.fromObject(model).toObject(MedianStoppingPolicy.class);
-        Assertions.assertEquals(1657701466, model.delayEvaluation());
-        Assertions.assertEquals(833506508, model.evaluationInterval());
+        Assertions.assertEquals(1021707486, model.delayEvaluation());
+        Assertions.assertEquals(757456202, model.evaluationInterval());
     }
 }

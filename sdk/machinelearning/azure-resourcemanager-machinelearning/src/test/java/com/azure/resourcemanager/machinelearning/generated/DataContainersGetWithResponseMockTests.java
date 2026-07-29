@@ -22,7 +22,7 @@ public final class DataContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"mltable\",\"isArchived\":true,\"latestVersion\":\"wqbak\",\"nextVersion\":\"xerowuzvrnnb\",\"description\":\"ra\",\"properties\":{\"ofmazhkqqs\":\"nmtojxg\",\"dmwiwevveswg\":\"knaqszbwgp\"},\"tags\":{\"dargkwim\":\"qqhd\",\"xvbkirgknhfwlajw\":\"cceeeuquuwczzcuj\",\"spewyzhydtkbm\":\"ajydjbjgip\",\"garmawokgcnev\":\"rsdplvia\"}},\"id\":\"cwbqy\",\"name\":\"clwbjgiynqryoisw\",\"type\":\"ofvsxau\"}";
+            = "{\"properties\":{\"dataType\":\"mltable\",\"isArchived\":true,\"latestVersion\":\"rrsjscosanjso\",\"nextVersion\":\"rztog\",\"description\":\"gbncl\",\"properties\":{\"uz\":\"kzfgg\",\"zui\":\"vdant\",\"c\":\"azoabthutc\"},\"tags\":{\"zwegvuoj\":\"pwabzfihszfkpoid\",\"sssmyaemkrhbsdg\":\"wgweccvufjqvfc\",\"qgpqcpenobqysb\":\"tluif\",\"rszsu\":\"espqbvva\"}},\"id\":\"sautbri\",\"name\":\"vvofenintzunhyyq\",\"type\":\"c\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class DataContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataContainer response = manager.dataContainers()
-            .getWithResponse("v", "unudmakkshrnaxk", "zkwohdigeyuocft", com.azure.core.util.Context.NONE)
+            .getWithResponse("wwdocjasu", "megjkfisz", "exumfavweslo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ra", response.properties().description());
-        Assertions.assertEquals("nmtojxg", response.properties().properties().get("ofmazhkqqs"));
-        Assertions.assertEquals("qqhd", response.properties().tags().get("dargkwim"));
+        Assertions.assertEquals("gbncl", response.properties().description());
+        Assertions.assertEquals("kzfgg", response.properties().properties().get("uz"));
+        Assertions.assertEquals("pwabzfihszfkpoid", response.properties().tags().get("zwegvuoj"));
         Assertions.assertTrue(response.properties().isArchived());
         Assertions.assertEquals(DataType.MLTABLE, response.properties().dataType());
     }

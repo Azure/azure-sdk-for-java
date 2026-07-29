@@ -15,33 +15,33 @@ public final class AzureOpenAiFineTuningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureOpenAiFineTuning model = BinaryData.fromString(
-            "{\"modelProvider\":\"AzureOpenAI\",\"hyperParameters\":{\"batchSize\":1194687245,\"learningRateMultiplier\":63.990177127512005,\"nEpochs\":245383792},\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"cvsvk\"},\"taskType\":\"TextSummarization\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"jolpyoklkvuz\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"vhmlieoi\"}}")
+            "{\"modelProvider\":\"AzureOpenAI\",\"hyperParameters\":{\"batchSize\":307725158,\"learningRateMultiplier\":87.36997088794438,\"nEpochs\":1156669978},\"model\":{\"jobInputType\":\"JobInput\",\"description\":\"dmiplois\"},\"taskType\":\"TextCompletion\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"so\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"ntwgkvyo\"}}")
             .toObject(AzureOpenAiFineTuning.class);
-        Assertions.assertEquals("cvsvk", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.TEXT_SUMMARIZATION, model.taskType());
-        Assertions.assertEquals("jolpyoklkvuz", model.trainingData().description());
-        Assertions.assertEquals("vhmlieoi", model.validationData().description());
-        Assertions.assertEquals(1194687245, model.hyperParameters().batchSize());
-        Assertions.assertEquals(63.990177127512005D, model.hyperParameters().learningRateMultiplier());
-        Assertions.assertEquals(245383792, model.hyperParameters().nEpochs());
+        Assertions.assertEquals("dmiplois", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.TEXT_COMPLETION, model.taskType());
+        Assertions.assertEquals("so", model.trainingData().description());
+        Assertions.assertEquals("ntwgkvyo", model.validationData().description());
+        Assertions.assertEquals(307725158, model.hyperParameters().batchSize());
+        Assertions.assertEquals(87.36997088794438D, model.hyperParameters().learningRateMultiplier());
+        Assertions.assertEquals(1156669978, model.hyperParameters().nEpochs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureOpenAiFineTuning model = new AzureOpenAiFineTuning().withModel(new JobInput().withDescription("cvsvk"))
-            .withTaskType(FineTuningTaskType.TEXT_SUMMARIZATION)
-            .withTrainingData(new JobInput().withDescription("jolpyoklkvuz"))
-            .withValidationData(new JobInput().withDescription("vhmlieoi"))
-            .withHyperParameters(new AzureOpenAiHyperParameters().withBatchSize(1194687245)
-                .withLearningRateMultiplier(63.990177127512005D)
-                .withNEpochs(245383792));
+        AzureOpenAiFineTuning model = new AzureOpenAiFineTuning().withModel(new JobInput().withDescription("dmiplois"))
+            .withTaskType(FineTuningTaskType.TEXT_COMPLETION)
+            .withTrainingData(new JobInput().withDescription("so"))
+            .withValidationData(new JobInput().withDescription("ntwgkvyo"))
+            .withHyperParameters(new AzureOpenAiHyperParameters().withBatchSize(307725158)
+                .withLearningRateMultiplier(87.36997088794438D)
+                .withNEpochs(1156669978));
         model = BinaryData.fromObject(model).toObject(AzureOpenAiFineTuning.class);
-        Assertions.assertEquals("cvsvk", model.model().description());
-        Assertions.assertEquals(FineTuningTaskType.TEXT_SUMMARIZATION, model.taskType());
-        Assertions.assertEquals("jolpyoklkvuz", model.trainingData().description());
-        Assertions.assertEquals("vhmlieoi", model.validationData().description());
-        Assertions.assertEquals(1194687245, model.hyperParameters().batchSize());
-        Assertions.assertEquals(63.990177127512005D, model.hyperParameters().learningRateMultiplier());
-        Assertions.assertEquals(245383792, model.hyperParameters().nEpochs());
+        Assertions.assertEquals("dmiplois", model.model().description());
+        Assertions.assertEquals(FineTuningTaskType.TEXT_COMPLETION, model.taskType());
+        Assertions.assertEquals("so", model.trainingData().description());
+        Assertions.assertEquals("ntwgkvyo", model.validationData().description());
+        Assertions.assertEquals(307725158, model.hyperParameters().batchSize());
+        Assertions.assertEquals(87.36997088794438D, model.hyperParameters().learningRateMultiplier());
+        Assertions.assertEquals(1156669978, model.hyperParameters().nEpochs());
     }
 }

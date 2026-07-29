@@ -13,17 +13,17 @@ public final class TensorFlowTests {
     public void testDeserialize() throws Exception {
         TensorFlow model = BinaryData
             .fromString(
-                "{\"distributionType\":\"TensorFlow\",\"parameterServerCount\":715322521,\"workerCount\":1082076426}")
+                "{\"distributionType\":\"TensorFlow\",\"parameterServerCount\":1749260230,\"workerCount\":1320265729}")
             .toObject(TensorFlow.class);
-        Assertions.assertEquals(715322521, model.parameterServerCount());
-        Assertions.assertEquals(1082076426, model.workerCount());
+        Assertions.assertEquals(1749260230, model.parameterServerCount());
+        Assertions.assertEquals(1320265729, model.workerCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TensorFlow model = new TensorFlow().withParameterServerCount(715322521).withWorkerCount(1082076426);
+        TensorFlow model = new TensorFlow().withParameterServerCount(1749260230).withWorkerCount(1320265729);
         model = BinaryData.fromObject(model).toObject(TensorFlow.class);
-        Assertions.assertEquals(715322521, model.parameterServerCount());
-        Assertions.assertEquals(1082076426, model.workerCount());
+        Assertions.assertEquals(1749260230, model.parameterServerCount());
+        Assertions.assertEquals(1320265729, model.workerCount());
     }
 }

@@ -13,21 +13,21 @@ public final class ImageLimitSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageLimitSettings model = BinaryData
-            .fromString("{\"maxConcurrentTrials\":1645316445,\"maxTrials\":571616299,\"timeout\":\"PT74H29M13S\"}")
+            .fromString("{\"maxConcurrentTrials\":1816914268,\"maxTrials\":712500505,\"timeout\":\"PT237H29M16S\"}")
             .toObject(ImageLimitSettings.class);
-        Assertions.assertEquals(1645316445, model.maxConcurrentTrials());
-        Assertions.assertEquals(571616299, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT74H29M13S"), model.timeout());
+        Assertions.assertEquals(1816914268, model.maxConcurrentTrials());
+        Assertions.assertEquals(712500505, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT237H29M16S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageLimitSettings model = new ImageLimitSettings().withMaxConcurrentTrials(1645316445)
-            .withMaxTrials(571616299)
-            .withTimeout(Duration.parse("PT74H29M13S"));
+        ImageLimitSettings model = new ImageLimitSettings().withMaxConcurrentTrials(1816914268)
+            .withMaxTrials(712500505)
+            .withTimeout(Duration.parse("PT237H29M16S"));
         model = BinaryData.fromObject(model).toObject(ImageLimitSettings.class);
-        Assertions.assertEquals(1645316445, model.maxConcurrentTrials());
-        Assertions.assertEquals(571616299, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT74H29M13S"), model.timeout());
+        Assertions.assertEquals(1816914268, model.maxConcurrentTrials());
+        Assertions.assertEquals(712500505, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT237H29M16S"), model.timeout());
     }
 }

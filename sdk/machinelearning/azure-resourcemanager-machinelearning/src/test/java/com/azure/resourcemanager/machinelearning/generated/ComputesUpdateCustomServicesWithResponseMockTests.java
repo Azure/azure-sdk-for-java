@@ -45,171 +45,158 @@ public final class ComputesUpdateCustomServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.computes()
-            .updateCustomServicesWithResponse("tqjtsz", "excqcwbxxvcvek", "jdruml", Arrays.asList(
-                new CustomService().withName("wwqh")
-                    .withImage(new Image()
-                        .withType(ImageType.DOCKER)
-                        .withReference("w")
-                        .withVersion("arswsvtzotmwxq")
-                        .withAdditionalProperties(mapOf("wrtmjskb", "\"datadanfexlawkeqjhz\"", "rpajbiig",
-                            "\"datamwb\"", "xqbknoxjhedwh", "\"datar\"", "mvounbyvsfqu", "\"dataenjnady\"")))
-                    .withEnvironmentVariables(mapOf("jgdjvyclas",
-                        new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                            .withValue("uzkwigifinoy")
-                            .withAdditionalProperties(mapOf("lcnk", "\"datalpshxjhanskoo\"", "qhscaand",
-                                "\"datajjltuymna\"", "lsb", "\"datalvccuvcva\"", "jiql", "\"dataqsqvfyokssta\"")),
-                        "exar",
-                        new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                            .withValue("nupftek")
-                            .withAdditionalProperties(
-                                mapOf("lthowcsuebt", "\"datanpvqczpkooa\"", "euimtxmd", "\"datag\"")),
-                        "nwnj",
-                        new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                            .withValue("irnivf")
-                            .withAdditionalProperties(mapOf("p", "\"dataskinmxanjguadh\"", "shmqxgjzslho", "\"datati\"",
-                                "spvkcnggo", "\"datayqxipb\"", "qjnouuujl", "\"datafxstwaaz\""))))
-                    .withDocker(new Docker().withPrivileged(false)
-                        .withAdditionalProperties(mapOf("hqzvwznwcqoapdtj", "\"datahjxwwqzsyetbff\"", "etfdpurvz",
-                            "\"datal\"", "lk", "\"datamfb\"")))
-                    .withEndpoints(Arrays.asList(
-                        new Endpoint().withProtocol(Protocol.HTTP)
-                            .withName("fume")
-                            .withTarget(96398704)
-                            .withPublished(421877560)
-                            .withHostIp("vqhbwsvi"),
-                        new Endpoint().withProtocol(Protocol.TCP)
-                            .withName("aghfvublszsveg")
-                            .withTarget(350110535)
-                            .withPublished(473639683)
-                            .withHostIp("pnymbjrsdiufqxr"),
-                        new Endpoint()
-                            .withProtocol(Protocol.TCP)
-                            .withName("osuzegmcmlzmfe")
-                            .withTarget(1006883116)
-                            .withPublished(195006450)
-                            .withHostIp("rvjgwnmxcngow")))
-                    .withVolumes(Arrays.asList(new VolumeDefinition().withType(VolumeDefinitionType.TMPFS)
-                        .withReadOnly(false)
-                        .withSource("xhorzozfrgkwp")
-                        .withTarget("efabgtcggoppm")
-                        .withConsistency("moug")
-                        .withBind(
-                            new BindOptions().withPropagation("c").withCreateHostPath(true).withSelinux("unamzqvawk"))
-                        .withVolume(new VolumeOptions().withNocopy(true))
-                        .withTmpfs(new TmpfsOptions().withSize(1806827133)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.VOLUME)
-                            .withReadOnly(false)
-                            .withSource("pgqwb")
-                            .withTarget("km")
-                            .withConsistency("lmycxmhorrec")
-                            .withBind(new BindOptions().withPropagation("wnqlizlcy")
-                                .withCreateHostPath(false)
-                                .withSelinux("kfp"))
-                            .withVolume(new VolumeOptions().withNocopy(false))
-                            .withTmpfs(new TmpfsOptions().withSize(17731896)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.BIND)
-                            .withReadOnly(true)
-                            .withSource("vmajcmpohjdvf")
-                            .withTarget("b")
-                            .withConsistency("wymahboi")
-                            .withBind(new BindOptions().withPropagation("uyqdj")
-                                .withCreateHostPath(false)
-                                .withSelinux("jssqpkm"))
-                            .withVolume(new VolumeOptions().withNocopy(false))
-                            .withTmpfs(new TmpfsOptions().withSize(74240592)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.TMPFS)
-                            .withReadOnly(false)
-                            .withSource("zqwwttqjyiw")
-                            .withTarget("eryavbjvvcogups")
-                            .withConsistency("ofaskyyvdj")
-                            .withBind(new BindOptions().withPropagation("buuhbcck")
-                                .withCreateHostPath(false)
-                                .withSelinux("e"))
-                            .withVolume(new VolumeOptions().withNocopy(true))
-                            .withTmpfs(new TmpfsOptions().withSize(1346138225))))
-                    .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("phlbkquhmblnismv"))
-                        .withDisplayName("asdexsrgl")
-                        .withLanguage("juyvkkp"))
-                    .withAdditionalProperties(mapOf("ipdxqnpdjomddad", "\"dataesp\"", "iyhdbbjgsjmcybrp", "\"datan\"",
-                        "lkyh", "\"dataosjxywwv\"")),
-                new CustomService().withName("e")
-                    .withImage(new Image().withType(ImageType.AZUREML)
-                        .withReference("ghrrxauuh")
-                        .withVersion("hkizyxoyxnhu")
-                        .withAdditionalProperties(mapOf("rpdxygf", "\"dataipfryivpezz\"")))
-                    .withEnvironmentVariables(mapOf("dokuqnkoskf",
-                        new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                            .withValue("ezkpdm")
-                            .withAdditionalProperties(mapOf("disypgapfdwhwbe", "\"datakvhuiadyh\"", "rqe", "\"dataft\"",
-                                "wwidnrds", "\"datarjopotefekfxmgj\"")),
-                        "xzpz",
-                        new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
-                            .withValue("y")
-                            .withAdditionalProperties(mapOf("emrhbzetss", "\"dataeevmb\"", "lie",
-                                "\"datawwexbotbrepef\"", "cscootfsgilwis", "\"dataocyarvsfz\""))))
-                    .withDocker(new Docker().withPrivileged(false)
-                        .withAdditionalProperties(mapOf("jqtuzb", "\"datatrfvogknocshmp\"")))
-                    .withEndpoints(Arrays.asList(
-                        new Endpoint().withProtocol(Protocol.UDP)
-                            .withName("hfjqpxydpamctzm")
-                            .withTarget(96367630)
-                            .withPublished(608431233)
-                            .withHostIp("gunsjssreo"),
-                        new Endpoint().withProtocol(Protocol.HTTP)
-                            .withName("oue")
-                            .withTarget(1242141375)
-                            .withPublished(59078105)
-                            .withHostIp("rsp"),
-                        new Endpoint().withProtocol(Protocol.HTTP)
-                            .withName("yekggoawlqvu")
-                            .withTarget(1822196985)
-                            .withPublished(2114374912)
-                            .withHostIp("sgyrznostngxvr")))
-                    .withVolumes(Arrays.asList(
-                        new VolumeDefinition().withType(VolumeDefinitionType.BIND)
-                            .withReadOnly(true)
-                            .withSource("dsu")
-                            .withTarget("umbcirkbkqpsvo")
-                            .withConsistency("h")
-                            .withBind(new BindOptions().withPropagation("uuy")
-                                .withCreateHostPath(false)
-                                .withSelinux("rufvmgblbqx"))
-                            .withVolume(new VolumeOptions().withNocopy(true))
-                            .withTmpfs(new TmpfsOptions().withSize(619289628)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
-                            .withReadOnly(false)
-                            .withSource("jnbbbgvmowyzxq")
-                            .withTarget("hml")
-                            .withConsistency("nzsckfuzuchotdz")
-                            .withBind(new BindOptions().withPropagation("qhwpuaermaww")
-                                .withCreateHostPath(true)
-                                .withSelinux("azqcemcotw"))
-                            .withVolume(new VolumeOptions().withNocopy(true))
-                            .withTmpfs(new TmpfsOptions().withSize(1514842489)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
-                            .withReadOnly(true)
-                            .withSource("vdf")
-                            .withTarget("xbupsx")
-                            .withConsistency("jpgxcgqkhy")
-                            .withBind(new BindOptions().withPropagation("jwkrxm")
-                                .withCreateHostPath(false)
-                                .withSelinux("fncwlwovkzbo"))
-                            .withVolume(new VolumeOptions().withNocopy(true))
-                            .withTmpfs(new TmpfsOptions().withSize(1242023808)),
-                        new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
-                            .withReadOnly(false)
-                            .withSource("aljwfnc")
-                            .withTarget("aylcpgzmx")
-                            .withConsistency("ppqajdm")
-                            .withBind(new BindOptions().withPropagation("ntqqguhvnwr")
-                                .withCreateHostPath(false)
-                                .withSelinux("netbzfwf"))
-                            .withVolume(new VolumeOptions().withNocopy(true))
-                            .withTmpfs(new TmpfsOptions().withSize(437845143))))
-                    .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("edlclxx", "uyff", "qombdsgqxacidu"))
-                        .withDisplayName("zzhdjbyfdfu")
-                        .withLanguage("nhpyylek"))
-                    .withAdditionalProperties(mapOf("pwjvfisloqu", "\"datawvjvzznyjqbw\""))),
+            .updateCustomServicesWithResponse("mhjmqf", "qwqcxyiqppacj", "qrllacylbtkxeijz",
+                Arrays
+                    .asList(
+                        new CustomService().withName("aaxttexaugojv")
+                            .withImage(new Image().withType(ImageType.AZUREML)
+                                .withReference("wbobawlntenhnq")
+                                .withVersion("xghbehh")
+                                .withAdditionalProperties(mapOf("eojl", "\"datatqorrvwl\"", "klbfvtzdtw",
+                                    "\"dataupgevjmandrvvj\"", "fdsgrtkevim", "\"dataugzlvgjirjkkrs\"")))
+                            .withEnvironmentVariables(
+                                mapOf("rjnnbmods",
+                                    new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                        .withValue("ocrexfmqfuflup")
+                                        .withAdditionalProperties(mapOf("zscgslwujkeytpm", "\"datalfzjrjglacpz\"")),
+                                    "hym",
+                                    new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                        .withValue("vatujphqv")
+                                        .withAdditionalProperties(mapOf("oxwpiqkkmpfnwdr", "\"datavogwgh\"",
+                                            "cusvidkzbdbvlsn", "\"datargmgn\"", "aciypkh", "\"datazwmtsm\"")),
+                                    "sqjxxbsafqiw",
+                                    new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                        .withValue("lhkhiktec")
+                                        .withAdditionalProperties(mapOf("ettmfcxviw", "\"datacqweydaa\"")),
+                                    "ijunmgdpxeivr",
+                                    new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                        .withValue("tsyjzdasgk")
+                                        .withAdditionalProperties(mapOf("ddlnzmffyvowlamm", "\"datarhqomuzohnpkofkl\"",
+                                            "ie", "\"dataazvw\""))))
+                            .withDocker(new Docker().withPrivileged(true)
+                                .withAdditionalProperties(mapOf("zvbre", "\"datagztfgc\"", "qggzahng", "\"datad\"")))
+                            .withEndpoints(Arrays.asList(
+                                new Endpoint().withProtocol(Protocol.TCP)
+                                    .withName("dfpwbybmx")
+                                    .withTarget(225342171)
+                                    .withPublished(630848946)
+                                    .withHostIp("l"),
+                                new Endpoint().withProtocol(Protocol.HTTP)
+                                    .withName("ibqilbpyj")
+                                    .withTarget(880822530)
+                                    .withPublished(339334225)
+                                    .withHostIp("f"),
+                                new Endpoint().withProtocol(Protocol.HTTP)
+                                    .withName("czvvwrougalywgq")
+                                    .withTarget(277290893)
+                                    .withPublished(1144692123)
+                                    .withHostIp("heyxewcskt"),
+                                new Endpoint().withProtocol(Protocol.HTTP)
+                                    .withName("prkfvvx")
+                                    .withTarget(1361875677)
+                                    .withPublished(2093751694)
+                                    .withHostIp("mztvnmrgvtyp")))
+                            .withVolumes(Arrays.asList(
+                                new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
+                                    .withReadOnly(true)
+                                    .withSource("uhmhksgouzv")
+                                    .withTarget("tnphnotrgyyjea")
+                                    .withConsistency("vjdunbaets")
+                                    .withBind(new BindOptions().withPropagation("egbvvkuzygzrzu")
+                                        .withCreateHostPath(false)
+                                        .withSelinux("sachmhzpu"))
+                                    .withVolume(new VolumeOptions().withNocopy(true))
+                                    .withTmpfs(new TmpfsOptions().withSize(1762556434)),
+                                new VolumeDefinition().withType(VolumeDefinitionType.NPIPE)
+                                    .withReadOnly(true)
+                                    .withSource("osralbxhdxnlu")
+                                    .withTarget("wuafbh")
+                                    .withConsistency("aqf")
+                                    .withBind(new BindOptions().withPropagation("p")
+                                        .withCreateHostPath(true)
+                                        .withSelinux("bkvqogzawfoqdnxu"))
+                                    .withVolume(new VolumeOptions().withNocopy(false))
+                                    .withTmpfs(new TmpfsOptions().withSize(1024918950)),
+                                new VolumeDefinition().withType(VolumeDefinitionType.TMPFS)
+                                    .withReadOnly(false)
+                                    .withSource("wsynt")
+                                    .withTarget("rluqaqn")
+                                    .withConsistency("g")
+                                    .withBind(new BindOptions().withPropagation("fejbozkl")
+                                        .withCreateHostPath(false)
+                                        .withSelinux("vpsmvksauw"))
+                                    .withVolume(new VolumeOptions().withNocopy(true))
+                                    .withTmpfs(new TmpfsOptions().withSize(1262932016))))
+                            .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("fqmdjz", "ov", "kp"))
+                                .withDisplayName("jkmpa")
+                                .withLanguage("eylpofaogvmqzagr"))
+                            .withAdditionalProperties(mapOf("solbzzbrufkeylk", "\"datahdul\"", "otqocnryyp",
+                                "\"datautxcmcc\"", "rpkdpnjldwcxjvex", "\"datahwfskmk\"")),
+                        new CustomService().withName("aagrdfwvgl")
+                            .withImage(new Image().withType(ImageType.DOCKER)
+                                .withReference("vosucryh")
+                                .withVersion("hthzfotfrfhrjkah")
+                                .withAdditionalProperties(mapOf("rnxrjmilogcn", "\"dataaittbmobrxhwpg\"",
+                                    "ppnitrmzvnrfkzn", "\"datashgmqxw\"", "plrtxhzt", "\"datafgqibb\"")))
+                            .withEnvironmentVariables(mapOf("lauhr",
+                                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                    .withValue("fjjsoyusrbuydey")
+                                    .withAdditionalProperties(mapOf("t", "\"datattkdrblehenj\"", "uwhbpojujpifxtgr",
+                                        "\"datawdeosbijikjfji\"", "iwx", "\"dataavfjx\"")),
+                                "hxoyrgvrtcct",
+                                new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                    .withValue("hovuvrsczwc")
+                                    .withAdditionalProperties(mapOf("gdkbdozsspfw", "\"datacohywfvyriawfww\"",
+                                        "buqmkmwdo", "\"datafcortoxsthjyyir\"", "otdioxgs", "\"datanvyilho\""))))
+                            .withDocker(new Docker().withPrivileged(false)
+                                .withAdditionalProperties(
+                                    mapOf("xgxbgochpxps", "\"datafouhye\"", "xufyqc", "\"datalqhbrarukdep\"")))
+                            .withEndpoints(Arrays.asList(
+                                new Endpoint().withProtocol(Protocol.UDP)
+                                    .withName("oozrugbdkx")
+                                    .withTarget(902328692)
+                                    .withPublished(1631428365)
+                                    .withHostIp("lzk"),
+                                new Endpoint().withProtocol(Protocol.HTTP)
+                                    .withName("apvqjebtdpsg")
+                                    .withTarget(189706772)
+                                    .withPublished(1080582539)
+                                    .withHostIp("zpkvyl"),
+                                new Endpoint().withProtocol(Protocol.UDP)
+                                    .withName("wt")
+                                    .withTarget(1720173760)
+                                    .withPublished(440769160)
+                                    .withHostIp("wwybu"),
+                                new Endpoint().withProtocol(Protocol.TCP)
+                                    .withName("cw")
+                                    .withTarget(117734556)
+                                    .withPublished(1060975193)
+                                    .withHostIp("uncuqcocchdxj")))
+                            .withVolumes(Arrays.asList(
+                                new VolumeDefinition().withType(VolumeDefinitionType.BIND)
+                                    .withReadOnly(true)
+                                    .withSource("qpsquou")
+                                    .withTarget("zgdtu")
+                                    .withConsistency("oimojcm")
+                                    .withBind(new BindOptions().withPropagation("dxwvorzhzfocgf")
+                                        .withCreateHostPath(true)
+                                        .withSelinux("rnvbhuy"))
+                                    .withVolume(new VolumeOptions().withNocopy(true))
+                                    .withTmpfs(new TmpfsOptions().withSize(1579455259)),
+                                new VolumeDefinition().withType(VolumeDefinitionType.BIND)
+                                    .withReadOnly(false)
+                                    .withSource("yw")
+                                    .withTarget("vkthrexzve")
+                                    .withConsistency("zyuiklokeqeowb")
+                                    .withBind(new BindOptions().withPropagation("ehvgchsgotgwe")
+                                        .withCreateHostPath(false)
+                                        .withSelinux("bvjhun"))
+                                    .withVolume(new VolumeOptions().withNocopy(false))
+                                    .withTmpfs(new TmpfsOptions().withSize(379791133))))
+                            .withKernel(new JupyterKernelConfig().withArgv(Arrays.asList("mdtkllqhzn"))
+                                .withDisplayName("rxomztrnni")
+                                .withLanguage("j"))
+                            .withAdditionalProperties(mapOf("esqykqfserls", "\"datahyxiqfoq\""))),
                 com.azure.core.util.Context.NONE);
 
     }

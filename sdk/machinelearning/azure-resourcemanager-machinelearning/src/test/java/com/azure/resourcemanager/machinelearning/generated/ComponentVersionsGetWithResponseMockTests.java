@@ -21,7 +21,7 @@ public final class ComponentVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentSpec\":\"\\\"dataoivxcodwkwoytc\\\"\",\"provisioningState\":\"Canceled\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"uewlfwfiikqcdnzs\",\"properties\":{\"dmcrxly\":\"hgneo\",\"ovufakrxjjwn\":\"oa\",\"aanistcjha\":\"rmdwtbrnlsy\",\"pphcstmryc\":\"c\"},\"tags\":{\"zrinlpxngzzx\":\"apfao\",\"mzc\":\"bgqn\"}},\"id\":\"xzjkpifpucvbd\",\"name\":\"zwbsk\",\"type\":\"e\"}";
+            = "{\"properties\":{\"componentSpec\":\"\\\"datagqyiyjxzx\\\"\",\"provisioningState\":\"Failed\",\"isAnonymous\":false,\"isArchived\":false,\"description\":\"uonrmdl\",\"properties\":{\"sasmryuyut\":\"bfcvefbwxpmgyqs\",\"uuihkybgkyncyzj\":\"bxrgrztkyqgu\"},\"tags\":{\"pfivypmwdza\":\"eemxiu\"}},\"id\":\"cr\",\"name\":\"xppoqimyhxn\",\"type\":\"dgg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class ComponentVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComponentVersion response = manager.componentVersions()
-            .getWithResponse("pvlxtywu", "hj", "spllitxrrgkw", "yoy", com.azure.core.util.Context.NONE)
+            .getWithResponse("vuyxuu", "zea", "datopdtphvjgv", "zy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uewlfwfiikqcdnzs", response.properties().description());
-        Assertions.assertEquals("hgneo", response.properties().properties().get("dmcrxly"));
-        Assertions.assertEquals("apfao", response.properties().tags().get("zrinlpxngzzx"));
-        Assertions.assertTrue(response.properties().isAnonymous());
+        Assertions.assertEquals("uonrmdl", response.properties().description());
+        Assertions.assertEquals("bfcvefbwxpmgyqs", response.properties().properties().get("sasmryuyut"));
+        Assertions.assertEquals("eemxiu", response.properties().tags().get("pfivypmwdza"));
+        Assertions.assertFalse(response.properties().isAnonymous());
         Assertions.assertFalse(response.properties().isArchived());
     }
 }

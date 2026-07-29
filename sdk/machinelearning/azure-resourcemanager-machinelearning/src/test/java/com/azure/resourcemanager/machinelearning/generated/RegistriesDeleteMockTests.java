@@ -27,7 +27,7 @@ public final class RegistriesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.registries().delete("ab", "yydsyweoh", com.azure.core.util.Context.NONE);
+        manager.registries().delete("skmpeajzzypa", "amzmzfnt", com.azure.core.util.Context.NONE);
 
     }
 }

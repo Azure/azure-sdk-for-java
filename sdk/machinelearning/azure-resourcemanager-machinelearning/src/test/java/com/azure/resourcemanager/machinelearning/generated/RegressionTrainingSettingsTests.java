@@ -17,19 +17,19 @@ public final class RegressionTrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegressionTrainingSettings model = BinaryData.fromString(
-            "{\"allowedTrainingAlgorithms\":[\"ElasticNet\",\"KNN\",\"SGD\",\"KNN\"],\"blockedTrainingAlgorithms\":[\"ExtremeRandomTrees\",\"XGBoostRegressor\",\"ExtremeRandomTrees\",\"LassoLars\"],\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT136H26M50S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datafonfdbgm\\\"\",\"stackMetaLearnerTrainPercentage\":73.45406709829312,\"stackMetaLearnerType\":\"LightGBMRegressor\"}}")
+            "{\"allowedTrainingAlgorithms\":[\"GradientBoosting\"],\"blockedTrainingAlgorithms\":[\"ElasticNet\",\"ElasticNet\",\"GradientBoosting\"],\"enableDnnTraining\":false,\"enableModelExplainability\":false,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":false,\"ensembleModelDownloadTimeout\":\"PT80H7M20S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"dataslurbqfygpny\\\"\",\"stackMetaLearnerTrainPercentage\":45.28180818902208,\"stackMetaLearnerType\":\"LogisticRegressionCV\"}}")
             .toObject(RegressionTrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertFalse(model.enableModelExplainability());
         Assertions.assertFalse(model.enableOnnxCompatibleModels());
         Assertions.assertTrue(model.enableStackEnsemble());
-        Assertions.assertTrue(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT136H26M50S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(73.45406709829312D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR,
+        Assertions.assertFalse(model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT80H7M20S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(45.28180818902208D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
             model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(RegressionModels.ELASTIC_NET, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(RegressionModels.EXTREME_RANDOM_TREES, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.GRADIENT_BOOSTING, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.ELASTIC_NET, model.blockedTrainingAlgorithms().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -38,27 +38,25 @@ public final class RegressionTrainingSettingsTests {
             .withEnableModelExplainability(false)
             .withEnableOnnxCompatibleModels(false)
             .withEnableStackEnsemble(true)
-            .withEnableVoteEnsemble(true)
-            .withEnsembleModelDownloadTimeout(Duration.parse("PT136H26M50S"))
-            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datafonfdbgm\"")
-                .withStackMetaLearnerTrainPercentage(73.45406709829312D)
-                .withStackMetaLearnerType(StackMetaLearnerType.LIGHT_GBMREGRESSOR))
-            .withAllowedTrainingAlgorithms(Arrays.asList(RegressionModels.ELASTIC_NET, RegressionModels.KNN,
-                RegressionModels.SGD, RegressionModels.KNN))
-            .withBlockedTrainingAlgorithms(
-                Arrays.asList(RegressionModels.EXTREME_RANDOM_TREES, RegressionModels.XGBOOST_REGRESSOR,
-                    RegressionModels.EXTREME_RANDOM_TREES, RegressionModels.LASSO_LARS));
+            .withEnableVoteEnsemble(false)
+            .withEnsembleModelDownloadTimeout(Duration.parse("PT80H7M20S"))
+            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"dataslurbqfygpny\"")
+                .withStackMetaLearnerTrainPercentage(45.28180818902208D)
+                .withStackMetaLearnerType(StackMetaLearnerType.LOGISTIC_REGRESSION_CV))
+            .withAllowedTrainingAlgorithms(Arrays.asList(RegressionModels.GRADIENT_BOOSTING))
+            .withBlockedTrainingAlgorithms(Arrays.asList(RegressionModels.ELASTIC_NET, RegressionModels.ELASTIC_NET,
+                RegressionModels.GRADIENT_BOOSTING));
         model = BinaryData.fromObject(model).toObject(RegressionTrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertFalse(model.enableModelExplainability());
         Assertions.assertFalse(model.enableOnnxCompatibleModels());
         Assertions.assertTrue(model.enableStackEnsemble());
-        Assertions.assertTrue(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT136H26M50S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(73.45406709829312D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.LIGHT_GBMREGRESSOR,
+        Assertions.assertFalse(model.enableVoteEnsemble());
+        Assertions.assertEquals(Duration.parse("PT80H7M20S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(45.28180818902208D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
             model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(RegressionModels.ELASTIC_NET, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(RegressionModels.EXTREME_RANDOM_TREES, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.GRADIENT_BOOSTING, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(RegressionModels.ELASTIC_NET, model.blockedTrainingAlgorithms().get(0));
     }
 }

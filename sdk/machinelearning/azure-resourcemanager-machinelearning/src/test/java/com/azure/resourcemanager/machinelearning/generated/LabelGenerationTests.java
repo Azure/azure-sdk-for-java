@@ -20,52 +20,51 @@ public final class LabelGenerationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LabelGeneration model = BinaryData.fromString(
-            "{\"dataGenerationType\":\"LabelGeneration\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"kmgobliqe\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"iiisklbonxxu\"},\"dataGenerationTaskType\":\"Conversation\",\"promptSettings\":{\"enableChainOfDensity\":true,\"enableChainOfThought\":true,\"maxLenSummary\":1841598394},\"teacherModelEndpoint\":{\"endpointName\":\"enjqnnpjw\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":40.119399963877186,\"requestBatchSize\":1455466288},\"teacherModelInferenceParameters\":{\"kwopswnyinxupr\":\"ujjcxgdqmrlhn\",\"uekdcpvu\":\"xyxwjezbfqplo\"}}}")
+            "{\"dataGenerationType\":\"LabelGeneration\",\"trainingData\":{\"jobInputType\":\"JobInput\",\"description\":\"erejrkpzj\"},\"validationData\":{\"jobInputType\":\"JobInput\",\"description\":\"tjx\"},\"dataGenerationTaskType\":\"NluQa\",\"promptSettings\":{\"enableChainOfDensity\":true,\"enableChainOfThought\":true,\"maxLenSummary\":496838932},\"teacherModelEndpoint\":{\"endpointName\":\"hlbecgih\"},\"teacherModelSettings\":{\"teacherModelEndpointRequestSettings\":{\"minEndpointSuccessRatio\":41.968855582911445,\"requestBatchSize\":614376862},\"teacherModelInferenceParameters\":{\"wpjhspboxhifppsk\":\"ovrwwx\"}}}")
             .toObject(LabelGeneration.class);
-        Assertions.assertEquals(DataGenerationTaskType.CONVERSATION, model.dataGenerationTaskType());
+        Assertions.assertEquals(DataGenerationTaskType.NLU_QA, model.dataGenerationTaskType());
         Assertions.assertTrue(model.promptSettings().enableChainOfDensity());
         Assertions.assertTrue(model.promptSettings().enableChainOfThought());
-        Assertions.assertEquals(1841598394, model.promptSettings().maxLenSummary());
-        Assertions.assertEquals("enjqnnpjw", model.teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(40.119399963877186D,
+        Assertions.assertEquals(496838932, model.promptSettings().maxLenSummary());
+        Assertions.assertEquals("hlbecgih", model.teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(41.968855582911445D,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(1455466288,
+        Assertions.assertEquals(614376862,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("ujjcxgdqmrlhn",
-            model.teacherModelSettings().teacherModelInferenceParameters().get("kwopswnyinxupr"));
-        Assertions.assertEquals("kmgobliqe", model.trainingData().description());
-        Assertions.assertEquals("iiisklbonxxu", model.validationData().description());
+        Assertions.assertEquals("ovrwwx",
+            model.teacherModelSettings().teacherModelInferenceParameters().get("wpjhspboxhifppsk"));
+        Assertions.assertEquals("erejrkpzj", model.trainingData().description());
+        Assertions.assertEquals("tjx", model.validationData().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabelGeneration model = new LabelGeneration().withDataGenerationTaskType(DataGenerationTaskType.CONVERSATION)
+        LabelGeneration model = new LabelGeneration().withDataGenerationTaskType(DataGenerationTaskType.NLU_QA)
             .withPromptSettings(new PromptSettings().withEnableChainOfDensity(true)
                 .withEnableChainOfThought(true)
-                .withMaxLenSummary(1841598394))
-            .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("enjqnnpjw"))
+                .withMaxLenSummary(496838932))
+            .withTeacherModelEndpoint(new TeacherModelEndpoint().withEndpointName("hlbecgih"))
             .withTeacherModelSettings(new TeacherModelSettings()
                 .withTeacherModelEndpointRequestSettings(
-                    new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(40.119399963877186D)
-                        .withRequestBatchSize(1455466288))
-                .withTeacherModelInferenceParameters(
-                    mapOf("kwopswnyinxupr", "ujjcxgdqmrlhn", "uekdcpvu", "xyxwjezbfqplo")))
-            .withTrainingData(new JobInput().withDescription("kmgobliqe"))
-            .withValidationData(new JobInput().withDescription("iiisklbonxxu"));
+                    new TeacherModelEndpointRequestSettings().withMinEndpointSuccessRatio(41.968855582911445D)
+                        .withRequestBatchSize(614376862))
+                .withTeacherModelInferenceParameters(mapOf("wpjhspboxhifppsk", "ovrwwx")))
+            .withTrainingData(new JobInput().withDescription("erejrkpzj"))
+            .withValidationData(new JobInput().withDescription("tjx"));
         model = BinaryData.fromObject(model).toObject(LabelGeneration.class);
-        Assertions.assertEquals(DataGenerationTaskType.CONVERSATION, model.dataGenerationTaskType());
+        Assertions.assertEquals(DataGenerationTaskType.NLU_QA, model.dataGenerationTaskType());
         Assertions.assertTrue(model.promptSettings().enableChainOfDensity());
         Assertions.assertTrue(model.promptSettings().enableChainOfThought());
-        Assertions.assertEquals(1841598394, model.promptSettings().maxLenSummary());
-        Assertions.assertEquals("enjqnnpjw", model.teacherModelEndpoint().endpointName());
-        Assertions.assertEquals(40.119399963877186D,
+        Assertions.assertEquals(496838932, model.promptSettings().maxLenSummary());
+        Assertions.assertEquals("hlbecgih", model.teacherModelEndpoint().endpointName());
+        Assertions.assertEquals(41.968855582911445D,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().minEndpointSuccessRatio());
-        Assertions.assertEquals(1455466288,
+        Assertions.assertEquals(614376862,
             model.teacherModelSettings().teacherModelEndpointRequestSettings().requestBatchSize());
-        Assertions.assertEquals("ujjcxgdqmrlhn",
-            model.teacherModelSettings().teacherModelInferenceParameters().get("kwopswnyinxupr"));
-        Assertions.assertEquals("kmgobliqe", model.trainingData().description());
-        Assertions.assertEquals("iiisklbonxxu", model.validationData().description());
+        Assertions.assertEquals("ovrwwx",
+            model.teacherModelSettings().teacherModelInferenceParameters().get("wpjhspboxhifppsk"));
+        Assertions.assertEquals("erejrkpzj", model.trainingData().description());
+        Assertions.assertEquals("tjx", model.validationData().description());
     }
 
     // Use "Map.of" if available

@@ -12,8 +12,8 @@ public final class ListAmlUserFeatureResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListAmlUserFeatureResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"obnhrfbrjokjwqd\",\"displayName\":\"aqnilpp\",\"description\":\"aigazwf\"},{\"id\":\"rfd\",\"displayName\":\"lzs\",\"description\":\"dtqfdrslzy\"},{\"id\":\"xserw\",\"displayName\":\"uhytjwgetfi\",\"description\":\"n\"},{\"id\":\"jxzi\",\"displayName\":\"bjrahgdstubw\",\"description\":\"xzsshxliqmsckwh\"}],\"nextLink\":\"doi\"}")
+            "{\"value\":[{\"id\":\"xdemklph\",\"displayName\":\"wwlojkbgnf\",\"description\":\"zj\"},{\"id\":\"sunhaevlah\",\"displayName\":\"zywywuah\",\"description\":\"orewcnnaaxqjfd\"},{\"id\":\"rfgimomggewdqbxe\",\"displayName\":\"yznvussu\",\"description\":\"slwsfxayzq\"}],\"nextLink\":\"eywpmohnrtlikf\"}")
             .toObject(ListAmlUserFeatureResult.class);
-        Assertions.assertEquals("doi", model.nextLink());
+        Assertions.assertEquals("eywpmohnrtlikf", model.nextLink());
     }
 }

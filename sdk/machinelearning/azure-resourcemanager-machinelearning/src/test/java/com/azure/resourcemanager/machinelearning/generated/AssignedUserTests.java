@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AssignedUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssignedUser model = BinaryData.fromString("{\"objectId\":\"rcycmwhuzymhl\",\"tenantId\":\"ih\"}")
+        AssignedUser model = BinaryData.fromString("{\"objectId\":\"gdrzige\",\"tenantId\":\"wsadsqyu\"}")
             .toObject(AssignedUser.class);
-        Assertions.assertEquals("rcycmwhuzymhl", model.objectId());
-        Assertions.assertEquals("ih", model.tenantId());
+        Assertions.assertEquals("gdrzige", model.objectId());
+        Assertions.assertEquals("wsadsqyu", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssignedUser model = new AssignedUser().withObjectId("rcycmwhuzymhl").withTenantId("ih");
+        AssignedUser model = new AssignedUser().withObjectId("gdrzige").withTenantId("wsadsqyu");
         model = BinaryData.fromObject(model).toObject(AssignedUser.class);
-        Assertions.assertEquals("rcycmwhuzymhl", model.objectId());
-        Assertions.assertEquals("ih", model.tenantId());
+        Assertions.assertEquals("gdrzige", model.objectId());
+        Assertions.assertEquals("wsadsqyu", model.tenantId());
     }
 }

@@ -22,7 +22,7 @@ public final class ConnectionsListDeploymentsMockTests {
     @Test
     public void testListDeployments() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"gchsgotgwerbpob\",\"provisioningState\":\"Canceled\"},\"id\":\"nicgrxcei\",\"name\":\"v\",\"type\":\"dtkllqhznutrx\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"mwfoummdomvditp\",\"provisioningState\":\"Accepted\"},\"id\":\"wlirap\",\"name\":\"hsidfhsfnocz\",\"type\":\"f\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ConnectionsListDeploymentsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EndpointDeploymentResourcePropertiesBasicResource> response
-            = manager.connections().listDeployments("zvejqzyu", "kloke", "eowbpiie", com.azure.core.util.Context.NONE);
+        PagedIterable<EndpointDeploymentResourcePropertiesBasicResource> response = manager.connections()
+            .listDeployments("wxxynttrnksvx", "mgn", "iycxuyzrnngnm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gchsgotgwerbpob", response.iterator().next().properties().failureReason());
+        Assertions.assertEquals("mwfoummdomvditp", response.iterator().next().properties().failureReason());
     }
 }

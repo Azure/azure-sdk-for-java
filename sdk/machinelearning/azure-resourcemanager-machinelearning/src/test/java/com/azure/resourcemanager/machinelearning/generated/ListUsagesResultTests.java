@@ -12,8 +12,8 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"iadd\",\"amlWorkspaceLocation\":\"huvnlmdcnutie\",\"type\":\"izunzbqvioyn\",\"unit\":\"Count\",\"currentValue\":2469519608018888042,\"limit\":4591862988552242383,\"name\":{\"value\":\"rj\",\"localizedValue\":\"aiaibtvavly\"}},{\"id\":\"tlocnwmefzvzuzq\",\"amlWorkspaceLocation\":\"lko\",\"type\":\"bzgy\",\"unit\":\"Count\",\"currentValue\":1007917423236602932,\"limit\":2734655068304419001,\"name\":{\"value\":\"wmh\",\"localizedValue\":\"zfbywji\"}}],\"nextLink\":\"osladagwaakktbj\"}")
+            "{\"value\":[{\"id\":\"lwjsbaqxax\",\"amlWorkspaceLocation\":\"xirppbiichlygkv\",\"type\":\"xwonkrnizdxywab\",\"unit\":\"Count\",\"currentValue\":6308926280975390193,\"limit\":5114629645767858082,\"name\":{\"value\":\"naqyjukkaj\",\"localizedValue\":\"ewltono\"}}],\"nextLink\":\"femiwfhhawbabhz\"}")
             .toObject(ListUsagesResult.class);
-        Assertions.assertEquals("osladagwaakktbj", model.nextLink());
+        Assertions.assertEquals("femiwfhhawbabhz", model.nextLink());
     }
 }

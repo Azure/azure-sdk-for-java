@@ -23,7 +23,7 @@ public final class RegistryEnvironmentVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"autoRebuild\":\"Disabled\",\"build\":{\"contextUri\":\"rs\",\"dockerfilePath\":\"xlkcw\"},\"condaFile\":\"ejssksgxykdepqcy\",\"environmentType\":\"UserCreated\",\"image\":\"sxpzk\",\"imageDetails\":{\"exists\":true,\"image\":{\"digest\":\"ygwwqevbi\",\"hostname\":\"tpt\",\"repository\":\"wjxlycelf\",\"tag\":\"gywrauuru\"},\"vulnerabilityFindings\":{\"assetId\":\"aycnkirmiecfmqc\",\"criticalFindingsCount\":1982091148,\"data\":[{},{},{}],\"generatedTime\":\"2021-03-29T18:47:13Z\",\"highFindingsCount\":459886212,\"lastScanDate\":\"2021-07-18T04:07Z\",\"scanner\":\"hefuhnbdl\",\"source\":\"wectz\",\"totalFindingsCount\":1278479715}},\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"btq\",\"port\":622935540},\"readinessRoute\":{\"path\":\"nkyvujhejytrv\",\"port\":1106620394},\"scoringRoute\":{\"path\":\"ysb\",\"port\":741277327},\"startupRoute\":{\"path\":\"nbqhmuqyz\",\"port\":1082902102}},\"osType\":\"Windows\",\"provisioningState\":\"Succeeded\",\"stage\":\"jshtcfnb\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"yhxp\",\"properties\":{\"zxnuxamxikhrxi\":\"ehuboq\",\"ecbog\":\"glynbqpeo\",\"irjtwjimcf\":\"wtihtnywgtsodnx\"},\"tags\":{\"axqoca\":\"zgduv\",\"cyramvzu\":\"ptfpbzyqbgg\",\"uwxslzq\":\"xtbrqnyurxl\",\"bn\":\"gx\"}},\"id\":\"rtn\",\"name\":\"bj\",\"type\":\"ysupck\"}";
+            = "{\"properties\":{\"autoRebuild\":\"Disabled\",\"build\":{\"contextUri\":\"ajian\",\"dockerfilePath\":\"y\"},\"condaFile\":\"trdukdmsktuvjh\",\"environmentType\":\"Curated\",\"image\":\"yto\",\"imageDetails\":{\"exists\":false,\"image\":{\"digest\":\"zwdwdudxq\",\"hostname\":\"trpsplwtlocse\",\"repository\":\"vtgc\",\"tag\":\"n\"},\"vulnerabilityFindings\":{\"assetId\":\"xckrnkuu\",\"criticalFindingsCount\":128657426,\"data\":[{}],\"generatedTime\":\"2021-06-28T14:29:30Z\",\"highFindingsCount\":2020817968,\"lastScanDate\":\"2021-06-06T13:19:56Z\",\"scanner\":\"xkmtuynugptfjpi\",\"source\":\"fhqtqq\",\"totalFindingsCount\":484480351}},\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"zhuhujkzjse\",\"port\":1503331646},\"readinessRoute\":{\"path\":\"hipteo\",\"port\":125013493},\"scoringRoute\":{\"path\":\"nhwd\",\"port\":88040354},\"startupRoute\":{\"path\":\"ec\",\"port\":918609125}},\"osType\":\"Linux\",\"provisioningState\":\"Failed\",\"stage\":\"bhsnimompxd\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"dm\",\"properties\":{\"dq\":\"hbdxxnmyxzhiocqo\",\"wywayjinlsk\":\"zhfnylgbwdsa\",\"qltygyeyxm\":\"prnkn\"},\"tags\":{\"gencmoswcxlg\":\"nwxtmh\",\"vc\":\"quqxewsvqpifz\",\"paczprzrsqcugv\":\"ywa\"}},\"id\":\"gsqlanuhms\",\"name\":\"npsoag\",\"type\":\"oeqiwpdxpdls\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,41 +33,41 @@ public final class RegistryEnvironmentVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EnvironmentVersion response = manager.registryEnvironmentVersions()
-            .getWithResponse("wv", "xblucpmqwkf", "mkpvekstz", "zhdwrc", com.azure.core.util.Context.NONE)
+            .getWithResponse("vszdyvzmi", "f", "wreawhnzhsmue", "dbhnklesvzd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yhxp", response.properties().description());
-        Assertions.assertEquals("ehuboq", response.properties().properties().get("zxnuxamxikhrxi"));
-        Assertions.assertEquals("zgduv", response.properties().tags().get("axqoca"));
+        Assertions.assertEquals("dm", response.properties().description());
+        Assertions.assertEquals("hbdxxnmyxzhiocqo", response.properties().properties().get("dq"));
+        Assertions.assertEquals("nwxtmh", response.properties().tags().get("gencmoswcxlg"));
         Assertions.assertFalse(response.properties().isAnonymous());
         Assertions.assertTrue(response.properties().isArchived());
         Assertions.assertEquals(AutoRebuildSetting.DISABLED, response.properties().autoRebuild());
-        Assertions.assertEquals("rs", response.properties().build().contextUri());
-        Assertions.assertEquals("xlkcw", response.properties().build().dockerfilePath());
-        Assertions.assertEquals("ejssksgxykdepqcy", response.properties().condaFile());
-        Assertions.assertEquals("sxpzk", response.properties().image());
-        Assertions.assertTrue(response.properties().imageDetails().exists());
-        Assertions.assertEquals("ygwwqevbi", response.properties().imageDetails().image().digest());
-        Assertions.assertEquals("tpt", response.properties().imageDetails().image().hostname());
-        Assertions.assertEquals("wjxlycelf", response.properties().imageDetails().image().repository());
-        Assertions.assertEquals("gywrauuru", response.properties().imageDetails().image().tag());
-        Assertions.assertEquals("aycnkirmiecfmqc",
-            response.properties().imageDetails().vulnerabilityFindings().assetId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T18:47:13Z"),
+        Assertions.assertEquals("ajian", response.properties().build().contextUri());
+        Assertions.assertEquals("y", response.properties().build().dockerfilePath());
+        Assertions.assertEquals("trdukdmsktuvjh", response.properties().condaFile());
+        Assertions.assertEquals("yto", response.properties().image());
+        Assertions.assertFalse(response.properties().imageDetails().exists());
+        Assertions.assertEquals("zwdwdudxq", response.properties().imageDetails().image().digest());
+        Assertions.assertEquals("trpsplwtlocse", response.properties().imageDetails().image().hostname());
+        Assertions.assertEquals("vtgc", response.properties().imageDetails().image().repository());
+        Assertions.assertEquals("n", response.properties().imageDetails().image().tag());
+        Assertions.assertEquals("xckrnkuu", response.properties().imageDetails().vulnerabilityFindings().assetId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T14:29:30Z"),
             response.properties().imageDetails().vulnerabilityFindings().generatedTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T04:07Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T13:19:56Z"),
             response.properties().imageDetails().vulnerabilityFindings().lastScanDate());
-        Assertions.assertEquals("hefuhnbdl", response.properties().imageDetails().vulnerabilityFindings().scanner());
-        Assertions.assertEquals("wectz", response.properties().imageDetails().vulnerabilityFindings().source());
-        Assertions.assertEquals("btq", response.properties().inferenceConfig().livenessRoute().path());
-        Assertions.assertEquals(622935540, response.properties().inferenceConfig().livenessRoute().port());
-        Assertions.assertEquals("nkyvujhejytrv", response.properties().inferenceConfig().readinessRoute().path());
-        Assertions.assertEquals(1106620394, response.properties().inferenceConfig().readinessRoute().port());
-        Assertions.assertEquals("ysb", response.properties().inferenceConfig().scoringRoute().path());
-        Assertions.assertEquals(741277327, response.properties().inferenceConfig().scoringRoute().port());
-        Assertions.assertEquals("nbqhmuqyz", response.properties().inferenceConfig().startupRoute().path());
-        Assertions.assertEquals(1082902102, response.properties().inferenceConfig().startupRoute().port());
-        Assertions.assertEquals(OperatingSystemType.WINDOWS, response.properties().osType());
-        Assertions.assertEquals("jshtcfnb", response.properties().stage());
+        Assertions.assertEquals("xkmtuynugptfjpi",
+            response.properties().imageDetails().vulnerabilityFindings().scanner());
+        Assertions.assertEquals("fhqtqq", response.properties().imageDetails().vulnerabilityFindings().source());
+        Assertions.assertEquals("zhuhujkzjse", response.properties().inferenceConfig().livenessRoute().path());
+        Assertions.assertEquals(1503331646, response.properties().inferenceConfig().livenessRoute().port());
+        Assertions.assertEquals("hipteo", response.properties().inferenceConfig().readinessRoute().path());
+        Assertions.assertEquals(125013493, response.properties().inferenceConfig().readinessRoute().port());
+        Assertions.assertEquals("nhwd", response.properties().inferenceConfig().scoringRoute().path());
+        Assertions.assertEquals(88040354, response.properties().inferenceConfig().scoringRoute().port());
+        Assertions.assertEquals("ec", response.properties().inferenceConfig().startupRoute().path());
+        Assertions.assertEquals(918609125, response.properties().inferenceConfig().startupRoute().port());
+        Assertions.assertEquals(OperatingSystemType.LINUX, response.properties().osType());
+        Assertions.assertEquals("bhsnimompxd", response.properties().stage());
     }
 }

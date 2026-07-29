@@ -16,12 +16,12 @@ public final class EstimatedVMPricesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EstimatedVMPrices model = BinaryData.fromString(
-            "{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":49.33737436072607,\"osType\":\"Windows\",\"vmTier\":\"Standard\"},{\"retailPrice\":28.57186762072177,\"osType\":\"Windows\",\"vmTier\":\"Spot\"}]}")
+            "{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":57.211642287105015,\"osType\":\"Linux\",\"vmTier\":\"Spot\"}]}")
             .toObject(EstimatedVMPrices.class);
         Assertions.assertEquals(BillingCurrency.USD, model.billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.unitOfMeasure());
-        Assertions.assertEquals(49.33737436072607, model.values().get(0).retailPrice());
-        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.values().get(0).osType());
-        Assertions.assertEquals(VMTier.STANDARD, model.values().get(0).vmTier());
+        Assertions.assertEquals(57.211642287105015, model.values().get(0).retailPrice());
+        Assertions.assertEquals(VMPriceOSType.LINUX, model.values().get(0).osType());
+        Assertions.assertEquals(VMTier.SPOT, model.values().get(0).vmTier());
     }
 }

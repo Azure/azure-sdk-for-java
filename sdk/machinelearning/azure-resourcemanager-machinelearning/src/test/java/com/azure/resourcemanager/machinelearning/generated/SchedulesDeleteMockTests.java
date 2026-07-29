@@ -27,7 +27,7 @@ public final class SchedulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.schedules().delete("dleohysdgkb", "xygwvtkrqiyuqds", "jqztrpjme", com.azure.core.util.Context.NONE);
+        manager.schedules().delete("yxsoxqa", "jtunlllmtiy", "uuh", com.azure.core.util.Context.NONE);
 
     }
 }

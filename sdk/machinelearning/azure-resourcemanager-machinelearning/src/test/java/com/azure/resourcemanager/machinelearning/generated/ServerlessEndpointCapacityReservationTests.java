@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerlessEndpointCapacityReservationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerlessEndpointCapacityReservation model = BinaryData
-            .fromString("{\"capacityReservationGroupId\":\"ylsyqyj\",\"endpointReservedCapacity\":920544524}")
-            .toObject(ServerlessEndpointCapacityReservation.class);
-        Assertions.assertEquals("ylsyqyj", model.capacityReservationGroupId());
-        Assertions.assertEquals(920544524, model.endpointReservedCapacity());
+        ServerlessEndpointCapacityReservation model
+            = BinaryData.fromString("{\"capacityReservationGroupId\":\"meo\",\"endpointReservedCapacity\":1765045998}")
+                .toObject(ServerlessEndpointCapacityReservation.class);
+        Assertions.assertEquals("meo", model.capacityReservationGroupId());
+        Assertions.assertEquals(1765045998, model.endpointReservedCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerlessEndpointCapacityReservation model
-            = new ServerlessEndpointCapacityReservation().withCapacityReservationGroupId("ylsyqyj")
-                .withEndpointReservedCapacity(920544524);
+            = new ServerlessEndpointCapacityReservation().withCapacityReservationGroupId("meo")
+                .withEndpointReservedCapacity(1765045998);
         model = BinaryData.fromObject(model).toObject(ServerlessEndpointCapacityReservation.class);
-        Assertions.assertEquals("ylsyqyj", model.capacityReservationGroupId());
-        Assertions.assertEquals(920544524, model.endpointReservedCapacity());
+        Assertions.assertEquals("meo", model.capacityReservationGroupId());
+        Assertions.assertEquals(1765045998, model.endpointReservedCapacity());
     }
 }

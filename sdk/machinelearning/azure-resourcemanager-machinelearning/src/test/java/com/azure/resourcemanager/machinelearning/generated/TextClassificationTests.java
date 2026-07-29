@@ -19,51 +19,51 @@ public final class TextClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TextClassification model = BinaryData.fromString(
-            "{\"taskType\":\"TextClassification\",\"featurizationSettings\":{\"datasetLanguage\":\"ewfhxwyrkbre\"},\"limitSettings\":{\"maxConcurrentTrials\":1504317434,\"maxTrials\":1250431077,\"timeout\":\"PT46H54M3S\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"mkaeplrajubow\",\"description\":\"wevtjrieikmwla\"},\"primaryMetric\":\"NormMacroRecall\",\"logVerbosity\":\"Critical\",\"targetColumnName\":\"syx\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"Download\",\"uri\":\"bmtredscnns\",\"description\":\"cyyuvtzrxzhclec\"}}")
+            "{\"taskType\":\"TextClassification\",\"featurizationSettings\":{\"datasetLanguage\":\"a\"},\"limitSettings\":{\"maxConcurrentTrials\":1312804840,\"maxTrials\":1372554981,\"timeout\":\"PT107H2M31S\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"ReadOnlyMount\",\"uri\":\"qzssl\",\"description\":\"gwfnivrxpfduio\"},\"primaryMetric\":\"AUCWeighted\",\"logVerbosity\":\"NotSet\",\"targetColumnName\":\"pbfjpoqzucfzl\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"EvalMount\",\"uri\":\"dquur\",\"description\":\"rmvhvzi\"}}")
             .toObject(TextClassification.class);
-        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
-        Assertions.assertEquals("syx", model.targetColumnName());
-        Assertions.assertEquals("cyyuvtzrxzhclec", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DOWNLOAD, model.trainingData().mode());
-        Assertions.assertEquals("bmtredscnns", model.trainingData().uri());
-        Assertions.assertEquals("ewfhxwyrkbre", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1504317434, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1250431077, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT46H54M3S"), model.limitSettings().timeout());
-        Assertions.assertEquals("wevtjrieikmwla", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
-        Assertions.assertEquals("mkaeplrajubow", model.validationData().uri());
-        Assertions.assertEquals(ClassificationPrimaryMetrics.NORM_MACRO_RECALL, model.primaryMetric());
+        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
+        Assertions.assertEquals("pbfjpoqzucfzl", model.targetColumnName());
+        Assertions.assertEquals("rmvhvzi", model.trainingData().description());
+        Assertions.assertEquals(InputDeliveryMode.EVAL_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("dquur", model.trainingData().uri());
+        Assertions.assertEquals("a", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals(1312804840, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(1372554981, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT107H2M31S"), model.limitSettings().timeout());
+        Assertions.assertEquals("gwfnivrxpfduio", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("qzssl", model.validationData().uri());
+        Assertions.assertEquals(ClassificationPrimaryMetrics.AUCWEIGHTED, model.primaryMetric());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TextClassification model = new TextClassification().withLogVerbosity(LogVerbosity.CRITICAL)
-            .withTargetColumnName("syx")
-            .withTrainingData(new MLTableJobInput().withDescription("cyyuvtzrxzhclec")
-                .withMode(InputDeliveryMode.DOWNLOAD)
-                .withUri("bmtredscnns"))
-            .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("ewfhxwyrkbre"))
-            .withLimitSettings(new NlpVerticalLimitSettings().withMaxConcurrentTrials(1504317434)
-                .withMaxTrials(1250431077)
-                .withTimeout(Duration.parse("PT46H54M3S")))
-            .withValidationData(new MLTableJobInput().withDescription("wevtjrieikmwla")
-                .withMode(InputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("mkaeplrajubow"))
-            .withPrimaryMetric(ClassificationPrimaryMetrics.NORM_MACRO_RECALL);
+        TextClassification model = new TextClassification().withLogVerbosity(LogVerbosity.NOT_SET)
+            .withTargetColumnName("pbfjpoqzucfzl")
+            .withTrainingData(new MLTableJobInput().withDescription("rmvhvzi")
+                .withMode(InputDeliveryMode.EVAL_MOUNT)
+                .withUri("dquur"))
+            .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("a"))
+            .withLimitSettings(new NlpVerticalLimitSettings().withMaxConcurrentTrials(1312804840)
+                .withMaxTrials(1372554981)
+                .withTimeout(Duration.parse("PT107H2M31S")))
+            .withValidationData(new MLTableJobInput().withDescription("gwfnivrxpfduio")
+                .withMode(InputDeliveryMode.READ_ONLY_MOUNT)
+                .withUri("qzssl"))
+            .withPrimaryMetric(ClassificationPrimaryMetrics.AUCWEIGHTED);
         model = BinaryData.fromObject(model).toObject(TextClassification.class);
-        Assertions.assertEquals(LogVerbosity.CRITICAL, model.logVerbosity());
-        Assertions.assertEquals("syx", model.targetColumnName());
-        Assertions.assertEquals("cyyuvtzrxzhclec", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DOWNLOAD, model.trainingData().mode());
-        Assertions.assertEquals("bmtredscnns", model.trainingData().uri());
-        Assertions.assertEquals("ewfhxwyrkbre", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1504317434, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1250431077, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT46H54M3S"), model.limitSettings().timeout());
-        Assertions.assertEquals("wevtjrieikmwla", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.validationData().mode());
-        Assertions.assertEquals("mkaeplrajubow", model.validationData().uri());
-        Assertions.assertEquals(ClassificationPrimaryMetrics.NORM_MACRO_RECALL, model.primaryMetric());
+        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
+        Assertions.assertEquals("pbfjpoqzucfzl", model.targetColumnName());
+        Assertions.assertEquals("rmvhvzi", model.trainingData().description());
+        Assertions.assertEquals(InputDeliveryMode.EVAL_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("dquur", model.trainingData().uri());
+        Assertions.assertEquals("a", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals(1312804840, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals(1372554981, model.limitSettings().maxTrials());
+        Assertions.assertEquals(Duration.parse("PT107H2M31S"), model.limitSettings().timeout());
+        Assertions.assertEquals("gwfnivrxpfduio", model.validationData().description());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
+        Assertions.assertEquals("qzssl", model.validationData().uri());
+        Assertions.assertEquals(ClassificationPrimaryMetrics.AUCWEIGHTED, model.primaryMetric());
     }
 }

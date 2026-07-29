@@ -21,7 +21,7 @@ public final class RegistryCodeContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"isArchived\":false,\"latestVersion\":\"ovhjkwfolpjre\",\"nextVersion\":\"hvoiranxqnzssv\",\"description\":\"dtqykz\",\"properties\":{\"trnqxi\":\"oqrej\",\"alvchfumlf\":\"yozryoxmfrxfxycj\"},\"tags\":{\"qlrt\":\"zxxkokipklfwnhfk\",\"jitbnhglrvlarozs\":\"fswqdkv\",\"abgsdxtwqqukgo\":\"mucr\",\"ksltunrwxsqvx\":\"lvjgsk\"}},\"id\":\"pccfwq\",\"name\":\"souqyzx\",\"type\":\"jehdklvqtm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":true,\"latestVersion\":\"gghutlh\",\"nextVersion\":\"zljyogcpw\",\"description\":\"gpbi\",\"properties\":{\"mfo\":\"xhqel\"},\"tags\":{\"v\":\"ik\"}},\"id\":\"lsp\",\"name\":\"hghkf\",\"type\":\"wnlpbawtp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class RegistryCodeContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeContainer response = manager.registryCodeContainers()
-            .getWithResponse("cwyltslfccy", "vysfmndr", "qqjkegbmldkcih", com.azure.core.util.Context.NONE)
+            .getWithResponse("mnswxq", "mhffca", "vrd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dtqykz", response.properties().description());
-        Assertions.assertEquals("oqrej", response.properties().properties().get("trnqxi"));
-        Assertions.assertEquals("zxxkokipklfwnhfk", response.properties().tags().get("qlrt"));
-        Assertions.assertFalse(response.properties().isArchived());
+        Assertions.assertEquals("gpbi", response.properties().description());
+        Assertions.assertEquals("xhqel", response.properties().properties().get("mfo"));
+        Assertions.assertEquals("ik", response.properties().tags().get("v"));
+        Assertions.assertTrue(response.properties().isArchived());
     }
 }

@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class JupyterKernelConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JupyterKernelConfig model = BinaryData.fromString(
-            "{\"argv\":[\"egqxsorchazrq\",\"xz\",\"hlbeqvhs\"],\"displayName\":\"mpwxsl\",\"language\":\"ggfzgaefh\"}")
-            .toObject(JupyterKernelConfig.class);
-        Assertions.assertEquals("egqxsorchazrq", model.argv().get(0));
-        Assertions.assertEquals("mpwxsl", model.displayName());
-        Assertions.assertEquals("ggfzgaefh", model.language());
+        JupyterKernelConfig model
+            = BinaryData.fromString("{\"argv\":[\"n\"],\"displayName\":\"gwiij\",\"language\":\"qiywhxpsbapial\"}")
+                .toObject(JupyterKernelConfig.class);
+        Assertions.assertEquals("n", model.argv().get(0));
+        Assertions.assertEquals("gwiij", model.displayName());
+        Assertions.assertEquals("qiywhxpsbapial", model.language());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JupyterKernelConfig model = new JupyterKernelConfig().withArgv(Arrays.asList("egqxsorchazrq", "xz", "hlbeqvhs"))
-            .withDisplayName("mpwxsl")
-            .withLanguage("ggfzgaefh");
+        JupyterKernelConfig model = new JupyterKernelConfig().withArgv(Arrays.asList("n"))
+            .withDisplayName("gwiij")
+            .withLanguage("qiywhxpsbapial");
         model = BinaryData.fromObject(model).toObject(JupyterKernelConfig.class);
-        Assertions.assertEquals("egqxsorchazrq", model.argv().get(0));
-        Assertions.assertEquals("mpwxsl", model.displayName());
-        Assertions.assertEquals("ggfzgaefh", model.language());
+        Assertions.assertEquals("n", model.argv().get(0));
+        Assertions.assertEquals("gwiij", model.displayName());
+        Assertions.assertEquals("qiywhxpsbapial", model.language());
     }
 }

@@ -12,14 +12,14 @@ public final class CustomSeasonalityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomSeasonality model
-            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":400188640}").toObject(CustomSeasonality.class);
-        Assertions.assertEquals(400188640, model.value());
+            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":403004029}").toObject(CustomSeasonality.class);
+        Assertions.assertEquals(403004029, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomSeasonality model = new CustomSeasonality().withValue(400188640);
+        CustomSeasonality model = new CustomSeasonality().withValue(403004029);
         model = BinaryData.fromObject(model).toObject(CustomSeasonality.class);
-        Assertions.assertEquals(400188640, model.value());
+        Assertions.assertEquals(403004029, model.value());
     }
 }

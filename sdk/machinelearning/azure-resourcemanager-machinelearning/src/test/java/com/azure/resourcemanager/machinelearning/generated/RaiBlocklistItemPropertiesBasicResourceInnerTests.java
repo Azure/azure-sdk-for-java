@@ -13,18 +13,18 @@ public final class RaiBlocklistItemPropertiesBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemPropertiesBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"isRegex\":true,\"pattern\":\"kv\"},\"id\":\"loeohy\",\"name\":\"ivxdifbwblijhp\",\"type\":\"ukxgoyxontbwdq\"}")
+            "{\"properties\":{\"isRegex\":false,\"pattern\":\"bwcxy\"},\"id\":\"dzycxhaoegjzgplj\",\"name\":\"nwczsraz\",\"type\":\"bybicqhxhj\"}")
             .toObject(RaiBlocklistItemPropertiesBasicResourceInner.class);
-        Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("kv", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("bwcxy", model.properties().pattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistItemPropertiesBasicResourceInner model = new RaiBlocklistItemPropertiesBasicResourceInner()
-            .withProperties(new RaiBlocklistItemProperties().withIsRegex(true).withPattern("kv"));
+            .withProperties(new RaiBlocklistItemProperties().withIsRegex(false).withPattern("bwcxy"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemPropertiesBasicResourceInner.class);
-        Assertions.assertTrue(model.properties().isRegex());
-        Assertions.assertEquals("kv", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("bwcxy", model.properties().pattern());
     }
 }

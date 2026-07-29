@@ -28,7 +28,7 @@ public final class ComponentVersionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.componentVersions()
-            .deleteWithResponse("fz", "qmbinpxmiwt", "qi", "pvrd", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lyduyufdmz", "c", "v", "vwlxd", com.azure.core.util.Context.NONE);
 
     }
 }

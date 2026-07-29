@@ -25,7 +25,7 @@ public final class EndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"lkmgcxmkr\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"idy\",\"provisioningState\":\"NotStarted\"},\"id\":\"gvyuusexenywwkd\",\"name\":\"qqg\",\"type\":\"sxpaapmthdqv\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"fwknlytvx\",\"provisioningState\":\"Deleting\"},\"id\":\"adtnmqr\",\"name\":\"jecjixc\",\"type\":\"aiki\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"r\",\"provisioningState\":\"Failed\"},\"id\":\"kvluuessu\",\"name\":\"zfrwmctrngjqc\",\"type\":\"sfbkrtpu\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"yeyqsiniejjb\",\"provisioningState\":\"Failed\"},\"id\":\"xkwrvtlb\",\"name\":\"ukbdtmr\",\"type\":\"jtuz\"}],\"endpointUri\":\"vbpvizuu\",\"failureReason\":\"ilgmo\",\"location\":\"dntj\",\"name\":\"jxgqsb\",\"provisioningState\":\"Succeeded\",\"shouldCreateAiServicesEndpoint\":true},\"id\":\"uvbzcqgtzx\",\"name\":\"lrmrtdznvjgovy\",\"type\":\"pppswleptta\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointResourceProperties\",\"associatedResourceId\":\"tjgpyvjgsjyjnhwb\",\"deployments\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"nc\",\"provisioningState\":\"NotStarted\"},\"id\":\"err\",\"name\":\"pa\",\"type\":\"fpiniopbfkmfbru\"},{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"yl\",\"provisioningState\":\"NotStarted\"},\"id\":\"vnlbjfsol\",\"name\":\"rqu\",\"type\":\"lnhxr\"}],\"endpointUri\":\"shicvrmwbg\",\"failureReason\":\"alqb\",\"location\":\"pvpgsrfshkjg\",\"name\":\"boaevtxibrooog\",\"provisioningState\":\"Succeeded\",\"shouldCreateAiServicesEndpoint\":false},\"id\":\"wpubdhqn\",\"name\":\"rbvruhdjziv\",\"type\":\"axiimqnqmbfptz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,29 +35,27 @@ public final class EndpointsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EndpointResourcePropertiesBasicResource response = manager.endpoints()
-            .define("qwiawbwzyvbui")
-            .withExistingWorkspace("zldplamcc", "ljrnveqleoz")
-            .withProperties(new EndpointResourceProperties().withAssociatedResourceId("ysatoplqc")
+            .define("ajqnsrcqd")
+            .withExistingWorkspace("kj", "o")
+            .withProperties(new EndpointResourceProperties().withAssociatedResourceId("mlqamd")
                 .withDeployments(Arrays.asList(
                     new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("lzwuqkprf")),
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("d")),
                     new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("wrjbr")),
-                    new EndpointDeploymentResourcePropertiesBasicResourceInner()
-                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("yipjzgmxqaupy"))))
-                .withEndpointUri("ucmhonojese")
-                .withFailureReason("xel")
-                .withLocation("xwmpziy")
-                .withName("sjswedkfof")
-                .withShouldCreateAiServicesEndpoint(false))
+                        .withProperties(new EndpointDeploymentResourceProperties().withFailureReason("wo"))))
+                .withEndpointUri("nkmkcimksfejzm")
+                .withFailureReason("lbzmngxzpdnbjo")
+                .withLocation("ddvtnbtv")
+                .withName("kjfkaoe")
+                .withShouldCreateAiServicesEndpoint(true))
             .create();
 
-        Assertions.assertEquals("lkmgcxmkr", response.properties().associatedResourceId());
-        Assertions.assertEquals("idy", response.properties().deployments().get(0).properties().failureReason());
-        Assertions.assertEquals("vbpvizuu", response.properties().endpointUri());
-        Assertions.assertEquals("ilgmo", response.properties().failureReason());
-        Assertions.assertEquals("dntj", response.properties().location());
-        Assertions.assertEquals("jxgqsb", response.properties().name());
-        Assertions.assertTrue(response.properties().shouldCreateAiServicesEndpoint());
+        Assertions.assertEquals("tjgpyvjgsjyjnhwb", response.properties().associatedResourceId());
+        Assertions.assertEquals("nc", response.properties().deployments().get(0).properties().failureReason());
+        Assertions.assertEquals("shicvrmwbg", response.properties().endpointUri());
+        Assertions.assertEquals("alqb", response.properties().failureReason());
+        Assertions.assertEquals("pvpgsrfshkjg", response.properties().location());
+        Assertions.assertEquals("boaevtxibrooog", response.properties().name());
+        Assertions.assertFalse(response.properties().shouldCreateAiServicesEndpoint());
     }
 }

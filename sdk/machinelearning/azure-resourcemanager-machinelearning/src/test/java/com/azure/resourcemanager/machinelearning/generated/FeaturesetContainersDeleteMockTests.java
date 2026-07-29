@@ -27,7 +27,7 @@ public final class FeaturesetContainersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.featuresetContainers().delete("u", "mzozb", "htvughu", com.azure.core.util.Context.NONE);
+        manager.featuresetContainers().delete("svfsuk", "ki", "albckpn", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -17,44 +17,46 @@ public final class ForecastingTrainingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForecastingTrainingSettings model = BinaryData.fromString(
-            "{\"allowedTrainingAlgorithms\":[\"AutoArima\"],\"blockedTrainingAlgorithms\":[\"Naive\",\"TCNForecaster\",\"ExponentialSmoothing\",\"ExponentialSmoothing\"],\"enableDnnTraining\":false,\"enableModelExplainability\":true,\"enableOnnxCompatibleModels\":false,\"enableStackEnsemble\":true,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT64H5M8S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datadqzsaaoqdsgp\\\"\",\"stackMetaLearnerTrainPercentage\":55.170473316715174,\"stackMetaLearnerType\":\"None\"}}")
+            "{\"allowedTrainingAlgorithms\":[\"Naive\"],\"blockedTrainingAlgorithms\":[\"GradientBoosting\",\"ElasticNet\",\"Average\",\"Prophet\"],\"enableDnnTraining\":false,\"enableModelExplainability\":true,\"enableOnnxCompatibleModels\":true,\"enableStackEnsemble\":false,\"enableVoteEnsemble\":true,\"ensembleModelDownloadTimeout\":\"PT11H8M54S\",\"stackEnsembleSettings\":{\"stackMetaLearnerKWargs\":\"\\\"datalu\\\"\",\"stackMetaLearnerTrainPercentage\":12.29962769063241,\"stackMetaLearnerType\":\"LogisticRegressionCV\"}}")
             .toObject(ForecastingTrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertTrue(model.enableModelExplainability());
-        Assertions.assertFalse(model.enableOnnxCompatibleModels());
-        Assertions.assertTrue(model.enableStackEnsemble());
+        Assertions.assertTrue(model.enableOnnxCompatibleModels());
+        Assertions.assertFalse(model.enableStackEnsemble());
         Assertions.assertTrue(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT64H5M8S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(55.170473316715174D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.NONE, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ForecastingModels.AUTO_ARIMA, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ForecastingModels.NAIVE, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(Duration.parse("PT11H8M54S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(12.29962769063241D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(ForecastingModels.NAIVE, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ForecastingModels.GRADIENT_BOOSTING, model.blockedTrainingAlgorithms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ForecastingTrainingSettings model = new ForecastingTrainingSettings().withEnableDnnTraining(false)
             .withEnableModelExplainability(true)
-            .withEnableOnnxCompatibleModels(false)
-            .withEnableStackEnsemble(true)
+            .withEnableOnnxCompatibleModels(true)
+            .withEnableStackEnsemble(false)
             .withEnableVoteEnsemble(true)
-            .withEnsembleModelDownloadTimeout(Duration.parse("PT64H5M8S"))
-            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datadqzsaaoqdsgp\"")
-                .withStackMetaLearnerTrainPercentage(55.170473316715174D)
-                .withStackMetaLearnerType(StackMetaLearnerType.NONE))
-            .withAllowedTrainingAlgorithms(Arrays.asList(ForecastingModels.AUTO_ARIMA))
-            .withBlockedTrainingAlgorithms(Arrays.asList(ForecastingModels.NAIVE, ForecastingModels.TCNFORECASTER,
-                ForecastingModels.EXPONENTIAL_SMOOTHING, ForecastingModels.EXPONENTIAL_SMOOTHING));
+            .withEnsembleModelDownloadTimeout(Duration.parse("PT11H8M54S"))
+            .withStackEnsembleSettings(new StackEnsembleSettings().withStackMetaLearnerKWargs("\"datalu\"")
+                .withStackMetaLearnerTrainPercentage(12.29962769063241D)
+                .withStackMetaLearnerType(StackMetaLearnerType.LOGISTIC_REGRESSION_CV))
+            .withAllowedTrainingAlgorithms(Arrays.asList(ForecastingModels.NAIVE))
+            .withBlockedTrainingAlgorithms(Arrays.asList(ForecastingModels.GRADIENT_BOOSTING,
+                ForecastingModels.ELASTIC_NET, ForecastingModels.AVERAGE, ForecastingModels.PROPHET));
         model = BinaryData.fromObject(model).toObject(ForecastingTrainingSettings.class);
         Assertions.assertFalse(model.enableDnnTraining());
         Assertions.assertTrue(model.enableModelExplainability());
-        Assertions.assertFalse(model.enableOnnxCompatibleModels());
-        Assertions.assertTrue(model.enableStackEnsemble());
+        Assertions.assertTrue(model.enableOnnxCompatibleModels());
+        Assertions.assertFalse(model.enableStackEnsemble());
         Assertions.assertTrue(model.enableVoteEnsemble());
-        Assertions.assertEquals(Duration.parse("PT64H5M8S"), model.ensembleModelDownloadTimeout());
-        Assertions.assertEquals(55.170473316715174D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
-        Assertions.assertEquals(StackMetaLearnerType.NONE, model.stackEnsembleSettings().stackMetaLearnerType());
-        Assertions.assertEquals(ForecastingModels.AUTO_ARIMA, model.allowedTrainingAlgorithms().get(0));
-        Assertions.assertEquals(ForecastingModels.NAIVE, model.blockedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(Duration.parse("PT11H8M54S"), model.ensembleModelDownloadTimeout());
+        Assertions.assertEquals(12.29962769063241D, model.stackEnsembleSettings().stackMetaLearnerTrainPercentage());
+        Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION_CV,
+            model.stackEnsembleSettings().stackMetaLearnerType());
+        Assertions.assertEquals(ForecastingModels.NAIVE, model.allowedTrainingAlgorithms().get(0));
+        Assertions.assertEquals(ForecastingModels.GRADIENT_BOOSTING, model.blockedTrainingAlgorithms().get(0));
     }
 }

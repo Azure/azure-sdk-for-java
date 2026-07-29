@@ -27,7 +27,7 @@ public final class WorkspacesResyncKeysMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.workspaces().resyncKeys("fzhhru", "m", com.azure.core.util.Context.NONE);
+        manager.workspaces().resyncKeys("erndzzywxqraqxtk", "eetnn", com.azure.core.util.Context.NONE);
 
     }
 }

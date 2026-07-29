@@ -38,7 +38,7 @@ public final class RegistriesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"discoveryUrl\":\"kgtlhzkrazki\",\"intellectualPropertyPublisher\":\"yecznvzmsvznghe\",\"managedResourceGroup\":{\"resourceId\":\"ehgvmmnoyz\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"pluzypkf\"},{\"principalId\":\"fu\"},{\"principalId\":\"lzvxotnoilqcd\"}]},\"mlFlowRegistryUri\":\"yefqhxytsqmbwca\",\"registryPrivateEndpointConnections\":[{\"id\":\"qakvokya\",\"location\":\"ratqlreqbrc\",\"properties\":{\"groupIds\":[\"shzumxuczn\",\"ab\",\"wrcyrn\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"owxqzkk\"}}],\"publicNetworkAccess\":\"vejhmnaphrskmp\",\"regionDetails\":[{\"acrDetails\":[{},{}],\"location\":\"pavamzmzfntte\",\"storageAccountDetails\":[{},{}]},{\"acrDetails\":[{},{}],\"location\":\"tjaypjdrjlijkkv\",\"storageAccountDetails\":[{},{},{}]}]},\"identity\":{\"principalId\":\"jjir\",\"tenantId\":\"qxa\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"avyrjlnd\":{\"principalId\":\"racfsffdralihh\",\"clientId\":\"cygyzhcv\"},\"h\":{\"principalId\":\"myzvtiojtpdr\",\"clientId\":\"xaxoyj\"}}},\"kind\":\"we\",\"sku\":{\"name\":\"givkteccxfnatntm\",\"tier\":\"Premium\",\"size\":\"qpmfhjikqcnbdq\",\"family\":\"ghnme\",\"capacity\":629202106},\"location\":\"chmyucgrmw\",\"tags\":{\"yplgq\":\"d\"},\"id\":\"qgrbrhhv\",\"name\":\"pgtipaaoylwh\",\"type\":\"mkbweasgyp\"}";
+            = "{\"properties\":{\"discoveryUrl\":\"tjuzvyj\",\"intellectualPropertyPublisher\":\"xchquo\",\"managedResourceGroup\":{\"resourceId\":\"rcsksxqfh\"},\"managedResourceGroupSettings\":{\"assignedIdentities\":[{\"principalId\":\"dagvyjcdpncvf\"},{\"principalId\":\"qyodiijcsapqh\"},{\"principalId\":\"ajsnivnme\"},{\"principalId\":\"jb\"}]},\"mlFlowRegistryUri\":\"wrf\",\"registryPrivateEndpointConnections\":[{\"id\":\"vqwkseodvl\",\"location\":\"zgvcyk\",\"properties\":{\"groupIds\":[\"c\",\"yg\",\"bmum\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"crsm\"}},{\"id\":\"jmxwcvumnrutqnke\",\"location\":\"f\",\"properties\":{\"groupIds\":[\"jopecvp\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"tnowpajfhxsmu\"}},{\"id\":\"zadzglmuu\",\"location\":\"suhsypx\",\"properties\":{\"groupIds\":[\"hfrerkqpyfjxkb\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"uqfmxbdjkmnxsg\"}},{\"id\":\"owxhyvdbrdv\",\"location\":\"ghbt\",\"properties\":{\"groupIds\":[\"kusgii\",\"h\"],\"privateEndpoint\":{},\"registryPrivateLinkServiceConnectionState\":{},\"provisioningState\":\"ype\"}}],\"publicNetworkAccess\":\"shm\",\"regionDetails\":[{\"acrDetails\":[{},{},{}],\"location\":\"dvkymktcwm\",\"storageAccountDetails\":[{}]},{\"acrDetails\":[{},{},{},{}],\"location\":\"e\",\"storageAccountDetails\":[{},{},{},{}]},{\"acrDetails\":[{},{},{},{}],\"location\":\"nfgazaghdd\",\"storageAccountDetails\":[{},{},{},{}]},{\"acrDetails\":[{}],\"location\":\"xorrutuhve\",\"storageAccountDetails\":[{},{},{}]}]},\"identity\":{\"principalId\":\"solqy\",\"tenantId\":\"wxlxohvr\",\"type\":\"None\",\"userAssignedIdentities\":{\"xmjpja\":{\"principalId\":\"gd\",\"clientId\":\"cvzfc\"},\"mqds\":{\"principalId\":\"dtuodocgq\",\"clientId\":\"xnyx\"},\"tacvs\":{\"principalId\":\"iiontqikdipk\",\"clientId\":\"qkuzabrsoihataj\"}}},\"kind\":\"ssxylsu\",\"sku\":{\"name\":\"adohsj\",\"tier\":\"Standard\",\"size\":\"kxgfuzqqnzkwlxqd\",\"family\":\"ipdnl\",\"capacity\":1467221261},\"location\":\"f\",\"tags\":{\"rkt\":\"wgzeylzpiimxa\",\"gynsixgzbbnug\":\"o\"},\"id\":\"quarb\",\"name\":\"uvqbeyxwrmupzpe\",\"type\":\"zbhg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -48,96 +48,91 @@ public final class RegistriesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Registry response = manager.registries()
-            .define("dzccqtwsrbfbsd")
-            .withRegion("esywywnvgy")
-            .withExistingResourceGroup("hophqwo")
-            .withTags(mapOf("zyrgrlh", "ifrzcwuejmxlfzl"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("xvvmrnjrdi", new UserAssignedIdentity(), "owvfxe",
-                    new UserAssignedIdentity(), "lbd", new UserAssignedIdentity())))
-            .withKind("lfhl")
-            .withSku(new Sku().withName("gapspx")
-                .withTier(SkuTier.PREMIUM)
-                .withSize("scrmzquuzy")
-                .withFamily("gouxnro")
-                .withCapacity(167174087))
-            .withDiscoveryUrl("cdzfbvexrv")
-            .withIntellectualPropertyPublisher("hmfsnqp")
-            .withManagedResourceGroup(new ArmResourceId().withResourceId("s"))
+            .define("onmtoj")
+            .withRegion("agbahdbtjmku")
+            .withExistingResourceGroup("af")
+            .withTags(mapOf("lo", "rklbizrxhuqfvpa"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xipe", new UserAssignedIdentity())))
+            .withKind("plfmfvmjjfzi")
+            .withSku(new Sku().withName("lbiqq")
+                .withTier(SkuTier.STANDARD)
+                .withSize("x")
+                .withFamily("fv")
+                .withCapacity(38788164))
+            .withDiscoveryUrl("dofmazhk")
+            .withIntellectualPropertyPublisher("sjknaq")
+            .withManagedResourceGroup(new ArmResourceId().withResourceId("wgpmdmwiwevvesw"))
             .withManagedResourceGroupSettings(new ManagedResourceGroupSettings().withAssignedIdentities(
-                Arrays.asList(new ManagedResourceGroupAssignedIdentities().withPrincipalId("sksd"),
-                    new ManagedResourceGroupAssignedIdentities().withPrincipalId("hwtsyp"),
-                    new ManagedResourceGroupAssignedIdentities().withPrincipalId("fbwoetxi"))))
-            .withMlFlowRegistryUri("fwxhflgdunga")
+                Arrays.asList(new ManagedResourceGroupAssignedIdentities().withPrincipalId("qhdldargkwimtcce"),
+                    new ManagedResourceGroupAssignedIdentities().withPrincipalId("uqu"),
+                    new ManagedResourceGroupAssignedIdentities().withPrincipalId("czzc"),
+                    new ManagedResourceGroupAssignedIdentities().withPrincipalId("wxvbkirgknhfw"))))
+            .withMlFlowRegistryUri("jwdajy")
             .withRegistryPrivateEndpointConnections(
                 Arrays
                     .asList(
-                        new RegistryPrivateEndpointConnection().withId("a")
-                            .withLocation("xsnxyksznfstmp")
-                            .withGroupIds(Arrays.asList("andzktwomlpczlq", "oomzgmrolhsfddk", "xvevwxmnbwaxa"))
+                        new RegistryPrivateEndpointConnection().withId("gipvspewyzhydt")
+                            .withLocation("mtrsdp")
+                            .withGroupIds(Arrays.asList("igarmawokgcnevic", "wb", "ysclwbjgiynqr"))
                             .withPrivateEndpoint(new PrivateEndpointResource())
                             .withRegistryPrivateLinkServiceConnectionState(
                                 new RegistryPrivateLinkServiceConnectionState())
-                            .withProvisioningState("pyhtuh"),
-                        new RegistryPrivateEndpointConnection().withId("pqild")
-                            .withLocation("ok")
-                            .withGroupIds(Arrays.asList("pnytkqj", "rla", "btgt"))
+                            .withProvisioningState("weofvsxauphzefi"),
+                        new RegistryPrivateEndpointConnection().withId("yydxwgti")
+                            .withLocation("zkdeexccwldgf")
+                            .withGroupIds(Arrays.asList("mwtacrscfcn"))
                             .withPrivateEndpoint(new PrivateEndpointResource())
                             .withRegistryPrivateLinkServiceConnectionState(
                                 new RegistryPrivateLinkServiceConnectionState())
-                            .withProvisioningState("trm"),
-                        new RegistryPrivateEndpointConnection().withId("ujfgtg")
-                            .withLocation("upczegqn")
-                            .withGroupIds(Arrays.asList("ssvgyoggkzt", "ttjnknpbqgzk", "obc", "obnaqei"))
+                            .withProvisioningState("cullmfwfpoeow"),
+                        new RegistryPrivateEndpointConnection().withId("zzwncs")
+                            .withLocation("fxvchmubyguqh")
+                            .withGroupIds(Arrays.asList("vjfgrpryyi", "cbajx", "rbvy", "kbuatxkznlwl"))
                             .withPrivateEndpoint(new PrivateEndpointResource())
                             .withRegistryPrivateLinkServiceConnectionState(
                                 new RegistryPrivateLinkServiceConnectionState())
-                            .withProvisioningState("q")))
-            .withPublicNetworkAccess("ugpnnhzjm")
+                            .withProvisioningState("gkev")))
+            .withPublicNetworkAccess("yvxzkxiymzgrgk")
             .withRegionDetails(Arrays.asList(
                 new RegistryRegionArmDetails()
                     .withAcrDetails(
                         Arrays.asList(new AcrDetails(), new AcrDetails(), new AcrDetails(), new AcrDetails()))
-                    .withLocation("mnvmujy")
-                    .withStorageAccountDetails(Arrays.asList(new StorageAccountDetails(), new StorageAccountDetails())),
-                new RegistryRegionArmDetails()
-                    .withAcrDetails(Arrays.asList(new AcrDetails(), new AcrDetails(), new AcrDetails()))
-                    .withLocation("xmliytdegcrun")
-                    .withStorageAccountDetails(Arrays.asList(new StorageAccountDetails(), new StorageAccountDetails())),
-                new RegistryRegionArmDetails()
-                    .withAcrDetails(Arrays.asList(new AcrDetails(), new AcrDetails(), new AcrDetails()))
-                    .withLocation("tekbirhyvsy")
+                    .withLocation("aezplybspsb")
                     .withStorageAccountDetails(Arrays.asList(new StorageAccountDetails(), new StorageAccountDetails(),
                         new StorageAccountDetails())),
+                new RegistryRegionArmDetails().withAcrDetails(Arrays.asList(new AcrDetails(), new AcrDetails()))
+                    .withLocation("zimfcf")
+                    .withStorageAccountDetails(Arrays.asList(new StorageAccountDetails())),
                 new RegistryRegionArmDetails()
                     .withAcrDetails(
                         Arrays.asList(new AcrDetails(), new AcrDetails(), new AcrDetails(), new AcrDetails()))
-                    .withLocation("orsz")
-                    .withStorageAccountDetails(Arrays.asList(new StorageAccountDetails(), new StorageAccountDetails(),
-                        new StorageAccountDetails()))))
+                    .withLocation("pasckpgb")
+                    .withStorageAccountDetails(
+                        Arrays.asList(new StorageAccountDetails(), new StorageAccountDetails()))))
             .create();
 
-        Assertions.assertEquals("chmyucgrmw", response.location());
-        Assertions.assertEquals("d", response.tags().get("yplgq"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("we", response.kind());
-        Assertions.assertEquals("givkteccxfnatntm", response.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("qpmfhjikqcnbdq", response.sku().size());
-        Assertions.assertEquals("ghnme", response.sku().family());
-        Assertions.assertEquals(629202106, response.sku().capacity());
-        Assertions.assertEquals("kgtlhzkrazki", response.discoveryUrl());
-        Assertions.assertEquals("yecznvzmsvznghe", response.intellectualPropertyPublisher());
-        Assertions.assertEquals("ehgvmmnoyz", response.managedResourceGroup().resourceId());
-        Assertions.assertEquals("pluzypkf",
+        Assertions.assertEquals("f", response.location());
+        Assertions.assertEquals("wgzeylzpiimxa", response.tags().get("rkt"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("ssxylsu", response.kind());
+        Assertions.assertEquals("adohsj", response.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.sku().tier());
+        Assertions.assertEquals("kxgfuzqqnzkwlxqd", response.sku().size());
+        Assertions.assertEquals("ipdnl", response.sku().family());
+        Assertions.assertEquals(1467221261, response.sku().capacity());
+        Assertions.assertEquals("tjuzvyj", response.discoveryUrl());
+        Assertions.assertEquals("xchquo", response.intellectualPropertyPublisher());
+        Assertions.assertEquals("rcsksxqfh", response.managedResourceGroup().resourceId());
+        Assertions.assertEquals("dagvyjcdpncvf",
             response.managedResourceGroupSettings().assignedIdentities().get(0).principalId());
-        Assertions.assertEquals("yefqhxytsqmbwca", response.mlFlowRegistryUri());
-        Assertions.assertEquals("qakvokya", response.registryPrivateEndpointConnections().get(0).id());
-        Assertions.assertEquals("ratqlreqbrc", response.registryPrivateEndpointConnections().get(0).location());
-        Assertions.assertEquals("shzumxuczn", response.registryPrivateEndpointConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("owxqzkk", response.registryPrivateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals("vejhmnaphrskmp", response.publicNetworkAccess());
-        Assertions.assertEquals("pavamzmzfntte", response.regionDetails().get(0).location());
+        Assertions.assertEquals("wrf", response.mlFlowRegistryUri());
+        Assertions.assertEquals("vqwkseodvl", response.registryPrivateEndpointConnections().get(0).id());
+        Assertions.assertEquals("zgvcyk", response.registryPrivateEndpointConnections().get(0).location());
+        Assertions.assertEquals("c", response.registryPrivateEndpointConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("crsm", response.registryPrivateEndpointConnections().get(0).provisioningState());
+        Assertions.assertEquals("shm", response.publicNetworkAccess());
+        Assertions.assertEquals("dvkymktcwm", response.regionDetails().get(0).location());
     }
 
     // Use "Map.of" if available

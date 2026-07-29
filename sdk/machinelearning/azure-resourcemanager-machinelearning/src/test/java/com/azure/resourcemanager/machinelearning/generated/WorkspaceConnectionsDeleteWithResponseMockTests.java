@@ -28,7 +28,7 @@ public final class WorkspaceConnectionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.workspaceConnections()
-            .deleteWithResponse("tudk", "gsgopyckmncr", "t", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("svzhlkeot", "scqkxzrfloqzmvem", "iy", com.azure.core.util.Context.NONE);
 
     }
 }

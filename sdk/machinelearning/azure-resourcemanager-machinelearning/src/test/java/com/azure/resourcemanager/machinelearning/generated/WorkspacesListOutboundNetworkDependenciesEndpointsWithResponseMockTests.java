@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 public final class WorkspacesListOutboundNetworkDependenciesEndpointsWithResponseMockTests {
     @Test
     public void testListOutboundNetworkDependenciesEndpointsWithResponse() throws Exception {
-        String responseStr = "{\"value\":[{\"properties\":{\"category\":\"rrhyjxcqcaczzvwa\",\"endpoints\":[{}]}}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"category\":\"llxwkno\",\"endpoints\":[{},{},{}]}},{\"properties\":{\"category\":\"lfsdntkqiymmddsl\",\"endpoints\":[{},{},{},{}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +31,9 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsWithRespons
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExternalFqdnResponse response = manager.workspaces()
-            .listOutboundNetworkDependenciesEndpointsWithResponse("x", "xmlfouqpskva", com.azure.core.util.Context.NONE)
+            .listOutboundNetworkDependenciesEndpointsWithResponse("uedcm", "ryhhe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rrhyjxcqcaczzvwa", response.value().get(0).properties().category());
+        Assertions.assertEquals("llxwkno", response.value().get(0).properties().category());
     }
 }

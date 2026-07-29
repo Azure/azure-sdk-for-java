@@ -13,18 +13,18 @@ public final class RandomSamplingAlgorithmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RandomSamplingAlgorithm model
-            = BinaryData.fromString("{\"samplingAlgorithmType\":\"Random\",\"rule\":\"Sobol\",\"seed\":1996277732}")
+            = BinaryData.fromString("{\"samplingAlgorithmType\":\"Random\",\"rule\":\"Sobol\",\"seed\":1781324493}")
                 .toObject(RandomSamplingAlgorithm.class);
         Assertions.assertEquals(RandomSamplingAlgorithmRule.SOBOL, model.rule());
-        Assertions.assertEquals(1996277732, model.seed());
+        Assertions.assertEquals(1781324493, model.seed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RandomSamplingAlgorithm model
-            = new RandomSamplingAlgorithm().withRule(RandomSamplingAlgorithmRule.SOBOL).withSeed(1996277732);
+            = new RandomSamplingAlgorithm().withRule(RandomSamplingAlgorithmRule.SOBOL).withSeed(1781324493);
         model = BinaryData.fromObject(model).toObject(RandomSamplingAlgorithm.class);
         Assertions.assertEquals(RandomSamplingAlgorithmRule.SOBOL, model.rule());
-        Assertions.assertEquals(1996277732, model.seed());
+        Assertions.assertEquals(1781324493, model.seed());
     }
 }

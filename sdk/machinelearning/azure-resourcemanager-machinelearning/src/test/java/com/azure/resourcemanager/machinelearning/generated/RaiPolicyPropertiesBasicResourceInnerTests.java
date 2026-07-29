@@ -20,71 +20,61 @@ public final class RaiPolicyPropertiesBasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyPropertiesBasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"basePolicyName\":\"ukrcdiohcl\",\"completionBlocklists\":[{\"blocking\":false,\"blocklistName\":\"k\"},{\"blocking\":true,\"blocklistName\":\"eddp\"},{\"blocking\":false,\"blocklistName\":\"wy\"}],\"contentFilters\":[{\"allowedContentLevel\":\"High\",\"blocking\":false,\"enabled\":false,\"name\":\"bnwvpaq\",\"source\":\"Prompt\"},{\"allowedContentLevel\":\"Medium\",\"blocking\":true,\"enabled\":true,\"name\":\"ddofxnfb\",\"source\":\"Completion\"},{\"allowedContentLevel\":\"Low\",\"blocking\":false,\"enabled\":false,\"name\":\"ovo\",\"source\":\"Prompt\"},{\"allowedContentLevel\":\"High\",\"blocking\":true,\"enabled\":true,\"name\":\"krwfmihwpadhedb\",\"source\":\"Completion\"}],\"mode\":\"Default\",\"promptBlocklists\":[{\"blocking\":false,\"blocklistName\":\"mkhjaozvb\"},{\"blocking\":true,\"blocklistName\":\"jhbp\"},{\"blocking\":false,\"blocklistName\":\"scmyhrhjvszf\"}],\"type\":\"SystemManaged\"},\"id\":\"ndwpppqw\",\"name\":\"joevzzuf\",\"type\":\"tdxmlynzlyvap\"}")
+            "{\"properties\":{\"basePolicyName\":\"nsdunrkzvzua\",\"completionBlocklists\":[{\"blocking\":true,\"blocklistName\":\"yxtrvfdbqsk\"},{\"blocking\":true,\"blocklistName\":\"vitp\"},{\"blocking\":false,\"blocklistName\":\"ffavdhpiwr\"}],\"contentFilters\":[{\"allowedContentLevel\":\"Low\",\"blocking\":true,\"enabled\":false,\"name\":\"dwfbwxy\",\"source\":\"Prompt\"},{\"allowedContentLevel\":\"Low\",\"blocking\":true,\"enabled\":true,\"name\":\"rmegajrzctwymzsk\",\"source\":\"Completion\"}],\"mode\":\"Deferred\",\"promptBlocklists\":[{\"blocking\":false,\"blocklistName\":\"hgliupqscoobkj\"},{\"blocking\":true,\"blocklistName\":\"sqcomjiqiincevx\"},{\"blocking\":true,\"blocklistName\":\"vpximziizmeqmd\"}],\"type\":\"UserManaged\"},\"id\":\"odqxxpqhm\",\"name\":\"qibtblmc\",\"type\":\"rjaznotdofqvpb\"}")
             .toObject(RaiPolicyPropertiesBasicResourceInner.class);
-        Assertions.assertEquals("ukrcdiohcl", model.properties().basePolicyName());
-        Assertions.assertFalse(model.properties().completionBlocklists().get(0).blocking());
-        Assertions.assertEquals("k", model.properties().completionBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(AllowedContentLevel.HIGH,
+        Assertions.assertEquals("nsdunrkzvzua", model.properties().basePolicyName());
+        Assertions.assertTrue(model.properties().completionBlocklists().get(0).blocking());
+        Assertions.assertEquals("yxtrvfdbqsk", model.properties().completionBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(AllowedContentLevel.LOW,
             model.properties().contentFilters().get(0).allowedContentLevel());
-        Assertions.assertFalse(model.properties().contentFilters().get(0).blocking());
+        Assertions.assertTrue(model.properties().contentFilters().get(0).blocking());
         Assertions.assertFalse(model.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals("bnwvpaq", model.properties().contentFilters().get(0).name());
+        Assertions.assertEquals("dwfbwxy", model.properties().contentFilters().get(0).name());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiPolicyMode.DEFAULT, model.properties().mode());
+        Assertions.assertEquals(RaiPolicyMode.DEFERRED, model.properties().mode());
         Assertions.assertFalse(model.properties().promptBlocklists().get(0).blocking());
-        Assertions.assertEquals("mkhjaozvb", model.properties().promptBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(RaiPolicyType.SYSTEM_MANAGED, model.properties().type());
+        Assertions.assertEquals("hgliupqscoobkj", model.properties().promptBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(RaiPolicyType.USER_MANAGED, model.properties().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiPolicyPropertiesBasicResourceInner model = new RaiPolicyPropertiesBasicResourceInner()
-            .withProperties(new RaiPolicyProperties().withBasePolicyName("ukrcdiohcl")
+            .withProperties(new RaiPolicyProperties().withBasePolicyName("nsdunrkzvzua")
                 .withCompletionBlocklists(
-                    Arrays.asList(new RaiBlocklistConfig().withBlocking(false).withBlocklistName("k"),
-                        new RaiBlocklistConfig().withBlocking(true).withBlocklistName("eddp"),
-                        new RaiBlocklistConfig().withBlocking(false).withBlocklistName("wy")))
+                    Arrays.asList(new RaiBlocklistConfig().withBlocking(true).withBlocklistName("yxtrvfdbqsk"),
+                        new RaiBlocklistConfig().withBlocking(true).withBlocklistName("vitp"),
+                        new RaiBlocklistConfig().withBlocking(false).withBlocklistName("ffavdhpiwr")))
                 .withContentFilters(Arrays.asList(
-                    new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.HIGH)
-                        .withBlocking(false)
-                        .withEnabled(false)
-                        .withName("bnwvpaq")
-                        .withSource(RaiPolicyContentSource.PROMPT),
-                    new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.MEDIUM)
-                        .withBlocking(true)
-                        .withEnabled(true)
-                        .withName("ddofxnfb")
-                        .withSource(RaiPolicyContentSource.COMPLETION),
                     new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.LOW)
-                        .withBlocking(false)
+                        .withBlocking(true)
                         .withEnabled(false)
-                        .withName("ovo")
+                        .withName("dwfbwxy")
                         .withSource(RaiPolicyContentSource.PROMPT),
-                    new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.HIGH)
+                    new RaiPolicyContentFilter().withAllowedContentLevel(AllowedContentLevel.LOW)
                         .withBlocking(true)
                         .withEnabled(true)
-                        .withName("krwfmihwpadhedb")
+                        .withName("rmegajrzctwymzsk")
                         .withSource(RaiPolicyContentSource.COMPLETION)))
-                .withMode(RaiPolicyMode.DEFAULT)
+                .withMode(RaiPolicyMode.DEFERRED)
                 .withPromptBlocklists(
-                    Arrays.asList(new RaiBlocklistConfig().withBlocking(false).withBlocklistName("mkhjaozvb"),
-                        new RaiBlocklistConfig().withBlocking(true).withBlocklistName("jhbp"),
-                        new RaiBlocklistConfig().withBlocking(false).withBlocklistName("scmyhrhjvszf")))
-                .withType(RaiPolicyType.SYSTEM_MANAGED));
+                    Arrays.asList(new RaiBlocklistConfig().withBlocking(false).withBlocklistName("hgliupqscoobkj"),
+                        new RaiBlocklistConfig().withBlocking(true).withBlocklistName("sqcomjiqiincevx"),
+                        new RaiBlocklistConfig().withBlocking(true).withBlocklistName("vpximziizmeqmd")))
+                .withType(RaiPolicyType.USER_MANAGED));
         model = BinaryData.fromObject(model).toObject(RaiPolicyPropertiesBasicResourceInner.class);
-        Assertions.assertEquals("ukrcdiohcl", model.properties().basePolicyName());
-        Assertions.assertFalse(model.properties().completionBlocklists().get(0).blocking());
-        Assertions.assertEquals("k", model.properties().completionBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(AllowedContentLevel.HIGH,
+        Assertions.assertEquals("nsdunrkzvzua", model.properties().basePolicyName());
+        Assertions.assertTrue(model.properties().completionBlocklists().get(0).blocking());
+        Assertions.assertEquals("yxtrvfdbqsk", model.properties().completionBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(AllowedContentLevel.LOW,
             model.properties().contentFilters().get(0).allowedContentLevel());
-        Assertions.assertFalse(model.properties().contentFilters().get(0).blocking());
+        Assertions.assertTrue(model.properties().contentFilters().get(0).blocking());
         Assertions.assertFalse(model.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals("bnwvpaq", model.properties().contentFilters().get(0).name());
+        Assertions.assertEquals("dwfbwxy", model.properties().contentFilters().get(0).name());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiPolicyMode.DEFAULT, model.properties().mode());
+        Assertions.assertEquals(RaiPolicyMode.DEFERRED, model.properties().mode());
         Assertions.assertFalse(model.properties().promptBlocklists().get(0).blocking());
-        Assertions.assertEquals("mkhjaozvb", model.properties().promptBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(RaiPolicyType.SYSTEM_MANAGED, model.properties().type());
+        Assertions.assertEquals("hgliupqscoobkj", model.properties().promptBlocklists().get(0).blocklistName());
+        Assertions.assertEquals(RaiPolicyType.USER_MANAGED, model.properties().type());
     }
 }

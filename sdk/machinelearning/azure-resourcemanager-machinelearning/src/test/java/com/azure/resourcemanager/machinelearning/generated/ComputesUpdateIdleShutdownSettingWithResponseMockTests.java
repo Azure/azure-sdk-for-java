@@ -29,8 +29,8 @@ public final class ComputesUpdateIdleShutdownSettingWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.computes()
-            .updateIdleShutdownSettingWithResponse("rqfksjllfgmdo", "ihlvrsqci", "mirybwga",
-                new IdleShutdownSetting().withIdleTimeBeforeShutdown("vwkynemazgtbynx"),
+            .updateIdleShutdownSettingWithResponse("qxi", "yozryoxmfrxfxycj", "alvchfumlf",
+                new IdleShutdownSetting().withIdleTimeBeforeShutdown("lzxxkokipklfwnhf"),
                 com.azure.core.util.Context.NONE);
 
     }

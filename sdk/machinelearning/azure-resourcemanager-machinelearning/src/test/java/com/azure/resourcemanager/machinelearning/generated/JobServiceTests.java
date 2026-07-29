@@ -15,27 +15,26 @@ public final class JobServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobService model = BinaryData.fromString(
-            "{\"endpoint\":\"kqnstpaqpibjgbvs\",\"errorMessage\":\"ehfxrttxbmsen\",\"jobServiceType\":\"fab\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1156963756,\"properties\":{\"synbkdn\":\"ectcxsfmbzdx\",\"brnxhjtlxfikj\":\"yufxuzmsvzyq\",\"rxbozp\":\"xaravwwuasnjeglh\"},\"status\":\"cnwjzbqblxr\"}")
+            "{\"endpoint\":\"mqmiwxzfvvzu\",\"errorMessage\":\"fgufjnbx\",\"jobServiceType\":\"mwdukinhl\",\"nodes\":{\"nodesValueType\":\"Nodes\"},\"port\":1102518808,\"properties\":{\"pzrdwc\":\"ekzouyvew\",\"dxfhhht\":\"ldohgca\",\"qtdn\":\"st\"},\"status\":\"kkpljdsh\"}")
             .toObject(JobService.class);
-        Assertions.assertEquals("kqnstpaqpibjgbvs", model.endpoint());
-        Assertions.assertEquals("fab", model.jobServiceType());
-        Assertions.assertEquals(1156963756, model.port());
-        Assertions.assertEquals("ectcxsfmbzdx", model.properties().get("synbkdn"));
+        Assertions.assertEquals("mqmiwxzfvvzu", model.endpoint());
+        Assertions.assertEquals("mwdukinhl", model.jobServiceType());
+        Assertions.assertEquals(1102518808, model.port());
+        Assertions.assertEquals("ekzouyvew", model.properties().get("pzrdwc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobService model = new JobService().withEndpoint("kqnstpaqpibjgbvs")
-            .withJobServiceType("fab")
+        JobService model = new JobService().withEndpoint("mqmiwxzfvvzu")
+            .withJobServiceType("mwdukinhl")
             .withNodes(new Nodes())
-            .withPort(1156963756)
-            .withProperties(
-                mapOf("synbkdn", "ectcxsfmbzdx", "brnxhjtlxfikj", "yufxuzmsvzyq", "rxbozp", "xaravwwuasnjeglh"));
+            .withPort(1102518808)
+            .withProperties(mapOf("pzrdwc", "ekzouyvew", "dxfhhht", "ldohgca", "qtdn", "st"));
         model = BinaryData.fromObject(model).toObject(JobService.class);
-        Assertions.assertEquals("kqnstpaqpibjgbvs", model.endpoint());
-        Assertions.assertEquals("fab", model.jobServiceType());
-        Assertions.assertEquals(1156963756, model.port());
-        Assertions.assertEquals("ectcxsfmbzdx", model.properties().get("synbkdn"));
+        Assertions.assertEquals("mqmiwxzfvvzu", model.endpoint());
+        Assertions.assertEquals("mwdukinhl", model.jobServiceType());
+        Assertions.assertEquals(1102518808, model.port());
+        Assertions.assertEquals("ekzouyvew", model.properties().get("pzrdwc"));
     }
 
     // Use "Map.of" if available

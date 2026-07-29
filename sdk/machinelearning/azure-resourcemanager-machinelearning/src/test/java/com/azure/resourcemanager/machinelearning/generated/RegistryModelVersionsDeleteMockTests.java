@@ -28,7 +28,8 @@ public final class RegistryModelVersionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.registryModelVersions()
-            .delete("ahxgrpwjgk", "vkjdhsl", "qmmwwtzxsv", "qi", com.azure.core.util.Context.NONE);
+            .delete("upvqjkqlafiaywm", "ipuyefhhdrmg", "ifgyxkgqwmpgh", "pcxqcbnkxhcodhxs",
+                com.azure.core.util.Context.NONE);
 
     }
 }

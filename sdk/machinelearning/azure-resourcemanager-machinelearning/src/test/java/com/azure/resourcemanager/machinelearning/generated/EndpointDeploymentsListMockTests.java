@@ -22,7 +22,7 @@ public final class EndpointDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"nvabdju\",\"provisioningState\":\"Updating\"},\"id\":\"otudamkiyaosthul\",\"name\":\"u\",\"type\":\"ifgs\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"EndpointDeploymentResourceProperties\",\"failureReason\":\"wu\",\"provisioningState\":\"Updating\"},\"id\":\"fznfgpbc\",\"name\":\"kcpympdjieask\",\"type\":\"kqclnfusr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class EndpointDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EndpointDeploymentResourcePropertiesBasicResource> response = manager.endpointDeployments()
-            .list("ggdpftfcbrtsrdpl", "dyzaciasfzrgu", "liyvsbf", com.azure.core.util.Context.NONE);
+            .list("dwqymxsfqe", "xdqeluvmsaq", "viawg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nvabdju", response.iterator().next().properties().failureReason());
+        Assertions.assertEquals("wu", response.iterator().next().properties().failureReason());
     }
 }

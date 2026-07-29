@@ -22,7 +22,7 @@ public final class RegistryDataContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"uri_file\",\"isArchived\":false,\"latestVersion\":\"gcpwn\",\"nextVersion\":\"pbiuwnxhqeljmf\",\"description\":\"qdikuvjclspdh\",\"properties\":{\"n\":\"fl\",\"plqnilozf\":\"pbawtpwnkiwx\",\"dmlie\":\"gvsfafcar\",\"fc\":\"dwocufcsh\"},\"tags\":{\"ofwqdro\":\"x\",\"egilbkzctqbvntl\":\"k\"}},\"id\":\"gj\",\"name\":\"exqoydyislepdbs\",\"type\":\"klntspfnumpyy\"}";
+            = "{\"properties\":{\"dataType\":\"uri_file\",\"isArchived\":false,\"latestVersion\":\"ptfpbzyqbgg\",\"nextVersion\":\"yramvzuaxtbrqnyu\",\"description\":\"lpuwxs\",\"properties\":{\"tnwbjjysu\":\"lgxxbnru\",\"ohlshmaaoofltbs\":\"ckhfbmde\",\"dc\":\"yvmwaejxzkqcm\"},\"tags\":{\"dqscgorvgdibepgf\":\"xyrtqegabsfjrj\"}},\"id\":\"ijoehhqwwsg\",\"name\":\"z\",\"type\":\"wooetwjssyaz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class RegistryDataContainersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataContainer response = manager.registryDataContainers()
-            .getWithResponse("vrd", "dlgxmggh", "tlhsz", com.azure.core.util.Context.NONE)
+            .getWithResponse("oggwtihtnywgtsod", "xeirjtwji", "cfrhtzgduvoax", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qdikuvjclspdh", response.properties().description());
-        Assertions.assertEquals("fl", response.properties().properties().get("n"));
-        Assertions.assertEquals("x", response.properties().tags().get("ofwqdro"));
+        Assertions.assertEquals("lpuwxs", response.properties().description());
+        Assertions.assertEquals("lgxxbnru", response.properties().properties().get("tnwbjjysu"));
+        Assertions.assertEquals("xyrtqegabsfjrj", response.properties().tags().get("dqscgorvgdibepgf"));
         Assertions.assertFalse(response.properties().isArchived());
         Assertions.assertEquals(DataType.URI_FILE, response.properties().dataType());
     }

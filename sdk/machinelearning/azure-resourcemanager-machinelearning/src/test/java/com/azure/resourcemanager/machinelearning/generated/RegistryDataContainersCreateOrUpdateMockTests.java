@@ -26,7 +26,7 @@ public final class RegistryDataContainersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"mltable\",\"isArchived\":false,\"latestVersion\":\"abbyfhzyb\",\"nextVersion\":\"xenpk\",\"description\":\"nlbrcydwrcjta\",\"properties\":{\"ilzgpghjak\":\"xhlqioqhoxcgfyzl\",\"slwmjlpbxv\":\"mnxjnqma\"},\"tags\":{\"ojrwpoxuy\":\"up\",\"gtxwyqkkdumxdrg\":\"qyoyjptkyfrk\",\"ovfundk\":\"msioffyboon\"}},\"id\":\"myxmsbtq\",\"name\":\"hgnugcbjx\",\"type\":\"judg\"}";
+            = "{\"properties\":{\"dataType\":\"uri_folder\",\"isArchived\":false,\"latestVersion\":\"hnj\",\"nextVersion\":\"co\",\"description\":\"uwzunkzbdeyh\",\"properties\":{\"yndt\":\"hobdocfvajmmdmby\",\"hwwtlerhpfrarq\":\"ujfzxsazuj\",\"htvnqcmrrgmlwgo\":\"jushs\"},\"tags\":{\"ngeffrghwd\":\"csddlcnwbijxf\",\"rguvdrgg\":\"rowh\",\"cphgimi\":\"cwawlmsiklzomd\"}},\"id\":\"hrbs\",\"name\":\"jvublou\",\"type\":\"lfyqfbgeblpdw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,20 @@ public final class RegistryDataContainersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataContainer response = manager.registryDataContainers()
-            .createOrUpdate("b", "bmjbmtxbi", "f",
-                new DataContainerInner().withProperties(new DataContainerProperties().withDescription("yvtrsgfdmtfn")
-                    .withProperties(mapOf("cd", "xqqlbmiqbdiahj", "yn", "pdlxwsfddyqp", "lj", "owmjsur"))
-                    .withTags(mapOf("zqvgad", "jhhruw"))
+            .createOrUpdate("mbuxqtokckxfkftq", "byruh", "awucmqfurbtbo",
+                new DataContainerInner().withProperties(new DataContainerProperties().withDescription("fzv")
+                    .withProperties(mapOf("jawsa", "ykjrdxlximvrbl", "ujivhtzidzqrpfhz", "kullvts"))
+                    .withTags(mapOf("bnmthxcmxqdexnkp", "ygkuidgwdhawjco", "pnjgiumuztbcjt", "oxcmsmzy",
+                        "ehmvrveurpzrysef", "mcnrgwgcstozrv", "omhfqs", "hchkkwahaxyrdlv"))
                     .withIsArchived(true)
-                    .withDataType(DataType.URI_FOLDER)),
+                    .withDataType(DataType.MLTABLE)),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nlbrcydwrcjta", response.properties().description());
-        Assertions.assertEquals("xhlqioqhoxcgfyzl", response.properties().properties().get("ilzgpghjak"));
-        Assertions.assertEquals("up", response.properties().tags().get("ojrwpoxuy"));
+        Assertions.assertEquals("uwzunkzbdeyh", response.properties().description());
+        Assertions.assertEquals("hobdocfvajmmdmby", response.properties().properties().get("yndt"));
+        Assertions.assertEquals("csddlcnwbijxf", response.properties().tags().get("ngeffrghwd"));
         Assertions.assertFalse(response.properties().isArchived());
-        Assertions.assertEquals(DataType.MLTABLE, response.properties().dataType());
+        Assertions.assertEquals(DataType.URI_FOLDER, response.properties().dataType());
     }
 
     // Use "Map.of" if available

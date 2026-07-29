@@ -11,7 +11,7 @@ public final class ComputeInstanceCreatedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeInstanceCreatedBy model
-            = BinaryData.fromString("{\"userName\":\"lgqpwwlzpd\",\"userOrgId\":\"rcbcdwhslxe\",\"userId\":\"j\"}")
+            = BinaryData.fromString("{\"userName\":\"c\",\"userOrgId\":\"hidyliu\",\"userId\":\"klna\"}")
                 .toObject(ComputeInstanceCreatedBy.class);
     }
 }

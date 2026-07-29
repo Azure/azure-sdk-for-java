@@ -16,13 +16,13 @@ public final class VirtualMachineSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineSize model = BinaryData.fromString(
-            "{\"name\":\"ttuhaaax\",\"family\":\"c\",\"vCPUs\":178534975,\"gpus\":1802555671,\"osVhdSizeMB\":1113871804,\"maxResourceVolumeMB\":668673483,\"memoryGB\":34.962382023378225,\"lowPriorityCapable\":true,\"premiumIO\":false,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":83.65065383361126,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"}]},\"supportedComputeTypes\":[\"hwesrtja\"]}")
+            "{\"name\":\"tclnh\",\"family\":\"cyuzlybqscibv\",\"vCPUs\":837498555,\"gpus\":156746738,\"osVhdSizeMB\":824249265,\"maxResourceVolumeMB\":198825044,\"memoryGB\":20.56127667979869,\"lowPriorityCapable\":true,\"premiumIO\":true,\"estimatedVMPrices\":{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":97.08250606488829,\"osType\":\"Windows\",\"vmTier\":\"Spot\"},{\"retailPrice\":85.49303292131725,\"osType\":\"Linux\",\"vmTier\":\"Standard\"}]},\"supportedComputeTypes\":[\"y\",\"wpbgumwhmxp\",\"cknsastlpsmgomic\",\"trvlv\"]}")
             .toObject(VirtualMachineSize.class);
         Assertions.assertEquals(BillingCurrency.USD, model.estimatedVMPrices().billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.estimatedVMPrices().unitOfMeasure());
-        Assertions.assertEquals(83.65065383361126, model.estimatedVMPrices().values().get(0).retailPrice());
-        Assertions.assertEquals(VMPriceOSType.LINUX, model.estimatedVMPrices().values().get(0).osType());
-        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.estimatedVMPrices().values().get(0).vmTier());
-        Assertions.assertEquals("hwesrtja", model.supportedComputeTypes().get(0));
+        Assertions.assertEquals(97.08250606488829, model.estimatedVMPrices().values().get(0).retailPrice());
+        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.estimatedVMPrices().values().get(0).osType());
+        Assertions.assertEquals(VMTier.SPOT, model.estimatedVMPrices().values().get(0).vmTier());
+        Assertions.assertEquals("y", model.supportedComputeTypes().get(0));
     }
 }

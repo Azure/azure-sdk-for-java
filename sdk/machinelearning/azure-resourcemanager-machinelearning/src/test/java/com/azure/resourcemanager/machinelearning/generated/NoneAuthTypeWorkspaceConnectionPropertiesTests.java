@@ -19,43 +19,43 @@ public final class NoneAuthTypeWorkspaceConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NoneAuthTypeWorkspaceConnectionProperties model = BinaryData.fromString(
-            "{\"authType\":\"None\",\"category\":\"Xero\",\"createdByWorkspaceArmId\":\"jk\",\"error\":\"eecwtfm\",\"expiryTime\":\"2021-12-05T04:59:29Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"mlqkiekhj\":\"ofxfmhlvyqnslbq\",\"spt\":\"qqrugwespscvs\",\"supcvqgxcvw\":\"uwozfvz\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Active\",\"sharedUserList\":[\"gmlmpnvqxuyiar\",\"n\"],\"target\":\"qseypdlmajpu\",\"useWorkspaceManagedIdentity\":false}")
+            "{\"authType\":\"None\",\"category\":\"Netezza\",\"createdByWorkspaceArmId\":\"wdqzuhfgt\",\"error\":\"czhfjdcc\",\"expiryTime\":\"2021-11-30T22:55:45Z\",\"group\":\"Azure\",\"isSharedToAll\":true,\"metadata\":{\"cgjtjk\":\"h\",\"bszsbzrrxey\":\"tomnlzthc\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Active\",\"sharedUserList\":[\"rmbd\",\"tqxavejoez\",\"wkry\",\"gavplndmdfiek\"],\"target\":\"skyy\",\"useWorkspaceManagedIdentity\":false}")
             .toObject(NoneAuthTypeWorkspaceConnectionProperties.class);
-        Assertions.assertEquals(ConnectionCategory.XERO, model.category());
-        Assertions.assertEquals("eecwtfm", model.error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T04:59:29Z"), model.expiryTime());
+        Assertions.assertEquals(ConnectionCategory.NETEZZA, model.category());
+        Assertions.assertEquals("czhfjdcc", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T22:55:45Z"), model.expiryTime());
         Assertions.assertTrue(model.isSharedToAll());
-        Assertions.assertEquals("ofxfmhlvyqnslbq", model.metadata().get("mlqkiekhj"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.peRequirement());
+        Assertions.assertEquals("h", model.metadata().get("cgjtjk"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.peRequirement());
         Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.peStatus());
-        Assertions.assertEquals("gmlmpnvqxuyiar", model.sharedUserList().get(0));
-        Assertions.assertEquals("qseypdlmajpu", model.target());
+        Assertions.assertEquals("rmbd", model.sharedUserList().get(0));
+        Assertions.assertEquals("skyy", model.target());
         Assertions.assertFalse(model.useWorkspaceManagedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NoneAuthTypeWorkspaceConnectionProperties model
-            = new NoneAuthTypeWorkspaceConnectionProperties().withCategory(ConnectionCategory.XERO)
-                .withError("eecwtfm")
-                .withExpiryTime(OffsetDateTime.parse("2021-12-05T04:59:29Z"))
+            = new NoneAuthTypeWorkspaceConnectionProperties().withCategory(ConnectionCategory.NETEZZA)
+                .withError("czhfjdcc")
+                .withExpiryTime(OffsetDateTime.parse("2021-11-30T22:55:45Z"))
                 .withIsSharedToAll(true)
-                .withMetadata(mapOf("mlqkiekhj", "ofxfmhlvyqnslbq", "spt", "qqrugwespscvs", "supcvqgxcvw", "uwozfvz"))
-                .withPeRequirement(ManagedPERequirement.NOT_REQUIRED)
+                .withMetadata(mapOf("cgjtjk", "h", "bszsbzrrxey", "tomnlzthc"))
+                .withPeRequirement(ManagedPERequirement.NOT_APPLICABLE)
                 .withPeStatus(ManagedPEStatus.ACTIVE)
-                .withSharedUserList(Arrays.asList("gmlmpnvqxuyiar", "n"))
-                .withTarget("qseypdlmajpu")
+                .withSharedUserList(Arrays.asList("rmbd", "tqxavejoez", "wkry", "gavplndmdfiek"))
+                .withTarget("skyy")
                 .withUseWorkspaceManagedIdentity(false);
         model = BinaryData.fromObject(model).toObject(NoneAuthTypeWorkspaceConnectionProperties.class);
-        Assertions.assertEquals(ConnectionCategory.XERO, model.category());
-        Assertions.assertEquals("eecwtfm", model.error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T04:59:29Z"), model.expiryTime());
+        Assertions.assertEquals(ConnectionCategory.NETEZZA, model.category());
+        Assertions.assertEquals("czhfjdcc", model.error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T22:55:45Z"), model.expiryTime());
         Assertions.assertTrue(model.isSharedToAll());
-        Assertions.assertEquals("ofxfmhlvyqnslbq", model.metadata().get("mlqkiekhj"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.peRequirement());
+        Assertions.assertEquals("h", model.metadata().get("cgjtjk"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.peRequirement());
         Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.peStatus());
-        Assertions.assertEquals("gmlmpnvqxuyiar", model.sharedUserList().get(0));
-        Assertions.assertEquals("qseypdlmajpu", model.target());
+        Assertions.assertEquals("rmbd", model.sharedUserList().get(0));
+        Assertions.assertEquals("skyy", model.target());
         Assertions.assertFalse(model.useWorkspaceManagedIdentity());
     }
 

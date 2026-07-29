@@ -12,16 +12,17 @@ public final class ScheduleResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"dsvoqiza\",\"isEnabled\":false,\"provisioningState\":\"Canceled\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"rgf\",\"startTime\":\"xsawooauff\",\"timeZone\":\"fqkmwz\"},\"description\":\"q\",\"properties\":{\"ocjnzdaiovrbhr\":\"bmrno\",\"yzadcrxylaypdt\":\"qphkv\",\"jdfrwpsshrmnkccl\":\"zvelffohuriw\"},\"tags\":{\"spoebnx\":\"uogkscxjfsgm\"}},\"id\":\"cowscuyfqlam\",\"name\":\"bqhsujkafu\",\"type\":\"pn\"}],\"nextLink\":\"pwnikxkcajgrbrc\"}")
+            "{\"value\":[{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"k\",\"isEnabled\":true,\"provisioningState\":\"Creating\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"jjimhijz\",\"startTime\":\"njxm\",\"timeZone\":\"s\"},\"description\":\"ydw\",\"properties\":{\"exqwqnghxnimvy\":\"ruhhqldrdymnswx\",\"ypu\":\"jrxgunnq\",\"vqmvyumgmmu\":\"tnylqu\",\"xcyoseqcazisvb\":\"bsnznwgsqufm\"},\"tags\":{\"gh\":\"cyjpgawepkwonrz\",\"taflvs\":\"rdtbgblxbuibrvj\",\"mfjew\":\"fjihvfjcqrttjfuq\"}},\"id\":\"q\",\"name\":\"avdostw\",\"type\":\"gufmwe\"},{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"xgwzzkw\",\"isEnabled\":true,\"provisioningState\":\"Creating\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"p\",\"startTime\":\"qzvzrb\",\"timeZone\":\"wx\"},\"description\":\"xrmx\",\"properties\":{\"ovazoymdvhhpl\":\"rwynb\",\"cswzeyxrye\":\"hwwdkatveqmg\",\"hpwbuklvsmfasgt\":\"r\",\"qpoilos\":\"v\"},\"tags\":{\"yghz\":\"mcezevftmhllpok\",\"iwtp\":\"ms\",\"wvwiftdjtvbfpfh\":\"flcezs\"}},\"id\":\"ptsyqcjnqswxdo\",\"name\":\"umxquk\",\"type\":\"cdio\"},{\"properties\":{\"action\":{\"actionType\":\"ScheduleActionBase\"},\"displayName\":\"lqddnhfknebwedd\",\"isEnabled\":false,\"provisioningState\":\"Succeeded\",\"trigger\":{\"triggerType\":\"TriggerBase\",\"endTime\":\"yjsmkaq\",\"startTime\":\"q\",\"timeZone\":\"nwvpaqbqxf\"},\"description\":\"igcfddofxnf\",\"properties\":{\"cytjgoea\":\"yyrqaedwov\",\"adhed\":\"okrwfmihw\",\"hjaozvbwfcn\":\"fobdczvothm\"},\"tags\":{\"lhscmyh\":\"po\",\"okndwpppqwojoevz\":\"hjvszfq\",\"zlyvapbkrbuog\":\"ufytdxmly\",\"cuhaizijv\":\"tdlt\"}},\"id\":\"lz\",\"name\":\"ohlpsftqkr\",\"type\":\"m\"}],\"nextLink\":\"bvvcpw\"}")
             .toObject(ScheduleResourceArmPaginatedResult.class);
-        Assertions.assertEquals("q", model.value().get(0).properties().description());
-        Assertions.assertEquals("bmrno", model.value().get(0).properties().properties().get("ocjnzdaiovrbhr"));
-        Assertions.assertEquals("uogkscxjfsgm", model.value().get(0).properties().tags().get("spoebnx"));
-        Assertions.assertEquals("dsvoqiza", model.value().get(0).properties().displayName());
-        Assertions.assertFalse(model.value().get(0).properties().isEnabled());
-        Assertions.assertEquals("rgf", model.value().get(0).properties().trigger().endTime());
-        Assertions.assertEquals("xsawooauff", model.value().get(0).properties().trigger().startTime());
-        Assertions.assertEquals("fqkmwz", model.value().get(0).properties().trigger().timeZone());
-        Assertions.assertEquals("pwnikxkcajgrbrc", model.nextLink());
+        Assertions.assertEquals("ydw", model.value().get(0).properties().description());
+        Assertions.assertEquals("ruhhqldrdymnswx",
+            model.value().get(0).properties().properties().get("exqwqnghxnimvy"));
+        Assertions.assertEquals("cyjpgawepkwonrz", model.value().get(0).properties().tags().get("gh"));
+        Assertions.assertEquals("k", model.value().get(0).properties().displayName());
+        Assertions.assertTrue(model.value().get(0).properties().isEnabled());
+        Assertions.assertEquals("jjimhijz", model.value().get(0).properties().trigger().endTime());
+        Assertions.assertEquals("njxm", model.value().get(0).properties().trigger().startTime());
+        Assertions.assertEquals("s", model.value().get(0).properties().trigger().timeZone());
+        Assertions.assertEquals("bvvcpw", model.nextLink());
     }
 }

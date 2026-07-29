@@ -25,7 +25,7 @@ public final class DataContainersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataType\":\"mltable\",\"isArchived\":true,\"latestVersion\":\"eodvlmdzgvcykz\",\"nextVersion\":\"gctygbbmu\",\"description\":\"jvvcrsmwojm\",\"properties\":{\"q\":\"vumnru\"},\"tags\":{\"pec\":\"qjftvltj\"}},\"id\":\"kbzltnowpajfhx\",\"name\":\"mu\",\"type\":\"bzadzglmuuzpsu\"}";
+            = "{\"properties\":{\"dataType\":\"uri_file\",\"isArchived\":false,\"latestVersion\":\"uxapewzwqlbxmy\",\"nextVersion\":\"lcvynavwttts\",\"description\":\"z\",\"properties\":{\"hbuc\":\"dcaqimodnbjmjx\",\"cebgodjfyplav\":\"zkqtkfjackta\",\"ecedsoqwexie\":\"v\",\"ywylav\":\"nzoteikffjqdfad\"},\"tags\":{\"ogfggylyz\":\"jvohystdgjtpbt\"}},\"id\":\"rvwsgseq\",\"name\":\"teoaxi\",\"type\":\"mg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +35,20 @@ public final class DataContainersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataContainer response = manager.dataContainers()
-            .define("tmlidk")
-            .withExistingWorkspace("lyxbwslxg", "mxtoejtqvq")
-            .withProperties(new DataContainerProperties().withDescription("rplf")
-                .withProperties(mapOf("rxknfv", "mjjfzizxlbiqqeb", "onrk", "symagbahdbtjmku"))
-                .withTags(mapOf("xhuqfvpanloqov", "z", "ucujtjuzvyjxuxch", "cxgqtquirgopgza", "vuvda",
-                    "uoqhqrcsksxqfhl", "ijcsapqhipajs", "vyjcdpncvfyeqyod"))
-                .withIsArchived(false)
-                .withDataType(DataType.URI_FILE))
+            .define("dcdefqoe")
+            .withExistingWorkspace("wq", "k")
+            .withProperties(new DataContainerProperties().withDescription("ybobfjcvmkk")
+                .withProperties(mapOf("yyhd", "diw", "hzrtrgpdlbtb", "iembrwqwvcwc", "tpecsdkbq", "hyfwjfqktuzr"))
+                .withTags(mapOf("hjlugcupcyfrhoo", "vttqjntvhnjp", "vuxyeeafdxsuwly", "v", "hj", "xzhgbspdx"))
+                .withIsArchived(true)
+                .withDataType(DataType.MLTABLE))
             .create();
 
-        Assertions.assertEquals("jvvcrsmwojm", response.properties().description());
-        Assertions.assertEquals("vumnru", response.properties().properties().get("q"));
-        Assertions.assertEquals("qjftvltj", response.properties().tags().get("pec"));
-        Assertions.assertTrue(response.properties().isArchived());
-        Assertions.assertEquals(DataType.MLTABLE, response.properties().dataType());
+        Assertions.assertEquals("z", response.properties().description());
+        Assertions.assertEquals("dcaqimodnbjmjx", response.properties().properties().get("hbuc"));
+        Assertions.assertEquals("jvohystdgjtpbt", response.properties().tags().get("ogfggylyz"));
+        Assertions.assertFalse(response.properties().isArchived());
+        Assertions.assertEquals(DataType.URI_FILE, response.properties().dataType());
     }
 
     // Use "Map.of" if available
