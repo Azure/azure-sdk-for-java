@@ -1,4 +1,4 @@
 directory: specification/containerservice/resource-manager/Microsoft.ContainerService/preparedimagespecification
-commit: 631e82669ee09c9f09ef3191510c05a897deead8
+commit: c269608b4125389acd3c8472d99a2760dd0bfebe
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
