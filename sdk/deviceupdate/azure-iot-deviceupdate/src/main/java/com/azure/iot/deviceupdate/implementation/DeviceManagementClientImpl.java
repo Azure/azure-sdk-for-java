@@ -47,7 +47,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.iot.deviceupdate.DeviceUpdateServiceVersion;
-import com.azure.iot.deviceupdate.models.DeviceOperation;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -2267,72 +2266,6 @@ public final class DeviceManagementClientImpl {
         final String contentType = "application/json";
         return service.importDevicesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             this.getInstanceId(), contentType, importType, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Import existing devices from IoT Hub. This is a long-running-operation; use
-     * Operation-Location response header value to check for operation status.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * String(Devices/Modules/All)
-     * }
-     * </pre>
-     * 
-     * @param importType The types of devices to import.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeviceOperation, Void> beginImportDevicesWithModelAsync(BinaryData importType,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.importDevicesWithResponseAsync(importType, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(DeviceOperation.class), TypeReference.createInstance(Void.class));
-    }
-
-    /**
-     * Import existing devices from IoT Hub. This is a long-running-operation; use
-     * Operation-Location response header value to check for operation status.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * String(Devices/Modules/All)
-     * }
-     * </pre>
-     * 
-     * @param importType The types of devices to import.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeviceOperation, Void> beginImportDevicesWithModel(BinaryData importType,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.importDevicesWithResponse(importType, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(DeviceOperation.class), TypeReference.createInstance(Void.class));
     }
 
     /**
