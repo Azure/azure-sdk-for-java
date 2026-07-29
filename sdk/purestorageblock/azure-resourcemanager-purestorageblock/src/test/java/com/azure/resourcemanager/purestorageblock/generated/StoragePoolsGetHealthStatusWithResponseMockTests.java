@@ -22,7 +22,7 @@ public final class StoragePoolsGetHealthStatusWithResponseMockTests {
     @Test
     public void testGetHealthStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"health\":{\"usedCapacityPercentage\":37.904659906955786,\"bandwidthUsage\":{\"current\":3561845794707371131,\"provisioned\":5142901389847761375,\"max\":3428056516697378704},\"iopsUsage\":{\"current\":2089848727273246662,\"provisioned\":2395973517654166674,\"max\":1210801517644379605},\"space\":{\"totalUsed\":8144209061033072751,\"unique\":1627513098218533241,\"snapshots\":195420941787005324,\"shared\":5700722260986013528},\"dataReductionRatio\":88.61506404849831,\"estimatedMaxCapacity\":1833714202725458886},\"alerts\":[{\"level\":\"info\",\"message\":\"iaa\"},{\"level\":\"warning\",\"message\":\"uagydwqfbylyrf\"}]}";
+            = "{\"health\":{\"usedCapacityPercentage\":27.11264817465777,\"bandwidthUsage\":{\"current\":205069095955114127,\"provisioned\":2662641877735387496,\"max\":8349886578695136526},\"iopsUsage\":{\"current\":714793263673058266,\"provisioned\":5864227724036789317,\"max\":9078020840850761696},\"space\":{\"totalUsed\":994604483308032293,\"unique\":942922715491744842,\"snapshots\":1642106309711711609,\"shared\":247224500255142173},\"dataReductionRatio\":66.18135769379016,\"estimatedMaxCapacity\":4683047037511229554},\"alerts\":[{\"level\":\"info\",\"message\":\"izoyuelyetndnbf\"},{\"level\":\"error\",\"message\":\"ggagfln\"},{\"level\":\"info\",\"message\":\"mtrwah\"},{\"level\":\"warning\",\"message\":\"mu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,23 @@ public final class StoragePoolsGetHealthStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StoragePoolHealthInfo response = manager.storagePools()
-            .getHealthStatusWithResponse("lefaxvxilcbtgn", "nzeyqxtjj", com.azure.core.util.Context.NONE)
+            .getHealthStatusWithResponse("vitac", "xmfcsserxhtv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(37.904659906955786, response.health().usedCapacityPercentage());
-        Assertions.assertEquals(3561845794707371131L, response.health().bandwidthUsage().current());
-        Assertions.assertEquals(5142901389847761375L, response.health().bandwidthUsage().provisioned());
-        Assertions.assertEquals(3428056516697378704L, response.health().bandwidthUsage().max());
-        Assertions.assertEquals(2089848727273246662L, response.health().iopsUsage().current());
-        Assertions.assertEquals(2395973517654166674L, response.health().iopsUsage().provisioned());
-        Assertions.assertEquals(1210801517644379605L, response.health().iopsUsage().max());
-        Assertions.assertEquals(8144209061033072751L, response.health().space().totalUsed());
-        Assertions.assertEquals(1627513098218533241L, response.health().space().unique());
-        Assertions.assertEquals(195420941787005324L, response.health().space().snapshots());
-        Assertions.assertEquals(5700722260986013528L, response.health().space().shared());
-        Assertions.assertEquals(88.61506404849831, response.health().dataReductionRatio());
-        Assertions.assertEquals(1833714202725458886L, response.health().estimatedMaxCapacity());
+        Assertions.assertEquals(27.11264817465777, response.health().usedCapacityPercentage());
+        Assertions.assertEquals(205069095955114127L, response.health().bandwidthUsage().current());
+        Assertions.assertEquals(2662641877735387496L, response.health().bandwidthUsage().provisioned());
+        Assertions.assertEquals(8349886578695136526L, response.health().bandwidthUsage().max());
+        Assertions.assertEquals(714793263673058266L, response.health().iopsUsage().current());
+        Assertions.assertEquals(5864227724036789317L, response.health().iopsUsage().provisioned());
+        Assertions.assertEquals(9078020840850761696L, response.health().iopsUsage().max());
+        Assertions.assertEquals(994604483308032293L, response.health().space().totalUsed());
+        Assertions.assertEquals(942922715491744842L, response.health().space().unique());
+        Assertions.assertEquals(1642106309711711609L, response.health().space().snapshots());
+        Assertions.assertEquals(247224500255142173L, response.health().space().shared());
+        Assertions.assertEquals(66.18135769379016, response.health().dataReductionRatio());
+        Assertions.assertEquals(4683047037511229554L, response.health().estimatedMaxCapacity());
         Assertions.assertEquals(AlertLevel.INFO, response.alerts().get(0).level());
-        Assertions.assertEquals("iaa", response.alerts().get(0).message());
+        Assertions.assertEquals("izoyuelyetndnbf", response.alerts().get(0).message());
     }
 }

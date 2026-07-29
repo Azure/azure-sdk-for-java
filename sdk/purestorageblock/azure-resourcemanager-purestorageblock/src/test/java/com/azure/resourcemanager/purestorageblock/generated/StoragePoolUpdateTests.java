@@ -7,9 +7,13 @@ package com.azure.resourcemanager.purestorageblock.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAccessSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSubnet;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolUpdate;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolUpdateProperties;
 import com.azure.resourcemanager.purestorageblock.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,25 +22,44 @@ public final class StoragePoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePoolUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"obdagxtibqdxb\",\"tenantId\":\"akbogqxndlkzgxh\",\"type\":\"None\",\"userAssignedIdentities\":{\"bqtkoievseotgqr\":{\"principalId\":\"bpodxunkbebxm\",\"clientId\":\"yyntwl\"},\"gcj\":{\"principalId\":\"tmuwlauwzi\",\"clientId\":\"bm\"},\"tdum\":{\"principalId\":\"u\",\"clientId\":\"uvpb\"}}},\"tags\":{\"hjpglkf\":\"pxebmnzbt\"},\"properties\":{\"provisionedBandwidthMbPerSec\":4451284906694141783}}")
+            "{\"identity\":{\"principalId\":\"ppg\",\"tenantId\":\"tpnapnyiropuhpig\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zhxgktrmgucn\":{\"principalId\":\"gqgitxmedjvcsl\",\"clientId\":\"qwwncw\"},\"pfqbuaceopzf\":{\"principalId\":\"kteo\",\"clientId\":\"lwptfdy\"},\"lzdahzxctobgbkdm\":{\"principalId\":\"hhuao\",\"clientId\":\"pcqeqx\"},\"jy\":{\"principalId\":\"zpostmgrcfbu\",\"clientId\":\"mfqjhhkxbp\"}}},\"tags\":{\"xqzvszjfa\":\"xxjyngudivkrtsw\"},\"properties\":{\"provisionedBandwidthMbPerSec\":8685114994195323199,\"platformConsoleSettings\":{\"enabled\":false,\"gui\":{\"enabled\":false},\"api\":{\"enabled\":true},\"cli\":{\"enabled\":true},\"subnets\":[{\"id\":\"qtdo\",\"managementIpAddress\":\"cbxvwvxyslqbh\",\"serviceBackendIps\":[\"obl\",\"tkblmpewww\",\"bkrvrnsvshqj\"]},{\"id\":\"hxcr\",\"managementIpAddress\":\"fovasr\",\"serviceBackendIps\":[\"wbhsqfsub\"]},{\"id\":\"gjb\",\"managementIpAddress\":\"xb\",\"serviceBackendIps\":[\"srfbjfdtwss\",\"t\"]}],\"defaultUsername\":\"pvjzbe\"}}}")
             .toObject(StoragePoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("pxebmnzbt", model.tags().get("hjpglkf"));
-        Assertions.assertEquals(4451284906694141783L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xxjyngudivkrtsw", model.tags().get("xqzvszjfa"));
+        Assertions.assertEquals(8685114994195323199L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().api().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("qtdo", model.properties().platformConsoleSettings().subnets().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolUpdate model = new StoragePoolUpdate()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("bqtkoievseotgqr", new UserAssignedIdentity(), "gcj",
-                    new UserAssignedIdentity(), "tdum", new UserAssignedIdentity())))
-            .withTags(mapOf("hjpglkf", "pxebmnzbt"))
-            .withProperties(new StoragePoolUpdateProperties().withProvisionedBandwidthMbPerSec(4451284906694141783L));
+        StoragePoolUpdate model
+            = new StoragePoolUpdate()
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("zhxgktrmgucn", new UserAssignedIdentity(), "pfqbuaceopzf",
+                            new UserAssignedIdentity(), "lzdahzxctobgbkdm", new UserAssignedIdentity(), "jy",
+                            new UserAssignedIdentity())))
+                .withTags(mapOf("xqzvszjfa", "xxjyngudivkrtsw"))
+                .withProperties(new StoragePoolUpdateProperties().withProvisionedBandwidthMbPerSec(8685114994195323199L)
+                    .withPlatformConsoleSettings(new PlatformConsoleSettings().withEnabled(false)
+                        .withGui(new PlatformConsoleAccessSettings().withEnabled(false))
+                        .withApi(new PlatformConsoleAccessSettings().withEnabled(true))
+                        .withCli(new PlatformConsoleAccessSettings().withEnabled(true))
+                        .withSubnets(Arrays.asList(new PlatformConsoleSubnet().withId("qtdo"),
+                            new PlatformConsoleSubnet().withId("hxcr"), new PlatformConsoleSubnet().withId("gjb")))));
         model = BinaryData.fromObject(model).toObject(StoragePoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("pxebmnzbt", model.tags().get("hjpglkf"));
-        Assertions.assertEquals(4451284906694141783L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xxjyngudivkrtsw", model.tags().get("xqzvszjfa"));
+        Assertions.assertEquals(8685114994195323199L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().api().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("qtdo", model.properties().platformConsoleSettings().subnets().get(0).id());
     }
 
     // Use "Map.of" if available
