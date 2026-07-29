@@ -145,6 +145,7 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("azureBlobArguments", this.azureBlobArguments);
+        jsonWriter.writeJsonField("queryHintProcessing", this.queryHintProcessing);
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +171,7 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
             Integer count = null;
             ImageServingStatistics imageServing = null;
             KnowledgeBaseAzureBlobActivityArguments azureBlobArguments = null;
+            KnowledgeBaseQueryHintProcessing queryHintProcessing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -194,6 +196,8 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
                     imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("azureBlobArguments".equals(fieldName)) {
                     azureBlobArguments = KnowledgeBaseAzureBlobActivityArguments.fromJson(reader);
+                } else if ("queryHintProcessing".equals(fieldName)) {
+                    queryHintProcessing = KnowledgeBaseQueryHintProcessing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -209,7 +213,24 @@ public final class KnowledgeBaseAzureBlobActivityRecord extends KnowledgeBaseAct
             deserializedKnowledgeBaseAzureBlobActivityRecord.count = count;
             deserializedKnowledgeBaseAzureBlobActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseAzureBlobActivityRecord.azureBlobArguments = azureBlobArguments;
+            deserializedKnowledgeBaseAzureBlobActivityRecord.queryHintProcessing = queryHintProcessing;
             return deserializedKnowledgeBaseAzureBlobActivityRecord;
         });
+    }
+
+    /*
+     * Details about the expressions generated from query hints for this activity.
+     */
+    @Generated
+    private KnowledgeBaseQueryHintProcessing queryHintProcessing;
+
+    /**
+     * Get the queryHintProcessing property: Details about the expressions generated from query hints for this activity.
+     *
+     * @return the queryHintProcessing value.
+     */
+    @Generated
+    public KnowledgeBaseQueryHintProcessing getQueryHintProcessing() {
+        return this.queryHintProcessing;
     }
 }

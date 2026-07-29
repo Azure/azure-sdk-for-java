@@ -171,6 +171,8 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("resultsProcessing",
+            this.resultsProcessing == null ? null : this.resultsProcessing.toString());
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         return jsonWriter.writeEndObject();
@@ -240,6 +242,7 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
             String name = null;
             KnowledgeSourceKind kind = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -251,6 +254,8 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -262,9 +267,41 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
             KnowledgeSource deserializedKnowledgeSource = new KnowledgeSource(name);
             deserializedKnowledgeSource.kind = kind;
             deserializedKnowledgeSource.description = description;
+            deserializedKnowledgeSource.resultsProcessing = resultsProcessing;
             deserializedKnowledgeSource.eTag = eTag;
             deserializedKnowledgeSource.encryptionKey = encryptionKey;
             return deserializedKnowledgeSource;
         });
+    }
+
+    /*
+     * Controls whether results from this knowledge source are reranked before they are included in the final result
+     * set. Defaults to 'rerank' when not specified.
+     */
+    @Generated
+    private KnowledgeSourceResultsProcessing resultsProcessing;
+
+    /**
+     * Get the resultsProcessing property: Controls whether results from this knowledge source are reranked before they
+     * are included in the final result set. Defaults to 'rerank' when not specified.
+     *
+     * @return the resultsProcessing value.
+     */
+    @Generated
+    public KnowledgeSourceResultsProcessing getResultsProcessing() {
+        return this.resultsProcessing;
+    }
+
+    /**
+     * Set the resultsProcessing property: Controls whether results from this knowledge source are reranked before they
+     * are included in the final result set. Defaults to 'rerank' when not specified.
+     *
+     * @param resultsProcessing the resultsProcessing value to set.
+     * @return the KnowledgeSource object itself.
+     */
+    @Generated
+    public KnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        this.resultsProcessing = resultsProcessing;
+        return this;
     }
 }

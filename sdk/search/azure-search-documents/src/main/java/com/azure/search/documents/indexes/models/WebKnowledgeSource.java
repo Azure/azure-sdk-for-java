@@ -110,6 +110,8 @@ public final class WebKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
@@ -131,6 +133,7 @@ public final class WebKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.WEB;
@@ -142,6 +145,8 @@ public final class WebKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -156,11 +161,22 @@ public final class WebKnowledgeSource extends KnowledgeSource {
             }
             WebKnowledgeSource deserializedWebKnowledgeSource = new WebKnowledgeSource(name);
             deserializedWebKnowledgeSource.setDescription(description);
+            deserializedWebKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedWebKnowledgeSource.setETag(eTag);
             deserializedWebKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedWebKnowledgeSource.kind = kind;
             deserializedWebKnowledgeSource.webParameters = webParameters;
             return deserializedWebKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

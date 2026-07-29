@@ -217,6 +217,7 @@ public final class IndexedSqlKnowledgeSourceParameters
         jsonWriter.writeArrayField("embeddingColumns", this.embeddingColumns,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
+        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -238,6 +239,7 @@ public final class IndexedSqlKnowledgeSourceParameters
             List<ContentColumnMapping> contentColumns = null;
             List<EmbeddingColumnMapping> embeddingColumns = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
+            SearchIndexKnowledgeSourceQueryHints queryHints = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -254,6 +256,8 @@ public final class IndexedSqlKnowledgeSourceParameters
                     embeddingColumns = reader.readArray(reader1 -> EmbeddingColumnMapping.fromJson(reader1));
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
+                } else if ("queryHints".equals(fieldName)) {
+                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -266,8 +270,40 @@ public final class IndexedSqlKnowledgeSourceParameters
             deserializedIndexedSqlKnowledgeSourceParameters.contentColumns = contentColumns;
             deserializedIndexedSqlKnowledgeSourceParameters.embeddingColumns = embeddingColumns;
             deserializedIndexedSqlKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
+            deserializedIndexedSqlKnowledgeSourceParameters.queryHints = queryHints;
             deserializedIndexedSqlKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedIndexedSqlKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
+     * Request-time query hints replace these defaults as a complete object.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHints;
+
+    /**
+     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @return the queryHints value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
+        return this.queryHints;
+    }
+
+    /**
+     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @param queryHints the queryHints value to set.
+     * @return the IndexedSqlKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public IndexedSqlKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
+        this.queryHints = queryHints;
+        return this;
     }
 }

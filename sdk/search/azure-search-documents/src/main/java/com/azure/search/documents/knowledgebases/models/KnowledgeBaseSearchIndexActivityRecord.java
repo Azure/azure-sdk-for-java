@@ -145,6 +145,7 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("searchIndexArguments", this.searchIndexArguments);
+        jsonWriter.writeJsonField("queryHintProcessing", this.queryHintProcessing);
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +171,7 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
             Integer count = null;
             ImageServingStatistics imageServing = null;
             KnowledgeBaseSearchIndexActivityArguments searchIndexArguments = null;
+            KnowledgeBaseQueryHintProcessing queryHintProcessing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -194,6 +196,8 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
                     imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("searchIndexArguments".equals(fieldName)) {
                     searchIndexArguments = KnowledgeBaseSearchIndexActivityArguments.fromJson(reader);
+                } else if ("queryHintProcessing".equals(fieldName)) {
+                    queryHintProcessing = KnowledgeBaseQueryHintProcessing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -209,7 +213,24 @@ public final class KnowledgeBaseSearchIndexActivityRecord extends KnowledgeBaseA
             deserializedKnowledgeBaseSearchIndexActivityRecord.count = count;
             deserializedKnowledgeBaseSearchIndexActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseSearchIndexActivityRecord.searchIndexArguments = searchIndexArguments;
+            deserializedKnowledgeBaseSearchIndexActivityRecord.queryHintProcessing = queryHintProcessing;
             return deserializedKnowledgeBaseSearchIndexActivityRecord;
         });
+    }
+
+    /*
+     * Details about the expressions generated from query hints for this activity.
+     */
+    @Generated
+    private KnowledgeBaseQueryHintProcessing queryHintProcessing;
+
+    /**
+     * Get the queryHintProcessing property: Details about the expressions generated from query hints for this activity.
+     *
+     * @return the queryHintProcessing value.
+     */
+    @Generated
+    public KnowledgeBaseQueryHintProcessing getQueryHintProcessing() {
+        return this.queryHintProcessing;
     }
 }

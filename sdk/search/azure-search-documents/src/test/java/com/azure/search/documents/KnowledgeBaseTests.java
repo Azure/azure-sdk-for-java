@@ -988,9 +988,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
         // At least one model-backed activity record should have modelName set
         boolean foundModelName = response.getActivity().stream().anyMatch(record -> {
             if (record instanceof KnowledgeBaseModelQueryPlanningActivityRecord) {
-                return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModelName() != null;
+                return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModel() != null
+                    && ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModel().getModelName() != null;
             } else if (record instanceof KnowledgeBaseModelAnswerSynthesisActivityRecord) {
-                return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModelName() != null;
+                return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModel() != null
+                    && ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModel().getModelName() != null;
             }
             return false;
         });
@@ -1023,9 +1025,11 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
             boolean foundModelName = response.getActivity().stream().anyMatch(record -> {
                 if (record instanceof KnowledgeBaseModelQueryPlanningActivityRecord) {
-                    return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModelName() != null;
+                    return ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModel() != null
+                        && ((KnowledgeBaseModelQueryPlanningActivityRecord) record).getModel().getModelName() != null;
                 } else if (record instanceof KnowledgeBaseModelAnswerSynthesisActivityRecord) {
-                    return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModelName() != null;
+                    return ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModel() != null
+                        && ((KnowledgeBaseModelAnswerSynthesisActivityRecord) record).getModel().getModelName() != null;
                 }
                 return false;
             });
@@ -1066,7 +1070,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
         // Fabric sources require x-ms-query-source-authorization header (OBO token)
         String querySourceToken = getQuerySourceAuthorizationToken();
-        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest, querySourceToken);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest, querySourceToken, null);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -1102,7 +1106,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
                     .setIntents(new KnowledgeRetrievalSemanticIntent("List all data"))
                     .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
 
-                return knowledgeBaseClient.retrieve(retrievalRequest, authToken);
+                return knowledgeBaseClient.retrieve(retrievalRequest, authToken, null);
             });
 
         StepVerifier.create(testMono).assertNext(response -> {
@@ -1139,7 +1143,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
 
         String querySourceToken = getQuerySourceAuthorizationToken();
-        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest, querySourceToken);
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest, querySourceToken, null);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -1175,7 +1179,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
                     .setIntents(new KnowledgeRetrievalSemanticIntent("List all data"))
                     .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
 
-                return knowledgeBaseClient.retrieve(retrievalRequest, authToken);
+                return knowledgeBaseClient.retrieve(retrievalRequest, authToken, null);
             });
 
         StepVerifier.create(testMono).assertNext(response -> {
