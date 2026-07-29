@@ -62,7 +62,8 @@ public final class IngestionClient {
     }
 
     /**
-     * Cancel all running operations of a geo-catalog collection.
+     * Cancel all pending and running operations across the entire GeoCatalog instance. This is a catalog-wide operation
+     * and is not scoped to a specific collection.
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -355,9 +356,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -372,9 +374,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -458,9 +461,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -501,9 +505,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -534,9 +539,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -551,9 +557,10 @@ public final class IngestionClient {
      * {@code
      * {
      *     id: String (Required)
-     *     importType: String(StaticCatalog) (Optional, Required on create)
+     *     importType: String(StaticCatalog/StacGeoparquet) (Optional, Required on create)
      *     displayName: String (Optional)
      *     sourceCatalogUrl: String (Optional)
+     *     stacGeoparquetUrl: String (Optional)
      *     skipExistingItems: Boolean (Optional)
      *     keepOriginalAssets: Boolean (Optional)
      *     creationTime: OffsetDateTime (Required)
@@ -787,7 +794,8 @@ public final class IngestionClient {
     }
 
     /**
-     * Cancel all running operations of a geo-catalog collection.
+     * Cancel all pending and running operations across the entire GeoCatalog instance. This is a catalog-wide operation
+     * and is not scoped to a specific collection.
      * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
