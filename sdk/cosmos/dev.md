@@ -27,6 +27,11 @@ Running tests require Azure Cosmos DB Endpoint credentials:
 mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
 ```
 
+Tests that create databases must use `TestSuiteBase.createTestDatabase(...)` so CI cleanup can delete
+them - see [test resource hygiene](AGENTS.md#test-resource-hygiene-required-for-any-test-that-touches-an-account).
+Creating a database directly fails
+the build.
+
 ## Import into Intellij or Eclipse
 
 - Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).

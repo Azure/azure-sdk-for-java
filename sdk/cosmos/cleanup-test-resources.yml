@@ -1,0 +1,39 @@
+# Deletes the Cosmos databases created by the current job.
+#
+# The in-process janitor (CosmosTestResourceJanitor) already cleans up at the end of a test run, but it
+# cannot help when the JVM is killed before any listener or shutdown hook runs. This step runs at the end
+# of the job and deletes exactly the databases tagged with this job's run id, so it is safe on the long
+# lived shared accounts where several legs execute concurrently.
+#
+# It is a bonus layer, not the backstop: on cancellation it only gets cancelTimeoutInMinutes (5 by
+# default) to finish, which a cold Maven start plus a metadata sweep can exceed. Cancelled and
+# timed-out jobs are covered by the scheduled janitor pipeline (sdk/cosmos/janitor.yml).
+
+parameters:
+  - name: AccountHost
+    type: string
+  - name: AccountKey
+    type: string
+  - name: DisplayName
+    type: string
+    default: 'Clean up Cosmos test resources for this run'
+
+steps:
+  - task: Maven@4
+    displayName: ${{ parameters.DisplayName }}
+    # Cleanup must run even when the tests failed - that is exactly when resources are most likely to
+    # have been left behind. always() does also run on cancellation, but everything after a cancel has
+    # to finish inside cancelTimeoutInMinutes (5 by default), which a cold Maven start plus a metadata
+    # sweep can exceed. Cancelled and timed-out jobs are therefore covered by janitor.yml, not here.
+    condition: always()
+    continueOnError: true
+    inputs:
+      mavenPomFile: sdk/cosmos/azure-cosmos-tests/pom.xml
+      goals: 'exec:java'
+      options: >-
+        -Dexec.args="--account-host ${{ parameters.AccountHost }} --account-key ${{ parameters.AccountKey }}"
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false

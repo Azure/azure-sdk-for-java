@@ -23,6 +23,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.CosmosTestResourceRegistry;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
@@ -935,6 +936,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.empty();
             })
             .block();
+        CosmosTestResourceRegistry.registerContainer(database.getId(), cosmosContainerProperties.getId());
     }
 
     protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
@@ -1268,6 +1270,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.empty();
             })
             .block();
+        CosmosTestResourceRegistry.registerContainer(database.getId(), cosmosContainerProperties.getId());
         waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         getFeedRangesWithRetry(
             getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
@@ -1395,6 +1398,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteCollection(CosmosAsyncClient client, String dbId, String collectionId) {
         client.getDatabase(dbId).getContainer(collectionId).delete().block();
+        CosmosTestResourceRegistry.unregisterContainer(dbId, collectionId);
     }
 
     public static InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, InternalObjectNode item) {
@@ -1634,10 +1638,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteCollection(CosmosAsyncDatabase cosmosDatabase, String collectionId) {
         cosmosDatabase.getContainer(collectionId).delete().block();
+        CosmosTestResourceRegistry.unregisterContainer(cosmosDatabase.getId(), collectionId);
     }
 
     public static void deleteCollection(CosmosAsyncContainer cosmosContainer) {
         cosmosContainer.delete().block();
+        CosmosTestResourceRegistry.unregisterContainer(
+            cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getId());
     }
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
@@ -1695,23 +1703,89 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .filter(TestSuiteBase::isTransientCreateFailure))
             .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
             .block();
+        CosmosTestResourceRegistry.registerDatabase(databaseSettings.getId());
         return client.getDatabase(databaseSettings.getId());
     }
 
+    /**
+     * Creates a database whose id carries the current run id, and registers it for automatic cleanup.
+     * This is the sanctioned way for tests to create a database - it guarantees the database is
+     * deleted at the end of the run even if the test fails to delete it, and guarantees that cleanup
+     * running on a shared account can attribute it to this run instead of a concurrent one.
+     *
+     * @param client the client to create the database with.
+     * @return the created database.
+     */
+    static protected CosmosAsyncDatabase createTestDatabase(CosmosAsyncClient client) {
+        return createTestDatabase(client, null);
+    }
+
+    /**
+     * Overload of {@link #createTestDatabase(CosmosAsyncClient)} that embeds a human readable label in
+     * the generated id to make logs and portal views easier to read. The label does not affect
+     * uniqueness or cleanup scoping.
+     *
+     * @param client the client to create the database with.
+     * @param label optional label, may be null.
+     * @return the created database.
+     */
+    static protected CosmosAsyncDatabase createTestDatabase(CosmosAsyncClient client, String label) {
+        return createDatabaseInternal(client, CosmosDatabaseForTest.generateId(label));
+    }
+
+    /**
+     * Synchronous counterpart of {@link #createTestDatabase(CosmosAsyncClient)}.
+     *
+     * @param client the client to create the database with.
+     * @param label optional label, may be null.
+     * @return the created database.
+     */
+    static protected CosmosDatabase createTestSyncDatabase(CosmosClient client, String label) {
+        String databaseId = CosmosDatabaseForTest.generateId(label);
+        client.createDatabase(new CosmosDatabaseProperties(databaseId));
+        CosmosTestResourceRegistry.registerDatabase(databaseId);
+        return client.getDatabase(databaseId);
+    }
+
+    /**
+     * @deprecated tests should use {@link #createTestDatabase(CosmosAsyncClient, String)} so the id
+     * carries the run id and cleanup can attribute the database to this run. Databases created with an
+     * arbitrary id are still registered for cleanup, but only the in-process janitor can delete them -
+     * if the JVM is killed (job cancelled or timed out) they leak permanently on shared accounts.
+     *
+     * @param client the client to create the database with.
+     * @param databaseId the database id.
+     * @return the created database.
+     */
+    @Deprecated
     static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
+        return createDatabaseInternal(client, databaseId);
+    }
+
+    private static CosmosAsyncDatabase createDatabaseInternal(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         client.createDatabase(databaseSettings)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
             .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
             .block();
+        CosmosTestResourceRegistry.registerDatabase(databaseSettings.getId());
         return client.getDatabase(databaseSettings.getId());
     }
 
+    /**
+     * @deprecated use {@link #createTestSyncDatabase(CosmosClient, String)} instead.
+     *
+     * @param client the client to create the database with.
+     * @param databaseId the database id.
+     * @return the created database, or null when creation failed.
+     */
+    @Deprecated
     static protected CosmosDatabase createSyncDatabase(CosmosClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
             client.createDatabase(databaseSettings);
+            CosmosTestResourceRegistry.registerDatabase(databaseSettings.getId());
             return client.getDatabase(databaseSettings.getId());
         } catch (CosmosException e) {
             e.printStackTrace();
@@ -1719,6 +1793,15 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return null;
     }
 
+    /**
+     * @deprecated use {@link #createTestDatabase(CosmosAsyncClient, String)} instead. See
+     * {@link #createDatabase(CosmosAsyncClient, String)} for why arbitrary ids are discouraged.
+     *
+     * @param client the client to create the database with.
+     * @param databaseId the database id.
+     * @return the existing or newly created database.
+     */
+    @Deprecated
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
             .collectList()
@@ -1726,6 +1809,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (res.size() != 0) {
             CosmosAsyncDatabase database = client.getDatabase(databaseId);
             database.read().block();
+            CosmosTestResourceRegistry.registerDatabase(databaseId);
             return database;
         } else {
             CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
@@ -1733,6 +1817,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                     .filter(TestSuiteBase::isTransientCreateFailure))
                 .block();
+            CosmosTestResourceRegistry.registerDatabase(databaseSettings.getId());
             return client.getDatabase(databaseSettings.getId());
         }
     }
@@ -1742,6 +1827,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             try {
                 database.delete().block();
             } catch (Exception e) {
+            } finally {
+                CosmosTestResourceRegistry.unregisterDatabase(database.getId());
             }
         }
     }
@@ -1754,6 +1841,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 logger.info("database deletion completed");
             } catch (Exception e) {
                 logger.error("failed to delete sync database", e);
+            } finally {
+                CosmosTestResourceRegistry.unregisterDatabase(database.getId());
             }
         }
     }
@@ -1806,6 +1895,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 }
             }
             finally {
+                CosmosTestResourceRegistry.unregisterContainer(
+                    collection.getDatabase().getId(),
+                    collection.getId());
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -2584,7 +2676,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                                       RequestOptions options) {
         AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
         try {
-            return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+            return createCollection(client, databaseId, collection, options);
         } finally {
             client.close();
         }
@@ -2593,21 +2685,25 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     public static Database createDatabase(AsyncDocumentClient client, String databaseId) {
         Database database = new Database();
         database.setId(databaseId);
-        return client.createDatabase(database, null).block().getResource();
+        return createDatabase(client, database);
     }
 
     public static Database createDatabase(AsyncDocumentClient client, Database database) {
-        return client.createDatabase(database, null).block().getResource();
+        Database created = client.createDatabase(database, null).block().getResource();
+        CosmosTestResourceRegistry.registerDatabase(created.getId());
+        return created;
     }
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection, RequestOptions options) {
-        return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+        DocumentCollection created = client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+        CosmosTestResourceRegistry.registerContainer(databaseId, created.getId());
+        return created;
     }
 
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection) {
-        return client.createCollection("dbs/" + databaseId, collection, null).block().getResource();
+        return createCollection(client, databaseId, collection, null);
     }
 
     public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document) {
@@ -2661,6 +2757,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 client.deleteDatabase(database.getSelfLink(), null).block();
             } catch (Exception e) {
                 // Ignore deletion errors
+            } finally {
+                CosmosTestResourceRegistry.unregisterDatabase(database.getId());
             }
         }
     }
@@ -2671,6 +2769,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).block();
             } catch (Exception e) {
                 System.err.println("Failed to delete database '" + databaseId + "': " + e.getMessage());
+            } finally {
+                CosmosTestResourceRegistry.unregisterDatabase(databaseId);
             }
         }
     }
@@ -2691,6 +2791,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 client.deleteCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).block();
             } catch (Exception e) {
                 // Ignore deletion errors
+            } finally {
+                CosmosTestResourceRegistry.unregisterContainer(databaseId, collectionId);
             }
         }
     }
