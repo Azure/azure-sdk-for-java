@@ -1,7 +1,9 @@
 # Scheduled janitor for the long lived shared Cosmos test accounts.
 #
 # The in-process janitor (CosmosTestResourceJanitor) and the always-run post steps in tests.yml cover
-# the cases where the test JVM or the job gets a chance to clean up. This pipeline is the backstop for
+# the cases where the test JVM or the job gets a chance to clean up. A test run only ever deletes its
+# own resources; reclaiming other runs' orphans is this pipeline's job, where the age threshold cannot
+# race an in-flight job. This pipeline is the backstop for
 # the cases where they do not - a cancelled job, an agent that dies, or a stage that hits its timeout -
 # by sweeping test databases older than any plausible in-flight run.
 #

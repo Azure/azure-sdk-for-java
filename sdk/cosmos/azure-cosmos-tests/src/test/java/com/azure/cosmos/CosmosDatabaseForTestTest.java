@@ -254,10 +254,6 @@ public class CosmosDatabaseForTestTest {
                 options -> Flux.just(ModelBridgeInternal.createFeedResponse(matching, new HashMap<>())));
         }
 
-        @Override
-        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
-            throw new UnsupportedOperationException();
-        }
 
         @Override
         public CosmosAsyncDatabase getDatabase(String id) {

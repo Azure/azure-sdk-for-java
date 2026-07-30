@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import reactor.core.publisher.Mono;
@@ -180,10 +179,6 @@ public final class CosmosTestAccountJanitor {
             return client.queryDatabases(query, null);
         }
 
-        @Override
-        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
-            return client.createDatabase(databaseDefinition);
-        }
 
         @Override
         public CosmosAsyncDatabase getDatabase(String id) {

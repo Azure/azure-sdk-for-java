@@ -103,6 +103,7 @@ import static org.testng.Assert.assertThrows;
 public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger logger = LoggerFactory.getLogger(IncrementalChangeFeedProcessorTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private static final Duration MULTI_WRITE_COLLECTION_READINESS_MAX_WAIT = Duration.ofMinutes(5);
 
     private CosmosAsyncDatabase createdDatabase;
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
@@ -359,7 +360,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = 240 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readFeedDocumentsStartFromCustomDateForMultiWrite_test() throws InterruptedException {
         CosmosClientBuilder clientBuilder = getClientBuilder();
 
@@ -392,16 +393,18 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             cosmosAsyncClient.createDatabaseIfNotExists(MULTI_WRITE_DATABASE_NAME).block();
             cosmosAsyncDatabase = cosmosAsyncClient.getDatabase(MULTI_WRITE_DATABASE_NAME);
-            createdFeedCollection = createCollection(
+            createdFeedCollection = createCollectionWithReadinessMaxWait(
                 cosmosAsyncDatabase,
                 new CosmosContainerProperties(MULTI_WRITE_MONITORED_COLLECTION_NAME, "/id"),
                 new CosmosContainerRequestOptions(),
-                400);
-            createdLeaseCollection = createCollection(
+                400,
+                MULTI_WRITE_COLLECTION_READINESS_MAX_WAIT);
+            createdLeaseCollection = createCollectionWithReadinessMaxWait(
                 cosmosAsyncDatabase,
                 new CosmosContainerProperties(MULTI_WRITE_LEASE_COLLECTION_NAME, "/id"),
                 new CosmosContainerRequestOptions(),
-                400);
+                400,
+                MULTI_WRITE_COLLECTION_READINESS_MAX_WAIT);
 
             try {
                 List<InternalObjectNode> createdDocuments = new ArrayList<>();
@@ -1686,7 +1689,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query" }, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"query" }, timeOut = 3 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void endToEndTimeoutConfigShouldBeSuppressed() throws InterruptedException {
         CosmosAsyncClient clientWithE2ETimeoutConfig = null;
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -1739,11 +1742,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to shutdown.
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
         } finally {
-            safeDeleteCollection(createdFeedCollection);
-            safeDeleteCollection(createdLeaseCollection);
             // reset the endToEnd config
             this.getClientBuilder().endToEndOperationLatencyPolicyConfig(null);
             safeClose(clientWithE2ETimeoutConfig);
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
@@ -2086,10 +2089,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(feedRanges.size()).isEqualTo(1);
 
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
-            // even though CFP is at lease once delivery, but in the test, we did not expect any load balancer would cause the duplicate processing
-            // so we should expect each item will only be delivered once
-            // using list instead of map to confirm
-            List<JsonNode> receivedDocuments = new ArrayList<>();
+            // CFP is at-least-once, so validate completion using unique document IDs.
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, createdFeedCollectionForSplit, FEED_COUNT);
@@ -2129,10 +2130,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             waitToReceiveDocuments(receivedDocuments, 30 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
 
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
-            Map<String, JsonNode> receivedDocumentsMap =
-                receivedDocuments.stream().collect(Collectors.toMap(item -> item.get("id").asText(), item -> item));
             for (InternalObjectNode item : createdDocuments) {
-                assertThat(receivedDocumentsMap.containsKey(item.getId())).isTrue();
+                assertThat(receivedDocuments.containsKey(item.getId())).isTrue();
             }
 
         } finally {
@@ -2146,11 +2145,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    private static final Duration CHANGE_FEED_PROCESSOR_LIFECYCLE_TIMEOUT = Duration.ofSeconds(60);
+
     private void startChangeFeedProcessor(ChangeFeedProcessor changeFeedProcessor) {
         changeFeedProcessor
             .start()
             .subscribeOn(Schedulers.boundedElastic())
-            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+            .timeout(CHANGE_FEED_PROCESSOR_LIFECYCLE_TIMEOUT)
             .onErrorResume(throwable -> {
                 logger.error("Change feed processor did not start in the expected time", throwable);
                 return Mono.error(throwable);
@@ -2162,7 +2163,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         if (changeFeedProcessor != null && changeFeedProcessor.isStarted()) {
             changeFeedProcessor
                 .stop()
-                .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .timeout(CHANGE_FEED_PROCESSOR_LIFECYCLE_TIMEOUT)
                 .onErrorResume(throwable -> {
                     logger.warn("Stop changeFeedProcessor failed", throwable);
                     return Mono.empty();

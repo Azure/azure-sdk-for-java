@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.slf4j.Logger;
@@ -258,10 +257,10 @@ public final class CosmosTestResourceJanitor implements IExecutionListener, IInv
                 swept.add("database " + databaseId + " (deleted; created by <not registered>)");
             }
 
-            CosmosDatabaseForTest.CleanupResult stale =
-                CosmosDatabaseForTest.cleanupStaleTestDatabases(new JanitorDatabaseManager(client));
-
-            return new SweepResult(swept, runScoped.isComplete() && stale.isComplete());
+            // Deliberately no age based sweep here: a test run only ever deletes its own resources.
+            // Reclaiming other runs' orphans is the scheduled janitor pipeline's job, where an 8h
+            // threshold cannot race an in-flight job.
+            return new SweepResult(swept, runScoped.isComplete());
         }).subscribeOn(Schedulers.boundedElastic()).timeout(ACCOUNT_SWEEP_TIMEOUT).block();
     }
 
@@ -407,10 +406,6 @@ public final class CosmosTestResourceJanitor implements IExecutionListener, IInv
             return client.queryDatabases(query, null);
         }
 
-        @Override
-        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
-            return client.createDatabase(databaseDefinition);
-        }
 
         @Override
         public CosmosAsyncDatabase getDatabase(String id) {

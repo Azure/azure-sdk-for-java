@@ -5,9 +5,10 @@ For general repo-wide guidance, see the [root AGENTS.md](../../AGENTS.md).
 
 ## Test resource hygiene (required for any test that touches an account)
 
-Six live test stages in `tests.yml` run against **long lived shared accounts** that are never torn
-down and are used by several matrix legs concurrently. Databases a test forgets to delete stay on
-those accounts forever.
+Every live test stage in `tests.yml` now runs against a **long lived shared account** that is never
+torn down - either a fixed self-owned account in RG `sdk-ci` (the main and Http2 stages) or a thin
+client / GSI account. Several matrix legs and concurrent pipeline runs share them, so a database a
+test forgets to delete stays on that account forever.
 
 When adding or changing tests in `azure-cosmos-tests`:
 

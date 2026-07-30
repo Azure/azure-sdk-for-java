@@ -39,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OfferQueryTest extends TestSuiteBase {
 
-    public final static int SETUP_TIMEOUT = 40000;
     public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
