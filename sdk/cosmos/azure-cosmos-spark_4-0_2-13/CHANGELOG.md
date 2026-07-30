@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Updated Netty to `4.1.135.Final` and MSAL4J to `1.23.1`, and replaced `commons-lang` 2.6 with `commons-lang3` 3.18.0 in the shaded connector JAR.
+
 ### 4.49.2 (2026-07-27)
 
 #### Bugs Fixed
