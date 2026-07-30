@@ -1,4 +1,12 @@
 # Release History
+## 7.5.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+
+#### Bugs Fixed
+
+- Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
+
 ## 7.4.0 (2026-07-24)
 - This release is compatible with Spring Boot 4.0.0-4.1.0. (Note: 4.1.x (x>0) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0-2025.1.2. (Note: 2025.1.2 (x>2) should be supported, but they aren't tested with this release.)
@@ -22,7 +30,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
-- Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 - Fixed the AAD authentication filter (`AadAuthenticationFilter` and `AadAppRoleStatelessAuthenticationFilter`) not validating the `tid` (tenant ID) claim in JWT tokens against the configured tenant, allowing tokens from other tenants to be accepted. The JWT token validator now validates that the token's `tid` claim matches the configured tenant ID, preventing cross-tenant authentication bypass. This hardening is only enforced when a specific tenant ID is configured. ([#49631](https://github.com/Azure/azure-sdk-for-java/pull/49631))
 - Fixed the AAD and B2C OpenID Connect login (`oauth2Login`) ID token decoders not validating the `iss` (issuer) and `aud` (audience) claims. `AadOidcIdTokenDecoderFactory` and `AadB2cOidcIdTokenDecoderFactory` now validate the standard OIDC ID token claims (audience, expiry, issued-at and subject) and the issuer. For single tenant applications the issuer must belong to the configured tenant, and for multi-tenant applications (the `common`, `organizations` or `consumers` endpoints) the issuer must be a trusted Microsoft identity platform issuer consistent with the token's own `tid` claim. This prevents users from unauthorized tenants from signing in to multi-tenant applications that rely on the issuer/tenant claim for tenant restriction  ([#49423](https://github.com/Azure/azure-sdk-for-java/pull/49423)).
 - Fixed the missing bean name in `@ConditionalOnMissingBean` for `LettuceClientConfigurationBuilderCustomizer` ([#49290](https://github.com/Azure/azure-sdk-for-java/issues/49290)).
