@@ -12,7 +12,7 @@ public final class LookUpResourceIdResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LookUpResourceIdResponseInner model
-            = BinaryData.fromString("{\"resourceId\":\"hxcr\"}").toObject(LookUpResourceIdResponseInner.class);
-        Assertions.assertEquals("hxcr", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"divkrt\"}").toObject(LookUpResourceIdResponseInner.class);
+        Assertions.assertEquals("divkrt", model.resourceId());
     }
 }

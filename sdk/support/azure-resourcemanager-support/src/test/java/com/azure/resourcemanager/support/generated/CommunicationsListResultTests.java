@@ -12,11 +12,11 @@ public final class CommunicationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunicationsListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"matuok\",\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"dsfcpkvxodpuoz\",\"subject\":\"yzydagfuaxbezyi\",\"body\":\"okktwhrdxw\",\"createdDate\":\"2021-02-16T11:08:22Z\"},\"id\":\"sm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"}]}")
+            "{\"nextLink\":\"wxrjfeallnwsub\",\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"ngnzscxaqwoochc\",\"subject\":\"onq\",\"body\":\"pkvlrxn\",\"createdDate\":\"2021-04-17T15:50:50Z\"},\"id\":\"eipheoflokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"azjpqyegualhbxxh\",\"subject\":\"jj\",\"body\":\"zvdudgwdslfhotwm\",\"createdDate\":\"2021-03-06T02:52:56Z\"},\"id\":\"wlbjnpgacftade\",\"name\":\"xnltyfsoppu\",\"type\":\"uesnzwdejbavo\"}]}")
             .toObject(CommunicationsListResult.class);
-        Assertions.assertEquals("matuok", model.nextLink());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.value().get(0).sender());
-        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).subject());
-        Assertions.assertEquals("okktwhrdxw", model.value().get(0).body());
+        Assertions.assertEquals("wxrjfeallnwsub", model.nextLink());
+        Assertions.assertEquals("ngnzscxaqwoochc", model.value().get(0).sender());
+        Assertions.assertEquals("onq", model.value().get(0).subject());
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).body());
     }
 }

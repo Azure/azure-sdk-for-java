@@ -13,18 +13,18 @@ public final class LookUpResourceIdRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LookUpResourceIdRequest model
-            = BinaryData.fromString("{\"identifier\":\"fbkrvrnsvs\",\"type\":\"Microsoft.Support/supportTickets\"}")
+            = BinaryData.fromString("{\"identifier\":\"j\",\"type\":\"Microsoft.Support/supportTickets\"}")
                 .toObject(LookUpResourceIdRequest.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.identifier());
+        Assertions.assertEquals("j", model.identifier());
         Assertions.assertEquals(LookUpResourceIdRequestType.MICROSOFT_SUPPORT_SUPPORT_TICKETS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LookUpResourceIdRequest model = new LookUpResourceIdRequest().withIdentifier("fbkrvrnsvs")
+        LookUpResourceIdRequest model = new LookUpResourceIdRequest().withIdentifier("j")
             .withType(LookUpResourceIdRequestType.MICROSOFT_SUPPORT_SUPPORT_TICKETS);
         model = BinaryData.fromObject(model).toObject(LookUpResourceIdRequest.class);
-        Assertions.assertEquals("fbkrvrnsvs", model.identifier());
+        Assertions.assertEquals("j", model.identifier());
         Assertions.assertEquals(LookUpResourceIdRequestType.MICROSOFT_SUPPORT_SUPPORT_TICKETS, model.type());
     }
 }

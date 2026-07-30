@@ -397,7 +397,7 @@ public final class SupportManagementClientImpl implements SupportManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
         this.services = new ServicesClientImpl(this);
         this.classifyServices = new ClassifyServicesClientImpl(this);

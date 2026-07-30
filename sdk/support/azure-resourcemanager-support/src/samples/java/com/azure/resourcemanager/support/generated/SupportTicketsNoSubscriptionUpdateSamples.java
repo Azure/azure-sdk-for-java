@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsNoSubscriptionUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
      */
     /**
      * Sample code: Update advanced diagnostic consent of a support ticket.
@@ -34,7 +34,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateSeverityOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateSeverityOfSupportTicket.json
      */
     /**
      * Sample code: Update severity of a support ticket.
@@ -48,7 +48,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateStatusOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateStatusOfSupportTicket.json
      */
     /**
      * Sample code: Update status of a support ticket.
@@ -62,7 +62,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateEscalationStatusOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateEscalationStatusOfSupportTicket.json
      */
     /**
      * Sample code: Update escalation status of a support ticket.
@@ -81,7 +81,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateContactDetailsOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateContactDetailsOfSupportTicket.json
      */
     /**
      * Sample code: Update contact details of a support ticket.

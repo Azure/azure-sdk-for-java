@@ -21,7 +21,7 @@ public final class FilesNoSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdOn\":\"2021-04-26T01:10:25Z\",\"chunkSize\":256597525,\"fileSize\":877094344,\"numberOfChunks\":307968762},\"id\":\"wy\",\"name\":\"undmbx\",\"type\":\"ugcmjkavlgorb\"}";
+            = "{\"properties\":{\"createdOn\":\"2021-04-16T10:18:40Z\",\"chunkSize\":991710429,\"fileSize\":1582753325,\"numberOfChunks\":184634517},\"id\":\"bowxe\",\"name\":\"o\",\"type\":\"ljmygvkzqkjjeokb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class FilesNoSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileDetails response = manager.filesNoSubscriptions()
-            .getWithResponse("hnmgixhcm", "vmqfoud", com.azure.core.util.Context.NONE)
+            .getWithResponse("mcmuapc", "hdbevwqqxeyskon", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(256597525, response.chunkSize());
-        Assertions.assertEquals(877094344, response.fileSize());
-        Assertions.assertEquals(307968762, response.numberOfChunks());
+        Assertions.assertEquals(991710429, response.chunkSize());
+        Assertions.assertEquals(1582753325, response.fileSize());
+        Assertions.assertEquals(184634517, response.numberOfChunks());
     }
 }

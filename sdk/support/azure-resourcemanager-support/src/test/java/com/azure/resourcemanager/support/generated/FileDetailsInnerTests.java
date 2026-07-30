@@ -12,20 +12,20 @@ public final class FileDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdOn\":\"2021-03-05T05:10:55Z\",\"chunkSize\":938616277,\"fileSize\":988727085,\"numberOfChunks\":1662588727},\"id\":\"yzvqt\",\"name\":\"nubexk\",\"type\":\"zksmondj\"}")
+            "{\"properties\":{\"createdOn\":\"2021-12-08T09:50:21Z\",\"chunkSize\":1929847054,\"fileSize\":1598005613,\"numberOfChunks\":1083170526},\"id\":\"pomgkopkwhojvp\",\"name\":\"jqg\",\"type\":\"ysmocmbqfqvmkcxo\"}")
             .toObject(FileDetailsInner.class);
-        Assertions.assertEquals(938616277, model.chunkSize());
-        Assertions.assertEquals(988727085, model.fileSize());
-        Assertions.assertEquals(1662588727, model.numberOfChunks());
+        Assertions.assertEquals(1929847054, model.chunkSize());
+        Assertions.assertEquals(1598005613, model.fileSize());
+        Assertions.assertEquals(1083170526, model.numberOfChunks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileDetailsInner model
-            = new FileDetailsInner().withChunkSize(938616277).withFileSize(988727085).withNumberOfChunks(1662588727);
+            = new FileDetailsInner().withChunkSize(1929847054).withFileSize(1598005613).withNumberOfChunks(1083170526);
         model = BinaryData.fromObject(model).toObject(FileDetailsInner.class);
-        Assertions.assertEquals(938616277, model.chunkSize());
-        Assertions.assertEquals(988727085, model.fileSize());
-        Assertions.assertEquals(1662588727, model.numberOfChunks());
+        Assertions.assertEquals(1929847054, model.chunkSize());
+        Assertions.assertEquals(1598005613, model.fileSize());
+        Assertions.assertEquals(1083170526, model.numberOfChunks());
     }
 }

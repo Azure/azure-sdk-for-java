@@ -21,7 +21,7 @@ public final class ChatTranscriptsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"messages\":[{\"contentType\":\"nfnw\",\"communicationDirection\":\"outbound\",\"sender\":\"vpdvjdhttzae\",\"body\":\"dxihc\",\"createdDate\":\"2021-05-03T20:49:03Z\"},{\"contentType\":\"k\",\"communicationDirection\":\"outbound\",\"sender\":\"dqns\",\"body\":\"zpbgtgkylkdg\",\"createdDate\":\"2021-03-05T10:28:15Z\"},{\"contentType\":\"uutlwxezwzhok\",\"communicationDirection\":\"outbound\",\"sender\":\"hh\",\"body\":\"lgehg\",\"createdDate\":\"2021-01-12T07:30:51Z\"},{\"contentType\":\"ifhpf\",\"communicationDirection\":\"outbound\",\"sender\":\"vgcxtx\",\"body\":\"sheafid\",\"createdDate\":\"2021-04-13T14:48:11Z\"}],\"startTime\":\"2021-07-18T03:03:02Z\"},\"id\":\"esmkssjhoiftxfkf\",\"name\":\"egprhptil\",\"type\":\"ucb\"}";
+            = "{\"properties\":{\"messages\":[{\"contentType\":\"mqt\",\"communicationDirection\":\"inbound\",\"sender\":\"ijddtvqc\",\"body\":\"adijaeukmrsie\",\"createdDate\":\"2021-10-17T06:17:44Z\"},{\"contentType\":\"dzaapmudqme\",\"communicationDirection\":\"inbound\",\"sender\":\"pibudqwyxebeybpm\",\"body\":\"nrtffyaqi\",\"createdDate\":\"2021-04-15T13:41:26Z\"}],\"startTime\":\"2021-06-15T17:15:43Z\"},\"id\":\"oqaqhvseufuq\",\"name\":\"rxpdlcgqlsi\",\"type\":\"mjqfrddgamquhio\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,10 @@ public final class ChatTranscriptsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ChatTranscriptDetails response = manager.chatTranscripts()
-            .getWithResponse("disdosfjbjsvgj", "whryvycytdcl", com.azure.core.util.Context.NONE)
-            .getValue();
+        ChatTranscriptDetails response
+            = manager.chatTranscripts().getWithResponse("jpahlxvea", "f", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("vpdvjdhttzae", response.messages().get(0).sender());
-        Assertions.assertEquals("dxihc", response.messages().get(0).body());
+        Assertions.assertEquals("ijddtvqc", response.messages().get(0).sender());
+        Assertions.assertEquals("adijaeukmrsie", response.messages().get(0).body());
     }
 }

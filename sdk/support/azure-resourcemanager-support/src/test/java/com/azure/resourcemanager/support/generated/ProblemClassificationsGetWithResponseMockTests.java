@@ -21,7 +21,7 @@ public final class ProblemClassificationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"imerqfobwyznk\",\"secondaryConsentEnabled\":[{\"description\":\"t\",\"type\":\"fhpagmhrskdsnf\"},{\"description\":\"doakgtdlmkkzevdl\",\"type\":\"wpusdsttwvogv\"}]},\"id\":\"ejdcngqqmoakuf\",\"name\":\"m\",\"type\":\"zr\"}";
+            = "{\"properties\":{\"displayName\":\"xgfpelolppv\",\"secondaryConsentEnabled\":[{\"description\":\"qvujzraehtwdwrf\",\"type\":\"wib\"}]},\"id\":\"cdl\",\"name\":\"h\",\"type\":\"hfwpracstwit\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ProblemClassificationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProblemClassification response = manager.problemClassifications()
-            .getWithResponse("wtl", "nguxawqaldsy", com.azure.core.util.Context.NONE)
+            .getWithResponse("gytguslfead", "ygqukyhejh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("imerqfobwyznk", response.displayName());
-        Assertions.assertEquals("t", response.secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("fhpagmhrskdsnf", response.secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("xgfpelolppv", response.displayName());
+        Assertions.assertEquals("qvujzraehtwdwrf", response.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("wib", response.secondaryConsentEnabled().get(0).type());
     }
 }

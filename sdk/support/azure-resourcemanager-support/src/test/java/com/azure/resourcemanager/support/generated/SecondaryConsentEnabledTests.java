@@ -11,9 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SecondaryConsentEnabledTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecondaryConsentEnabled model = BinaryData.fromString("{\"description\":\"rzayv\",\"type\":\"pgvdf\"}")
-            .toObject(SecondaryConsentEnabled.class);
-        Assertions.assertEquals("rzayv", model.description());
-        Assertions.assertEquals("pgvdf", model.type());
+        SecondaryConsentEnabled model
+            = BinaryData.fromString("{\"description\":\"iwqvhkh\",\"type\":\"uigdtopbobjog\"}")
+                .toObject(SecondaryConsentEnabled.class);
+        Assertions.assertEquals("iwqvhkh", model.description());
+        Assertions.assertEquals("uigdtopbobjog", model.type());
     }
 }

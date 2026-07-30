@@ -12,11 +12,11 @@ public final class FilesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilesListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"kopkwhojvpajqgx\",\"value\":[{\"properties\":{\"createdOn\":\"2020-12-21T19:48:14Z\",\"chunkSize\":1861395903,\"fileSize\":1729730350,\"numberOfChunks\":484454898},\"id\":\"cxozapvhelxp\",\"name\":\"glyatddckcbcuej\",\"type\":\"jxgciqibrh\"},{\"properties\":{\"createdOn\":\"2021-01-18T20:01:11Z\",\"chunkSize\":1655789286,\"fileSize\":656063523,\"numberOfChunks\":218775906},\"id\":\"m\",\"name\":\"bmrqyibahwfl\",\"type\":\"szdtmhrkwof\"},{\"properties\":{\"createdOn\":\"2021-02-28T16:21:21Z\",\"chunkSize\":1338367817,\"fileSize\":354911524,\"numberOfChunks\":1486476697},\"id\":\"pbtg\",\"name\":\"wbwo\",\"type\":\"nwashrtd\"}]}")
+            "{\"nextLink\":\"glyatddckcbcuej\",\"value\":[{\"properties\":{\"createdOn\":\"2021-11-24T14:48:34Z\",\"chunkSize\":785036468,\"fileSize\":974015799,\"numberOfChunks\":703095811},\"id\":\"xsdqrhzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}]}")
             .toObject(FilesListResult.class);
-        Assertions.assertEquals("kopkwhojvpajqgx", model.nextLink());
-        Assertions.assertEquals(1861395903, model.value().get(0).chunkSize());
-        Assertions.assertEquals(1729730350, model.value().get(0).fileSize());
-        Assertions.assertEquals(484454898, model.value().get(0).numberOfChunks());
+        Assertions.assertEquals("glyatddckcbcuej", model.nextLink());
+        Assertions.assertEquals(785036468, model.value().get(0).chunkSize());
+        Assertions.assertEquals(974015799, model.value().get(0).fileSize());
+        Assertions.assertEquals(703095811, model.value().get(0).numberOfChunks());
     }
 }

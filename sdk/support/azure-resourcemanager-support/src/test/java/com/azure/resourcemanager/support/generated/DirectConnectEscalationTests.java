@@ -15,23 +15,22 @@ public final class DirectConnectEscalationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DirectConnectEscalation model = BinaryData.fromString(
-            "{\"azureEEStatus\":\"EscalationUnavailable\",\"allowedSeverities\":[\"highestcriticalimpact\",\"minimal\",\"minimal\"],\"reasonForEscalation\":\"ilovnot\"}")
+            "{\"azureEEStatus\":\"EscalationUnavailable\",\"allowedSeverities\":[\"highestcriticalimpact\"],\"reasonForEscalation\":\"cuh\"}")
             .toObject(DirectConnectEscalation.class);
         Assertions.assertEquals(EscalationStatus.ESCALATION_UNAVAILABLE, model.azureEEStatus());
         Assertions.assertEquals(SeverityLevel.HIGHESTCRITICALIMPACT, model.allowedSeverities().get(0));
-        Assertions.assertEquals("ilovnot", model.reasonForEscalation());
+        Assertions.assertEquals("cuh", model.reasonForEscalation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DirectConnectEscalation model
             = new DirectConnectEscalation().withAzureEEStatus(EscalationStatus.ESCALATION_UNAVAILABLE)
-                .withAllowedSeverities(
-                    Arrays.asList(SeverityLevel.HIGHESTCRITICALIMPACT, SeverityLevel.MINIMAL, SeverityLevel.MINIMAL))
-                .withReasonForEscalation("ilovnot");
+                .withAllowedSeverities(Arrays.asList(SeverityLevel.HIGHESTCRITICALIMPACT))
+                .withReasonForEscalation("cuh");
         model = BinaryData.fromObject(model).toObject(DirectConnectEscalation.class);
         Assertions.assertEquals(EscalationStatus.ESCALATION_UNAVAILABLE, model.azureEEStatus());
         Assertions.assertEquals(SeverityLevel.HIGHESTCRITICALIMPACT, model.allowedSeverities().get(0));
-        Assertions.assertEquals("ilovnot", model.reasonForEscalation());
+        Assertions.assertEquals("cuh", model.reasonForEscalation());
     }
 }

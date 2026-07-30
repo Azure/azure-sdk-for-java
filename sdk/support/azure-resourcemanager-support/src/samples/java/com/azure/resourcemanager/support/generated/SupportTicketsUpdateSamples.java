@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UpdateEscalationStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateEscalationStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update escalation status of a subscription support ticket.
@@ -39,7 +39,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update advanced diagnostic consent of a subscription support ticket.
@@ -54,7 +54,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateSeverityOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateSeverityOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update severity of a subscription support ticket.
@@ -69,7 +69,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update status of a subscription support ticket.
@@ -84,7 +84,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateContactDetailsOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateContactDetailsOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update contact details of a subscription support ticket.

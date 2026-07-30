@@ -11,7 +11,7 @@ import com.azure.resourcemanager.support.models.ServiceClassificationRequest;
  */
 public final class ClassifyServicesClassifyServicesSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyServicesForSubscription.json
+     * x-ms-original-file: 2026-06-01/ClassifyServicesForSubscription.json
      */
     /**
      * Sample code: Classify list of Azure services for a subscription.

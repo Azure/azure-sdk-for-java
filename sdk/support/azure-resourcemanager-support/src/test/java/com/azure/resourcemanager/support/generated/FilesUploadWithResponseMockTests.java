@@ -29,8 +29,8 @@ public final class FilesUploadWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.files()
-            .uploadWithResponse("etnluankrrfx", "eebtijvacvb",
-                new UploadFile().withContent("z").withChunkIndex(32108213), com.azure.core.util.Context.NONE);
+            .uploadWithResponse("vmqfoud", "rhc", new UploadFile().withContent("yprotwyp").withChunkIndex(147246399),
+                com.azure.core.util.Context.NONE);
 
     }
 }

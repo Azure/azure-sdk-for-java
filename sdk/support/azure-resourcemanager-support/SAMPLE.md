@@ -103,7 +103,7 @@
  */
 public final class ChatTranscriptsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: Get chat transcript details for a subscription support ticket.
@@ -126,7 +126,7 @@ public final class ChatTranscriptsGetSamples {
  */
 public final class ChatTranscriptsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListChatTranscriptsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListChatTranscriptsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List chat transcripts for a subscription support ticket.
@@ -148,7 +148,7 @@ public final class ChatTranscriptsListSamples {
  */
 public final class ChatTranscriptsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetchatTranscriptDetailsForSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetchatTranscriptDetailsForSupportTicket.json
      */
     /**
      * Sample code: Get chat transcript details for a subscription support ticket.
@@ -171,7 +171,7 @@ public final class ChatTranscriptsNoSubscriptionGetSamples {
  */
 public final class ChatTranscriptsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListChatTranscriptsForSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListChatTranscriptsForSupportTicket.json
      */
     /**
      * Sample code: List chat transcripts for a no-subscription support ticket.
@@ -195,7 +195,7 @@ import com.azure.resourcemanager.support.models.ProblemClassificationsClassifica
  */
 public final class ClassifyProblemsClassifyProblemsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyProblemClassificationsForSubscription.json
+     * x-ms-original-file: 2026-06-01/ClassifyProblemClassificationsForSubscription.json
      */
     /**
      * Sample code: Classify list of problemClassifications for a specified Azure service for a subscription.
@@ -224,7 +224,7 @@ import com.azure.resourcemanager.support.models.ProblemClassificationsClassifica
  */
 public final class ClassifyProblemsNoSubscriptionClassifyProblemsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyProblemClassifications.json
+     * x-ms-original-file: 2026-06-01/ClassifyProblemClassifications.json
      */
     /**
      * Sample code: Classify list of problemClassifications for a specified Azure service.
@@ -251,7 +251,7 @@ import com.azure.resourcemanager.support.models.ServiceClassificationRequest;
  */
 public final class ClassifyServicesClassifyServicesSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyServicesForSubscription.json
+     * x-ms-original-file: 2026-06-01/ClassifyServicesForSubscription.json
      */
     /**
      * Sample code: Classify list of Azure services for a subscription.
@@ -280,7 +280,7 @@ import com.azure.resourcemanager.support.models.ServiceClassificationRequest;
  */
 public final class ClassifyServicesNoSubscriptionClassifyServicesSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyServices.json
+     * x-ms-original-file: 2026-06-01/ClassifyServices.json
      */
     /**
      * Sample code: Classify list of Azure services.
@@ -309,7 +309,7 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class CommunicationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/CheckNameAvailabilityForSupportTicketCommunication.json
+     * x-ms-original-file: 2026-06-01/CheckNameAvailabilityForSupportTicketCommunication.json
      */
     /**
      * Sample code: Checks whether name is available for Communication resource for a subscription support ticket.
@@ -334,7 +334,7 @@ public final class CommunicationsCheckNameAvailabilitySamples {
  */
 public final class CommunicationsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateSupportTicketCommunication.json
+     * x-ms-original-file: 2026-06-01/CreateSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToSubscriptionTicket.
@@ -361,7 +361,7 @@ public final class CommunicationsCreateSamples {
  */
 public final class CommunicationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: Get communication details for a subscription support ticket.
@@ -383,7 +383,7 @@ public final class CommunicationsGetSamples {
  */
 public final class CommunicationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List communications for a subscription support ticket.
@@ -396,7 +396,7 @@ public final class CommunicationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListWebCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List web communications for a subscription support ticket.
@@ -410,7 +410,7 @@ public final class CommunicationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
      */
     /**
      * Sample code: List web communication created on or after a specific date for a subscription support ticket.
@@ -437,7 +437,7 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class CommunicationsNoSubscriptionCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/CheckNameAvailabilityForNoSubscriptionSupportTicketCommunication.json
+     * x-ms-original-file: 2026-06-01/CheckNameAvailabilityForNoSubscriptionSupportTicketCommunication.json
      */
     /**
      * Sample code: Checks whether name is available for Communication resource.
@@ -464,7 +464,7 @@ import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner
  */
 public final class CommunicationsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateNoSubscriptionSupportTicketCommunication.json
+     * x-ms-original-file: 2026-06-01/CreateNoSubscriptionSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToNoSubscriptionTicket.
@@ -491,7 +491,7 @@ public final class CommunicationsNoSubscriptionCreateSamples {
  */
 public final class CommunicationsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetCommunicationDetailsForSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetCommunicationDetailsForSupportTicket.json
      */
     /**
      * Sample code: Get communication details for a no-subscription support ticket.
@@ -514,7 +514,7 @@ public final class CommunicationsNoSubscriptionGetSamples {
  */
 public final class CommunicationsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListCommunicationsForSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListCommunicationsForSupportTicket.json
      */
     /**
      * Sample code: List communications for a no-subscription support ticket.
@@ -527,7 +527,7 @@ public final class CommunicationsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListWebCommunicationsForSupportTicketCreatedOnOrAfter.json
+     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSupportTicketCreatedOnOrAfter.json
      */
     /**
      * Sample code: List web communication created on or after a specific date for a no-subscription support ticket.
@@ -542,7 +542,7 @@ public final class CommunicationsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListWebCommunicationsForSupportTicket.json
+     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSupportTicket.json
      */
     /**
      * Sample code: List web communications for a no-subscription support ticket.
@@ -565,7 +565,7 @@ public final class CommunicationsNoSubscriptionListSamples {
  */
 public final class FileWorkspacesCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFileWorkspaceForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateFileWorkspaceForSubscription.json
      */
     /**
      * Sample code: Create a file workspace for a subscription.
@@ -586,7 +586,7 @@ public final class FileWorkspacesCreateSamples {
  */
 public final class FileWorkspacesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetFileWorkspaceDetailsForSubscription.json
+     * x-ms-original-file: 2026-06-01/GetFileWorkspaceDetailsForSubscription.json
      */
     /**
      * Sample code: Get details of a subscription file workspace.
@@ -608,7 +608,7 @@ public final class FileWorkspacesGetSamples {
  */
 public final class FileWorkspacesNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFileWorkspace.json
+     * x-ms-original-file: 2026-06-01/CreateFileWorkspace.json
      */
     /**
      * Sample code: Create a file workspace.
@@ -629,7 +629,7 @@ public final class FileWorkspacesNoSubscriptionCreateSamples {
  */
 public final class FileWorkspacesNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetFileWorkspaceDetails.json
+     * x-ms-original-file: 2026-06-01/GetFileWorkspaceDetails.json
      */
     /**
      * Sample code: Get details of a file workspace.
@@ -650,7 +650,7 @@ public final class FileWorkspacesNoSubscriptionGetSamples {
  */
 public final class FilesCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFileForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateFileForSubscription.json
      */
     /**
      * Sample code: Create a file under a subscription workspace.
@@ -678,7 +678,7 @@ public final class FilesCreateSamples {
  */
 public final class FilesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetFileDetailsForSubscription.json
+     * x-ms-original-file: 2026-06-01/GetFileDetailsForSubscription.json
      */
     /**
      * Sample code: Get details of a subscription file.
@@ -699,7 +699,7 @@ public final class FilesGetSamples {
  */
 public final class FilesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListFilesForSubscriptionUnderFileWorkspace.json
+     * x-ms-original-file: 2026-06-01/ListFilesForSubscriptionUnderFileWorkspace.json
      */
     /**
      * Sample code: List files under a workspace for a subscription.
@@ -723,7 +723,7 @@ import com.azure.resourcemanager.support.models.UploadFile;
  */
 public final class FilesUploadSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UploadFileForSubscription.json
+     * x-ms-original-file: 2026-06-01/UploadFileForSubscription.json
      */
     /**
      * Sample code: UploadFileForSubscription.
@@ -749,7 +749,7 @@ import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
  */
 public final class FilesNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFile.json
+     * x-ms-original-file: 2026-06-01/CreateFile.json
      */
     /**
      * Sample code: Create a file workspace.
@@ -773,7 +773,7 @@ public final class FilesNoSubscriptionCreateSamples {
  */
 public final class FilesNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetFileDetails.json
+     * x-ms-original-file: 2026-06-01/GetFileDetails.json
      */
     /**
      * Sample code: Get details of a subscription file.
@@ -794,7 +794,7 @@ public final class FilesNoSubscriptionGetSamples {
  */
 public final class FilesNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListFilesUnderFileWorkspace.json
+     * x-ms-original-file: 2026-06-01/ListFilesUnderFileWorkspace.json
      */
     /**
      * Sample code: List files under a workspace.
@@ -817,7 +817,7 @@ import com.azure.resourcemanager.support.models.UploadFile;
  */
 public final class FilesNoSubscriptionUploadSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UploadFile.json
+     * x-ms-original-file: 2026-06-01/UploadFile.json
      */
     /**
      * Sample code: UploadFile.
@@ -841,7 +841,7 @@ public final class FilesNoSubscriptionUploadSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListOperations.json
+     * x-ms-original-file: 2026-06-01/ListOperations.json
      */
     /**
      * Sample code: Get all operations.
@@ -862,7 +862,7 @@ public final class OperationsListSamples {
  */
 public final class ProblemClassificationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetProblemClassification.json
+     * x-ms-original-file: 2026-06-01/GetProblemClassification.json
      */
     /**
      * Sample code: Gets details of problemClassification for Azure service.
@@ -885,7 +885,7 @@ public final class ProblemClassificationsGetSamples {
  */
 public final class ProblemClassificationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListProblemClassifications.json
+     * x-ms-original-file: 2026-06-01/ListProblemClassifications.json
      */
     /**
      * Sample code: Gets list of problemClassifications for a service for which a support ticket can be created.
@@ -907,7 +907,7 @@ public final class ProblemClassificationsListSamples {
  */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetService.json
+     * x-ms-original-file: 2026-06-01/GetService.json
      */
     /**
      * Sample code: Gets details of the Azure service.
@@ -928,7 +928,7 @@ public final class ServicesGetSamples {
  */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListServices.json
+     * x-ms-original-file: 2026-06-01/ListServices.json
      */
     /**
      * Sample code: Gets list of services for which a support ticket can be created.
@@ -953,7 +953,7 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class SupportTicketsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/CheckNameAvailabilityWithSubscription.json
+     * x-ms-original-file: 2026-06-01/CheckNameAvailabilityWithSubscription.json
      */
     /**
      * Sample code: Checks whether name is available for a subscription support ticket resource.
@@ -988,7 +988,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for Azure Synapse Analytics.
@@ -1023,7 +1023,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Active Jobs and Job Schedules for a Batch account.
@@ -1058,7 +1058,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+     * x-ms-original-file: 2026-06-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for Machine Learning service.
@@ -1093,7 +1093,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Batch accounts for a subscription.
@@ -1128,7 +1128,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateGenericQuotaTicket.json
+     * x-ms-original-file: 2026-06-01/CreateGenericQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for services that do not require additional details in the
@@ -1159,7 +1159,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatabaseQuotaTicketForDTUs.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatabaseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for SQL Database.
@@ -1194,7 +1194,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for a Batch account.
@@ -1229,7 +1229,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlManagedInstanceQuotaTicket.json
+     * x-ms-original-file: 2026-06-01/CreateSqlManagedInstanceQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Azure SQL managed instance.
@@ -1267,7 +1267,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSubMgmtSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateSubMgmtSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues for a subscription.
@@ -1299,7 +1299,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateTechnicalSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateTechnicalSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource for a subscription.
@@ -1339,7 +1339,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Pools for a Batch account.
@@ -1374,7 +1374,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for a Batch account.
@@ -1410,7 +1410,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatabaseQuotaTicketForServers.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatabaseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for SQL Database.
@@ -1445,7 +1445,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBillingSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateBillingSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -1476,7 +1476,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
+     * x-ms-original-file: 2026-06-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for Machine Learning service.
@@ -1511,7 +1511,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForServers.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatawarehouseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for Azure Synapse Analytics.
@@ -1546,7 +1546,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateCoresQuotaTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateCoresQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Compute VM Cores.
@@ -1589,7 +1589,7 @@ public final class SupportTicketsCreateSamples {
  */
 public final class SupportTicketsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetSubscriptionSupportTicketDetails.json
+     * x-ms-original-file: 2026-06-01/GetSubscriptionSupportTicketDetails.json
      */
     /**
      * Sample code: Get details of a subscription ticket.
@@ -1610,7 +1610,7 @@ public final class SupportTicketsGetSamples {
  */
 public final class SupportTicketsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsServiceIdEqualsForSubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsServiceIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain service id for a subscription.
@@ -1623,7 +1623,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state for a subscription.
@@ -1637,7 +1637,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInUpdatingStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in updating state for a subscription.
@@ -1650,7 +1650,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state for a subscription.
@@ -1665,7 +1665,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id for a subscription.
@@ -1680,7 +1680,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsBySubscription.json
      */
     /**
      * Sample code: List support tickets for a subscription.
@@ -1692,7 +1692,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInOpenStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in open state for a subscription.
@@ -1717,7 +1717,7 @@ import com.azure.resourcemanager.support.models.LookUpResourceIdRequestType;
  */
 public final class SupportTicketsLookUpResourceIdSamples {
     /*
-     * x-ms-original-file: 2026-07-01/LookUpResourceId.json
+     * x-ms-original-file: 2026-06-01/LookUpResourceId.json
      */
     /**
      * Sample code: Look up resource id of support resource type.
@@ -1752,7 +1752,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UpdateEscalationStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateEscalationStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update escalation status of a subscription support ticket.
@@ -1772,7 +1772,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update advanced diagnostic consent of a subscription support ticket.
@@ -1787,7 +1787,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateSeverityOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateSeverityOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update severity of a subscription support ticket.
@@ -1802,7 +1802,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update status of a subscription support ticket.
@@ -1817,7 +1817,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateContactDetailsOfSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/UpdateContactDetailsOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update contact details of a subscription support ticket.
@@ -1854,7 +1854,7 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class SupportTicketsNoSubscriptionCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/CheckNameAvailability.json
+     * x-ms-original-file: 2026-06-01/CheckNameAvailability.json
      */
     /**
      * Sample code: Checks whether name is available for SupportTicket resource.
@@ -1887,7 +1887,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateBillingSupportTicket.json
+     * x-ms-original-file: 2026-06-01/CreateBillingSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -1917,7 +1917,7 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSubMgmtSupportTicket.json
+     * x-ms-original-file: 2026-06-01/CreateSubMgmtSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues.
@@ -1948,7 +1948,7 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateTechnicalSupportTicket.json
+     * x-ms-original-file: 2026-06-01/CreateTechnicalSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource.
@@ -1994,7 +1994,7 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
  */
 public final class SupportTicketsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetSupportTicketDetails.json
+     * x-ms-original-file: 2026-06-01/GetSupportTicketDetails.json
      */
     /**
      * Sample code: Get details of a ticket.
@@ -2015,7 +2015,7 @@ public final class SupportTicketsNoSubscriptionGetSamples {
  */
 public final class SupportTicketsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state.
@@ -2030,7 +2030,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInOpenState.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInOpenState.json
      */
     /**
      * Sample code: List support tickets in open state.
@@ -2042,7 +2042,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTickets.json
+     * x-ms-original-file: 2026-06-01/ListSupportTickets.json
      */
     /**
      * Sample code: List support tickets.
@@ -2054,7 +2054,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInUpdatingState.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInUpdatingState.json
      */
     /**
      * Sample code: List support tickets in updating state.
@@ -2066,7 +2066,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state.
@@ -2080,7 +2080,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsServiceIdEquals.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsServiceIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain service id.
@@ -2094,7 +2094,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsProblemClassificationIdEquals.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsProblemClassificationIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id.
@@ -2128,7 +2128,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsNoSubscriptionUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
      */
     /**
      * Sample code: Update advanced diagnostic consent of a support ticket.
@@ -2143,7 +2143,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateSeverityOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateSeverityOfSupportTicket.json
      */
     /**
      * Sample code: Update severity of a support ticket.
@@ -2157,7 +2157,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateStatusOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateStatusOfSupportTicket.json
      */
     /**
      * Sample code: Update status of a support ticket.
@@ -2171,7 +2171,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateEscalationStatusOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateEscalationStatusOfSupportTicket.json
      */
     /**
      * Sample code: Update escalation status of a support ticket.
@@ -2190,7 +2190,7 @@ public final class SupportTicketsNoSubscriptionUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/UpdateContactDetailsOfSupportTicket.json
+     * x-ms-original-file: 2026-06-01/UpdateContactDetailsOfSupportTicket.json
      */
     /**
      * Sample code: Update contact details of a support ticket.

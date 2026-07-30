@@ -12,8 +12,8 @@ public final class ProblemClassificationsClassificationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationsClassificationResult model = BinaryData.fromString(
-            "{\"problemId\":\"epgzgqexz\",\"title\":\"c\",\"description\":\"c\",\"serviceId\":\"ierhhbcsglummaj\",\"problemClassificationId\":\"aodxo\",\"relatedService\":{\"serviceId\":\"dxkqpx\",\"displayName\":\"ajionpimexgstxg\",\"resourceTypes\":[\"dg\",\"aajrm\",\"djwzrlov\",\"clwhijcoejctbz\"]},\"articleId\":\"s\"}")
+            "{\"problemId\":\"bqidtqaj\",\"title\":\"ulpkudjkrl\",\"description\":\"bzhfepgzgqexz\",\"serviceId\":\"c\",\"problemClassificationId\":\"c\",\"relatedService\":{\"serviceId\":\"erhhbcsglumm\",\"displayName\":\"tjaodxobnb\",\"resourceTypes\":[\"qp\"]}}")
             .toObject(ProblemClassificationsClassificationResult.class);
-        Assertions.assertEquals("dg", model.relatedService().resourceTypes().get(0));
+        Assertions.assertEquals("qp", model.relatedService().resourceTypes().get(0));
     }
 }

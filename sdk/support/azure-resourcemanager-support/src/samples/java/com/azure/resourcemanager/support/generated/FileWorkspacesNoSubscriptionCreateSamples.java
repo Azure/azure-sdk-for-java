@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FileWorkspacesNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFileWorkspace.json
+     * x-ms-original-file: 2026-06-01/CreateFileWorkspace.json
      */
     /**
      * Sample code: Create a file workspace.

@@ -22,7 +22,7 @@ public final class ClassifyProblemsNoSubscriptionsClassifyProblemsWithResponseMo
     @Test
     public void testClassifyProblemsWithResponse() throws Exception {
         String responseStr
-            = "{\"problemClassificationResults\":[{\"problemId\":\"df\",\"title\":\"waezkojvd\",\"description\":\"zfoqouicybxar\",\"serviceId\":\"szufoxciqopidoa\",\"problemClassificationId\":\"iodhkhazxkhnz\",\"relatedService\":{\"serviceId\":\"lwntoego\",\"displayName\":\"wbw\",\"resourceTypes\":[\"z\",\"cmrvexzt\",\"bt\"]},\"articleId\":\"sfraoyzko\"}]}";
+            = "{\"problemClassificationResults\":[{\"problemId\":\"vsmzlxwab\",\"title\":\"oefki\",\"description\":\"vtpuqujmqlgk\",\"serviceId\":\"tndoaongbjc\",\"problemClassificationId\":\"ujitcjedftww\",\"relatedService\":{\"serviceId\":\"kojvd\",\"displayName\":\"zfoqouicybxar\",\"resourceTypes\":[\"zuf\",\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\"]}},{\"problemId\":\"egokdwbwhkszzcmr\",\"title\":\"xztvbtqgsfraoyzk\",\"description\":\"wtl\",\"serviceId\":\"guxawqaldsyuuxi\",\"problemClassificationId\":\"rqf\",\"relatedService\":{\"serviceId\":\"yznkby\",\"displayName\":\"t\",\"resourceTypes\":[\"hpagm\",\"r\",\"kdsnfdsdoakgtdl\",\"kkze\"]}},{\"problemId\":\"l\",\"title\":\"wpusdsttwvogv\",\"description\":\"ejdcngqqmoakuf\",\"serviceId\":\"jzrwrdgrtw\",\"problemClassificationId\":\"nuuzkopbm\",\"relatedService\":{\"serviceId\":\"fdwoyuhh\",\"displayName\":\"u\",\"resourceTypes\":[\"ozbhdmsmlmzq\",\"oftrmaequia\",\"xicslfao\",\"z\"]}},{\"problemId\":\"yylhalnswhccsp\",\"title\":\"aivwitqscywu\",\"description\":\"woluhczbwemhair\",\"serviceId\":\"rgzdwmsweyp\",\"problemClassificationId\":\"dxggicccnxqhuexm\",\"relatedService\":{\"serviceId\":\"lstvlzywe\",\"displayName\":\"zrncsdt\",\"resourceTypes\":[\"siypbs\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ClassifyProblemsNoSubscriptionsClassifyProblemsWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProblemClassificationsClassificationOutput response = manager.classifyProblemsNoSubscriptions()
-            .classifyProblemsWithResponse("btndo",
-                new ProblemClassificationsClassificationInput().withIssueSummary("ongbjcnt").withResourceId("i"),
+            .classifyProblemsWithResponse("mkycgra",
+                new ProblemClassificationsClassificationInput().withIssueSummary("wjue").withResourceId("eburu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("z",
+        Assertions.assertEquals("zuf",
             response.problemClassificationResults().get(0).relatedService().resourceTypes().get(0));
     }
 }

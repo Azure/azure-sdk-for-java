@@ -22,7 +22,7 @@ public final class ServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"qkacewii\",\"resourceTypes\":[\"ubjibww\",\"f\"]},\"id\":\"hqkvpuvksgplsak\",\"name\":\"ynfs\",\"type\":\"n\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"ndsytgadg\",\"resourceTypes\":[\"ea\",\"neqn\",\"arrwlquu\",\"jfqka\"]},\"id\":\"wiipfpub\",\"name\":\"ibwwiftohqkv\",\"type\":\"uvksgplsaknynfsy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class ServicesListMockTests {
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qkacewii", response.iterator().next().displayName());
-        Assertions.assertEquals("ubjibww", response.iterator().next().resourceTypes().get(0));
+        Assertions.assertEquals("ndsytgadg", response.iterator().next().displayName());
+        Assertions.assertEquals("ea", response.iterator().next().resourceTypes().get(0));
     }
 }

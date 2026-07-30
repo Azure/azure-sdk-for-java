@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: Get communication details for a subscription support ticket.

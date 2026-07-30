@@ -12,11 +12,11 @@ public final class ProblemClassificationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationsListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"otkftutqxlngx\",\"value\":[{\"properties\":{\"displayName\":\"gnxkrxdqmidtth\",\"secondaryConsentEnabled\":[{\"description\":\"drabhjybige\",\"type\":\"qfbow\"},{\"description\":\"anyktzlcuiywg\",\"type\":\"wgndrvynhzgpp\"}]},\"id\":\"cgyncocpecf\",\"name\":\"m\",\"type\":\"coofsxlzev\"},{\"properties\":{\"displayName\":\"qjqabcypmivkwl\",\"secondaryConsentEnabled\":[{\"description\":\"c\",\"type\":\"nfnbacfionlebxe\"},{\"description\":\"gtzxdpn\",\"type\":\"qqwx\"}]},\"id\":\"feallnwsu\",\"name\":\"isnjampmngnz\",\"type\":\"c\"},{\"properties\":{\"displayName\":\"wooc\",\"secondaryConsentEnabled\":[{\"description\":\"nqvpkvlrxnje\",\"type\":\"eipheoflokeyy\"},{\"description\":\"nj\",\"type\":\"lwtgrhpdj\"},{\"description\":\"umasxazjpq\",\"type\":\"gual\"},{\"description\":\"xxhejjzzvd\",\"type\":\"gwdslfhotwm\"}]},\"id\":\"npwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"},{\"properties\":{\"displayName\":\"jbavorxzdm\",\"secondaryConsentEnabled\":[{\"description\":\"bqvudwxdndn\",\"type\":\"w\"},{\"description\":\"jjugwdkcglhslaz\",\"type\":\"yggdtjixh\"},{\"description\":\"uofqwe\",\"type\":\"hmenevfyexfwhybc\"}]},\"id\":\"vyvdcs\",\"name\":\"tynnaamdectehfi\",\"type\":\"scjeypv\"}]}")
+            "{\"nextLink\":\"e\",\"value\":[{\"properties\":{\"displayName\":\"uhrzayvvt\",\"secondaryConsentEnabled\":[{\"description\":\"f\",\"type\":\"otkftutqxlngx\"},{\"description\":\"fgugnxkrxdqmid\",\"type\":\"hzrvqd\"}]},\"id\":\"bhj\",\"name\":\"big\",\"type\":\"h\"}]}")
             .toObject(ProblemClassificationsListResult.class);
-        Assertions.assertEquals("otkftutqxlngx", model.nextLink());
-        Assertions.assertEquals("gnxkrxdqmidtth", model.value().get(0).displayName());
-        Assertions.assertEquals("drabhjybige", model.value().get(0).secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("qfbow", model.value().get(0).secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("e", model.nextLink());
+        Assertions.assertEquals("uhrzayvvt", model.value().get(0).displayName());
+        Assertions.assertEquals("f", model.value().get(0).secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("otkftutqxlngx", model.value().get(0).secondaryConsentEnabled().get(0).type());
     }
 }

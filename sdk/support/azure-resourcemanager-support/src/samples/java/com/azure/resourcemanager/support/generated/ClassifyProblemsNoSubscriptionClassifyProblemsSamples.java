@@ -11,7 +11,7 @@ import com.azure.resourcemanager.support.models.ProblemClassificationsClassifica
  */
 public final class ClassifyProblemsNoSubscriptionClassifyProblemsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClassifyProblemClassifications.json
+     * x-ms-original-file: 2026-06-01/ClassifyProblemClassifications.json
      */
     /**
      * Sample code: Classify list of problemClassifications for a specified Azure service.

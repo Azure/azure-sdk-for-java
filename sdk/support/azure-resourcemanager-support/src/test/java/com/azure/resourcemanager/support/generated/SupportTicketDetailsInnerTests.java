@@ -27,119 +27,118 @@ public final class SupportTicketDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportTicketDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"supportTicketId\":\"vdfwatkpn\",\"description\":\"ulexxbczwtr\",\"problemClassificationId\":\"wiqzbqjvsovmyo\",\"problemClassificationDisplayName\":\"cspkwlhzdobpxjmf\",\"severity\":\"critical\",\"enrollmentId\":\"vnchrkcci\",\"require24X7Response\":true,\"advancedDiagnosticConsent\":\"Yes\",\"problemScopingQuestions\":\"qkhr\",\"supportPlanId\":\"jiwkuofoskghsau\",\"contactDetails\":{\"firstName\":\"imjm\",\"lastName\":\"xieduugidyjrr\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"y\",\"additionalEmailAddresses\":[\"v\",\"xc\",\"onpc\",\"hocohslkev\"],\"phoneNumber\":\"ggzfbu\",\"preferredTimeZone\":\"fmvfaxkffeiit\",\"country\":\"lvmezyvshxmzsbbz\",\"preferredSupportLanguage\":\"ggi\"},\"serviceLevelAgreement\":{\"startTime\":\"2021-07-22T08:18:11Z\",\"expirationTime\":\"2021-08-02T21:26:13Z\",\"slaMinutes\":2000842411},\"supportEngineer\":{\"emailAddress\":\"xjnspy\"},\"supportPlanType\":\"tko\",\"supportPlanDisplayName\":\"kouknvudwtiu\",\"title\":\"bldngkpoc\",\"problemStartTime\":\"2021-05-19T00:57:25Z\",\"serviceId\":\"z\",\"serviceDisplayName\":\"o\",\"status\":\"ukgjnpiucgygevq\",\"createdDate\":\"2021-05-23T07:03:19Z\",\"modifiedDate\":\"2021-02-02T09:27:42Z\",\"fileWorkspaceName\":\"rbpizc\",\"isTemporaryTicket\":\"No\",\"technicalTicketDetails\":{\"resourceId\":\"dpydn\"},\"quotaTicketDetails\":{\"quotaChangeRequestSubType\":\"xdeoejzic\",\"quotaChangeRequestVersion\":\"fsj\",\"quotaChangeRequests\":[{\"region\":\"fbishcbkha\",\"payload\":\"eyeam\"},{\"region\":\"hagalpbuxwgipwh\",\"payload\":\"ow\"},{\"region\":\"shwankixzbinje\",\"payload\":\"ttmrywnuzoqf\"}]},\"secondaryConsent\":[{\"userConsent\":\"No\",\"type\":\"n\"},{\"userConsent\":\"No\",\"type\":\"yx\"},{\"userConsent\":\"Yes\",\"type\":\"lsicohoqqnwv\"},{\"userConsent\":\"Yes\",\"type\":\"vwhheunmmqhgyx\"}],\"directConnectEscalation\":{\"azureEEStatus\":\"EscalationProcessed\",\"allowedSeverities\":[\"minimal\",\"moderate\",\"critical\",\"critical\"],\"reasonForEscalation\":\"yaxuconuqszfkb\"},\"communityForumPost\":\"pewr\",\"supportChannel\":\"Web\",\"chatConversationStatus\":\"Closed\"},\"id\":\"jektcxsenh\",\"name\":\"lrsf\",\"type\":\"rzpwvlqdqgbiq\"}")
+            "{\"properties\":{\"supportTicketId\":\"ujjugwdkcglh\",\"description\":\"lazjdyggdtjixhbk\",\"problemClassificationId\":\"ofqweykhmenevfye\",\"problemClassificationDisplayName\":\"whybcib\",\"severity\":\"critical\",\"enrollmentId\":\"dcsi\",\"require24X7Response\":true,\"advancedDiagnosticConsent\":\"Yes\",\"problemScopingQuestions\":\"amdecte\",\"supportPlanId\":\"iqscjeypv\",\"contactDetails\":{\"firstName\":\"ezrkgqhcjrefo\",\"lastName\":\"gm\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"sle\",\"additionalEmailAddresses\":[\"xyqj\",\"k\",\"attpngjcrcczsq\",\"jh\"],\"phoneNumber\":\"daj\",\"preferredTimeZone\":\"nysounqe\",\"country\":\"a\",\"preferredSupportLanguage\":\"oaeupfhyhltrpmo\"},\"serviceLevelAgreement\":{\"startTime\":\"2021-06-19T02:30:24Z\",\"expirationTime\":\"2020-12-30T03:24:58Z\",\"slaMinutes\":61877127},\"supportEngineer\":{\"emailAddress\":\"thfuiuaodsfcpkvx\"},\"supportPlanType\":\"puozmyzydag\",\"supportPlanDisplayName\":\"axbezyiuo\",\"title\":\"ktwh\",\"problemStartTime\":\"2021-09-10T15:31:21Z\",\"serviceId\":\"wz\",\"serviceDisplayName\":\"q\",\"status\":\"bsureximo\",\"createdDate\":\"2021-05-23T11:03:50Z\",\"modifiedDate\":\"2021-01-18T04:02:20Z\",\"fileWorkspaceName\":\"fksymddystki\",\"isTemporaryTicket\":\"No\",\"technicalTicketDetails\":{\"resourceId\":\"yudxorrqnbp\"},\"quotaTicketDetails\":{\"quotaChangeRequestSubType\":\"vyifqrvkdvjsl\",\"quotaChangeRequestVersion\":\"mvvd\",\"quotaChangeRequests\":[{\"region\":\"kpnpulexxbczwtr\",\"payload\":\"iqzbq\"},{\"region\":\"sovmyokacspkwl\",\"payload\":\"dobpxjmflbvvn\"}]},\"secondaryConsent\":[{\"userConsent\":\"Yes\",\"type\":\"iwwzjuqk\"},{\"userConsent\":\"Yes\",\"type\":\"jiwkuofoskghsau\"},{\"userConsent\":\"No\",\"type\":\"mvxi\"}],\"directConnectEscalation\":{\"azureEEStatus\":\"EscalationInitiated\",\"allowedSeverities\":[\"critical\",\"minimal\",\"critical\",\"highestcriticalimpact\"],\"reasonForEscalation\":\"f\"},\"communityForumPost\":\"aos\",\"supportChannel\":\"Chat\",\"chatConversationStatus\":\"Closed\"},\"id\":\"npc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"}")
             .toObject(SupportTicketDetailsInner.class);
-        Assertions.assertEquals("vdfwatkpn", model.supportTicketId());
-        Assertions.assertEquals("ulexxbczwtr", model.description());
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.problemClassificationId());
+        Assertions.assertEquals("ujjugwdkcglh", model.supportTicketId());
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.description());
+        Assertions.assertEquals("ofqweykhmenevfye", model.problemClassificationId());
         Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
-        Assertions.assertEquals("vnchrkcci", model.enrollmentId());
+        Assertions.assertEquals("dcsi", model.enrollmentId());
         Assertions.assertTrue(model.require24X7Response());
         Assertions.assertEquals(Consent.YES, model.advancedDiagnosticConsent());
-        Assertions.assertEquals("qkhr", model.problemScopingQuestions());
-        Assertions.assertEquals("jiwkuofoskghsau", model.supportPlanId());
-        Assertions.assertEquals("imjm", model.contactDetails().firstName());
-        Assertions.assertEquals("xieduugidyjrr", model.contactDetails().lastName());
+        Assertions.assertEquals("amdecte", model.problemScopingQuestions());
+        Assertions.assertEquals("iqscjeypv", model.supportPlanId());
+        Assertions.assertEquals("ezrkgqhcjrefo", model.contactDetails().firstName());
+        Assertions.assertEquals("gm", model.contactDetails().lastName());
         Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("y", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("v", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("ggzfbu", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("fmvfaxkffeiit", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.contactDetails().country());
-        Assertions.assertEquals("ggi", model.contactDetails().preferredSupportLanguage());
-        Assertions.assertEquals("bldngkpoc", model.title());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T00:57:25Z"), model.problemStartTime());
-        Assertions.assertEquals("z", model.serviceId());
-        Assertions.assertEquals("rbpizc", model.fileWorkspaceName());
-        Assertions.assertEquals("dpydn", model.technicalTicketDetails().resourceId());
-        Assertions.assertEquals("xdeoejzic", model.quotaTicketDetails().quotaChangeRequestSubType());
-        Assertions.assertEquals("fsj", model.quotaTicketDetails().quotaChangeRequestVersion());
-        Assertions.assertEquals("fbishcbkha", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("eyeam", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
-        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("n", model.secondaryConsent().get(0).type());
-        Assertions.assertEquals(EscalationStatus.ESCALATION_PROCESSED, model.directConnectEscalation().azureEEStatus());
-        Assertions.assertEquals(SeverityLevel.MINIMAL, model.directConnectEscalation().allowedSeverities().get(0));
-        Assertions.assertEquals("yaxuconuqszfkb", model.directConnectEscalation().reasonForEscalation());
-        Assertions.assertEquals("pewr", model.communityForumPost());
+        Assertions.assertEquals("sle", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("xyqj", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("daj", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("nysounqe", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("a", model.contactDetails().country());
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("ktwh", model.title());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T15:31:21Z"), model.problemStartTime());
+        Assertions.assertEquals("wz", model.serviceId());
+        Assertions.assertEquals("fksymddystki", model.fileWorkspaceName());
+        Assertions.assertEquals("yudxorrqnbp", model.technicalTicketDetails().resourceId());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.quotaTicketDetails().quotaChangeRequestSubType());
+        Assertions.assertEquals("mvvd", model.quotaTicketDetails().quotaChangeRequestVersion());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("iqzbq", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("iwwzjuqk", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(EscalationStatus.ESCALATION_INITIATED, model.directConnectEscalation().azureEEStatus());
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.directConnectEscalation().allowedSeverities().get(0));
+        Assertions.assertEquals("f", model.directConnectEscalation().reasonForEscalation());
+        Assertions.assertEquals("aos", model.communityForumPost());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportTicketDetailsInner model = new SupportTicketDetailsInner().withSupportTicketId("vdfwatkpn")
-            .withDescription("ulexxbczwtr")
-            .withProblemClassificationId("wiqzbqjvsovmyo")
+        SupportTicketDetailsInner model = new SupportTicketDetailsInner().withSupportTicketId("ujjugwdkcglh")
+            .withDescription("lazjdyggdtjixhbk")
+            .withProblemClassificationId("ofqweykhmenevfye")
             .withSeverity(SeverityLevel.CRITICAL)
-            .withEnrollmentId("vnchrkcci")
+            .withEnrollmentId("dcsi")
             .withRequire24X7Response(true)
             .withAdvancedDiagnosticConsent(Consent.YES)
-            .withProblemScopingQuestions("qkhr")
-            .withSupportPlanId("jiwkuofoskghsau")
-            .withContactDetails(new ContactProfile().withFirstName("imjm")
-                .withLastName("xieduugidyjrr")
+            .withProblemScopingQuestions("amdecte")
+            .withSupportPlanId("iqscjeypv")
+            .withContactDetails(new ContactProfile().withFirstName("ezrkgqhcjrefo")
+                .withLastName("gm")
                 .withPreferredContactMethod(PreferredContactMethod.EMAIL)
-                .withPrimaryEmailAddress("y")
-                .withAdditionalEmailAddresses(Arrays.asList("v", "xc", "onpc", "hocohslkev"))
-                .withPhoneNumber("ggzfbu")
-                .withPreferredTimeZone("fmvfaxkffeiit")
-                .withCountry("lvmezyvshxmzsbbz")
-                .withPreferredSupportLanguage("ggi"))
+                .withPrimaryEmailAddress("sle")
+                .withAdditionalEmailAddresses(Arrays.asList("xyqj", "k", "attpngjcrcczsq", "jh"))
+                .withPhoneNumber("daj")
+                .withPreferredTimeZone("nysounqe")
+                .withCountry("a")
+                .withPreferredSupportLanguage("oaeupfhyhltrpmo"))
             .withServiceLevelAgreement(new ServiceLevelAgreement())
             .withSupportEngineer(new SupportEngineer())
-            .withTitle("bldngkpoc")
-            .withProblemStartTime(OffsetDateTime.parse("2021-05-19T00:57:25Z"))
-            .withServiceId("z")
-            .withFileWorkspaceName("rbpizc")
-            .withTechnicalTicketDetails(new TechnicalTicketDetails().withResourceId("dpydn"))
-            .withQuotaTicketDetails(new QuotaTicketDetails().withQuotaChangeRequestSubType("xdeoejzic")
-                .withQuotaChangeRequestVersion("fsj")
+            .withTitle("ktwh")
+            .withProblemStartTime(OffsetDateTime.parse("2021-09-10T15:31:21Z"))
+            .withServiceId("wz")
+            .withFileWorkspaceName("fksymddystki")
+            .withTechnicalTicketDetails(new TechnicalTicketDetails().withResourceId("yudxorrqnbp"))
+            .withQuotaTicketDetails(new QuotaTicketDetails().withQuotaChangeRequestSubType("vyifqrvkdvjsl")
+                .withQuotaChangeRequestVersion("mvvd")
                 .withQuotaChangeRequests(
-                    Arrays.asList(new QuotaChangeRequest().withRegion("fbishcbkha").withPayload("eyeam"),
-                        new QuotaChangeRequest().withRegion("hagalpbuxwgipwh").withPayload("ow"),
-                        new QuotaChangeRequest().withRegion("shwankixzbinje").withPayload("ttmrywnuzoqf"))))
-            .withSecondaryConsent(Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.NO).withType("n"),
-                new SecondaryConsent().withUserConsent(UserConsent.NO).withType("yx"),
-                new SecondaryConsent().withUserConsent(UserConsent.YES).withType("lsicohoqqnwv"),
-                new SecondaryConsent().withUserConsent(UserConsent.YES).withType("vwhheunmmqhgyx")))
+                    Arrays.asList(new QuotaChangeRequest().withRegion("kpnpulexxbczwtr").withPayload("iqzbq"),
+                        new QuotaChangeRequest().withRegion("sovmyokacspkwl").withPayload("dobpxjmflbvvn"))))
+            .withSecondaryConsent(
+                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.YES).withType("iwwzjuqk"),
+                    new SecondaryConsent().withUserConsent(UserConsent.YES).withType("jiwkuofoskghsau"),
+                    new SecondaryConsent().withUserConsent(UserConsent.NO).withType("mvxi")))
             .withDirectConnectEscalation(
-                new DirectConnectEscalation().withAzureEEStatus(EscalationStatus.ESCALATION_PROCESSED)
-                    .withAllowedSeverities(Arrays.asList(SeverityLevel.MINIMAL, SeverityLevel.MODERATE,
-                        SeverityLevel.CRITICAL, SeverityLevel.CRITICAL))
-                    .withReasonForEscalation("yaxuconuqszfkb"))
-            .withCommunityForumPost("pewr");
+                new DirectConnectEscalation().withAzureEEStatus(EscalationStatus.ESCALATION_INITIATED)
+                    .withAllowedSeverities(Arrays.asList(SeverityLevel.CRITICAL, SeverityLevel.MINIMAL,
+                        SeverityLevel.CRITICAL, SeverityLevel.HIGHESTCRITICALIMPACT))
+                    .withReasonForEscalation("f"))
+            .withCommunityForumPost("aos");
         model = BinaryData.fromObject(model).toObject(SupportTicketDetailsInner.class);
-        Assertions.assertEquals("vdfwatkpn", model.supportTicketId());
-        Assertions.assertEquals("ulexxbczwtr", model.description());
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.problemClassificationId());
+        Assertions.assertEquals("ujjugwdkcglh", model.supportTicketId());
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.description());
+        Assertions.assertEquals("ofqweykhmenevfye", model.problemClassificationId());
         Assertions.assertEquals(SeverityLevel.CRITICAL, model.severity());
-        Assertions.assertEquals("vnchrkcci", model.enrollmentId());
+        Assertions.assertEquals("dcsi", model.enrollmentId());
         Assertions.assertTrue(model.require24X7Response());
         Assertions.assertEquals(Consent.YES, model.advancedDiagnosticConsent());
-        Assertions.assertEquals("qkhr", model.problemScopingQuestions());
-        Assertions.assertEquals("jiwkuofoskghsau", model.supportPlanId());
-        Assertions.assertEquals("imjm", model.contactDetails().firstName());
-        Assertions.assertEquals("xieduugidyjrr", model.contactDetails().lastName());
+        Assertions.assertEquals("amdecte", model.problemScopingQuestions());
+        Assertions.assertEquals("iqscjeypv", model.supportPlanId());
+        Assertions.assertEquals("ezrkgqhcjrefo", model.contactDetails().firstName());
+        Assertions.assertEquals("gm", model.contactDetails().lastName());
         Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("y", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("v", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("ggzfbu", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("fmvfaxkffeiit", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.contactDetails().country());
-        Assertions.assertEquals("ggi", model.contactDetails().preferredSupportLanguage());
-        Assertions.assertEquals("bldngkpoc", model.title());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T00:57:25Z"), model.problemStartTime());
-        Assertions.assertEquals("z", model.serviceId());
-        Assertions.assertEquals("rbpizc", model.fileWorkspaceName());
-        Assertions.assertEquals("dpydn", model.technicalTicketDetails().resourceId());
-        Assertions.assertEquals("xdeoejzic", model.quotaTicketDetails().quotaChangeRequestSubType());
-        Assertions.assertEquals("fsj", model.quotaTicketDetails().quotaChangeRequestVersion());
-        Assertions.assertEquals("fbishcbkha", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
-        Assertions.assertEquals("eyeam", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
-        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("n", model.secondaryConsent().get(0).type());
-        Assertions.assertEquals(EscalationStatus.ESCALATION_PROCESSED, model.directConnectEscalation().azureEEStatus());
-        Assertions.assertEquals(SeverityLevel.MINIMAL, model.directConnectEscalation().allowedSeverities().get(0));
-        Assertions.assertEquals("yaxuconuqszfkb", model.directConnectEscalation().reasonForEscalation());
-        Assertions.assertEquals("pewr", model.communityForumPost());
+        Assertions.assertEquals("sle", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("xyqj", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("daj", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("nysounqe", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("a", model.contactDetails().country());
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals("ktwh", model.title());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T15:31:21Z"), model.problemStartTime());
+        Assertions.assertEquals("wz", model.serviceId());
+        Assertions.assertEquals("fksymddystki", model.fileWorkspaceName());
+        Assertions.assertEquals("yudxorrqnbp", model.technicalTicketDetails().resourceId());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.quotaTicketDetails().quotaChangeRequestSubType());
+        Assertions.assertEquals("mvvd", model.quotaTicketDetails().quotaChangeRequestVersion());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.quotaTicketDetails().quotaChangeRequests().get(0).region());
+        Assertions.assertEquals("iqzbq", model.quotaTicketDetails().quotaChangeRequests().get(0).payload());
+        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("iwwzjuqk", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(EscalationStatus.ESCALATION_INITIATED, model.directConnectEscalation().azureEEStatus());
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.directConnectEscalation().allowedSeverities().get(0));
+        Assertions.assertEquals("f", model.directConnectEscalation().reasonForEscalation());
+        Assertions.assertEquals("aos", model.communityForumPost());
     }
 }

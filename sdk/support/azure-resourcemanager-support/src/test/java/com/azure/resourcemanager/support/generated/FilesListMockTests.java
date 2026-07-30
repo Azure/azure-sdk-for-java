@@ -22,7 +22,7 @@ public final class FilesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-11-11T00:30:43Z\",\"chunkSize\":474168225,\"fileSize\":763875657,\"numberOfChunks\":1052982888},\"id\":\"gzfc\",\"name\":\"bgomfgbegl\",\"type\":\"gleohi\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-05-08T16:08:16Z\",\"chunkSize\":49823086,\"fileSize\":1804695545,\"numberOfChunks\":996447468},\"id\":\"miybnn\",\"name\":\"stgnl\",\"type\":\"hnmgixhcm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FilesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FileDetails> response = manager.files().list("absnmfpp", com.azure.core.util.Context.NONE);
+        PagedIterable<FileDetails> response = manager.files().list("nuciqdsmexiit", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(474168225, response.iterator().next().chunkSize());
-        Assertions.assertEquals(763875657, response.iterator().next().fileSize());
-        Assertions.assertEquals(1052982888, response.iterator().next().numberOfChunks());
+        Assertions.assertEquals(49823086, response.iterator().next().chunkSize());
+        Assertions.assertEquals(1804695545, response.iterator().next().fileSize());
+        Assertions.assertEquals(996447468, response.iterator().next().numberOfChunks());
     }
 }

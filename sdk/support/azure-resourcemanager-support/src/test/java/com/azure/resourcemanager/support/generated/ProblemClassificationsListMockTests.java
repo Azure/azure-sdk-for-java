@@ -22,7 +22,7 @@ public final class ProblemClassificationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"u\",\"secondaryConsentEnabled\":[{\"description\":\"pbminr\",\"type\":\"woyuhhziuief\"},{\"description\":\"bhdmsmlmzqhof\",\"type\":\"maequiahxicslfa\"},{\"description\":\"z\",\"type\":\"yylhalnswhccsp\"}]},\"id\":\"aivwitqscywu\",\"name\":\"gwol\",\"type\":\"h\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"dyodnwzxltj\",\"secondaryConsentEnabled\":[{\"description\":\"ltiugcxnavv\",\"type\":\"qiby\"},{\"description\":\"nyowxwlmdjrkvfg\",\"type\":\"fvpdbo\"},{\"description\":\"cizsjqlhkrribdei\",\"type\":\"ipqkghvxndzwm\"}]},\"id\":\"efajpj\",\"name\":\"rwkq\",\"type\":\"yhgbijtjivfx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,11 @@ public final class ProblemClassificationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProblemClassification> response
-            = manager.problemClassifications().list("rdgrtw", com.azure.core.util.Context.NONE);
+            = manager.problemClassifications().list("khevxccedc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("u", response.iterator().next().displayName());
-        Assertions.assertEquals("pbminr", response.iterator().next().secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("woyuhhziuief", response.iterator().next().secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("dyodnwzxltj", response.iterator().next().displayName());
+        Assertions.assertEquals("ltiugcxnavv",
+            response.iterator().next().secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("qiby", response.iterator().next().secondaryConsentEnabled().get(0).type());
     }
 }

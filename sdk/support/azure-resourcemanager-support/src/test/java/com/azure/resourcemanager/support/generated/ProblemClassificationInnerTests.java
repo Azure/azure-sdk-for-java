@@ -12,10 +12,10 @@ public final class ProblemClassificationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"cbkbfkg\",\"secondaryConsentEnabled\":[{\"description\":\"exxppofmxaxcfjp\",\"type\":\"dtocj\"},{\"description\":\"hvpmoue\",\"type\":\"dzxibqeojnxqbzvd\"},{\"description\":\"t\",\"type\":\"deicbtwnpzao\"}]},\"id\":\"uhrhcffcyddgl\",\"name\":\"jthjqkwpyei\",\"type\":\"xmqci\"}")
+            "{\"properties\":{\"displayName\":\"ajionpimexgstxg\",\"secondaryConsentEnabled\":[{\"description\":\"gmaajrm\",\"type\":\"jwzrl\"},{\"description\":\"mcl\",\"type\":\"ijcoejctb\"},{\"description\":\"qsqsy\",\"type\":\"kbfkg\"},{\"description\":\"dkexxppofm\",\"type\":\"x\"}]},\"id\":\"jpgd\",\"name\":\"toc\",\"type\":\"j\"}")
             .toObject(ProblemClassificationInner.class);
-        Assertions.assertEquals("cbkbfkg", model.displayName());
-        Assertions.assertEquals("exxppofmxaxcfjp", model.secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("dtocj", model.secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("ajionpimexgstxg", model.displayName());
+        Assertions.assertEquals("gmaajrm", model.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("jwzrl", model.secondaryConsentEnabled().get(0).type());
     }
 }

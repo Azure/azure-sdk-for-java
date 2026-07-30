@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ProblemClassificationsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetProblemClassification.json
+     * x-ms-original-file: 2026-06-01/GetProblemClassification.json
      */
     /**
      * Sample code: Gets details of problemClassification for Azure service.

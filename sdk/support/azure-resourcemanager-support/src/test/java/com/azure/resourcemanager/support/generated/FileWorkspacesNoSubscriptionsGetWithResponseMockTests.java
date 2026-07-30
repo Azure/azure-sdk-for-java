@@ -20,7 +20,7 @@ public final class FileWorkspacesNoSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdOn\":\"2021-11-11T00:02:33Z\",\"expirationTime\":\"2021-04-24T08:22:39Z\"},\"id\":\"fpch\",\"name\":\"qbnj\",\"type\":\"rcgegydcwboxjum\"}";
+            = "{\"properties\":{\"createdOn\":\"2021-08-06T02:53:59Z\",\"expirationTime\":\"2020-12-22T17:50:01Z\"},\"id\":\"ugeyzihgrkyuiza\",\"name\":\"snmfpphojeevy\",\"type\":\"yhsgz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class FileWorkspacesNoSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileWorkspaceDetails response = manager.fileWorkspacesNoSubscriptions()
-            .getWithResponse("qspkcdqzhlctd", com.azure.core.util.Context.NONE)
+            .getWithResponse("uzslzojhpctfnmdx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

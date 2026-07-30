@@ -12,9 +12,9 @@ public final class ChatTranscriptDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChatTranscriptDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"messages\":[{\"contentType\":\"asrru\",\"communicationDirection\":\"outbound\",\"sender\":\"sqfsubcgjbirxb\",\"body\":\"bsrfbj\",\"createdDate\":\"2021-07-26T21:20:39Z\"},{\"contentType\":\"ssotftpv\",\"communicationDirection\":\"outbound\",\"sender\":\"xilzznf\",\"body\":\"nvwpmqtaruouj\",\"createdDate\":\"2021-07-07T14:17:28Z\"},{\"contentType\":\"hwqytj\",\"communicationDirection\":\"inbound\",\"sender\":\"wj\",\"body\":\"gdrjervnaenqpe\",\"createdDate\":\"2021-05-26T12:17:52Z\"},{\"contentType\":\"oygmift\",\"communicationDirection\":\"inbound\",\"sender\":\"ndslgnayqigynduh\",\"body\":\"hqlkthumaqo\",\"createdDate\":\"2021-05-05T06:10:43Z\"}],\"startTime\":\"2021-05-30T14:02:28Z\"},\"id\":\"uie\",\"name\":\"tgccymvaolpss\",\"type\":\"qlfmmdnbb\"}")
+            "{\"properties\":{\"messages\":[{\"contentType\":\"zvszj\",\"communicationDirection\":\"outbound\",\"sender\":\"j\",\"body\":\"xxivetv\",\"createdDate\":\"2021-02-03T22:58:32Z\"},{\"contentType\":\"qtdo\",\"communicationDirection\":\"outbound\",\"sender\":\"xv\",\"body\":\"xyslqbh\",\"createdDate\":\"2021-02-23T20:11:15Z\"},{\"contentType\":\"blytk\",\"communicationDirection\":\"inbound\",\"sender\":\"ewwwfbkrvrnsv\",\"body\":\"q\",\"createdDate\":\"2021-01-04T22:35:44Z\"}],\"startTime\":\"2021-04-04T20:05:33Z\"},\"id\":\"sbfov\",\"name\":\"srruvwbhsqfsubcg\",\"type\":\"birx\"}")
             .toObject(ChatTranscriptDetailsInner.class);
-        Assertions.assertEquals("sqfsubcgjbirxb", model.messages().get(0).sender());
-        Assertions.assertEquals("bsrfbj", model.messages().get(0).body());
+        Assertions.assertEquals("j", model.messages().get(0).sender());
+        Assertions.assertEquals("xxivetv", model.messages().get(0).body());
     }
 }

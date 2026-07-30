@@ -12,10 +12,10 @@ public final class ProblemClassificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationProperties model = BinaryData.fromString(
-            "{\"displayName\":\"vhkhixu\",\"secondaryConsentEnabled\":[{\"description\":\"opbobj\",\"type\":\"hm\"},{\"description\":\"u\",\"type\":\"a\"}]}")
+            "{\"displayName\":\"vpmouexhdzxib\",\"secondaryConsentEnabled\":[{\"description\":\"nxqbzvddn\",\"type\":\"ndei\"},{\"description\":\"twnpzaoqvuhrhcf\",\"type\":\"yd\"},{\"description\":\"lmjthjq\",\"type\":\"pyeicxm\"}]}")
             .toObject(ProblemClassificationProperties.class);
-        Assertions.assertEquals("vhkhixu", model.displayName());
-        Assertions.assertEquals("opbobj", model.secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("hm", model.secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("vpmouexhdzxib", model.displayName());
+        Assertions.assertEquals("nxqbzvddn", model.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("ndei", model.secondaryConsentEnabled().get(0).type());
     }
 }

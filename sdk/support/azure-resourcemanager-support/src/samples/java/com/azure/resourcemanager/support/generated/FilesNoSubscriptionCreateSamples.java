@@ -11,7 +11,7 @@ import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
  */
 public final class FilesNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateFile.json
+     * x-ms-original-file: 2026-06-01/CreateFile.json
      */
     /**
      * Sample code: Create a file workspace.

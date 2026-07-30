@@ -12,7 +12,7 @@ import com.azure.resourcemanager.support.models.Type;
  */
 public final class CommunicationsNoSubscriptionCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-07-01/CheckNameAvailabilityForNoSubscriptionSupportTicketCommunication.json
+     * x-ms-original-file: 2026-06-01/CheckNameAvailabilityForNoSubscriptionSupportTicketCommunication.json
      */
     /**
      * Sample code: Checks whether name is available for Communication resource.

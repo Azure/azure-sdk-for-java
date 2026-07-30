@@ -22,66 +22,67 @@ public final class UpdateSupportTicketTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSupportTicket model = BinaryData.fromString(
-            "{\"severity\":\"minimal\",\"status\":\"closed\",\"contactDetails\":{\"firstName\":\"bkc\",\"lastName\":\"dhbt\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"ywpnvjt\",\"additionalEmailAddresses\":[\"ermclfplphoxuscr\",\"abgy\"],\"phoneNumber\":\"sbj\",\"preferredTimeZone\":\"zq\",\"country\":\"xywpmueefjzwfqkq\",\"preferredSupportLanguage\":\"ids\"},\"advancedDiagnosticConsent\":\"No\",\"secondaryConsent\":[{\"userConsent\":\"Yes\",\"type\":\"aocqxtccmgy\"},{\"userConsent\":\"Yes\",\"type\":\"tlmoyrx\"},{\"userConsent\":\"Yes\",\"type\":\"dw\"}],\"directConnectEscalation\":{\"azureEEStatus\":\"EscalationInitiated\",\"allowedSeverities\":[\"moderate\",\"moderate\"],\"reasonForEscalation\":\"lrqjbhckfr\"}}")
+            "{\"severity\":\"minimal\",\"status\":\"open\",\"contactDetails\":{\"firstName\":\"iklbbovpl\",\"lastName\":\"bhvgy\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"svmkfssxquk\",\"additionalEmailAddresses\":[\"l\",\"mg\",\"xnkjzkdesl\"],\"phoneNumber\":\"lopwiyig\",\"preferredTimeZone\":\"pkdwzbai\",\"country\":\"bbaumnyquped\",\"preferredSupportLanguage\":\"jn\"},\"advancedDiagnosticConsent\":\"No\",\"secondaryConsent\":[{\"userConsent\":\"No\",\"type\":\"xpsiebtfhvpes\"},{\"userConsent\":\"No\",\"type\":\"rdqmhjjdhtldwkyz\"},{\"userConsent\":\"Yes\",\"type\":\"kn\"},{\"userConsent\":\"Yes\",\"type\":\"wsvlxotogtwrupqs\"}],\"directConnectEscalation\":{\"azureEEStatus\":\"EscalationAvailable\",\"allowedSeverities\":[\"critical\",\"highestcriticalimpact\"],\"reasonForEscalation\":\"ceoveilovno\"}}")
             .toObject(UpdateSupportTicket.class);
         Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
-        Assertions.assertEquals(Status.CLOSED, model.status());
-        Assertions.assertEquals("bkc", model.contactDetails().firstName());
-        Assertions.assertEquals("dhbt", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("ywpnvjt", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("ermclfplphoxuscr", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("sbj", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("zq", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.contactDetails().country());
-        Assertions.assertEquals("ids", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(Status.OPEN, model.status());
+        Assertions.assertEquals("iklbbovpl", model.contactDetails().firstName());
+        Assertions.assertEquals("bhvgy", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("svmkfssxquk", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("l", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("lopwiyig", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("pkdwzbai", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("bbaumnyquped", model.contactDetails().country());
+        Assertions.assertEquals("jn", model.contactDetails().preferredSupportLanguage());
         Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
-        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("aocqxtccmgy", model.secondaryConsent().get(0).type());
-        Assertions.assertEquals(EscalationStatus.ESCALATION_INITIATED, model.directConnectEscalation().azureEEStatus());
-        Assertions.assertEquals(SeverityLevel.MODERATE, model.directConnectEscalation().allowedSeverities().get(0));
-        Assertions.assertEquals("lrqjbhckfr", model.directConnectEscalation().reasonForEscalation());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("xpsiebtfhvpes", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(EscalationStatus.ESCALATION_AVAILABLE, model.directConnectEscalation().azureEEStatus());
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.directConnectEscalation().allowedSeverities().get(0));
+        Assertions.assertEquals("ceoveilovno", model.directConnectEscalation().reasonForEscalation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSupportTicket model = new UpdateSupportTicket().withSeverity(SeverityLevel.MINIMAL)
-            .withStatus(Status.CLOSED)
-            .withContactDetails(new UpdateContactProfile().withFirstName("bkc")
-                .withLastName("dhbt")
-                .withPreferredContactMethod(PreferredContactMethod.EMAIL)
-                .withPrimaryEmailAddress("ywpnvjt")
-                .withAdditionalEmailAddresses(Arrays.asList("ermclfplphoxuscr", "abgy"))
-                .withPhoneNumber("sbj")
-                .withPreferredTimeZone("zq")
-                .withCountry("xywpmueefjzwfqkq")
-                .withPreferredSupportLanguage("ids"))
+            .withStatus(Status.OPEN)
+            .withContactDetails(new UpdateContactProfile().withFirstName("iklbbovpl")
+                .withLastName("bhvgy")
+                .withPreferredContactMethod(PreferredContactMethod.PHONE)
+                .withPrimaryEmailAddress("svmkfssxquk")
+                .withAdditionalEmailAddresses(Arrays.asList("l", "mg", "xnkjzkdesl"))
+                .withPhoneNumber("lopwiyig")
+                .withPreferredTimeZone("pkdwzbai")
+                .withCountry("bbaumnyquped")
+                .withPreferredSupportLanguage("jn"))
             .withAdvancedDiagnosticConsent(Consent.NO)
             .withSecondaryConsent(
-                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.YES).withType("aocqxtccmgy"),
-                    new SecondaryConsent().withUserConsent(UserConsent.YES).withType("tlmoyrx"),
-                    new SecondaryConsent().withUserConsent(UserConsent.YES).withType("dw")))
+                Arrays.asList(new SecondaryConsent().withUserConsent(UserConsent.NO).withType("xpsiebtfhvpes"),
+                    new SecondaryConsent().withUserConsent(UserConsent.NO).withType("rdqmhjjdhtldwkyz"),
+                    new SecondaryConsent().withUserConsent(UserConsent.YES).withType("kn"),
+                    new SecondaryConsent().withUserConsent(UserConsent.YES).withType("wsvlxotogtwrupqs")))
             .withDirectConnectEscalation(
-                new DirectConnectEscalation().withAzureEEStatus(EscalationStatus.ESCALATION_INITIATED)
-                    .withAllowedSeverities(Arrays.asList(SeverityLevel.MODERATE, SeverityLevel.MODERATE))
-                    .withReasonForEscalation("lrqjbhckfr"));
+                new DirectConnectEscalation().withAzureEEStatus(EscalationStatus.ESCALATION_AVAILABLE)
+                    .withAllowedSeverities(Arrays.asList(SeverityLevel.CRITICAL, SeverityLevel.HIGHESTCRITICALIMPACT))
+                    .withReasonForEscalation("ceoveilovno"));
         model = BinaryData.fromObject(model).toObject(UpdateSupportTicket.class);
         Assertions.assertEquals(SeverityLevel.MINIMAL, model.severity());
-        Assertions.assertEquals(Status.CLOSED, model.status());
-        Assertions.assertEquals("bkc", model.contactDetails().firstName());
-        Assertions.assertEquals("dhbt", model.contactDetails().lastName());
-        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.contactDetails().preferredContactMethod());
-        Assertions.assertEquals("ywpnvjt", model.contactDetails().primaryEmailAddress());
-        Assertions.assertEquals("ermclfplphoxuscr", model.contactDetails().additionalEmailAddresses().get(0));
-        Assertions.assertEquals("sbj", model.contactDetails().phoneNumber());
-        Assertions.assertEquals("zq", model.contactDetails().preferredTimeZone());
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.contactDetails().country());
-        Assertions.assertEquals("ids", model.contactDetails().preferredSupportLanguage());
+        Assertions.assertEquals(Status.OPEN, model.status());
+        Assertions.assertEquals("iklbbovpl", model.contactDetails().firstName());
+        Assertions.assertEquals("bhvgy", model.contactDetails().lastName());
+        Assertions.assertEquals(PreferredContactMethod.PHONE, model.contactDetails().preferredContactMethod());
+        Assertions.assertEquals("svmkfssxquk", model.contactDetails().primaryEmailAddress());
+        Assertions.assertEquals("l", model.contactDetails().additionalEmailAddresses().get(0));
+        Assertions.assertEquals("lopwiyig", model.contactDetails().phoneNumber());
+        Assertions.assertEquals("pkdwzbai", model.contactDetails().preferredTimeZone());
+        Assertions.assertEquals("bbaumnyquped", model.contactDetails().country());
+        Assertions.assertEquals("jn", model.contactDetails().preferredSupportLanguage());
         Assertions.assertEquals(Consent.NO, model.advancedDiagnosticConsent());
-        Assertions.assertEquals(UserConsent.YES, model.secondaryConsent().get(0).userConsent());
-        Assertions.assertEquals("aocqxtccmgy", model.secondaryConsent().get(0).type());
-        Assertions.assertEquals(EscalationStatus.ESCALATION_INITIATED, model.directConnectEscalation().azureEEStatus());
-        Assertions.assertEquals(SeverityLevel.MODERATE, model.directConnectEscalation().allowedSeverities().get(0));
-        Assertions.assertEquals("lrqjbhckfr", model.directConnectEscalation().reasonForEscalation());
+        Assertions.assertEquals(UserConsent.NO, model.secondaryConsent().get(0).userConsent());
+        Assertions.assertEquals("xpsiebtfhvpes", model.secondaryConsent().get(0).type());
+        Assertions.assertEquals(EscalationStatus.ESCALATION_AVAILABLE, model.directConnectEscalation().azureEEStatus());
+        Assertions.assertEquals(SeverityLevel.CRITICAL, model.directConnectEscalation().allowedSeverities().get(0));
+        Assertions.assertEquals("ceoveilovno", model.directConnectEscalation().reasonForEscalation());
     }
 }

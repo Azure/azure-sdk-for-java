@@ -47,12 +47,6 @@ public final class ProblemClassificationsClassificationResult
      */
     private ClassificationService relatedService;
 
-    /*
-     * Identifier of the article associated with this problem classification result. This value is populated only when a
-     * related article is available; otherwise it is omitted.
-     */
-    private String articleId;
-
     /**
      * Creates an instance of ProblemClassificationsClassificationResult class.
      */
@@ -114,16 +108,6 @@ public final class ProblemClassificationsClassificationResult
     }
 
     /**
-     * Get the articleId property: Identifier of the article associated with this problem classification result. This
-     * value is populated only when a related article is available; otherwise it is omitted.
-     * 
-     * @return the articleId value.
-     */
-    public String articleId() {
-        return this.articleId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -162,8 +146,6 @@ public final class ProblemClassificationsClassificationResult
                 } else if ("relatedService".equals(fieldName)) {
                     deserializedProblemClassificationsClassificationResult.relatedService
                         = ClassificationService.fromJson(reader);
-                } else if ("articleId".equals(fieldName)) {
-                    deserializedProblemClassificationsClassificationResult.articleId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

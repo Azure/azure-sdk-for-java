@@ -22,7 +22,7 @@ public final class ChatTranscriptsNoSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"evkh\",\"communicationDirection\":\"outbound\",\"sender\":\"zonzlrpiqywnc\",\"body\":\"tszcofizehtdhgb\",\"createdDate\":\"2020-12-26T18:59:24Z\"},{\"contentType\":\"eljeamurvzmlovua\",\"communicationDirection\":\"outbound\",\"sender\":\"cxlpmjerb\",\"body\":\"elvidizozsdbccx\",\"createdDate\":\"2021-04-03T14:05:40Z\"},{\"contentType\":\"fdgnwncypuuwwlt\",\"communicationDirection\":\"outbound\",\"sender\":\"ctzenkeifzzhmkd\",\"body\":\"vflyhbxcu\",\"createdDate\":\"2021-01-19T10:38:22Z\"},{\"contentType\":\"gsrboldforobw\",\"communicationDirection\":\"inbound\",\"sender\":\"zbfhfovvac\",\"body\":\"btuodxeszabbel\",\"createdDate\":\"2021-06-04T10:52:18Z\"}],\"startTime\":\"2020-12-26T02:35:36Z\"},\"id\":\"slzkwrrwoycqu\",\"name\":\"wyh\",\"type\":\"hnomdrkywuh\"}]}";
+            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"xmysuxswqrntv\",\"communicationDirection\":\"inbound\",\"sender\":\"psttexoq\",\"body\":\"wcyyufmhruncu\",\"createdDate\":\"2021-10-04T02:15:36Z\"}],\"startTime\":\"2021-11-18T23:48:24Z\"},\"id\":\"cdqzhlctddu\",\"name\":\"qn\",\"type\":\"yfp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ChatTranscriptsNoSubscriptionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ChatTranscriptDetails> response
-            = manager.chatTranscriptsNoSubscriptions().list("xrxzbujrtr", com.azure.core.util.Context.NONE);
+            = manager.chatTranscriptsNoSubscriptions().list("hzyvlixqnrkcx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zonzlrpiqywnc", response.iterator().next().messages().get(0).sender());
-        Assertions.assertEquals("tszcofizehtdhgb", response.iterator().next().messages().get(0).body());
+        Assertions.assertEquals("psttexoq", response.iterator().next().messages().get(0).sender());
+        Assertions.assertEquals("wcyyufmhruncu", response.iterator().next().messages().get(0).body());
     }
 }

@@ -1,7 +1,8 @@
 # Release History
 
-## 1.2.0 (2026-07-06)
+## 1.2.0 (2026-07-30)
 
+- Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
@@ -58,9 +59,9 @@
 #### `models.MessageProperties` was modified
 
 * `MessageProperties()` was changed to private access
+* `withBody(java.lang.String)` was removed
 * `validate()` was removed
 * `models.TranscriptContentType contentType()` -> `java.lang.String contentType()`
-* `withBody(java.lang.String)` was removed
 * `withSender(java.lang.String)` was removed
 
 #### `models.SecondaryConsent` was modified
@@ -74,9 +75,9 @@
 #### `models.SecondaryConsentEnabled` was modified
 
 * `SecondaryConsentEnabled()` was changed to private access
-* `withDescription(java.lang.String)` was removed
-* `validate()` was removed
 * `withType(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
 
 #### `models.UploadFile` was modified
 
@@ -142,14 +143,14 @@
 
 #### `models.UpdateSupportTicket` was modified
 
-* `directConnectEscalation()` was added
 * `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
+* `directConnectEscalation()` was added
 
 #### `models.Operation` was modified
 
-* `origin()` was added
-* `actionType()` was added
 * `isDataAction()` was added
+* `actionType()` was added
+* `origin()` was added
 
 #### `models.SupportTickets` was modified
 
@@ -158,10 +159,10 @@
 
 #### `SupportManager` was modified
 
-* `classifyProblems()` was added
-* `classifyServices()` was added
 * `classifyServicesNoSubscriptions()` was added
 * `classifyProblemsNoSubscriptions()` was added
+* `classifyServices()` was added
+* `classifyProblems()` was added
 
 #### `models.CommunicationDetails` was modified
 
@@ -170,9 +171,9 @@
 #### `models.SupportTicketDetails` was modified
 
 * `chatConversationStatus()` was added
-* `communityForumPost()` was added
 * `supportChannel()` was added
 * `directConnectEscalation()` was added
+* `communityForumPost()` was added
 * `systemData()` was added
 
 #### `models.SupportTicketDetails$Definition` was modified

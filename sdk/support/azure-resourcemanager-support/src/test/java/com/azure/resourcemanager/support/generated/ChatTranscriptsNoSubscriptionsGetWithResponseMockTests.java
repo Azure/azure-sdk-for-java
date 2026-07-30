@@ -21,7 +21,7 @@ public final class ChatTranscriptsNoSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"messages\":[{\"contentType\":\"mwmqtibx\",\"communicationDirection\":\"inbound\",\"sender\":\"dt\",\"body\":\"cttadi\",\"createdDate\":\"2021-03-19T17:47:24Z\"},{\"contentType\":\"kmr\",\"communicationDirection\":\"inbound\",\"sender\":\"kpn\",\"body\":\"aapm\",\"createdDate\":\"2021-04-29T10:29:21Z\"},{\"contentType\":\"eqw\",\"communicationDirection\":\"outbound\",\"sender\":\"bu\",\"body\":\"wyxebeybpmzz\",\"createdDate\":\"2021-07-31T19:09:27Z\"},{\"contentType\":\"fyaqitm\",\"communicationDirection\":\"outbound\",\"sender\":\"oqaqhvseufuq\",\"body\":\"xpdlcgqlsis\",\"createdDate\":\"2021-03-09T15:21:31Z\"}],\"startTime\":\"2021-11-20T10:23:31Z\"},\"id\":\"dgamquhiosrsj\",\"name\":\"ivfcdisyirnx\",\"type\":\"hcz\"}";
+            = "{\"properties\":{\"messages\":[{\"contentType\":\"izozsd\",\"communicationDirection\":\"outbound\",\"sender\":\"jmonfdgn\",\"body\":\"cypuuwwlt\",\"createdDate\":\"2021-11-20T18:00Z\"},{\"contentType\":\"ctzenkeifzzhmkd\",\"communicationDirection\":\"outbound\",\"sender\":\"lyhb\",\"body\":\"udchxgsrboldforo\",\"createdDate\":\"2021-04-07T12:53:34Z\"},{\"contentType\":\"vizbfhfo\",\"communicationDirection\":\"outbound\",\"sender\":\"qpbtuodxes\",\"body\":\"bbelawumuaslzk\",\"createdDate\":\"2021-08-29T09:46:53Z\"},{\"contentType\":\"oycqucwy\",\"communicationDirection\":\"outbound\",\"sender\":\"omd\",\"body\":\"ywuhpsvfuur\",\"createdDate\":\"2021-08-15T09:05:35Z\"}],\"startTime\":\"2021-11-04T07:23:46Z\"},\"id\":\"xwlalniexzsrzpg\",\"name\":\"pqtybb\",\"type\":\"wpgdak\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ChatTranscriptsNoSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ChatTranscriptDetails response = manager.chatTranscriptsNoSubscriptions()
-            .getWithResponse("emwmdxmebwjs", "jpahlxvea", com.azure.core.util.Context.NONE)
+            .getWithResponse("xlpm", "erbdk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dt", response.messages().get(0).sender());
-        Assertions.assertEquals("cttadi", response.messages().get(0).body());
+        Assertions.assertEquals("jmonfdgn", response.messages().get(0).sender());
+        Assertions.assertEquals("cypuuwwlt", response.messages().get(0).body());
     }
 }

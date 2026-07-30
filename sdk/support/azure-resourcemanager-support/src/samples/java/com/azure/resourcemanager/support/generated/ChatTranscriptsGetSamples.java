@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ChatTranscriptsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2026-06-01/GetchatTranscriptDetailsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: Get chat transcript details for a subscription support ticket.

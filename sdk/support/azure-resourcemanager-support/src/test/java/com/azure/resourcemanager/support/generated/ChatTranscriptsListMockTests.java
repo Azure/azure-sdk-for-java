@@ -22,7 +22,7 @@ public final class ChatTranscriptsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"tpwb\",\"communicationDirection\":\"inbound\",\"sender\":\"libph\",\"body\":\"zmizakakan\",\"createdDate\":\"2021-05-23T03:49:23Z\"},{\"contentType\":\"n\",\"communicationDirection\":\"inbound\",\"sender\":\"joylh\",\"body\":\"muoyxprimr\",\"createdDate\":\"2021-01-23T03:44:08Z\"}],\"startTime\":\"2021-07-10T13:36:57Z\"},\"id\":\"cjmeislstvasy\",\"name\":\"wxdzaumweoohgu\",\"type\":\"fuzboyjathwtzolb\"}]}";
+            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"zexrxzbujrt\",\"communicationDirection\":\"inbound\",\"sender\":\"wrevkhgnlnzon\",\"body\":\"rpiqywncv\",\"createdDate\":\"2021-01-10T04:03:15Z\"}],\"startTime\":\"2021-06-29T09:34:31Z\"},\"id\":\"fizehtdhgbjk\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ChatTranscriptsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ChatTranscriptDetails> response
-            = manager.chatTranscripts().list("qtgdqohmcwsl", com.azure.core.util.Context.NONE);
+            = manager.chatTranscripts().list("rsjuivfcdisyir", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("libph", response.iterator().next().messages().get(0).sender());
-        Assertions.assertEquals("zmizakakan", response.iterator().next().messages().get(0).body());
+        Assertions.assertEquals("wrevkhgnlnzon", response.iterator().next().messages().get(0).sender());
+        Assertions.assertEquals("rpiqywncv", response.iterator().next().messages().get(0).body());
     }
 }

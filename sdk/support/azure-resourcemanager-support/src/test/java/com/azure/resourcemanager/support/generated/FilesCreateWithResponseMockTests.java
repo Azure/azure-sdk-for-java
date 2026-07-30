@@ -21,7 +21,7 @@ public final class FilesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdOn\":\"2021-06-13T15:29:29Z\",\"chunkSize\":2099801683,\"fileSize\":1261691522,\"numberOfChunks\":1860731641},\"id\":\"qdsmexiit\",\"name\":\"fuxtyasiibmiybnn\",\"type\":\"stgnl\"}";
+            = "{\"properties\":{\"createdOn\":\"2021-08-17T17:54:59Z\",\"chunkSize\":1374749557,\"fileSize\":1164052621,\"numberOfChunks\":1291609137},\"id\":\"cw\",\"name\":\"hohsd\",\"type\":\"mcdzsufcohdxbz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class FilesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileDetails response = manager.files()
-            .define("jrnwxacev")
-            .withExistingFileWorkspace("xl")
-            .withChunkSize(1137200728)
-            .withFileSize(2050950039)
-            .withNumberOfChunks(1175028140)
+            .define("gorbmftpm")
+            .withExistingFileWorkspace("mbxhugcmjkav")
+            .withChunkSize(1527890487)
+            .withFileSize(840864374)
+            .withNumberOfChunks(177919214)
             .create();
 
-        Assertions.assertEquals(2099801683, response.chunkSize());
-        Assertions.assertEquals(1261691522, response.fileSize());
-        Assertions.assertEquals(1860731641, response.numberOfChunks());
+        Assertions.assertEquals(1374749557, response.chunkSize());
+        Assertions.assertEquals(1164052621, response.fileSize());
+        Assertions.assertEquals(1291609137, response.numberOfChunks());
     }
 }

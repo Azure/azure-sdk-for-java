@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SecondaryConsentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecondaryConsent model
-            = BinaryData.fromString("{\"userConsent\":\"Yes\",\"type\":\"i\"}").toObject(SecondaryConsent.class);
+        SecondaryConsent model = BinaryData.fromString("{\"userConsent\":\"Yes\",\"type\":\"gnxytxhpzxbz\"}")
+            .toObject(SecondaryConsent.class);
         Assertions.assertEquals(UserConsent.YES, model.userConsent());
-        Assertions.assertEquals("i", model.type());
+        Assertions.assertEquals("gnxytxhpzxbz", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecondaryConsent model = new SecondaryConsent().withUserConsent(UserConsent.YES).withType("i");
+        SecondaryConsent model = new SecondaryConsent().withUserConsent(UserConsent.YES).withType("gnxytxhpzxbz");
         model = BinaryData.fromObject(model).toObject(SecondaryConsent.class);
         Assertions.assertEquals(UserConsent.YES, model.userConsent());
-        Assertions.assertEquals("i", model.type());
+        Assertions.assertEquals("gnxytxhpzxbz", model.type());
     }
 }

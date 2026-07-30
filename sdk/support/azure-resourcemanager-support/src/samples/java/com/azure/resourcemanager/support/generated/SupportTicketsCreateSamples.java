@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for Azure Synapse Analytics.
@@ -55,7 +55,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Active Jobs and Job Schedules for a Batch account.
@@ -90,7 +90,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+     * x-ms-original-file: 2026-06-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for Machine Learning service.
@@ -125,7 +125,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Batch accounts for a subscription.
@@ -160,7 +160,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateGenericQuotaTicket.json
+     * x-ms-original-file: 2026-06-01/CreateGenericQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for services that do not require additional details in the
@@ -191,7 +191,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatabaseQuotaTicketForDTUs.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatabaseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for SQL Database.
@@ -226,7 +226,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for a Batch account.
@@ -261,7 +261,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlManagedInstanceQuotaTicket.json
+     * x-ms-original-file: 2026-06-01/CreateSqlManagedInstanceQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Azure SQL managed instance.
@@ -299,7 +299,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSubMgmtSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateSubMgmtSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues for a subscription.
@@ -331,7 +331,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateTechnicalSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateTechnicalSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource for a subscription.
@@ -371,7 +371,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Pools for a Batch account.
@@ -406,7 +406,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+     * x-ms-original-file: 2026-06-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for a Batch account.
@@ -442,7 +442,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatabaseQuotaTicketForServers.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatabaseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for SQL Database.
@@ -477,7 +477,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateBillingSupportTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateBillingSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -508,7 +508,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
+     * x-ms-original-file: 2026-06-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for Machine Learning service.
@@ -543,7 +543,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForServers.json
+     * x-ms-original-file: 2026-06-01/CreateSqlDatawarehouseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for Azure Synapse Analytics.
@@ -578,7 +578,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/CreateCoresQuotaTicketForSubscription.json
+     * x-ms-original-file: 2026-06-01/CreateCoresQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Compute VM Cores.

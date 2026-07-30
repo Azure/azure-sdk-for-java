@@ -22,7 +22,7 @@ public final class CommunicationsNoSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"flnorwmduvwp\",\"subject\":\"lvxwmyg\",\"body\":\"xpgpq\",\"createdDate\":\"2021-06-13T19:04:17Z\"},\"id\":\"zepn\",\"name\":\"bjcrxgibbdaxco\",\"type\":\"fozauorsuk\"}]}";
+            = "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"igovi\",\"subject\":\"rxkpmloazuruoc\",\"body\":\"goorbteo\",\"createdDate\":\"2021-12-07T06:56:11Z\"},\"id\":\"jxakv\",\"name\":\"jgslordilmyww\",\"type\":\"kgkxn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CommunicationsNoSubscriptionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CommunicationDetails> response = manager.communicationsNoSubscriptions()
-            .list("d", 1559984904, "tujbazpju", com.azure.core.util.Context.NONE);
+        PagedIterable<CommunicationDetails> response
+            = manager.communicationsNoSubscriptions().list("kqqfk", 901895840, "s", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("flnorwmduvwp", response.iterator().next().sender());
-        Assertions.assertEquals("lvxwmyg", response.iterator().next().subject());
-        Assertions.assertEquals("xpgpq", response.iterator().next().body());
+        Assertions.assertEquals("igovi", response.iterator().next().sender());
+        Assertions.assertEquals("rxkpmloazuruoc", response.iterator().next().subject());
+        Assertions.assertEquals("goorbteo", response.iterator().next().body());
     }
 }

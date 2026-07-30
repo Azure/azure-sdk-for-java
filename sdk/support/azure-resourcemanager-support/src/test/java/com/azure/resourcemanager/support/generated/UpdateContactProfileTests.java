@@ -14,39 +14,39 @@ public final class UpdateContactProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateContactProfile model = BinaryData.fromString(
-            "{\"firstName\":\"rxsbkyvp\",\"lastName\":\"anuzbpzkafkuw\",\"preferredContactMethod\":\"email\",\"primaryEmailAddress\":\"wbme\",\"additionalEmailAddresses\":[\"eyvjusrtslhspkde\",\"maofmxagkv\"],\"phoneNumber\":\"elmqk\",\"preferredTimeZone\":\"ahvljuaha\",\"country\":\"hcdhmdual\",\"preferredSupportLanguage\":\"xqpvfadmw\"}")
+            "{\"firstName\":\"fj\",\"lastName\":\"njbkcnxdhbttkph\",\"preferredContactMethod\":\"phone\",\"primaryEmailAddress\":\"vjtoqnermclfp\",\"additionalEmailAddresses\":[\"oxuscrpabgyepsbj\",\"azqugxywpmueefj\"],\"phoneNumber\":\"fqkquj\",\"preferredTimeZone\":\"suyonobglaocq\",\"country\":\"ccm\",\"preferredSupportLanguage\":\"udxytlmoyrx\"}")
             .toObject(UpdateContactProfile.class);
-        Assertions.assertEquals("rxsbkyvp", model.firstName());
-        Assertions.assertEquals("anuzbpzkafkuw", model.lastName());
-        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.preferredContactMethod());
-        Assertions.assertEquals("wbme", model.primaryEmailAddress());
-        Assertions.assertEquals("eyvjusrtslhspkde", model.additionalEmailAddresses().get(0));
-        Assertions.assertEquals("elmqk", model.phoneNumber());
-        Assertions.assertEquals("ahvljuaha", model.preferredTimeZone());
-        Assertions.assertEquals("hcdhmdual", model.country());
-        Assertions.assertEquals("xqpvfadmw", model.preferredSupportLanguage());
+        Assertions.assertEquals("fj", model.firstName());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.lastName());
+        Assertions.assertEquals(PreferredContactMethod.PHONE, model.preferredContactMethod());
+        Assertions.assertEquals("vjtoqnermclfp", model.primaryEmailAddress());
+        Assertions.assertEquals("oxuscrpabgyepsbj", model.additionalEmailAddresses().get(0));
+        Assertions.assertEquals("fqkquj", model.phoneNumber());
+        Assertions.assertEquals("suyonobglaocq", model.preferredTimeZone());
+        Assertions.assertEquals("ccm", model.country());
+        Assertions.assertEquals("udxytlmoyrx", model.preferredSupportLanguage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateContactProfile model = new UpdateContactProfile().withFirstName("rxsbkyvp")
-            .withLastName("anuzbpzkafkuw")
-            .withPreferredContactMethod(PreferredContactMethod.EMAIL)
-            .withPrimaryEmailAddress("wbme")
-            .withAdditionalEmailAddresses(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv"))
-            .withPhoneNumber("elmqk")
-            .withPreferredTimeZone("ahvljuaha")
-            .withCountry("hcdhmdual")
-            .withPreferredSupportLanguage("xqpvfadmw");
+        UpdateContactProfile model = new UpdateContactProfile().withFirstName("fj")
+            .withLastName("njbkcnxdhbttkph")
+            .withPreferredContactMethod(PreferredContactMethod.PHONE)
+            .withPrimaryEmailAddress("vjtoqnermclfp")
+            .withAdditionalEmailAddresses(Arrays.asList("oxuscrpabgyepsbj", "azqugxywpmueefj"))
+            .withPhoneNumber("fqkquj")
+            .withPreferredTimeZone("suyonobglaocq")
+            .withCountry("ccm")
+            .withPreferredSupportLanguage("udxytlmoyrx");
         model = BinaryData.fromObject(model).toObject(UpdateContactProfile.class);
-        Assertions.assertEquals("rxsbkyvp", model.firstName());
-        Assertions.assertEquals("anuzbpzkafkuw", model.lastName());
-        Assertions.assertEquals(PreferredContactMethod.EMAIL, model.preferredContactMethod());
-        Assertions.assertEquals("wbme", model.primaryEmailAddress());
-        Assertions.assertEquals("eyvjusrtslhspkde", model.additionalEmailAddresses().get(0));
-        Assertions.assertEquals("elmqk", model.phoneNumber());
-        Assertions.assertEquals("ahvljuaha", model.preferredTimeZone());
-        Assertions.assertEquals("hcdhmdual", model.country());
-        Assertions.assertEquals("xqpvfadmw", model.preferredSupportLanguage());
+        Assertions.assertEquals("fj", model.firstName());
+        Assertions.assertEquals("njbkcnxdhbttkph", model.lastName());
+        Assertions.assertEquals(PreferredContactMethod.PHONE, model.preferredContactMethod());
+        Assertions.assertEquals("vjtoqnermclfp", model.primaryEmailAddress());
+        Assertions.assertEquals("oxuscrpabgyepsbj", model.additionalEmailAddresses().get(0));
+        Assertions.assertEquals("fqkquj", model.phoneNumber());
+        Assertions.assertEquals("suyonobglaocq", model.preferredTimeZone());
+        Assertions.assertEquals("ccm", model.country());
+        Assertions.assertEquals("udxytlmoyrx", model.preferredSupportLanguage());
     }
 }

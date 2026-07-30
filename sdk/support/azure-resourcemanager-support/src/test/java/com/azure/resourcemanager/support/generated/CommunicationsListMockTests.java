@@ -22,7 +22,7 @@ public final class CommunicationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"dw\",\"subject\":\"ftswibyrcdlbhsh\",\"body\":\"wpracstwitykhev\",\"createdDate\":\"2021-04-16T00:20:28Z\"},\"id\":\"dcpnmdyodnw\",\"name\":\"xltjcvnhltiu\",\"type\":\"cxnavv\"}]}";
+            = "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"wutwbdsre\",\"subject\":\"pdrhne\",\"body\":\"yowqkdwytisibir\",\"createdDate\":\"2021-12-07T21:16:32Z\"},\"id\":\"kpzi\",\"name\":\"ejzanlfz\",\"type\":\"iavrm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class CommunicationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommunicationDetails> response
-            = manager.communications().list("isxgfp", 843863757, "olppvksrpqvujz", com.azure.core.util.Context.NONE);
+            = manager.communications().list("ldgmfpgvmpip", 1476888765, "ltha", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dw", response.iterator().next().sender());
-        Assertions.assertEquals("ftswibyrcdlbhsh", response.iterator().next().subject());
-        Assertions.assertEquals("wpracstwitykhev", response.iterator().next().body());
+        Assertions.assertEquals("wutwbdsre", response.iterator().next().sender());
+        Assertions.assertEquals("pdrhne", response.iterator().next().subject());
+        Assertions.assertEquals("yowqkdwytisibir", response.iterator().next().body());
     }
 }

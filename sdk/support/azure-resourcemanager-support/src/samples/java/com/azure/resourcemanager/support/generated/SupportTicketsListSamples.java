@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class SupportTicketsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsServiceIdEqualsForSubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsServiceIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain service id for a subscription.
@@ -22,7 +22,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state for a subscription.
@@ -36,7 +36,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInUpdatingStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in updating state for a subscription.
@@ -49,7 +49,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state for a subscription.
@@ -64,7 +64,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id for a subscription.
@@ -79,7 +79,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsBySubscription.json
      */
     /**
      * Sample code: List support tickets for a subscription.
@@ -91,7 +91,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ListSupportTicketsInOpenStateBySubscription.json
+     * x-ms-original-file: 2026-06-01/ListSupportTicketsInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in open state for a subscription.

@@ -12,9 +12,9 @@ public final class MessagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MessageProperties model = BinaryData.fromString(
-            "{\"contentType\":\"iwubmwmbesldnk\",\"communicationDirection\":\"inbound\",\"sender\":\"pjflcxogao\",\"body\":\"nzmnsikvm\",\"createdDate\":\"2021-05-13T18:51:38Z\"}")
+            "{\"contentType\":\"psslqlfmm\",\"communicationDirection\":\"outbound\",\"sender\":\"glzpswiydm\",\"body\":\"yhz\",\"createdDate\":\"2021-07-22T13:49:27Z\"}")
             .toObject(MessageProperties.class);
-        Assertions.assertEquals("pjflcxogao", model.sender());
-        Assertions.assertEquals("nzmnsikvm", model.body());
+        Assertions.assertEquals("glzpswiydm", model.sender());
+        Assertions.assertEquals("yhz", model.body());
     }
 }

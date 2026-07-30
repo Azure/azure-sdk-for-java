@@ -32,8 +32,8 @@ public final class ClassifyServicesClassifyServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceClassificationOutput response = manager.classifyServices()
-            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("ph")
-                .withResourceId("pxodlqiyntorzih")
+            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("jphuopxodlqi")
+                .withResourceId("torzih")
                 .withAdditionalContext("osjswsr"), com.azure.core.util.Context.NONE)
             .getValue();
 

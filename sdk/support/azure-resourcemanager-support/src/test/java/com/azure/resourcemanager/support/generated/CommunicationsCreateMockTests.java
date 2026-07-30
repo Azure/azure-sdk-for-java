@@ -21,7 +21,7 @@ public final class CommunicationsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"fsdjpvkvp\",\"subject\":\"jxbkzbzkdvn\",\"body\":\"jabudurgkakmo\",\"createdDate\":\"2021-07-24T12:59:33Z\"},\"id\":\"jk\",\"name\":\"ffhmouwqlgzr\",\"type\":\"zeeyebi\"}";
+            = "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"g\",\"subject\":\"wspughftqsxhqx\",\"body\":\"j\",\"createdDate\":\"2021-06-04T22:03:42Z\"},\"id\":\"dxdigr\",\"name\":\"guufzd\",\"type\":\"syqtfi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class CommunicationsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunicationDetails response = manager.communications()
-            .define("lhkrribdeibqipqk")
-            .withExistingSupportTicket("j")
-            .withSubject("efajpj")
-            .withBody("rwkq")
-            .withSender("zwmk")
+            .define("sj")
+            .withExistingSupportTicket("lwbtlhf")
+            .withSubject("rqmq")
+            .withBody("ldvriiiojnalghfk")
+            .withSender("jvfbgofelja")
             .create();
 
-        Assertions.assertEquals("fsdjpvkvp", response.sender());
-        Assertions.assertEquals("jxbkzbzkdvn", response.subject());
-        Assertions.assertEquals("jabudurgkakmo", response.body());
+        Assertions.assertEquals("g", response.sender());
+        Assertions.assertEquals("wspughftqsxhqx", response.subject());
+        Assertions.assertEquals("j", response.body());
     }
 }
