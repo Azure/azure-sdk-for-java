@@ -140,6 +140,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.18.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
