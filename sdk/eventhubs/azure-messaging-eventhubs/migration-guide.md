@@ -460,8 +460,9 @@ In v3:
 ```java
 EventProcessorHost processor = EventProcessorHost.EventProcessorHostBuilder
         .newBuilder("a-processor-name", "my-consumer-group")
+        .useUserCheckpointAndLeaseManagers(new InMemoryCheckpointManager(), new InMemoryLeaseManager())
         .useEventHubConnectionString("connection-string-for-an-event-hub")
-        .build(new InMemoryCheckpointManager(), new InMemoryLeaseManager());
+        .build();
 
 processor.registerEventProcessor(MyEventProcessor.class).get();
 ```
@@ -481,6 +482,8 @@ EventProcessorClient processor = new EventProcessorClientBuilder()
         .processEvent(eventContext -> { /* process event */ })
         .processError(context -> { /* handle error */ })
         .buildEventProcessorClient();
+
+processor.start();
 ```
 
 ## Additional samples
@@ -513,6 +516,5 @@ More examples can be found at:
 [README-Samples-Blobs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/src/samples/README.md
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md
-
 
 
