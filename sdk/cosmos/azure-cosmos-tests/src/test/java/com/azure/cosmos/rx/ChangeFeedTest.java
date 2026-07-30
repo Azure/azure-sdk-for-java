@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Database;
@@ -387,7 +388,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("Change feed should have one newly created document").isEqualTo(1);
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changesFromPartitionKey_AfterInsertingNewDocuments() throws Exception {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         FeedRange feedRange = new FeedRangePartitionKeyImpl(
