@@ -1,4 +1,12 @@
 # Release History
+## 7.5.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+
+#### Bugs Fixed
+
+- Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
+
 ## 7.4.0 (2026-07-24)
 - This release is compatible with Spring Boot 4.0.0-4.1.0. (Note: 4.1.x (x>0) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0-2025.1.2. (Note: 2025.1.2 (x>2) should be supported, but they aren't tested with this release.)
