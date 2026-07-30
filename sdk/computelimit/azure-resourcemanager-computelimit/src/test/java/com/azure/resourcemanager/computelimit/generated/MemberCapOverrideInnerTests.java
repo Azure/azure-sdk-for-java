@@ -13,16 +13,16 @@ public final class MemberCapOverrideInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MemberCapOverrideInner model = BinaryData.fromString(
-            "{\"properties\":{\"cap\":1025748151,\"provisioningState\":\"Failed\"},\"id\":\"scpai\",\"name\":\"rhhbcs\",\"type\":\"l\"}")
+            "{\"properties\":{\"cap\":208705149,\"provisioningState\":\"Canceled\"},\"id\":\"paierh\",\"name\":\"bcsglumma\",\"type\":\"tjaodxobnb\"}")
             .toObject(MemberCapOverrideInner.class);
-        Assertions.assertEquals(1025748151, model.properties().cap());
+        Assertions.assertEquals(208705149, model.properties().cap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MemberCapOverrideInner model
-            = new MemberCapOverrideInner().withProperties(new MemberCapOverrideProperties().withCap(1025748151));
+            = new MemberCapOverrideInner().withProperties(new MemberCapOverrideProperties().withCap(208705149));
         model = BinaryData.fromObject(model).toObject(MemberCapOverrideInner.class);
-        Assertions.assertEquals(1025748151, model.properties().cap());
+        Assertions.assertEquals(208705149, model.properties().cap());
     }
 }

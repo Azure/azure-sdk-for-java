@@ -1,6 +1,13 @@
 # Release History
-## 7.4.0-beta.1 (Unreleased)
-- Upgrade Spring Boot dependencies to `4.1.0` and Spring Cloud dependencies to `2025.1.2`.
+## 7.4.0 (2026-07-24)
+- This release is compatible with Spring Boot 4.0.0-4.1.0. (Note: 4.1.x (x>0) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.2. (Note: 2025.1.2 (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.8.
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -113,6 +120,10 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 #### Bugs Fixed
 
 - Fixed a regression where dead-letter reason and error description were not transmitted because a no-arg `deadLetter()` call settled the message before `deadLetter(options)` was invoked ([#41883](https://github.com/Azure/azure-sdk-for-java/issues/41883)).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#740-2026-07-24) for more details.
 
 ## 6.4.0 (2026-06-01)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)

@@ -148,6 +148,32 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Flux<RuleProperties> listRules();
 
+    /**
+     * Lists the session IDs for sessions that have active messages or whose state was updated
+     * since the given time.
+     *
+     * <p>Pagination follows the cursor semantics of Track 1's
+     * {@code com.microsoft.azure.servicebus.SessionBrowser}: the caller threads {@code skip} from
+     * {@link MessageSessionsResult#getNextSkip()} of the previous response and {@code lastSessionId}
+     * (the last entry of the previous page) into the next request, and stops when an empty page is
+     * returned.</p>
+     *
+     * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the
+     *     {@link ManagementConstants#ACTIVE_MESSAGES_SENTINEL} sentinel (the implementation also
+     *     accepts {@link OffsetDateTime#MAX} and clamps it to that sentinel), which matches the
+     *     Track 1 Java sentinel value ({@code new Date(253402300800000L)}, rendered by
+     *     {@code OffsetDateTime.toString()} as {@code +10000-01-01T00:00Z}). Pass a real timestamp
+     *     to get sessions updated since that time.
+     * @param skip Pagination offset (from {@link MessageSessionsResult#getNextSkip()} of the
+     *     previous page, or {@code 0} for the first page).
+     * @param top Page size.
+     * @param lastSessionId Last session ID from the previous page (cursor); {@code null} for the
+     *     first page.
+     * @return The page of session IDs together with the {@code skip} value to use for the next page.
+     */
+    Mono<MessageSessionsResult> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
+        String lastSessionId);
+
     @Override
     void close();
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class SettingsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/settings/SettingsGet.json
+     * x-ms-original-file: 2026-06-16-preview/settings/SettingsGet.json
      */
     /**
      * Sample code: NetworkConfigurationsGet.
