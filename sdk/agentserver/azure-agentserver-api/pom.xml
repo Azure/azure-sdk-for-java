@@ -49,24 +49,6 @@
       <artifactId>opentelemetry-api</artifactId>
     </dependency>
 
-    <!--
-      Runtime netty modules required by azure-core-http-netty. The root parent pom
-      excludes all io.netty:* transitive deps from azure-core-http-netty so consumers
-      can pick the netty version; FoundryStorageProvider uses the netty HTTP client
-      at runtime when hosted in Foundry, so we declare the required modules here.
-    -->
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-codec-http2</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-resolver-dns</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-handler-proxy</artifactId>
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>

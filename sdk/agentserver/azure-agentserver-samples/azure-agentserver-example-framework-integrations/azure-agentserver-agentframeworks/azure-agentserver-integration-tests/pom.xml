@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.agentserver</groupId>
-    <artifactId>azure-agentserver-parent</artifactId>
+    <artifactId>azure-agentserver-samples</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../../../pom.xml</relativePath>
+    <relativePath>../../../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-agentserver-integration-tests</artifactId>
@@ -15,8 +15,8 @@
   <description>Integration tests for the Azure AI Foundry Agent Server Server</description>
 
   <properties>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

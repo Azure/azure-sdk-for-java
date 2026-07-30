@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.microsoft.agentserver</groupId>
-    <artifactId>azure-agentserver-parent</artifactId>
+    <artifactId>azure-agentserver-samples</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-agentserver-hosted-agent-cli</artifactId>

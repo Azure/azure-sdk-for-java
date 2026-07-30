@@ -169,8 +169,8 @@ The server starts on `http://localhost:8088`.
 
 ## Deploying to Azure AI Foundry
 
-The [`azure-agentserver-hosted-agent-cli`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli) sample is a
-compact command-line tool for deploying and managing hosted agents against the vnext Azure AI Foundry experience. It
+The [`azure-agentserver-hosted-agent-cli`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/agentserver/azure-agentserver-samples/azure-agentserver-hosted-agent-cli/README.md) sample is a
+compact command-line tool for deploying and managing hosted agents into the vnext Azure AI Foundry experience. It
 wraps the `com.azure:azure-ai-agents` Java SDK directly (no raw REST calls) and provides:
 
 * `deploy` — push a container image as a new hosted-agent version and wait until it is `ACTIVE`.
