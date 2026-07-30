@@ -321,9 +321,9 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      *
      * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
      * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
-     * previous page) and terminates when the broker returns an empty page. The default page size
-     * is 100; callers can request a different size via
-     * {@link PagedFlux#byPage(int)}.</p>
+     * previous page) and terminates when the broker returns a page smaller than the requested page
+     * size (a short or empty page signals the end). The default page size is 100; callers can
+     * request a different size via {@link PagedFlux#byPage(int)}.</p>
      *
      * @return A {@link PagedFlux} of session ID strings.
      */
@@ -339,9 +339,9 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      *
      * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
      * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
-     * previous page) and terminates when the broker returns an empty page. The default page size
-     * is 100; callers can request a different size via
-     * {@link PagedFlux#byPage(int)}.</p>
+     * previous page) and terminates when the broker returns a page smaller than the requested page
+     * size (a short or empty page signals the end). The default page size is 100; callers can
+     * request a different size via {@link PagedFlux#byPage(int)}.</p>
      *
      * <p>Values at or beyond the active-messages sentinel value
      * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
@@ -440,13 +440,15 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 managementNode -> managementNode.getMessageSessions(lastUpdatedTime, skip, pageSize, lastSessionId))
             .map(result -> {
                 final java.util.List<String> sessionIds = result.getSessionIds();
-                // Empty page terminates pagination (matches Track 1's SessionBrowser loop and the
-                // broker contract). Continuation token encodes the server-returned skip and the
-                // last session ID of the page so the next call uses the same cursor Track 1 does.
-                // Base64url-encode the session ID so arbitrary byte sequences (including the '|'
-                // separator) round-trip without escaping.
+                // A short page (fewer IDs than the requested page size) terminates pagination: the
+                // service has no more sessions to return, so no further page is fetched. This
+                // matches the .NET SDK, which breaks on page.Count < SessionBrowsePageSize.
+                // Continuation token encodes the server-returned skip and the last session ID of the
+                // page so the next call uses the same cursor Track 1 does. Base64url-encode the
+                // session ID so arbitrary byte sequences (including the '|' separator) round-trip
+                // without escaping.
                 final String continuationToken;
-                if (sessionIds.isEmpty()) {
+                if (sessionIds.size() < pageSize) {
                     continuationToken = null;
                 } else {
                     final String last = sessionIds.get(sessionIds.size() - 1);
