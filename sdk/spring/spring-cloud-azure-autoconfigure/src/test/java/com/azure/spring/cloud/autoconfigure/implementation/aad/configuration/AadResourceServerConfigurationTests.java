@@ -3,6 +3,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.RecordingClientHttpRequestFactoryBuilderConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.RecordingClientHttpRequestFactoryBuilderConfiguration.RecordingClientHttpRequestFactoryBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
@@ -18,9 +20,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -76,6 +80,7 @@ class AadResourceServerConfigurationTests {
     @Test
     void testJwtDecoderTimeoutDefaultValues() {
         resourceServerContextRunner()
+            .withUserConfiguration(RecordingClientHttpRequestFactoryBuilderConfiguration.class)
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
@@ -85,7 +90,7 @@ class AadResourceServerConfigurationTests {
                     .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
                 // Verify the default timeouts are applied to the RestTemplate used by the JwtDecoder
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
-                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder,
+                verifyJwtDecoderRestTemplateTimeouts(context, jwtDecoder,
                     JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
                     JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
             });
@@ -110,6 +115,7 @@ class AadResourceServerConfigurationTests {
     @Test
     void testJwtDecoderTimeoutCustomValues() {
         resourceServerContextRunner()
+            .withUserConfiguration(RecordingClientHttpRequestFactoryBuilderConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.jwt-connect-timeout=2000",
@@ -123,7 +129,7 @@ class AadResourceServerConfigurationTests {
                 assertThat(jwtDecoder).isNotNull();
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
                 // Verify the configured timeouts are applied to the RestTemplate used by the JwtDecoder
-                verifyJwtDecoderRestTemplateTimeouts(jwtDecoder, 2000, 3000);
+                verifyJwtDecoderRestTemplateTimeouts(context, jwtDecoder, 2000, 3000);
             });
     }
 
@@ -445,11 +451,12 @@ class AadResourceServerConfigurationTests {
     }
 
     /**
-     * Verifies that the NimbusJwtDecoder uses the expected JWK retrieval path and that the RestTemplate
-     * backing it has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     * Verifies that the NimbusJwtDecoder uses the expected JWK retrieval path and that
+     * the recorded HTTP client settings contain the expected connect and read timeouts.
      */
     @SuppressWarnings("deprecation")
-    private static void verifyJwtDecoderRestTemplateTimeouts(JwtDecoder jwtDecoder,
+    private static void verifyJwtDecoderRestTemplateTimeouts(ApplicationContext context,
+                                                             JwtDecoder jwtDecoder,
                                                              int expectedConnectTimeoutMs,
                                                              int expectedReadTimeoutMs) {
         RemoteJWKSet<?> remoteJwkSet = getRemoteJwkSet(jwtDecoder);
@@ -462,17 +469,11 @@ class AadResourceServerConfigurationTests {
         Object restOperations = ReflectionTestUtils.getField(resourceRetriever, "restOperations");
         assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
 
-        // RestTemplate -> ClientHttpRequestFactory
-        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
-            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
-
-        // Verify timeouts on the request factory (may be stored as Duration or int)
-        Object connectTimeoutValue = ReflectionTestUtils.getField(requestFactory, "connectTimeout");
-        Object readTimeoutValue = ReflectionTestUtils.getField(requestFactory, "readTimeout");
-        int connectTimeout = connectTimeoutValue instanceof Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
-        int readTimeout = readTimeoutValue instanceof Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
-        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
-        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
+        ClientHttpRequestFactorySettings clientSettings =
+            context.getBean(RecordingClientHttpRequestFactoryBuilder.class).getClientSettings();
+        assertThat(clientSettings).isNotNull();
+        assertThat(clientSettings.connectTimeout()).isEqualTo(Duration.ofMillis(expectedConnectTimeoutMs));
+        assertThat(clientSettings.readTimeout()).isEqualTo(Duration.ofMillis(expectedReadTimeoutMs));
     }
 
     @SuppressWarnings("deprecation")

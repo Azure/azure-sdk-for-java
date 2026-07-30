@@ -21,7 +21,7 @@ This starter packages the `spring-cloud-azure-appconfiguration-config-web` and `
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
-    <version>6.5.0-beta.1</version>
+    <version>6.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
