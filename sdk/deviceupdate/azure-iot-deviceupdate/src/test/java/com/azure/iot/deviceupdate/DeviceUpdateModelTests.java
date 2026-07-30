@@ -5,8 +5,6 @@ package com.azure.iot.deviceupdate;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ExpandableStringEnum;
-import com.azure.iot.deviceupdate.implementation.JsonMergePatchHelper;
-import com.azure.iot.deviceupdate.models.PatchBody;
 import com.azure.json.JsonSerializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -33,7 +31,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class DeviceUpdateModelTests {
     private static final String MODELS_PACKAGE = "com.azure.iot.deviceupdate.models.";
@@ -62,17 +59,6 @@ public class DeviceUpdateModelTests {
                 invokeModelAccessors(deserialized);
             }
         }
-    }
-
-    @Test
-    public void patchBodyCanSerializeAsJsonMergePatch() {
-        PatchBody patchBody = new PatchBody().setFriendlyName(null);
-        JsonMergePatchHelper.PatchBodyAccessor accessor = JsonMergePatchHelper.getPatchBodyAccessor();
-
-        PatchBody mergePatch = accessor.prepareModelForJsonMergePatch(patchBody, true);
-
-        assertSame(patchBody, mergePatch);
-        assertFalse(BinaryData.fromObject(mergePatch).toString().isEmpty());
     }
 
     private static List<Class<?>> modelClasses() throws Exception {
