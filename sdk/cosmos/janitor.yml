@@ -52,6 +52,10 @@ extends:
       - stage: CleanupCosmosTestAccounts
         displayName: 'Clean up stale Cosmos test resources'
         variables:
+          # Declared here rather than linked on the pipeline definition (as sdk/cosmos/tests.yml does) so
+          # that creating the pipeline needs no extra configuration - the group only has to be authorized
+          # for it. Supplies the account endpoint/key pairs referenced below.
+          - group: 'Test Secrets for Cosmos Live Tests - user administered'
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
         jobs:
