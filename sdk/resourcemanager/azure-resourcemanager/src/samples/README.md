@@ -26,7 +26,7 @@ For additional code snippets grouped by service, see [SAMPLE.md][RESOURCEMANAGER
 
 - [Connect a web app to a SQL database (passwordless)][sample_connect_web_app_to_sql_database]
 - [Connect a web app to a storage account (passwordless)][sample_connect_web_app_to_storage_account]
-- [Deploy an image from Azure Container Registry to a Linux web app (passwordless)][sample_deploy_image_from_acr_to_linux_web_app]
+- [Deploy an image from Azure Container Registry to a Linux web app][sample_deploy_image_from_acr_to_linux_web_app]
 - [Manage web app deployment slots][sample_manage_web_app_slots]
 - [Manage a web app with a custom domain][sample_manage_web_app_with_custom_domain]
 - [Scale a web app across multiple regions with a Traffic Manager][sample_scale_web_app_with_traffic_manager]
