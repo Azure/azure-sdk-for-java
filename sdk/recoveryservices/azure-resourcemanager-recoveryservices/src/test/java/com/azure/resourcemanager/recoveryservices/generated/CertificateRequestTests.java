@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateRequest model
-            = BinaryData.fromString("{\"properties\":{\"authType\":\"AAD\"}}").toObject(CertificateRequest.class);
-        Assertions.assertEquals(AuthType.AAD, model.properties().authType());
+        CertificateRequest model = BinaryData.fromString("{\"properties\":{\"authType\":\"AzureActiveDirectory\"}}")
+            .toObject(CertificateRequest.class);
+        Assertions.assertEquals(AuthType.AZURE_ACTIVE_DIRECTORY, model.properties().authType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateRequest model
-            = new CertificateRequest().withProperties(new RawCertificateData().withAuthType(AuthType.AAD));
+        CertificateRequest model = new CertificateRequest()
+            .withProperties(new RawCertificateData().withAuthType(AuthType.AZURE_ACTIVE_DIRECTORY));
         model = BinaryData.fromObject(model).toObject(CertificateRequest.class);
-        Assertions.assertEquals(AuthType.AAD, model.properties().authType());
+        Assertions.assertEquals(AuthType.AZURE_ACTIVE_DIRECTORY, model.properties().authType());
     }
 }

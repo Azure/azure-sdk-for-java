@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ComputesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/GetContainerInstanceCompute.json
+     * x-ms-original-file: 2026-05-15-preview/GetContainerInstanceCompute.json
      */
     /**
      * Sample code: GetContainerInstanceCompute.
@@ -24,7 +24,7 @@ public final class ComputesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/GetCompute.json
+     * x-ms-original-file: 2026-05-15-preview/GetCompute.json
      */
     /**
      * Sample code: GetCompute.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnConnectionDelete.json
+     * x-ms-original-file: 2025-07-01/VpnConnectionDelete.json
      */
     /**
      * Sample code: VpnConnectionDelete.

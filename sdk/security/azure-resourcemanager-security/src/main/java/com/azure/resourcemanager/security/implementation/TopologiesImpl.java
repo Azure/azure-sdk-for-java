@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TopologiesClient;
@@ -25,33 +23,6 @@ public final class TopologiesImpl implements Topologies {
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Response<TopologyResource> getWithResponse(String resourceGroupName, String ascLocation,
-        String topologyResourceName, Context context) {
-        Response<TopologyResourceInner> inner
-            = this.serviceClient().getWithResponse(resourceGroupName, ascLocation, topologyResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TopologyResourceImpl(inner.getValue(), this.manager()));
-    }
-
-    public TopologyResource get(String resourceGroupName, String ascLocation, String topologyResourceName) {
-        TopologyResourceInner inner = this.serviceClient().get(resourceGroupName, ascLocation, topologyResourceName);
-        if (inner != null) {
-            return new TopologyResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<TopologyResource> listByHomeRegion(String ascLocation) {
-        PagedIterable<TopologyResourceInner> inner = this.serviceClient().listByHomeRegion(ascLocation);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopologyResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<TopologyResource> listByHomeRegion(String ascLocation, Context context) {
-        PagedIterable<TopologyResourceInner> inner = this.serviceClient().listByHomeRegion(ascLocation, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopologyResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TopologyResource> list() {

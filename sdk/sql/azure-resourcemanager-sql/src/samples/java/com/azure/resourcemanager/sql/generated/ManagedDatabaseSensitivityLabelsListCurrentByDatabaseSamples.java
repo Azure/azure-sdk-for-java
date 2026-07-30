@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseSensitivityLabelsListCurrentByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsListByDatabaseCurrent.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseSensitivityLabelsListByDatabaseCurrent.json
      */
     /**
      * Sample code: Gets the current sensitivity labels of a given database in a managed database.

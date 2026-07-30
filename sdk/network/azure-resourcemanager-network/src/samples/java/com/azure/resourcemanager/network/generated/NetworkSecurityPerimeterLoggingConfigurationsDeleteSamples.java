@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterLoggingConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLoggingConfigurationDelete.json
+     * x-ms-original-file: 2025-07-01/NspLoggingConfigurationDelete.json
      */
     /**
      * Sample code: NspLoggingConfigurationDelete.

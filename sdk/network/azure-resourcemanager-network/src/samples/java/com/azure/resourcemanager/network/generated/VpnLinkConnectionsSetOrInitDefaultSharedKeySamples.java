@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.SharedKeyProperties;
  */
 public final class VpnLinkConnectionsSetOrInitDefaultSharedKeySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnSiteLinkConnectionDefaultSharedKeyPut.json
+     * x-ms-original-file: 2025-07-01/VpnSiteLinkConnectionDefaultSharedKeyPut.json
      */
     /**
      * Sample code: VpnSiteLinkConnectionDefaultSharedKeyPut.

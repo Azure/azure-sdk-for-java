@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class IpamPoolsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpamPools_Create.json
+     * x-ms-original-file: 2025-07-01/IpamPools_Create.json
      */
     /**
      * Sample code: IpamPools_Create.

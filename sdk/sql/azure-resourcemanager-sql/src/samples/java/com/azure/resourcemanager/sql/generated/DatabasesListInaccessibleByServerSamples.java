@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabasesListInaccessibleByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListVCoreInaccessibleDatabasesByServer.json
+     * x-ms-original-file: 2025-01-01/ListVCoreInaccessibleDatabasesByServer.json
      */
     /**
      * Sample code: Gets a list of inaccessible databases in a logical server.

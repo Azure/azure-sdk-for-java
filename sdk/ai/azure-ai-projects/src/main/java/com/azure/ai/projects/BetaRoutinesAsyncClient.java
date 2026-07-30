@@ -36,8 +36,8 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRoutinesAsyncClient {
 
     @Generated
@@ -58,7 +58,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -75,9 +75,9 @@ public final class BetaRoutinesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -121,7 +121,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -164,7 +164,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -205,7 +205,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -259,7 +259,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -332,7 +332,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -341,6 +341,9 @@ public final class BetaRoutinesAsyncClient {
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
+     *     trigger_event_payload (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     attempt_source: String(event_fire/manual_dispatch/queued_dispatch/schedule_delivery/timer_delivery) (Optional)
      *     action_type: String(invoke_agent_responses_api/invoke_agent_invocations_api) (Optional)
      *     agent_id: String (Optional)
@@ -381,7 +384,7 @@ public final class BetaRoutinesAsyncClient {
      *
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -391,9 +394,9 @@ public final class BetaRoutinesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

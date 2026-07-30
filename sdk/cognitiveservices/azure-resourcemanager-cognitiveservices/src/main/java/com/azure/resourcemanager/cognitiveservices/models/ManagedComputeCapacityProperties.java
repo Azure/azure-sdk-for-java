@@ -23,11 +23,6 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
     private String acceleratorType;
 
     /*
-     * The Azure region where the capacity is available.
-     */
-    private String location;
-
-    /*
      * The number of available accelerators in the region.
      */
     private Integer availableAccelerators;
@@ -50,15 +45,6 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
      */
     public String acceleratorType() {
         return this.acceleratorType;
-    }
-
-    /**
-     * Get the location property: The Azure region where the capacity is available.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
     }
 
     /**
@@ -106,8 +92,6 @@ public final class ManagedComputeCapacityProperties implements JsonSerializable<
 
                 if ("acceleratorType".equals(fieldName)) {
                     deserializedManagedComputeCapacityProperties.acceleratorType = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedManagedComputeCapacityProperties.location = reader.getString();
                 } else if ("availableAccelerators".equals(fieldName)) {
                     deserializedManagedComputeCapacityProperties.availableAccelerators
                         = reader.getNullable(JsonReader::getInt);

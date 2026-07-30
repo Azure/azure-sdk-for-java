@@ -195,6 +195,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         // and BE will respect the per-request value.
 
         this.fillTokenFromHeader(headers, this::getClientVersion, HttpHeaders.VERSION);
+
+        // QueryPlan headers — needed for proxy to extract supported features and query version
+        // from the RNTBD body (IDs match server-side proxy)
+        this.fillTokenFromHeader(headers, this::getSupportedQueryFeatures, HttpHeaders.SUPPORTED_QUERY_FEATURES);
+        this.fillTokenFromHeader(headers, this::getQueryVersion, HttpHeaders.QUERY_VERSION);
     }
 
     private RntbdRequestHeaders(ByteBuf in) {
@@ -651,6 +656,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getChangeFeedWireFormatVersion() {
         return this.get(RntbdRequestHeader.ChangeFeedWireFormatVersion);
+    }
+
+    private RntbdToken getSupportedQueryFeatures() {
+        return this.get(RntbdRequestHeader.SupportedQueryFeatures);
+    }
+
+    private RntbdToken getQueryVersion() {
+        return this.get(RntbdRequestHeader.QueryVersion);
     }
 
     private void addAimHeader(final Map<String, String> headers) {

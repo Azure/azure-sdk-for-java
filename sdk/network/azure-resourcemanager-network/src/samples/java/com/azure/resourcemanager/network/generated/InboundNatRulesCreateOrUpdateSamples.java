@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.TransportProtocol;
  */
 public final class InboundNatRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/InboundNatRuleCreate.json
+     * x-ms-original-file: 2025-07-01/InboundNatRuleCreate.json
      */
     /**
      * Sample code: InboundNatRuleCreate.

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ConfigurationPolicyGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ConfigurationPolicyGroupPut.json
+     * x-ms-original-file: 2025-07-01/ConfigurationPolicyGroupPut.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupPut.

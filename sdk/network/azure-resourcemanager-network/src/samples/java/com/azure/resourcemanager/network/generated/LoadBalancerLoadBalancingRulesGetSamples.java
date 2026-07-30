@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerLoadBalancingRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerLoadBalancingRuleGet.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerLoadBalancingRuleGet.json
      */
     /**
      * Sample code: LoadBalancerLoadBalancingRuleGet.

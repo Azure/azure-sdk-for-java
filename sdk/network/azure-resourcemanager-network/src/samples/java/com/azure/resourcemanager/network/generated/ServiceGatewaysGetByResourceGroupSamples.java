@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayGet.json
+     * x-ms-original-file: 2025-07-01/ServiceGatewayGet.json
      */
     /**
      * Sample code: Get load balancer.

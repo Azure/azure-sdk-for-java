@@ -496,7 +496,8 @@ public interface Volume {
     List<PlacementKeyValuePairs> placementRules();
 
     /**
-     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -530,6 +531,13 @@ public interface Volume {
      * @return the inheritedSizeInBytes value.
      */
     Long inheritedSizeInBytes();
+
+    /**
+     * Gets the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @return the breakthroughMode value.
+     */
+    BreakthroughMode breakthroughMode();
 
     /**
      * Gets the region of the resource.
@@ -682,7 +690,7 @@ public interface Volume {
             DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
             DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
             DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
-            DefinitionStages.WithIsLargeVolume {
+            DefinitionStages.WithIsLargeVolume, DefinitionStages.WithBreakthroughMode {
             /**
              * Executes the create request.
              * 
@@ -1252,9 +1260,11 @@ public interface Volume {
         interface WithEnableSubvolumes {
             /**
              * Specifies the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the
-             * volume.
+             * volume
+             * Deprecated. Subvolume operations and this flag will be removed in a future API version..
              * 
-             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume.
+             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume
+             * Deprecated. Subvolume operations and this flag will be removed in a future API version.
              * @return the next definition stage.
              */
             WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
@@ -1271,6 +1281,19 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify breakthroughMode.
+         */
+        interface WithBreakthroughMode {
+            /**
+             * Specifies the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode..
+             * 
+             * @param breakthroughMode Specifies whether the volume operates in Breakthrough Mode.
+             * @return the next definition stage.
+             */
+            WithCreate withBreakthroughMode(BreakthroughMode breakthroughMode);
         }
     }
 

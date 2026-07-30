@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerBackendAddressPoolsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LBBackendAddressPoolListWithBackendAddressesPoolType.json
+     * x-ms-original-file: 2025-07-01/LBBackendAddressPoolListWithBackendAddressesPoolType.json
      */
     /**
      * Sample code: Load balancer with BackendAddressPool containing BackendAddresses.
@@ -24,7 +24,7 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerBackendAddressPoolList.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerBackendAddressPoolList.json
      */
     /**
      * Sample code: LoadBalancerBackendAddressPoolList.

@@ -11,7 +11,7 @@ public final class ExternalSignalGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSignalGroup model = BinaryData.fromString(
-            "{\"signals\":[{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":6.5261527094749745},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":92.21513436527684}},\"name\":\"equi\",\"signalDefinitionName\":\"xicslfao\",\"status\":{\"healthState\":\"Healthy\",\"value\":63.521235407564966,\"reportedAt\":\"2021-10-14T23:18:25Z\",\"error\":\"nswhcc\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":70.87231250117593},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":97.24423582596484}},\"name\":\"tqscywug\",\"signalDefinitionName\":\"oluhczbwemh\",\"status\":{\"healthState\":\"Deleted\",\"value\":62.53617723274214,\"reportedAt\":\"2021-01-28T00:27:19Z\",\"error\":\"msweypqwdxggicc\"}}]}")
+            "{\"signals\":[{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":97.63993583337299,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":84.63764695021342,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"}},\"name\":\"fcdmqnrojlpijn\",\"signalDefinitionName\":\"xfrdd\",\"status\":{\"healthState\":\"Unknown\",\"value\":98.63851736367654,\"reportedAt\":\"2021-03-09T16:30:01Z\",\"error\":\"nasx\",\"additionalContext\":\"tozqyzhftwesgo\"}}]}")
             .toObject(ExternalSignalGroup.class);
     }
 }

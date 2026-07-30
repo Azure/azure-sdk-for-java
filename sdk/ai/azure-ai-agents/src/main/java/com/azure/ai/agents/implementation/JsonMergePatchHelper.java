@@ -4,11 +4,17 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.ai.agents.models.A2AProtocolConfiguration;
+import com.azure.ai.agents.models.ActivityProtocolConfiguration;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentCardSkill;
 import com.azure.ai.agents.models.AgentEndpointAuthorizationScheme;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.IsolationKeySource;
+import com.azure.ai.agents.models.InvocationsProtocolConfiguration;
+import com.azure.ai.agents.models.InvocationsWsProtocolConfiguration;
+import com.azure.ai.agents.models.McpProtocolConfiguration;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
@@ -69,6 +75,126 @@ public class JsonMergePatchHelper {
         return versionSelectionRuleAccessor;
     }
 
+    private static ProtocolConfigurationAccessor protocolConfigurationAccessor;
+
+    public interface ProtocolConfigurationAccessor {
+        ProtocolConfiguration prepareModelForJsonMergePatch(ProtocolConfiguration protocolConfiguration,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(ProtocolConfiguration protocolConfiguration);
+    }
+
+    public static void setProtocolConfigurationAccessor(ProtocolConfigurationAccessor accessor) {
+        protocolConfigurationAccessor = accessor;
+    }
+
+    public static ProtocolConfigurationAccessor getProtocolConfigurationAccessor() {
+        return protocolConfigurationAccessor;
+    }
+
+    private static ActivityProtocolConfigurationAccessor activityProtocolConfigurationAccessor;
+
+    public interface ActivityProtocolConfigurationAccessor {
+        ActivityProtocolConfiguration prepareModelForJsonMergePatch(
+            ActivityProtocolConfiguration activityProtocolConfiguration, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(ActivityProtocolConfiguration activityProtocolConfiguration);
+    }
+
+    public static void setActivityProtocolConfigurationAccessor(ActivityProtocolConfigurationAccessor accessor) {
+        activityProtocolConfigurationAccessor = accessor;
+    }
+
+    public static ActivityProtocolConfigurationAccessor getActivityProtocolConfigurationAccessor() {
+        return activityProtocolConfigurationAccessor;
+    }
+
+    private static ResponsesProtocolConfigurationAccessor responsesProtocolConfigurationAccessor;
+
+    public interface ResponsesProtocolConfigurationAccessor {
+        ResponsesProtocolConfiguration prepareModelForJsonMergePatch(
+            ResponsesProtocolConfiguration responsesProtocolConfiguration, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(ResponsesProtocolConfiguration responsesProtocolConfiguration);
+    }
+
+    public static void setResponsesProtocolConfigurationAccessor(ResponsesProtocolConfigurationAccessor accessor) {
+        responsesProtocolConfigurationAccessor = accessor;
+    }
+
+    public static ResponsesProtocolConfigurationAccessor getResponsesProtocolConfigurationAccessor() {
+        return responsesProtocolConfigurationAccessor;
+    }
+
+    private static A2AProtocolConfigurationAccessor a2AProtocolConfigurationAccessor;
+
+    public interface A2AProtocolConfigurationAccessor {
+        A2AProtocolConfiguration prepareModelForJsonMergePatch(A2AProtocolConfiguration a2AProtocolConfiguration,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(A2AProtocolConfiguration a2AProtocolConfiguration);
+    }
+
+    public static void setA2AProtocolConfigurationAccessor(A2AProtocolConfigurationAccessor accessor) {
+        a2AProtocolConfigurationAccessor = accessor;
+    }
+
+    public static A2AProtocolConfigurationAccessor getA2AProtocolConfigurationAccessor() {
+        return a2AProtocolConfigurationAccessor;
+    }
+
+    private static McpProtocolConfigurationAccessor mcpProtocolConfigurationAccessor;
+
+    public interface McpProtocolConfigurationAccessor {
+        McpProtocolConfiguration prepareModelForJsonMergePatch(McpProtocolConfiguration mcpProtocolConfiguration,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(McpProtocolConfiguration mcpProtocolConfiguration);
+    }
+
+    public static void setMcpProtocolConfigurationAccessor(McpProtocolConfigurationAccessor accessor) {
+        mcpProtocolConfigurationAccessor = accessor;
+    }
+
+    public static McpProtocolConfigurationAccessor getMcpProtocolConfigurationAccessor() {
+        return mcpProtocolConfigurationAccessor;
+    }
+
+    private static InvocationsProtocolConfigurationAccessor invocationsProtocolConfigurationAccessor;
+
+    public interface InvocationsProtocolConfigurationAccessor {
+        InvocationsProtocolConfiguration prepareModelForJsonMergePatch(
+            InvocationsProtocolConfiguration invocationsProtocolConfiguration, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(InvocationsProtocolConfiguration invocationsProtocolConfiguration);
+    }
+
+    public static void setInvocationsProtocolConfigurationAccessor(InvocationsProtocolConfigurationAccessor accessor) {
+        invocationsProtocolConfigurationAccessor = accessor;
+    }
+
+    public static InvocationsProtocolConfigurationAccessor getInvocationsProtocolConfigurationAccessor() {
+        return invocationsProtocolConfigurationAccessor;
+    }
+
+    private static InvocationsWsProtocolConfigurationAccessor invocationsWsProtocolConfigurationAccessor;
+
+    public interface InvocationsWsProtocolConfigurationAccessor {
+        InvocationsWsProtocolConfiguration prepareModelForJsonMergePatch(
+            InvocationsWsProtocolConfiguration invocationsWsProtocolConfiguration, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(InvocationsWsProtocolConfiguration invocationsWsProtocolConfiguration);
+    }
+
+    public static void
+        setInvocationsWsProtocolConfigurationAccessor(InvocationsWsProtocolConfigurationAccessor accessor) {
+        invocationsWsProtocolConfigurationAccessor = accessor;
+    }
+
+    public static InvocationsWsProtocolConfigurationAccessor getInvocationsWsProtocolConfigurationAccessor() {
+        return invocationsWsProtocolConfigurationAccessor;
+    }
+
     private static AgentEndpointAuthorizationSchemeAccessor agentEndpointAuthorizationSchemeAccessor;
 
     public interface AgentEndpointAuthorizationSchemeAccessor {
@@ -84,23 +210,6 @@ public class JsonMergePatchHelper {
 
     public static AgentEndpointAuthorizationSchemeAccessor getAgentEndpointAuthorizationSchemeAccessor() {
         return agentEndpointAuthorizationSchemeAccessor;
-    }
-
-    private static IsolationKeySourceAccessor isolationKeySourceAccessor;
-
-    public interface IsolationKeySourceAccessor {
-        IsolationKeySource prepareModelForJsonMergePatch(IsolationKeySource isolationKeySource,
-            boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(IsolationKeySource isolationKeySource);
-    }
-
-    public static void setIsolationKeySourceAccessor(IsolationKeySourceAccessor accessor) {
-        isolationKeySourceAccessor = accessor;
-    }
-
-    public static IsolationKeySourceAccessor getIsolationKeySourceAccessor() {
-        return isolationKeySourceAccessor;
     }
 
     private static AgentCardAccessor agentCardAccessor;

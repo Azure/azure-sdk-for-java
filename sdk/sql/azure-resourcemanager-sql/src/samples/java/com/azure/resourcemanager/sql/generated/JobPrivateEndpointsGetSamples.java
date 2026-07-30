@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobPrivateEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetJobPrivateEndpoint.json
+     * x-ms-original-file: 2025-01-01/GetJobPrivateEndpoint.json
      */
     /**
      * Sample code: Get a private endpoint.

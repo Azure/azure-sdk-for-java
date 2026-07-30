@@ -292,6 +292,13 @@ public interface SecurityCenter {
     SecuritySolutionsClient getSecuritySolutions();
 
     /**
+     * Gets the TopologyResourcesClient object to access its operations.
+     * 
+     * @return the TopologyResourcesClient object.
+     */
+    TopologyResourcesClient getTopologyResources();
+
+    /**
      * Gets the SecurityStandardsClient object to access its operations.
      * 
      * @return the SecurityStandardsClient object.
@@ -516,18 +523,18 @@ public interface SecurityCenter {
     ServerVulnerabilityAssessmentsClient getServerVulnerabilityAssessments();
 
     /**
-     * Gets the TopologiesClient object to access its operations.
-     * 
-     * @return the TopologiesClient object.
-     */
-    TopologiesClient getTopologies();
-
-    /**
      * Gets the SecuritySolutionsReferenceDatasClient object to access its operations.
      * 
      * @return the SecuritySolutionsReferenceDatasClient object.
      */
     SecuritySolutionsReferenceDatasClient getSecuritySolutionsReferenceDatas();
+
+    /**
+     * Gets the TopologiesClient object to access its operations.
+     * 
+     * @return the TopologiesClient object.
+     */
+    TopologiesClient getTopologies();
 
     /**
      * Gets the SensitivitySettingsClient object to access its operations.

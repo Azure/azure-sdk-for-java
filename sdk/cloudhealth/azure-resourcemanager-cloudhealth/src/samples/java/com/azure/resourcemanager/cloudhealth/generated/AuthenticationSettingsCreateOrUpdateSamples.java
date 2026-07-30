@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cloudhealth.models.ManagedIdentityAuthenticatio
  */
 public final class AuthenticationSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/AuthenticationSettings_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthenticationSettings_CreateOrUpdate.
@@ -21,10 +21,11 @@ public final class AuthenticationSettingsCreateOrUpdateSamples {
     public static void
         authenticationSettingsCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.authenticationSettings()
-            .define("myAuthSetting")
-            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
-            .withProperties(new ManagedIdentityAuthenticationSettingProperties().withDisplayName("myDisplayName")
-                .withManagedIdentityName("SystemAssigned"))
+            .define("default-auth")
+            .withExistingHealthmodel("online-store-rg", "online-store")
+            .withProperties(
+                new ManagedIdentityAuthenticationSettingProperties().withDisplayName("Default managed identity")
+                    .withManagedIdentityName("SystemAssigned"))
             .create();
     }
 }

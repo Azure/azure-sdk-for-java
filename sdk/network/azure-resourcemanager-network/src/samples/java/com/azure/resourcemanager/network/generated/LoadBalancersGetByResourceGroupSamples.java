@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.network.generated;
 
+import com.azure.resourcemanager.network.models.LoadBalancerDetailLevel;
+
 /**
  * Samples for LoadBalancers GetByResourceGroup.
  */
 public final class LoadBalancersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerGet.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerGet.json
      */
     /**
      * Sample code: Get load balancer.
@@ -19,11 +21,26 @@ public final class LoadBalancersGetByResourceGroupSamples {
     public static void getLoadBalancer(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerGetInboundNatRulePortMapping.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerGetReduced.json
+     */
+    /**
+     * Sample code: Get load balancer reduced.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getLoadBalancerReduced(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getLoadBalancers()
+            .getByResourceGroupWithResponse("rg-name", "lb-name", null, LoadBalancerDetailLevel.REDUCED,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-01/LoadBalancerGetInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Get load balancer with inbound NAT rule port mapping.
@@ -34,6 +51,6 @@ public final class LoadBalancersGetByResourceGroupSamples {
         getLoadBalancerWithInboundNATRulePortMapping(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, null, com.azure.core.util.Context.NONE);
     }
 }

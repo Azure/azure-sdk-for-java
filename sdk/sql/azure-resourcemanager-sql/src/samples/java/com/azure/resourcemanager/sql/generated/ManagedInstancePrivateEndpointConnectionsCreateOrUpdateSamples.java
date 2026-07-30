@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkServiceCon
  */
 public final class ManagedInstancePrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstancePrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: 2025-01-01/ManagedInstancePrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.

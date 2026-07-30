@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelSource;
  */
 public final class ManagedDatabaseSensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseRecommendedColumnSensitivityLabelDisable.json
      */
     /**
      * Sample code: Disables the sensitivity recommendations on a given column.

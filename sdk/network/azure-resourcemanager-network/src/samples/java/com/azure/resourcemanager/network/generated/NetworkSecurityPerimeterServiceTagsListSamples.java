@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterServiceTagsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspServiceTagsList.json
+     * x-ms-original-file: 2025-07-01/NspServiceTagsList.json
      */
     /**
      * Sample code: NSPServiceTagsList.

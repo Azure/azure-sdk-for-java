@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ComputesRestartSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/RestartContainerInstanceCompute.json
+     * x-ms-original-file: 2026-05-15-preview/RestartContainerInstanceCompute.json
      */
     /**
      * Sample code: RestartContainerInstanceCompute.

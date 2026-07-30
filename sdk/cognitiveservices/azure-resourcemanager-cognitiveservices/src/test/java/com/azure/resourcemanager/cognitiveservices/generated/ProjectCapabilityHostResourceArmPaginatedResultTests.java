@@ -12,13 +12,12 @@ public final class ProjectCapabilityHostResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectCapabilityHostResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"mhbrbqgvg\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"ttefjoknssq\",\"zqedikdfrdbi\",\"mrjgeihfqlggwfi\"],\"vectorStoreConnections\":[\"xmjpbyep\",\"mgtvlj\",\"rc\"],\"storageConnections\":[\"qipgx\"],\"threadStorageConnections\":[\"omyqwcabvnuileey\",\"swlpaugmrmfj\",\"rxwtoaukhfkvc\",\"sizmoae\"],\"provisioningState\":\"Updating\"},\"id\":\"wuived\",\"name\":\"cgyee\",\"type\":\"xeiqbpsmg\"},{\"properties\":{\"aiServicesConnections\":[\"u\",\"mljdlrgmsplzga\"],\"vectorStoreConnections\":[\"shhvnewgnxky\",\"pqanxrjkix\"],\"storageConnections\":[\"taoypnyghshxc\"],\"threadStorageConnections\":[\"kgmnsghpxyc\",\"hdrwjjkh\"],\"provisioningState\":\"Succeeded\"},\"id\":\"ac\",\"name\":\"u\",\"type\":\"vxnqmhrpqpd\"},{\"properties\":{\"aiServicesConnections\":[\"kois\",\"css\",\"fxuifmcsypobk\"],\"vectorStoreConnections\":[\"rdzsylollgtrczzy\"],\"storageConnections\":[\"zjijpvuaurkihcir\"],\"threadStorageConnections\":[\"fx\",\"dcoxnbk\",\"ja\"],\"provisioningState\":\"Updating\"},\"id\":\"nqbnqb\",\"name\":\"izxqltgrd\",\"type\":\"gypxrxvbfihwuhvc\"},{\"properties\":{\"aiServicesConnections\":[\"s\"],\"vectorStoreConnections\":[\"rblmli\",\"wxihs\",\"nxw\",\"agnepzwaklsb\"],\"storageConnections\":[\"qqagwwr\",\"ao\",\"zisglrrczezkhh\",\"tnjadhq\"],\"threadStorageConnections\":[\"jqoyueayfbpcm\"],\"provisioningState\":\"Failed\"},\"id\":\"yrrueqth\",\"name\":\"mg\",\"type\":\"mbscbbx\"}]}")
+            "{\"nextLink\":\"gmnsghpxy\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"wjjkh\",\"yomacluzvxnqm\",\"rpqpd\",\"wmkoisq\"],\"vectorStoreConnections\":[\"f\",\"xuifmcsypobkdqz\"],\"storageConnections\":[\"sylollgtr\",\"zzydmxzjijpvua\",\"rkihcirld\"],\"threadStorageConnections\":[\"rdcoxnbkkj\",\"nurnnq\",\"nqbpi\"],\"provisioningState\":\"Creating\"},\"id\":\"tgrdogypx\",\"name\":\"x\",\"type\":\"bfihw\"},{\"properties\":{\"aiServicesConnections\":[\"ctafsrbxrblm\",\"iowxi\"],\"vectorStoreConnections\":[\"nxw\"],\"storageConnections\":[\"nepzwakls\",\"sbq\"],\"threadStorageConnections\":[\"gwwrxaomzis\",\"lrrcz\",\"zkhhltnjadhqo\"],\"provisioningState\":\"Canceled\"},\"id\":\"oyueayfbpcmsp\",\"name\":\"byrrueqth\",\"type\":\"mg\"}]}")
             .toObject(ProjectCapabilityHostResourceArmPaginatedResult.class);
-        Assertions.assertEquals("mhbrbqgvg", model.nextLink());
-        Assertions.assertEquals("ttefjoknssq", model.value().get(0).properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("xmjpbyep", model.value().get(0).properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("qipgx", model.value().get(0).properties().storageConnections().get(0));
-        Assertions.assertEquals("omyqwcabvnuileey",
-            model.value().get(0).properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("gmnsghpxy", model.nextLink());
+        Assertions.assertEquals("wjjkh", model.value().get(0).properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("f", model.value().get(0).properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("sylollgtr", model.value().get(0).properties().storageConnections().get(0));
+        Assertions.assertEquals("rdcoxnbkkj", model.value().get(0).properties().threadStorageConnections().get(0));
     }
 }
