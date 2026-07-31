@@ -28,7 +28,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
     @Test
     public void testTestAllRoutesWithResponse() throws Exception {
         String responseStr
-            = "{\"routes\":[{\"properties\":{\"name\":\"mfpgv\",\"source\":\"DeviceMessages\",\"condition\":\"paslthaqfxssmwu\",\"endpointNames\":[\"bdsrez\",\"drhneuyow\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"wyt\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"bi\",\"endpointNames\":[\"gpikpzimejza\",\"lfzxiavrmbzonoki\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"q\",\"source\":\"TwinChangeEvents\",\"condition\":\"gzpfrla\",\"endpointNames\":[\"zrnw\",\"iin\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"wp\",\"source\":\"MqttBrokerMessages\",\"condition\":\"wbtlhflsjcdh\",\"endpointNames\":[\"fjvfbgofeljagr\",\"mqhldvrii\",\"ojnal\"],\"isEnabled\":true}}]}";
+            = "{\"routes\":[{\"properties\":{\"name\":\"p\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"stwit\",\"endpointNames\":[\"hevxcced\",\"pnmdyodnwzxltjcv\",\"hlt\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"cxnavv\",\"source\":\"DeviceMessages\",\"condition\":\"ibyqunyowxwlmdj\",\"endpointNames\":[\"vfgbvfvpdboda\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"sjq\",\"source\":\"DeviceMessages\",\"condition\":\"rribd\",\"endpointNames\":[\"b\",\"ipqkghvxndzwm\"],\"isEnabled\":true}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,23 +38,26 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TestAllRoutesResult response = manager.iotHubResources()
-            .testAllRoutesWithResponse("xnavvwxq", "byqunyow",
-                new TestAllRoutesInput().withRoutingSource(RoutingSource.MQTT_BROKER_MESSAGES)
-                    .withMessage(new RoutingMessage().withBody("jrkvfgbvfvpdbo")
-                        .withAppProperties(mapOf("bdeibqipqk", "izsjqlhkrr", "rwkq", "hvxndzwmkrefajpj", "sjabibs",
-                            "yhgbijtjivfx", "bjxbkzbzk", "stawfsdjpvkv"))
-                        .withSystemProperties(mapOf("zhjjklffhmouwq", "cjabudurgkakmo")))
-                    .withTwin(new RoutingTwin().withTags("\"datarfzeey\"")
-                        .withProperties(new RoutingTwinProperties().withDesired("\"datazi\"")
-                            .withReported("\"datayuhqlbjbsybbqwrv\""))),
+            .testAllRoutesWithResponse("dcngqqmoakufgmj", "rwr",
+                new TestAllRoutesInput().withRoutingSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
+                    .withMessage(new RoutingMessage().withBody("aenuuz")
+                        .withAppProperties(mapOf("iefozbhdmsml", "bminrfdwoyuhhzi", "rmaequ", "zqhof"))
+                        .withSystemProperties(
+                            mapOf("z", "xicslfao", "kaivwit", "iyylhalnswhccsp", "bwemhairs", "scywuggwoluhc")))
+                    .withTwin(new RoutingTwin().withTags(mapOf("ggicccnxqhue", "\"datadwmsweypqwd\""))
+                        .withProperties(new RoutingTwinProperties()
+                            .withDesired(mapOf("zrncsdt", "\"datatlstvlzywem\"", "bsfgytguslfea", "\"datalusiy\"",
+                                "qukyhejhzi", "\"datacy\"", "srp", "\"dataxgfpelolppv\""))
+                            .withReported(mapOf("swibyr", "\"datajzraehtwdwrf\"", "h", "\"datadl\"")))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mfpgv", response.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, response.routes().get(0).properties().source());
-        Assertions.assertEquals("paslthaqfxssmwu", response.routes().get(0).properties().condition());
-        Assertions.assertEquals("bdsrez", response.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertFalse(response.routes().get(0).properties().isEnabled());
+        Assertions.assertEquals("p", response.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS,
+            response.routes().get(0).properties().source());
+        Assertions.assertEquals("stwit", response.routes().get(0).properties().condition());
+        Assertions.assertEquals("hevxcced", response.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertTrue(response.routes().get(0).properties().isEnabled());
     }
 
     // Use "Map.of" if available

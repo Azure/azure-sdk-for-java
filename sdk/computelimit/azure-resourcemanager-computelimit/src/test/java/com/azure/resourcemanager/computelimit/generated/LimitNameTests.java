@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LimitNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LimitName model = BinaryData.fromString("{\"value\":\"lwejdpv\",\"localizedValue\":\"yoqpsoaccta\"}")
+        LimitName model = BinaryData.fromString("{\"value\":\"mayhuybbkpodepoo\",\"localizedValue\":\"nuvamiheogna\"}")
             .toObject(LimitName.class);
-        Assertions.assertEquals("lwejdpv", model.value());
+        Assertions.assertEquals("mayhuybbkpodepoo", model.value());
     }
 }

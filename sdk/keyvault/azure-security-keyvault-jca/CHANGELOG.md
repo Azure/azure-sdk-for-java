@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,14 +8,15 @@
 
 ### Bugs Fixed
 - Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault is incomplete, the missing intermediate CA certificates are now downloaded at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Chains that are already contiguous are used as-is, so no network request is made. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
-- Fixed an issue where a disabled certificate in Azure Key Vault caused keystore initialization to fail with an HTTP 403 error. Disabled certificates are now skipped when loading aliases and a warning is logged for each skipped certificate. [#49730](https://github.com/Azure/azure-sdk-for-java/pull/49730)
 
 ### Other Changes
-- Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. This allows locked-down environments to prevent outbound HTTP(S) requests triggered by embedded certificate AIA extensions, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
+- Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
 - AIA chain completion caches the certificates published at each CA Issuers URL for 24 hours, so certificates sharing an issuer and successive refresh cycles no longer re-download the same immutable issuer certificates. Cached certificates are still fully validated on every use.
 
-### Security Advisory
-- **AIA Chain Completion**: The AIA chain completion feature downloads certificates from URLs embedded in certificate extensions. In locked-down environments or when processing untrusted certificates, set `azure.keyvault.jca.disable-aia-download=true` to disable this feature and prevent unexpected network requests.
+## 2.12.0 (2026-07-24)
+
+### Bugs Fixed
+- Fixed an issue where a disabled certificate in Azure Key Vault caused keystore initialization to fail with an HTTP 403 error. Disabled certificates are now skipped when loading aliases and a warning is logged for each skipped certificate. [#49730](https://github.com/Azure/azure-sdk-for-java/pull/49730)
 
 ## 2.11.0 (2026-02-28)
 

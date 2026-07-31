@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class PrivateEndpointConnectionsListByPrivateLinkScopeSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateEndpoint/PrivateEndpointConnection_List.json
+     * x-ms-original-file: 2026-06-16-preview/privateEndpoint/PrivateEndpointConnection_List.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a private link scope.

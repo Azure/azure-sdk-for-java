@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class IotHubResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_IoTHub_With_DeviceRegistry.json
      */
     /**
      * Sample code: CreateOrReplace_IoTHub_With_DeviceRegistry.
@@ -99,7 +99,7 @@ public final class IotHubResourceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_createOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_createOrUpdate.json
      */
     /**
      * Sample code: IotHubResource_CreateOrUpdate.

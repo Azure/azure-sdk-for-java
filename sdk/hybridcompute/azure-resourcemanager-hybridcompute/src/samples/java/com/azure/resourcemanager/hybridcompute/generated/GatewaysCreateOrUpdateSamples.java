@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class GatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Gateway.
@@ -26,6 +26,7 @@ public final class GatewaysCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withGatewayType(GatewayType.PUBLIC)
             .withAllowedFeatures(Arrays.asList("*"))
+            .withGatewayBypass(Arrays.asList("contoso.com", "internal.corp.net"))
             .create();
     }
 }

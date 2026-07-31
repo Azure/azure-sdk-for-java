@@ -338,7 +338,8 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the details of the test notification results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createNotificationsAtActionGroupResourceLevelWithResponseAsync(
@@ -353,7 +354,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the details of the test notification results.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
@@ -369,7 +370,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
@@ -386,7 +387,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the details of the test notification results.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
@@ -402,7 +403,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the details of the test notification results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TestNotificationDetailsResponseInner> createNotificationsAtActionGroupResourceLevelAsync(
@@ -417,7 +418,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the details of the test notification results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(String resourceGroupName,
@@ -433,7 +434,7 @@ public interface ActionGroupsClient extends InnerSupportsGet<ActionGroupResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the details of the test notification results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(String resourceGroupName,

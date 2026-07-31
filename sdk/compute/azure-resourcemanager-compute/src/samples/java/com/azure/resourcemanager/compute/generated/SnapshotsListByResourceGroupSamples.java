@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SnapshotsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_ListByResourceGroup.json
      */
     /**
      * Sample code: List all snapshots in a resource group.

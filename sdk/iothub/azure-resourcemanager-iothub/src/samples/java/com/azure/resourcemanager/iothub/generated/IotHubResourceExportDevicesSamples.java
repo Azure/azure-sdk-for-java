@@ -13,7 +13,7 @@ import com.azure.resourcemanager.iothub.models.ManagedIdentity;
  */
 public final class IotHubResourceExportDevicesSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_exportdevices.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_exportdevices.json
      */
     /**
      * Sample code: IotHubResource_ExportDevices.

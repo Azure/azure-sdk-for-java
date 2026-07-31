@@ -8,6 +8,7 @@ import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.msi.models.IsolationScope;
 import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -54,6 +55,17 @@ public final class IdentityImpl extends GroupableResourceImpl<Identity, Identity
         } else {
             return this.innerModel().clientId().toString();
         }
+    }
+
+    @Override
+    public IsolationScope isolationScope() {
+        return this.innerModel().isolationScope();
+    }
+
+    @Override
+    public IdentityImpl withIsolationScope(IsolationScope isolationScope) {
+        this.innerModel().withIsolationScope(isolationScope);
+        return this;
     }
 
     @Override
