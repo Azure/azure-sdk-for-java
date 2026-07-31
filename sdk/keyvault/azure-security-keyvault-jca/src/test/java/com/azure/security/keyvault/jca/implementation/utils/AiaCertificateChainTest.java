@@ -19,6 +19,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.MockedStatic;
@@ -515,6 +516,32 @@ public class AiaCertificateChainTest {
 
             httpMock.verify(() -> HttpUtil.getBytes(firstUrl), Mockito.times(2));
         }
+    }
+
+    // -----------------------------------------------------------------------
+    // Loop-termination tests
+    // -----------------------------------------------------------------------
+
+    @Test
+    @Timeout(30)
+    void completeChainViaAiaTerminatesOnCrossSignedIssuers() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        // Two CA certificates issuing each other. Walking the chain upwards never reaches a self-signed root, and
+        // the issuer of the chain's top always sits inside the already-valid prefix, so repositioning it would
+        // break that prefix and let the loop oscillate between two arrangements.
+        KeyPair keyPairA = keyGen.generateKeyPair();
+        KeyPair keyPairB = keyGen.generateKeyPair();
+        X509Certificate crossSignedA = buildCertificate(keyPairA.getPublic(), "CN=Cross CA A", "CN=Cross CA B",
+            keyPairB.getPrivate(), true, null);
+        X509Certificate crossSignedB = buildCertificate(keyPairB.getPublic(), "CN=Cross CA B", "CN=Cross CA A",
+            keyPairA.getPrivate(), true, null);
+
+        Certificate[] result = CertificateUtil.completeChainViaAia(new Certificate[] { crossSignedA, crossSignedB });
+
+        assertArrayEquals(new Certificate[] { crossSignedA, crossSignedB }, result,
+            "Cross-signed issuers must be left in place instead of being repositioned");
     }
 
     // -----------------------------------------------------------------------

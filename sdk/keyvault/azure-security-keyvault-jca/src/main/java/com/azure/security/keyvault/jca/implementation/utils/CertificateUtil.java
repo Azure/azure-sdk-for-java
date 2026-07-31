@@ -383,8 +383,19 @@ public final class CertificateUtil {
 
         List<Certificate> chain = new ArrayList<>(Arrays.asList(orderedCertificates));
         int maxDownloads = 10; // Safety limit to prevent infinite loops
+        // Defence in depth. Repositioning below takes `continue` without decrementing maxDownloads, so it is the one
+        // path whose termination rests on findValidChainEnd() advancing. It does advance today, because a reposition
+        // only touches positions after the valid prefix, but this cap keeps the loop bounded should a later change
+        // break that invariant. The bound is generous so it never truncates a legitimately completable chain.
+        int remainingIterations = 4 * (chain.size() + maxDownloads) + 16;
 
         while (true) {
+            if (--remainingIterations < 0) {
+                LOGGER.log(FINE, "Reached maximum certificate chain-completion iterations. Stopping to guard against "
+                    + "non-terminating input (possible duplicate or cross-signed intermediates).");
+                break;
+            }
+
             // Find the end of the valid chain (continuous issuer path leaf → issuer → ...).
             // This excludes any extra/unplaced certificates appended at the end.
             int validChainEnd = findValidChainEnd(chain);
@@ -428,18 +439,33 @@ public final class CertificateUtil {
             }
 
             if (validIssuerInChain != null) {
-                // Issuer exists in the chain. If it's not in the expected position (validChainEnd+1),
-                // move it to make the chain contiguous
-                if (validIssuerIndex != validChainEnd + 1) {
+                if (validIssuerIndex > validChainEnd + 1) {
+                    // Valid issuer sits among the appended/unplaced certs after the valid prefix.
+                    // Moving it up into the contiguous slot is safe: the removal is beyond the valid
+                    // prefix, so it cannot break an earlier link. This makes forward progress, so
+                    // re-evaluate the chain from the top.
                     LOGGER.log(FINE, "Valid issuer found but not at contiguous position. Moving from index {0} to {1}.",
                         new Object[] { validIssuerIndex, validChainEnd + 1 });
                     chain.remove(validIssuerIndex);
                     chain.add(validChainEnd + 1, validIssuerInChain);
+                    continue;
+                } else if (validIssuerIndex <= validChainEnd) {
+                    // The matching issuer lies *inside* the already-valid prefix. This can occur with
+                    // duplicate or cross-signed intermediates that share a subject DN and key. Removing
+                    // it would break the valid prefix and could keep the loop oscillating between two
+                    // chain arrangements without ever decrementing maxDownloads, so do NOT reposition here.
+                    // Fall through to the bounded AIA download branch, which inserts a fresh issuer copy
+                    // contiguously and makes guaranteed forward progress.
+                    LOGGER.log(FINE,
+                        "Valid issuer for [{0}] found inside the valid prefix at index {1} (likely duplicate or "
+                            + "cross-signed). Not repositioning; attempting AIA download instead.",
+                        new Object[] { x509Top.getSubjectX500Principal().getName(), validIssuerIndex });
                 } else {
+                    // validIssuerIndex == validChainEnd + 1: already contiguous. findValidChainEnd would
+                    // normally have consumed it already; fall through rather than spinning on `continue`.
                     LOGGER.log(FINE, "Valid issuer already at correct contiguous position.");
                 }
-                // Continue the loop to potentially download the issuer's issuer
-                continue;
+                // Fall through to the AIA download branch below.
             }
 
             // Try to download the issuer certificate via the AIA extension.
