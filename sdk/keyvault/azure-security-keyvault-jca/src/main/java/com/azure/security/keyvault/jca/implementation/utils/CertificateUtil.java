@@ -36,9 +36,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -50,6 +53,11 @@ public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
     static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
+    private static final int AIA_CACHE_MAX_SIZE = 32;
+    private static final long AIA_CACHE_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
+    // Issuer certificates are immutable, so caching them per CA Issuers URL avoids re-downloading the same
+    // certificate for every alias sharing an issuer and on every certificates refresh cycle.
+    private static final Map<String, CachedAiaResponse> AIA_CACHE = new ConcurrentHashMap<>();
 
     public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
@@ -683,45 +691,13 @@ public final class CertificateUtil {
                     continue; // Only HTTP/HTTPS URLs are supported
                 }
 
-                LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
-                byte[] certBytes = HttpUtil.getBytes(url);
-                if (certBytes == null) {
-                    LOGGER.log(FINE, "Failed to download issuer certificate from AIA URL: {0}", url);
-                    continue;
-                }
-
-                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                try {
-                    // Parse all certificates in the response. Some AIA endpoints return a bundle.
-                    Collection<? extends Certificate> downloadedCerts
-                        = cf.generateCertificates(new ByteArrayInputStream(certBytes));
-                    X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
-                    for (Certificate downloaded : downloadedCerts) {
-                        if (!(downloaded instanceof X509Certificate)) {
-                            continue;
-                        }
-                        X509Certificate downloadedX509Cert = (X509Certificate) downloaded;
-                        if (expectedIssuerPrincipal.equals(downloadedX509Cert.getSubjectX500Principal())
-                            && isValidIssuer(downloadedX509Cert, cert)) {
-                            return downloadedX509Cert;
-                        }
-                    }
-                } catch (CertificateException e) {
-                    // Fall back to PEM format
-                    String pem = new String(certBytes, StandardCharsets.UTF_8);
-                    if (pem.contains(BEGIN_CERTIFICATE)) {
-                        Certificate[] pemCerts = loadCertificatesFromSecretBundleValuePem(pem);
-                        X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
-                        for (Certificate pemCert : pemCerts) {
-                            if (!(pemCert instanceof X509Certificate)) {
-                                continue;
-                            }
-                            X509Certificate pemX509Cert = (X509Certificate) pemCert;
-                            if (expectedIssuerPrincipal.equals(pemX509Cert.getSubjectX500Principal())
-                                && isValidIssuer(pemX509Cert, cert)) {
-                                return pemX509Cert;
-                            }
-                        }
+                X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
+                for (X509Certificate candidate : fetchCertificatesFromAiaUrl(url)) {
+                    // Validation runs on every use, including cache hits, so a cached certificate can never
+                    // shortcut signature or CA verification.
+                    if (expectedIssuerPrincipal.equals(candidate.getSubjectX500Principal())
+                        && isValidIssuer(candidate, cert)) {
+                        return candidate;
                     }
                 }
             }
@@ -731,4 +707,121 @@ public final class CertificateUtil {
         return null;
     }
 
+    /**
+     * Retrieves the certificates published at a CA Issuers URL, reusing a previously cached response when possible.
+     *
+     * <p>Issuer certificates are immutable, so downloading them once per URL removes repeated round trips to public
+     * CA endpoints across aliases sharing an issuer and across certificate refresh cycles. Only the parsed
+     * certificates are cached, never the result of validating them against a specific certificate: callers must
+     * still run {@link #isValidIssuer(X509Certificate, X509Certificate)} on every use.
+     *
+     * @param url the CA Issuers URL taken from an AIA extension
+     * @return the certificates published at the URL, or an empty list if they cannot be retrieved or parsed
+     */
+    static List<X509Certificate> fetchCertificatesFromAiaUrl(String url) {
+        CachedAiaResponse cachedResponse = AIA_CACHE.get(url);
+        if (cachedResponse != null && !cachedResponse.isExpired()) {
+            LOGGER.log(FINE, "Reusing the cached AIA response for URL: {0}", url);
+            return cachedResponse.certificates;
+        }
+
+        LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
+        byte[] certBytes = HttpUtil.getBytes(url);
+        if (certBytes == null) {
+            LOGGER.log(FINE, "Failed to download issuer certificate from AIA URL: {0}", url);
+            return Collections.emptyList();
+        }
+
+        List<X509Certificate> certificates = parseCertificates(certBytes);
+        if (!certificates.isEmpty()) {
+            cacheAiaResponse(url, certificates);
+        }
+
+        return certificates;
+    }
+
+    /**
+     * Clears the cached AIA responses.
+     *
+     * <p>Used by tests to keep certificate downloads isolated from each other.
+     */
+    static void clearAiaCache() {
+        AIA_CACHE.clear();
+    }
+
+    /**
+     * Parses the certificates contained in an AIA response, which may be DER- or PEM-encoded and may hold a bundle
+     * rather than a single certificate.
+     *
+     * @param certBytes the raw AIA response body
+     * @return the parsed certificates, or an empty list if the response cannot be parsed
+     */
+    private static List<X509Certificate> parseCertificates(byte[] certBytes) {
+        try {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            return toX509Certificates(cf.generateCertificates(new ByteArrayInputStream(certBytes)));
+        } catch (CertificateException e) {
+            // Fall back to PEM format
+            String pem = new String(certBytes, StandardCharsets.UTF_8);
+            if (pem.contains(BEGIN_CERTIFICATE)) {
+                try {
+                    return toX509Certificates(Arrays.asList(loadCertificatesFromSecretBundleValuePem(pem)));
+                } catch (IOException | CertificateException pemException) {
+                    LOGGER.log(FINE, "Failed to parse the AIA response as PEM.", pemException);
+                }
+            }
+        }
+
+        return Collections.emptyList();
+    }
+
+    private static List<X509Certificate> toX509Certificates(Collection<? extends Certificate> certificates) {
+        List<X509Certificate> x509Certificates = new ArrayList<>(certificates.size());
+        for (Certificate certificate : certificates) {
+            if (certificate instanceof X509Certificate) {
+                x509Certificates.add((X509Certificate) certificate);
+            }
+        }
+
+        return Collections.unmodifiableList(x509Certificates);
+    }
+
+    /**
+     * Caches an AIA response, keeping the cache bounded so that certificates advertising many distinct AIA URLs
+     * cannot grow it without limit.
+     *
+     * @param url the CA Issuers URL the certificates were published at
+     * @param certificates the certificates parsed from the response
+     */
+    private static void cacheAiaResponse(String url, List<X509Certificate> certificates) {
+        if (AIA_CACHE.size() >= AIA_CACHE_MAX_SIZE) {
+            AIA_CACHE.entrySet().removeIf(entry -> entry.getValue().isExpired());
+
+            if (AIA_CACHE.size() >= AIA_CACHE_MAX_SIZE) {
+                LOGGER.log(FINE, "The AIA response cache reached its maximum size of {0} entries. Clearing it.",
+                    AIA_CACHE_MAX_SIZE);
+                AIA_CACHE.clear();
+            }
+        }
+
+        AIA_CACHE.put(url, new CachedAiaResponse(certificates));
+    }
+
+    /**
+     * A cached AIA response. Certificates are held with an expiration time so a reissued or revoked issuer is not
+     * served indefinitely.
+     */
+    private static final class CachedAiaResponse {
+        private final List<X509Certificate> certificates;
+        private final long expiresAtInMillis;
+
+        private CachedAiaResponse(List<X509Certificate> certificates) {
+            this.certificates = certificates;
+            this.expiresAtInMillis = System.currentTimeMillis() + AIA_CACHE_TTL_IN_MILLIS;
+        }
+
+        private boolean isExpired() {
+            return System.currentTimeMillis() >= expiresAtInMillis;
+        }
+    }
 }

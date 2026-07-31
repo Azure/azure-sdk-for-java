@@ -60,8 +60,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * only its leaf certificate in the secret bundle. The missing intermediate CA certificates
  * must be downloaded via the CA Issuers URL in the AIA extension of each certificate.
  *
- * <p>Tests must run sequentially because they share JVM-global state (system properties and
- * Mockito static mocks). Parallel execution would cause property-pollution flakiness.
+ * <p>Tests must run sequentially because they share JVM-global state (system properties, the AIA response cache
+ * and Mockito static mocks). Parallel execution would cause property-pollution flakiness.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class AiaCertificateChainTest {
@@ -101,12 +101,14 @@ public class AiaCertificateChainTest {
     void setupClean() {
         // Ensure each test starts with a clean state - clear the disable property
         System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        CertificateUtil.clearAiaCache();
     }
 
     @AfterEach
     void cleanup() {
         // Clear the property after each test to prevent interference with subsequent tests
         System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        CertificateUtil.clearAiaCache();
     }
 
     // -----------------------------------------------------------------------
@@ -436,6 +438,82 @@ public class AiaCertificateChainTest {
 
             assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, result);
             httpMock.verifyNoInteractions();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // AIA response cache tests
+    //
+    // Issuer certificates are immutable, so the response of each CA Issuers URL
+    // is cached to avoid repeated round trips to public CA endpoints. Caching
+    // must never shortcut issuer validation.
+    // -----------------------------------------------------------------------
+
+    @Test
+    void aiaResponseIsCachedAcrossDownloads() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+
+            assertEquals(intermediateCert, CertificateUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertEquals(intermediateCert, CertificateUtil.downloadIssuerCertificateFromAia(leafCert));
+
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void cachedAiaResponseIsStillValidatedOnEveryUse() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        // A certificate claiming the cached issuer's DN but signed by a different key. Reusing the cached
+        // response must not let it skip signature verification.
+        KeyPair impostorKeyPair = keyGen.generateKeyPair();
+        KeyPair subjectKeyPair = keyGen.generateKeyPair();
+        X509Certificate certSignedByAnotherKey = buildCertificate(subjectKeyPair.getPublic(), "CN=Other Leaf",
+            "CN=Test Intermediate CA", impostorKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+
+            assertEquals(intermediateCert, CertificateUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertNull(CertificateUtil.downloadIssuerCertificateFromAia(certSignedByAnotherKey),
+                "A cache hit must still fail issuer validation when the signature does not match");
+
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void clearAiaCacheForcesNewDownload() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+
+            CertificateUtil.downloadIssuerCertificateFromAia(leafCert);
+            CertificateUtil.clearAiaCache();
+            CertificateUtil.downloadIssuerCertificateFromAia(leafCert);
+
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void aiaCacheEvictsEntriesWhenFull() throws Exception {
+        String firstUrl = "http://aia.example.com/cache-0.crt";
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(Mockito.anyString())).thenReturn(intermediateCert.getEncoded());
+
+            CertificateUtil.fetchCertificatesFromAiaUrl(firstUrl);
+
+            // Fill the cache past its maximum size so its first entry can no longer be retained.
+            for (int i = 1; i <= 64; i++) {
+                CertificateUtil.fetchCertificatesFromAiaUrl("http://aia.example.com/cache-" + i + ".crt");
+            }
+
+            CertificateUtil.fetchCertificatesFromAiaUrl(firstUrl);
+
+            httpMock.verify(() -> HttpUtil.getBytes(firstUrl), Mockito.times(2));
         }
     }
 
