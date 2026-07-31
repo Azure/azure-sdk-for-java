@@ -15,6 +15,7 @@
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.security.keyvault.jca.implementation.utils.AiaCertificateChainUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.HttpUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
