@@ -6,8 +6,11 @@ package com.azure.resourcemanager.playwright.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.playwright.models.EnablementStatus;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceUpdate;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceUpdateProperties;
+import com.azure.resourcemanager.playwright.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,22 +19,35 @@ public final class PlaywrightWorkspaceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"jye\":\"pczwlo\"},\"properties\":{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\"}}")
+            "{\"identity\":{\"principalId\":\"elluwfziton\",\"tenantId\":\"qfpjk\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"inuvamiheogn\":{\"principalId\":\"pdvhpfxxypin\",\"clientId\":\"mayhuybbkpodepoo\"},\"yevc\":{\"principalId\":\"xzxtheo\",\"clientId\":\"si\"}}},\"tags\":{\"bwjzr\":\"ihnhun\"},\"properties\":{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\",\"reporting\":\"Disabled\",\"storageUri\":\"emv\"}}")
             .toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals("pczwlo", model.tags().get("jye"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ihnhun", model.tags().get("bwjzr"));
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
+        Assertions.assertEquals("emv", model.properties().storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlaywrightWorkspaceUpdate model = new PlaywrightWorkspaceUpdate().withTags(mapOf("jye", "pczwlo"))
+        PlaywrightWorkspaceUpdate model = new PlaywrightWorkspaceUpdate()
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf("inuvamiheogn", new UserAssignedIdentity(), "yevc", new UserAssignedIdentity())))
+            .withTags(mapOf("bwjzr", "ihnhun"))
             .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
-                .withLocalAuth(EnablementStatus.DISABLED));
+                .withLocalAuth(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.DISABLED)
+                .withStorageUri("emv"));
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals("pczwlo", model.tags().get("jye"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ihnhun", model.tags().get("bwjzr"));
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
+        Assertions.assertEquals("emv", model.properties().storageUri());
     }
 
     // Use "Map.of" if available

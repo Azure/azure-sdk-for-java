@@ -6,21 +6,25 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import org.junit.jupiter.api.Assertions;
 
 public final class EndpointBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointBaseProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"lyxwjkcprbnwbx\",\"provisioningState\":\"Succeeded\"}")
+            "{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"zuhtymwisdkfthwx\",\"endpointKind\":\"Source\",\"provisioningState\":\"Succeeded\"}")
             .toObject(EndpointBaseProperties.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.description());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.description());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointBaseProperties model = new EndpointBaseProperties().withDescription("lyxwjkcprbnwbx");
+        EndpointBaseProperties model
+            = new EndpointBaseProperties().withDescription("zuhtymwisdkfthwx").withEndpointKind(EndpointKind.SOURCE);
         model = BinaryData.fromObject(model).toObject(EndpointBaseProperties.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.description());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.description());
+        Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
     }
 }

@@ -12,15 +12,15 @@ public final class AbsoluteDeleteOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AbsoluteDeleteOption model
-            = BinaryData.fromString("{\"objectType\":\"AbsoluteDeleteOption\",\"duration\":\"gaowpulpqblylsyx\"}")
+            = BinaryData.fromString("{\"objectType\":\"AbsoluteDeleteOption\",\"duration\":\"ewpusdsttwvogvb\"}")
                 .toObject(AbsoluteDeleteOption.class);
-        Assertions.assertEquals("gaowpulpqblylsyx", model.duration());
+        Assertions.assertEquals("ewpusdsttwvogvb", model.duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AbsoluteDeleteOption model = new AbsoluteDeleteOption().withDuration("gaowpulpqblylsyx");
+        AbsoluteDeleteOption model = new AbsoluteDeleteOption().withDuration("ewpusdsttwvogvb");
         model = BinaryData.fromObject(model).toObject(AbsoluteDeleteOption.class);
-        Assertions.assertEquals("gaowpulpqblylsyx", model.duration());
+        Assertions.assertEquals("ewpusdsttwvogvb", model.duration());
     }
 }

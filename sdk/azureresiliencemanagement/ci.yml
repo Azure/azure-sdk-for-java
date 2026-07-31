@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azureresiliencemanagement/ci.yml
+      - sdk/azureresiliencemanagement/azure-resourcemanager-resiliencemanagement/
+    exclude:
+      - sdk/azureresiliencemanagement/pom.xml
+      - sdk/azureresiliencemanagement/azure-resourcemanager-resiliencemanagement/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azureresiliencemanagement/ci.yml
+      - sdk/azureresiliencemanagement/azure-resourcemanager-resiliencemanagement/
+    exclude:
+      - sdk/azureresiliencemanagement/pom.xml
+      - sdk/azureresiliencemanagement/azure-resourcemanager-resiliencemanagement/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerresiliencemanagement
+    displayName: azure-resourcemanager-resiliencemanagement
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: azureresiliencemanagement
+    Artifacts:
+      - name: azure-resourcemanager-resiliencemanagement
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresiliencemanagement
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresiliencemanagement }}

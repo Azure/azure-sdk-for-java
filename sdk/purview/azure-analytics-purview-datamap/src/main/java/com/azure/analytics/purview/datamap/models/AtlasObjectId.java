@@ -119,8 +119,13 @@ public final class AtlasObjectId implements JsonSerializable<AtlasObjectId> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("guid", this.guid);
         jsonWriter.writeStringField("typeName", this.typeName);
-        jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("uniqueAttributes", this.uniqueAttributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

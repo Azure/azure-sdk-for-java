@@ -10,8 +10,8 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceMessageSchemaRef
 public final class NamespaceMessageSchemaReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamespaceMessageSchemaReference model = BinaryData.fromString(
-            "{\"schemaRegistryNamespace\":\"onz\",\"schemaName\":\"nsikvmkqzeqqkdl\",\"schemaVersion\":\"fzxmhhvhgureodkw\"}")
+        NamespaceMessageSchemaReference model = BinaryData
+            .fromString("{\"schemaRegistryNamespace\":\"dntnevf\",\"schemaName\":\"wjmy\",\"schemaVersion\":\"tdss\"}")
             .toObject(NamespaceMessageSchemaReference.class);
     }
 }

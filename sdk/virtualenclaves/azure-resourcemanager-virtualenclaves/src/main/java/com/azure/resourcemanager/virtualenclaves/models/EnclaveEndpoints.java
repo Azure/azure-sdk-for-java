@@ -128,7 +128,7 @@ public interface EnclaveEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalCallbackRequest body);
@@ -144,7 +144,7 @@ public interface EnclaveEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalCallbackRequest body, Context context);
@@ -159,7 +159,7 @@ public interface EnclaveEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalDeletionCallbackRequest body);
@@ -175,7 +175,7 @@ public interface EnclaveEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String virtualEnclaveName,
         String enclaveEndpointName, ApprovalDeletionCallbackRequest body, Context context);

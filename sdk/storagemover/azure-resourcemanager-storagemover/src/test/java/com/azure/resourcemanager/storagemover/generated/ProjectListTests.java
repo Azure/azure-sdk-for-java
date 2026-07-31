@@ -12,8 +12,8 @@ public final class ProjectListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"vjsllrmvvdfw\",\"provisioningState\":\"Deleting\"},\"id\":\"n\",\"name\":\"ulexxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"}],\"nextLink\":\"cspkwlhzdobpxjmf\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"lfh\",\"provisioningState\":\"Succeeded\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"},{\"properties\":{\"description\":\"uesnzwdejbavo\",\"provisioningState\":\"Failed\"},\"id\":\"mohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"},{\"properties\":{\"description\":\"jjugwdkcglhslaz\",\"provisioningState\":\"Failed\"},\"id\":\"gdtjixhbkuofqwey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"}],\"nextLink\":\"aamdect\"}")
             .toObject(ProjectList.class);
-        Assertions.assertEquals("cspkwlhzdobpxjmf", model.nextLink());
+        Assertions.assertEquals("aamdect", model.nextLink());
     }
 }

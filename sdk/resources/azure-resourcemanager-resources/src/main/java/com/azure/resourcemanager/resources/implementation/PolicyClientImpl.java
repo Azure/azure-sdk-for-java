@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionVersionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
+import com.azure.resourcemanager.resources.fluent.PolicyTokensClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -109,6 +110,20 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
     }
 
     /**
+     * The PolicyAssignmentsClient object to access its operations.
+     */
+    private final PolicyAssignmentsClient policyAssignments;
+
+    /**
+     * Gets the PolicyAssignmentsClient object to access its operations.
+     * 
+     * @return the PolicyAssignmentsClient object.
+     */
+    public PolicyAssignmentsClient getPolicyAssignments() {
+        return this.policyAssignments;
+    }
+
+    /**
      * The PolicyDefinitionsClient object to access its operations.
      */
     private final PolicyDefinitionsClient policyDefinitions;
@@ -165,17 +180,17 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
     }
 
     /**
-     * The PolicyAssignmentsClient object to access its operations.
+     * The PolicyTokensClient object to access its operations.
      */
-    private final PolicyAssignmentsClient policyAssignments;
+    private final PolicyTokensClient policyTokens;
 
     /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
+     * Gets the PolicyTokensClient object to access its operations.
      * 
-     * @return the PolicyAssignmentsClient object.
+     * @return the PolicyTokensClient object.
      */
-    public PolicyAssignmentsClient getPolicyAssignments() {
-        return this.policyAssignments;
+    public PolicyTokensClient getPolicyTokens() {
+        return this.policyTokens;
     }
 
     /**
@@ -211,11 +226,12 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
+        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
         this.policyDefinitionVersions = new PolicyDefinitionVersionsClientImpl(this);
         this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
         this.policySetDefinitionVersions = new PolicySetDefinitionVersionsClientImpl(this);
-        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
+        this.policyTokens = new PolicyTokensClientImpl(this);
         this.policyExemptions = new PolicyExemptionsClientImpl(this);
     }
 }

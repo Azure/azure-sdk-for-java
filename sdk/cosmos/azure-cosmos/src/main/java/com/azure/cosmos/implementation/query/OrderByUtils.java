@@ -29,9 +29,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class OrderByUtils {
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     public static <T extends Resource> Flux<OrderByRowResult<Document>> orderedMerge(OrderbyRowComparer<Document> consumeComparer,
                                                                                      RequestChargeTracker tracker,
@@ -88,7 +89,7 @@ class OrderByUtils {
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
                 clientSideRequestStatistics.addAll(
-                    diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
+                    diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
                 QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
                                                   BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));

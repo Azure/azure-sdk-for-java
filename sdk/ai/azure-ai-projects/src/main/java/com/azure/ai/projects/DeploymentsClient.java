@@ -39,7 +39,9 @@ public final class DeploymentsClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -57,16 +59,21 @@ public final class DeploymentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response}.
+     * @return a deployment
+     *
+     * Gets a deployed model along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, requestOptions);
+    public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getDeploymentWithResponse(name, requestOptions);
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -98,12 +105,14 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listDeployments(RequestOptions requestOptions) {
+        return this.serviceClient.listDeployments(requestOptions);
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      *
      * @param name Name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,18 +121,23 @@ public final class DeploymentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployed model.
+     * @return a deployment
+     *
+     * Gets a deployed model.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Deployment get(String name) {
-        // Generated convenience method for getWithResponse
+    public Deployment getDeployment(String name) {
+        // Generated convenience method for getDeploymentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).getValue().toObject(Deployment.class);
+        return getDeploymentWithResponse(name, requestOptions).getValue().toObject(Deployment.class);
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @param modelPublisher Model publisher to filter models by.
      * @param modelName Model name (the publisher specific name) to filter models by.
@@ -138,8 +152,9 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Deployment> list(String modelPublisher, String modelName, DeploymentType deploymentType) {
-        // Generated convenience method for list
+    public PagedIterable<Deployment> listDeployments(String modelPublisher, String modelName,
+        DeploymentType deploymentType) {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
         if (modelPublisher != null) {
             requestOptions.addQueryParam("modelPublisher", modelPublisher, false);
@@ -150,11 +165,15 @@ public final class DeploymentsClient {
         if (deploymentType != null) {
             requestOptions.addQueryParam("deploymentType", deploymentType.toString(), false);
         }
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
+        return serviceClient.listDeployments(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -165,9 +184,10 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Deployment> list() {
-        // Generated convenience method for list
+    public PagedIterable<Deployment> listDeployments() {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
+        return serviceClient.listDeployments(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
     }
 }

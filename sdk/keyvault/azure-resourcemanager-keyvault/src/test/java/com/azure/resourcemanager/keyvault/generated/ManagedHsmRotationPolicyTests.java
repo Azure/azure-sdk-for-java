@@ -18,40 +18,26 @@ public final class ManagedHsmRotationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmRotationPolicy model = BinaryData.fromString(
-            "{\"attributes\":{\"created\":7216876515794387050,\"updated\":4963904800674309636,\"expiryTime\":\"jorwkqnyhgbij\"},\"lifetimeActions\":[{\"trigger\":{\"timeAfterCreate\":\"xzsjabib\",\"timeBeforeExpiry\":\"stawfsdjpvkv\"},\"action\":{\"type\":\"notify\"}},{\"trigger\":{\"timeAfterCreate\":\"zbzkdvncjabudurg\",\"timeBeforeExpiry\":\"kmokz\"},\"action\":{\"type\":\"rotate\"}},{\"trigger\":{\"timeAfterCreate\":\"fhmouwq\",\"timeBeforeExpiry\":\"zrfze\"},\"action\":{\"type\":\"notify\"}},{\"trigger\":{\"timeAfterCreate\":\"ikayuhqlbjbsybb\",\"timeBeforeExpiry\":\"r\"},\"action\":{\"type\":\"notify\"}}]}")
+            "{\"attributes\":{\"created\":7639947879919042450,\"updated\":2473641111583713453,\"expiryTime\":\"yrcdlbhshfwprac\"},\"lifetimeActions\":[{\"trigger\":{\"timeAfterCreate\":\"ykhevxccedcpnmdy\",\"timeBeforeExpiry\":\"nwzxltjcv\"},\"action\":{\"type\":\"notify\"}}]}")
             .toObject(ManagedHsmRotationPolicy.class);
-        Assertions.assertEquals("jorwkqnyhgbij", model.attributes().expiryTime());
-        Assertions.assertEquals("xzsjabib", model.lifetimeActions().get(0).trigger().timeAfterCreate());
-        Assertions.assertEquals("stawfsdjpvkv", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
+        Assertions.assertEquals("yrcdlbhshfwprac", model.attributes().expiryTime());
+        Assertions.assertEquals("ykhevxccedcpnmdy", model.lifetimeActions().get(0).trigger().timeAfterCreate());
+        Assertions.assertEquals("nwzxltjcv", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.lifetimeActions().get(0).action().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedHsmRotationPolicy model = new ManagedHsmRotationPolicy()
-            .withAttributes(new ManagedHsmKeyRotationPolicyAttributes().withExpiryTime("jorwkqnyhgbij"))
-            .withLifetimeActions(Arrays
-                .asList(
-                    new ManagedHsmLifetimeAction()
-                        .withTrigger(new ManagedHsmTrigger().withTimeAfterCreate("xzsjabib")
-                            .withTimeBeforeExpiry("stawfsdjpvkv"))
-                        .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.NOTIFY)),
-                    new ManagedHsmLifetimeAction()
-                        .withTrigger(new ManagedHsmTrigger().withTimeAfterCreate("zbzkdvncjabudurg")
-                            .withTimeBeforeExpiry("kmokz"))
-                        .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.ROTATE)),
-                    new ManagedHsmLifetimeAction()
-                        .withTrigger(
-                            new ManagedHsmTrigger().withTimeAfterCreate("fhmouwq").withTimeBeforeExpiry("zrfze"))
-                        .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.NOTIFY)),
-                    new ManagedHsmLifetimeAction()
-                        .withTrigger(
-                            new ManagedHsmTrigger().withTimeAfterCreate("ikayuhqlbjbsybb").withTimeBeforeExpiry("r"))
-                        .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.NOTIFY))));
+            .withAttributes(new ManagedHsmKeyRotationPolicyAttributes().withExpiryTime("yrcdlbhshfwprac"))
+            .withLifetimeActions(Arrays.asList(new ManagedHsmLifetimeAction()
+                .withTrigger(
+                    new ManagedHsmTrigger().withTimeAfterCreate("ykhevxccedcpnmdy").withTimeBeforeExpiry("nwzxltjcv"))
+                .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.NOTIFY))));
         model = BinaryData.fromObject(model).toObject(ManagedHsmRotationPolicy.class);
-        Assertions.assertEquals("jorwkqnyhgbij", model.attributes().expiryTime());
-        Assertions.assertEquals("xzsjabib", model.lifetimeActions().get(0).trigger().timeAfterCreate());
-        Assertions.assertEquals("stawfsdjpvkv", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
+        Assertions.assertEquals("yrcdlbhshfwprac", model.attributes().expiryTime());
+        Assertions.assertEquals("ykhevxccedcpnmdy", model.lifetimeActions().get(0).trigger().timeAfterCreate());
+        Assertions.assertEquals("nwzxltjcv", model.lifetimeActions().get(0).trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.lifetimeActions().get(0).action().type());
     }
 }

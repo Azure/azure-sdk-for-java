@@ -1,6 +1,6 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
+## 12.35.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.34.0 (2026-06-11)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.33.0 (2026-05-14)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.33.4` to version `12.34.0`.
+
+## 12.32.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.33.3` to version `12.33.4`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 12.32.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.2` to version `12.33.3`.
+
+
+## 12.34.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+## 12.32.2 (2026-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.33.1` to version `12.33.2`.
+
+## 12.33.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for service version 2026-04-06.
 
 ## 12.32.1 (2026-01-29)
 

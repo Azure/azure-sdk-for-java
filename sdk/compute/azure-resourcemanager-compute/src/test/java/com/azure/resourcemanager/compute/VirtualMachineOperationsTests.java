@@ -1681,6 +1681,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .create());
     }
 
+    @Disabled("Forbidden to create key")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canSwapOSDiskWithManagedDisk() {
@@ -2186,7 +2187,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSubnet("default")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS_GEN2)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
             .withRootUsername("tirekicker")
             .withSsh(sshPublicKey())
             // data disk

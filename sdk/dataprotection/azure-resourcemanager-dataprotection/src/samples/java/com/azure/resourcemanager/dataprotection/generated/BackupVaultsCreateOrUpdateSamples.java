@@ -11,6 +11,8 @@ import com.azure.resourcemanager.dataprotection.models.CmkKekIdentity;
 import com.azure.resourcemanager.dataprotection.models.CmkKeyVaultProperties;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreSettings;
 import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreState;
+import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreState;
 import com.azure.resourcemanager.dataprotection.models.EncryptionSettings;
 import com.azure.resourcemanager.dataprotection.models.EncryptionState;
 import com.azure.resourcemanager.dataprotection.models.FeatureSettings;
@@ -34,7 +36,7 @@ import java.util.Map;
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
@@ -62,7 +64,42 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/PutBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-03-01/PutBackupVaultWithUndelete.json
+     */
+    /**
+     * Sample code: Restore a soft-deleted backup vault.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void
+        restoreASoftDeletedBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults()
+            .define("swaggerExample")
+            .withRegion("WestUS")
+            .withExistingResourceGroup("SampleResourceGroup")
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.fromString("Enabled"))
+                        .withRetentionDurationInDays(14.0D))
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                .withFeatureSettings(new FeatureSettings()
+                    .withCrossSubscriptionRestoreSettings(
+                        new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.DISABLED))
+                    .withCrossRegionRestoreSettings(
+                        new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withXMsDeletedVaultId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DataProtection/locations/WestUS/deletedVaults/swaggerExample")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVaultWithCMK.json
      */
     /**
      * Sample code: Create BackupVault With CMK.
@@ -96,7 +133,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.

@@ -13,19 +13,19 @@ public final class ManagedClusterUpgradeSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedClusterUpgradeSpec model
-            = BinaryData.fromString("{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"uvwbhsqfs\"}")
+            = BinaryData.fromString("{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"cpdggkzzlvmbmp\"}")
                 .toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY, model.type());
-        Assertions.assertEquals("uvwbhsqfs", model.kubernetesVersion());
+        Assertions.assertEquals("cpdggkzzlvmbmp", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedClusterUpgradeSpec model
             = new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY)
-                .withKubernetesVersion("uvwbhsqfs");
+                .withKubernetesVersion("cpdggkzzlvmbmp");
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY, model.type());
-        Assertions.assertEquals("uvwbhsqfs", model.kubernetesVersion());
+        Assertions.assertEquals("cpdggkzzlvmbmp", model.kubernetesVersion());
     }
 }

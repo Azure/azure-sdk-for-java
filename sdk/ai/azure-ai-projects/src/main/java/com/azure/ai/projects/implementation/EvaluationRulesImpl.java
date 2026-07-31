@@ -85,7 +85,7 @@ public final class EvaluationRulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getEvaluationRule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -95,7 +95,7 @@ public final class EvaluationRulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getEvaluationRuleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -105,7 +105,7 @@ public final class EvaluationRulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteEvaluationRule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id, RequestOptions requestOptions,
             Context context);
 
@@ -115,74 +115,77 @@ public final class EvaluationRulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("id") String id, RequestOptions requestOptions, Context context);
-
-        @Put("/evaluationrules/{id}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluationRule, RequestOptions requestOptions, Context context);
-
-        @Put("/evaluationrules/{id}")
-        @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluationRule, RequestOptions requestOptions, Context context);
-
-        @Get("/evaluationrules")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/evaluationrules")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+        Response<Void> deleteEvaluationRuleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id, RequestOptions requestOptions,
             Context context);
 
+        @Put("/evaluationrules/{id}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createOrUpdateEvaluationRule(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluationRule, RequestOptions requestOptions, Context context);
+
+        @Put("/evaluationrules/{id}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrUpdateEvaluationRuleSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluationRule, RequestOptions requestOptions, Context context);
+
+        @Get("/evaluationrules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listEvaluationRules(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/evaluationrules")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEvaluationRulesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listEvaluationRulesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEvaluationRulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -192,7 +195,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -212,17 +215,22 @@ public final class EvaluationRulesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response} on successful completion of {@link Mono}.
+     * @return an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEvaluationRuleWithResponseAsync(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getEvaluationRule(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context));
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -232,7 +240,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -252,17 +260,21 @@ public final class EvaluationRulesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response}.
+     * @return an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.getEvaluationRuleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            id, accept, requestOptions, Context.NONE);
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     * 
+     * Removes the specified evaluation rule from the project.
      * 
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -273,13 +285,15 @@ public final class EvaluationRulesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(),
+    public Mono<Response<Void>> deleteEvaluationRuleWithResponseAsync(String id, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteEvaluationRule(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), id, requestOptions, context));
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     * 
+     * Removes the specified evaluation rule from the project.
      * 
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -290,13 +304,15 @@ public final class EvaluationRulesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String id, RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            requestOptions, Context.NONE);
+    public Response<Void> deleteEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
+        return service.deleteEvaluationRuleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            id, requestOptions, Context.NONE);
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     * 
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -306,7 +322,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -329,7 +345,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -353,17 +369,19 @@ public final class EvaluationRulesImpl {
      * @return evaluation rule model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData evaluationRule,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateEvaluationRuleWithResponseAsync(String id,
+        BinaryData evaluationRule, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                id, contentType, accept, evaluationRule, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateEvaluationRule(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, evaluationRule, requestOptions,
+            context));
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     * 
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -373,7 +391,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -396,7 +414,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -420,22 +438,26 @@ public final class EvaluationRulesImpl {
      * @return evaluation rule model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData evaluationRule,
+    public Response<BinaryData> createOrUpdateEvaluationRuleWithResponse(String id, BinaryData evaluationRule,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            contentType, accept, evaluationRule, requestOptions, Context.NONE);
+        return service.createOrUpdateEvaluationRuleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, evaluationRule, requestOptions,
+            Context.NONE);
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -449,7 +471,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -472,23 +494,26 @@ public final class EvaluationRulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listEvaluationRulesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(),
+            .withContext(context -> service.listEvaluationRules(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -502,7 +527,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -524,22 +549,25 @@ public final class EvaluationRulesImpl {
      * @return paged collection of EvaluationRule items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listEvaluationRulesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
-            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listEvaluationRulesSinglePageAsync(requestOptions),
+            nextLink -> listEvaluationRulesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -553,7 +581,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -575,22 +603,25 @@ public final class EvaluationRulesImpl {
      * @return paged collection of EvaluationRule items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listEvaluationRulesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listEvaluationRulesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>actionType</td><td>String</td><td>No</td><td>Filter by the type of evaluation rule. Allowed values:
-     * "continuousEvaluation", "humanEvaluation".</td></tr>
+     * "continuousEvaluation", "humanEvaluationPreview".</td></tr>
      * <tr><td>agentName</td><td>String</td><td>No</td><td>Filter by the agent name.</td></tr>
      * <tr><td>enabled</td><td>Boolean</td><td>No</td><td>Filter by the enabled status.</td></tr>
      * </table>
@@ -604,7 +635,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -626,15 +657,17 @@ public final class EvaluationRulesImpl {
      * @return paged collection of EvaluationRule items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listEvaluationRules(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listSinglePage(requestOptions),
-            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listEvaluationRulesSinglePage(requestOptions),
+            nextLink -> listEvaluationRulesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
+     * List evaluation rules
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -645,7 +678,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -669,16 +702,19 @@ public final class EvaluationRulesImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listEvaluationRulesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listEvaluationRulesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
+     * List evaluation rules
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -689,7 +725,7 @@ public final class EvaluationRulesImpl {
      *     displayName: String (Optional)
      *     description: String (Optional)
      *     action (Required): {
-     *         type: String(continuousEvaluation/humanEvaluation) (Required)
+     *         type: String(continuousEvaluation/humanEvaluationPreview) (Required)
      *     }
      *     filter (Optional): {
      *         agentName: String (Required)
@@ -712,10 +748,11 @@ public final class EvaluationRulesImpl {
      * @return paged collection of EvaluationRule items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listEvaluationRulesNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listEvaluationRulesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

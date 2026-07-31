@@ -35,12 +35,8 @@ public final class ManagedClustersImpl implements ManagedClusters {
         Context context) {
         Response<ManagedClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedClusterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedClusterImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedCluster getByResourceGroup(String resourceGroupName, String clusterName) {
@@ -84,12 +80,8 @@ public final class ManagedClustersImpl implements ManagedClusters {
         FaultSimulationIdContent parameters, Context context) {
         Response<FaultSimulationInner> inner
             = this.serviceClient().getFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FaultSimulationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FaultSimulationImpl(inner.getValue(), this.manager()));
     }
 
     public FaultSimulation getFaultSimulation(String resourceGroupName, String clusterName,

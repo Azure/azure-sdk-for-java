@@ -31,12 +31,8 @@ public final class OperatorApiConnectionsImpl implements OperatorApiConnections 
         String operatorApiConnectionName, Context context) {
         Response<OperatorApiConnectionInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, operatorApiConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperatorApiConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperatorApiConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public OperatorApiConnection getByResourceGroup(String resourceGroupName, String operatorApiConnectionName) {

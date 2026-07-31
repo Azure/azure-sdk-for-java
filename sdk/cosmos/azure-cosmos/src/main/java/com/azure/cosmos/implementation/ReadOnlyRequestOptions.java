@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 
@@ -129,6 +130,13 @@ public interface ReadOnlyRequestOptions {
     Boolean isIndexMetricsEnabled();
 
     /**
+     * Gets the query advice enabled.
+     *
+     * @return the query advice enabled. It could be null if not defined or called on an irrelevant operation.
+     */
+    Boolean isQueryAdviceEnabled();
+
+    /**
      * Gets the query name.
      *
      * @return the query name. It could be null if not defined or called on an irrelevant operation.
@@ -149,4 +157,11 @@ public interface ReadOnlyRequestOptions {
      * @return the custom correlated ids.
      */
     Set<String> getKeywordIdentifiers();
+
+    /**
+     * Gets the custom item serializer.
+     *
+     * @return the custom item serializer. It could be null if not defined or called on an irrelevant operation.
+     */
+    CosmosItemSerializer getCustomItemSerializer();
 }

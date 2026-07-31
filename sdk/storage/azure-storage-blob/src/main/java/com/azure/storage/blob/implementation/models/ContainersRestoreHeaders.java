@@ -17,10 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ContainersRestoreHeaders {
     /*
-     * The x-ms-version property.
+     * The x-ms-client-request-id property.
      */
     @Generated
-    private String xMsVersion;
+    private String xMsClientRequestId;
 
     /*
      * The x-ms-request-id property.
@@ -29,10 +29,10 @@ public final class ContainersRestoreHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-client-request-id property.
+     * The x-ms-version property.
      */
     @Generated
-    private String xMsClientRequestId;
+    private String xMsVersion;
 
     /*
      * The Date property.
@@ -49,9 +49,9 @@ public final class ContainersRestoreHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersRestoreHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -61,24 +61,24 @@ public final class ContainersRestoreHeaders {
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @return the xMsVersion value.
+     * @return the xMsClientRequestId value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ContainersRestoreHeaders object itself.
      */
     @Generated
-    public ContainersRestoreHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public ContainersRestoreHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -105,24 +105,24 @@ public final class ContainersRestoreHeaders {
     }
 
     /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsClientRequestId value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersRestoreHeaders object itself.
      */
     @Generated
-    public ContainersRestoreHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public ContainersRestoreHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

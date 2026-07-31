@@ -24,7 +24,7 @@ public final class ManagedClustersListFaultSimulationMockTests {
     @Test
     public void testListFaultSimulation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"simulationId\":\"whixmonstsh\",\"status\":\"StartFailed\",\"startTime\":\"2021-11-30T03:41Z\",\"endTime\":\"2021-08-28T04:08:34Z\",\"details\":{\"clusterId\":\"lduccbi\",\"operationId\":\"svu\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"iegstm\",\"status\":\"StartFailed\",\"operationId\":\"jizcilnghgs\",\"operationStatus\":\"Created\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-09-06T18:31Z\"}}}}]}";
+            = "{\"value\":[{\"simulationId\":\"npbs\",\"status\":\"Done\",\"startTime\":\"2021-09-23T08:24:57Z\",\"endTime\":\"2021-04-22T04:47:20Z\",\"details\":{\"clusterId\":\"rmozihmipgawt\",\"operationId\":\"pkyjcxcjxgrytfm\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"ilrmcaykggnox\",\"status\":\"Done\",\"operationId\":\"ksxwpnd\",\"operationStatus\":\"Created\"},{\"nodeTypeName\":\"nznthjtw\",\"status\":\"Active\",\"operationId\":\"srxuzvoam\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"iosmgbzahgxqdly\",\"status\":\"Active\",\"operationId\":\"laprlt\",\"operationStatus\":\"Created\"},{\"nodeTypeName\":\"bhjmznnb\",\"status\":\"Stopping\",\"operationId\":\"qalarvlagunbtg\",\"operationStatus\":\"Succeeded\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-08-19T19:49:36Z\"}}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,25 +33,25 @@ public final class ManagedClustersListFaultSimulationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FaultSimulation> response = manager.managedClusters()
-            .listFaultSimulation("gehkfkimrtixokff", "yinljqe", com.azure.core.util.Context.NONE);
+        PagedIterable<FaultSimulation> response
+            = manager.managedClusters().listFaultSimulation("ltsxoatf", "g", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("whixmonstsh", response.iterator().next().simulationId());
-        Assertions.assertEquals(FaultSimulationStatus.START_FAILED, response.iterator().next().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T03:41Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T04:08:34Z"), response.iterator().next().endTime());
-        Assertions.assertEquals("lduccbi", response.iterator().next().details().clusterId());
-        Assertions.assertEquals("svu", response.iterator().next().details().operationId());
-        Assertions.assertEquals("iegstm",
+        Assertions.assertEquals("npbs", response.iterator().next().simulationId());
+        Assertions.assertEquals(FaultSimulationStatus.DONE, response.iterator().next().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T08:24:57Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T04:47:20Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("rmozihmipgawt", response.iterator().next().details().clusterId());
+        Assertions.assertEquals("pkyjcxcjxgrytfm", response.iterator().next().details().operationId());
+        Assertions.assertEquals("ilrmcaykggnox",
             response.iterator().next().details().nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.START_FAILED,
+        Assertions.assertEquals(FaultSimulationStatus.DONE,
             response.iterator().next().details().nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("jizcilnghgs",
+        Assertions.assertEquals("ksxwpnd",
             response.iterator().next().details().nodeTypeFaultSimulation().get(0).operationId());
         Assertions.assertEquals(SfmcOperationStatus.CREATED,
             response.iterator().next().details().nodeTypeFaultSimulation().get(0).operationStatus());
         Assertions.assertFalse(response.iterator().next().details().parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T18:31Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T19:49:36Z"),
             response.iterator().next().details().parameters().constraints().expirationTime());
     }
 }

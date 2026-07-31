@@ -9,7 +9,7 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
  */
 public final class ImagesListDownloadUriSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Images_ListDownloadUri_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Images_ListDownloadUri_MaximumSet_Gen.json
      */
     /**
      * Sample code: Images_ListDownloadUri.

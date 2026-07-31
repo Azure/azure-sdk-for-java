@@ -185,6 +185,10 @@ public class ReflectionUtils {
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
 
+    public static void setBackgroundRefreshJitterMaxInSeconds(GlobalEndpointManager globalEndPointManager, int seconds){
+        set(globalEndPointManager, seconds, "backgroundRefreshJitterMaxInSeconds");
+    }
+
     public static void setDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient, DiagnosticsProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
     }

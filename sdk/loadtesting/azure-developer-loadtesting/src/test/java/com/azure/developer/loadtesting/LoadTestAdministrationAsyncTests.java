@@ -5,20 +5,28 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.developer.loadtesting.models.DailyRecurrence;
 import com.azure.developer.loadtesting.models.FileValidationStatus;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
+import com.azure.developer.loadtesting.models.PassFailTestResult;
+import com.azure.developer.loadtesting.models.ScheduleTestsTrigger;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
-import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestRunEndedEventCondition;
+import com.azure.developer.loadtesting.models.TestRunEndedNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestsNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestsNotificationRule;
+import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
@@ -31,7 +39,9 @@ import reactor.test.StepVerifier;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +55,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTestBase {
 
     // Helpers
-
     private BinaryData getFileBodyFromResource(String fileName) {
         URL url = LoadTestAdministrationAsyncTests.class.getClassLoader().getResource(fileName);
 
@@ -128,31 +137,10 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
         StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
     }
 
-    @Test
-    @Order(6)
-    public void createOrUpdateTestProfile() {
-
-        Map<String, FunctionFlexConsumptionResourceConfiguration> configurations = new HashMap<>();
-        configurations.put("config1",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(2048).setHttpConcurrency(100L));
-        configurations.put("config2",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(4096).setHttpConcurrency(100L));
-
-        TestProfile testProfile = new TestProfile().setTestId(newTestIdAsync)
-            .setDisplayName("Java SDK Sample Test Profile")
-            .setDescription("Sample Test Profile")
-            .setTargetResourceId(targetResourceId)
-            .setTargetResourceConfigurations(
-                new FunctionFlexConsumptionTargetResourceConfigurations().setConfigurations(configurations));
-        LoadTestAdministrationAsyncClient adminClient = getLoadTestAdministrationAsyncClient();
-        Mono<TestProfile> monoResponse = adminClient.createOrUpdateTestProfile(newTestProfileIdAsync, testProfile);
-        StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
-    }
-
     // Gets
 
     @Test
-    @Order(7)
+    @Order(6)
     public void getTestFile() {
 
         Mono<TestFileInfo> monoTestScriptFileResponse
@@ -173,7 +161,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     }
 
     @Test
-    @Order(8)
+    @Order(7)
     public void getTest() {
         Mono<LoadTest> monoResponse = getLoadTestAdministrationAsyncClient().getTest(newTestIdAsync);
 
@@ -184,18 +172,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     }
 
     @Test
-    @Order(9)
-    public void getTestProfile() {
-        Mono<TestProfile> monoResponse = getLoadTestAdministrationAsyncClient().getTestProfile(newTestProfileIdAsync);
-
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            assertNotNull(response);
-            assertEquals(newTestProfileIdAsync, response.getTestProfileId());
-        }).verifyComplete();
-    }
-
-    @Test
-    @Order(10)
+    @Order(8)
     public void getAppComponents() {
 
         Mono<TestAppComponents> monoResponse = getLoadTestAdministrationAsyncClient().getAppComponents(newTestIdAsync);
@@ -209,7 +186,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     }
 
     @Test
-    @Order(11)
+    @Order(9)
     public void getServerMetricsConfig() {
 
         Mono<TestServerMetricsConfiguration> monoResponse
@@ -225,7 +202,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     // Lists
 
     @Test
-    @Order(12)
+    @Order(10)
     public void listTestFiles() {
         PagedFlux<TestFileInfo> response = getLoadTestAdministrationAsyncClient().listTestFiles(newTestIdAsync);
 
@@ -237,8 +214,9 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
         }).thenConsumeWhile(testFileInfo -> true).verifyComplete();
     }
 
+    @LiveOnly
     @Test
-    @Order(13)
+    @Order(11)
     public void listTests() {
         List<LoadTest> testList = new ArrayList<>();
         PagedFlux<LoadTest> response
@@ -250,24 +228,179 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
         assertTrue(testList.stream().anyMatch(test -> test.getTestId().equals(newTestIdAsync)));
     }
 
+    // Trigger CRUD tests
+
+    @Test
+    @Order(12)
+    public void createOrUpdateTrigger() {
+        ScheduleTestsTrigger trigger = new ScheduleTestsTrigger().setDisplayName("sample-trigger")
+            .setDescription("Sample trigger for testing")
+            .setTestIds(Arrays.asList(newTestIdAsync))
+            .setStartDateTime(OffsetDateTime.now().plusDays(2))
+            .setRecurrence(new DailyRecurrence().setInterval(1));
+
+        Mono<Trigger> result = getLoadTestAdministrationAsyncClient().createOrUpdateTrigger(triggerIdAsync, trigger);
+
+        StepVerifier.create(result).assertNext(created -> {
+            assertNotNull(created);
+            assertNotNull(created.getTriggerId());
+            assertEquals("sample-trigger", created.getDisplayName());
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(13)
+    public void getTrigger() {
+        Mono<Trigger> result = getLoadTestAdministrationAsyncClient().getTrigger(triggerIdAsync);
+
+        StepVerifier.create(result).assertNext(trigger -> {
+            assertNotNull(trigger);
+            assertEquals("sample-trigger", trigger.getDisplayName());
+        }).verifyComplete();
+    }
+
     @Test
     @Order(14)
-    public void listTestProfiles() {
+    public void listTriggers() {
+        PagedFlux<Trigger> result
+            = getLoadTestAdministrationAsyncClient().listTriggers(newTestIdAsync, null, null, null);
 
-        List<TestProfile> testProfileList = new ArrayList<>();
-        PagedFlux<TestProfile> response = getLoadTestAdministrationAsyncClient().listTestProfiles();
+        StepVerifier.create(result)
+            .expectNextMatches(trigger -> "sample-trigger".equals(trigger.getDisplayName()))
+            .thenConsumeWhile(trigger -> true)
+            .verifyComplete();
+    }
 
-        StepVerifier.create(response).thenConsumeWhile(testProfileList::add).expectComplete().verify();
+    @Test
+    @Order(15)
+    public void deleteTrigger() {
+        Mono<Void> result = getLoadTestAdministrationAsyncClient().deleteTrigger(triggerIdAsync);
 
-        assertTrue(testProfileList.size() > 0);
-        assertTrue(testProfileList.stream()
-            .anyMatch(testProfile -> testProfile.getTestProfileId().equals(newTestProfileIdAsync)));
+        StepVerifier.create(result).verifyComplete();
+    }
+
+    // Notification Rule CRUD tests
+
+    @Test
+    @Order(16)
+    public void createOrUpdateNotificationRule() {
+        TestRunEndedEventCondition condition = new TestRunEndedEventCondition()
+            .setTestRunStatuses(Arrays.asList(TestRunStatus.DONE, TestRunStatus.FAILED))
+            .setTestRunResults(Arrays.asList(PassFailTestResult.PASSED, PassFailTestResult.FAILED));
+
+        // Build the event filter
+        TestRunEndedNotificationEventFilter eventFilter
+            = new TestRunEndedNotificationEventFilter().setCondition(condition);
+
+        // Build the event filters map
+        Map<String, TestsNotificationEventFilter> eventFilters = new HashMap<>();
+        eventFilters.put("testRunEnded", eventFilter);
+
+        // Build the notification rule using the strongly-typed model
+        TestsNotificationRule rule = new TestsNotificationRule().setDisplayName("Test Notification Rule")
+            .setTestIds(Arrays.asList(newTestIdAsync))
+            .setActionGroupIds(Arrays.asList(actionGroupId))
+            .setEventFilters(eventFilters);
+
+        Mono<NotificationRule> result
+            = getLoadTestAdministrationAsyncClient().createOrUpdateNotificationRule(notificationRuleIdAsync, rule);
+
+        StepVerifier.create(result).assertNext(created -> {
+            assertNotNull(created);
+            assertEquals("Test Notification Rule", created.getDisplayName());
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(17)
+    public void getNotificationRule() {
+        Mono<NotificationRule> result
+            = getLoadTestAdministrationAsyncClient().getNotificationRule(notificationRuleIdAsync);
+
+        StepVerifier.create(result).assertNext(rule -> {
+            assertNotNull(rule);
+            assertEquals("Test Notification Rule", rule.getDisplayName());
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(18)
+    public void listNotificationRules() {
+        PagedFlux<NotificationRule> result
+            = getLoadTestAdministrationAsyncClient().listNotificationRules(newTestIdAsync, null, null, null);
+
+        StepVerifier.create(result)
+            .expectNextMatches(rule -> "Test Notification Rule".equals(rule.getDisplayName()))
+            .thenConsumeWhile(rule -> true)
+            .verifyComplete();
+    }
+
+    @Test
+    @Order(19)
+    public void deleteNotificationRule() {
+        Mono<Void> result = getLoadTestAdministrationAsyncClient().deleteNotificationRule(notificationRuleIdAsync);
+
+        StepVerifier.create(result).verifyComplete();
+    }
+
+    @Test
+    @Order(20)
+    public void beginGenerateTestPlanRecommendations() {
+        RequestOptions requestOptions = new RequestOptions();
+        PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
+            .beginGenerateTestPlanRecommendations(recordingTestId, requestOptions);
+        poller = setPlaybackPollerFluxPollInterval(poller);
+
+        StepVerifier.create(poller.last()).assertNext(pollResponse -> {
+            assertNotNull(pollResponse);
+            assertTrue(pollResponse.getStatus().isComplete());
+        }).verifyComplete();
+    }
+
+    // Clone Test
+
+    @Test
+    @Order(21)
+    public void beginCloneTest() {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData cloneRequest = BinaryData.fromString(String.format("{\"newTestId\":\"%s\"}", cloneTestIdAsync));
+        PollerFlux<BinaryData, BinaryData> poller
+            = getLoadTestAdministrationAsyncClient().beginCloneTest(newTestIdAsync, cloneRequest, requestOptions);
+        poller = setPlaybackPollerFluxPollInterval(poller);
+
+        StepVerifier.create(poller.last()).assertNext(pollResponse -> {
+            assertNotNull(pollResponse);
+            assertTrue(pollResponse.getStatus().isComplete());
+
+            // Verify the cloned test exists by parsing the final result
+            BinaryData finalResult = pollResponse.getValue();
+            assertNotNull(finalResult);
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(22)
+    public void getClonedTest() {
+        Mono<LoadTest> monoResponse = getLoadTestAdministrationAsyncClient().getTest(cloneTestIdAsync);
+
+        StepVerifier.create(monoResponse).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(cloneTestIdAsync, response.getTestId());
+        }).verifyComplete();
+    }
+
+    @Test
+    @Order(23)
+    public void deleteClonedTest() {
+        StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestWithResponse(cloneTestIdAsync, null))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     // Deletes
 
     @Test
-    @Order(15)
+    @Order(24)
     public void deleteTestFile() {
         StepVerifier
             .create(getLoadTestAdministrationAsyncClient().deleteTestFileWithResponse(newTestIdAsync, uploadCsvFileName,
@@ -282,16 +415,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     }
 
     @Test
-    @Order(16)
-    public void deleteTestProfile() {
-        StepVerifier
-            .create(getLoadTestAdministrationAsyncClient().deleteTestProfileWithResponse(newTestProfileIdAsync, null))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    @Order(17)
+    @Order(25)
     public void deleteTest() {
         StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestWithResponse(newTestIdAsync, null))
             .expectNextCount(1)

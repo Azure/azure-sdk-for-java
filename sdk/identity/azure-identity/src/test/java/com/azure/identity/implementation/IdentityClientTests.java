@@ -4,8 +4,18 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.implementation.util.CertificateUtil;
@@ -29,6 +39,7 @@ import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -41,10 +52,12 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -329,6 +342,7 @@ public class IdentityClientTests {
 
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                     ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
@@ -372,6 +386,7 @@ public class IdentityClientTests {
                 = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                     ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
@@ -422,6 +437,7 @@ public class IdentityClientTests {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock
             = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
                 when(builder.authority(any())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
                 PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
@@ -473,6 +489,7 @@ public class IdentityClientTests {
                     when(builder.build()).thenReturn(application);
                     when(builder.authority(any())).thenReturn(builder);
                     when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                    when(builder.disableInternalRetries()).thenReturn(builder);
                     when(builder.httpClient(any())).thenReturn(builder);
                     when(builder.logPii(anyBoolean())).thenReturn(builder);
                 })) {
@@ -573,6 +590,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -610,6 +628,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -636,6 +655,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -662,6 +682,7 @@ public class IdentityClientTests {
                 when(builder.build()).thenReturn(application);
                 when(builder.authority(any())).thenReturn(builder);
                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
+                when(builder.disableInternalRetries()).thenReturn(builder);
                 when(builder.httpClient(any())).thenReturn(builder);
                 when(builder.logPii(anyBoolean())).thenReturn(builder);
             })) {
@@ -949,6 +970,33 @@ public class IdentityClientTests {
     }
 
     @Test
+    public void testGetAzdErrorMessageReturnsExtractedMessage() {
+        // Should return extracted user-friendly message when available
+        String output = "{\"data\":{\"message\":\"run azd auth login\"}}";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals("run azd auth login", result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForNoValidMessages() {
+        // Should return the raw input when extractUserFriendlyErrorFromAzdOutput returns null
+        String output = "{\"data\":{\"notamessage\":\"Not a message\"}}\n" + "This is not JSON";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
+    }
+
+    @Test
+    public void testGetAzdErrorMessageFallsBackForWhitespaceOnlyInput() {
+        // Should return the whitespace string when extraction returns null
+        String output = "   \n\n   \t  ";
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.getAzdErrorMessage(output);
+        assertEquals(output, result);
+    }
+
+    @Test
     public void testManagedCredentialSkipsImdsProbing() {
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -979,6 +1027,119 @@ public class IdentityClientTests {
             assertEquals(1, identityClientMock.constructed().size(),
                 "Should create only one IdentityClient when AZURE_TOKEN_CREDENTIALS=managedidentitycredential");
         }
+    }
+
+    @Test
+    public void testConfidentialClientRetryCountWithDisabledMsalInternalRetries() {
+        AtomicInteger requestCount = new AtomicInteger(0);
+        final int retryCount = 2;
+
+        HttpClient mockHttpClient = new HttpClient() {
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                requestCount.incrementAndGet();
+                return new MockHttpResponse(request, 500);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                requestCount.incrementAndGet();
+                return Mono.just(new MockHttpResponse(request, 500));
+            }
+        };
+
+        IdentityClientOptions options = new IdentityClientOptions().setHttpClient(mockHttpClient)
+            .disableInstanceDiscovery()
+            .setRetryPolicy(new RetryPolicy(new FixedDelay(retryCount, Duration.ofMillis(1))));
+
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret("test-secret")
+            .identityClientOptions(options)
+            .build();
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        StepVerifier.create(client.authenticateWithConfidentialClient(request))
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
+            .verify();
+
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
+    }
+
+    @Test
+    public void testPublicClientRetryCountWithDisabledMsalInternalRetries() {
+        AtomicInteger requestCount = new AtomicInteger(0);
+        final int retryCount = 2;
+
+        HttpClient mockHttpClient = new HttpClient() {
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                requestCount.incrementAndGet();
+                return new MockHttpResponse(request, 503);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                requestCount.incrementAndGet();
+                return Mono.just(new MockHttpResponse(request, 503));
+            }
+        };
+
+        IdentityClientOptions options = new IdentityClientOptions().setHttpClient(mockHttpClient)
+            .disableInstanceDiscovery()
+            .setRetryOptions(new RetryOptions(new FixedDelayOptions(retryCount, Duration.ofMillis(1))));
+
+        IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .identityClientOptions(options)
+            .build();
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+
+        StepVerifier.create(client.authenticateWithUsernamePassword(request, "test-username", "test-password"))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
+            .verify();
+
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
+    }
+
+    @Test
+    public void testManagedIdentityClientRetryCountWithDisabledMsalInternalRetries() {
+        AtomicInteger requestCount = new AtomicInteger(0);
+        final int retryCount = 2;
+
+        HttpClient mockHttpClient = new HttpClient() {
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                requestCount.incrementAndGet();
+                return new MockHttpResponse(request, 500);
+            }
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                requestCount.incrementAndGet();
+                return Mono.just(new MockHttpResponse(request, 500));
+            }
+        };
+
+        RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(retryCount, Duration.ofMillis(1)));
+
+        IdentityClientOptions options
+            = new IdentityClientOptions().setHttpClient(mockHttpClient).setRetryPolicy(retryPolicy);
+
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
+
+        StepVerifier
+            .create(client.authenticateWithManagedIdentityMsalClient(
+                new TokenRequestContext().addScopes("https://management.azure.com/.default")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
+            .verify();
+
+        assertEquals(retryCount + 1, requestCount.get(), "With maxRetries=" + retryCount + ", total requests should be "
+            + (retryCount + 1) + " (1 initial + " + retryCount + " retries)");
     }
 
 }

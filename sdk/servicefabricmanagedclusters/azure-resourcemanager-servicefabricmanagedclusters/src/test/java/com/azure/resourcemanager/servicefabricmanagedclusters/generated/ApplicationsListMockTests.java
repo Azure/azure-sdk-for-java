@@ -25,7 +25,7 @@ public final class ApplicationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"managedIdentities\":[{\"name\":\"bm\",\"principalId\":\"pjbabwidfc\"},{\"name\":\"sspuunnoxyhkx\",\"principalId\":\"qddrihpfhoqcaae\"},{\"name\":\"dao\",\"principalId\":\"djvlpj\"},{\"name\":\"xkzb\",\"principalId\":\"msgeivsiykzk\"}],\"provisioningState\":\"cjdx\",\"version\":\"bzo\",\"parameters\":{\"ogtqxepnylbf\":\"ulapzwyrp\",\"cib\":\"ajlyjtlvofqzhv\",\"uxrkjp\":\"fmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"upgradePolicy\":{\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":857914437,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":2010544463,\"maxPercentUnhealthyPartitionsPerService\":1753999923,\"maxPercentUnhealthyReplicasPerPartition\":426068094},\"serviceTypeHealthPolicyMap\":{\"vuqeqvldspast\":{\"maxPercentUnhealthyServices\":1243501701,\"maxPercentUnhealthyPartitionsPerService\":1525920075,\"maxPercentUnhealthyReplicasPerPartition\":983606156},\"dmflv\":{\"maxPercentUnhealthyServices\":900352978,\"maxPercentUnhealthyPartitionsPerService\":1481750195,\"maxPercentUnhealthyReplicasPerPartition\":1155931033},\"jlxr\":{\"maxPercentUnhealthyServices\":922777,\"maxPercentUnhealthyPartitionsPerService\":1294255388,\"maxPercentUnhealthyReplicasPerPartition\":1941406807}}},\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"apeewchpxlkt\",\"healthCheckStableDuration\":\"kuziycsle\",\"healthCheckRetryTimeout\":\"ufuztcktyhjtq\",\"upgradeTimeout\":\"dcgzul\",\"upgradeDomainTimeout\":\"mmrqz\"},\"instanceCloseDelayDuration\":9007359622737683059,\"upgradeMode\":\"Monitored\",\"upgradeReplicaSetCheckTimeout\":6630814331855742678,\"recreateApplication\":false}},\"tags\":{\"ytp\":\"rvqeevtoepryutn\"},\"identity\":{\"principalId\":\"o\",\"tenantId\":\"vf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"xndticokpvzmlqtm\":{\"principalId\":\"adflgzu\",\"clientId\":\"glae\"},\"iykhy\":{\"principalId\":\"gxobfirclnp\",\"clientId\":\"iayz\"}}},\"location\":\"fvjlboxqvkjlmx\",\"id\":\"mdy\",\"name\":\"hdwdi\",\"type\":\"umbnraauzzp\"}]}";
+            = "{\"value\":[{\"properties\":{\"managedIdentities\":[{\"name\":\"kuziycsle\",\"principalId\":\"ufuztcktyhjtq\"}],\"provisioningState\":\"cgzulwmmrqzzr\",\"version\":\"vpglydz\",\"parameters\":{\"yutnwytpzdmov\":\"vqeevtoep\",\"aawzqadfl\":\"vf\",\"riglaec\":\"z\",\"kpvzmlq\":\"ndtic\"},\"upgradePolicy\":{\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":763019330,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":403916626,\"maxPercentUnhealthyPartitionsPerService\":456968385,\"maxPercentUnhealthyReplicasPerPartition\":1135591058},\"serviceTypeHealthPolicyMap\":{\"pkc\":{\"maxPercentUnhealthyServices\":1763053171,\"maxPercentUnhealthyPartitionsPerService\":2041776052,\"maxPercentUnhealthyReplicasPerPartition\":1047219235},\"riykhyawfvjlbox\":{\"maxPercentUnhealthyServices\":1115944872,\"maxPercentUnhealthyPartitionsPerService\":1931804941,\"maxPercentUnhealthyReplicasPerPartition\":1763691901}}},\"forceRestart\":false,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"mxho\",\"healthCheckStableDuration\":\"dynhdwdigum\",\"healthCheckRetryTimeout\":\"nraauzz\",\"upgradeTimeout\":\"tj\",\"upgradeDomainTimeout\":\"zysdzh\"},\"instanceCloseDelayDuration\":6070245982200608768,\"upgradeMode\":\"UnmonitoredAuto\",\"upgradeReplicaSetCheckTimeout\":1821585547650833137,\"recreateApplication\":false}},\"tags\":{\"hqyikvy\":\"onkp\",\"vluwmncsttij\":\"auy\",\"vpo\":\"y\",\"huzqgn\":\"krsgsgb\"},\"identity\":{\"principalId\":\"kynscliqhzv\",\"tenantId\":\"nk\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"frbbc\":{\"principalId\":\"otppnv\",\"clientId\":\"zxhi\"}}},\"location\":\"qagt\",\"id\":\"dhlfkqojpykvgt\",\"name\":\"dcnifmz\",\"type\":\"sdymbrn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,85 +35,86 @@ public final class ApplicationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApplicationResource> response
-            = manager.applications().list("qypfcv", "er", com.azure.core.util.Context.NONE);
+            = manager.applications().list("ril", "zapeewchpx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rvqeevtoepryutn", response.iterator().next().tags().get("ytp"));
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("fvjlboxqvkjlmx", response.iterator().next().location());
-        Assertions.assertEquals("bm", response.iterator().next().managedIdentities().get(0).name());
-        Assertions.assertEquals("pjbabwidfc", response.iterator().next().managedIdentities().get(0).principalId());
-        Assertions.assertEquals("bzo", response.iterator().next().version());
-        Assertions.assertEquals("ulapzwyrp", response.iterator().next().parameters().get("ogtqxepnylbf"));
+        Assertions.assertEquals("onkp", response.iterator().next().tags().get("hqyikvy"));
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("qagt", response.iterator().next().location());
+        Assertions.assertEquals("kuziycsle", response.iterator().next().managedIdentities().get(0).name());
+        Assertions.assertEquals("ufuztcktyhjtq", response.iterator().next().managedIdentities().get(0).principalId());
+        Assertions.assertEquals("vpglydz", response.iterator().next().version());
+        Assertions.assertEquals("vqeevtoep", response.iterator().next().parameters().get("yutnwytpzdmov"));
         Assertions
             .assertTrue(response.iterator().next().upgradePolicy().applicationHealthPolicy().considerWarningAsError());
-        Assertions.assertEquals(857914437,
+        Assertions.assertEquals(763019330,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(2010544463,
+        Assertions.assertEquals(403916626,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1753999923,
+        Assertions.assertEquals(456968385,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(426068094,
+        Assertions.assertEquals(1135591058,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .defaultServiceTypeHealthPolicy()
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(1243501701,
+        Assertions.assertEquals(1763053171,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("vuqeqvldspast")
+                .get("pkc")
                 .maxPercentUnhealthyServices());
-        Assertions.assertEquals(1525920075,
+        Assertions.assertEquals(2041776052,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("vuqeqvldspast")
+                .get("pkc")
                 .maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(983606156,
+        Assertions.assertEquals(1047219235,
             response.iterator()
                 .next()
                 .upgradePolicy()
                 .applicationHealthPolicy()
                 .serviceTypeHealthPolicyMap()
-                .get("vuqeqvldspast")
+                .get("pkc")
                 .maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertTrue(response.iterator().next().upgradePolicy().forceRestart());
+        Assertions.assertFalse(response.iterator().next().upgradePolicy().forceRestart());
         Assertions.assertEquals(FailureAction.MANUAL,
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().failureAction());
-        Assertions.assertEquals("apeewchpxlkt",
+        Assertions.assertEquals("mxho",
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("kuziycsle",
+        Assertions.assertEquals("dynhdwdigum",
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("ufuztcktyhjtq",
+        Assertions.assertEquals("nraauzz",
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("dcgzul",
+        Assertions.assertEquals("tj",
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("mmrqz",
+        Assertions.assertEquals("zysdzh",
             response.iterator().next().upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertEquals(9007359622737683059L,
+        Assertions.assertEquals(6070245982200608768L,
             response.iterator().next().upgradePolicy().instanceCloseDelayDuration());
-        Assertions.assertEquals(RollingUpgradeMode.MONITORED, response.iterator().next().upgradePolicy().upgradeMode());
-        Assertions.assertEquals(6630814331855742678L,
+        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_AUTO,
+            response.iterator().next().upgradePolicy().upgradeMode());
+        Assertions.assertEquals(1821585547650833137L,
             response.iterator().next().upgradePolicy().upgradeReplicaSetCheckTimeout());
         Assertions.assertFalse(response.iterator().next().upgradePolicy().recreateApplication());
     }

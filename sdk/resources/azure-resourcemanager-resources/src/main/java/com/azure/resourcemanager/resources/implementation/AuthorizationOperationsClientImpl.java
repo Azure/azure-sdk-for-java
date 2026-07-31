@@ -60,7 +60,7 @@ public final class AuthorizationOperationsClientImpl implements AuthorizationOpe
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagementLockClient")
+    @ServiceInterface(name = "ManagementLockClientAuthorizationOperations")
     public interface AuthorizationOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/operations")

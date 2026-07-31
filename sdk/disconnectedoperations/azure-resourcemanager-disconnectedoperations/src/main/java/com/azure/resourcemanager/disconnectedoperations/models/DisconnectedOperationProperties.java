@@ -51,6 +51,16 @@ public final class DisconnectedOperationProperties implements JsonSerializable<D
      */
     private String deviceVersion;
 
+    /*
+     * The billing configuration
+     */
+    private BillingConfiguration billingConfiguration;
+
+    /*
+     * The benefit plans
+     */
+    private BenefitPlans benefitPlans;
+
     /**
      * Creates an instance of DisconnectedOperationProperties class.
      */
@@ -154,6 +164,46 @@ public final class DisconnectedOperationProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the billingConfiguration property: The billing configuration.
+     * 
+     * @return the billingConfiguration value.
+     */
+    public BillingConfiguration billingConfiguration() {
+        return this.billingConfiguration;
+    }
+
+    /**
+     * Set the billingConfiguration property: The billing configuration.
+     * 
+     * @param billingConfiguration the billingConfiguration value to set.
+     * @return the DisconnectedOperationProperties object itself.
+     */
+    public DisconnectedOperationProperties withBillingConfiguration(BillingConfiguration billingConfiguration) {
+        this.billingConfiguration = billingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the benefitPlans property: The benefit plans.
+     * 
+     * @return the benefitPlans value.
+     */
+    public BenefitPlans benefitPlans() {
+        return this.benefitPlans;
+    }
+
+    /**
+     * Set the benefitPlans property: The benefit plans.
+     * 
+     * @param benefitPlans the benefitPlans value to set.
+     * @return the DisconnectedOperationProperties object itself.
+     */
+    public DisconnectedOperationProperties withBenefitPlans(BenefitPlans benefitPlans) {
+        this.benefitPlans = benefitPlans;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -164,6 +214,8 @@ public final class DisconnectedOperationProperties implements JsonSerializable<D
         jsonWriter.writeStringField("registrationStatus",
             this.registrationStatus == null ? null : this.registrationStatus.toString());
         jsonWriter.writeStringField("deviceVersion", this.deviceVersion);
+        jsonWriter.writeJsonField("billingConfiguration", this.billingConfiguration);
+        jsonWriter.writeJsonField("benefitPlans", this.benefitPlans);
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +255,11 @@ public final class DisconnectedOperationProperties implements JsonSerializable<D
                         = RegistrationStatus.fromString(reader.getString());
                 } else if ("deviceVersion".equals(fieldName)) {
                     deserializedDisconnectedOperationProperties.deviceVersion = reader.getString();
+                } else if ("billingConfiguration".equals(fieldName)) {
+                    deserializedDisconnectedOperationProperties.billingConfiguration
+                        = BillingConfiguration.fromJson(reader);
+                } else if ("benefitPlans".equals(fieldName)) {
+                    deserializedDisconnectedOperationProperties.benefitPlans = BenefitPlans.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,51 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2026-03-04)
+
+- Azure Resource Manager Azure Traffic Collector client library for Java. This package contains Microsoft Azure SDK for Azure Traffic Collector Management SDK. Azure Traffic Collector service. Package api-version 2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.CollectorPolicyListResult` was removed
+
+#### `models.AzureTrafficCollectorListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EmissionPolicyDestination` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceReference` was modified
+
+* `validate()` was removed
+
+#### `models.IngestionSourcesPropertiesFormat` was modified
+
+* `validate()` was removed
+
+#### `models.EmissionPoliciesPropertiesFormat` was modified
+
+* `validate()` was removed
+
+#### `models.IngestionPolicyPropertiesFormat` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.TagsObject` was modified
+
+* `validate()` was removed
 
 ## 1.0.0-beta.3 (2024-10-14)
 

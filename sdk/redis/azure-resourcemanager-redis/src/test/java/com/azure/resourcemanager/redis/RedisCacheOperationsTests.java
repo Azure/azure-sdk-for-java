@@ -209,9 +209,11 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         //      "target":null}}
         // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
         // The SAS token is poorly formatted.
-        /*premiumCache.exportData(storageAccount.name(),"snapshot1");
+        /*
+        premiumCache.exportData(storageAccount.name(),"snapshot1");
         
-        premiumCache.importData(Arrays.asList("snapshot1"));*/
+        premiumCache.importData(Arrays.asList("snapshot1"));
+        */
     }
 
     @Disabled("Cannot create cache. Redis version 4.0 is retiring.")

@@ -149,10 +149,20 @@ public final class StageStatus implements JsonSerializable<StageStatus> {
         jsonWriter.writeStringField("nextstage", this.nextstage);
         jsonWriter.writeStringField("errorMessage", this.errorMessage);
         jsonWriter.writeStringField("isActive", this.isActive == null ? null : this.isActive.toString());
-        jsonWriter.writeMapField("inputs", this.inputs,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("outputs", this.outputs,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("inputs", this.inputs, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("outputs", this.outputs, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

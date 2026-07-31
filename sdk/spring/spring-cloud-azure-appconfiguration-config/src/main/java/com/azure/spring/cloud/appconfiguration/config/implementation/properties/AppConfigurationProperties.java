@@ -4,9 +4,9 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -23,18 +23,23 @@ import jakarta.annotation.PostConstruct;
 public class AppConfigurationProperties {
 
     /**
-     * Prefix for client configurations for connecting to configuration stores.
+     * Configuration property prefix for Azure App Configuration client settings.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
     private boolean enabled = true;
 
     /**
-     * List of Azure App Configuration stores to connect to.
+     * Azure App Configuration store connections. At least one store must be configured.
      */
     private List<ConfigStore> stores = new ArrayList<>();
 
     private Duration refreshInterval;
+
+    /**
+     * The timeout duration for retry attempts during startup.
+     */
+    private Duration startupTimeout = Duration.ofSeconds(100);
 
     /**
      * @return the enabled
@@ -44,38 +49,62 @@ public class AppConfigurationProperties {
     }
 
     /**
-     * @param enabled the enabled to set
+     * Sets whether Azure App Configuration is enabled.
+     *
+     * @param enabled {@code true} to enable, {@code false} to disable
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @return the stores
+     * Returns the list of configured App Configuration stores.
+     *
+     * @return the list of {@link ConfigStore} instances
      */
     public List<ConfigStore> getStores() {
         return stores;
     }
 
     /**
-     * @param stores the stores to set
+     * Sets the list of App Configuration stores to connect to.
+     *
+     * @param stores the list of {@link ConfigStore} instances
      */
     public void setStores(List<ConfigStore> stores) {
         this.stores = stores;
     }
 
     /**
-     * @return the refreshInterval
+     * Returns the interval between configuration refreshes.
+     *
+     * @return the refresh interval, or {@code null} if not set
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
     }
 
     /**
-     * @param refreshInterval the refreshInterval to set
+     * Sets the interval between configuration refreshes. Must be at least 1 second.
+     *
+     * @param refreshInterval the refresh interval duration
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     * @return the startupTimeout
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
+    }
+
+    /**
+     * @param startupTimeout the startupTimeout to set
+     */
+    public void setStartupTimeout(Duration startupTimeout) {
+        this.startupTimeout = startupTimeout;
     }
 
     /**
@@ -86,34 +115,44 @@ public class AppConfigurationProperties {
     public void validateAndInit() {
         Assert.notEmpty(this.stores, "At least one config store has to be configured.");
 
-        this.stores.forEach(store -> {
+        for (ConfigStore store : this.stores) {
+            if (!store.isEnabled()) {
+                continue;
+            }
             Assert.isTrue(
                 StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
-                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
+                    || !store.getEndpoints().isEmpty() || !store.getConnectionStrings().isEmpty(),
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
-        });
+        }
 
-        Map<String, Boolean> existingEndpoints = new HashMap<>();
+        Set<String> existingEndpoints = new HashSet<>();
 
         for (ConfigStore store : this.stores) {
-
-            if (store.getEndpoints().size() > 0) {
+            if (!store.isEnabled()) {
+                continue;
+            }
+            if (!store.getEndpoints().isEmpty()) {
                 for (String endpoint : store.getEndpoints()) {
-                    if (existingEndpoints.containsKey(endpoint)) {
-                        throw new IllegalArgumentException("Duplicate store name exists.");
+                    if (!existingEndpoints.add(endpoint)) {
+                        throw new IllegalArgumentException("Duplicate endpoint exists: " + endpoint);
                     }
-                    existingEndpoints.put(endpoint, true);
                 }
             } else if (StringUtils.hasText(store.getEndpoint())) {
-                if (existingEndpoints.containsKey(store.getEndpoint())) {
-                    throw new IllegalArgumentException("Duplicate store name exists.");
+                if (!existingEndpoints.add(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate endpoint exists: " + store.getEndpoint());
                 }
-                existingEndpoints.put(store.getEndpoint(), true);
             }
         }
         if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
+        }
+        if (startupTimeout == null) {
+            throw new IllegalArgumentException("startupTimeout cannot be null.");
+        }
+        if (startupTimeout.compareTo(Duration.ofSeconds(30)) < 0
+            || startupTimeout.compareTo(Duration.ofSeconds(600)) > 0) {
+            throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
         }
     }
 }

@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Action model = BinaryData.fromString("{\"type\":\"rotate\"}").toObject(Action.class);
-        Assertions.assertEquals(KeyRotationPolicyActionType.ROTATE, model.type());
+        Action model = BinaryData.fromString("{\"type\":\"notify\"}").toObject(Action.class);
+        Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Action model = new Action().withType(KeyRotationPolicyActionType.ROTATE);
+        Action model = new Action().withType(KeyRotationPolicyActionType.NOTIFY);
         model = BinaryData.fromObject(model).toObject(Action.class);
-        Assertions.assertEquals(KeyRotationPolicyActionType.ROTATE, model.type());
+        Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.type());
     }
 }

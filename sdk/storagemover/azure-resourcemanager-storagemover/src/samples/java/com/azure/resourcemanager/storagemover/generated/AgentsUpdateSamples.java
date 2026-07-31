@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class AgentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_Update.json
+     * x-ms-original-file: 2025-12-01/Agents_Update.json
      */
     /**
      * Sample code: Agents_Update.

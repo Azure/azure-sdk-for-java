@@ -30,12 +30,8 @@ public final class AssetsImpl implements Assets {
     public Response<Asset> getByResourceGroupWithResponse(String resourceGroupName, String assetName, Context context) {
         Response<AssetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, assetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AssetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AssetImpl(inner.getValue(), this.manager()));
     }
 
     public Asset getByResourceGroup(String resourceGroupName, String assetName) {

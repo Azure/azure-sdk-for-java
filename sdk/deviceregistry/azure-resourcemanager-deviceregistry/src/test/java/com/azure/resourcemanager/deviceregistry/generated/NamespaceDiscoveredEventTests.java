@@ -15,29 +15,28 @@ public final class NamespaceDiscoveredEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredEvent model = BinaryData.fromString(
-            "{\"name\":\"joqrvqqaatj\",\"dataSource\":\"rv\",\"eventConfiguration\":\"upmfiibfg\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"olvrw\",\"lastUpdatedOn\":\"2021-05-18T06:59:06Z\"}")
+            "{\"name\":\"mfe\",\"dataSource\":\"erqwkyhkobopg\",\"eventConfiguration\":\"dkow\",\"destinations\":[{\"target\":\"EventDestination\"}],\"typeRef\":\"pc\",\"lastUpdatedOn\":\"2021-05-26T00:48:59Z\"}")
             .toObject(NamespaceDiscoveredEvent.class);
-        Assertions.assertEquals("joqrvqqaatj", model.name());
-        Assertions.assertEquals("rv", model.dataSource());
-        Assertions.assertEquals("upmfiibfg", model.eventConfiguration());
-        Assertions.assertEquals("olvrw", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T06:59:06Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("mfe", model.name());
+        Assertions.assertEquals("erqwkyhkobopg", model.dataSource());
+        Assertions.assertEquals("dkow", model.eventConfiguration());
+        Assertions.assertEquals("pc", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T00:48:59Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredEvent model = new NamespaceDiscoveredEvent().withName("joqrvqqaatj")
-            .withDataSource("rv")
-            .withEventConfiguration("upmfiibfg")
-            .withDestinations(Arrays.asList(new EventDestination(), new EventDestination(), new EventDestination(),
-                new EventDestination()))
-            .withTypeRef("olvrw")
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-18T06:59:06Z"));
+        NamespaceDiscoveredEvent model = new NamespaceDiscoveredEvent().withName("mfe")
+            .withDataSource("erqwkyhkobopg")
+            .withEventConfiguration("dkow")
+            .withDestinations(Arrays.asList(new EventDestination()))
+            .withTypeRef("pc")
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-26T00:48:59Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredEvent.class);
-        Assertions.assertEquals("joqrvqqaatj", model.name());
-        Assertions.assertEquals("rv", model.dataSource());
-        Assertions.assertEquals("upmfiibfg", model.eventConfiguration());
-        Assertions.assertEquals("olvrw", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T06:59:06Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("mfe", model.name());
+        Assertions.assertEquals("erqwkyhkobopg", model.dataSource());
+        Assertions.assertEquals("dkow", model.eventConfiguration());
+        Assertions.assertEquals("pc", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T00:48:59Z"), model.lastUpdatedOn());
     }
 }

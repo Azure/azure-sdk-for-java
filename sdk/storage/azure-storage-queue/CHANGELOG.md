@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,61 @@
 
 ### Other Changes
 
-## 12.28.2 (Unreleased)
+## 12.30.0 (2026-06-11)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.29.0 (2026-05-14)
+
+### Features Added
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
+
+## 12.28.3 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.32.2` to version `12.32.3`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 12.30.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+## 12.29.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.28.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
 
 ### Bugs Fixed
 - Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class ReplicasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeleteReplica.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeleteReplica.json
      */
     /**
      * Sample code: Replicas_Delete.

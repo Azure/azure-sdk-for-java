@@ -280,8 +280,13 @@ public final class NamespaceDiscoveredDeviceProperties
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("operatingSystem", this.operatingSystem);
         jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

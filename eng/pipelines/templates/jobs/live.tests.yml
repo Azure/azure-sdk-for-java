@@ -121,6 +121,9 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
           PreTestRunSteps: ${{ parameters.PreTestRunSteps }}

@@ -2,7 +2,7 @@
 
 Azure Resource Manager Chaos client library for Java.
 
-This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-chaos</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

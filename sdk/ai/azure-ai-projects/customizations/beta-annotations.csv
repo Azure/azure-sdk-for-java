@@ -1,0 +1,26 @@
+type;class_name;annotation_description;member_name
+field;com.azure.ai.projects.models.CodeBasedEvaluatorDefinition;Preview API. Evaluations=V1Preview;blobUrl
+field;com.azure.ai.projects.models.CodeBasedEvaluatorDefinition;Preview API. Evaluations=V1Preview;entry_point
+field;com.azure.ai.projects.models.CodeBasedEvaluatorDefinition;Preview API. Evaluations=V1Preview;image_tag
+class;com.azure.ai.projects.models.CustomRoutineTrigger;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.DispatchRoutineResult;Preview API. Routines=V1Preview;
+field;com.azure.ai.projects.models.EvaluationRule;Preview API. Evaluations=V1Preview;action
+class;com.azure.ai.projects.models.EvaluatorCredentialInput;Preview API. Evaluations=V1Preview;
+class;com.azure.ai.projects.models.GitHubIssueEvent;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.GitHubIssueRoutineTrigger;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.InvokeAgentInvocationsApiDispatchPayload;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.InvokeAgentInvocationsApiRoutineAction;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.InvokeAgentResponsesApiDispatchPayload;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.InvokeAgentResponsesApiRoutineAction;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.Routine;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineAction;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineActionType;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineAttemptSource;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineDispatchPayload;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineDispatchPayloadType;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineRun;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineRunPhase;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineTrigger;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineTriggerType;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.ScheduleRoutineTrigger;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.TimerRoutineTrigger;Preview API. Routines=V1Preview;

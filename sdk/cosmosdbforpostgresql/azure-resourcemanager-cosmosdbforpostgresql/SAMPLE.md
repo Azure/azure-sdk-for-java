@@ -69,9 +69,7 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.NameAvailabilityRe
  */
 public final class ClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * CheckNameAvailability.json
+     * x-ms-original-file: 2023-03-02-preview/CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability.
@@ -104,9 +102,7 @@ import java.util.Map;
  */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateSingleNode.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateSingleNode.json
      */
     /**
      * Sample code: Create a new single node cluster.
@@ -135,9 +131,65 @@ public final class ClustersCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateCustomDatabaseName.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateBurstablev1.json
+     */
+    /**
+     * Sample code: Create a new single node Burstable 1 vCore cluster.
+     * 
+     * @param manager Entry point to CosmosDBForPostgreSqlManager.
+     */
+    public static void createANewSingleNodeBurstable1VCoreCluster(
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters()
+            .define("testcluster-burstablev1")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("BurstableMemoryOptimized")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(1)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateBurstablev2.json
+     */
+    /**
+     * Sample code: Create a new single node Burstable 2 vCores cluster.
+     * 
+     * @param manager Entry point to CosmosDBForPostgreSqlManager.
+     */
+    public static void createANewSingleNodeBurstable2VCoresCluster(
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.clusters()
+            .define("testcluster-burstablev2")
+            .withRegion("westus")
+            .withExistingResourceGroup("TestGroup")
+            .withTags(mapOf("owner", "JohnDoe"))
+            .withAdministratorLoginPassword("password")
+            .withPostgresqlVersion("15")
+            .withCitusVersion("11.3")
+            .withPreferredPrimaryZone("1")
+            .withEnableShardsOnCoordinator(true)
+            .withEnableHa(false)
+            .withCoordinatorServerEdition("BurstableGeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(131072)
+            .withCoordinatorVCores(2)
+            .withCoordinatorEnablePublicIpAccess(true)
+            .withNodeCount(0)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateCustomDatabaseName.json
      */
     /**
      * Sample code: Create a new cluster with custom database name.
@@ -167,71 +219,40 @@ public final class ClustersCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateBurstablev1.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateMultiNode.json
      */
     /**
-     * Sample code: Create a new single node Burstable 1 vCore cluster.
+     * Sample code: Create a new multi-node cluster.
      * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
-    public static void createANewSingleNodeBurstable1VCoreCluster(
+    public static void createANewMultiNodeCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         manager.clusters()
-            .define("testcluster-burstablev1")
+            .define("testcluster-multinode")
             .withRegion("westus")
             .withExistingResourceGroup("TestGroup")
-            .withTags(mapOf("owner", "JohnDoe"))
+            .withTags(mapOf())
             .withAdministratorLoginPassword("password")
             .withPostgresqlVersion("15")
-            .withCitusVersion("11.3")
+            .withCitusVersion("11.1")
             .withPreferredPrimaryZone("1")
-            .withEnableShardsOnCoordinator(true)
-            .withEnableHa(false)
-            .withCoordinatorServerEdition("BurstableMemoryOptimized")
-            .withCoordinatorStorageQuotaInMb(131072)
-            .withCoordinatorVCores(1)
+            .withEnableShardsOnCoordinator(false)
+            .withEnableHa(true)
+            .withCoordinatorServerEdition("GeneralPurpose")
+            .withCoordinatorStorageQuotaInMb(524288)
+            .withCoordinatorVCores(4)
             .withCoordinatorEnablePublicIpAccess(true)
-            .withNodeCount(0)
+            .withNodeServerEdition("MemoryOptimized")
+            .withNodeCount(3)
+            .withNodeStorageQuotaInMb(524288)
+            .withNodeVCores(8)
+            .withNodeEnablePublicIpAccess(false)
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateBurstablev2.json
-     */
-    /**
-     * Sample code: Create a new single node Burstable 2 vCores cluster.
-     * 
-     * @param manager Entry point to CosmosDBForPostgreSqlManager.
-     */
-    public static void createANewSingleNodeBurstable2VCoresCluster(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters()
-            .define("testcluster-burstablev2")
-            .withRegion("westus")
-            .withExistingResourceGroup("TestGroup")
-            .withTags(mapOf("owner", "JohnDoe"))
-            .withAdministratorLoginPassword("password")
-            .withPostgresqlVersion("15")
-            .withCitusVersion("11.3")
-            .withPreferredPrimaryZone("1")
-            .withEnableShardsOnCoordinator(true)
-            .withEnableHa(false)
-            .withCoordinatorServerEdition("BurstableGeneralPurpose")
-            .withCoordinatorStorageQuotaInMb(131072)
-            .withCoordinatorVCores(2)
-            .withCoordinatorEnablePublicIpAccess(true)
-            .withNodeCount(0)
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateWithCMK.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateWithCMK.json
      */
     /**
      * Sample code: Create a new cluster with Customer Managed Key - CMK data encryption.
@@ -273,44 +294,7 @@ public final class ClustersCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateMultiNode.json
-     */
-    /**
-     * Sample code: Create a new multi-node cluster.
-     * 
-     * @param manager Entry point to CosmosDBForPostgreSqlManager.
-     */
-    public static void createANewMultiNodeCluster(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.clusters()
-            .define("testcluster-multinode")
-            .withRegion("westus")
-            .withExistingResourceGroup("TestGroup")
-            .withTags(mapOf())
-            .withAdministratorLoginPassword("password")
-            .withPostgresqlVersion("15")
-            .withCitusVersion("11.1")
-            .withPreferredPrimaryZone("1")
-            .withEnableShardsOnCoordinator(false)
-            .withEnableHa(true)
-            .withCoordinatorServerEdition("GeneralPurpose")
-            .withCoordinatorStorageQuotaInMb(524288)
-            .withCoordinatorVCores(4)
-            .withCoordinatorEnablePublicIpAccess(true)
-            .withNodeServerEdition("MemoryOptimized")
-            .withNodeCount(3)
-            .withNodeStorageQuotaInMb(524288)
-            .withNodeVCores(8)
-            .withNodeEnablePublicIpAccess(false)
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateReadReplica.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateReadReplica.json
      */
     /**
      * Sample code: Create a new cluster as a read replica.
@@ -330,9 +314,7 @@ public final class ClustersCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreatePITR.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreatePITR.json
      */
     /**
      * Sample code: Create a new cluster as a point in time restore.
@@ -353,9 +335,7 @@ public final class ClustersCreateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterCreateWithAAD.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterCreateWithAAD.json
      */
     /**
      * Sample code: Create a new cluster with Azure Active Directory Authentication.
@@ -418,9 +398,7 @@ public final class ClustersCreateSamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterDelete.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterDelete.json
      */
     /**
      * Sample code: Delete the cluster.
@@ -442,9 +420,7 @@ public final class ClustersDeleteSamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterGet.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterGet.json
      */
     /**
      * Sample code: Get the cluster.
@@ -467,9 +443,7 @@ public final class ClustersGetByResourceGroupSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterList.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterList.json
      */
     /**
      * Sample code: List all the clusters.
@@ -491,9 +465,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterListByResourceGroup.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterListByResourceGroup.json
      */
     /**
      * Sample code: List the clusters by resource group.
@@ -516,9 +488,7 @@ public final class ClustersListByResourceGroupSamples {
  */
 public final class ClustersPromoteReadReplicaSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterPromoteReadReplica.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterPromoteReadReplica.json
      */
     /**
      * Sample code: Promote read replica cluster to an independent read-write cluster.
@@ -540,9 +510,7 @@ public final class ClustersPromoteReadReplicaSamples {
  */
 public final class ClustersRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterRestart.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterRestart.json
      */
     /**
      * Sample code: Restart all servers in the cluster.
@@ -564,9 +532,7 @@ public final class ClustersRestartSamples {
  */
 public final class ClustersStartSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterStart.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterStart.json
      */
     /**
      * Sample code: Start all servers in the cluster.
@@ -588,9 +554,7 @@ public final class ClustersStartSamples {
  */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterStop.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterStop.json
      */
     /**
      * Sample code: Stop all servers in the cluster.
@@ -615,9 +579,7 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterScaleStorage.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterScaleStorage.json
      */
     /**
      * Sample code: Scale up storage.
@@ -633,9 +595,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterUpdate.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterUpdate.json
      */
     /**
      * Sample code: Update multiple configuration settings of the cluster.
@@ -656,9 +616,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterScaleCompute.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterScaleCompute.json
      */
     /**
      * Sample code: Scale compute up or down.
@@ -674,9 +632,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterAddNode.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterAddNode.json
      */
     /**
      * Sample code: Scale out: Add new worker nodes.
@@ -692,9 +648,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ClusterUpdateMaintenanceWindow.json
+     * x-ms-original-file: 2023-03-02-preview/ClusterUpdateMaintenanceWindow.json
      */
     /**
      * Sample code: Update or define maintenance window.
@@ -724,9 +678,7 @@ public final class ClustersUpdateSamples {
  */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationGet.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationGet.json
      */
     /**
      * Sample code: Get configuration details.
@@ -749,9 +701,7 @@ public final class ConfigurationsGetSamples {
  */
 public final class ConfigurationsGetCoordinatorSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationGetCoordinator.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationGetCoordinator.json
      */
     /**
      * Sample code: Get configuration details for coordinator.
@@ -775,9 +725,7 @@ public final class ConfigurationsGetCoordinatorSamples {
  */
 public final class ConfigurationsGetNodeSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationGetNode.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationGetNode.json
      */
     /**
      * Sample code: Get configuration details for node.
@@ -800,9 +748,7 @@ public final class ConfigurationsGetNodeSamples {
  */
 public final class ConfigurationsListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationListByCluster.json
      */
     /**
      * Sample code: List configurations of the cluster.
@@ -824,9 +770,7 @@ public final class ConfigurationsListByClusterSamples {
  */
 public final class ConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationListByServer.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationListByServer.json
      */
     /**
      * Sample code: List configurations of the server that in the cluster.
@@ -851,9 +795,7 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ServerConfi
  */
 public final class ConfigurationsUpdateOnCoordinatorSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationUpdateCoordinator.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationUpdateCoordinator.json
      */
     /**
      * Sample code: Update single configuration of coordinator.
@@ -879,9 +821,7 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ServerConfi
  */
 public final class ConfigurationsUpdateOnNodeSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ConfigurationUpdateNode.json
+     * x-ms-original-file: 2023-03-02-preview/ConfigurationUpdateNode.json
      */
     /**
      * Sample code: Update single configuration of nodes.
@@ -905,9 +845,7 @@ public final class ConfigurationsUpdateOnNodeSamples {
  */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * FirewallRuleCreate.json
+     * x-ms-original-file: 2023-03-02-preview/FirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule of the cluster.
@@ -934,9 +872,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
  */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * FirewallRuleDelete.json
+     * x-ms-original-file: 2023-03-02-preview/FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete the firewall rule of the cluster.
@@ -958,9 +894,7 @@ public final class FirewallRulesDeleteSamples {
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * FirewallRuleGet.json
+     * x-ms-original-file: 2023-03-02-preview/FirewallRuleGet.json
      */
     /**
      * Sample code: Get the firewall rule of the cluster.
@@ -982,9 +916,7 @@ public final class FirewallRulesGetSamples {
  */
 public final class FirewallRulesListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * FirewallRuleListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/FirewallRuleListByCluster.json
      */
     /**
      * Sample code: List firewall rules of the cluster.
@@ -1006,9 +938,7 @@ public final class FirewallRulesListByClusterSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * OperationList.json
+     * x-ms-original-file: 2023-03-02-preview/OperationList.json
      */
     /**
      * Sample code: List all available operations.
@@ -1033,9 +963,7 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrivateLinkService
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateEndpointConnectionCreateOrUpdate.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateEndpointConnectionCreateOrUpdate.json
      */
     /**
      * Sample code: Approves or Rejects a Private Endpoint Connection with a given name.
@@ -1063,9 +991,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateEndpointConnectionsDelete.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateEndpointConnectionsDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
@@ -1088,9 +1014,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -1114,9 +1038,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateEndpointConnectionsListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateEndpointConnectionsListByCluster.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a cluster.
@@ -1139,9 +1061,7 @@ public final class PrivateEndpointConnectionsListByClusterSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateLinkResourcesGet.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateLinkResourcesGet.json
      */
     /**
      * Sample code: Gets a private link resource for cluster.
@@ -1164,9 +1084,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * PrivateLinkResourceListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/PrivateLinkResourceListByCluster.json
      */
     /**
      * Sample code: Gets the private link resources for cluster.
@@ -1189,9 +1107,7 @@ public final class PrivateLinkResourcesListByClusterSamples {
  */
 public final class RolesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * RoleCreate.json
+     * x-ms-original-file: 2023-03-02-preview/RoleCreate.json
      */
     /**
      * Sample code: RoleCreate.
@@ -1217,9 +1133,7 @@ public final class RolesCreateSamples {
  */
 public final class RolesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * RoleDelete.json
+     * x-ms-original-file: 2023-03-02-preview/RoleDelete.json
      */
     /**
      * Sample code: RoleDelete.
@@ -1241,9 +1155,7 @@ public final class RolesDeleteSamples {
  */
 public final class RolesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * RoleGet.json
+     * x-ms-original-file: 2023-03-02-preview/RoleGet.json
      */
     /**
      * Sample code: Get the role of the cluster.
@@ -1265,9 +1177,7 @@ public final class RolesGetSamples {
  */
 public final class RolesListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * RoleListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/RoleListByCluster.json
      */
     /**
      * Sample code: RoleList.
@@ -1288,9 +1198,7 @@ public final class RolesListByClusterSamples {
  */
 public final class ServersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ServerGet.json
+     * x-ms-original-file: 2023-03-02-preview/ServerGet.json
      */
     /**
      * Sample code: Get the server of cluster.
@@ -1313,9 +1221,7 @@ public final class ServersGetSamples {
  */
 public final class ServersListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
-     * ServerListByCluster.json
+     * x-ms-original-file: 2023-03-02-preview/ServerListByCluster.json
      */
     /**
      * Sample code: List servers of the cluster.

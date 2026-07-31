@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRPsRequestP
  */
 public final class FetchSecondaryRecoveryPointsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/CrossRegionRestore/FetchSecondaryRPs.json
+     * x-ms-original-file: 2026-03-01/CrossRegionRestore/FetchSecondaryRPs.json
      */
     /**
      * Sample code: Fetch SecondaryRPs.

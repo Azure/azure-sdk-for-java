@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMaintenanceWindowRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,11 @@ public final class ManagedApplyMaintenanceWindowsPostWithResponsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.managedApplyMaintenanceWindows()
-            .postWithResponse("d", "cpfnznthjtwkja", com.azure.core.util.Context.NONE);
+            .postWithResponse("t", "vzbglbyvi",
+                new ApplyMaintenanceWindowRequest().withStartDateTime("ctbrxkjzwrgxffm")
+                    .withDuration("kwfbkgo")
+                    .withTimeZone("wopdbydpiz"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

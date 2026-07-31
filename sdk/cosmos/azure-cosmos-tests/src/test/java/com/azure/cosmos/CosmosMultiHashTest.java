@@ -33,6 +33,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +52,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
     private CosmosContainer createdMultiHashContainer;
+    private CosmosContainer createdNestedPathContainer;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosMultiHashTest(CosmosClientBuilder clientBuilder) {
@@ -79,6 +81,19 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         //MultiHash collection read
         createdMultiHashContainer = createdDatabase.getContainer(collectionName);
+
+        String nestedPathCollectionName = UUID.randomUUID().toString();
+        PartitionKeyDefinition nestedPartitionKeyDefinition = new PartitionKeyDefinition();
+        nestedPartitionKeyDefinition.setKind(PartitionKind.HASH);
+        nestedPartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        nestedPartitionKeyDefinition.setPaths(Collections.singletonList("/address/city"));
+
+        CosmosContainerProperties nestedPathContainerProperties = getCollectionDefinition(
+            nestedPathCollectionName,
+            nestedPartitionKeyDefinition);
+
+        createdDatabase.createContainer(nestedPathContainerProperties);
+        createdNestedPathContainer = createdDatabase.getContainer(nestedPathCollectionName);
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -154,6 +169,42 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                     .map(itemIdentity -> itemIdentity.getId())
                     .collect(Collectors.toList())
         );
+    }
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readManySupportsNestedPartitionKeyPaths() {
+        String city = "nested-readmany-" + UUID.randomUUID();
+
+        ObjectNode firstItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "downtown");
+        ObjectNode secondItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "overlake");
+
+        createdNestedPathContainer.createItem(firstItem);
+        createdNestedPathContainer.createItem(secondItem);
+
+        List<CosmosItemIdentity> itemList = new ArrayList<>();
+        itemList.add(new CosmosItemIdentity(new PartitionKey(city), firstItem.get("id").asText()));
+        itemList.add(new CosmosItemIdentity(new PartitionKey(city), secondItem.get("id").asText()));
+
+        FeedResponse<ObjectNode> documentFeedResponse = createdNestedPathContainer.readMany(itemList, ObjectNode.class);
+        validateResponse(documentFeedResponse, itemList);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readAllItemsSupportsNestedPartitionKeyPaths() {
+        String city = "nested-readall-" + UUID.randomUUID();
+
+        ObjectNode firstItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "north");
+        ObjectNode secondItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "south");
+        ObjectNode otherItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city + "-other", "east");
+
+        createdNestedPathContainer.createItem(firstItem);
+        createdNestedPathContainer.createItem(secondItem);
+        createdNestedPathContainer.createItem(otherItem);
+
+        CosmosPagedIterable<ObjectNode> readAllResults =
+            createdNestedPathContainer.readAllItems(new PartitionKey(city), ObjectNode.class);
+
+        assertThat(readAllResults.stream().map(item -> item.get("id").asText()).collect(Collectors.toList()))
+            .containsExactlyInAnyOrder(firstItem.get("id").asText(), secondItem.get("id").asText());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -548,6 +599,19 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         } catch (NullPointerException e) {
             assertThat(e.getMessage()).isEqualTo("Argument 'partitionKeyDefinition' must not be null.");
         }
+    }
+
+    private ObjectNode createNestedPartitionKeyItem(String id, String city, String neighborhood) {
+        ObjectNode item = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        item.put("id", id);
+        item.put("type", "nestedPartitionKeyRegression");
+
+        ObjectNode address = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        address.put("city", city);
+        address.put("neighborhood", neighborhood);
+        item.set("address", address);
+
+        return item;
     }
 
     private ArrayList<CityItem> createItems() {

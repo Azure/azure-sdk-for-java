@@ -67,7 +67,7 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagementLockClient")
+    @ServiceInterface(name = "ManagementLockClientManagementLocks")
     public interface ManagementLocksService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
@@ -2671,7 +2671,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>>
@@ -2700,7 +2701,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(String nextLink,
@@ -2726,7 +2728,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(String nextLink) {
@@ -2754,7 +2757,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(String nextLink,
@@ -2780,7 +2784,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(String nextLink) {
@@ -2808,7 +2813,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(String nextLink,
@@ -2834,7 +2840,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(String nextLink) {
@@ -2861,7 +2868,8 @@ public final class ManagementLocksClientImpl implements InnerSupportsGet<Managem
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(String nextLink,

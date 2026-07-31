@@ -34,12 +34,8 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
         String playwrightWorkspaceName, Context context) {
         Response<PlaywrightWorkspaceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, playwrightWorkspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PlaywrightWorkspaceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlaywrightWorkspaceImpl(inner.getValue(), this.manager()));
     }
 
     public PlaywrightWorkspace getByResourceGroup(String resourceGroupName, String playwrightWorkspaceName) {
@@ -85,12 +81,8 @@ public final class PlaywrightWorkspacesImpl implements PlaywrightWorkspaces {
         Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest body) {

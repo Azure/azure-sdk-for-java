@@ -18,16 +18,17 @@ public final class ValidateRestoreRequestObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateRestoreRequestObject model = BinaryData.fromString(
-            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"onobglaocqx\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"mgyudxytlmoyrxv\",\"resourceGuardOperationRequests\":[\"dw\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"hdzhlrqj\"}}}")
+            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"hdzhlrqj\"},\"sourceDataStoreType\":\"OperationalStore\",\"sourceResourceId\":\"kfrlhrxsbky\",\"resourceGuardOperationRequests\":[\"ca\",\"uzbpzkafku\",\"b\",\"rnwb\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"eyvjusrtslhspkde\"}}}")
             .toObject(ValidateRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("onobglaocqx", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("mgyudxytlmoyrxv", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("dw", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("hdzhlrqj", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE,
+            model.restoreRequestObject().sourceDataStoreType());
+        Assertions.assertEquals("kfrlhrxsbky", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("ca", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("hdzhlrqj",
+        Assertions.assertEquals("eyvjusrtslhspkde",
             model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
     }
 
@@ -36,21 +37,22 @@ public final class ValidateRestoreRequestObjectTests {
         ValidateRestoreRequestObject model
             = new ValidateRestoreRequestObject().withRestoreRequestObject(new AzureBackupRestoreRequest()
                 .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                    .withRestoreLocation("onobglaocqx"))
-                .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
-                .withSourceResourceId("mgyudxytlmoyrxv")
-                .withResourceGuardOperationRequests(Arrays.asList("dw"))
+                    .withRestoreLocation("hdzhlrqj"))
+                .withSourceDataStoreType(SourceDataStoreType.OPERATIONAL_STORE)
+                .withSourceResourceId("kfrlhrxsbky")
+                .withResourceGuardOperationRequests(Arrays.asList("ca", "uzbpzkafku", "b", "rnwb"))
                 .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                    .withUserAssignedIdentityArmUrl("hdzhlrqj")));
+                    .withUserAssignedIdentityArmUrl("eyvjusrtslhspkde")));
         model = BinaryData.fromObject(model).toObject(ValidateRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("onobglaocqx", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("mgyudxytlmoyrxv", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("dw", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("hdzhlrqj", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE,
+            model.restoreRequestObject().sourceDataStoreType());
+        Assertions.assertEquals("kfrlhrxsbky", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("ca", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("hdzhlrqj",
+        Assertions.assertEquals("eyvjusrtslhspkde",
             model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
     }
 }

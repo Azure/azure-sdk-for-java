@@ -9,8 +9,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -37,7 +35,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import org.assertj.core.api.AssertionsForClassTypes;
-import org.assertj.core.api.Fail;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -49,7 +46,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -70,8 +66,6 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     private List<String> preferredRegions;
     private AccountLevelLocationContext accountLevelReadableLocationContext;
     private AccountLevelLocationContext accountLevelWritableLocationContext;
-
-    private static final String thinClientEndpointIndicator = ":10250/";
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public ClientRetryPolicyE2ETestsWithGatewayV2(CosmosClientBuilder clientBuilder) {
@@ -475,32 +469,6 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
             AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
         }
-    }
-
-    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
-        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
-
-        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
-        AssertionsForClassTypes.assertThat(ctx).isNotNull();
-
-        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
-        AssertionsForClassTypes.assertThat(requests).isNotNull();
-        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
-
-        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            logger.info(
-                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
-                requestInfo.getEndpoint(),
-                requestInfo.getRequestType(),
-                requestInfo.getPartitionId(),
-                requestInfo.getPartitionKeyRangeId(),
-                requestInfo.getActivityId());
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
-                return;
-            }
-        }
-
-        Fail.fail("No request targeting thin client proxy endpoint.");
     }
 
     private static class AccountLevelLocationContext {

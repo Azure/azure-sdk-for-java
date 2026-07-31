@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertConfiguration model = BinaryData
-            .fromString(
-                "{\"severity\":\"Sev4\",\"description\":\"rhhuaopppcqeqx\",\"actionGroupIds\":[\"dahzxctobg\"]}")
+        AlertConfiguration model = BinaryData.fromString(
+            "{\"severity\":\"Sev1\",\"description\":\"byrcdlbhshfwp\",\"actionGroupIds\":[\"stwit\",\"khevxccedc\"]}")
             .toObject(AlertConfiguration.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.severity());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.description());
-        Assertions.assertEquals("dahzxctobg", model.actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV1, model.severity());
+        Assertions.assertEquals("byrcdlbhshfwp", model.description());
+        Assertions.assertEquals("stwit", model.actionGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertConfiguration model = new AlertConfiguration().withSeverity(AlertSeverity.SEV4)
-            .withDescription("rhhuaopppcqeqx")
-            .withActionGroupIds(Arrays.asList("dahzxctobg"));
+        AlertConfiguration model = new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
+            .withDescription("byrcdlbhshfwp")
+            .withActionGroupIds(Arrays.asList("stwit", "khevxccedc"));
         model = BinaryData.fromObject(model).toObject(AlertConfiguration.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.severity());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.description());
-        Assertions.assertEquals("dahzxctobg", model.actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV1, model.severity());
+        Assertions.assertEquals("byrcdlbhshfwp", model.description());
+        Assertions.assertEquals("stwit", model.actionGroupIds().get(0));
     }
 }

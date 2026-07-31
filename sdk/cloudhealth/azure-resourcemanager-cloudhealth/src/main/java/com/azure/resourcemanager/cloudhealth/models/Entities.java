@@ -47,14 +47,11 @@ public interface Entities {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param healthModelName Name of health model resource.
      * @param entityName Name of the entity. Must be unique within a health model.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
-        Context context);
+    void delete(String resourceGroupName, String healthModelName, String entityName);
 
     /**
      * Delete a Entity.
@@ -62,11 +59,12 @@ public interface Entities {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param healthModelName Name of health model resource.
      * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String healthModelName, String entityName);
+    void delete(String resourceGroupName, String healthModelName, String entityName, Context context);
 
     /**
      * List Entity resources by HealthModel.
@@ -95,6 +93,98 @@ public interface Entities {
      */
     PagedIterable<Entity> listByHealthModel(String resourceGroupName, String healthModelName, OffsetDateTime timestamp,
         Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions along with {@link Response}.
+     */
+    Response<EntityHistoryResponse> getHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, EntityHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions.
+     */
+    EntityHistoryResponse getHistory(String resourceGroupName, String healthModelName, String entityName,
+        EntityHistoryRequest body);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history along with {@link Response}.
+     */
+    Response<SignalHistoryResponse> getSignalHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, SignalHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history.
+     */
+    SignalHistoryResponse getSignalHistory(String resourceGroupName, String healthModelName, String entityName,
+        SignalHistoryRequest body);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> ingestHealthReportWithResponse(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body, Context context);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body);
 
     /**
      * Get a Entity.
@@ -137,9 +227,8 @@ public interface Entities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Entity resource.

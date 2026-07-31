@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.EntityListResult;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
+import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.EntityImpact;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,43 +16,54 @@ public final class EntityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"zpostmgrcfbu\",\"kind\":\"mfqjhhkxbp\",\"canvasPosition\":{\"x\":93.7726067893376,\"y\":41.362515263932465},\"icon\":{\"iconName\":\"xjyngudivk\",\"customData\":\"swbxqz\"},\"healthObjective\":15.572520547165258,\"impact\":\"Limited\",\"labels\":{\"dxxiv\":\"j\",\"aqtdoqmcbx\":\"tvtc\"},\"signals\":{\"azureResource\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"slqb\",\"azureResourceId\":\"sfxobl\"},\"azureLogAnalytics\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"lmpewwwfbkr\",\"logAnalyticsWorkspaceResourceId\":\"rn\"},\"azureMonitorWorkspace\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"q\",\"azureMonitorWorkspaceResourceId\":\"ohxcrsbfova\"},\"dependencies\":{\"aggregationType\":\"WorstOf\",\"degradedThreshold\":\"v\",\"unhealthyThreshold\":\"hsqfsubcgjbirxbp\"}},\"discoveredBy\":\"srfbjfdtwss\",\"deletionDate\":\"2021-06-01T18:34:35Z\",\"healthState\":\"Error\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev4\",\"description\":\"exilzznfqqnvwpmq\",\"actionGroupIds\":[\"uoujmkcjhwqy\",\"jrybnwjewgdrjer\"]},\"degraded\":{\"severity\":\"Sev4\",\"description\":\"nqpeh\",\"actionGroupIds\":[\"oygmift\"]}}},\"id\":\"zdnds\",\"name\":\"gnayqigynduh\",\"type\":\"vhqlkthumaqo\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"duiertgcc\",\"kind\":\"vaolpsslqlf\",\"canvasPosition\":{\"x\":55.09905966116355,\"y\":76.73665651224995},\"icon\":{\"iconName\":\"lzpswiydm\",\"customData\":\"yhz\"},\"healthObjective\":9.457104362985113,\"impact\":\"Limited\",\"labels\":{\"daodvxzbncblyl\":\"mnvdfzn\",\"erscdntne\":\"stdbhhxsrzdzu\",\"tmweriofzpyq\":\"fiwjmygtdssls\",\"hhszh\":\"emwabnet\"},\"signals\":{\"azureResource\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"wiwubm\",\"azureResourceId\":\"mbes\"},\"azureLogAnalytics\":{\"signalAssignments\":[{\"signalDefinitions\":[]}],\"authenticationSetting\":\"wwtppj\",\"logAnalyticsWorkspaceResourceId\":\"lcxog\"},\"azureMonitorWorkspace\":{\"signalAssignments\":[{\"signalDefinitions\":[]}],\"authenticationSetting\":\"nzmnsikvm\",\"azureMonitorWorkspaceResourceId\":\"qzeqqkdltfzxm\"},\"dependencies\":{\"aggregationType\":\"WorstOf\",\"degradedThreshold\":\"gureodkwobdag\",\"unhealthyThreshold\":\"ibqdxbxwakbogqx\"}},\"discoveredBy\":\"lkzgxhuriplbp\",\"deletionDate\":\"2021-08-20T16:40:33Z\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev0\",\"description\":\"xmubyyntwlrbq\",\"actionGroupIds\":[\"ievseotgqrllt\",\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\"]},\"degraded\":{\"severity\":\"Sev2\",\"description\":\"zbtbhj\",\"actionGroupIds\":[\"kfgohdneue\"]}}},\"id\":\"phsdyhto\",\"name\":\"fikdowwqu\",\"type\":\"v\"}],\"nextLink\":\"xclvit\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"dnwzxltjcvnhltiu\",\"canvasPosition\":{\"x\":44.832563921288795,\"y\":41.27449742844404},\"icon\":{\"iconName\":\"wxqibyq\",\"customData\":\"y\"},\"healthObjective\":43.63406071962037,\"impact\":\"Standard\",\"tags\":{\"acizsjqlhkrr\":\"rkvfgbvfvpdbo\",\"hvxndzwmkrefajpj\":\"bdeibqipqk\",\"yhgbijtjivfx\":\"rwkq\",\"stawfsdjpvkv\":\"sjabibs\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"xbkzbzkdvncj\",\"azureResourceId\":\"budurgkakmo\",\"azureResourceKind\":\"hjjklff\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"name\":\"uwqlgzrfzeey\"}]},\"azureLogAnalytics\":{\"authenticationSetting\":\"izikayuhq\",\"logAnalyticsWorkspaceResourceId\":\"bjbsybb\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"vtldgmfpgvmpip\"}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"ltha\",\"azureMonitorWorkspaceResourceId\":\"fxssm\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"wbdsr\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"zpdrhneu\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"owqkdwytisi\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"ircgpikpz\"}]},\"dependencies\":{\"aggregationType\":\"MaxNotHealthy\",\"degradedThreshold\":20.182019174595943,\"unhealthyThreshold\":96.94426436016722,\"unit\":\"Absolute\",\"ignoreUnknown\":false},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"name\":\"bzonok\"},{\"signalKind\":\"External\",\"name\":\"xrjqcirgzpfrlazs\"},{\"signalKind\":\"External\",\"name\":\"rnwoiindfp\"}]}},\"discoveredBy\":\"jylwbtlhflsj\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev2\",\"description\":\"vfbgofeljagrqmqh\",\"actionGroupIds\":[\"riiiojnalghfkv\",\"vsexsowuelu\"]},\"degraded\":{\"severity\":\"Sev4\",\"description\":\"hhxvrhmzkwpj\",\"actionGroupIds\":[\"spughftqsxhq\",\"ujxukndxd\",\"grjguufzd\",\"syqtfi\"]}}},\"id\":\"hbotzingamvppho\",\"name\":\"zqzudph\",\"type\":\"amvdkfwynwcvtbv\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"tnvyqiatkzwp\",\"canvasPosition\":{\"x\":4.19884002491534,\"y\":75.65980635736302},\"icon\":{\"iconName\":\"a\",\"customData\":\"gvvs\"},\"healthObjective\":84.22306233952368,\"impact\":\"Limited\",\"tags\":{\"mdwzrmuhapfcqdps\":\"fhwygzlvdnkfxus\",\"svuo\":\"xqv\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"ccelve\",\"azureResourceId\":\"rypqlmfeo\",\"azureResourceKind\":\"rqwky\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"name\":\"bopgxedkowepbqp\"}]},\"azureLogAnalytics\":{\"authenticationSetting\":\"fkbw\",\"logAnalyticsWorkspaceResourceId\":\"csnjvcdwxlpqekft\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"tjsyin\"},{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"wfqatmtd\"}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"mdvy\",\"azureMonitorWorkspaceResourceId\":\"gikdgsz\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"birryuzhl\"}]},\"dependencies\":{\"aggregationType\":\"MinHealthy\",\"degradedThreshold\":29.51901176169669,\"unhealthyThreshold\":79.6052672368584,\"unit\":\"Percentage\",\"ignoreUnknown\":true},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"name\":\"vgoup\"}]}},\"discoveredBy\":\"iibfggj\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev2\",\"description\":\"x\",\"actionGroupIds\":[\"kkgll\",\"wjygvjayvblmhvk\",\"uhbxvvy\"]},\"degraded\":{\"severity\":\"Sev1\",\"description\":\"pbyrqufegxu\",\"actionGroupIds\":[\"fbn\"]}}},\"id\":\"mctlpdngitv\",\"name\":\"bmhrixkwmyijejv\",\"type\":\"grhbpn\"},{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"ccbdre\",\"canvasPosition\":{\"x\":59.161151250673136,\"y\":72.6628480048742},\"icon\":{\"iconName\":\"rrvqa\",\"customData\":\"kghtpwijnh\"},\"healthObjective\":60.279360977004615,\"impact\":\"Suppressed\",\"tags\":{\"fvoow\":\"z\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"mtg\",\"azureResourceId\":\"qp\",\"azureResourceKind\":\"ostronz\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"name\":\"gfipnsxk\"},{\"signalKind\":\"AzureResourceMetric\",\"name\":\"cwaekrrjre\"},{\"signalKind\":\"AzureResourceMetric\",\"name\":\"fxtsgum\"}]},\"azureLogAnalytics\":{\"authenticationSetting\":\"glikkxwslolb\",\"logAnalyticsWorkspaceResourceId\":\"pvuzlmv\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"fktgplc\"},{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"pwjxezn\"},{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"igbrnjw\"},{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"wkpnbsaz\"}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"joqkagfhsxt\",\"azureMonitorWorkspaceResourceId\":\"augzxnfaazpxdtn\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"kqjjlwuenvrkp\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"ou\"}]},\"dependencies\":{\"aggregationType\":\"MaxNotHealthy\",\"degradedThreshold\":87.93222655970122,\"unhealthyThreshold\":19.161809832340616,\"unit\":\"Absolute\",\"ignoreUnknown\":true},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"name\":\"tnqttezlwfffiak\"},{\"signalKind\":\"External\",\"name\":\"jpqqmted\"}]}},\"discoveredBy\":\"mmji\",\"healthState\":\"Healthy\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev4\",\"description\":\"vwau\",\"actionGroupIds\":[\"c\"]},\"degraded\":{\"severity\":\"Sev3\",\"description\":\"kvi\",\"actionGroupIds\":[\"scw\",\"qupevzh\",\"stotxh\",\"jujbypelmcuvhixb\"]}}},\"id\":\"yfwnylr\",\"name\":\"ool\",\"type\":\"ttpkiwkkbnujrywv\"}],\"nextLink\":\"lbfpncurd\"}")
             .toObject(EntityListResult.class);
-        Assertions.assertEquals("zpostmgrcfbu", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("mfqjhhkxbp", model.value().get(0).properties().kind());
-        Assertions.assertEquals(93.7726067893376, model.value().get(0).properties().canvasPosition().x());
-        Assertions.assertEquals(41.362515263932465, model.value().get(0).properties().canvasPosition().y());
-        Assertions.assertEquals("xjyngudivk", model.value().get(0).properties().icon().iconName());
-        Assertions.assertEquals("swbxqz", model.value().get(0).properties().icon().customData());
-        Assertions.assertEquals(15.572520547165258D, model.value().get(0).properties().healthObjective());
-        Assertions.assertEquals(EntityImpact.LIMITED, model.value().get(0).properties().impact());
-        Assertions.assertEquals("j", model.value().get(0).properties().labels().get("dxxiv"));
-        Assertions.assertEquals("slqb",
-            model.value().get(0).properties().signals().azureResource().authenticationSetting());
-        Assertions.assertEquals("sfxobl",
-            model.value().get(0).properties().signals().azureResource().azureResourceId());
-        Assertions.assertEquals("lmpewwwfbkr",
-            model.value().get(0).properties().signals().azureLogAnalytics().authenticationSetting());
-        Assertions.assertEquals("rn",
-            model.value().get(0).properties().signals().azureLogAnalytics().logAnalyticsWorkspaceResourceId());
-        Assertions.assertEquals("q",
-            model.value().get(0).properties().signals().azureMonitorWorkspace().authenticationSetting());
-        Assertions.assertEquals("ohxcrsbfova",
-            model.value().get(0).properties().signals().azureMonitorWorkspace().azureMonitorWorkspaceResourceId());
-        Assertions.assertEquals(DependenciesAggregationType.WORST_OF,
-            model.value().get(0).properties().signals().dependencies().aggregationType());
-        Assertions.assertEquals("v", model.value().get(0).properties().signals().dependencies().degradedThreshold());
-        Assertions.assertEquals("hsqfsubcgjbirxbp",
-            model.value().get(0).properties().signals().dependencies().unhealthyThreshold());
-        Assertions.assertEquals(AlertSeverity.SEV4, model.value().get(0).properties().alerts().unhealthy().severity());
-        Assertions.assertEquals("exilzznfqqnvwpmq",
+        Assertions.assertEquals("dnwzxltjcvnhltiu", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(44.832563921288795, model.value().get(0).properties().canvasPosition().x());
+        Assertions.assertEquals(41.27449742844404, model.value().get(0).properties().canvasPosition().y());
+        Assertions.assertEquals("wxqibyq", model.value().get(0).properties().icon().iconName());
+        Assertions.assertEquals("y", model.value().get(0).properties().icon().customData());
+        Assertions.assertEquals(43.63406071962037D, model.value().get(0).properties().healthObjective());
+        Assertions.assertEquals(EntityImpact.STANDARD, model.value().get(0).properties().impact());
+        Assertions.assertEquals("rkvfgbvfvpdbo", model.value().get(0).properties().tags().get("acizsjqlhkrr"));
+        Assertions.assertEquals("xbkzbzkdvncj",
+            model.value().get(0).properties().signalGroups().azureResource().authenticationSetting());
+        Assertions.assertEquals("budurgkakmo",
+            model.value().get(0).properties().signalGroups().azureResource().azureResourceId());
+        Assertions.assertEquals("hjjklff",
+            model.value().get(0).properties().signalGroups().azureResource().azureResourceKind());
+        Assertions.assertEquals("uwqlgzrfzeey",
+            model.value().get(0).properties().signalGroups().azureResource().signals().get(0).name());
+        Assertions.assertEquals("izikayuhq",
+            model.value().get(0).properties().signalGroups().azureLogAnalytics().authenticationSetting());
+        Assertions.assertEquals("bjbsybb",
+            model.value().get(0).properties().signalGroups().azureLogAnalytics().logAnalyticsWorkspaceResourceId());
+        Assertions.assertEquals("vtldgmfpgvmpip",
+            model.value().get(0).properties().signalGroups().azureLogAnalytics().signals().get(0).name());
+        Assertions.assertEquals("ltha",
+            model.value().get(0).properties().signalGroups().azureMonitorWorkspace().authenticationSetting());
+        Assertions.assertEquals("fxssm",
+            model.value().get(0).properties().signalGroups().azureMonitorWorkspace().azureMonitorWorkspaceResourceId());
+        Assertions.assertEquals("wbdsr",
+            model.value().get(0).properties().signalGroups().azureMonitorWorkspace().signals().get(0).name());
+        Assertions.assertEquals(DependenciesAggregationType.MAX_NOT_HEALTHY,
+            model.value().get(0).properties().signalGroups().dependencies().aggregationType());
+        Assertions.assertEquals(20.182019174595943D,
+            model.value().get(0).properties().signalGroups().dependencies().degradedThreshold());
+        Assertions.assertEquals(96.94426436016722D,
+            model.value().get(0).properties().signalGroups().dependencies().unhealthyThreshold());
+        Assertions.assertEquals(DependenciesAggregationUnit.ABSOLUTE,
+            model.value().get(0).properties().signalGroups().dependencies().unit());
+        Assertions.assertFalse(model.value().get(0).properties().signalGroups().dependencies().ignoreUnknown());
+        Assertions.assertEquals(AlertSeverity.SEV2, model.value().get(0).properties().alerts().unhealthy().severity());
+        Assertions.assertEquals("vfbgofeljagrqmqh",
             model.value().get(0).properties().alerts().unhealthy().description());
-        Assertions.assertEquals("uoujmkcjhwqy",
+        Assertions.assertEquals("riiiojnalghfkv",
             model.value().get(0).properties().alerts().unhealthy().actionGroupIds().get(0));
         Assertions.assertEquals(AlertSeverity.SEV4, model.value().get(0).properties().alerts().degraded().severity());
-        Assertions.assertEquals("nqpeh", model.value().get(0).properties().alerts().degraded().description());
-        Assertions.assertEquals("oygmift",
+        Assertions.assertEquals("hhxvrhmzkwpj", model.value().get(0).properties().alerts().degraded().description());
+        Assertions.assertEquals("spughftqsxhq",
             model.value().get(0).properties().alerts().degraded().actionGroupIds().get(0));
-        Assertions.assertEquals("xclvit", model.nextLink());
+        Assertions.assertEquals("lbfpncurd", model.nextLink());
     }
 }

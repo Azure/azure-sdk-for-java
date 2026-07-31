@@ -3,30 +3,29 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class CosmosBulkTransactionalBatchResponse {
-    private final CosmosBatch cosmosBatch;
+    private final CosmosBatchBulkOperation cosmosBatchBulkOperation;
     private final CosmosBatchResponse response;
     private final Exception exception;
 
     public CosmosBulkTransactionalBatchResponse(
-        CosmosBatch cosmosBatch,
+        CosmosBatchBulkOperation cosmosBatchBulkOperation,
         CosmosBatchResponse response,
         Exception exception) {
 
-        checkNotNull(cosmosBatch, "Argument 'cosmosBatch' can not be null");
-        this.cosmosBatch = cosmosBatch;
+        checkNotNull(cosmosBatchBulkOperation, "Argument 'cosmosBatchBulkOperation' can not be null");
+        this.cosmosBatchBulkOperation = cosmosBatchBulkOperation;
         this.response = response;
         this.exception = exception;
     }
 
 
-    public CosmosBatch getCosmosBatch() {
-        return cosmosBatch;
+    public CosmosBatchBulkOperation getCosmosBatchBulkOperation() {
+        return cosmosBatchBulkOperation;
     }
 
     public Exception getException() {

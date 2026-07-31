@@ -27,7 +27,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"yvudtjuewbci\",\"groups\":[{\"name\":\"uwhcjyxccybv\"},{\"name\":\"ayakkudzpx\"},{\"name\":\"wjplma\"}],\"afterStageWaitInSeconds\":625665728,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"dg\",\"groups\":[{\"name\":\"sjkmnwqj\"}],\"afterStageWaitInSeconds\":1313812453,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]},{\"name\":\"iacegfnmn\",\"groups\":[{\"name\":\"mvmemfnczd\"},{\"name\":\"vvbalx\"},{\"name\":\"l\"},{\"name\":\"chp\"}],\"afterStageWaitInSeconds\":1628077523,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"ukuv\",\"id\":\"cswsmystul\",\"name\":\"qypfcv\",\"type\":\"er\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"fgiagtcojocqwo\",\"groups\":[{\"name\":\"zjvusfzldmo\"},{\"name\":\"uxylfsbtkadpy\"},{\"name\":\"own\"}],\"afterStageWaitInSeconds\":268742670,\"maxConcurrency\":\"bugrj\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"of\",\"id\":\"ypefojyqdhcupl\",\"name\":\"plcwkhi\",\"type\":\"ihlhzdsqtzb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,42 +36,27 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        FleetUpdateStrategy response
-            = manager.fleetUpdateStrategies()
-                .define("vutpthjoxo")
-                .withExistingFleet("wb", "lgy")
-                .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
-                    new UpdateStage().withName("sbpimlq")
-                        .withGroups(Arrays.asList(new UpdateGroup().withName("xkcgxxlxsffgcvi"),
-                            new UpdateGroup().withName("qzdwlvwlyoup"), new UpdateGroup().withName("gfbkjubdyh")))
-                        .withAfterStageWaitInSeconds(373887537)
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateStage().withName("wzf")
-                        .withGroups(Arrays.asList(new UpdateGroup().withName("ttktlahbq"),
-                            new UpdateGroup().withName("ctxtgzukxi"), new UpdateGroup().withName("mmqtgqqqxhr")))
-                        .withAfterStageWaitInSeconds(734515726)
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))),
-                    new UpdateStage().withName("vokqdzfv")
-                        .withGroups(Arrays.asList(new UpdateGroup().withName("vjlfrqtt"),
-                            new UpdateGroup().withName("ajlkatnw"), new UpdateGroup().withName("yiopi"),
-                            new UpdateGroup().withName("kqqfk")))
-                        .withAfterStageWaitInSeconds(113648851)
-                        .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL)))
-                        .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL),
-                            new GateConfiguration().withType(GateType.APPROVAL))))))
-                .withIfMatch("eoybfhjxakvvjgs")
-                .withIfNoneMatch("ordilmywwtkgkxny")
-                .create();
+        FleetUpdateStrategy response = manager.fleetUpdateStrategies()
+            .define("pavehhr")
+            .withExistingFleet("rafwgckhocxvdf", "fwafqrouda")
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("zoz")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("cxgkmoyxcdyui"),
+                    new UpdateGroup().withName("hmfdnbzydvfvfcj"), new UpdateGroup().withName("aeoisrvh")))
+                .withAfterStageWaitInSeconds(510741232)
+                .withMaxConcurrency("ffukiscvw")
+                .withBeforeGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                    new GateConfiguration().withType(GateType.APPROVAL),
+                    new GateConfiguration().withType(GateType.APPROVAL)))
+                .withAfterGates(Arrays.asList(new GateConfiguration().withType(GateType.APPROVAL),
+                    new GateConfiguration().withType(GateType.APPROVAL))))))
+            .withIfMatch("mieknlraria")
+            .withIfNoneMatch("wiuagydwqf")
+            .create();
 
-        Assertions.assertEquals("yvudtjuewbci", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("uwhcjyxccybv", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(625665728, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("fgiagtcojocqwo", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("zjvusfzldmo", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(268742670, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("bugrj", response.strategy().stages().get(0).maxConcurrency());
         Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).afterGates().get(0).type());
     }

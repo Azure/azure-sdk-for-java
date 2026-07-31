@@ -87,6 +87,8 @@ public final class BackupVaultResourceImpl
 
     private String vaultName;
 
+    private String createXMsDeletedVaultId;
+
     private PatchResourceRequestInput updateParameters;
 
     public BackupVaultResourceImpl withExistingResourceGroup(String resourceGroupName) {
@@ -97,14 +99,14 @@ public final class BackupVaultResourceImpl
     public BackupVaultResource create() {
         this.innerObject = serviceManager.serviceClient()
             .getBackupVaults()
-            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), createXMsDeletedVaultId, Context.NONE);
         return this;
     }
 
     public BackupVaultResource create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBackupVaults()
-            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), createXMsDeletedVaultId, context);
         return this;
     }
 
@@ -113,6 +115,7 @@ public final class BackupVaultResourceImpl
         this.innerObject = new BackupVaultResourceInner();
         this.serviceManager = serviceManager;
         this.vaultName = name;
+        this.createXMsDeletedVaultId = null;
     }
 
     public BackupVaultResourceImpl update() {
@@ -195,6 +198,11 @@ public final class BackupVaultResourceImpl
 
     public BackupVaultResourceImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
+        return this;
+    }
+
+    public BackupVaultResourceImpl withXMsDeletedVaultId(String xMsDeletedVaultId) {
+        this.createXMsDeletedVaultId = xMsDeletedVaultId;
         return this;
     }
 

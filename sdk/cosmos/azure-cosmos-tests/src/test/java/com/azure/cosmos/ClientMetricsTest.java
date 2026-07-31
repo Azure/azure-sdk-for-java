@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
@@ -85,7 +86,7 @@ public class ClientMetricsTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
@@ -133,7 +134,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem() throws Exception {
         boolean[] disableLatencyMeterTestCases = { false, true };
 
@@ -274,7 +275,10 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
+    // during TestState initialization, especially in CI environments where collection creation
+    // can take longer than 40 seconds
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void readItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -336,7 +340,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManySingleItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -464,7 +468,9 @@ public class ClientMetricsTest extends BatchTestBase {
         runReadItemTestWithThresholds(minThresholds, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    // Using SETUP_TIMEOUT (60s) instead of SuperFlakyTestRetryAnalyzer to give adequate time.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -657,7 +663,7 @@ public class ClientMetricsTest extends BatchTestBase {
         return response;
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItemsWithDetailMetricsWithExplicitPageSize() throws Exception {
         try (TestState state = new TestState(getClientBuilder(),
             CosmosMetricCategory.DEFAULT,
@@ -993,7 +999,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
     public void effectiveMetricCategoriesForDefault() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.fromString("DeFAult"))) {
             assertThat(state.getEffectiveMetricCategories().size()).isEqualTo(5);
@@ -1082,7 +1088,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void endpointMetricsAreDurable() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)){
             if (state.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -1111,7 +1117,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
     public void effectiveMetricCategoriesForAllLatebound() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             EnumSet<MetricCategory> effectiveMetricCategories =

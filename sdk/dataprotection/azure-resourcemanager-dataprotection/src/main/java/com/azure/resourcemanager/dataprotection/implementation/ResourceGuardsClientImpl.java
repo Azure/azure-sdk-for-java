@@ -459,6 +459,38 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ResourceGuardResourceList>> getResourcesInResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> getResourcesInResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ResourceGuardResourceList>> getResourcesInSubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceGuardResourceList> getResourcesInSubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DppBaseResourceList>> getDisableSoftDeleteRequestsObjectsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -1069,7 +1101,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .<PagedResponse<ResourceGuardResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1084,7 +1116,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName));
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> getResourcesInResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1102,7 +1135,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         Response<ResourceGuardResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1122,7 +1155,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         Response<ResourceGuardResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1136,7 +1169,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> getResourcesInResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1151,7 +1185,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> getResourcesInResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1169,7 +1204,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<ResourceGuardResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1182,7 +1217,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardResourceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync());
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> getResourcesInSubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1198,7 +1234,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         Response<ResourceGuardResourceList> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1216,7 +1252,7 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         Response<ResourceGuardResourceList> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1228,7 +1264,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage());
+        return new PagedIterable<>(() -> listSinglePage(),
+            nextLink -> getResourcesInSubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1242,7 +1279,8 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardResourceInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> getResourcesInSubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2362,6 +2400,125 @@ public final class ResourceGuardsClientImpl implements ResourceGuardsClient {
         final String accept = "application/json";
         Response<DppBaseResourceList> res = service.getDeleteResourceGuardProxyRequestsObjectsNextSync(nextLink,
             this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceGuardResourceInner>>
+        getResourcesInResourceGroupNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getResourcesInResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceGuardResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInResourceGroupNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInResourceGroupNextSinglePage(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceGuardResourceInner>>
+        getResourcesInSubscriptionNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.getResourcesInSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceGuardResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInSubscriptionNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ResourceGuard resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceGuardResourceInner> getResourcesInSubscriptionNextSinglePage(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        Response<ResourceGuardResourceList> res
+            = service.getResourcesInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

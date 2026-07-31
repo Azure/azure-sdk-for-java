@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -212,8 +211,8 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
      * {@inheritDoc}
      */
     @Override
-    public ResourceMetricSignalDefinitionProperties withLabels(Map<String, String> labels) {
-        super.withLabels(labels);
+    public ResourceMetricSignalDefinitionProperties withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
@@ -244,7 +243,7 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
         jsonWriter.writeJsonField("evaluationRules", evaluationRules());
         jsonWriter.writeStringField("displayName", displayName());
         jsonWriter.writeStringField("refreshInterval", refreshInterval() == null ? null : refreshInterval().toString());
-        jsonWriter.writeMapField("labels", labels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("dataUnit", dataUnit());
         jsonWriter.writeStringField("metricNamespace", this.metricNamespace);
         jsonWriter.writeStringField("metricName", this.metricName);
@@ -285,14 +284,11 @@ public final class ResourceMetricSignalDefinitionProperties extends SignalDefini
                 } else if ("refreshInterval".equals(fieldName)) {
                     deserializedResourceMetricSignalDefinitionProperties
                         .withRefreshInterval(RefreshInterval.fromString(reader.getString()));
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedResourceMetricSignalDefinitionProperties.withLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceMetricSignalDefinitionProperties.withTags(tags);
                 } else if ("dataUnit".equals(fieldName)) {
                     deserializedResourceMetricSignalDefinitionProperties.withDataUnit(reader.getString());
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedResourceMetricSignalDefinitionProperties.withDeletionDate(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("metricNamespace".equals(fieldName)) {
                     deserializedResourceMetricSignalDefinitionProperties.metricNamespace = reader.getString();
                 } else if ("metricName".equals(fieldName)) {

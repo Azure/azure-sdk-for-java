@@ -108,7 +108,7 @@ public interface SapDatabaseInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
 
@@ -124,7 +124,7 @@ public interface SapDatabaseInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
         StartRequest body, Context context);
@@ -139,7 +139,7 @@ public interface SapDatabaseInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
 
@@ -155,7 +155,7 @@ public interface SapDatabaseInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
         StopRequest body, Context context);

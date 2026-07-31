@@ -34,6 +34,83 @@ function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
   $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
 }
 
+# Normalize version_client.txt for patch releases.
+# This handles the edge case where some libraries within the same release pipeline
+# got partially released (i.e., only some libraries in a release group received a
+# stable release) instead of all libraries releasing together. In such cases, the
+# unreleased libraries have a beta current-version (col3) but a GA dependency-version
+# (col2). During patch generation, we need {x-version-update;...;current} markers to
+# resolve to GA versions for non-patched artifacts, so we normalize col3 = col2
+# only for the specific dependencies referenced by the patched artifacts.
+function NormalizeVersionFileForPatching([string[]]$PatchedArtifactNames, [string[]]$PatchedPomFilePaths) {
+  # Step 1: Scan patched artifacts' pom.xml files for {;current} dependencies
+  $depsToNormalize = @{}
+  foreach ($pomPath in $PatchedPomFilePaths) {
+    if (Test-Path $pomPath) {
+      $pomContent = Get-Content $pomPath -Raw
+      $regex = [regex]'\{x-version-update;([^;]+);current\}'
+      foreach ($match in $regex.Matches($pomContent)) {
+        $depName = $match.Groups[1].Value
+        if ($PatchedArtifactNames -notcontains $depName) {
+          $depsToNormalize[$depName] = $true
+        }
+      }
+    }
+  }
+
+  if ($depsToNormalize.Count -eq 0) {
+    return
+  }
+
+  Write-Host "Dependencies to check for normalization: $($depsToNormalize.Keys -join ', ')"
+
+  # Step 2: Normalize only those entries in version_client.txt where col3 is prerelease and col2 is GA
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $lines = Get-Content $versionFilePath
+  $newLines = @()
+  $normalizedCount = 0
+
+  foreach ($line in $lines) {
+    if ($line.StartsWith('#') -or [string]::IsNullOrWhiteSpace($line)) {
+      $newLines += $line
+      continue
+    }
+
+    $parts = $line.Split(';')
+    if ($parts.Length -ne 3) {
+      $newLines += $line
+      continue
+    }
+
+    $artifactName = $parts[0].Trim()
+
+    if (-not $depsToNormalize.ContainsKey($artifactName)) {
+      $newLines += $line
+      continue
+    }
+
+    $dependencyVersion = $parts[1].Trim()
+    $currentVersion = $parts[2].Trim()
+
+    $parsedCurrent = [AzureEngSemanticVersion]::ParseVersionString($currentVersion)
+    $parsedDependency = [AzureEngSemanticVersion]::ParseVersionString($dependencyVersion)
+
+    if ($null -ne $parsedCurrent -and $parsedCurrent.IsPrerelease -and
+        $null -ne $parsedDependency -and -not $parsedDependency.IsPrerelease) {
+      $newLines += "$artifactName;$dependencyVersion;$dependencyVersion"
+      $normalizedCount++
+    } else {
+      $newLines += $line
+    }
+  }
+
+  if ($normalizedCount -gt 0) {
+    Set-Content -Path $versionFilePath -Value $newLines -Encoding UTF8
+  }
+  Write-Host "Normalized $normalizedCount entries in version_client.txt for patch release."
+}
+
 # Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
@@ -41,19 +118,33 @@ function UpdateDependencyOfClientSDK() {
   $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
-# Get all azure com client artifacts from Maven.
-function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
-  $groupPath = $GroupId -replace '\.', '/'
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath" -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
-  $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
-  return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
+# Get all azure com client artifact IDs from version_client.txt.
+function GetAllAzComClientArtifactIds($GroupId = "com.azure") {
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $artifactIds = @()
+  foreach ($line in Get-Content $versionFilePath) {
+    if ($line -and !$line.StartsWith("#") -and $line.StartsWith("${GroupId}:")) {
+      $artifactId = $line.Split(";")[0].Split(":")[1]
+      if ($artifactId -like "azure-*" -and $artifactId -notlike "azure-spring*") {
+        $artifactIds += $artifactId
+      }
+    }
+  }
+  return $artifactIds
 }
 
 # Get version info for an artifact.
 function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
   $groupPath = $GroupId -replace '\.', '/'
-  $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
-  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
+  # Use the internal Azure Artifacts feed instead of repo1.maven.org because the public
+  # Maven Central endpoint is blocked on the build agent network.
+  $mavenMetadataUrl = "$PackageRepositoryUri/$groupPath/$($ArtifactId)/maven-metadata.xml"
+  $headers = @{}
+  if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
+    $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"
+  }
+  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers $headers
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
   $sortedVersions = [AzureEngSemanticVersion]::SortVersions($semVersions)
@@ -78,7 +169,8 @@ function GetPatchVersion([String]$ReleaseVersion) {
 
 # Get remote name
 function GetRemoteName() {
-  $mainRemoteUrl = "https://github.com/Azure/azure-sdk-for-java"
+  $mainRemoteHttpsUrl = "https://github.com/Azure/azure-sdk-for-java"
+  $mainRemoteSshUrl = "git@github.com:Azure/azure-sdk-for-java"
   $remoteName = "origin"
   Write-Host "git remote show"
   $remoteNames = git remote show
@@ -86,7 +178,7 @@ function GetRemoteName() {
     Write-Host "git remote get-url $rem"
     $remoteUrl = git remote get-url $rem
     $remoteString = [string]$remoteUrl
-    if ($remoteString -Match $mainRemoteUrl) {
+    if (($remoteString -Match $mainRemoteHttpsUrl) -or ($remoteString -Match $mainRemoteSshUrl)) {
       $remoteName = $rem
       break;
     }
@@ -153,6 +245,79 @@ function GetDependencyToVersion($PomFilePath) {
   }
 
   return $dependencyNameToVersion
+}
+
+# Resolve dependency versions for patch changelog generation.
+# Parses version_client.txt following the same format as utils.load_version_map_from_file
+# (eng/versioning/utils.py), extracting column 2 (CodeModule.dependency) per entry.
+# Uses a layered resolution strategy:
+#   1. PatchVersionOverrides (highest priority) — maps artifactId to the patch version
+#      for sibling artifacts being patched in the same run.
+#   2. version_client.txt column 2 — the released/GA version. Used as a fallback for
+#      dependencies whose pom.xml version is a prerelease (beta/alpha), which happens
+#      when update_versions.py writes column 3 for {x-version-update;...;current} markers.
+#   3. pom.xml version (lowest priority) — used for external dependencies not in
+#      version_client.txt and for GA versions that are already correct.
+function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath, $PatchVersionOverrides) {
+  if (-not $VersionClientPath) {
+    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+    $VersionClientPath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  }
+  if (-not $PatchVersionOverrides) {
+    $PatchVersionOverrides = @{}
+  }
+
+  # Build lookup: groupId:artifactId → dependency version (column 2) from version_client.txt
+  # Key must include groupId because the same artifactId can appear under different groups
+  # (e.g., com.azure:azure-storage-blob vs com.azure.v2:azure-storage-blob).
+  $versionClientLookup = @{}
+  foreach ($line in Get-Content -Path $VersionClientPath) {
+    $trimmed = $line.Trim()
+    if ($trimmed.StartsWith('#') -or [string]::IsNullOrWhiteSpace($trimmed)) { continue }
+    $parts = $trimmed.Split(';')
+    if ($parts.Length -ge 2) {
+      $key = $parts[0].Trim()
+      $dependencyVersion = $parts[1].Trim()
+      $versionClientLookup[$key] = $dependencyVersion
+    }
+  }
+
+  # Read non-test dependencies from pom.xml, resolve each version using the layered strategy.
+  $resolvedVersions = @{}
+  $pomFileContent = [xml](Get-Content -Path $PomFilePath)
+  foreach ($dependency in $pomFileContent.project.dependencies.dependency) {
+    $scope = $dependency.scope
+    if ($scope -ne 'test') {
+      $artifactId = $dependency.artifactId
+      $groupId = $dependency.groupId
+      $pomVersion = $dependency.version
+      $key = "${groupId}:${artifactId}"
+      $patchOverrideKey = $key
+
+      if ($PatchVersionOverrides.ContainsKey($patchOverrideKey)) {
+        # Sibling artifact being patched in the same run — use its fully qualified
+        # patch version override (groupId:artifactId) to avoid collisions.
+        $resolvedVersions[$artifactId] = $PatchVersionOverrides[$patchOverrideKey]
+      } elseif ($PatchVersionOverrides.ContainsKey($artifactId)) {
+        # Backward compatibility: fall back to artifactId-only override if present.
+        $resolvedVersions[$artifactId] = $PatchVersionOverrides[$artifactId]
+      } elseif ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
+        # Pom has a prerelease version (from {;current} marker) — fall back to
+        # version_client.txt column 2 (GA/released version) to avoid showing
+        # beta versions in the changelog.
+        if ($versionClientLookup.ContainsKey($key)) {
+          $resolvedVersions[$artifactId] = $versionClientLookup[$key]
+        } else {
+          $resolvedVersions[$artifactId] = $pomVersion
+        }
+      } else {
+        # GA version from pom (e.g., {;dependency} marker or external dep) — use as-is.
+        $resolvedVersions[$artifactId] = $pomVersion
+      }
+    }
+  }
+
+  return $resolvedVersions
 }
 
 # Create the changelog content from a message.
@@ -231,9 +396,9 @@ function GitCommit($Message) {
 }
 
 # Generate patches for given artifact patch infos.
-function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
+function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
   foreach ($patchInfo in $ArtifactPatchInfos) {
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
   }
 
   #TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
@@ -251,7 +416,7 @@ function GetCurrentBranchName() {
    3. Updating the changelog and readme's to update the dependency information.
    4. Committing these changes.
 #>
-function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
+function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
   $artifactId = $PatchInfo.ArtifactId
   $releaseVersion = $PatchInfo.LatestGAOrPatchVersion
   $serviceDirectoryName = $PatchInfo.ServiceDirectoryName
@@ -278,8 +443,9 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $currentBranchName = GetCurrentBranchName
 
   if ($currentBranchName -ne $BranchName) {
-    Write-Host "git checkout -b $BranchName $RemoteName/main"
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    Write-Host "git checkout -b $BranchName $base"
+    $cmdOutput = git checkout -b $BranchName $base
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
       exit $LASTEXITCODE
@@ -313,9 +479,21 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
   if (!$currentPomFileVersion -or !$artifactDirPath -or !$changelogPath) {
     $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName -GroupId $GroupId)
-    $artifactDirPath = $pkgProperties.DirectoryPath
-    $currentPomFileVersion = $pkgProperties.Version
-    $changelogPath = $pkgProperties.ChangeLogPath
+    # Only fill in fields that weren't supplied by the caller. In particular, do NOT overwrite
+    # an explicitly-passed $currentPomFileVersion: when called from
+    # Generate-Patches-For-Automatic-Releases.ps1, that value was captured from pom.xml BEFORE
+    # any sibling iteration's UpdateDependencyOfClientSDK / update_versions.py rewrote this
+    # package's pom on disk. Re-reading pom.xml here would clobber that with the (already
+    # mutated) GA version and cause the source-reset gate below to be skipped.
+    if (!$artifactDirPath) {
+      $artifactDirPath = $pkgProperties.DirectoryPath
+    }
+    if (!$currentPomFileVersion) {
+      $currentPomFileVersion = $pkgProperties.Version
+    }
+    if (!$changelogPath) {
+      $changelogPath = $pkgProperties.ChangeLogPath
+    }
   }
 
   if (!$artifactDirPath) {
@@ -335,12 +513,12 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
       Write-Host "git fetch $RemoteName $oldReleaseTag"
       $cmdOutput = git fetch $RemoteName $oldReleaseTag
-      
+
       if ($LASTEXITCODE -ne 0) {
         LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
         exit $LASTEXITCODE
       }
-      
+
       $releaseTag = $oldReleaseTag
     }
 
@@ -369,7 +547,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     exit $LASTEXITCODE
   }
 
-  $newDependenciesToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
+  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $pomFilePath -PatchVersionOverrides $PatchVersionOverrides
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
   $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $changelogPath

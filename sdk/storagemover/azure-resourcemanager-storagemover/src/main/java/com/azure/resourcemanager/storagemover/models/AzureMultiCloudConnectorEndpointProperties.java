@@ -99,9 +99,19 @@ public final class AzureMultiCloudConnectorEndpointProperties extends EndpointBa
      * {@inheritDoc}
      */
     @Override
+    public AzureMultiCloudConnectorEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("multiCloudConnectorId", this.multiCloudConnectorId);
         jsonWriter.writeStringField("awsS3BucketId", this.awsS3BucketId);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -127,6 +137,9 @@ public final class AzureMultiCloudConnectorEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureMultiCloudConnectorEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureMultiCloudConnectorEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureMultiCloudConnectorEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

@@ -248,7 +248,7 @@ public class TopQueryTests extends TestSuiteBase {
     public void before_TopQueryTests() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         bulkInsert(client);
 

@@ -326,6 +326,15 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
             default Update disableLocalAuth() {
                 throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
             }
+
+            /**
+             * Enables SAS authentication for the Service Bus namespace.
+             *
+             * @return next stage of the Service Bus namespace update
+             */
+            default Update enableLocalAuth() {
+                throw new UnsupportedOperationException("[enableLocalAuth] is not supported in " + getClass());
+            }
         }
     }
 

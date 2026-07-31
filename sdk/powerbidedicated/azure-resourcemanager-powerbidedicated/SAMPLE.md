@@ -40,9 +40,7 @@ import java.util.Map;
  */
 public final class AutoScaleVCoresCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * createAutoScaleVCore.json
+     * x-ms-original-file: 2021-01-01/createAutoScaleVCore.json
      */
     /**
      * Sample code: Create auto scale v-core.
@@ -84,9 +82,7 @@ public final class AutoScaleVCoresCreateSamples {
  */
 public final class AutoScaleVCoresDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * deleteAutoScaleVCore.json
+     * x-ms-original-file: 2021-01-01/deleteAutoScaleVCore.json
      */
     /**
      * Sample code: Delete an auto scale v-core.
@@ -109,9 +105,7 @@ public final class AutoScaleVCoresDeleteSamples {
  */
 public final class AutoScaleVCoresGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * getAutoScaleVCore.json
+     * x-ms-original-file: 2021-01-01/getAutoScaleVCore.json
      */
     /**
      * Sample code: Get details of an auto scale v-core.
@@ -134,9 +128,7 @@ public final class AutoScaleVCoresGetByResourceGroupSamples {
  */
 public final class AutoScaleVCoresListSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listAutoScaleVCoresInSubscription.json
+     * x-ms-original-file: 2021-01-01/listAutoScaleVCoresInSubscription.json
      */
     /**
      * Sample code: List auto scale v-cores in subscription.
@@ -158,9 +150,7 @@ public final class AutoScaleVCoresListSamples {
  */
 public final class AutoScaleVCoresListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listAutoScaleVCoresInResourceGroup.json
+     * x-ms-original-file: 2021-01-01/listAutoScaleVCoresInResourceGroup.json
      */
     /**
      * Sample code: List auto scale v-cores in resource group.
@@ -188,9 +178,7 @@ import java.util.Map;
  */
 public final class AutoScaleVCoresUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * updateAutoScaleVCore.json
+     * x-ms-original-file: 2021-01-01/updateAutoScaleVCore.json
      */
     /**
      * Sample code: Update auto scale v-core parameters.
@@ -233,9 +221,7 @@ import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvaila
  */
 public final class CapacitiesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * checkNameAvailability.json
+     * x-ms-original-file: 2021-01-01/checkNameAvailability.json
      */
     /**
      * Sample code: Check name availability of a capacity.
@@ -268,9 +254,7 @@ import java.util.Map;
  */
 public final class CapacitiesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * createCapacity.json
+     * x-ms-original-file: 2021-01-01/createCapacity.json
      */
     /**
      * Sample code: Create capacity.
@@ -311,9 +295,7 @@ public final class CapacitiesCreateSamples {
  */
 public final class CapacitiesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * deleteCapacity.json
+     * x-ms-original-file: 2021-01-01/deleteCapacity.json
      */
     /**
      * Sample code: Get details of a capacity.
@@ -335,9 +317,7 @@ public final class CapacitiesDeleteSamples {
  */
 public final class CapacitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/getCapacity
-     * .json
+     * x-ms-original-file: 2021-01-01/getCapacity.json
      */
     /**
      * Sample code: Get details of a capacity.
@@ -359,9 +339,7 @@ public final class CapacitiesGetByResourceGroupSamples {
  */
 public final class CapacitiesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listCapacitiesInSubscription.json
+     * x-ms-original-file: 2021-01-01/listCapacitiesInSubscription.json
      */
     /**
      * Sample code: Get details of a capacity.
@@ -383,9 +361,7 @@ public final class CapacitiesListSamples {
  */
 public final class CapacitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listCapacitiesInResourceGroup.json
+     * x-ms-original-file: 2021-01-01/listCapacitiesInResourceGroup.json
      */
     /**
      * Sample code: List capacities in resource group.
@@ -407,9 +383,7 @@ public final class CapacitiesListByResourceGroupSamples {
  */
 public final class CapacitiesListSkusSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listSKUsForNew.json
+     * x-ms-original-file: 2021-01-01/listSKUsForNew.json
      */
     /**
      * Sample code: List eligible SKUs for a new capacity.
@@ -431,9 +405,7 @@ public final class CapacitiesListSkusSamples {
  */
 public final class CapacitiesListSkusForCapacitySamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * listSKUsForExisting.json
+     * x-ms-original-file: 2021-01-01/listSKUsForExisting.json
      */
     /**
      * Sample code: List eligible SKUs for an existing capacity.
@@ -455,9 +427,7 @@ public final class CapacitiesListSkusForCapacitySamples {
  */
 public final class CapacitiesResumeSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * resumeCapacity.json
+     * x-ms-original-file: 2021-01-01/resumeCapacity.json
      */
     /**
      * Sample code: Get details of a capacity.
@@ -479,9 +449,7 @@ public final class CapacitiesResumeSamples {
  */
 public final class CapacitiesSuspendSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * suspendCapacity.json
+     * x-ms-original-file: 2021-01-01/suspendCapacity.json
      */
     /**
      * Sample code: Suspend capacity.
@@ -511,9 +479,7 @@ import java.util.Map;
  */
 public final class CapacitiesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * updateToGen2.json
+     * x-ms-original-file: 2021-01-01/updateToGen2.json
      */
     /**
      * Sample code: Update capacity to Generation 2.
@@ -533,9 +499,7 @@ public final class CapacitiesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/
-     * updateCapacity.json
+     * x-ms-original-file: 2021-01-01/updateCapacity.json
      */
     /**
      * Sample code: Update capacity parameters.
@@ -577,9 +541,7 @@ public final class CapacitiesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/powerbidedicated/resource-manager/Microsoft.PowerBIdedicated/stable/2021-01-01/examples/operations.
-     * json
+     * x-ms-original-file: 2021-01-01/operations.json
      */
     /**
      * Sample code: List operations.

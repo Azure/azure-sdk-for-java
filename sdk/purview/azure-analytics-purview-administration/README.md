@@ -104,14 +104,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-administration
-[protocol_method]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
+[protocol_method]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/protocol-methods.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_azure_purview_account]: https://learn.microsoft.com/azure/purview/create-catalog-portal
 [azure_purview_permissions]: https://learn.microsoft.com/azure/purview/catalog-permissions
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

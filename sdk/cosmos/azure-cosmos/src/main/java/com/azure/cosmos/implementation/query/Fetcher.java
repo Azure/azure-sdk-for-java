@@ -29,11 +29,11 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 abstract class Fetcher<T> {
-    private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
@@ -238,7 +238,7 @@ abstract class Fetcher<T> {
     }
 
     private void handleCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
-        RegionalRoutingContext firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+        RegionalRoutingContext firstContactedLocationEndpoint = diagAccessor().getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker

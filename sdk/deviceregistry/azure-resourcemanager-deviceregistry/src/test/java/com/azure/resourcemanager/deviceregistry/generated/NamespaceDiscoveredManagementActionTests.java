@@ -14,37 +14,36 @@ public final class NamespaceDiscoveredManagementActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredManagementAction model = BinaryData.fromString(
-            "{\"name\":\"tnqttezlwfffiak\",\"actionConfiguration\":\"pqqmted\",\"targetUri\":\"tmmjihyeozph\",\"typeRef\":\"auyqncygupkv\",\"topic\":\"mdscwxqupev\",\"actionType\":\"Write\",\"timeoutInSeconds\":434974760,\"lastUpdatedOn\":\"2021-10-10T08:16:26Z\"}")
+            "{\"name\":\"jreafxtsgum\",\"actionConfiguration\":\"glikkxwslolb\",\"targetUri\":\"pvuzlmv\",\"typeRef\":\"lfktgplcrpwjxe\",\"topic\":\"oi\",\"actionType\":\"Read\",\"timeoutInSeconds\":76074858,\"lastUpdatedOn\":\"2021-03-28T01:41:30Z\"}")
             .toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("tnqttezlwfffiak", model.name());
-        Assertions.assertEquals("pqqmted", model.actionConfiguration());
-        Assertions.assertEquals("tmmjihyeozph", model.targetUri());
-        Assertions.assertEquals("auyqncygupkv", model.typeRef());
-        Assertions.assertEquals("mdscwxqupev", model.topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(434974760, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T08:16:26Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("jreafxtsgum", model.name());
+        Assertions.assertEquals("glikkxwslolb", model.actionConfiguration());
+        Assertions.assertEquals("pvuzlmv", model.targetUri());
+        Assertions.assertEquals("lfktgplcrpwjxe", model.typeRef());
+        Assertions.assertEquals("oi", model.topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actionType());
+        Assertions.assertEquals(76074858, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T01:41:30Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredManagementAction model
-            = new NamespaceDiscoveredManagementAction().withName("tnqttezlwfffiak")
-                .withActionConfiguration("pqqmted")
-                .withTargetUri("tmmjihyeozph")
-                .withTypeRef("auyqncygupkv")
-                .withTopic("mdscwxqupev")
-                .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
-                .withTimeoutInSeconds(434974760)
-                .withLastUpdatedOn(OffsetDateTime.parse("2021-10-10T08:16:26Z"));
+        NamespaceDiscoveredManagementAction model = new NamespaceDiscoveredManagementAction().withName("jreafxtsgum")
+            .withActionConfiguration("glikkxwslolb")
+            .withTargetUri("pvuzlmv")
+            .withTypeRef("lfktgplcrpwjxe")
+            .withTopic("oi")
+            .withActionType(NamespaceDiscoveredManagementActionType.READ)
+            .withTimeoutInSeconds(76074858)
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-03-28T01:41:30Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("tnqttezlwfffiak", model.name());
-        Assertions.assertEquals("pqqmted", model.actionConfiguration());
-        Assertions.assertEquals("tmmjihyeozph", model.targetUri());
-        Assertions.assertEquals("auyqncygupkv", model.typeRef());
-        Assertions.assertEquals("mdscwxqupev", model.topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(434974760, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T08:16:26Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("jreafxtsgum", model.name());
+        Assertions.assertEquals("glikkxwslolb", model.actionConfiguration());
+        Assertions.assertEquals("pvuzlmv", model.targetUri());
+        Assertions.assertEquals("lfktgplcrpwjxe", model.typeRef());
+        Assertions.assertEquals("oi", model.topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actionType());
+        Assertions.assertEquals(76074858, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T01:41:30Z"), model.lastUpdatedOn());
     }
 }

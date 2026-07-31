@@ -32,6 +32,11 @@ public final class PeeringPassphrasesInner implements JsonSerializable<PeeringPa
      */
     private String vserverPeeringCommand;
 
+    /*
+     * Warnings that are critical for the cluster peering and vserver peering processes.
+     */
+    private String criticalWarning;
+
     /**
      * Creates an instance of PeeringPassphrasesInner class.
      */
@@ -63,6 +68,16 @@ public final class PeeringPassphrasesInner implements JsonSerializable<PeeringPa
      */
     public String vserverPeeringCommand() {
         return this.vserverPeeringCommand;
+    }
+
+    /**
+     * Get the criticalWarning property: Warnings that are critical for the cluster peering and vserver peering
+     * processes.
+     * 
+     * @return the criticalWarning value.
+     */
+    public String criticalWarning() {
+        return this.criticalWarning;
     }
 
     /**
@@ -124,6 +139,8 @@ public final class PeeringPassphrasesInner implements JsonSerializable<PeeringPa
                     deserializedPeeringPassphrasesInner.clusterPeeringPassphrase = reader.getString();
                 } else if ("vserverPeeringCommand".equals(fieldName)) {
                     deserializedPeeringPassphrasesInner.vserverPeeringCommand = reader.getString();
+                } else if ("criticalWarning".equals(fieldName)) {
+                    deserializedPeeringPassphrasesInner.criticalWarning = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

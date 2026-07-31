@@ -1530,17 +1530,6 @@ service
 
 <br/>
 <details>
-<summary> mixedreality </summary>
-
-* [package-2021-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mixedreality/resource-manager#tag-package-2021-01)
-    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-mixedreality/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> mobilenetwork </summary>
 
 * [package-2024-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mobilenetwork/resource-manager#tag-package-2024-04)

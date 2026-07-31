@@ -15,24 +15,24 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateRuntimeImageConfigurationSettings model = BinaryData.fromString(
-            "{\"imageName\":\"bfggjioolvr\",\"imagePullPolicy\":\"IfNotPresent\",\"replicas\":485662234,\"registrySettings\":{\"registrySettingsType\":\"AkriConnectorsRegistrySettings\"},\"tagDigestSettings\":{\"tagDigestType\":\"AkriConnectorsTagDigestSettings\"}}")
+            "{\"imageName\":\"hgfipnsxkmcw\",\"imagePullPolicy\":\"Always\",\"replicas\":26130374,\"registrySettings\":{\"registrySettingsType\":\"AkriConnectorsRegistrySettings\"},\"tagDigestSettings\":{\"tagDigestType\":\"AkriConnectorsTagDigestSettings\"}}")
             .toObject(AkriConnectorTemplateRuntimeImageConfigurationSettings.class);
-        Assertions.assertEquals("bfggjioolvr", model.imageName());
-        Assertions.assertEquals(AkriConnectorsImagePullPolicy.IF_NOT_PRESENT, model.imagePullPolicy());
-        Assertions.assertEquals(485662234, model.replicas());
+        Assertions.assertEquals("hgfipnsxkmcw", model.imageName());
+        Assertions.assertEquals(AkriConnectorsImagePullPolicy.ALWAYS, model.imagePullPolicy());
+        Assertions.assertEquals(26130374, model.replicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateRuntimeImageConfigurationSettings model
-            = new AkriConnectorTemplateRuntimeImageConfigurationSettings().withImageName("bfggjioolvr")
-                .withImagePullPolicy(AkriConnectorsImagePullPolicy.IF_NOT_PRESENT)
-                .withReplicas(485662234)
+            = new AkriConnectorTemplateRuntimeImageConfigurationSettings().withImageName("hgfipnsxkmcw")
+                .withImagePullPolicy(AkriConnectorsImagePullPolicy.ALWAYS)
+                .withReplicas(26130374)
                 .withRegistrySettings(new AkriConnectorsRegistrySettings())
                 .withTagDigestSettings(new AkriConnectorsTagDigestSettings());
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateRuntimeImageConfigurationSettings.class);
-        Assertions.assertEquals("bfggjioolvr", model.imageName());
-        Assertions.assertEquals(AkriConnectorsImagePullPolicy.IF_NOT_PRESENT, model.imagePullPolicy());
-        Assertions.assertEquals(485662234, model.replicas());
+        Assertions.assertEquals("hgfipnsxkmcw", model.imageName());
+        Assertions.assertEquals(AkriConnectorsImagePullPolicy.ALWAYS, model.imagePullPolicy());
+        Assertions.assertEquals(26130374, model.replicas());
     }
 }

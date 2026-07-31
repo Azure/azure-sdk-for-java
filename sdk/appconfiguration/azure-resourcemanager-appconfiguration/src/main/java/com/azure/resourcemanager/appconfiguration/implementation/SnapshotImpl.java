@@ -154,13 +154,13 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
         return this;
     }
 
-    public SnapshotImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
+    public SnapshotImpl withFilters(List<KeyValueFilter> filters) {
+        this.innerModel().withFilters(filters);
         return this;
     }
 
-    public SnapshotImpl withFilters(List<KeyValueFilter> filters) {
-        this.innerModel().withFilters(filters);
+    public SnapshotImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
         return this;
     }
 

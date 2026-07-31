@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.PoliciesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.PolicyInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.PolicyListResult;
+import com.azure.resourcemanager.deviceregistry.models.ActivateBringYourOwnRootRequest;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -164,6 +166,44 @@ public final class PoliciesClientImpl implements PoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/revokeIssuer")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> revokeIssuer(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("policyName") String policyName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/revokeIssuer")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> revokeIssuerSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("policyName") String policyName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/activateBringYourOwnRoot")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> activateBringYourOwnRoot(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("policyName") String policyName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") ActivateBringYourOwnRootRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/credentials/default/policies/{policyName}/activateBringYourOwnRoot")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> activateBringYourOwnRootSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @PathParam("policyName") String policyName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") ActivateBringYourOwnRootRequest body, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -186,7 +226,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +247,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +264,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,7 +284,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +300,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -284,7 +324,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,7 +346,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,7 +369,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -350,7 +390,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -371,7 +411,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +433,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -412,7 +452,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -430,7 +470,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +489,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -469,7 +509,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -486,7 +526,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -505,7 +545,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -524,7 +564,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -542,7 +582,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,7 +601,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,7 +618,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -593,7 +633,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -609,7 +649,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -633,7 +673,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -655,7 +695,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,7 +718,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,7 +739,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -719,7 +759,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -741,7 +781,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -760,7 +800,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -778,7 +818,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
-     * @param policyName The name of the Policy tracked resource.
+     * @param policyName The name of the Policy proxy resource.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,6 +945,358 @@ public final class PoliciesClientImpl implements PoliciesClient {
         Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> revokeIssuerWithResponseAsync(String resourceGroupName,
+        String namespaceName, String policyName) {
+        return FluxUtil
+            .withContext(context -> service.revokeIssuer(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revokeIssuerWithResponse(String resourceGroupName, String namespaceName,
+        String policyName) {
+        return service.revokeIssuerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> revokeIssuerWithResponse(String resourceGroupName, String namespaceName,
+        String policyName, Context context) {
+        return service.revokeIssuerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRevokeIssuerAsync(String resourceGroupName, String namespaceName,
+        String policyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = revokeIssuerWithResponseAsync(resourceGroupName, namespaceName, policyName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
+        String policyName) {
+        Response<BinaryData> response = revokeIssuerWithResponse(resourceGroupName, namespaceName, policyName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeIssuer(String resourceGroupName, String namespaceName,
+        String policyName, Context context) {
+        Response<BinaryData> response = revokeIssuerWithResponse(resourceGroupName, namespaceName, policyName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> revokeIssuerAsync(String resourceGroupName, String namespaceName, String policyName) {
+        return beginRevokeIssuerAsync(resourceGroupName, namespaceName, policyName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName) {
+        beginRevokeIssuer(resourceGroupName, namespaceName, policyName).getFinalResult();
+    }
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revokeIssuer(String resourceGroupName, String namespaceName, String policyName, Context context) {
+        beginRevokeIssuer(resourceGroupName, namespaceName, policyName, context).getFinalResult();
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> activateBringYourOwnRootWithResponseAsync(String resourceGroupName,
+        String namespaceName, String policyName, ActivateBringYourOwnRootRequest body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.activateBringYourOwnRoot(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, namespaceName,
+                policyName, contentType, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateBringYourOwnRootWithResponse(String resourceGroupName, String namespaceName,
+        String policyName, ActivateBringYourOwnRootRequest body) {
+        final String contentType = "application/json";
+        return service.activateBringYourOwnRootSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, contentType, body,
+            Context.NONE);
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> activateBringYourOwnRootWithResponse(String resourceGroupName, String namespaceName,
+        String policyName, ActivateBringYourOwnRootRequest body, Context context) {
+        final String contentType = "application/json";
+        return service.activateBringYourOwnRootSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, namespaceName, policyName, contentType, body, context);
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginActivateBringYourOwnRootAsync(String resourceGroupName,
+        String namespaceName, String policyName, ActivateBringYourOwnRootRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = activateBringYourOwnRootWithResponseAsync(resourceGroupName, namespaceName, policyName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName,
+        String namespaceName, String policyName, ActivateBringYourOwnRootRequest body) {
+        Response<BinaryData> response
+            = activateBringYourOwnRootWithResponse(resourceGroupName, namespaceName, policyName, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginActivateBringYourOwnRoot(String resourceGroupName,
+        String namespaceName, String policyName, ActivateBringYourOwnRootRequest body, Context context) {
+        Response<BinaryData> response
+            = activateBringYourOwnRootWithResponse(resourceGroupName, namespaceName, policyName, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> activateBringYourOwnRootAsync(String resourceGroupName, String namespaceName, String policyName,
+        ActivateBringYourOwnRootRequest body) {
+        return beginActivateBringYourOwnRootAsync(resourceGroupName, namespaceName, policyName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
+        ActivateBringYourOwnRootRequest body) {
+        beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body).getFinalResult();
+    }
+
+    /**
+     * Activates or renews a Bring Your Own Root policy by accepting a customer-provided signed certificate. This is a
+     * long-running operation that returns no content upon completion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param namespaceName The name of the namespace.
+     * @param policyName The name of the Policy proxy resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void activateBringYourOwnRoot(String resourceGroupName, String namespaceName, String policyName,
+        ActivateBringYourOwnRootRequest body, Context context) {
+        beginActivateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, context).getFinalResult();
     }
 
     /**

@@ -369,6 +369,8 @@ public final class CallRecordingAsync {
         Context context) {
         try {
             Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
+            // Validate recording URL to prevent SSRF attacks
+            RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentDownloader.downloadStreamWithResponse(sourceUrl, range, contextValue);
@@ -457,6 +459,8 @@ public final class CallRecordingAsync {
         Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+        // Validate recording URL to prevent SSRF attacks
+        RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
 
         Set<OpenOption> openOptions = new HashSet<>();
 
@@ -479,7 +483,8 @@ public final class CallRecordingAsync {
     }
 
     Mono<Void> downloadTo(String sourceUrl, OutputStream destinationStream, HttpRange httpRange, Context context) {
-
+        // Validate recording URL to prevent SSRF attacks
+        RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
         return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context).then();
     }
 
@@ -526,9 +531,13 @@ public final class CallRecordingAsync {
     }
 
     Mono<Response<Void>> deleteWithResponseInternal(String deleteUrl, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
-        URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
         try {
+            Objects.requireNonNull(deleteUrl, "'deleteUrl' cannot be null");
+            // Validate recording URL to prevent SSRF attacks before sending credentials
+            RecordingUrlValidator.validateRecordingUrl(deleteUrl, "deleteUrl");
+
+            HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
+            URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 contextValue = contextValue.addData("hmacSignatureURL", urlToSignWith);

@@ -12,9 +12,9 @@ public final class AuthenticationSettingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationSettingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"v\"},\"id\":\"xmzsbbzogg\",\"name\":\"grxwbu\",\"type\":\"vjxxjnsp\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Creating\",\"displayName\":\"oenkouknvudwti\"},\"id\":\"bldngkpoc\",\"name\":\"pazyxoegukg\",\"type\":\"npiucgygevqznty\"}],\"nextLink\":\"rbpizc\"}")
+            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"cohslkev\"},\"id\":\"ggzfbu\",\"name\":\"fmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"rxwburv\"},\"id\":\"xjnspy\",\"name\":\"ptkoenkoukn\",\"type\":\"udwtiukbl\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"ocipazyxoeg\"},\"id\":\"g\",\"name\":\"npiucgygevqznty\",\"type\":\"mrbpizcdrqj\"}],\"nextLink\":\"pyd\"}")
             .toObject(AuthenticationSettingListResult.class);
-        Assertions.assertEquals("v", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("rbpizc", model.nextLink());
+        Assertions.assertEquals("cohslkev", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("pyd", model.nextLink());
     }
 }

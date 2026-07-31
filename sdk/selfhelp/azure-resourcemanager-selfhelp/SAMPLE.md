@@ -56,8 +56,7 @@ import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
  */
 public final class CheckNameAvailabilityCheckAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+     * x-ms-original-file: 2024-03-01-preview/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
      */
     /**
      * Sample code: Example when name is not available for a Diagnostic resource.
@@ -73,8 +72,7 @@ public final class CheckNameAvailabilityCheckAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+     * x-ms-original-file: 2024-03-01-preview/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
      */
     /**
      * Sample code: Example when name is available for a Diagnostic resource.
@@ -99,8 +97,7 @@ public final class CheckNameAvailabilityCheckAvailabilitySamples {
  */
 public final class DiagnosticsCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * CreateDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: 2024-03-01-preview/CreateDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Creates a Diagnostic for a KeyVault resource.
@@ -126,8 +123,7 @@ public final class DiagnosticsCreateSamples {
  */
 public final class DiagnosticsGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * GetDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: 2024-03-01-preview/GetDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Gets a Diagnostic for a KeyVault resource.
@@ -151,8 +147,7 @@ public final class DiagnosticsGetSamples {
  */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * ListDiscoverySolutionsAtTenantScope.json
+     * x-ms-original-file: 2024-03-01-preview/ListDiscoverySolutionsAtTenantScope.json
      */
     /**
      * Sample code: List DiscoverySolutions at resource scope.
@@ -178,8 +173,7 @@ import com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest;
  */
 public final class DiscoverySolutionNlpDiscoverSolutionsSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * DiscoverSolutionsAtTenantScope.json
+     * x-ms-original-file: 2024-03-01-preview/DiscoverSolutionsAtTenantScope.json
      */
     /**
      * Sample code: Discovery Solutions using issue summary and service id.
@@ -207,8 +201,7 @@ import com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest;
  */
 public final class DiscoverySolutionNlpDiscoverSolutionsBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
-     * DiscoverSolutionsAtSubscriptionScope.json
+     * x-ms-original-file: 2024-03-01-preview/DiscoverSolutionsAtSubscriptionScope.json
      */
     /**
      * Sample code: Discovery Solutions using issue summary and service id.
@@ -236,8 +229,7 @@ public final class DiscoverySolutionNlpDiscoverSolutionsBySubscriptionSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListOperations.json
+     * x-ms-original-file: 2024-03-01-preview/ListOperations.json
      */
     /**
      * Sample code: List All Operations.
@@ -261,9 +253,7 @@ import java.util.Map;
  */
 public final class SimplifiedSolutionsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Create
-     * .json
+     * x-ms-original-file: 2024-03-01-preview/SimplifiedSolutions_Create.json
      */
     /**
      * Sample code: Solution_Create.
@@ -303,9 +293,7 @@ public final class SimplifiedSolutionsCreateSamples {
  */
 public final class SimplifiedSolutionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Get.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/SimplifiedSolutions_Get.json
      */
     /**
      * Sample code: Solution_Get.
@@ -335,8 +323,7 @@ import java.util.Map;
  */
 public final class SolutionOperationCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Create.json
+     * x-ms-original-file: 2024-03-01-preview/Solution_Create.json
      */
     /**
      * Sample code: Solution_Create.
@@ -377,8 +364,7 @@ public final class SolutionOperationCreateSamples {
  */
 public final class SolutionOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Get.json
+     * x-ms-original-file: 2024-03-01-preview/Solution_Get.json
      */
     /**
      * Sample code: Solution_Get.
@@ -404,8 +390,7 @@ import com.azure.resourcemanager.selfhelp.models.SolutionResource;
  */
 public final class SolutionOperationUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Update.json
+     * x-ms-original-file: 2024-03-01-preview/Solution_Update.json
      */
     /**
      * Sample code: Solution_Update.
@@ -432,8 +417,7 @@ public final class SolutionOperationUpdateSamples {
  */
 public final class SolutionOperationWarmUpSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_WarmUp.json
+     * x-ms-original-file: 2024-03-01-preview/Solution_WarmUp.json
      */
     /**
      * Sample code: Solution_WarmUp.
@@ -457,8 +441,7 @@ public final class SolutionOperationWarmUpSamples {
  */
 public final class SolutionSelfHelpGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SelfHelpSolution_Get.json
+     * x-ms-original-file: 2024-03-01-preview/SelfHelpSolution_Get.json
      */
     /**
      * Sample code: Solution_Get.
@@ -484,9 +467,7 @@ import java.util.Arrays;
  */
 public final class TroubleshootersContinueMethodSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Continue.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/Troubleshooter_Continue.json
      */
     /**
      * Sample code: Troubleshooter_Continue.
@@ -518,8 +499,7 @@ import java.util.Map;
  */
 public final class TroubleshootersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Create.json
+     * x-ms-original-file: 2024-03-01-preview/Troubleshooter_Create.json
      */
     /**
      * Sample code: Troubleshooters_Create.
@@ -559,8 +539,7 @@ public final class TroubleshootersCreateSamples {
  */
 public final class TroubleshootersEndSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_End.json
+     * x-ms-original-file: 2024-03-01-preview/Troubleshooter_End.json
      */
     /**
      * Sample code: Troubleshooters_End.
@@ -584,8 +563,7 @@ public final class TroubleshootersEndSamples {
  */
 public final class TroubleshootersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Get.json
+     * x-ms-original-file: 2024-03-01-preview/Troubleshooter_Get.json
      */
     /**
      * Sample code: Troubleshooters_Get.
@@ -609,9 +587,7 @@ public final class TroubleshootersGetSamples {
  */
 public final class TroubleshootersRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Restart.
-     * json
+     * x-ms-original-file: 2024-03-01-preview/Troubleshooter_Restart.json
      */
     /**
      * Sample code: Troubleshooters_Restart.

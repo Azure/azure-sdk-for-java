@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -170,7 +171,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT)
+    @Test(groups = {"flaky-multi-master"}, timeOut = CONFLICT_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void conflictCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);

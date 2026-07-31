@@ -19,17 +19,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public abstract class FeedOperationState {
 
-    protected static final ImplementationBridgeHelpers
-        .CosmosAsyncClientHelper
-        .CosmosAsyncClientAccessor clientAccessor = ImplementationBridgeHelpers
-            .CosmosAsyncClientHelper
-            .getCosmosAsyncClientAccessor();
+    protected static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    }
 
-    protected static final ImplementationBridgeHelpers
-        .CosmosDiagnosticsContextHelper
-        .CosmosDiagnosticsContextAccessor ctxAccessor = ImplementationBridgeHelpers
-            .CosmosDiagnosticsContextHelper
-            .getCosmosDiagnosticsContextAccessor();
+    protected static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    }
 
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosDiagnosticsThresholds thresholds;
@@ -81,13 +77,13 @@ public abstract class FeedOperationState {
             ? requestOptions.getReadConsistencyStrategy()
             : null;
 
-        ReadConsistencyStrategy effectiveReadConsistencyStrategy = clientAccessor
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = clientAccessor()
             .getEffectiveReadConsistencyStrategy(
                 cosmosAsyncClient, resourceType, operationType, requestLevelReadConsistencyStrategy);
 
-        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+        CosmosDiagnosticsContext cosmosCtx = ctxAccessor().create(
             checkNotNull(spanName, "Argument 'spanName' must not be null." ),
-            clientAccessor.getAccountTagValue(cosmosAsyncClient),
+            clientAccessor().getAccountTagValue(cosmosAsyncClient),
             BridgeInternal.getServiceEndpoint(this.cosmosAsyncClient),
             dbName,
             containerName,
@@ -99,8 +95,8 @@ public abstract class FeedOperationState {
             initialMaxItemCount != null ? initialMaxItemCount : Constants.Properties.DEFAULT_MAX_PAGE_SIZE,
             this.thresholds,
             null,
-            clientAccessor.getConnectionMode(cosmosAsyncClient),
-            clientAccessor.getUserAgent(cosmosAsyncClient),
+            clientAccessor().getConnectionMode(cosmosAsyncClient),
+            clientAccessor().getUserAgent(cosmosAsyncClient),
             this.sequenceNumberGenerator.incrementAndGet(),
             fluxOptions != null ? fluxOptions.getQueryText(): null,
             requestOptions);
@@ -120,7 +116,7 @@ public abstract class FeedOperationState {
         this.samplingRate.set(samplingRateSnapshot);
         this.isSampledOut.set(isSampledOut);
         CosmosDiagnosticsContext ctxSnapshot = this.ctxHolder.get();
-        ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
+        ctxAccessor().setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
     }
 
     // Can return null
@@ -148,11 +144,11 @@ public abstract class FeedOperationState {
     }
 
     public DiagnosticsProvider getDiagnosticsProvider() {
-        return clientAccessor.getDiagnosticsProvider(this.cosmosAsyncClient);
+        return clientAccessor().getDiagnosticsProvider(this.cosmosAsyncClient);
     }
 
     public String getSpanName() {
-        return ctxAccessor.getSpanName(this.ctxHolder.get());
+        return ctxAccessor().getSpanName(this.ctxHolder.get());
     }
 
     public CosmosAsyncClient getClient() {
@@ -169,14 +165,14 @@ public abstract class FeedOperationState {
             throw new IllegalStateException("CosmosDiagnosticsContext must never be null");
         }
 
-        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            ctxAccessor.getSpanName(snapshot),
-            ctxAccessor.getEndpoint(snapshot),
+        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor().create(
+            ctxAccessor().getSpanName(snapshot),
+            ctxAccessor().getEndpoint(snapshot),
             BridgeInternal.getServiceEndpoint(this.cosmosAsyncClient),
             snapshot.getDatabaseName(),
             snapshot.getContainerName(),
-            ctxAccessor.getResourceType(snapshot),
-            ctxAccessor.getOperationType(snapshot),
+            ctxAccessor().getResourceType(snapshot),
+            ctxAccessor().getOperationType(snapshot),
             snapshot.getOperationId(),
             snapshot.getEffectiveConsistencyLevel(),
             snapshot.getEffectiveReadConsistencyStrategy(),
@@ -187,11 +183,11 @@ public abstract class FeedOperationState {
             snapshot.getUserAgent(),
             this.sequenceNumberGenerator.incrementAndGet(),
             fluxOptions.getQueryText(),
-            ctxAccessor.getRequestOptions(snapshot)
+            ctxAccessor().getRequestOptions(snapshot)
     );
         Double samplingRateSnapshot = this.samplingRate.get();
         if (samplingRateSnapshot != null) {
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, this.isSampledOut.get());
+            ctxAccessor().setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, this.isSampledOut.get());
         }
 
         this.ctxHolder.set(cosmosCtx);

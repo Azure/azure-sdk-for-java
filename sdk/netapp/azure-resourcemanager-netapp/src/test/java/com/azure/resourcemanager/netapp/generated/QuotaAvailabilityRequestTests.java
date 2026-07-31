@@ -12,26 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"owx\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"piudeugfsxzecpa\"}")
+        QuotaAvailabilityRequest model = BinaryData
+            .fromString(
+                "{\"name\":\"opteecj\",\"type\":\"Microsoft.NetApp/netAppAccounts\",\"resourceGroup\":\"islstv\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("owx", model.name());
-        Assertions.assertEquals(
-            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS,
-            model.type());
-        Assertions.assertEquals("piudeugfsxzecpa", model.resourceGroup());
+        Assertions.assertEquals("opteecj", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("islstv", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("owx")
-            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-            .withResourceGroup("piudeugfsxzecpa");
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("opteecj")
+            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS)
+            .withResourceGroup("islstv");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("owx", model.name());
-        Assertions.assertEquals(
-            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS,
-            model.type());
-        Assertions.assertEquals("piudeugfsxzecpa", model.resourceGroup());
+        Assertions.assertEquals("opteecj", model.name());
+        Assertions.assertEquals(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS, model.type());
+        Assertions.assertEquals("islstv", model.resourceGroup());
     }
 }

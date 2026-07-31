@@ -23,7 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
@@ -81,6 +83,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private String instrumentationId;
     private final boolean isAutoComplete;
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
+    private volatile RetryTemplate retryTemplate;
 
     /**
      * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusMessageListenerContainer}.
@@ -153,7 +156,38 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      */
     public void setInstrumentationId(String instrumentationId) {
         this.instrumentationId = instrumentationId;
+    }
 
+    /**
+     * Set retry template for message processing retries.
+     *
+     * @param retryTemplate the retry template
+     */
+    public void setRetryTemplate(RetryTemplate retryTemplate) {
+        this.retryTemplate = retryTemplate;
+    }
+
+    /**
+     * Get the retry template configured on this adapter, or {@code null} if retry is not enabled.
+     *
+     * @return the retry template, or {@code null}
+     */
+    public RetryTemplate getRetryTemplate() {
+        return this.retryTemplate;
+    }
+
+    /**
+     * Sends the message directly to the output channel without routing exceptions to the error channel.
+     * This is used inside the retry template so that exceptions propagate back to the retry logic.
+     * Uses the adapter's configured sendTimeout (via MessagingTemplate) to match the non-retry path.
+     * The caller is responsible for routing to the error channel after retries are exhausted.
+     *
+     * @param message the message to send
+     */
+    private void sendMessageDirectly(Message<?> message) {
+        MessageChannel outputCh = getOutputChannel();
+        Assert.notNull(outputCh, "Output channel must not be null");
+        getMessagingTemplate().send(outputCh, message);
     }
 
     private class IntegrationErrorHandler implements ServiceBusErrorHandler {
@@ -199,7 +233,25 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
             Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
                 payloadType);
-            sendMessage(message);
+
+            RetryTemplate localRetryTemplate = retryTemplate;
+            if (localRetryTemplate != null) {
+                try {
+                    localRetryTemplate.execute(context -> {
+                        // Bypass sendMessage()'s error-channel routing so exceptions propagate
+                        // back to the retry template for retry. After all retries are exhausted
+                        // the catch block routes to the error channel.
+                        sendMessageDirectly(message);
+                        return null;
+                    });
+                } catch (RuntimeException e) {
+                    if (!sendErrorMessageIfNecessary(message, e)) {
+                        throw e;
+                    }
+                }
+            } else {
+                sendMessage(message);
+            }
         }
 
     }

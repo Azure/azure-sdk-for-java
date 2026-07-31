@@ -325,7 +325,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_cli]: https://learn.microsoft.com/cli/azure
 [rest_api]: https://learn.microsoft.com/rest/api/attestation/
 [azure_create_application_in_portal]: https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients

@@ -10,8 +10,9 @@ import com.azure.resourcemanager.containerregistry.models.TlsProperties;
 public final class TlsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TlsProperties model = BinaryData.fromString(
-            "{\"status\":\"Disabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"lqdqgbiqylihka\"}}")
+        TlsProperties model = BinaryData
+            .fromString(
+                "{\"status\":\"Enabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"kphywpnvjto\"}}")
             .toObject(TlsProperties.class);
     }
 }

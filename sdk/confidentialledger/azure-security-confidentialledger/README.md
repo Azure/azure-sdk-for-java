@@ -21,7 +21,7 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.1.0-beta.1</version>
+  <version>1.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -128,7 +128,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_resource_manager]: https://learn.microsoft.com/azure/azure-resource-manager/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [cla]: https://cla.opensource.microsoft.com/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

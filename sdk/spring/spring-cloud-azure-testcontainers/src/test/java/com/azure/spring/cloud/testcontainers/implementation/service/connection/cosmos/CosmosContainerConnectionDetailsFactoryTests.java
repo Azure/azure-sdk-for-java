@@ -22,6 +22,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.CosmosDBEmulatorContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -48,9 +49,11 @@ class CosmosContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
-        .waitingFor(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure())
-        .withStartupTimeout(Duration.ofMinutes(3));
+    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:stable"))
+        .waitingFor(new WaitAllStrategy()
+            .withStrategy(Wait.forLogMessage("(?s).*Started.*", 1))
+            .withStrategy(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure()))
+        .withStartupTimeout(Duration.ofMinutes(5));
 
     @Autowired
     private PersonRepository personRepository;

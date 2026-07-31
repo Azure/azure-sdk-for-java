@@ -485,10 +485,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     private List<InternalObjectNode> prepareCosmosContainer(CosmosAsyncContainer cosmosContainer) {
         try {
-            truncateCollection(cosmosContainer);
+            cleanUpContainer(cosmosContainer);
         } catch (Throwable firstChanceException) {
             try {
-                truncateCollection(cosmosContainer);
+                cleanUpContainer(cosmosContainer);
             } catch (Throwable lastChanceException) {
                 String message = String.format("container %s truncation failed due to first chance %s followed by last chance %s",
                     cosmosContainer,
@@ -509,7 +509,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition(99));
         }
 
-        List<InternalObjectNode> items = bulkInsertBlocking(cosmosContainer, docDefList);
+        List<InternalObjectNode> items = insertAllItemsBlocking(cosmosContainer, docDefList, true);
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return items;
     }
@@ -721,7 +721,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyIdSameAsPartitionKey() {
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<InternalObjectNode> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);

@@ -15,31 +15,31 @@ public final class EntityAlertsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityAlerts model = BinaryData.fromString(
-            "{\"unhealthy\":{\"severity\":\"Sev4\",\"description\":\"itxmedjvcslynqww\",\"actionGroupIds\":[\"zzhxgktrm\"]},\"degraded\":{\"severity\":\"Sev0\",\"description\":\"apkteoellwptfdyg\",\"actionGroupIds\":[\"b\",\"ac\",\"op\"]}}")
+            "{\"unhealthy\":{\"severity\":\"Sev1\",\"description\":\"huexmk\",\"actionGroupIds\":[\"stvlzywemhzrnc\",\"dtclusiypb\",\"fgytguslfeadcyg\"]},\"degraded\":{\"severity\":\"Sev2\",\"description\":\"hejhzisx\",\"actionGroupIds\":[\"elolppvksrpqvuj\",\"raehtwdwrft\"]}}")
             .toObject(EntityAlerts.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.unhealthy().severity());
-        Assertions.assertEquals("itxmedjvcslynqww", model.unhealthy().description());
-        Assertions.assertEquals("zzhxgktrm", model.unhealthy().actionGroupIds().get(0));
-        Assertions.assertEquals(AlertSeverity.SEV0, model.degraded().severity());
-        Assertions.assertEquals("apkteoellwptfdyg", model.degraded().description());
-        Assertions.assertEquals("b", model.degraded().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV1, model.unhealthy().severity());
+        Assertions.assertEquals("huexmk", model.unhealthy().description());
+        Assertions.assertEquals("stvlzywemhzrnc", model.unhealthy().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV2, model.degraded().severity());
+        Assertions.assertEquals("hejhzisx", model.degraded().description());
+        Assertions.assertEquals("elolppvksrpqvuj", model.degraded().actionGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntityAlerts model = new EntityAlerts()
-            .withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV4)
-                .withDescription("itxmedjvcslynqww")
-                .withActionGroupIds(Arrays.asList("zzhxgktrm")))
-            .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV0)
-                .withDescription("apkteoellwptfdyg")
-                .withActionGroupIds(Arrays.asList("b", "ac", "op")));
+            .withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
+                .withDescription("huexmk")
+                .withActionGroupIds(Arrays.asList("stvlzywemhzrnc", "dtclusiypb", "fgytguslfeadcyg")))
+            .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV2)
+                .withDescription("hejhzisx")
+                .withActionGroupIds(Arrays.asList("elolppvksrpqvuj", "raehtwdwrft")));
         model = BinaryData.fromObject(model).toObject(EntityAlerts.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.unhealthy().severity());
-        Assertions.assertEquals("itxmedjvcslynqww", model.unhealthy().description());
-        Assertions.assertEquals("zzhxgktrm", model.unhealthy().actionGroupIds().get(0));
-        Assertions.assertEquals(AlertSeverity.SEV0, model.degraded().severity());
-        Assertions.assertEquals("apkteoellwptfdyg", model.degraded().description());
-        Assertions.assertEquals("b", model.degraded().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV1, model.unhealthy().severity());
+        Assertions.assertEquals("huexmk", model.unhealthy().description());
+        Assertions.assertEquals("stvlzywemhzrnc", model.unhealthy().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV2, model.degraded().severity());
+        Assertions.assertEquals("hejhzisx", model.degraded().description());
+        Assertions.assertEquals("elolppvksrpqvuj", model.degraded().actionGroupIds().get(0));
     }
 }

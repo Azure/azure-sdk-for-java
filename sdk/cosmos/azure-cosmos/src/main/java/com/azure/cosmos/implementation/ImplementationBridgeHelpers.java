@@ -31,9 +31,9 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
-import com.azure.cosmos.implementation.batch.TransactionalBatchRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -60,7 +60,9 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosItemIdentity;
+
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -68,6 +70,7 @@ import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -76,6 +79,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.ShowQueryMode;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -349,6 +353,44 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosReadManyRequestOptionsAccessor {
             CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
+        }
+    }
+
+    public static final class CosmosReadManyByPartitionKeysRequestOptionsHelper {
+        private final static AtomicBoolean cosmosReadManyByPkRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosReadManyByPartitionKeysRequestOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosReadManyByPartitionKeysRequestOptionsHelper() {}
+
+        public static void setCosmosReadManyByPartitionKeysRequestOptionsAccessor(
+            final CosmosReadManyByPartitionKeysRequestOptionsAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosReadManyByPartitionKeysRequestOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
+                cosmosReadManyByPkRequestOptionsClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosReadManyByPartitionKeysRequestOptionsAccessor getCosmosReadManyByPartitionKeysRequestOptionsAccessor() {
+            if (!cosmosReadManyByPkRequestOptionsClassLoaded.get()) {
+                logger.debug("Initializing CosmosReadManyByPartitionKeysRequestOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosReadManyByPartitionKeysRequestOptionsAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosReadManyByPartitionKeysRequestOptionsAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosReadManyByPartitionKeysRequestOptionsAccessor {
+            CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyByPartitionKeysRequestOptions options);
+            String getContinuationToken(CosmosReadManyByPartitionKeysRequestOptions options);
+            Integer getMaxConcurrentBatchPrefetch(CosmosReadManyByPartitionKeysRequestOptions options);
+            Integer getMaxBatchSize(CosmosReadManyByPartitionKeysRequestOptions options);
         }
     }
 
@@ -1290,8 +1332,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchAccessor {
             List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch);
-            CosmosBatch setRetryPolicy(CosmosBatch cosmosBatch, TransactionalBatchRetryPolicy transactionalBatchRetryPolicy);
-            TransactionalBatchRetryPolicy getRetryPolicy(CosmosBatch cosmosBatch);
         }
     }
 
@@ -1548,7 +1588,7 @@ public class ImplementationBridgeHelpers {
             }
         }
 
-        public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
+        public static CosmosDiagnosticsThresholdsAccessor getCosmosDiagnosticsThresholdsAccessor() {
             if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsThresholds...");
                 initializeAllAccessors();
@@ -1893,6 +1933,9 @@ public class ImplementationBridgeHelpers {
 
             void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
             ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
+            CosmosItemSerializer getInternalDefaultSerializer();
+            void setCanSerialize(CosmosItemSerializer serializer, boolean canSerialize);
+            boolean canSerialize(CosmosItemSerializer serializer);
         }
     }
 
@@ -1932,6 +1975,111 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
                 ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
+        }
+    }
+
+    public static final class CosmosGlobalSecondaryIndexDefinitionHelper {
+        private static final AtomicReference<CosmosGlobalSecondaryIndexDefinitionAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosGlobalSecondaryIndexDefinitionClassLoaded = new AtomicBoolean(false);
+
+        private CosmosGlobalSecondaryIndexDefinitionHelper() {
+        }
+
+        public static void setCosmosGlobalSecondaryIndexDefinitionAccessor(
+            final CosmosGlobalSecondaryIndexDefinitionAccessor newAccessor) {
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosGlobalSecondaryIndexDefinitionAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosGlobalSecondaryIndexDefinitionAccessor...");
+                cosmosGlobalSecondaryIndexDefinitionClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosGlobalSecondaryIndexDefinitionAccessor getCosmosGlobalSecondaryIndexDefinitionAccessor() {
+            if (!cosmosGlobalSecondaryIndexDefinitionClassLoaded.get()) {
+                logger.debug("Initializing CosmosGlobalSecondaryIndexDefinitionAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosGlobalSecondaryIndexDefinitionAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosGlobalSecondaryIndexDefinitionAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosGlobalSecondaryIndexDefinitionAccessor {
+            void setSourceCollectionRid(CosmosGlobalSecondaryIndexDefinition definition, String sourceCollectionRid);
+        }
+    }
+
+    public static final class SqlQuerySpecHelper {
+        private static final AtomicReference<SqlQuerySpecAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean sqlQuerySpecClassLoaded = new AtomicBoolean(false);
+
+        private SqlQuerySpecHelper() {}
+
+        public static void setSqlQuerySpecAccessor(final SqlQuerySpecAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("SqlQuerySpecAccessor already initialized!");
+            } else {
+                logger.debug("Setting SqlQuerySpecAccessor...");
+                sqlQuerySpecClassLoaded.set(true);
+            }
+        }
+
+        public static SqlQuerySpecAccessor getSqlQuerySpecAccessor() {
+            if (!sqlQuerySpecClassLoaded.get()) {
+                logger.debug("Initializing SqlQuerySpecAccessor...");
+                initializeAllAccessors();
+            }
+
+            SqlQuerySpecAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("SqlQuerySpecAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface SqlQuerySpecAccessor {
+            void applySerializerToParameters(SqlQuerySpec sqlQuerySpec, CosmosItemSerializer serializer);
+        }
+    }
+
+    public static final class SqlParameterHelper {
+        private static final AtomicReference<SqlParameterAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean sqlParameterClassLoaded = new AtomicBoolean(false);
+
+        private SqlParameterHelper() {}
+
+        public static void setSqlParameterAccessor(final SqlParameterAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("SqlParameterAccessor already initialized!");
+            } else {
+                logger.debug("Setting SqlParameterAccessor...");
+                sqlParameterClassLoaded.set(true);
+            }
+        }
+
+        public static SqlParameterAccessor getSqlParameterAccessor() {
+            if (!sqlParameterClassLoaded.get()) {
+                logger.debug("Initializing SqlParameterAccessor...");
+                initializeAllAccessors();
+            }
+
+            SqlParameterAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("SqlParameterAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface SqlParameterAccessor {
+            SqlParameter createCopy(SqlParameter original);
         }
     }
 }

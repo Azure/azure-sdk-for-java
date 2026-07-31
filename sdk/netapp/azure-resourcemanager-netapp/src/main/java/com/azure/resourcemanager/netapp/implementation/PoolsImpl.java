@@ -30,12 +30,8 @@ public final class PoolsImpl implements Pools {
         Context context) {
         Response<CapacityPoolInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CapacityPoolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CapacityPoolImpl(inner.getValue(), this.manager()));
     }
 
     public CapacityPool get(String resourceGroupName, String accountName, String poolName) {

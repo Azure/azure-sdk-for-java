@@ -12,34 +12,18 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class DefaultCosmosItemSerializer extends CosmosItemSerializer {
-    ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers
-        .CosmosItemSerializerHelper
-        .getCosmosItemSerializerAccessor();
-    private final static ObjectMapper serializationInclusionModeAwareObjectMapper = Utils.getDocumentObjectMapper(
-        Configs.getItemSerializationInclusionMode()
-    );
-    private final static ObjectMapper defaultSerializationInclusionModeObjectMapper = Utils.getSimpleObjectMapper();
-
-    /**
-     * Gets the default Cosmos item serializer. This serializer is used by default when no custom serializer is
-     * specified on request options or the {@link CosmosClientBuilder}
-     */
-    public final static CosmosItemSerializer DEFAULT_SERIALIZER =
-        new DefaultCosmosItemSerializer(serializationInclusionModeAwareObjectMapper);
-
-    // guaranteed to sue serialization inclusion mode "Always"
-    public final static CosmosItemSerializer INTERNAL_DEFAULT_SERIALIZER =
-        new DefaultCosmosItemSerializer(defaultSerializationInclusionModeObjectMapper);
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
 
     private final ObjectMapper mapper;
 
     public DefaultCosmosItemSerializer(ObjectMapper mapper) {
-        checkNotNull("mapper", "Argument 'mapper' must not be null.");
+        checkNotNull(mapper, "Argument 'mapper' must not be null.");
 
         this.mapper = mapper;
-        itemSerializerAccessor.setItemObjectMapper(this, mapper);
-        itemSerializerAccessor.setShouldWrapSerializationExceptions(this, false);
+        itemSerializerAccessor().setItemObjectMapper(this, mapper);
+        itemSerializerAccessor().setShouldWrapSerializationExceptions(this, false);
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class ReplicasCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateReplica.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateReplica.json
      */
     /**
      * Sample code: Replicas_Create.

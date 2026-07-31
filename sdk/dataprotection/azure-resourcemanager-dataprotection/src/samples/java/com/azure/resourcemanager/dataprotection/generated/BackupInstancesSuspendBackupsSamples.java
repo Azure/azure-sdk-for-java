@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupInstancesSuspendBackupsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/SuspendBackups.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/SuspendBackups.json
      */
     /**
      * Sample code: SuspendBackups.
@@ -25,7 +25,7 @@ public final class BackupInstancesSuspendBackupsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
      */
     /**
      * Sample code: SuspendBackups with MUA.

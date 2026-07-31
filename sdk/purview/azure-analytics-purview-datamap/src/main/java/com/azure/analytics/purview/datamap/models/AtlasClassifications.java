@@ -129,8 +129,13 @@ public final class AtlasClassifications implements JsonSerializable<AtlasClassif
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("list", this.list,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeArrayField("list", this.list, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeNumberField("pageSize", this.pageSize);
         jsonWriter.writeStringField("sortBy", this.sortBy);
         jsonWriter.writeStringField("sortType", this.sortType == null ? null : this.sortType.toString());

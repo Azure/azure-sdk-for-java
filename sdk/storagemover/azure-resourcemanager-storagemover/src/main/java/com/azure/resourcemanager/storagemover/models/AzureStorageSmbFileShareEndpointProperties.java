@@ -99,9 +99,19 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
      * {@inheritDoc}
      */
     @Override
+    public AzureStorageSmbFileShareEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("fileShareName", this.fileShareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -127,6 +137,9 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureStorageSmbFileShareEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureStorageSmbFileShareEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

@@ -53,7 +53,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class CallInvite {
     public CallInvite(TeamsExtensionUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsAppIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**

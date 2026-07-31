@@ -77,6 +77,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
+
     private static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
 
     private final static Logger logger = LoggerFactory.getLogger(GatewayAddressCache.class);
@@ -123,7 +127,8 @@ public class GatewayAddressCache implements IAddressCache {
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        GatewayServerErrorInjector gatewayServerErrorInjector) {
+        GatewayServerErrorInjector gatewayServerErrorInjector,
+        Map<String, String> additionalHeaders) {
 
         this.clientContext = clientContext;
         try {
@@ -165,6 +170,16 @@ public class GatewayAddressCache implements IAddressCache {
             HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
             HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
+        // Apply client-level additional headers (e.g., workload-id) to address resolution requests.
+        // Address resolution is the one metadata path that bypasses RxGatewayStoreModel (which
+        // handles all other metadata requests) — GatewayAddressCache calls httpClient.send() directly.
+        // Use putIfAbsent to ensure SDK system headers (USER_AGENT, VERSION, etc.) are not overwritten.
+        if (additionalHeaders != null && !additionalHeaders.isEmpty()) {
+            for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
+                this.defaultRequestHeaders.putIfAbsent(entry.getKey(), entry.getValue());
+            }
+        }
+
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
@@ -188,7 +203,8 @@ public class GatewayAddressCache implements IAddressCache {
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        GatewayServerErrorInjector gatewayServerErrorInjector) {
+        GatewayServerErrorInjector gatewayServerErrorInjector,
+        Map<String, String> additionalHeaders) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -200,7 +216,8 @@ public class GatewayAddressCache implements IAddressCache {
                 globalEndpointManager,
                 connectionPolicy,
                 proactiveOpenConnectionsProcessor,
-                gatewayServerErrorInjector);
+                gatewayServerErrorInjector,
+                additionalHeaders);
     }
 
     @Override
@@ -1220,9 +1237,7 @@ public class GatewayAddressCache implements IAddressCache {
         String errorMessage,
         long transportRequestId) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            ImplementationBridgeHelpers
-                .CosmosDiagnosticsHelper
-                .getCosmosDiagnosticsAccessor()
+            diagAccessor()
                 .recordAddressResolutionEnd(request, identifier, errorMessage, transportRequestId);
         }
     }

@@ -410,7 +410,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
             validateSuccess(deleteObservable, validator);
             Mono<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), requestOptions);
             FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().unknownSubStatusCode().build();
-            validateFailure(readObservable, notFoundValidator);
+            validateResourceResponseFailure(readObservable, notFoundValidator);
 
         } finally {
             safeClose(client);

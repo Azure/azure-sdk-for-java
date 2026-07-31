@@ -285,7 +285,7 @@ public class BackPressureTest extends TestSuiteBase {
                 docDefList.add(getDocumentDefinition(i));
             }
 
-            createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
+            createdDocuments = insertAllItemsBlocking(createdCollection, docDefList, true);
 
             waitIfNeededForReplicasToCatchUp(getClientBuilder());
             warmUp();

@@ -8,8 +8,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
+import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
+import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
 import java.time.OffsetDateTime;
 
 /**
@@ -53,15 +60,31 @@ public interface EntitiesClient {
      * @param healthModelName Name of health model resource.
      * @param entityName Name of the entity. Must be unique within a health model.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EntityInner>, EntityInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String entityName, EntityInner resource);
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity (aka node) of a health model along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of an entity (aka node) of a health model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EntityInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
-        String entityName, EntityInner resource, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EntityInner>, EntityInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String entityName, EntityInner resource, Context context);
 
     /**
      * Create a Entity.
@@ -80,6 +103,37 @@ public interface EntitiesClient {
         EntityInner resource);
 
     /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EntityInner createOrUpdate(String resourceGroupName, String healthModelName, String entityName,
+        EntityInner resource, Context context);
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName, String entityName);
+
+    /**
      * Delete a Entity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -89,10 +143,10 @@ public interface EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName, String entityName,
         Context context);
 
     /**
@@ -107,6 +161,20 @@ public interface EntitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String healthModelName, String entityName);
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String healthModelName, String entityName, Context context);
 
     /**
      * List Entity resources by HealthModel.
@@ -137,4 +205,102 @@ public interface EntitiesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EntityInner> listByHealthModel(String resourceGroupName, String healthModelName,
         OffsetDateTime timestamp, Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EntityHistoryResponseInner> getHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, EntityHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EntityHistoryResponseInner getHistory(String resourceGroupName, String healthModelName, String entityName,
+        EntityHistoryRequest body);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SignalHistoryResponseInner> getSignalHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, SignalHistoryRequest body, Context context);
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignalHistoryResponseInner getSignalHistory(String resourceGroupName, String healthModelName, String entityName,
+        SignalHistoryRequest body);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> ingestHealthReportWithResponse(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body, Context context);
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body);
 }

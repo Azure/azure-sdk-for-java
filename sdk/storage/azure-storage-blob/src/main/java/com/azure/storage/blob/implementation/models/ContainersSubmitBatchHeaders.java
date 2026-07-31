@@ -15,10 +15,10 @@ import com.azure.core.http.HttpHeaders;
 @Fluent
 public final class ContainersSubmitBatchHeaders {
     /*
-     * The x-ms-version property.
+     * The Content-Type property.
      */
     @Generated
-    private String xMsVersion;
+    private String contentType;
 
     /*
      * The x-ms-request-id property.
@@ -27,10 +27,10 @@ public final class ContainersSubmitBatchHeaders {
     private String xMsRequestId;
 
     /*
-     * The Content-Type property.
+     * The x-ms-version property.
      */
     @Generated
-    private String contentType;
+    private String xMsVersion;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -41,30 +41,30 @@ public final class ContainersSubmitBatchHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersSubmitBatchHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
     }
 
     /**
-     * Get the xMsVersion property: The x-ms-version property.
+     * Get the contentType property: The Content-Type property.
      * 
-     * @return the xMsVersion value.
+     * @return the contentType value.
      */
     @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
+    public String getContentType() {
+        return this.contentType;
     }
 
     /**
-     * Set the xMsVersion property: The x-ms-version property.
+     * Set the contentType property: The Content-Type property.
      * 
-     * @param xMsVersion the xMsVersion value to set.
+     * @param contentType the contentType value to set.
      * @return the ContainersSubmitBatchHeaders object itself.
      */
     @Generated
-    public ContainersSubmitBatchHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public ContainersSubmitBatchHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 
@@ -91,24 +91,24 @@ public final class ContainersSubmitBatchHeaders {
     }
 
     /**
-     * Get the contentType property: The Content-Type property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the contentType value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getContentType() {
-        return this.contentType;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the contentType property: The Content-Type property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param contentType the contentType value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the ContainersSubmitBatchHeaders object itself.
      */
     @Generated
-    public ContainersSubmitBatchHeaders setContentType(String contentType) {
-        this.contentType = contentType;
+    public ContainersSubmitBatchHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 }

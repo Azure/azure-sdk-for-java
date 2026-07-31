@@ -58,11 +58,12 @@ public final class KeyVaultAdministrationClientImpl {
     private final KeyVaultAdministrationClientService service;
 
     /**
+     * The base URL of the Key Vault instance (e.g. https://myvault.vault.azure.net/).
      */
     private final String vaultBaseUrl;
 
     /**
-     * Gets.
+     * Gets The base URL of the Key Vault instance (e.g. https://myvault.vault.azure.net/).
      *
      * @return the vaultBaseUrl value.
      */
@@ -143,7 +144,7 @@ public final class KeyVaultAdministrationClientImpl {
     /**
      * Initializes an instance of KeyVaultAdministrationClient client.
      *
-     * @param vaultBaseUrl
+     * @param vaultBaseUrl The base URL of the Key Vault instance (e.g. https://myvault.vault.azure.net/).
      * @param serviceVersion Service version.
      */
     public KeyVaultAdministrationClientImpl(String vaultBaseUrl, KeyVaultAdministrationServiceVersion serviceVersion) {
@@ -155,7 +156,7 @@ public final class KeyVaultAdministrationClientImpl {
      * Initializes an instance of KeyVaultAdministrationClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param vaultBaseUrl
+     * @param vaultBaseUrl The base URL of the Key Vault instance (e.g. https://myvault.vault.azure.net/).
      * @param serviceVersion Service version.
      */
     public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
@@ -168,7 +169,7 @@ public final class KeyVaultAdministrationClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param vaultBaseUrl
+     * @param vaultBaseUrl The base URL of the Key Vault instance (e.g. https://myvault.vault.azure.net/).
      * @param serviceVersion Service version.
      */
     public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,

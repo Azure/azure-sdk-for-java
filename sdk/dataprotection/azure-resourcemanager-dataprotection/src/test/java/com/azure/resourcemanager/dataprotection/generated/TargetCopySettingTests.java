@@ -15,19 +15,19 @@ public final class TargetCopySettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetCopySetting model = BinaryData.fromString(
-            "{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"jnsjervtiagxsd\"}}")
+            "{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"jdcngqqm\"}}")
             .toObject(TargetCopySetting.class);
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("jnsjervtiagxsd", model.dataStore().objectType());
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStore().dataStoreType());
+        Assertions.assertEquals("jdcngqqm", model.dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetCopySetting model = new TargetCopySetting().withCopyAfter(new CopyOption())
             .withDataStore(
-                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("jnsjervtiagxsd"));
+                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withObjectType("jdcngqqm"));
         model = BinaryData.fromObject(model).toObject(TargetCopySetting.class);
-        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("jnsjervtiagxsd", model.dataStore().objectType());
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStore().dataStoreType());
+        Assertions.assertEquals("jdcngqqm", model.dataStore().objectType());
     }
 }

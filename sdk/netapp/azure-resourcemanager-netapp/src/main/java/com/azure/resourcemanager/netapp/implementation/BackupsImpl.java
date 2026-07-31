@@ -34,12 +34,8 @@ public final class BackupsImpl implements Backups {
         String backupName, Context context) {
         Response<BackupInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupImpl(inner.getValue(), this.manager()));
     }
 
     public Backup get(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
@@ -77,12 +73,8 @@ public final class BackupsImpl implements Backups {
         String poolName, String volumeName, Context context) {
         Response<BackupStatusInner> inner = this.serviceClient()
             .getLatestStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupStatusImpl(inner.getValue(), this.manager()));
     }
 
     public BackupStatus getLatestStatus(String resourceGroupName, String accountName, String poolName,
@@ -100,12 +92,8 @@ public final class BackupsImpl implements Backups {
         String accountName, String poolName, String volumeName, Context context) {
         Response<RestoreStatusInner> inner = this.serviceClient()
             .getVolumeLatestRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RestoreStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RestoreStatusImpl(inner.getValue(), this.manager()));
     }
 
     public RestoreStatus getVolumeLatestRestoreStatus(String resourceGroupName, String accountName, String poolName,

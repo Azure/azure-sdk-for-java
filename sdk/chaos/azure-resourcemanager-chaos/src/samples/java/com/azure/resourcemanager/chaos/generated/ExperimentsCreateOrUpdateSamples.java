@@ -8,6 +8,7 @@ import com.azure.resourcemanager.chaos.models.ChaosExperimentBranch;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
 import com.azure.resourcemanager.chaos.models.ChaosTargetListSelector;
 import com.azure.resourcemanager.chaos.models.ContinuousAction;
+import com.azure.resourcemanager.chaos.models.CustomerDataStorageProperties;
 import com.azure.resourcemanager.chaos.models.KeyValuePair;
 import com.azure.resourcemanager.chaos.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 public final class ExperimentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Experiments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Experiment in a resource group.
@@ -50,6 +51,9 @@ public final class ExperimentsCreateOrUpdateSamples {
                         "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine")))))
             .withTags(mapOf("key7131", "fakeTokenPlaceholder", "key2138", "fakeTokenPlaceholder"))
             .withIdentity(new ResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withCustomerDataStorage(new CustomerDataStorageProperties().withStorageAccountResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage")
+                .withBlobContainerName("azurechaosstudioexperiments"))
             .create();
     }
 

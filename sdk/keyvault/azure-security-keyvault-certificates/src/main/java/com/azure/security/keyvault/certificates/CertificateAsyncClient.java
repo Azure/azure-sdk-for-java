@@ -963,7 +963,8 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName) {
         try {
-            return implClient.purgeDeletedCertificateWithResponseAsync(certificateName, EMPTY_OPTIONS);
+            return implClient.purgeDeletedCertificateWithResponseAsync(certificateName,
+                new RequestOptions().addHeader("Accept", "application/json"));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }

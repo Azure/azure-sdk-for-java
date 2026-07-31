@@ -30,12 +30,8 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         Context context) {
         Response<VaultExtendedInfoResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
     }
 
     public VaultExtendedInfoResource get(String resourceGroupName, String vaultName) {
@@ -51,12 +47,8 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         VaultExtendedInfoResourceInner resourceResourceExtendedInfoDetails, Context context) {
         Response<VaultExtendedInfoResourceInner> inner = this.serviceClient()
             .createOrUpdateWithResponse(resourceGroupName, vaultName, resourceResourceExtendedInfoDetails, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
     }
 
     public VaultExtendedInfoResource createOrUpdate(String resourceGroupName, String vaultName,
@@ -74,12 +66,8 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         VaultExtendedInfoResourceInner resourceResourceExtendedInfoDetails, Context context) {
         Response<VaultExtendedInfoResourceInner> inner = this.serviceClient()
             .updateWithResponse(resourceGroupName, vaultName, resourceResourceExtendedInfoDetails, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VaultExtendedInfoResourceImpl(inner.getValue(), this.manager()));
     }
 
     public VaultExtendedInfoResource update(String resourceGroupName, String vaultName,

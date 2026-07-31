@@ -104,6 +104,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
         - deployment: PublishESRPPackage
           displayName: "Publish to Maven Central via ESRP"
@@ -229,10 +230,11 @@ stages:
                 CommitMsg: "Increment package versions for patch releases"
                 PRTitle: "Increment versions for patch releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''
 
         - job: PublishDocsMs
           displayName: Docs.MS Release
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 180
           dependsOn: PublishDevFeedPackage
 
@@ -274,7 +276,7 @@ stages:
 
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           variables:

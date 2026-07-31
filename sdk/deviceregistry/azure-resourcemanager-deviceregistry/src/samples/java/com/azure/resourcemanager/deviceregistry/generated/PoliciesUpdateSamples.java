@@ -4,20 +4,17 @@
 
 package com.azure.resourcemanager.deviceregistry.generated;
 
-import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorityConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.CertificateConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.LeafCertificateConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.Policy;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Policies Update.
  */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Update_Policies.json
+     * x-ms-original-file: 2026-03-01-preview/Update_Policies.json
      */
     /**
      * Sample code: Update_Policies.
@@ -29,22 +26,8 @@ public final class PoliciesUpdateSamples {
             .getWithResponse("rgdeviceregistry", "mynamespace", "mypolicy", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key5535", "fakeTokenPlaceholder"))
             .withProperties(new PolicyUpdateProperties().withCertificate(new CertificateConfiguration()
-                .withCertificateAuthorityConfiguration(new CertificateAuthorityConfiguration())
                 .withLeafCertificateConfiguration(new LeafCertificateConfiguration().withValidityPeriodInDays(10))))
             .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

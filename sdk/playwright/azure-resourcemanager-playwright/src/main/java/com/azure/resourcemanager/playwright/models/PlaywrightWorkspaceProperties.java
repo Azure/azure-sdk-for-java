@@ -43,6 +43,17 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
      */
     private String workspaceId;
 
+    /*
+     * Indicates whether reporting is enabled for the workspace. When set to true, reports will be generated and
+     * available for the workspace.
+     */
+    private EnablementStatus reporting;
+
+    /*
+     * The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
+     */
+    private String storageUri;
+
     /**
      * Creates an instance of PlaywrightWorkspaceProperties class.
      */
@@ -123,6 +134,50 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
     }
 
     /**
+     * Get the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
+     * 
+     * @return the reporting value.
+     */
+    public EnablementStatus reporting() {
+        return this.reporting;
+    }
+
+    /**
+     * Set the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
+     * 
+     * @param reporting the reporting value to set.
+     * @return the PlaywrightWorkspaceProperties object itself.
+     */
+    public PlaywrightWorkspaceProperties withReporting(EnablementStatus reporting) {
+        this.reporting = reporting;
+        return this;
+    }
+
+    /**
+     * Get the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @return the storageUri value.
+     */
+    public String storageUri() {
+        return this.storageUri;
+    }
+
+    /**
+     * Set the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @param storageUri the storageUri value to set.
+     * @return the PlaywrightWorkspaceProperties object itself.
+     */
+    public PlaywrightWorkspaceProperties withStorageUri(String storageUri) {
+        this.storageUri = storageUri;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -131,6 +186,8 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
         jsonWriter.writeStringField("regionalAffinity",
             this.regionalAffinity == null ? null : this.regionalAffinity.toString());
         jsonWriter.writeStringField("localAuth", this.localAuth == null ? null : this.localAuth.toString());
+        jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
+        jsonWriter.writeStringField("storageUri", this.storageUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,6 +220,11 @@ public final class PlaywrightWorkspaceProperties implements JsonSerializable<Pla
                         = EnablementStatus.fromString(reader.getString());
                 } else if ("workspaceId".equals(fieldName)) {
                     deserializedPlaywrightWorkspaceProperties.workspaceId = reader.getString();
+                } else if ("reporting".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceProperties.reporting
+                        = EnablementStatus.fromString(reader.getString());
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceProperties.storageUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * An structured input that can participate in prompt template substitutions and tool argument binding.
@@ -34,10 +35,11 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
      * The JSON schema for the structured input (optional).
      */
     @Generated
-    private BinaryData schema;
+    private Map<String, BinaryData> schema;
 
     /*
-     * Whether the input property is required when the agent is invoked.
+     * Whether the input property is required when the agent is invoked. The service defaults to `false` if a value is
+     * not specified by the caller.
      */
     @Generated
     private Boolean required;
@@ -99,24 +101,13 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
      * @return the schema value.
      */
     @Generated
-    public BinaryData getSchema() {
+    public Map<String, BinaryData> getSchema() {
         return this.schema;
     }
 
     /**
-     * Set the schema property: The JSON schema for the structured input (optional).
-     *
-     * @param schema the schema value to set.
-     * @return the StructuredInputDefinition object itself.
-     */
-    @Generated
-    public StructuredInputDefinition setSchema(BinaryData schema) {
-        this.schema = schema;
-        return this;
-    }
-
-    /**
-     * Get the required property: Whether the input property is required when the agent is invoked.
+     * Get the required property: Whether the input property is required when the agent is invoked. The service defaults
+     * to `false` if a value is not specified by the caller.
      *
      * @return the required value.
      */
@@ -126,7 +117,8 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
     }
 
     /**
-     * Set the required property: Whether the input property is required when the agent is invoked.
+     * Set the required property: Whether the input property is required when the agent is invoked. The service defaults
+     * to `false` if a value is not specified by the caller.
      *
      * @param required the required value to set.
      * @return the StructuredInputDefinition object itself.
@@ -149,10 +141,13 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
             jsonWriter.writeFieldName("default_value");
             this.defaultValue.writeTo(jsonWriter);
         }
-        if (this.schema != null) {
-            jsonWriter.writeFieldName("schema");
-            this.schema.writeTo(jsonWriter);
-        }
+        jsonWriter.writeMapField("schema", this.schema, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeBooleanField("required", this.required);
         return jsonWriter.writeEndObject();
     }
@@ -178,8 +173,9 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
                     deserializedStructuredInputDefinition.defaultValue
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("schema".equals(fieldName)) {
-                    deserializedStructuredInputDefinition.schema
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    Map<String, BinaryData> schema = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedStructuredInputDefinition.schema = schema;
                 } else if ("required".equals(fieldName)) {
                     deserializedStructuredInputDefinition.required = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -188,5 +184,17 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
             }
             return deserializedStructuredInputDefinition;
         });
+    }
+
+    /**
+     * Set the schema property: The JSON schema for the structured input (optional).
+     *
+     * @param schema the schema value to set.
+     * @return the StructuredInputDefinition object itself.
+     */
+    @Generated
+    public StructuredInputDefinition setSchema(Map<String, BinaryData> schema) {
+        this.schema = schema;
+        return this;
     }
 }

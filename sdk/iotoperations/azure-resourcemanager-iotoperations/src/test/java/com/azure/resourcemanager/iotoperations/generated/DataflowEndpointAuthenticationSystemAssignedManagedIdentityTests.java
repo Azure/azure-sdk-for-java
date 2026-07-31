@@ -12,17 +12,17 @@ public final class DataflowEndpointAuthenticationSystemAssignedManagedIdentityTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity model
-            = BinaryData.fromString("{\"audience\":\"mg\"}")
+            = BinaryData.fromString("{\"audience\":\"pbtg\"}")
                 .toObject(DataflowEndpointAuthenticationSystemAssignedManagedIdentity.class);
-        Assertions.assertEquals("mg", model.audience());
+        Assertions.assertEquals("pbtg", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointAuthenticationSystemAssignedManagedIdentity model
-            = new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("mg");
+            = new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("pbtg");
         model
             = BinaryData.fromObject(model).toObject(DataflowEndpointAuthenticationSystemAssignedManagedIdentity.class);
-        Assertions.assertEquals("mg", model.audience());
+        Assertions.assertEquals("pbtg", model.audience());
     }
 }

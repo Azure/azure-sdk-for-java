@@ -15,12 +15,12 @@ public final class GatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"displayName\":\"gnxytxhpzxbz\",\"gateType\":\"Approval\",\"target\":{\"id\":\"zabglcuhxwt\",\"updateRunProperties\":{\"name\":\"yqiklbbovplwzb\",\"stage\":\"gy\",\"group\":\"uosvmkfssxqukk\",\"timing\":\"After\"}},\"state\":\"Pending\"}")
+            "{\"provisioningState\":\"Failed\",\"displayName\":\"mclfplphoxuscr\",\"gateType\":\"Approval\",\"target\":{\"id\":\"bgyepsbj\",\"updateRunProperties\":{\"name\":\"zq\",\"stage\":\"xywpmueefjzwfqkq\",\"group\":\"ids\",\"timing\":\"Before\"}},\"state\":\"Completed\"}")
             .toObject(GateProperties.class);
-        Assertions.assertEquals("gnxytxhpzxbz", model.displayName());
+        Assertions.assertEquals("mclfplphoxuscr", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.gateType());
-        Assertions.assertEquals("zabglcuhxwt", model.target().id());
-        Assertions.assertEquals(Timing.AFTER, model.target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, model.state());
+        Assertions.assertEquals("bgyepsbj", model.target().id());
+        Assertions.assertEquals(Timing.BEFORE, model.target().updateRunProperties().timing());
+        Assertions.assertEquals(GateState.COMPLETED, model.state());
     }
 }

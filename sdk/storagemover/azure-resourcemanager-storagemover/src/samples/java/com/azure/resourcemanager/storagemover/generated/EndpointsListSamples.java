@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class EndpointsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_List.json
+     * x-ms-original-file: 2025-12-01/Endpoints_List.json
      */
     /**
      * Sample code: Endpoints_List.

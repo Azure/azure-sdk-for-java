@@ -5,7 +5,6 @@ package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("eventhubs-kafka-binder-oauth")
-@Disabled("Pipeline oauth is not enabled now")
 class EventHubsKafkaBinderOAuthIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsKafkaBinderOAuthIT.class);

@@ -15,23 +15,23 @@ public final class TaggingCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaggingCriteria model = BinaryData.fromString(
-            "{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":937620871414202300,\"tagInfo\":{\"eTag\":\"dnw\",\"id\":\"mewzsyyc\",\"tagName\":\"uzsoi\"}}")
+            "{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":true,\"taggingPriority\":6534775993251976339,\"tagInfo\":{\"eTag\":\"vsaznqntorudsg\",\"id\":\"hmk\",\"tagName\":\"c\"}}")
             .toObject(TaggingCriteria.class);
-        Assertions.assertFalse(model.isDefault());
-        Assertions.assertEquals(937620871414202300L, model.taggingPriority());
-        Assertions.assertEquals("uzsoi", model.tagInfo().tagName());
+        Assertions.assertTrue(model.isDefault());
+        Assertions.assertEquals(6534775993251976339L, model.taggingPriority());
+        Assertions.assertEquals("c", model.tagInfo().tagName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TaggingCriteria model = new TaggingCriteria()
             .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria()))
-            .withIsDefault(false)
-            .withTaggingPriority(937620871414202300L)
-            .withTagInfo(new RetentionTag().withTagName("uzsoi"));
+            .withIsDefault(true)
+            .withTaggingPriority(6534775993251976339L)
+            .withTagInfo(new RetentionTag().withTagName("c"));
         model = BinaryData.fromObject(model).toObject(TaggingCriteria.class);
-        Assertions.assertFalse(model.isDefault());
-        Assertions.assertEquals(937620871414202300L, model.taggingPriority());
-        Assertions.assertEquals("uzsoi", model.tagInfo().tagName());
+        Assertions.assertTrue(model.isDefault());
+        Assertions.assertEquals(6534775993251976339L, model.taggingPriority());
+        Assertions.assertEquals("c", model.tagInfo().tagName());
     }
 }

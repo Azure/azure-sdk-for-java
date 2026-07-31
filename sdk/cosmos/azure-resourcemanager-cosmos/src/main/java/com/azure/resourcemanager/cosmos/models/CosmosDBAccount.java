@@ -592,7 +592,7 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
             UpdateStages.WithConsistencyPolicy, UpdateStages.WithVirtualNetworkRule, UpdateStages.WithMultipleLocations,
             UpdateStages.WithConnector, UpdateStages.WithKeyBasedMetadataWriteAccess,
             UpdateStages.WithPrivateEndpointConnection, UpdateStages.WithIpRules, UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithAutomaticFailover {
+            UpdateStages.WithAutomaticFailover, UpdateStages.WithLocalAuth {
         }
 
         /** The stage of the cosmos db definition allowing the definition of a write location. */
@@ -814,6 +814,29 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
              */
             default Update disableAutomaticFailover() {
                 throw new UnsupportedOperationException("[disableAutomaticFailover] is not supported in " + getClass());
+            }
+        }
+
+        /**
+         * The stage of CosmosDB account update allowing to configure local auth settings.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables local auth for the CosmosDB account.
+             *
+             * @return the next stage of the update
+             */
+            default Update disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
+
+            /**
+             * Enables local auth for the CosmosDB account.
+             *
+             * @return the next stage of the update
+             */
+            default Update enableLocalAuth() {
+                throw new UnsupportedOperationException("[enableLocalAuth] is not supported in " + getClass());
             }
         }
     }

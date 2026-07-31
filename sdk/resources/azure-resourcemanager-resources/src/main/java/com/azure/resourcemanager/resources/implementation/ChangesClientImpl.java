@@ -59,7 +59,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ChangesManagementCli")
+    @ServiceInterface(name = "ChangesManagementClientChanges")
     public interface ChangesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Resources/changes")

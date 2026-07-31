@@ -12,5 +12,6 @@ module com.azure.resourcemanager.trafficmanager {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.trafficmanager.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.trafficmanager.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.trafficmanager.models to com.azure.core;
 }

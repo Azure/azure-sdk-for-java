@@ -36,12 +36,8 @@ public final class NodeTypesImpl implements NodeTypes {
         Context context) {
         Response<NodeTypeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, nodeTypeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NodeTypeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NodeTypeImpl(inner.getValue(), this.manager()));
     }
 
     public NodeType get(String resourceGroupName, String clusterName, String nodeTypeName) {
@@ -181,12 +177,8 @@ public final class NodeTypesImpl implements NodeTypes {
         String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
         Response<FaultSimulationInner> inner = this.serviceClient()
             .getFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FaultSimulationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FaultSimulationImpl(inner.getValue(), this.manager()));
     }
 
     public FaultSimulation getFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,

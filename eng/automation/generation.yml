@@ -77,3 +77,4 @@ steps:
         PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
       PRLabels: 'Mgmt - Track 2'
       OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
+      AuthToken: ''

@@ -24,6 +24,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeAct
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNatConfig;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeUpdateParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentSettings;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
@@ -342,6 +344,18 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public Boolean isOutboundOnly() {
         return this.innerModel().isOutboundOnly();
+    }
+
+    public Boolean enableResilientEphemeralOsDisk() {
+        return this.innerModel().enableResilientEphemeralOsDisk();
+    }
+
+    public ScaleInPolicy scaleInPolicy() {
+        return this.innerModel().scaleInPolicy();
+    }
+
+    public ProxyAgentSettings proxyAgentSettings() {
+        return this.innerModel().proxyAgentSettings();
     }
 
     public String resourceGroupName() {
@@ -798,6 +812,21 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withIsOutboundOnly(Boolean isOutboundOnly) {
         this.innerModel().withIsOutboundOnly(isOutboundOnly);
+        return this;
+    }
+
+    public NodeTypeImpl withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk) {
+        this.innerModel().withEnableResilientEphemeralOsDisk(enableResilientEphemeralOsDisk);
+        return this;
+    }
+
+    public NodeTypeImpl withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
+        this.innerModel().withScaleInPolicy(scaleInPolicy);
+        return this;
+    }
+
+    public NodeTypeImpl withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
+        this.innerModel().withProxyAgentSettings(proxyAgentSettings);
         return this;
     }
 

@@ -18,13 +18,13 @@ import java.io.IOException;
 public final class ImageGenToolInputImageMask implements JsonSerializable<ImageGenToolInputImageMask> {
 
     /*
-     * Base64-encoded mask image.
+     * The image_url property.
      */
     @Generated
     private String imageUrl;
 
     /*
-     * File ID for the mask image.
+     * The file_id property.
      */
     @Generated
     private String fileId;
@@ -37,7 +37,7 @@ public final class ImageGenToolInputImageMask implements JsonSerializable<ImageG
     }
 
     /**
-     * Get the imageUrl property: Base64-encoded mask image.
+     * Get the imageUrl property: The image_url property.
      *
      * @return the imageUrl value.
      */
@@ -47,7 +47,7 @@ public final class ImageGenToolInputImageMask implements JsonSerializable<ImageG
     }
 
     /**
-     * Set the imageUrl property: Base64-encoded mask image.
+     * Set the imageUrl property: The image_url property.
      *
      * @param imageUrl the imageUrl value to set.
      * @return the ImageGenToolInputImageMask object itself.
@@ -59,7 +59,7 @@ public final class ImageGenToolInputImageMask implements JsonSerializable<ImageG
     }
 
     /**
-     * Get the fileId property: File ID for the mask image.
+     * Get the fileId property: The file_id property.
      *
      * @return the fileId value.
      */
@@ -69,7 +69,7 @@ public final class ImageGenToolInputImageMask implements JsonSerializable<ImageG
     }
 
     /**
-     * Set the fileId property: File ID for the mask image.
+     * Set the fileId property: The file_id property.
      *
      * @param fileId the fileId value to set.
      * @return the ImageGenToolInputImageMask object itself.

@@ -31,6 +31,9 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
+import org.springframework.retry.backoff.NoBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -209,6 +212,193 @@ class ServiceBusInboundChannelAdapterTests {
         assertEquals(healthInstrumentation.getException().getClass(), IllegalArgumentException.class);
         assertEquals(healthInstrumentation.getException().getMessage(), "test");
 
+    }
+
+    @Test
+    void retryTemplateRetriesMessageOnFailure() throws InterruptedException {
+        ServiceBusMessageListenerContainer listenerContainer =
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
+
+        // Configure retry: maxAttempts=3, no backoff (for test speed)
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+        channelAdapter.setRetryTemplate(retryTemplate);
+
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+
+        final int[] attemptCount = {0};
+        final CountDownLatch successLatch = new CountDownLatch(1);
+        channel.subscribe(message -> {
+            attemptCount[0]++;
+            if (attemptCount[0] < 3) {
+                throw new RuntimeException("Simulated failure on attempt " + attemptCount[0]);
+            }
+            successLatch.countDown();
+        });
+
+        channelAdapter.setOutputChannel(channel);
+        channelAdapter.onInit();
+        channelAdapter.doStart();
+
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
+
+        ServiceBusReceivedMessageContext mockContext = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusReceivedMessage mockMessage = mock(ServiceBusReceivedMessage.class);
+        when(mockMessage.getBody()).thenReturn(BinaryData.fromString("test-payload"));
+        when(mockContext.getMessage()).thenReturn(mockMessage);
+
+        ((ServiceBusRecordMessageListener) messageListener).onMessage(mockContext);
+
+        assertTrue(successLatch.await(5L, TimeUnit.SECONDS), "Message should have been delivered after retries");
+        assertEquals(3, attemptCount[0], "Message should have been attempted exactly 3 times");
+    }
+
+    @Test
+    void retryTemplateWorksWithErrorChannelConfigured() throws InterruptedException {
+        ServiceBusMessageListenerContainer listenerContainer =
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
+
+        // Configure retry: maxAttempts=3, no backoff (for test speed)
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+        channelAdapter.setRetryTemplate(retryTemplate);
+
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+
+        // Handler fails first 2 attempts, succeeds on 3rd
+        final int[] attemptCount = {0};
+        final CountDownLatch successLatch = new CountDownLatch(1);
+        channel.subscribe(message -> {
+            attemptCount[0]++;
+            if (attemptCount[0] < 3) {
+                throw new RuntimeException("Simulated failure on attempt " + attemptCount[0]);
+            }
+            successLatch.countDown();
+        });
+
+        // Set an error channel — in the binder flow the adapter always has one configured
+        DirectChannel errorCh = new DirectChannel();
+        List<Message<?>> errorMessages = new CopyOnWriteArrayList<>();
+        errorCh.subscribe(msg -> errorMessages.add(msg));
+
+        channelAdapter.setOutputChannel(channel);
+        channelAdapter.setErrorChannel(errorCh);
+        channelAdapter.onInit();
+        channelAdapter.doStart();
+
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
+
+        ServiceBusReceivedMessageContext mockContext = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusReceivedMessage mockMessage = mock(ServiceBusReceivedMessage.class);
+        when(mockMessage.getBody()).thenReturn(BinaryData.fromString("test-payload"));
+        when(mockContext.getMessage()).thenReturn(mockMessage);
+
+        ((ServiceBusRecordMessageListener) messageListener).onMessage(mockContext);
+
+        assertTrue(successLatch.await(5L, TimeUnit.SECONDS), "Message should have been delivered after retries");
+        assertEquals(3, attemptCount[0], "Message should have been attempted exactly 3 times");
+        assertTrue(errorMessages.isEmpty(), "No error message should be sent to error channel when retries succeed");
+    }
+
+    @Test
+    void retryTemplateExhaustedWithErrorChannelRoutesToErrorChannel() throws InterruptedException {
+        ServiceBusMessageListenerContainer listenerContainer =
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
+
+        // Configure retry: maxAttempts=2, no backoff
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(2);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+        channelAdapter.setRetryTemplate(retryTemplate);
+
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+        // Handler always fails
+        channel.subscribe(message -> {
+            throw new RuntimeException("Always fails");
+        });
+
+        // Wire error channel
+        DirectChannel errorCh = new DirectChannel();
+        List<Message<?>> errorMessages = new CopyOnWriteArrayList<>();
+        CountDownLatch errorLatch = new CountDownLatch(1);
+        errorCh.subscribe(msg -> {
+            errorMessages.add(msg);
+            errorLatch.countDown();
+        });
+
+        channelAdapter.setOutputChannel(channel);
+        channelAdapter.setErrorChannel(errorCh);
+        channelAdapter.onInit();
+        channelAdapter.doStart();
+
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
+
+        ServiceBusReceivedMessageContext mockContext = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusReceivedMessage mockMessage = mock(ServiceBusReceivedMessage.class);
+        when(mockMessage.getBody()).thenReturn(BinaryData.fromString("test-payload"));
+        when(mockContext.getMessage()).thenReturn(mockMessage);
+
+        ((ServiceBusRecordMessageListener) messageListener).onMessage(mockContext);
+
+        assertTrue(errorLatch.await(5L, TimeUnit.SECONDS),
+            "One error message should be routed to the error channel after retries exhausted");
+        assertEquals(1, errorMessages.size(), "Exactly one error message should reach the error channel");
+    }
+
+    @Test
+    void retryTemplateExhaustedWithoutErrorChannelRethrowsException() {
+        ServiceBusMessageListenerContainer listenerContainer =
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
+
+        // Configure retry: maxAttempts=2, no backoff
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(2);
+        RetryTemplate retryTemplate = new RetryTemplate();
+        retryTemplate.setRetryPolicy(retryPolicy);
+        retryTemplate.setBackOffPolicy(new NoBackOffPolicy());
+        channelAdapter.setRetryTemplate(retryTemplate);
+
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+        // Handler always fails
+        channel.subscribe(message -> {
+            throw new RuntimeException("Always fails");
+        });
+
+        channelAdapter.setOutputChannel(channel);
+        // No error channel configured
+        channelAdapter.onInit();
+        channelAdapter.doStart();
+
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
+
+        ServiceBusReceivedMessageContext mockContext = mock(ServiceBusReceivedMessageContext.class);
+        ServiceBusReceivedMessage mockMessage = mock(ServiceBusReceivedMessage.class);
+        when(mockMessage.getBody()).thenReturn(BinaryData.fromString("test-payload"));
+        when(mockContext.getMessage()).thenReturn(mockMessage);
+
+        // Without error channel the exception must propagate to the caller
+        assertThrows(RuntimeException.class,
+            () -> ((ServiceBusRecordMessageListener) messageListener).onMessage(mockContext));
     }
 
 }

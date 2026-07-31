@@ -24,9 +24,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger  = LoggerFactory.getLogger(StaleResourceRetryPolicy.class);
 
-    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
-
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
@@ -87,6 +84,11 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
         CosmosException clientException = Utils.as(e, CosmosException.class);
         if (isServerNameCacheStaledException(clientException) || isGatewayStaledContainerException(clientException)) {
             if (!this.retried) {
+                logger.debug("Received name cache staled exception for collection [{}] with statusCode {}, subStatusCode {}, going to retry",
+                    collectionLink,
+                    clientException.getStatusCode(),
+                    clientException.getSubStatusCode());
+
                 // 1. refresh the collection cache if needed
                 // 2. If the collection rid has changed, then also clean up session container for old containerRid
                 AtomicReference<String> oldCollectionRid = new AtomicReference<>();

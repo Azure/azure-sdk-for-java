@@ -15,25 +15,25 @@ public final class NamespaceDiscoveredStreamTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredStream model = BinaryData.fromString(
-            "{\"name\":\"tkkgllqwjy\",\"streamConfiguration\":\"jayvblmhv\",\"typeRef\":\"uhbxvvy\",\"destinations\":[{\"target\":\"StreamDestination\"}],\"lastUpdatedOn\":\"2021-10-11T00:15:08Z\"}")
+            "{\"name\":\"bwccsnjvcdwxlpqe\",\"streamConfiguration\":\"tn\",\"typeRef\":\"tjsyin\",\"destinations\":[{\"target\":\"StreamDestination\"}],\"lastUpdatedOn\":\"2021-02-20T13:18:06Z\"}")
             .toObject(NamespaceDiscoveredStream.class);
-        Assertions.assertEquals("tkkgllqwjy", model.name());
-        Assertions.assertEquals("jayvblmhv", model.streamConfiguration());
-        Assertions.assertEquals("uhbxvvy", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T00:15:08Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.name());
+        Assertions.assertEquals("tn", model.streamConfiguration());
+        Assertions.assertEquals("tjsyin", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T13:18:06Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredStream model = new NamespaceDiscoveredStream().withName("tkkgllqwjy")
-            .withStreamConfiguration("jayvblmhv")
-            .withTypeRef("uhbxvvy")
+        NamespaceDiscoveredStream model = new NamespaceDiscoveredStream().withName("bwccsnjvcdwxlpqe")
+            .withStreamConfiguration("tn")
+            .withTypeRef("tjsyin")
             .withDestinations(Arrays.asList(new StreamDestination()))
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-10-11T00:15:08Z"));
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-02-20T13:18:06Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredStream.class);
-        Assertions.assertEquals("tkkgllqwjy", model.name());
-        Assertions.assertEquals("jayvblmhv", model.streamConfiguration());
-        Assertions.assertEquals("uhbxvvy", model.typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T00:15:08Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.name());
+        Assertions.assertEquals("tn", model.streamConfiguration());
+        Assertions.assertEquals("tjsyin", model.typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T13:18:06Z"), model.lastUpdatedOn());
     }
 }

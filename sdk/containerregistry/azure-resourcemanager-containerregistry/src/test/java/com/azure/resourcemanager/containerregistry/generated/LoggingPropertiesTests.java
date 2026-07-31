@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LoggingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoggingProperties model = BinaryData.fromString("{\"logLevel\":\"Error\",\"auditLogStatus\":\"Enabled\"}")
+        LoggingProperties model = BinaryData.fromString("{\"logLevel\":\"None\",\"auditLogStatus\":\"Enabled\"}")
             .toObject(LoggingProperties.class);
-        Assertions.assertEquals(LogLevel.ERROR, model.logLevel());
+        Assertions.assertEquals(LogLevel.NONE, model.logLevel());
         Assertions.assertEquals(AuditLogStatus.ENABLED, model.auditLogStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoggingProperties model
-            = new LoggingProperties().withLogLevel(LogLevel.ERROR).withAuditLogStatus(AuditLogStatus.ENABLED);
+            = new LoggingProperties().withLogLevel(LogLevel.NONE).withAuditLogStatus(AuditLogStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(LoggingProperties.class);
-        Assertions.assertEquals(LogLevel.ERROR, model.logLevel());
+        Assertions.assertEquals(LogLevel.NONE, model.logLevel());
         Assertions.assertEquals(AuditLogStatus.ENABLED, model.auditLogStatus());
     }
 }

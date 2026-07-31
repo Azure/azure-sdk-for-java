@@ -143,13 +143,8 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
     $algorithm = "sha256"
     $headers = @{ Authorization="BEARER $BearerToken"; "Content-signal" = "search=yes,ai-train=no" }
   }
-  elseif ($RepositoryUrl -match "^https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-    $baseUrl = "https://repo1.maven.org/maven2"
-    $algorithm = "sha1"
-    $headers = @{ "Content-signal" = "search=yes,ai-train=no" }
-  }
   else {
-    throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
+    throw "Repository URL must be an Azure Artifacts feed (https://pkgs.dev.azure.com/azure-sdk/...)."
   }
 
   $packageUrl = "$baseUrl/$($PackageDetail.GroupId.Replace('.', '/'))/$($PackageDetail.ArtifactID)/$($PackageDetail.Version)"

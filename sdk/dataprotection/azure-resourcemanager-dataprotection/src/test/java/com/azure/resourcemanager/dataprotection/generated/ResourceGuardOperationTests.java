@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.ResourceGuardOperation;
 public final class ResourceGuardOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceGuardOperation model
-            = BinaryData.fromString("{\"vaultCriticalOperation\":\"ubcgjbirxb\",\"requestResourceType\":\"bsrfbj\"}")
-                .toObject(ResourceGuardOperation.class);
+        ResourceGuardOperation model = BinaryData
+            .fromString("{\"vaultCriticalOperation\":\"sikvmkqzeqqkdlt\",\"requestResourceType\":\"xmhhvhgureo\"}")
+            .toObject(ResourceGuardOperation.class);
     }
 }

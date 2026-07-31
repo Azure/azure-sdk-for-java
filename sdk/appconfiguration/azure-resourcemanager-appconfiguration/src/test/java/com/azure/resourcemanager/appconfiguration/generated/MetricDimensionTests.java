@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricDimension model = BinaryData
-            .fromString("{\"name\":\"misgwbnb\",\"displayName\":\"ldawkzbaliourqha\",\"internalName\":\"uhashsfwx\"}")
-            .toObject(MetricDimension.class);
-        Assertions.assertEquals("misgwbnb", model.name());
-        Assertions.assertEquals("ldawkzbaliourqha", model.displayName());
-        Assertions.assertEquals("uhashsfwx", model.internalName());
+        MetricDimension model
+            = BinaryData.fromString("{\"name\":\"smwutwbdsrezpd\",\"displayName\":\"neuyow\",\"internalName\":\"d\"}")
+                .toObject(MetricDimension.class);
+        Assertions.assertEquals("smwutwbdsrezpd", model.name());
+        Assertions.assertEquals("neuyow", model.displayName());
+        Assertions.assertEquals("d", model.internalName());
     }
 }

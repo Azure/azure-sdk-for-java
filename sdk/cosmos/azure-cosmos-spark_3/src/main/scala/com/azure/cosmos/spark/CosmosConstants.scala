@@ -45,6 +45,7 @@ private[cosmos] object CosmosConstants {
     val Id = "id"
     val ETag = "_etag"
     val ItemIdentity = "_itemIdentity"
+    val PartitionKeyIdentity = "_partitionKeyIdentity"
   }
 
   object StatusCodes {
@@ -74,6 +75,7 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+    val VectorEmbeddingPolicy = "VectorEmbeddingPolicy"
   }
 
   object ChangeFeedMetricsConfigs {

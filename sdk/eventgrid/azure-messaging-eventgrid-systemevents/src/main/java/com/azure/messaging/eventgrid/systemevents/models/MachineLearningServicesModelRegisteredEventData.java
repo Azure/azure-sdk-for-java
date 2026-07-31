@@ -105,10 +105,20 @@ public final class MachineLearningServicesModelRegisteredEventData
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("modelName", this.modelName);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
-        jsonWriter.writeMapField("modelTags", this.modelTags,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("modelProperties", this.modelProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("modelTags", this.modelTags, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("modelProperties", this.modelProperties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 

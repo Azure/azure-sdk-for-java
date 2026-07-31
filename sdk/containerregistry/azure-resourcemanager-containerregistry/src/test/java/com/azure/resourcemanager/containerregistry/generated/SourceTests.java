@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Source model = BinaryData.fromString("{\"addr\":\"olppvksrpqvujz\",\"instanceID\":\"ehtwdwrft\"}")
-            .toObject(Source.class);
-        Assertions.assertEquals("olppvksrpqvujz", model.addr());
-        Assertions.assertEquals("ehtwdwrft", model.instanceId());
+        Source model
+            = BinaryData.fromString("{\"addr\":\"xhojuj\",\"instanceID\":\"pelmcuvhixbjxyf\"}").toObject(Source.class);
+        Assertions.assertEquals("xhojuj", model.addr());
+        Assertions.assertEquals("pelmcuvhixbjxyf", model.instanceId());
     }
 }

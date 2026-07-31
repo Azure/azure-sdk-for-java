@@ -31,12 +31,8 @@ public final class GalleryImagesImpl implements GalleryImages {
         Context context) {
         Response<GalleryImageInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, galleryImageName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GalleryImageImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GalleryImageImpl(inner.getValue(), this.manager()));
     }
 
     public GalleryImage getByResourceGroup(String resourceGroupName, String galleryImageName) {

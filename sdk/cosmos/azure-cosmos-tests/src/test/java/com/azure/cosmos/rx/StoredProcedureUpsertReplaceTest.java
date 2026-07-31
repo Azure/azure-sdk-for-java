@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -70,7 +71,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
         CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal

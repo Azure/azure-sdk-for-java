@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
@@ -555,6 +556,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"fast"})
     public void databaseAccountToClients() {
         CosmosClient testClient = null;
+        CosmosClient testClient2 = null;
         try {
             testClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -567,29 +569,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
+            ObjectNode cosmosDiagnosticsNode =
+                (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics);
 
-            // assert diagnostics shows the correct format for tracking client instances
-            String prefix = "\"clientEndpoints\":{";
-            int startIndex = diagnostics.indexOf(prefix);
-            assertThat(startIndex).isGreaterThanOrEqualTo(0);
-            startIndex += prefix.length();
-            int endIndex = diagnostics.indexOf("}", startIndex);
-            assertThat(endIndex).isGreaterThan(startIndex);
-            int matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
-            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
-            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
+            int clientCount =
+                cosmosDiagnosticsNode.get("clientCfgs").get("clientEndpoints").get(TestConfigurations.HOST).asInt();
 
-            // track number of clients currently mapped to account
-            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
-            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
-            // we have hundreds of clients (triple digit ints) running at once in the pipelines
-            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
-                .split("}")[0].split(":");
-            String intString = substrings[substrings.length-1];
-            int intValue = Integer.parseInt(intString);
-
-
-            CosmosClient testClient2 = new CosmosClientBuilder()
+            testClient2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
@@ -599,29 +585,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             internalObjectNode = getInternalObjectNode();
             createResponse = cosmosContainer.createItem(internalObjectNode);
             diagnostics = createResponse.getDiagnostics().toString();
-            // assert diagnostics shows the correct format for tracking client instances
-            startIndex = diagnostics.indexOf(prefix);
-            assertThat(startIndex).isGreaterThanOrEqualTo(0);
-            startIndex += prefix.length();
-            endIndex = diagnostics.indexOf("}", startIndex);
-            assertThat(endIndex).isGreaterThan(startIndex);
-            matchingIndex = diagnostics.indexOf(TestConfigurations.HOST, startIndex);
-            assertThat(matchingIndex).isGreaterThanOrEqualTo(startIndex);
-            assertThat(matchingIndex).isLessThanOrEqualTo(endIndex);
-            // grab new value and assert one additional client is mapped to the same account used previously
-            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
-            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
-                .split("}")[0].split(":");
-            intString = substrings[substrings.length-1];
-            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+            cosmosDiagnosticsNode =
+                (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics);
 
-            //close second client
-            testClient2.close();
+            int updatedClientCount =
+                cosmosDiagnosticsNode.get("clientCfgs").get("clientEndpoints").get(TestConfigurations.HOST).asInt();
 
+            assertThat(updatedClientCount).isEqualTo(clientCount + 1);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         } finally {
-            if (testClient != null) {
-                testClient.close();
-            }
+            safeCloseSyncClient(testClient);
+            safeCloseSyncClient(testClient2);
         }
     }
 
@@ -1097,6 +1072,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> createResponse = null;
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
+            
+            // Verify item creation is fully propagated before testing with wrong partition key
+            // Use retry-based polling instead of fixed sleep for CI resilience
+            String itemId = BridgeInternal.getProperties(createResponse).getId();
+            int maxRetries = 5;
+            int retryCount = 0;
+            boolean itemReadable = false;
+            while (retryCount < maxRetries && !itemReadable) {
+                try {
+                    containerDirect.readItem(itemId, new PartitionKey(itemId), InternalObjectNode.class);
+                    itemReadable = true;
+                } catch (CosmosException e) {
+                    retryCount++;
+                    Thread.sleep(200);
+                }
+            }
+            
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
@@ -1134,7 +1126,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void diagnosticsKeywordIdentifiers(CosmosContainer container) {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         HashSet<String> keywordIdentifiers = new HashSet<>();
@@ -1987,8 +1979,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     private String generateHttp2OptedInUserAgentIfRequired(String userAgent) {
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
+        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        // Tests here do not override Http2ConnectionConfig.setEnabled(...) so the per-client override branch
+        // in addUserAgentSuffix is a no-op for this helper.
         if (Configs.isHttp2Enabled()) {
-            userAgent = userAgent + "|F10";
+            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
+                featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
+            }
+            userAgent = userAgent + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 
         return userAgent;

@@ -32,12 +32,8 @@ public final class RestorableTimeRangesImpl implements RestorableTimeRanges {
         Context context) {
         Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> inner = this.serviceClient()
             .findWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureBackupFindRestorableTimeRangesResponseResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureBackupFindRestorableTimeRangesResponseResourceImpl(inner.getValue(), this.manager()));
     }
 
     public AzureBackupFindRestorableTimeRangesResponseResource find(String resourceGroupName, String vaultName,

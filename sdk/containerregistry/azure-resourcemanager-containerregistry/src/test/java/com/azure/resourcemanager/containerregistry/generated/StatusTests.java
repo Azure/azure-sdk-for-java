@@ -10,8 +10,9 @@ import com.azure.resourcemanager.containerregistry.models.Status;
 public final class StatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Status model = BinaryData.fromString(
-            "{\"displayStatus\":\"svqwhbmdgbbjfd\",\"message\":\"mbmbexppbh\",\"timestamp\":\"2021-09-17T16:41:16Z\"}")
+        Status model = BinaryData
+            .fromString(
+                "{\"displayStatus\":\"gmbmbexppbh\",\"message\":\"qrolfpf\",\"timestamp\":\"2021-03-16T09:26:04Z\"}")
             .toObject(Status.class);
     }
 }

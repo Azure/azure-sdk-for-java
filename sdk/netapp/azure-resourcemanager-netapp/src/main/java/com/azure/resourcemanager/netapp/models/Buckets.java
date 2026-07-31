@@ -146,6 +146,72 @@ public interface Buckets {
         String volumeName, String bucketName, BucketCredentialsExpiry body);
 
     /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body);
+
+    /**
+     * Generate the access key and secret key used for accessing the specified volume bucket and store in Azure Key
+     * Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void generateAkvCredentials(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, BucketCredentialsExpiry body, Context context);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName);
+
+    /**
+     * This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param bucketName The name of the bucket.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshCertificate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String bucketName, Context context);
+
+    /**
      * Get the details of the specified volume's bucket. A bucket allows additional services, such as AI services,
      * connect to the volume data contained in those buckets.
      * 

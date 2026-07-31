@@ -10,6 +10,7 @@ import com.openai.core.Timeout;
 import com.openai.models.conversations.*;
 import com.openai.models.conversations.items.*;
 import com.openai.models.responses.EasyInputMessage;
+import com.openai.services.blocking.ConversationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,10 +27,10 @@ public class ConversationsTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService client = getConversationsSyncClient(httpClient, serviceVersion);
 
         // creation
-        Conversation createdConversation = client.getConversationService().create();
+        Conversation createdConversation = client.create();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
@@ -39,19 +40,18 @@ public class ConversationsTests extends ClientTestBase {
             .putAdditionalProperty("metadata_key", JsonValue.from("metadata_value"))
             .build();
         ConversationUpdateParams.Builder params = ConversationUpdateParams.builder().metadata(metadata);
-        Conversation updatedConversation = client.getConversationService().update(conversationId, params.build());
+        Conversation updatedConversation = client.update(conversationId, params.build());
 
         assertEquals(JsonValue.from(metadata), updatedConversation._metadata());
         assertEquals(createdConversation.id(), updatedConversation.id());
 
         // retrieve
-        Conversation retrievedConversation = client.getConversationService().retrieve(conversationId);
+        Conversation retrievedConversation = client.retrieve(conversationId);
         assertEquals(updatedConversation.id(), retrievedConversation.id());
         assertEquals(updatedConversation._metadata(), retrievedConversation._metadata());
 
         // deletion
-        ConversationDeletedResource deletedConversationResource
-            = client.getConversationService().delete(conversationId);
+        ConversationDeletedResource deletedConversationResource = client.delete(conversationId);
         assertEquals(conversationId, deletedConversationResource.id());
         assertTrue(deletedConversationResource.deleted());
     }
@@ -59,17 +59,16 @@ public class ConversationsTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicItemCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService client = getConversationsSyncClient(httpClient, serviceVersion);
 
         // creation - conversation
-        Conversation createdConversation = client.getConversationService().create();
+        Conversation createdConversation = client.create();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
 
         // creation - conversation item
-        ConversationItemList conversationItem = client.getConversationService()
-            .items()
+        ConversationItemList conversationItem = client.items()
             .create(ItemCreateParams.builder()
                 .conversationId(conversationId)
                 .addItem(EasyInputMessage.builder()
@@ -89,8 +88,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", createdConversationItem.content().get(0).asInputText().text());
 
         // retrieve - conversation item
-        ConversationItem retrievedItem = client.getConversationService()
-            .items()
+        ConversationItem retrievedItem = client.items()
             .retrieve(ItemRetrieveParams.builder()
                 .itemId(createdConversationItem.id())
                 .conversationId(conversationId)
@@ -100,8 +98,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItem.asMessage().content().get(0).asInputText().text());
 
         // retrieve - conversation item with ID
-        ConversationItem retrievedItemWithId = client.getConversationService()
-            .items()
+        ConversationItem retrievedItemWithId = client.items()
             .retrieve(ItemRetrieveParams.builder()
                 .conversationId(conversationId)
                 .itemId(retrievedItem.asMessage().id())
@@ -111,8 +108,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItemWithId.asMessage().content().get(0).asInputText().text());
 
         // deletion - conversation
-        Conversation conversationWithDeletedItem = client.getConversationService()
-            .items()
+        Conversation conversationWithDeletedItem = client.items()
             .delete(ItemDeleteParams.builder()
                 .conversationId(conversationId)
                 .itemId(retrievedItemWithId.asMessage().id())
@@ -121,16 +117,15 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals(conversationId, conversationWithDeletedItem.id());
     }
 
-    @Disabled("Flaky test")
+    @Disabled("Flaky test - needs investigation")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService client = getConversationsSyncClient(httpClient, serviceVersion);
 
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
-        RuntimeException thrown
-            = assertThrows(RuntimeException.class, () -> client.getConversationService().create(requestOptions));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.create(requestOptions));
         assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 }

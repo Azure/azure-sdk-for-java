@@ -11,9 +11,9 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - After cloning the repo, copy the [pre-commit hooks file](https://github.com/Azure/azure-sdk-for-java/tree/main/eng/scripts/pre-commit) (located at `eng/scripts/pre-commit`) to your local `.git/hooks/` directory. This will run some validations before your changes are committed.
 
-- Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#testing-for-spotbugs-and-checkstyle-issues) to learn about how Azure SDK for java generates CheckStyle, SpotBugs, Jacoco, and JavaDoc reports.
+- Refer to the [Code Quality guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/code-quality.md) to learn about how Azure SDK for Java generates CheckStyle, SpotBugs, JaCoCo, and JavaDoc reports.
 
-- There are two Maven projects in the repo. Refer to the [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building#pomclientxml-vs-pomdataxml) to learn about project structure for each.
+- There are two Maven projects in the repo. Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) to learn about project structure for each.
 
 Pull Requests
 -------------
@@ -46,21 +46,112 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Pre-requisites
 
-- Install Java Development Kit 8 or 11
+- Install Java Development Kit 8, 11, 17, or 21 (Java 21 LTS recommended for local development)
   - add `JAVA_HOME` to environment variables
 - Install [Maven](https://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
+
+See [Getting Started](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/getting-started.md) for detailed environment setup instructions.
 
 >**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
 1.- Run this as Administrator on a command prompt:<br>
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
 
+### Azure Artifacts Feed Setup
+
+This repository uses an Azure Artifacts feed to resolve dependencies. The setup differs for external and internal contributors.
+
+#### External Contributors
+
+This repository routes all Maven dependencies through an Azure Artifacts feed, with Maven Central disabled. The feed serves cached packages anonymously, but requires authentication to fetch uncached packages from upstream sources.
+
+**If you encounter `401 Unauthorized` errors**, it means the dependency isn't cached in the feed yet. You have two options:
+
+1. **Submit your PR and let CI build it** - The CI system has authentication and can resolve all dependencies.
+
+2. **Override repository settings locally** - Add the following to your `~/.m2/settings.xml` file to re-enable Maven Central:
+   ```xml
+   <settings>
+     <profiles>
+       <profile>
+         <id>external-contributor</id>
+         <repositories>
+           <repository>
+             <id>central</id>
+             <url>https://repo.maven.apache.org/maven2</url>
+             <releases><enabled>true</enabled></releases>
+             <snapshots><enabled>false</enabled></snapshots>
+           </repository>
+         </repositories>
+         <pluginRepositories>
+           <pluginRepository>
+             <id>central</id>
+             <url>https://repo.maven.apache.org/maven2</url>
+             <releases><enabled>true</enabled></releases>
+             <snapshots><enabled>false</enabled></snapshots>
+           </pluginRepository>
+         </pluginRepositories>
+       </profile>
+     </profiles>
+     <activeProfiles>
+       <activeProfile>external-contributor</activeProfile>
+     </activeProfiles>
+   </settings>
+   ```
+
+> **Note:** Some unreleased dependencies may only be available in the Azure Artifacts feed. If you encounter missing dependencies with option 2, use option 1 instead.
+
+#### Internal Contributors (Microsoft Employees)
+
+Internal contributors should set up the Maven credential provider to authenticate with the Azure Artifacts feed.
+
+To set up the credential provider:
+1. Bootstrap the Maven Credential Provider. Run the following command from a folder **outside** the `azure-sdk-for-java` repository:
+   ```bash
+   mvn dependency:get "-Dartifact=com.microsoft.azure:artifacts-maven-credprovider:3.1" "-DremoteRepositories=central::::https://pkgs.dev.azure.com/artifacts-public/PublicTools/_packaging/AzureArtifacts/maven/v1"
+   ```
+2. Add the Maven extension to `.mvn/extensions.xml` at the repository root:
+   ```xml
+   <extensions xmlns="http://maven.apache.org/EXTENSIONS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/EXTENSIONS/1.1.0 https://maven.apache.org/xsd/core-extensions-1.0.0.xsd">
+     <extension>
+       <groupId>com.microsoft.azure</groupId>
+       <artifactId>artifacts-maven-credprovider</artifactId>
+       <version>3.1</version>
+     </extension>
+   </extensions>
+   ```
+
+For detailed instructions, refer to the [Maven Credential Provider documentation](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
+
+> **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
+
+##### Matching CI behavior locally
+
+All Maven dependency and artifact resolution already uses the Azure Artifacts feed by default via `<repositories>` declarations in the project POMs. However, Maven plugins and extensions do not honor POM-level repositories. To route plugin traffic through the Azure Artifacts feed as well (matching CI behavior), copy the mirror settings:
+
+```bash
+cp eng/settings.xml ~/.m2/settings.xml
+```
+
+##### Troubleshooting 401 Unauthorized errors
+
+If you encounter a `401 Unauthorized` error when running Maven commands:
+
+1. **Request access to Azure SDK Partners**: If you haven't already, [request access to the Azure SDK organization](https://aka.ms/azsdk/access).
+
+2. **Verify Azure CLI login**: Run `az account show` to ensure you're logged in with the correct account that has access to the Azure SDK organization.
+
+3. **Re-authenticate**: Run `az login` to refresh your credentials.
+
+4. **Verify feed access**: Ensure your Azure account has access to the [azure-sdk-for-java feed](https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java).
+
 ### Building and Unit Testing
 
-Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
-and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit
-testing.
+Refer to the [Building guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md) for Maven commands to build the SDK,
+and the [Unit Testing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/unit-testing.md) for guidelines on writing and running unit tests.
+
 
 ### Live testing
 

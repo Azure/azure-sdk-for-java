@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.playwright.fluent.models.PlaywrightWorkspaceInner;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspace;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceProperties;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceUpdate;
@@ -48,6 +49,10 @@ public final class PlaywrightWorkspaceImpl
 
     public PlaywrightWorkspaceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -174,6 +179,16 @@ public final class PlaywrightWorkspaceImpl
     public PlaywrightWorkspaceImpl withProperties(PlaywrightWorkspaceProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public PlaywrightWorkspaceImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public PlaywrightWorkspaceImpl withProperties(PlaywrightWorkspaceUpdateProperties properties) {

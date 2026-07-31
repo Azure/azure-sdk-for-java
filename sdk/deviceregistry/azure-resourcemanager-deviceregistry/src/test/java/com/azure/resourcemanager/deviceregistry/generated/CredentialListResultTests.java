@@ -12,10 +12,10 @@ public final class CredentialListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"zabglcuhxwt\",\"tags\":{\"bbovplwzbhvgyugu\":\"qik\",\"fpl\":\"svmkfssxquk\",\"xnkjzkdesl\":\"mg\",\"kdwzbaiuebbaumny\":\"vlopwiyighx\"},\"id\":\"upedeojnabckhs\",\"name\":\"txp\",\"type\":\"ie\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"pesapskrdqmhjj\",\"tags\":{\"ws\":\"ldwkyzxuutkn\",\"vnm\":\"wsvlxotogtwrupqs\",\"eil\":\"cykvceo\"},\"id\":\"vnotyfjfcnj\",\"name\":\"k\",\"type\":\"nxdhbt\"}],\"nextLink\":\"phywpnvj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"tnrsyn\",\"tags\":{\"dbabp\":\"dybyxczfclhaa\",\"fkts\":\"lwrq\",\"nyyazttbtwwrqpue\":\"hsucoc\"},\"id\":\"ckzywbiexzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"d\",\"tags\":{\"bniwdj\":\"v\",\"s\":\"wz\",\"xytxhpzxbz\":\"bpg\",\"lcuhxwtctyqiklb\":\"fzab\"},\"id\":\"ovplw\",\"name\":\"bhvgy\",\"type\":\"gu\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"fssxqukkfplg\",\"tags\":{\"vlopwiyighx\":\"xnkjzkdesl\",\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\",\"jdhtldwkyzxu\":\"tfhvpesapskrdqmh\"},\"id\":\"tkncwsc\",\"name\":\"svlxotogtwrup\",\"type\":\"sx\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"ykvceoveil\",\"tags\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"id\":\"crpab\",\"name\":\"ye\",\"type\":\"sbj\"}],\"nextLink\":\"zq\"}")
             .toObject(CredentialListResult.class);
-        Assertions.assertEquals("zabglcuhxwt", model.value().get(0).location());
-        Assertions.assertEquals("qik", model.value().get(0).tags().get("bbovplwzbhvgyugu"));
-        Assertions.assertEquals("phywpnvj", model.nextLink());
+        Assertions.assertEquals("tnrsyn", model.value().get(0).location());
+        Assertions.assertEquals("dybyxczfclhaa", model.value().get(0).tags().get("dbabp"));
+        Assertions.assertEquals("zq", model.nextLink());
     }
 }

@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PropertySelectorRequirementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PropertySelectorRequirement model = BinaryData
-            .fromString(
-                "{\"name\":\"lihkaetcktvfc\",\"operator\":\"Gt\",\"values\":[\"snkymuctq\",\"jf\",\"ebrjcxe\"]}")
-            .toObject(PropertySelectorRequirement.class);
-        Assertions.assertEquals("lihkaetcktvfc", model.name());
-        Assertions.assertEquals(PropertySelectorOperator.GT, model.operator());
-        Assertions.assertEquals("snkymuctq", model.values().get(0));
+        PropertySelectorRequirement model
+            = BinaryData.fromString("{\"name\":\"rqlfktsthsucocmn\",\"operator\":\"Eq\",\"values\":[\"zt\"]}")
+                .toObject(PropertySelectorRequirement.class);
+        Assertions.assertEquals("rqlfktsthsucocmn", model.name());
+        Assertions.assertEquals(PropertySelectorOperator.EQ, model.operator());
+        Assertions.assertEquals("zt", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PropertySelectorRequirement model = new PropertySelectorRequirement().withName("lihkaetcktvfc")
-            .withOperator(PropertySelectorOperator.GT)
-            .withValues(Arrays.asList("snkymuctq", "jf", "ebrjcxe"));
+        PropertySelectorRequirement model = new PropertySelectorRequirement().withName("rqlfktsthsucocmn")
+            .withOperator(PropertySelectorOperator.EQ)
+            .withValues(Arrays.asList("zt"));
         model = BinaryData.fromObject(model).toObject(PropertySelectorRequirement.class);
-        Assertions.assertEquals("lihkaetcktvfc", model.name());
-        Assertions.assertEquals(PropertySelectorOperator.GT, model.operator());
-        Assertions.assertEquals("snkymuctq", model.values().get(0));
+        Assertions.assertEquals("rqlfktsthsucocmn", model.name());
+        Assertions.assertEquals(PropertySelectorOperator.EQ, model.operator());
+        Assertions.assertEquals("zt", model.values().get(0));
     }
 }

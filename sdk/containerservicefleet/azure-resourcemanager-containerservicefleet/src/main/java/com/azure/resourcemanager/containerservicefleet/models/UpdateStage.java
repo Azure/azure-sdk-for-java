@@ -35,6 +35,24 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     private Integer afterStageWaitInSeconds;
 
     /*
+     * The max number of upgrades that can run concurrently across all groups in this stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --> up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --> “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --> up to 25% of the stage’s total clusters upgrade at the same time.
+     */
+    private String maxConcurrency;
+
+    /*
      * A list of Gates that will be created before this Stage is executed.
      */
     private List<GateConfiguration> beforeGates;
@@ -115,6 +133,54 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --&gt; “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the stage’s total clusters upgrade at the same time.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public String maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * Set the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --&gt; “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the stage’s total clusters upgrade at the same time.
+     * 
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withMaxConcurrency(String maxConcurrency) {
+        this.maxConcurrency = maxConcurrency;
+        return this;
+    }
+
+    /**
      * Get the beforeGates property: A list of Gates that will be created before this Stage is executed.
      * 
      * @return the beforeGates value.
@@ -163,6 +229,7 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -191,6 +258,8 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
                     deserializedUpdateStage.groups = groups;
                 } else if ("afterStageWaitInSeconds".equals(fieldName)) {
                     deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateStage.maxConcurrency = reader.getString();
                 } else if ("beforeGates".equals(fieldName)) {
                     List<GateConfiguration> beforeGates
                         = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));

@@ -31,12 +31,8 @@ public final class CapabilityTypesImpl implements CapabilityTypes {
         Context context) {
         Response<CapabilityTypeInner> inner
             = this.serviceClient().getWithResponse(location, targetTypeName, capabilityTypeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CapabilityTypeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CapabilityTypeImpl(inner.getValue(), this.manager()));
     }
 
     public CapabilityType get(String location, String targetTypeName, String capabilityTypeName) {

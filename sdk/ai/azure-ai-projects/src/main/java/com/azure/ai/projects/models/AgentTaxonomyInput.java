@@ -27,25 +27,13 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
      * Target configuration for the agent.
      */
     @Generated
-    private final AzureAIAgentTarget target;
+    private final Target target;
 
     /*
      * List of risk categories to evaluate against.
      */
     @Generated
     private final List<RiskCategory> riskCategories;
-
-    /**
-     * Creates an instance of AgentTaxonomyInput class.
-     *
-     * @param target the target value to set.
-     * @param riskCategories the riskCategories value to set.
-     */
-    @Generated
-    public AgentTaxonomyInput(AzureAIAgentTarget target, List<RiskCategory> riskCategories) {
-        this.target = target;
-        this.riskCategories = riskCategories;
-    }
 
     /**
      * Get the type property: Input type of the evaluation taxonomy.
@@ -64,7 +52,7 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
      * @return the target value.
      */
     @Generated
-    public AzureAIAgentTarget getTarget() {
+    public Target getTarget() {
         return this.target;
     }
 
@@ -104,14 +92,14 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
     @Generated
     public static AgentTaxonomyInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AzureAIAgentTarget target = null;
+            Target target = null;
             List<RiskCategory> riskCategories = null;
             EvaluationTaxonomyInputType type = EvaluationTaxonomyInputType.AGENT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("target".equals(fieldName)) {
-                    target = AzureAIAgentTarget.fromJson(reader);
+                    target = Target.fromJson(reader);
                 } else if ("riskCategories".equals(fieldName)) {
                     riskCategories = reader.readArray(reader1 -> RiskCategory.fromString(reader1.getString()));
                 } else if ("type".equals(fieldName)) {
@@ -124,5 +112,17 @@ public final class AgentTaxonomyInput extends EvaluationTaxonomyInput {
             deserializedAgentTaxonomyInput.type = type;
             return deserializedAgentTaxonomyInput;
         });
+    }
+
+    /**
+     * Creates an instance of AgentTaxonomyInput class.
+     *
+     * @param target the target value to set.
+     * @param riskCategories the riskCategories value to set.
+     */
+    @Generated
+    public AgentTaxonomyInput(Target target, List<RiskCategory> riskCategories) {
+        this.target = target;
+        this.riskCategories = riskCategories;
     }
 }

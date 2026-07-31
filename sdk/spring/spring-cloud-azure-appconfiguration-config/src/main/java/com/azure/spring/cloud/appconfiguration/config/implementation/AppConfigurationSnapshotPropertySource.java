@@ -32,7 +32,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name, replicaClient, keyVaultClientFactory, null, null);
+        super(name, replicaClient, keyVaultClientFactory, null, null, null);
         this.snapshotName = snapshotName;
         this.featureFlagClient = featureFlagClient;
     }
@@ -47,10 +47,11 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
+        replicaClient.getTracingInfo().resetAiConfigurationTracing();
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
     @Override

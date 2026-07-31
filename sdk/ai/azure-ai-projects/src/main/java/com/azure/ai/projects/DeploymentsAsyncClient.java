@@ -45,7 +45,9 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -63,16 +65,21 @@ public final class DeploymentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * @return a deployment
+     *
+     * Gets a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getDeploymentWithResponseAsync(name, requestOptions);
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -104,12 +111,14 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> listDeployments(RequestOptions requestOptions) {
+        return this.serviceClient.listDeploymentsAsync(requestOptions);
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      *
      * @param name Name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,19 +127,24 @@ public final class DeploymentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployed model on successful completion of {@link Mono}.
+     * @return a deployment
+     *
+     * Gets a deployed model on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Deployment> get(String name) {
-        // Generated convenience method for getWithResponse
+    public Mono<Deployment> getDeployment(String name) {
+        // Generated convenience method for getDeploymentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getDeploymentWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Deployment.class));
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @param modelPublisher Model publisher to filter models by.
      * @param modelName Model name (the publisher specific name) to filter models by.
@@ -145,8 +159,9 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Deployment> list(String modelPublisher, String modelName, DeploymentType deploymentType) {
-        // Generated convenience method for list
+    public PagedFlux<Deployment> listDeployments(String modelPublisher, String modelName,
+        DeploymentType deploymentType) {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
         if (modelPublisher != null) {
             requestOptions.addQueryParam("modelPublisher", modelPublisher, false);
@@ -157,7 +172,7 @@ public final class DeploymentsAsyncClient {
         if (deploymentType != null) {
             requestOptions.addQueryParam("deploymentType", deploymentType.toString(), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listDeployments(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -173,7 +188,10 @@ public final class DeploymentsAsyncClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -184,10 +202,10 @@ public final class DeploymentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Deployment> list() {
-        // Generated convenience method for list
+    public PagedFlux<Deployment> listDeployments() {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = list(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listDeployments(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

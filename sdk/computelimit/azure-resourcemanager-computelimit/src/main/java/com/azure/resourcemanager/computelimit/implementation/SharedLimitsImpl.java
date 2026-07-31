@@ -29,12 +29,8 @@ public final class SharedLimitsImpl implements SharedLimits {
 
     public Response<SharedLimit> getWithResponse(String location, String name, Context context) {
         Response<SharedLimitInner> inner = this.serviceClient().getWithResponse(location, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SharedLimitImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SharedLimitImpl(inner.getValue(), this.manager()));
     }
 
     public SharedLimit get(String location, String name) {

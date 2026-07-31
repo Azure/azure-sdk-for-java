@@ -202,7 +202,7 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-11-01";
+        this.apiVersion = "2026-02-01";
         this.operations = new OperationsClientImpl(this);
         this.schedulers = new SchedulersClientImpl(this);
         this.taskHubs = new TaskHubsClientImpl(this);
@@ -320,7 +320,7 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

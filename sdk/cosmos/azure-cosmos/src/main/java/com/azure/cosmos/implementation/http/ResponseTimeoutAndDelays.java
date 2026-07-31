@@ -8,10 +8,18 @@ public class ResponseTimeoutAndDelays {
 
     private final Duration responseTimeout;
     private final int delayForNextRequestInSeconds;
+    private final Duration delayForNextRequest;
 
     ResponseTimeoutAndDelays(Duration requestTimeout, int delayForNextRequest) {
         this.responseTimeout = requestTimeout;
         this.delayForNextRequestInSeconds = delayForNextRequest;
+        this.delayForNextRequest = Duration.ofSeconds(delayForNextRequest);
+    }
+
+    ResponseTimeoutAndDelays(Duration requestTimeout, Duration delayForNextRequest) {
+        this.responseTimeout = requestTimeout;
+        this.delayForNextRequest = delayForNextRequest;
+        this.delayForNextRequestInSeconds = (int) delayForNextRequest.getSeconds();
     }
 
     public Duration getResponseTimeout() {
@@ -20,6 +28,10 @@ public class ResponseTimeoutAndDelays {
 
     public int getDelayForNextRequestInSeconds() {
         return delayForNextRequestInSeconds;
+    }
+
+    public Duration getDelayForNextRequest() {
+        return delayForNextRequest;
     }
 
 }

@@ -14,21 +14,21 @@ public final class SyncUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         SyncUpdateProperties model = BinaryData
             .fromString(
-                "{\"schedule\":\"zahmgkbrpyydhibn\",\"syncWindow\":\"PT32H13M12S\",\"messageTtl\":\"PT95H25M16S\"}")
+                "{\"schedule\":\"juahaquhcdhmdual\",\"syncWindow\":\"PT135H1M42S\",\"messageTtl\":\"PT157H57M14S\"}")
             .toObject(SyncUpdateProperties.class);
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.schedule());
-        Assertions.assertEquals(Duration.parse("PT32H13M12S"), model.syncWindow());
-        Assertions.assertEquals(Duration.parse("PT95H25M16S"), model.messageTtl());
+        Assertions.assertEquals("juahaquhcdhmdual", model.schedule());
+        Assertions.assertEquals(Duration.parse("PT135H1M42S"), model.syncWindow());
+        Assertions.assertEquals(Duration.parse("PT157H57M14S"), model.messageTtl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SyncUpdateProperties model = new SyncUpdateProperties().withSchedule("zahmgkbrpyydhibn")
-            .withSyncWindow(Duration.parse("PT32H13M12S"))
-            .withMessageTtl(Duration.parse("PT95H25M16S"));
+        SyncUpdateProperties model = new SyncUpdateProperties().withSchedule("juahaquhcdhmdual")
+            .withSyncWindow(Duration.parse("PT135H1M42S"))
+            .withMessageTtl(Duration.parse("PT157H57M14S"));
         model = BinaryData.fromObject(model).toObject(SyncUpdateProperties.class);
-        Assertions.assertEquals("zahmgkbrpyydhibn", model.schedule());
-        Assertions.assertEquals(Duration.parse("PT32H13M12S"), model.syncWindow());
-        Assertions.assertEquals(Duration.parse("PT95H25M16S"), model.messageTtl());
+        Assertions.assertEquals("juahaquhcdhmdual", model.schedule());
+        Assertions.assertEquals(Duration.parse("PT135H1M42S"), model.syncWindow());
+        Assertions.assertEquals(Duration.parse("PT157H57M14S"), model.messageTtl());
     }
 }

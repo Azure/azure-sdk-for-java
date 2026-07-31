@@ -13,14 +13,14 @@ public final class GatePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatePatchProperties model
-            = BinaryData.fromString("{\"state\":\"Completed\"}").toObject(GatePatchProperties.class);
-        Assertions.assertEquals(GateState.COMPLETED, model.state());
+            = BinaryData.fromString("{\"state\":\"Skipped\"}").toObject(GatePatchProperties.class);
+        Assertions.assertEquals(GateState.SKIPPED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatePatchProperties model = new GatePatchProperties().withState(GateState.COMPLETED);
+        GatePatchProperties model = new GatePatchProperties().withState(GateState.SKIPPED);
         model = BinaryData.fromObject(model).toObject(GatePatchProperties.class);
-        Assertions.assertEquals(GateState.COMPLETED, model.state());
+        Assertions.assertEquals(GateState.SKIPPED, model.state());
     }
 }

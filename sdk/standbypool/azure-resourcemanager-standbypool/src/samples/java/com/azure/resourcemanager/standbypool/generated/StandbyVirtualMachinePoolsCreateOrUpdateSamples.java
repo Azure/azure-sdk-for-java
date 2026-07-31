@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.standbypool.generated;
 
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/StandbyVirtualMachinePools_CreateOrUpdate.json
      */
     /**
      * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
@@ -31,7 +32,9 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
             .withTags(mapOf())
             .withProperties(new StandbyVirtualMachinePoolResourceProperties()
                 .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L)
-                    .withMinReadyCapacity(300L))
+                    .withMinReadyCapacity(300L)
+                    .withPostProvisioningDelay("PT2S")
+                    .withDynamicSizing(new DynamicSizing().withEnabled(true)))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(
                     "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))

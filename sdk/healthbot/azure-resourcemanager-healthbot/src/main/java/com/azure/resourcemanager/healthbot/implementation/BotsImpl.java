@@ -34,12 +34,8 @@ public final class BotsImpl implements Bots {
         Context context) {
         Response<HealthBotInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, botName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HealthBotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HealthBotImpl(inner.getValue(), this.manager()));
     }
 
     public HealthBot getByResourceGroup(String resourceGroupName, String botName) {
@@ -83,12 +79,8 @@ public final class BotsImpl implements Bots {
         Context context) {
         Response<HealthBotKeysResponseInner> inner
             = this.serviceClient().listSecretsWithResponse(resourceGroupName, botName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HealthBotKeysResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HealthBotKeysResponseImpl(inner.getValue(), this.manager()));
     }
 
     public HealthBotKeysResponse listSecrets(String resourceGroupName, String botName) {
@@ -104,12 +96,8 @@ public final class BotsImpl implements Bots {
         Context context) {
         Response<HealthBotKeyInner> inner
             = this.serviceClient().regenerateApiJwtSecretWithResponse(resourceGroupName, botName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HealthBotKeyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HealthBotKeyImpl(inner.getValue(), this.manager()));
     }
 
     public HealthBotKey regenerateApiJwtSecret(String resourceGroupName, String botName) {

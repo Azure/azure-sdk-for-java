@@ -4,11 +4,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -19,9 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -45,6 +42,7 @@ public final class DocumentCollection extends Resource {
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
     private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
     private CosmosFullTextPolicy cosmosFullTextPolicy;
+    private CosmosGlobalSecondaryIndexDefinition cosmosGlobalSecondaryIndexDefinition;
 
     /**
      * Constructor.
@@ -469,7 +467,51 @@ public final class DocumentCollection extends Resource {
         this.set(Constants.Properties.FULL_TEXT_POLICY, value);
     }
 
-    public void populatePropertyBag() {
+    /**
+     * Gets the global secondary index definition for this container in the Azure Cosmos DB service.
+     *
+     * @return the CosmosGlobalSecondaryIndexDefinition
+     */
+    public synchronized CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+        if (this.cosmosGlobalSecondaryIndexDefinition == null) {
+            // Accept both the new wire format property name and the legacy one
+            if (super.has(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION)) {
+                this.cosmosGlobalSecondaryIndexDefinition = super.getObject(
+                    Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION,
+                    CosmosGlobalSecondaryIndexDefinition.class);
+            } else if (super.has(Constants.Properties.MATERIALIZED_VIEW_DEFINITION)) {
+                this.cosmosGlobalSecondaryIndexDefinition = super.getObject(
+                    Constants.Properties.MATERIALIZED_VIEW_DEFINITION,
+                    CosmosGlobalSecondaryIndexDefinition.class);
+            }
+        }
+        return this.cosmosGlobalSecondaryIndexDefinition;
+    }
+
+    /**
+     * Sets the global secondary index definition for this container in the Azure Cosmos DB service.
+     *
+     * @param value the CosmosGlobalSecondaryIndexDefinition
+     */
+    public synchronized void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+        checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
+        // Synchronized to make the cached-field update and the two wire-key writes appear as a
+        // single atomic update to any concurrent reader (getGlobalSecondaryIndexDefinition() and
+        // populatePropertyBag() are both also synchronized on this DocumentCollection instance).
+        this.cosmosGlobalSecondaryIndexDefinition = value;
+        // Intentionally dual-write the definition under both the new ("globalSecondaryIndexDefinition")
+        // and the legacy ("materializedViewDefinition") wire-format property names. The Cosmos DB service
+        // transitioned the property name during the rollout of the GSI feature: older gateway/back-end
+        // versions only recognize the legacy materialized-view name, while newer ones expect the new
+        // GSI name. Writing both keys keeps the SDK forward- and backward-compatible across server
+        // versions. This is the only setter in DocumentCollection that writes the same payload under two
+        // keys and exists solely for that transitional compatibility — remove the legacy write once all
+        // supported service versions accept the new property name.
+        this.set(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION, value);
+        this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
+    }
+
+    public synchronized void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
@@ -490,6 +532,16 @@ public final class DocumentCollection extends Resource {
 
         this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
         this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
+
+        // Re-emit the cached GSI definition under both wire keys. setGlobalSecondaryIndexDefinition
+        // dual-writes both the new ("globalSecondaryIndexDefinition") and the legacy
+        // ("materializedViewDefinition") keys to bridge the service rollout boundary; that contract
+        // also has to hold across a populatePropertyBag re-snapshot. Without this, an in-memory
+        // mutation made via getGlobalSecondaryIndexDefinition().<mutate>() (which only updates the
+        // cached field, not the property bag) would silently fail to round-trip through replace().
+        if (this.cosmosGlobalSecondaryIndexDefinition != null) {
+            this.setGlobalSecondaryIndexDefinition(this.cosmosGlobalSecondaryIndexDefinition);
+        }
     }
 
     @Override
@@ -513,35 +565,38 @@ public final class DocumentCollection extends Resource {
         return super.toJson();
     }
 
-    public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
-        private static final long serialVersionUID = 2l;
-        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapperWithAllowDuplicates();
-        public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
-            SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
-            serializableDocumentCollection.documentCollection = documentCollection;
-            return serializableDocumentCollection;
-        }
+    /**
+     * Serializes this DocumentCollection to a Jackson ObjectNode for JSON-based cache serialization.
+     * The result includes the collection property bag and the altLink.
+     */
+    public ObjectNode toSerializableObjectNode() {
+        this.populatePropertyBag();
+        ObjectMapper objectMapper = Utils.getSimpleObjectMapperWithAllowDuplicates();
+        ObjectNode node = objectMapper.createObjectNode();
+        node.set(COLLECTIONS_ROOT_PROPERTY_NAME, this.getPropertyBag());
+        node.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(this.getAltLink()));
+        return node;
+    }
 
-        transient DocumentCollection documentCollection;
-
-        public DocumentCollection getWrappedItem() {
-            return documentCollection;
+    /**
+     * Deserializes a DocumentCollection from a Jackson ObjectNode produced by {@link #toSerializableObjectNode()}.
+     *
+     * @param objectNode the ObjectNode containing "col" and "altLink" fields
+     * @return the reconstructed DocumentCollection
+     * @throws IllegalArgumentException if the node is missing required fields
+     */
+    public static DocumentCollection fromSerializableObjectNode(ObjectNode objectNode) {
+        if (objectNode == null) {
+            throw new IllegalArgumentException("objectNode must not be null");
         }
-
-        private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
-            documentCollection.populatePropertyBag();
-            ObjectNode docCollectionNode = OBJECT_MAPPER.createObjectNode();
-            docCollectionNode.set(COLLECTIONS_ROOT_PROPERTY_NAME, documentCollection.getPropertyBag());
-            docCollectionNode.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(documentCollection.getAltLink()));
-            objectOutputStream.writeObject(docCollectionNode);
+        if (!objectNode.has(COLLECTIONS_ROOT_PROPERTY_NAME) || !objectNode.has(ALT_LINK_PROPERTY_NAME)) {
+            throw new IllegalArgumentException(
+                "objectNode must contain '" + COLLECTIONS_ROOT_PROPERTY_NAME + "' and '" + ALT_LINK_PROPERTY_NAME + "' fields");
         }
-
-        private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-            ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
-            ObjectNode collectionNode = (ObjectNode)objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
-            String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
-            this.documentCollection = new DocumentCollection(collectionNode);
-            this.documentCollection.setAltLink(altLink);
-        }
+        ObjectNode collectionNode = (ObjectNode) objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
+        String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
+        DocumentCollection collection = new DocumentCollection(collectionNode);
+        collection.setAltLink(altLink);
+        return collection;
     }
 }

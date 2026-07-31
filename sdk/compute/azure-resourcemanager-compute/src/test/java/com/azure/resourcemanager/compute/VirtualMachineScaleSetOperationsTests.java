@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Disabled("Temporarily disabled, due to change of 'microsoft.Compute' to 'Microsoft.Compute' in network lib. Need re-record after network lib release.")
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private final Region region = Region.US_WEST3;

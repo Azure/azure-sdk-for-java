@@ -162,7 +162,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
         Mono<Response<FleetMemberListResult>> listByFleet(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members")
@@ -171,7 +172,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
         Response<FleetMemberListResult> listByFleetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1040,6 +1042,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @param filter Filter the result list using the given expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1047,15 +1052,35 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetMemberInner>> listByFleetSinglePageAsync(String resourceGroupName,
-        String fleetName) {
+    private Mono<PagedResponse<FleetMemberInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName,
+        Integer top, String skipToken, String filter) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFleet(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, filter, accept, context))
             .<PagedResponse<FleetMemberInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List FleetMember resources by Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @param filter Filter the result list using the given expression.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a FleetMember list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<FleetMemberInner> listByFleetAsync(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, String filter) {
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, top, skipToken, filter),
+            nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1070,7 +1095,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FleetMemberInner> listByFleetAsync(String resourceGroupName, String fleetName) {
-        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName),
+        final Integer top = null;
+        final String skipToken = null;
+        final String filter = null;
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, top, skipToken, filter),
             nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
@@ -1079,17 +1107,21 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @param filter Filter the result list using the given expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FleetMember list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<FleetMemberInner> listByFleetSinglePage(String resourceGroupName, String fleetName) {
+    private PagedResponse<FleetMemberInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
+        Integer top, String skipToken, String filter) {
         final String accept = "application/json";
-        Response<FleetMemberListResult> res
-            = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
+        Response<FleetMemberListResult> res = service.listByFleetSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken,
+            filter, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1099,6 +1131,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @param filter Filter the result list using the given expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1107,11 +1142,11 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FleetMemberInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
-        Context context) {
+        Integer top, String skipToken, String filter, Context context) {
         final String accept = "application/json";
         Response<FleetMemberListResult> res
             = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, top, skipToken, filter, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1128,7 +1163,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FleetMemberInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
+        final Integer top = null;
+        final String skipToken = null;
+        final String filter = null;
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, filter),
             nextLink -> listByFleetNextSinglePage(nextLink));
     }
 
@@ -1137,6 +1175,9 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @param filter Filter the result list using the given expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1144,8 +1185,10 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * @return the response of a FleetMember list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FleetMemberInner> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, context),
+    public PagedIterable<FleetMemberInner> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, String filter, Context context) {
+        return new PagedIterable<>(
+            () -> listByFleetSinglePage(resourceGroupName, fleetName, top, skipToken, filter, context),
             nextLink -> listByFleetNextSinglePage(nextLink, context));
     }
 

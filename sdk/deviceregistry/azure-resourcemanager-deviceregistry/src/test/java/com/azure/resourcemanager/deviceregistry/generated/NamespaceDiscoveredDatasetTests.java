@@ -16,51 +16,56 @@ public final class NamespaceDiscoveredDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredDataset model = BinaryData.fromString(
-            "{\"name\":\"rcgp\",\"dataSource\":\"pzimejzanlfzxi\",\"typeRef\":\"rmbzo\",\"datasetConfiguration\":\"kixrj\",\"destinations\":[{\"target\":\"DatasetDestination\"},{\"target\":\"DatasetDestination\"}],\"dataPoints\":[{\"name\":\"zpfrla\",\"dataSource\":\"szrnwo\",\"dataPointConfiguration\":\"ndfpwpj\",\"lastUpdatedOn\":\"2021-03-31T10:48:17Z\",\"typeRef\":\"tlhflsjcdhszf\"},{\"name\":\"vfbgofeljagrqmqh\",\"dataSource\":\"dvriiiojnal\",\"dataPointConfiguration\":\"fk\",\"lastUpdatedOn\":\"2021-04-04T08:27:15Z\",\"typeRef\":\"ex\"}],\"lastUpdatedOn\":\"2021-10-16T07:40:20Z\"}")
+            "{\"name\":\"wutwbdsre\",\"dataSource\":\"drhneuyow\",\"typeRef\":\"d\",\"datasetConfiguration\":\"t\",\"destinations\":[{\"target\":\"DatasetDestination\"}],\"dataPoints\":[{\"name\":\"rcgp\",\"dataSource\":\"kpzi\",\"dataPointConfiguration\":\"j\",\"lastUpdatedOn\":\"2021-11-14T04:35:06Z\",\"typeRef\":\"fzxiavrmb\"},{\"name\":\"onok\",\"dataSource\":\"xrjqcirgzpfrlazs\",\"dataPointConfiguration\":\"nwoiind\",\"lastUpdatedOn\":\"2020-12-22T05:34:35Z\",\"typeRef\":\"jylwbtlhflsj\"},{\"name\":\"dhszfjv\",\"dataSource\":\"bgofeljag\",\"dataPointConfiguration\":\"mqhldvrii\",\"lastUpdatedOn\":\"2021-11-23T14:52:02Z\",\"typeRef\":\"al\"}],\"lastUpdatedOn\":\"2021-06-23T19:51:13Z\"}")
             .toObject(NamespaceDiscoveredDataset.class);
-        Assertions.assertEquals("rcgp", model.name());
-        Assertions.assertEquals("pzimejzanlfzxi", model.dataSource());
-        Assertions.assertEquals("rmbzo", model.typeRef());
-        Assertions.assertEquals("kixrj", model.datasetConfiguration());
-        Assertions.assertEquals("zpfrla", model.dataPoints().get(0).name());
-        Assertions.assertEquals("szrnwo", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("ndfpwpj", model.dataPoints().get(0).dataPointConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T10:48:17Z"),
+        Assertions.assertEquals("wutwbdsre", model.name());
+        Assertions.assertEquals("drhneuyow", model.dataSource());
+        Assertions.assertEquals("d", model.typeRef());
+        Assertions.assertEquals("t", model.datasetConfiguration());
+        Assertions.assertEquals("rcgp", model.dataPoints().get(0).name());
+        Assertions.assertEquals("kpzi", model.dataPoints().get(0).dataSource());
+        Assertions.assertEquals("j", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T04:35:06Z"),
             model.dataPoints().get(0).lastUpdatedOn());
-        Assertions.assertEquals("tlhflsjcdhszf", model.dataPoints().get(0).typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T07:40:20Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("fzxiavrmb", model.dataPoints().get(0).typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T19:51:13Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredDataset model = new NamespaceDiscoveredDataset().withName("rcgp")
-            .withDataSource("pzimejzanlfzxi")
-            .withTypeRef("rmbzo")
-            .withDatasetConfiguration("kixrj")
-            .withDestinations(Arrays.asList(new DatasetDestination(), new DatasetDestination()))
+        NamespaceDiscoveredDataset model = new NamespaceDiscoveredDataset().withName("wutwbdsre")
+            .withDataSource("drhneuyow")
+            .withTypeRef("d")
+            .withDatasetConfiguration("t")
+            .withDestinations(Arrays.asList(new DatasetDestination()))
             .withDataPoints(Arrays.asList(
-                new NamespaceDiscoveredDatasetDataPoint().withName("zpfrla")
-                    .withDataSource("szrnwo")
-                    .withDataPointConfiguration("ndfpwpj")
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-03-31T10:48:17Z"))
-                    .withTypeRef("tlhflsjcdhszf"),
-                new NamespaceDiscoveredDatasetDataPoint().withName("vfbgofeljagrqmqh")
-                    .withDataSource("dvriiiojnal")
-                    .withDataPointConfiguration("fk")
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-04-04T08:27:15Z"))
-                    .withTypeRef("ex")))
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-10-16T07:40:20Z"));
+                new NamespaceDiscoveredDatasetDataPoint().withName("rcgp")
+                    .withDataSource("kpzi")
+                    .withDataPointConfiguration("j")
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-11-14T04:35:06Z"))
+                    .withTypeRef("fzxiavrmb"),
+                new NamespaceDiscoveredDatasetDataPoint().withName("onok")
+                    .withDataSource("xrjqcirgzpfrlazs")
+                    .withDataPointConfiguration("nwoiind")
+                    .withLastUpdatedOn(OffsetDateTime.parse("2020-12-22T05:34:35Z"))
+                    .withTypeRef("jylwbtlhflsj"),
+                new NamespaceDiscoveredDatasetDataPoint().withName("dhszfjv")
+                    .withDataSource("bgofeljag")
+                    .withDataPointConfiguration("mqhldvrii")
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-11-23T14:52:02Z"))
+                    .withTypeRef("al")))
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-06-23T19:51:13Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredDataset.class);
-        Assertions.assertEquals("rcgp", model.name());
-        Assertions.assertEquals("pzimejzanlfzxi", model.dataSource());
-        Assertions.assertEquals("rmbzo", model.typeRef());
-        Assertions.assertEquals("kixrj", model.datasetConfiguration());
-        Assertions.assertEquals("zpfrla", model.dataPoints().get(0).name());
-        Assertions.assertEquals("szrnwo", model.dataPoints().get(0).dataSource());
-        Assertions.assertEquals("ndfpwpj", model.dataPoints().get(0).dataPointConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T10:48:17Z"),
+        Assertions.assertEquals("wutwbdsre", model.name());
+        Assertions.assertEquals("drhneuyow", model.dataSource());
+        Assertions.assertEquals("d", model.typeRef());
+        Assertions.assertEquals("t", model.datasetConfiguration());
+        Assertions.assertEquals("rcgp", model.dataPoints().get(0).name());
+        Assertions.assertEquals("kpzi", model.dataPoints().get(0).dataSource());
+        Assertions.assertEquals("j", model.dataPoints().get(0).dataPointConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-14T04:35:06Z"),
             model.dataPoints().get(0).lastUpdatedOn());
-        Assertions.assertEquals("tlhflsjcdhszf", model.dataPoints().get(0).typeRef());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T07:40:20Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("fzxiavrmb", model.dataPoints().get(0).typeRef());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T19:51:13Z"), model.lastUpdatedOn());
     }
 }

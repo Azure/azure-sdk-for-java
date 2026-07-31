@@ -31,12 +31,8 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
         String backupInstanceName, Context context) {
         Response<DeletedBackupInstanceResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeletedBackupInstanceResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeletedBackupInstanceResourceImpl(inner.getValue(), this.manager()));
     }
 
     public DeletedBackupInstanceResource get(String resourceGroupName, String vaultName, String backupInstanceName) {

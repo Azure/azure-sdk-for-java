@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cloudhealth.models.DynamicDetectionRule;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.LogAnalyticsQuerySignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -22,66 +18,49 @@ public final class LogAnalyticsQuerySignalDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQuerySignalDefinitionProperties model = BinaryData.fromString(
-            "{\"signalKind\":\"LogAnalyticsQuery\",\"queryText\":\"cfionl\",\"timeGrain\":\"x\",\"valueColumnName\":\"qgtz\",\"provisioningState\":\"Deleting\",\"displayName\":\"qbqqwxr\",\"refreshInterval\":\"PT30M\",\"labels\":{\"ampmngnz\":\"lnwsubisn\",\"aqw\":\"c\"},\"dataUnit\":\"chcbonqvpkvlrxnj\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":80.0054787376229,\"dynamicThresholdDirection\":\"LowerThan\",\"trainingStartTime\":\"2021-01-11T00:37:29Z\"},\"degradedRule\":{\"operator\":\"LowerThan\",\"threshold\":\"lokeyy\"},\"unhealthyRule\":{\"operator\":\"LowerOrEquals\",\"threshold\":\"jbdlwtgrhpdjpju\"}},\"deletionDate\":\"2021-01-02T16:01:04Z\"}")
+            "{\"signalKind\":\"LogAnalyticsQuery\",\"queryText\":\"pqyegualhbxxh\",\"timeGrain\":\"jzzvdud\",\"valueColumnName\":\"dslfhotwmcy\",\"provisioningState\":\"Creating\",\"displayName\":\"bjnpg\",\"refreshInterval\":\"PT10M\",\"tags\":{\"uesnzwdejbavo\":\"dehxnltyfsoppu\",\"vudwx\":\"xzdmohctb\",\"gujjugwdkcglh\":\"ndnvo\",\"ofqweykhmenevfye\":\"lazjdyggdtjixhbk\"},\"dataUnit\":\"whybcib\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":22.33725937608365},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":7.025717032709222}}}")
             .toObject(LogAnalyticsQuerySignalDefinitionProperties.class);
-        Assertions.assertEquals("qbqqwxr", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
-        Assertions.assertEquals("lnwsubisn", model.labels().get("ampmngnz"));
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(80.0054787376229, model.evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.LOWER_THAN,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T00:37:29Z"),
-            model.evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("lokeyy", model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.LOWER_OR_EQUALS, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("jbdlwtgrhpdjpju", model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("cfionl", model.queryText());
-        Assertions.assertEquals("x", model.timeGrain());
-        Assertions.assertEquals("qgtz", model.valueColumnName());
+        Assertions.assertEquals("bjnpg", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT10M, model.refreshInterval());
+        Assertions.assertEquals("dehxnltyfsoppu", model.tags().get("uesnzwdejbavo"));
+        Assertions.assertEquals("whybcib", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(22.33725937608365, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(7.025717032709222, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("pqyegualhbxxh", model.queryText());
+        Assertions.assertEquals("jzzvdud", model.timeGrain());
+        Assertions.assertEquals("dslfhotwmcy", model.valueColumnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQuerySignalDefinitionProperties model = new LogAnalyticsQuerySignalDefinitionProperties()
-            .withDisplayName("qbqqwxr")
-            .withRefreshInterval(RefreshInterval.PT30M)
-            .withLabels(mapOf("ampmngnz", "lnwsubisn", "aqw", "c"))
-            .withDataUnit("chcbonqvpkvlrxnj")
-            .withEvaluationRules(new EvaluationRule()
-                .withDynamicDetectionRule(
-                    new DynamicDetectionRule().withDynamicThresholdModel(DynamicThresholdModel.ANOMALY_DETECTION)
-                        .withModelSensitivity(80.0054787376229)
-                        .withDynamicThresholdDirection(DynamicThresholdDirection.LOWER_THAN)
-                        .withTrainingStartTime(OffsetDateTime.parse("2021-01-11T00:37:29Z")))
-                .withDegradedRule(new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("lokeyy"))
-                .withUnhealthyRule(
-                    new ThresholdRule().withOperator(SignalOperator.LOWER_OR_EQUALS).withThreshold("jbdlwtgrhpdjpju")))
-            .withQueryText("cfionl")
-            .withTimeGrain("x")
-            .withValueColumnName("qgtz");
+        LogAnalyticsQuerySignalDefinitionProperties model
+            = new LogAnalyticsQuerySignalDefinitionProperties().withDisplayName("bjnpg")
+                .withRefreshInterval(RefreshInterval.PT10M)
+                .withTags(mapOf("uesnzwdejbavo", "dehxnltyfsoppu", "vudwx", "xzdmohctb", "gujjugwdkcglh", "ndnvo",
+                    "ofqweykhmenevfye", "lazjdyggdtjixhbk"))
+                .withDataUnit("whybcib")
+                .withEvaluationRules(new EvaluationRule()
+                    .withDegradedRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(22.33725937608365))
+                    .withUnhealthyRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(7.025717032709222)))
+                .withQueryText("pqyegualhbxxh")
+                .withTimeGrain("jzzvdud")
+                .withValueColumnName("dslfhotwmcy");
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQuerySignalDefinitionProperties.class);
-        Assertions.assertEquals("qbqqwxr", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
-        Assertions.assertEquals("lnwsubisn", model.labels().get("ampmngnz"));
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(80.0054787376229, model.evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.LOWER_THAN,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T00:37:29Z"),
-            model.evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("lokeyy", model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.LOWER_OR_EQUALS, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("jbdlwtgrhpdjpju", model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("cfionl", model.queryText());
-        Assertions.assertEquals("x", model.timeGrain());
-        Assertions.assertEquals("qgtz", model.valueColumnName());
+        Assertions.assertEquals("bjnpg", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT10M, model.refreshInterval());
+        Assertions.assertEquals("dehxnltyfsoppu", model.tags().get("uesnzwdejbavo"));
+        Assertions.assertEquals("whybcib", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(22.33725937608365, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(7.025717032709222, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("pqyegualhbxxh", model.queryText());
+        Assertions.assertEquals("jzzvdud", model.timeGrain());
+        Assertions.assertEquals("dslfhotwmcy", model.valueColumnName());
     }
 
     // Use "Map.of" if available

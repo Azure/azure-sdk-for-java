@@ -10,8 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
+ * Function
+ *
  * Defines a function in your own code the model can choose to call. Learn more about [function
  * calling](https://platform.openai.com/docs/guides/function-calling).
  */
@@ -31,36 +34,22 @@ public final class FunctionTool extends Tool {
     private final String name;
 
     /*
-     * A description of the function. Used by the model to determine whether or not to call the function.
+     * The description property.
      */
     @Generated
     private String description;
 
     /*
-     * A JSON schema object describing the parameters of the function.
+     * The parameters property.
      */
     @Generated
-    private final BinaryData parameters;
+    private final Map<String, BinaryData> parameters;
 
     /*
-     * Whether to enforce strict parameter validation. Default `true`.
+     * The strict property.
      */
     @Generated
     private final Boolean strict;
-
-    /**
-     * Creates an instance of FunctionTool class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     * @param strict the strict value to set.
-     */
-    @Generated
-    public FunctionTool(String name, BinaryData parameters, Boolean strict) {
-        this.name = name;
-        this.parameters = parameters;
-        this.strict = strict;
-    }
 
     /**
      * Get the type property: The type property.
@@ -84,8 +73,7 @@ public final class FunctionTool extends Tool {
     }
 
     /**
-     * Get the description property: A description of the function. Used by the model to determine whether or not to
-     * call the function.
+     * Get the description property: The description property.
      *
      * @return the description value.
      */
@@ -95,8 +83,7 @@ public final class FunctionTool extends Tool {
     }
 
     /**
-     * Set the description property: A description of the function. Used by the model to determine whether or not to
-     * call the function.
+     * Set the description property: The description property.
      *
      * @param description the description value to set.
      * @return the FunctionTool object itself.
@@ -108,17 +95,17 @@ public final class FunctionTool extends Tool {
     }
 
     /**
-     * Get the parameters property: A JSON schema object describing the parameters of the function.
+     * Get the parameters property: The parameters property.
      *
      * @return the parameters value.
      */
     @Generated
-    public BinaryData getParameters() {
+    public Map<String, BinaryData> getParameters() {
         return this.parameters;
     }
 
     /**
-     * Get the strict property: Whether to enforce strict parameter validation. Default `true`.
+     * Get the strict property: The strict property.
      *
      * @return the strict value.
      */
@@ -135,11 +122,17 @@ public final class FunctionTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeFieldName("parameters");
-        this.parameters.writeTo(jsonWriter);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeBooleanField("strict", this.strict);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         return jsonWriter.writeEndObject();
     }
 
@@ -156,24 +149,27 @@ public final class FunctionTool extends Tool {
     public static FunctionTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            BinaryData parameters = null;
+            Map<String, BinaryData> parameters = null;
             Boolean strict = null;
             ToolType type = ToolType.FUNCTION;
             String description = null;
+            Boolean deferLoading = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    parameters = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("strict".equals(fieldName)) {
                     strict = reader.getNullable(JsonReader::getBoolean);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -181,7 +177,50 @@ public final class FunctionTool extends Tool {
             FunctionTool deserializedFunctionTool = new FunctionTool(name, parameters, strict);
             deserializedFunctionTool.type = type;
             deserializedFunctionTool.description = description;
+            deserializedFunctionTool.deferLoading = deferLoading;
             return deserializedFunctionTool;
         });
+    }
+
+    /**
+     * Creates an instance of FunctionTool class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     * @param strict the strict value to set.
+     */
+    @Generated
+    public FunctionTool(String name, Map<String, BinaryData> parameters, Boolean strict) {
+        this.name = name;
+        this.parameters = parameters;
+        this.strict = strict;
+    }
+
+    /*
+     * Whether this function is deferred and loaded via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
     }
 }

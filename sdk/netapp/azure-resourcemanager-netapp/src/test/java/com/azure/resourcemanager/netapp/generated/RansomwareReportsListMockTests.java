@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-04-10T09:41:57Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":785027108,\"reportedCount\":332997027,\"suspects\":[{\"extension\":\"fcfxzirzzihvwy\",\"resolution\":\"PotentialThreat\",\"fileCount\":367979473,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"czwciidjsllfryvd\",\"resolution\":\"PotentialThreat\",\"fileCount\":1693179101,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"frgnawbabgfbktyj\"},\"id\":\"czlfsy\",\"name\":\"kfrbzgowoxqmjea\",\"type\":\"cxn\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-08-13T22:15:03Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":1510283924,\"reportedCount\":115970163,\"suspects\":[{\"extension\":\"flrmymyi\",\"resolution\":\"PotentialThreat\",\"fileCount\":521943782,\"suspectFiles\":[{}]},{\"extension\":\"wslmiiiovgqcg\",\"resolution\":\"FalsePositive\",\"fileCount\":1331750565,\"suspectFiles\":[{},{},{}]},{\"extension\":\"otiowlxteqd\",\"resolution\":\"FalsePositive\",\"fileCount\":857680137,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ukranblw\",\"resolution\":\"FalsePositive\",\"fileCount\":1668357779,\"suspectFiles\":[{}]}],\"provisioningState\":\"zgygqwahoiulwgni\"},\"id\":\"rglvaw\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("zknxkv", "cxetyvkunmignoh", "k", "gqogjwpindedva", com.azure.core.util.Context.NONE);
+            .list("utznabaobns", "ujdjltymkmvg", "ihywartspph", "ixkykxd", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -80,7 +80,7 @@ public class UploadFromFile extends ShareScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.deleteIfExists()
             .then(super.cleanupAsync());
     }
 
@@ -94,7 +94,7 @@ public class UploadFromFile extends ShareScenarioBase<StorageStressOptions> {
 
     private static void deleteFile(Path path) {
         try {
-            path.toFile().delete();
+            Files.deleteIfExists(path);
         } catch (Throwable e) {
             LOGGER.atError()
                 .addKeyValue("path", path)

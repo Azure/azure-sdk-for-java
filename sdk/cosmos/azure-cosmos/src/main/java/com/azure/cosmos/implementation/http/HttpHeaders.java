@@ -130,6 +130,41 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
         return result;
     }
 
+    /**
+     * Populates the provided arrays with lowercased header names and their values
+     * directly from the internal map, avoiding intermediate HashMap allocation.
+     *
+     * <p>Keys are guaranteed lowercase because {@link #set(String, String)} stores them
+     * via {@code name.toLowerCase(Locale.ROOT)} as the map key.</p>
+     *
+     * @param names  array to populate with lowercased header names (must be at least size() long)
+     * @param values array to populate with header values (must be at least size() long)
+     */
+    public void populateLowerCaseHeaders(String[] names, String[] values) {
+        if (names == null) {
+            throw new IllegalArgumentException("Parameter 'names' must not be null.");
+        }
+        if (values == null) {
+            throw new IllegalArgumentException("Parameter 'values' must not be null.");
+        }
+        int headerCount = headers.size();
+        if (names.length < headerCount) {
+            throw new IllegalArgumentException(
+                "Parameter 'names' must have length >= size(). Required: " + headerCount + ", actual: " + names.length);
+        }
+        if (values.length < headerCount) {
+            throw new IllegalArgumentException(
+                "Parameter 'values' must have length >= size(). Required: " + headerCount + ", actual: " + values.length);
+        }
+
+        int i = 0;
+        for (Map.Entry<String, HttpHeader> entry : headers.entrySet()) {
+            names[i] = entry.getKey();
+            values[i] = entry.getValue().value();
+            i++;
+        }
+    }
+
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();

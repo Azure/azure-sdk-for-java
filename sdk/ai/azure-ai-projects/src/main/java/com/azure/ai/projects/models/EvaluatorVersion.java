@@ -5,11 +5,13 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +61,13 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * Creation date/time of the evaluator
      */
     @Generated
-    private long createdAt;
+    private OffsetDateTime createdAt;
 
     /*
      * Last modified date/time of the evaluator
      */
     @Generated
-    private long modifiedAt;
+    private OffsetDateTime modifiedAt;
 
     /*
      * Asset ID, a unique identifier for the asset
@@ -204,7 +206,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the createdAt value.
      */
     @Generated
-    public long getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
 
@@ -214,7 +216,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the modifiedAt value.
      */
     @Generated
-    public long getModifiedAt() {
+    public OffsetDateTime getModifiedAt() {
         return this.modifiedAt;
     }
 
@@ -306,6 +308,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeStringField("display_name", this.displayName);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("supported_evaluation_levels", this.supportedEvaluationLevels,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -327,12 +331,14 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             List<EvaluatorCategory> categories = null;
             EvaluatorDefinition definition = null;
             String createdBy = null;
-            long createdAt = 0L;
-            long modifiedAt = 0L;
+            OffsetDateTime createdAt = null;
+            OffsetDateTime modifiedAt = null;
             String name = null;
             String version = null;
             String displayName = null;
             Map<String, String> metadata = null;
+            List<EvaluationLevel> supportedEvaluationLevels = null;
+            EvaluatorGenerationArtifacts generationArtifacts = null;
             String id = null;
             String description = null;
             Map<String, String> tags = null;
@@ -348,9 +354,11 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                 } else if ("created_by".equals(fieldName)) {
                     createdBy = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
-                    createdAt = reader.getLong();
+                    createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modified_at".equals(fieldName)) {
-                    modifiedAt = reader.getLong();
+                    modifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {
@@ -359,6 +367,11 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                     displayName = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("supported_evaluation_levels".equals(fieldName)) {
+                    supportedEvaluationLevels
+                        = reader.readArray(reader1 -> EvaluationLevel.fromString(reader1.getString()));
+                } else if ("generation_artifacts".equals(fieldName)) {
+                    generationArtifacts = EvaluatorGenerationArtifacts.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("description".equals(fieldName)) {
@@ -377,10 +390,68 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             deserializedEvaluatorVersion.version = version;
             deserializedEvaluatorVersion.displayName = displayName;
             deserializedEvaluatorVersion.metadata = metadata;
+            deserializedEvaluatorVersion.supportedEvaluationLevels = supportedEvaluationLevels;
+            deserializedEvaluatorVersion.generationArtifacts = generationArtifacts;
             deserializedEvaluatorVersion.id = id;
             deserializedEvaluatorVersion.description = description;
             deserializedEvaluatorVersion.tags = tags;
             return deserializedEvaluatorVersion;
         });
+    }
+
+    /*
+     * Provenance artifacts from the generation pipeline. Read-only; present only on evaluator versions created via an
+     * EvaluatorGenerationJob. Each artifact resolves to a versioned Foundry Dataset.
+     */
+    @Generated
+    private EvaluatorGenerationArtifacts generationArtifacts;
+
+    /**
+     * Get the generationArtifacts property: Provenance artifacts from the generation pipeline. Read-only; present only
+     * on evaluator versions created via an EvaluatorGenerationJob. Each artifact resolves to a versioned Foundry
+     * Dataset.
+     *
+     * @return the generationArtifacts value.
+     */
+    @Generated
+    public EvaluatorGenerationArtifacts getGenerationArtifacts() {
+        return this.generationArtifacts;
+    }
+
+    /*
+     * Evaluation levels this evaluator supports (e.g., `turn`, `conversation`). When omitted on create, the service
+     * defaults to `["turn"]`. On update, omitting this field leaves it unchanged; an empty list is rejected. Custom
+     * code-based evaluators support only `turn`; custom prompt-based evaluators support exactly one level (`turn` or
+     * `conversation`).
+     */
+    @Generated
+    private List<EvaluationLevel> supportedEvaluationLevels;
+
+    /**
+     * Get the supportedEvaluationLevels property: Evaluation levels this evaluator supports (e.g., `turn`,
+     * `conversation`). When omitted on create, the service defaults to `["turn"]`. On update, omitting this field
+     * leaves it unchanged; an empty list is rejected. Custom code-based evaluators support only `turn`; custom
+     * prompt-based evaluators support exactly one level (`turn` or `conversation`).
+     *
+     * @return the supportedEvaluationLevels value.
+     */
+    @Generated
+    public List<EvaluationLevel> getSupportedEvaluationLevels() {
+        return this.supportedEvaluationLevels;
+    }
+
+    /**
+     * Set the supportedEvaluationLevels property: Evaluation levels this evaluator supports (e.g., `turn`,
+     * `conversation`). When omitted on create, the service defaults to `["turn"]`. On update, omitting this field
+     * leaves it unchanged; an empty list is rejected. Custom code-based evaluators support only `turn`; custom
+     * prompt-based evaluators support exactly one level (`turn` or `conversation`).
+     *
+     * @param supportedEvaluationLevels the supportedEvaluationLevels value to set.
+     * @return the EvaluatorVersion object itself.
+     */
+    @Generated
+    public EvaluatorVersion setSupportedEvaluationLevels(List<EvaluationLevel> supportedEvaluationLevels) {
+        this.supportedEvaluationLevels = supportedEvaluationLevels;
+        return this;
     }
 }

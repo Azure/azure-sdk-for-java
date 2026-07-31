@@ -1091,8 +1091,13 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
         jsonWriter.writeNumberField("updateTime", this.updateTime);
         jsonWriter.writeStringField("updatedBy", this.updatedBy);
         jsonWriter.writeStringField("abbreviation", this.abbreviation);
-        jsonWriter.writeArrayField("templateName", this.templateName,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeArrayField("templateName", this.templateName, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("anchor", this.anchor);
         jsonWriter.writeArrayField("antonyms", this.antonyms, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
@@ -1101,8 +1106,14 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
         jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("contacts", this.contacts,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
-        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeMap(element,
-            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeArrayField("assignedEntities", this.assignedEntities,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeJson(element));

@@ -4,6 +4,7 @@
 package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -123,7 +124,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, check for multi-region setup, errorStatusCode, errorSubStatusCode
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, false, 500, 0 },
-            { FaultInjectionServerErrorType.RETRY_WITH, false, false, 449, 0 },
+            { FaultInjectionServerErrorType.RETRY_WITH, true, false, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, false, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, false, 404, 1002 },
             { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, true, true, 503, 21008 }
@@ -592,7 +593,32 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
             assertThat(gatewayStatistics.get("statusCode").asInt()).isEqualTo(statusCode);
             assertThat(gatewayStatistics.get("subStatusCode").asInt()).isEqualTo(subStatusCode);
             assertThat(gatewayStatistics.get("faultInjectionRuleId").asText()).isEqualTo(ruleId);
+
+            if (canRetryOnFaultInjectedError && statusCode == HttpConstants.StatusCodes.RETRY_WITH) {
+                this.validateRetryWithGatewayStatistics(gatewayStatisticsList);
+            }
         }
+    }
+
+    private void validateRetryWithGatewayStatistics(JsonNode gatewayStatisticsList) {
+        JsonNode retryGatewayStatistics = gatewayStatisticsList.get(1);
+        assertThat(retryGatewayStatistics).isNotNull();
+        assertThat(retryGatewayStatistics.get("statusCode").asInt())
+            .isNotEqualTo(HttpConstants.StatusCodes.RETRY_WITH);
+
+        JsonNode retryResponseTimeout = retryGatewayStatistics.get("httpNetworkResponseTimeout");
+        assertThat(retryResponseTimeout).isNotNull();
+
+        Duration retryTimeout = Duration.parse(retryResponseTimeout.asText());
+        assertThat(retryTimeout).isGreaterThan(Duration.ofSeconds(10));
+        assertThat(retryTimeout).isLessThanOrEqualTo(this.getMaxRetryWithTimeout());
+    }
+
+    private Duration getMaxRetryWithTimeout() {
+        ConsistencyLevel consistencyLevel = BridgeInternal.getContextClient(this.client)
+            .getDefaultConsistencyLevelOfAccount();
+
+        return consistencyLevel == ConsistencyLevel.STRONG ? Duration.ofSeconds(60) : Duration.ofSeconds(30);
     }
 
     private void validateNoFaultInjectionApplied(

@@ -17,16 +17,28 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesForceCloseHandlesHeaders {
     /*
-     * The x-ms-marker property.
+     * The x-ms-request-id property.
      */
     @Generated
-    private String xMsMarker;
+    private String xMsRequestId;
 
     /*
      * The x-ms-version property.
      */
     @Generated
     private String xMsVersion;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-marker property.
+     */
+    @Generated
+    private String xMsMarker;
 
     /*
      * The x-ms-number-of-handles-closed property.
@@ -40,21 +52,9 @@ public final class FilesForceCloseHandlesHeaders {
     @Generated
     private Integer xMsNumberOfHandlesFailed;
 
-    /*
-     * The x-ms-request-id property.
-     */
-    @Generated
-    private String xMsRequestId;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_MARKER = HttpHeaderName.fromString("x-ms-marker");
-
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_CLOSED
         = HttpHeaderName.fromString("x-ms-number-of-handles-closed");
@@ -69,8 +69,15 @@ public final class FilesForceCloseHandlesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesForceCloseHandlesHeaders(HttpHeaders rawHeaders) {
-        this.xMsMarker = rawHeaders.getValue(X_MS_MARKER);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
+        }
+        this.xMsMarker = rawHeaders.getValue(X_MS_MARKER);
         String xMsNumberOfHandlesClosed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_CLOSED);
         if (xMsNumberOfHandlesClosed != null) {
             this.xMsNumberOfHandlesClosed = Integer.parseInt(xMsNumberOfHandlesClosed);
@@ -83,34 +90,27 @@ public final class FilesForceCloseHandlesHeaders {
         } else {
             this.xMsNumberOfHandlesFailed = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
     }
 
     /**
-     * Get the xMsMarker property: The x-ms-marker property.
+     * Get the xMsRequestId property: The x-ms-request-id property.
      * 
-     * @return the xMsMarker value.
+     * @return the xMsRequestId value.
      */
     @Generated
-    public String getXMsMarker() {
-        return this.xMsMarker;
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
     }
 
     /**
-     * Set the xMsMarker property: The x-ms-marker property.
+     * Set the xMsRequestId property: The x-ms-request-id property.
      * 
-     * @param xMsMarker the xMsMarker value to set.
+     * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
     @Generated
-    public FilesForceCloseHandlesHeaders setXMsMarker(String xMsMarker) {
-        this.xMsMarker = xMsMarker;
+    public FilesForceCloseHandlesHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
         return this;
     }
 
@@ -133,6 +133,57 @@ public final class FilesForceCloseHandlesHeaders {
     @Generated
     public FilesForceCloseHandlesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the FilesForceCloseHandlesHeaders object itself.
+     */
+    @Generated
+    public FilesForceCloseHandlesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsMarker property: The x-ms-marker property.
+     * 
+     * @return the xMsMarker value.
+     */
+    @Generated
+    public String getXMsMarker() {
+        return this.xMsMarker;
+    }
+
+    /**
+     * Set the xMsMarker property: The x-ms-marker property.
+     * 
+     * @param xMsMarker the xMsMarker value to set.
+     * @return the FilesForceCloseHandlesHeaders object itself.
+     */
+    @Generated
+    public FilesForceCloseHandlesHeaders setXMsMarker(String xMsMarker) {
+        this.xMsMarker = xMsMarker;
         return this;
     }
 
@@ -177,57 +228,6 @@ public final class FilesForceCloseHandlesHeaders {
     @Generated
     public FilesForceCloseHandlesHeaders setXMsNumberOfHandlesFailed(Integer xMsNumberOfHandlesFailed) {
         this.xMsNumberOfHandlesFailed = xMsNumberOfHandlesFailed;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @return the xMsRequestId value.
-     */
-    @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the FilesForceCloseHandlesHeaders object itself.
-     */
-    @Generated
-    public FilesForceCloseHandlesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the FilesForceCloseHandlesHeaders object itself.
-     */
-    @Generated
-    public FilesForceCloseHandlesHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
-        }
         return this;
     }
 }

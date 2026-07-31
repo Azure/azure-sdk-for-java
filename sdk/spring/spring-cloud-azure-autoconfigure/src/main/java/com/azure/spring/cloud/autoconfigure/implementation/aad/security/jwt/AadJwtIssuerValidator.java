@@ -18,22 +18,9 @@ import java.util.function.Predicate;
  */
 public class AadJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
-
     private final JwtClaimValidator<String> validator;
 
     private final AadTrustedIssuerRepository trustedIssuerRepo;
-
-    /**
-     * Constructs a {@link AadJwtIssuerValidator} using the provided parameters
-     */
-    public AadJwtIssuerValidator() {
-        this(null);
-    }
 
     /**
      * Constructs a {@link AadJwtIssuerValidator} using the provided parameters
@@ -41,22 +28,13 @@ public class AadJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      * @param aadTrustedIssuerRepository trusted issuer repository.
      */
     public AadJwtIssuerValidator(AadTrustedIssuerRepository aadTrustedIssuerRepository) {
+        Assert.notNull(aadTrustedIssuerRepository, "aadTrustedIssuerRepository cannot be null");
         this.trustedIssuerRepo = aadTrustedIssuerRepository;
         this.validator = new JwtClaimValidator<>(AadJwtClaimNames.ISS, trustedIssuerRepoValidIssuer());
     }
 
     private Predicate<String> trustedIssuerRepoValidIssuer() {
-        return iss -> {
-            if (iss == null) {
-                return false;
-            }
-            if (trustedIssuerRepo == null) {
-                return iss.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                    || iss.startsWith(STS_WINDOWS_ISSUER)
-                    || iss.startsWith(STS_CHINA_CLOUD_API_ISSUER);
-            }
-            return trustedIssuerRepo.getTrustedIssuers().contains(iss);
-        };
+        return iss -> iss != null && trustedIssuerRepo.getTrustedIssuers().contains(iss);
     }
 
     /**

@@ -22,7 +22,7 @@ public final class SnapshotsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"snapshotId\":\"aonwivkcqhrxh\",\"created\":\"2021-09-27T05:10:50Z\",\"provisioningState\":\"ccrmmk\"},\"location\":\"upijubyqjfkakfq\",\"id\":\"kemyil\",\"name\":\"udxjascowv\",\"type\":\"djkpdxph\"}]}";
+            = "{\"value\":[{\"properties\":{\"snapshotId\":\"ebqinjipnw\",\"created\":\"2021-10-22T02:54:53Z\",\"provisioningState\":\"qlafcbahhpzpofoi\"},\"location\":\"jwpfilkm\",\"id\":\"holvdn\",\"name\":\"viauogphua\",\"type\":\"tvt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class SnapshotsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Snapshot> response
-            = manager.snapshots().list("lnuwiguy", "lykwphvxz", "wxh", "pejtl", com.azure.core.util.Context.NONE);
+            = manager.snapshots().list("xxgewpk", "vqylkmqpzoyhl", "bcg", "gcl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("upijubyqjfkakfq", response.iterator().next().location());
+        Assertions.assertEquals("jwpfilkm", response.iterator().next().location());
     }
 }

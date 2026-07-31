@@ -9,9 +9,13 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Note: web_search is not yet available via Azure OpenAI.
+ * Web search preview
+ *
+ * This tool searches the web for relevant results to use in a response. Learn more about the [web search
+ * tool](https://platform.openai.com/docs/guides/tools-web-search).
  */
 @Fluent
 public final class WebSearchPreviewTool extends Tool {
@@ -23,17 +27,17 @@ public final class WebSearchPreviewTool extends Tool {
     private ToolType type = ToolType.WEB_SEARCH_PREVIEW;
 
     /*
-     * The user's location.
+     * The user_location property.
      */
     @Generated
-    private Location userLocation;
+    private ApproximateLocation userLocation;
 
     /*
      * High level guidance for the amount of context window space to use for the search. One of `low`, `medium`, or
      * `high`. `medium` is the default.
      */
     @Generated
-    private WebSearchPreviewToolSearchContextSize searchContextSize;
+    private SearchContextSize searchContextSize;
 
     /**
      * Creates an instance of WebSearchPreviewTool class.
@@ -54,25 +58,13 @@ public final class WebSearchPreviewTool extends Tool {
     }
 
     /**
-     * Get the userLocation property: The user's location.
+     * Get the userLocation property: The user_location property.
      *
      * @return the userLocation value.
      */
     @Generated
-    public Location getUserLocation() {
+    public ApproximateLocation getUserLocation() {
         return this.userLocation;
-    }
-
-    /**
-     * Set the userLocation property: The user's location.
-     *
-     * @param userLocation the userLocation value to set.
-     * @return the WebSearchPreviewTool object itself.
-     */
-    @Generated
-    public WebSearchPreviewTool setUserLocation(Location userLocation) {
-        this.userLocation = userLocation;
-        return this;
     }
 
     /**
@@ -82,21 +74,8 @@ public final class WebSearchPreviewTool extends Tool {
      * @return the searchContextSize value.
      */
     @Generated
-    public WebSearchPreviewToolSearchContextSize getSearchContextSize() {
+    public SearchContextSize getSearchContextSize() {
         return this.searchContextSize;
-    }
-
-    /**
-     * Set the searchContextSize property: High level guidance for the amount of context window space to use for the
-     * search. One of `low`, `medium`, or `high`. `medium` is the default.
-     *
-     * @param searchContextSize the searchContextSize value to set.
-     * @return the WebSearchPreviewTool object itself.
-     */
-    @Generated
-    public WebSearchPreviewTool setSearchContextSize(WebSearchPreviewToolSearchContextSize searchContextSize) {
-        this.searchContextSize = searchContextSize;
-        return this;
     }
 
     /**
@@ -110,6 +89,8 @@ public final class WebSearchPreviewTool extends Tool {
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
             this.searchContextSize == null ? null : this.searchContextSize.toString());
+        jsonWriter.writeArrayField("search_content_types", this.searchContentTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -131,15 +112,72 @@ public final class WebSearchPreviewTool extends Tool {
                 if ("type".equals(fieldName)) {
                     deserializedWebSearchPreviewTool.type = ToolType.fromString(reader.getString());
                 } else if ("user_location".equals(fieldName)) {
-                    deserializedWebSearchPreviewTool.userLocation = Location.fromJson(reader);
+                    deserializedWebSearchPreviewTool.userLocation = ApproximateLocation.fromJson(reader);
                 } else if ("search_context_size".equals(fieldName)) {
                     deserializedWebSearchPreviewTool.searchContextSize
-                        = WebSearchPreviewToolSearchContextSize.fromString(reader.getString());
+                        = SearchContextSize.fromString(reader.getString());
+                } else if ("search_content_types".equals(fieldName)) {
+                    List<SearchContentType> searchContentTypes
+                        = reader.readArray(reader1 -> SearchContentType.fromString(reader1.getString()));
+                    deserializedWebSearchPreviewTool.searchContentTypes = searchContentTypes;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedWebSearchPreviewTool;
         });
+    }
+
+    /**
+     * Set the userLocation property: The user_location property.
+     *
+     * @param userLocation the userLocation value to set.
+     * @return the WebSearchPreviewTool object itself.
+     */
+    @Generated
+    public WebSearchPreviewTool setUserLocation(ApproximateLocation userLocation) {
+        this.userLocation = userLocation;
+        return this;
+    }
+
+    /**
+     * Set the searchContextSize property: High level guidance for the amount of context window space to use for the
+     * search. One of `low`, `medium`, or `high`. `medium` is the default.
+     *
+     * @param searchContextSize the searchContextSize value to set.
+     * @return the WebSearchPreviewTool object itself.
+     */
+    @Generated
+    public WebSearchPreviewTool setSearchContextSize(SearchContextSize searchContextSize) {
+        this.searchContextSize = searchContextSize;
+        return this;
+    }
+
+    /*
+     * The search_content_types property.
+     */
+    @Generated
+    private List<SearchContentType> searchContentTypes;
+
+    /**
+     * Get the searchContentTypes property: The search_content_types property.
+     *
+     * @return the searchContentTypes value.
+     */
+    @Generated
+    public List<SearchContentType> getSearchContentTypes() {
+        return this.searchContentTypes;
+    }
+
+    /**
+     * Set the searchContentTypes property: The search_content_types property.
+     *
+     * @param searchContentTypes the searchContentTypes value to set.
+     * @return the WebSearchPreviewTool object itself.
+     */
+    @Generated
+    public WebSearchPreviewTool setSearchContentTypes(List<SearchContentType> searchContentTypes) {
+        this.searchContentTypes = searchContentTypes;
+        return this;
     }
 }
