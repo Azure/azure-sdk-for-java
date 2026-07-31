@@ -1020,6 +1020,17 @@
       ]
     },
     {
+      "filename": [
+        "**/sdk/cosmos/AGENTS.md",
+        "**/sdk/cosmos/dev.md"
+      ],
+      "words": [
+        "DACCOUNT",
+        "Dcodesnippet",
+        "DCOSMOS"
+      ]
+    },
+    {
       "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",

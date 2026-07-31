@@ -61,6 +61,44 @@ public class CosmosDatabaseForTestTest {
     }
 
     @Test(groups = {"unit"})
+    public void registeringAnUnattributableDatabaseIdFailsTheTest() {
+        // The static ratchet cannot see an id built at runtime, or swapped inside a file that already
+        // has a baseline allowance. This runtime check is what actually closes those gaps: an id that CI
+        // cleanup could not find by name must never reach a shared account unnoticed.
+        try {
+            CosmosTestResourceRegistry.registerDatabase("myHardcodedLeakyDb");
+            org.testng.Assert.fail("Expected an AssertionError for an unattributable database id");
+        } catch (AssertionError expected) {
+            assertThat(expected).hasMessageContaining("myHardcodedLeakyDb");
+            assertThat(expected).hasMessageContaining("createTestDatabase");
+        } finally {
+            CosmosTestResourceRegistry.clear();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void registeringAGeneratedDatabaseIdIsAccepted() {
+        try {
+            CosmosTestResourceRegistry.registerDatabase(CosmosDatabaseForTest.generateId("ok"));
+            assertThat(CosmosTestResourceRegistry.leakedSnapshot()).hasSize(1);
+        } finally {
+            CosmosTestResourceRegistry.clear();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void legacyIdsRemainRegisterableDuringRollout() {
+        // Builds predating the run id still create three segment ids; those parse, so they must not trip
+        // the new check while both formats are in flight.
+        try {
+            CosmosTestResourceRegistry.registerDatabase("RxJava.SDKTest.SharedDatabase_20240101T101010_abc");
+            assertThat(CosmosTestResourceRegistry.leakedSnapshot()).hasSize(1);
+        } finally {
+            CosmosTestResourceRegistry.clear();
+        }
+    }
+
+    @Test(groups = {"unit"})
     public void runIdNeverContainsTheIdDelimiter() {
         // parse() splits on "_". A run id containing one would give every generated id five segments,
         // parse() would return null everywhere, and run scoped cleanup would silently stop working.

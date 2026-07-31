@@ -24,17 +24,23 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class CosmosTestResourceJanitorTest {
 
+    // Real generated ids: registration now rejects ids that CI cleanup could not attribute to a run,
+    // so the fixtures have to be as valid as production's.
+    private static final String DB_ONE = CosmosDatabaseForTest.generateId("janitorOne");
+    private static final String DB_OTHER = CosmosDatabaseForTest.generateId("janitorOther");
+    private static final String DB_UNTRACKED = CosmosDatabaseForTest.generateId("janitorUntracked");
+
     @Test(groups = {"unit"})
     public void deletedResourcesAreReportedAsLeaks() {
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
 
         List<String> leaks = CosmosTestResourceJanitor.deleteTrackedResources(
             Arrays.asList(database), deleter);
 
         assertThat(leaks).hasSize(1);
-        assertThat(leaks.get(0)).contains("db1").contains("deleted");
+        assertThat(leaks.get(0)).contains(DB_ONE).contains("deleted");
     }
 
     @Test(groups = {"unit"})
@@ -42,7 +48,7 @@ public class CosmosTestResourceJanitorTest {
         // The test deleted the resource but did not deregister. Nothing leaked, so nothing to report -
         // otherwise every healthy run would fail.
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.ALREADY_GONE);
 
         assertThat(CosmosTestResourceJanitor.deleteTrackedResources(Arrays.asList(database), deleter))
@@ -52,7 +58,7 @@ public class CosmosTestResourceJanitorTest {
     @Test(groups = {"unit"})
     public void failedDeletesAreReportedAsStillPresent() {
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.DELETE_FAILED);
 
         List<String> leaks = CosmosTestResourceJanitor.deleteTrackedResources(
@@ -66,8 +72,8 @@ public class CosmosTestResourceJanitorTest {
     @Test(groups = {"unit"})
     public void containersOfADeletedDatabaseAreNotProbed() {
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
-        CosmosTestResourceRegistry.TrackedResource container = container("db1", "c1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
+        CosmosTestResourceRegistry.TrackedResource container = container(DB_ONE, "c1");
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
 
         List<String> leaks = CosmosTestResourceJanitor.deleteTrackedResources(
@@ -85,11 +91,11 @@ public class CosmosTestResourceJanitorTest {
         // This is the dominant real case - a test deleted its database without deregistering. If it did
         // not populate the skip set, a long suite would end by 404-probing every container it ever made.
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.ALREADY_GONE);
 
         List<String> leaks = CosmosTestResourceJanitor.deleteTrackedResources(
-            Arrays.asList(database, container("db1", "c1"), container("db1", "c2")), deleter);
+            Arrays.asList(database, container(DB_ONE, "c1"), container(DB_ONE, "c2")), deleter);
 
         assertThat(deleter.attempted).containsExactly(database);
         assertThat(leaks).isEmpty();
@@ -99,8 +105,8 @@ public class CosmosTestResourceJanitorTest {
     public void containersOfADatabaseThatCouldNotBeDeletedAreStillAttempted() {
         // The database is still there, so its containers are too and were never attempted.
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
-        CosmosTestResourceRegistry.TrackedResource container = container("db1", "c1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
+        CosmosTestResourceRegistry.TrackedResource container = container(DB_ONE, "c1");
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.DELETE_FAILED);
         deleter.outcome(container, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
 
@@ -114,7 +120,7 @@ public class CosmosTestResourceJanitorTest {
     @Test(groups = {"unit"})
     public void containersOfAnUnregisteredDatabaseAreDeletedIndividually() {
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource container = container("dbNotTracked", "c1");
+        CosmosTestResourceRegistry.TrackedResource container = container(DB_UNTRACKED, "c1");
         deleter.outcome(container, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
 
         List<String> leaks = CosmosTestResourceJanitor.deleteTrackedResources(
@@ -127,8 +133,8 @@ public class CosmosTestResourceJanitorTest {
     @Test(groups = {"unit"})
     public void databasesAreAlwaysDeletedBeforeContainers() {
         FakeDeleter deleter = new FakeDeleter();
-        CosmosTestResourceRegistry.TrackedResource containerElsewhere = container("dbOther", "c1");
-        CosmosTestResourceRegistry.TrackedResource database = database("db1");
+        CosmosTestResourceRegistry.TrackedResource containerElsewhere = container(DB_OTHER, "c1");
+        CosmosTestResourceRegistry.TrackedResource database = database(DB_ONE);
         deleter.outcome(containerElsewhere, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
         deleter.outcome(database, CosmosTestResourceJanitor.DeleteOutcome.DELETED);
 

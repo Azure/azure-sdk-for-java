@@ -24,6 +24,7 @@ import java.util.Objects;
 public final class CosmosTestResourceRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTestResourceRegistry.class);
+    private static final String ID_VALIDATION_PROPERTY = "COSMOS.TEST_RESOURCE_ID_VALIDATION_ENABLED";
 
     // LinkedHashMap keeps creation order, which makes the leak report read chronologically.
     private static final Map<String, TrackedResource> TRACKED_RESOURCES = new LinkedHashMap<>();
@@ -51,9 +52,43 @@ public final class CosmosTestResourceRegistry {
             return;
         }
 
+        requireCleanableId(databaseId);
         synchronized (TRACKED_RESOURCES) {
             TRACKED_RESOURCES.put(key(databaseId, null), new TrackedResource(databaseId, null, owner()));
         }
+    }
+
+    /**
+     * Fails the test when a database id cannot be attributed to this run.
+     * <p>
+     * The in-process janitor can clean up any database it was told about, but the pipeline post step and
+     * the scheduled janitor find databases by <em>name</em>. A database whose id does not carry the run
+     * id is therefore invisible to them, and if the JVM is killed - a cancelled or timed out job, which
+     * is exactly when cleanup matters most - it leaks permanently on a shared account.
+     * <p>
+     * This check is the backstop for the static ratchet in {@code TestResourceHygieneTest}: the ratchet
+     * counts creation call sites per file and so cannot see an id that is built at runtime, swapped
+     * inside a file that already has an allowance, or produced through an API it does not know about.
+     * Checking the id itself catches all of those.
+     *
+     * @param databaseId the id to validate.
+     */
+    private static void requireCleanableId(String databaseId) {
+        if (isValidationDisabled() || CosmosDatabaseForTest.isTestDatabaseId(databaseId)) {
+            return;
+        }
+
+        throw new AssertionError(String.format(
+            "Test database id '%s' created by %s does not follow the required naming convention, so CI"
+                + " cleanup cannot attribute it to this run and it would leak permanently on the shared"
+                + " test accounts. Create databases with TestSuiteBase.createTestDatabase(client, label)"
+                + " or name them with CosmosDatabaseForTest.generateId(label) - see sdk/cosmos/AGENTS.md.",
+            databaseId,
+            owner()));
+    }
+
+    private static boolean isValidationDisabled() {
+        return "false".equalsIgnoreCase(System.getProperty(ID_VALIDATION_PROPERTY));
     }
 
     public static void unregisterDatabase(String databaseId) {
@@ -72,6 +107,10 @@ public final class CosmosTestResourceRegistry {
         if (databaseId == null || containerId == null) {
             return;
         }
+
+        // Containers are reclaimed transitively - deleting a database removes them - so the requirement
+        // is on the parent database's id, not the container's.
+        requireCleanableId(databaseId);
 
         synchronized (TRACKED_RESOURCES) {
             TRACKED_RESOURCES.put(

@@ -47,13 +47,21 @@ mvn -f sdk/cosmos/azure-cosmos-tests/pom.xml exec:java \
 
 Omit `--older-than` to delete only the current job's databases.
 
-### Guardrail
+### Guardrails
 
-`TestResourceHygieneTest` is a ratchet:
-`azure-cosmos-tests/src/test/resources/test-resource-hygiene-baseline.properties` records the
-violations that existed when the check was introduced, and the build fails when a file exceeds its
-entry or a new offending file appears. Do not add entries for new tests; when you migrate a file,
-lower or remove its entry.
+Two layers, because a static scan alone is not enough:
+
+- **At runtime**, `CosmosTestResourceRegistry` rejects any database id that CI cleanup could not
+  attribute to this run, failing the test immediately and naming it. This is the layer that actually
+  holds: it catches ids built at runtime, ids swapped inside a file that already has a ratchet
+  allowance, and creation through APIs the scanner does not know about. Disable only with
+  `-DCOSMOS.TEST_RESOURCE_ID_VALIDATION_ENABLED=false`.
+- **Statically**, `TestResourceHygieneTest` ratchets against direct database creation.
+  `azure-cosmos-tests/src/test/resources/test-resource-hygiene-baseline.properties` records the
+  violations that existed when the check was introduced, and the build fails when a file exceeds its
+  entry or a new offending file appears. It runs in the `unit` group, so it gives fast feedback on
+  every PR without needing an account. Do not add entries for new tests; when you migrate a file,
+  lower or remove its entry.
 
 ### Escape hatches
 
