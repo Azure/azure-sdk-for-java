@@ -28,9 +28,8 @@ mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/"
 ```
 
 Tests that create databases must use `TestSuiteBase.createTestDatabase(...)` so CI cleanup can delete
-them - see [test resource hygiene](AGENTS.md#test-resource-hygiene-required-for-any-test-that-touches-an-account).
-Creating a database directly fails
-the build.
+them - see [test resource hygiene](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/AGENTS.md).
+Creating a database directly fails the build.
 
 ## Import into Intellij or Eclipse
 
