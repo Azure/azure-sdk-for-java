@@ -67,7 +67,16 @@ public class CosmosDatabaseForTestTest {
         assertThat(CosmosDatabaseForTest.isTestDatabaseId(id)).isTrue();
         // Cosmos ids are capped at 255 characters and may not contain / \ # ?
         assertThat(id.length()).isLessThan(255);
+        // Much tighter in practice: the database id is embedded in the throughput control group id,
+        // which is base64 encoded and extended with a UUID. Ids around 100 characters made the emulator
+        // reject those requests with "400 Bad Request - Invalid URL"; ~82 characters is known to work.
+        assertThat(id.length()).isLessThanOrEqualTo(82);
         assertThat(id).doesNotContain("/").doesNotContain("\\").doesNotContain("#").doesNotContain("?");
+
+        // The budget has to hold for the longest label a caller can pass, not just a short one.
+        String longLabelId = CosmosDatabaseForTest.generateId("aVeryLongDescriptiveLabelIndeed");
+        assertThat(longLabelId.length()).isLessThanOrEqualTo(82);
+        assertThat(CosmosDatabaseForTest.isTestDatabaseId(longLabelId)).isTrue();
     }
 
     @Test(groups = {"unit"})

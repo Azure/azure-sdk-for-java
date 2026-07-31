@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 /**
@@ -37,6 +37,8 @@ public final class CosmosDatabaseForTest {
     public static final String SHARED_DB_ID_PREFIX = "RxJava.SDKTest.SharedDatabase";
     private static final String DELIMITER = "_";
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+    private static final int RANDOM_SUFFIX_LENGTH = 8;
+    private static final int MAX_LABEL_LENGTH = 10;
 
     private CosmosDatabaseForTest() {
     }
@@ -51,15 +53,21 @@ public final class CosmosDatabaseForTest {
 
     /**
      * Generates a run tagged database id. The optional label only makes logs and portal views readable -
-     * uniqueness comes from the UUID and cleanup scoping from the run id.
+     * uniqueness comes from the timestamp plus the random suffix, and cleanup scoping from the run id.
+     * <p>
+     * Length matters and is deliberately kept short. The database id is embedded in derived resource
+     * names elsewhere in the SDK - notably the throughput control group id, which is
+     * {@code <database>/<container>/<group>/<suffix>}, base64 encoded and then extended with a UUID to
+     * form a control item id. A long database id overflows that and the emulator rejects the request
+     * with "400 Bad Request - Invalid URL", so keep this comfortably shorter than the ~82 character ids
+     * that are known to work.
      *
      * @param label optional human readable label, may be null.
      * @return a database id that cleanup is able to attribute to the current run.
      */
     public static String generateId(String label) {
-        String suffix = StringUtils.isEmpty(label)
-            ? UUID.randomUUID().toString()
-            : sanitizeLabel(label) + UUID.randomUUID();
+        String random = RandomStringUtils.randomAlphanumeric(RANDOM_SUFFIX_LENGTH);
+        String suffix = StringUtils.isEmpty(label) ? random : sanitizeLabel(label) + random;
 
         return SHARED_DB_ID_PREFIX
             + DELIMITER + TIME_FORMATTER.format(nowUtc())
@@ -69,7 +77,7 @@ public final class CosmosDatabaseForTest {
 
     private static String sanitizeLabel(String label) {
         String sanitized = label.replaceAll("[^A-Za-z0-9]", "");
-        return sanitized.length() <= 40 ? sanitized : sanitized.substring(0, 40);
+        return sanitized.length() <= MAX_LABEL_LENGTH ? sanitized : sanitized.substring(0, MAX_LABEL_LENGTH);
     }
 
     /**

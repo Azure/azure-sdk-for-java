@@ -712,7 +712,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("beforeSuite Started");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            SHARED_DATABASE = createTestDatabase(houseKeepingClient, "shared");
+            SHARED_DATABASE = createTestDatabase(houseKeepingClient);
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
             SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 10100);
             SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(), options, 10100);

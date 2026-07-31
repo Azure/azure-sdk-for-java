@@ -19,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class CosmosTestRunId {
 
-    private static final int MAX_LENGTH = 20;
+    private static final int MAX_LENGTH = 16;
     private static final int HASH_BYTES = 7;
     private static final String RUN_ID = computeRunId();
     private static final boolean IS_CI =
@@ -30,7 +30,7 @@ public final class CosmosTestRunId {
 
     /**
      * Returns the identifier of the current test run. Stable for the lifetime of the JVM and safe to
-     * embed in a Cosmos resource id (lower case alphanumerics only, at most 20 characters).
+     * embed in a Cosmos resource id (lower case alphanumerics only, at most 16 characters).
      *
      * @return the run id.
      */
