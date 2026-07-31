@@ -1655,6 +1655,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
             }
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1689,6 +1690,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
@@ -1728,6 +1730,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
+            safeDeleteDatabase(client == null ? null : client.getDatabase(databaseId));
             safeClose(client);
         }
     }
