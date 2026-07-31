@@ -313,6 +313,13 @@
 # ServiceLabel: %Digital Twins
 # ServiceOwners:                                                   @abhipsaMisra @azabbasi @barustum @drwill-ms @jamdavi @timtay-microsoft @vinagesh
 
+# PRLabel: %Discovery
+/sdk/discovery/                                                    @ahall-msft @Azure/azure-java-sdk
+
+# AzureSdkOwners:                                                  @ahall-msft
+# ServiceLabel: %Discovery
+# ServiceOwners:                                                   @ahall-msft
+
 # PRLabel: %Document Intelligence
 /sdk/documentintelligence/                                         @samvaity @Azure/azure-java-sdk
 
