@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -145,9 +146,11 @@ public class CosmosTestResourceJanitorTest {
     }
 
     @BeforeMethod(groups = {"unit"})
+    @AfterMethod(groups = {"unit"})
     public void resetRegistry() {
-        // The registry is JVM global; reset here rather than inside a helper so that helper call order
-        // cannot silently wipe a resource registered earlier in the same test.
+        // The registry is JVM global. Reset on both sides: before, so helper call order cannot wipe a
+        // resource registered earlier in the same test; after, so this class leaves no residue for
+        // whatever test class the suite runs next.
         CosmosTestResourceRegistry.clear();
     }
 

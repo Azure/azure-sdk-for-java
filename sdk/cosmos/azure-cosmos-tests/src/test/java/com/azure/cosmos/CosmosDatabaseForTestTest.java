@@ -10,6 +10,8 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,6 +39,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosDatabaseForTestTest {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+
+    @BeforeMethod(groups = {"unit"})
+    @AfterMethod(groups = {"unit"})
+    public void resetRegistry() {
+        // CosmosTestResourceRegistry is JVM global and shared with the other test classes in this suite,
+        // so isolate on both sides rather than relying on suite ordering.
+        CosmosTestResourceRegistry.clear();
+    }
 
     /**
      * A hand created database that matches the query prefix but does not parse as a generated id. This is
@@ -71,31 +81,27 @@ public class CosmosDatabaseForTestTest {
         } catch (AssertionError expected) {
             assertThat(expected).hasMessageContaining("myHardcodedLeakyDb");
             assertThat(expected).hasMessageContaining("createTestDatabase");
-        } finally {
-            CosmosTestResourceRegistry.clear();
         }
+
+        assertThat(registeredDatabaseIds()).doesNotContain("myHardcodedLeakyDb");
     }
 
     @Test(groups = {"unit"})
     public void registeringAGeneratedDatabaseIdIsAccepted() {
-        try {
-            CosmosTestResourceRegistry.registerDatabase(CosmosDatabaseForTest.generateId("ok"));
-            assertThat(CosmosTestResourceRegistry.leakedSnapshot()).hasSize(1);
-        } finally {
-            CosmosTestResourceRegistry.clear();
-        }
+        String databaseId = CosmosDatabaseForTest.generateId("ok");
+        CosmosTestResourceRegistry.registerDatabase(databaseId);
+
+        assertThat(registeredDatabaseIds()).contains(databaseId);
     }
 
     @Test(groups = {"unit"})
     public void legacyIdsRemainRegisterableDuringRollout() {
         // Builds predating the run id still create three segment ids; those parse, so they must not trip
         // the new check while both formats are in flight.
-        try {
-            CosmosTestResourceRegistry.registerDatabase("RxJava.SDKTest.SharedDatabase_20240101T101010_abc");
-            assertThat(CosmosTestResourceRegistry.leakedSnapshot()).hasSize(1);
-        } finally {
-            CosmosTestResourceRegistry.clear();
-        }
+        String legacyId = "RxJava.SDKTest.SharedDatabase_20240101T101010_abc";
+        CosmosTestResourceRegistry.registerDatabase(legacyId);
+
+        assertThat(registeredDatabaseIds()).contains(legacyId);
     }
 
     @Test(groups = {"unit"})
@@ -223,6 +229,17 @@ public class CosmosDatabaseForTestTest {
         // The young database may belong to a run that is still executing, and neither fixture is ours -
         // PINNED_FIXTURE in particular reaches the production code because it matches the query prefix.
         assertThat(deleted).containsExactlyInAnyOrder(old, oldLegacy);
+    }
+
+    private static List<String> registeredDatabaseIds() {
+        List<String> ids = new ArrayList<>();
+        for (CosmosTestResourceRegistry.TrackedResource resource : CosmosTestResourceRegistry.leakedSnapshot()) {
+            if (resource.isDatabase()) {
+                ids.add(resource.getDatabaseId());
+            }
+        }
+
+        return ids;
     }
 
     private static String idFor(LocalDateTime createdAt, String runId) {
