@@ -6,7 +6,8 @@ package com.azure.cosmos;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.zip.CRC32;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Identity of the current test run, embedded into the name of every database created by the test
@@ -19,6 +20,7 @@ import java.util.zip.CRC32;
 public final class CosmosTestRunId {
 
     private static final int MAX_LENGTH = 20;
+    private static final int HASH_BYTES = 7;
     private static final String RUN_ID = computeRunId();
     private static final boolean IS_CI =
         System.getenv("BUILD_BUILDID") != null || System.getenv("SYSTEM_JOBID") != null;
@@ -53,8 +55,10 @@ public final class CosmosTestRunId {
         String attempt = StringUtils.defaultString(System.getenv("SYSTEM_JOBATTEMPT"), "1");
 
         // System.JobId is a GUID that is unique per job and stable for the whole job, including its post
-        // steps, so hashing it makes collisions between concurrently running legs structurally impossible.
-        // That matters because a run scoped delete on a shared account must never match another leg's id.
+        // steps, so the hash input differs for every concurrently running leg. The id is a truncated
+        // digest, so a collision is not impossible - it is ~2^-56 per pair - but uniqueness no longer
+        // depends on job display names happening to differ. That matters because a run scoped delete on a
+        // shared account must never match another leg's id.
         String jobId = System.getenv("SYSTEM_JOBID");
         if (StringUtils.isNotEmpty(jobId)) {
             // The build id is carried along purely so a stray database can be traced back to a build.
@@ -94,10 +98,27 @@ public final class CosmosTestRunId {
         return composed.isEmpty() ? "unknown" : composed;
     }
 
+    /**
+     * Truncated SHA-256, rendered base36. Deliberately not CRC32: this hash is the only thing keeping two
+     * concurrently running jobs from sharing a run id, and a run scoped delete that matched another job
+     * would delete its in-flight databases. 56 bits keeps a collision negligible while staying short
+     * enough to leave room for the readable build id.
+     */
     private static String shortHash(String value) {
-        CRC32 crc32 = new CRC32();
-        crc32.update(value.getBytes(StandardCharsets.UTF_8));
-        return Long.toString(crc32.getValue(), 36);
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256")
+                .digest(value.getBytes(StandardCharsets.UTF_8));
+
+            long truncated = 0L;
+            for (int i = 0; i < HASH_BYTES; i++) {
+                truncated = (truncated << 8) | (digest[i] & 0xFFL);
+            }
+
+            return Long.toString(truncated, 36);
+        } catch (NoSuchAlgorithmException e) {
+            // SHA-256 is required of every JRE, so this cannot happen.
+            throw new IllegalStateException("SHA-256 is unavailable", e);
+        }
     }
 
     private static String sanitize(String value) {

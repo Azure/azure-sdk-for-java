@@ -58,8 +58,15 @@ public class TestResourceHygieneTest {
         "com/azure/cosmos/CosmosTestResourceRegistry.java",
         "com/azure/cosmos/TestResourceHygieneTest.java");
 
+    /**
+     * A method declaration: optional modifiers, a return type, a name, a parameter list, and an opening
+     * brace at end of line. The modifiers are optional so package-private declarations are recognized
+     * too; what actually distinguishes a declaration from a call is the {@code <type> <name>(} shape,
+     * which a call ({@code client.createDatabase(} or {@code = createDatabase(}) never has.
+     */
     private static final Pattern METHOD_DECLARATION = Pattern.compile(
-        "^(?:(?:public|protected|private|static|final|abstract|default|synchronized)\\s+).*\\)\\s*\\{$");
+        "^(?:(?:public|protected|private|static|final|abstract|default|synchronized)\\s+)*"
+            + "[\\w.<>\\[\\],\\s]+\\s+\\w+\\s*\\([^;]*\\)\\s*\\{$");
 
     private static final Pattern DATABASE_CREATION = Pattern.compile(
         "(?:\\.\\s*createDatabase(?:IfNotExists)?\\s*\\()"
@@ -145,6 +152,9 @@ public class TestResourceHygieneTest {
             "public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties def) {")).isZero();
         assertThat(countViolations(
             "static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient c, String id) {")).isZero();
+        // Package-private declarations have no modifier at all.
+        assertThat(countViolations(
+            "CosmosAsyncDatabase createDatabase(CosmosAsyncClient c, String id) {")).isZero();
         // ... but a call that merely happens to sit on a line ending in "{" is still counted.
         assertThat(countViolations("if (x) { client.createDatabase(props); }")).isEqualTo(1);
     }

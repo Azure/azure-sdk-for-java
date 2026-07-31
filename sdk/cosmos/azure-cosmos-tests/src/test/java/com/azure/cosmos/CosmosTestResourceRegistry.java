@@ -54,7 +54,10 @@ public final class CosmosTestResourceRegistry {
 
         requireCleanableId(databaseId);
         synchronized (TRACKED_RESOURCES) {
-            TRACKED_RESOURCES.put(key(databaseId, null), new TrackedResource(databaseId, null, owner()));
+            // putIfAbsent, not put: re-registration (createDatabaseIfNotExists on an existing database)
+            // must not reattribute the resource to a later test. A genuine delete-then-recreate still
+            // records the new owner, because unregisterDatabase removes the entry first.
+            TRACKED_RESOURCES.putIfAbsent(key(databaseId, null), new TrackedResource(databaseId, null, owner()));
         }
     }
 
@@ -113,7 +116,8 @@ public final class CosmosTestResourceRegistry {
         requireCleanableId(databaseId);
 
         synchronized (TRACKED_RESOURCES) {
-            TRACKED_RESOURCES.put(
+            // putIfAbsent for the same reason as registerDatabase - see the comment there.
+            TRACKED_RESOURCES.putIfAbsent(
                 key(databaseId, containerId),
                 new TrackedResource(databaseId, containerId, owner()));
         }
