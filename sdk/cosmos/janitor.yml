@@ -75,8 +75,10 @@ extends:
                 inputs:
                   mavenPomFile: pom.xml
                   goals: 'install'
+                  # DefaultOptions pins maven.repo.local so the install here and the exec:java sweep
+                  # below resolve against the same local repository.
                   options: >-
-                    --batch-mode --fail-at-end -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true
+                    $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true
                     -pl com.azure:azure-cosmos-tests -am
                   mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                   javaHomeOption: 'JDKVersion'
@@ -96,6 +98,7 @@ extends:
                     mavenPomFile: sdk/cosmos/azure-cosmos-tests/pom.xml
                     goals: 'exec:java'
                     options: >-
+                      $(DefaultOptions)
                       -Dexec.args="--account-host $(${{ account.HostVariable }})
                       --account-key $(${{ account.KeyVariable }})
                       --older-than ${{ parameters.OlderThanHours }}"

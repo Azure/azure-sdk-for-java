@@ -30,7 +30,11 @@ steps:
     inputs:
       mavenPomFile: sdk/cosmos/azure-cosmos-tests/pom.xml
       goals: 'exec:java'
+      # DefaultOptions carries -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER). Without it Maven resolves against
+      # the agent's default ~/.m2, which does not contain the locally built azure-cosmos jar, and the step
+      # dies with "Could not find artifact com.azure:azure-cosmos" before deleting anything.
       options: >-
+        $(DefaultOptions)
         -Dexec.args="--account-host ${{ parameters.AccountHost }} --account-key ${{ parameters.AccountKey }}"
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
