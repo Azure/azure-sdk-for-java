@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ProblemClassificationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/ListProblemClassifications.json
+     * x-ms-original-file: 2025-06-01-preview/ListProblemClassifications.json
      */
     /**
      * Sample code: Gets list of problemClassifications for a service for which a support ticket can be created.

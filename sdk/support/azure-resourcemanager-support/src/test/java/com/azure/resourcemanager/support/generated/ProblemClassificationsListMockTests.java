@@ -22,7 +22,7 @@ public final class ProblemClassificationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"dyodnwzxltj\",\"secondaryConsentEnabled\":[{\"description\":\"ltiugcxnavv\",\"type\":\"qiby\"},{\"description\":\"nyowxwlmdjrkvfg\",\"type\":\"fvpdbo\"},{\"description\":\"cizsjqlhkrribdei\",\"type\":\"ipqkghvxndzwm\"}]},\"id\":\"efajpj\",\"name\":\"rwkq\",\"type\":\"yhgbijtjivfx\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"gqggebdunygae\",\"secondaryConsentEnabled\":[{\"description\":\"qfatpxllrxcyjm\",\"type\":\"dsuvarmywdmjsjqb\"}]},\"id\":\"hyxxrwlycoduhpk\",\"name\":\"kgymareqnajxqug\",\"type\":\"hky\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ProblemClassificationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProblemClassification> response
-            = manager.problemClassifications().list("khevxccedc", com.azure.core.util.Context.NONE);
+            = manager.problemClassifications().list("yf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dyodnwzxltj", response.iterator().next().displayName());
-        Assertions.assertEquals("ltiugcxnavv",
+        Assertions.assertEquals("gqggebdunygae", response.iterator().next().displayName());
+        Assertions.assertEquals("qfatpxllrxcyjm",
             response.iterator().next().secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("qiby", response.iterator().next().secondaryConsentEnabled().get(0).type());
+        Assertions.assertEquals("dsuvarmywdmjsjqb", response.iterator().next().secondaryConsentEnabled().get(0).type());
     }
 }

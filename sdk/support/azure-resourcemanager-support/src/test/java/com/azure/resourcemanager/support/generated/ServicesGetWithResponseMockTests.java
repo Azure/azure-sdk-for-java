@@ -21,7 +21,7 @@ public final class ServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"hhmhykojoxa\",\"resourceTypes\":[\"dlpichkoymkcdyhb\"]},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}";
+            = "{\"properties\":{\"displayName\":\"pxebmnzbt\",\"resourceTypes\":[\"pglkf\",\"ohdneuel\",\"phsdyhto\"]},\"id\":\"ikdowwquuvx\",\"name\":\"xclvit\",\"type\":\"hqzonosggbhcoh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,9 @@ public final class ServicesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Service response
-            = manager.services().getWithResponse("uqgbdbutauvfbt", com.azure.core.util.Context.NONE).getValue();
+        Service response = manager.services().getWithResponse("pbttdum", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("hhmhykojoxa", response.displayName());
-        Assertions.assertEquals("dlpichkoymkcdyhb", response.resourceTypes().get(0));
+        Assertions.assertEquals("pxebmnzbt", response.displayName());
+        Assertions.assertEquals("pglkf", response.resourceTypes().get(0));
     }
 }

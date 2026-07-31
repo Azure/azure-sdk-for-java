@@ -11,7 +11,7 @@ public final class FileWorkspaceDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileWorkspaceDetailsProperties model = BinaryData
-            .fromString("{\"createdOn\":\"2021-09-06T23:18:57Z\",\"expirationTime\":\"2021-01-01T12:42:30Z\"}")
+            .fromString("{\"createdOn\":\"2021-11-06T18:49:40Z\",\"expirationTime\":\"2021-10-14T05:29:13Z\"}")
             .toObject(FileWorkspaceDetailsProperties.class);
     }
 }

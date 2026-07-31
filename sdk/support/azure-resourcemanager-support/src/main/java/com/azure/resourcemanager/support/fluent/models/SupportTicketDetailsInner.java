@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.support.models.ChatConversationStatus;
 import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.DirectConnectEscalation;
@@ -19,7 +18,6 @@ import com.azure.resourcemanager.support.models.QuotaTicketDetails;
 import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
-import com.azure.resourcemanager.support.models.SupportChannel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
 import java.io.IOException;
@@ -675,24 +673,6 @@ public final class SupportTicketDetailsInner extends ProxyResource {
         }
         this.innerProperties().withCommunityForumPost(communityForumPost);
         return this;
-    }
-
-    /**
-     * Get the supportChannel property: Support channel type for the support ticket.
-     * 
-     * @return the supportChannel value.
-     */
-    public SupportChannel supportChannel() {
-        return this.innerProperties() == null ? null : this.innerProperties().supportChannel();
-    }
-
-    /**
-     * Get the chatConversationStatus property: Status of the chat conversation associated with the support ticket.
-     * 
-     * @return the chatConversationStatus value.
-     */
-    public ChatConversationStatus chatConversationStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().chatConversationStatus();
     }
 
     /**

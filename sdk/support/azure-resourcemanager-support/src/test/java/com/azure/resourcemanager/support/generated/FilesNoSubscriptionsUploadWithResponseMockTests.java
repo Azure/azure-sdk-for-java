@@ -29,8 +29,8 @@ public final class FilesNoSubscriptionsUploadWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.filesNoSubscriptions()
-            .uploadWithResponse("hol", "wjwiuub", new UploadFile().withContent("fqsfa").withChunkIndex(1449009668),
-                com.azure.core.util.Context.NONE);
+            .uploadWithResponse("bphbqzmizakakank", "p",
+                new UploadFile().withContent("jzhajoy").withChunkIndex(2052287318), com.azure.core.util.Context.NONE);
 
     }
 }

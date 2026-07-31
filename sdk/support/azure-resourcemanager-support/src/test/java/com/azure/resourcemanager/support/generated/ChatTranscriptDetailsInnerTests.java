@@ -12,9 +12,9 @@ public final class ChatTranscriptDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChatTranscriptDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"messages\":[{\"contentType\":\"zvszj\",\"communicationDirection\":\"outbound\",\"sender\":\"j\",\"body\":\"xxivetv\",\"createdDate\":\"2021-02-03T22:58:32Z\"},{\"contentType\":\"qtdo\",\"communicationDirection\":\"outbound\",\"sender\":\"xv\",\"body\":\"xyslqbh\",\"createdDate\":\"2021-02-23T20:11:15Z\"},{\"contentType\":\"blytk\",\"communicationDirection\":\"inbound\",\"sender\":\"ewwwfbkrvrnsv\",\"body\":\"q\",\"createdDate\":\"2021-01-04T22:35:44Z\"}],\"startTime\":\"2021-04-04T20:05:33Z\"},\"id\":\"sbfov\",\"name\":\"srruvwbhsqfsubcg\",\"type\":\"birx\"}")
+            "{\"properties\":{\"messages\":[{\"contentType\":\"hzxct\",\"communicationDirection\":\"outbound\",\"sender\":\"kdmoi\",\"body\":\"ostmgrcf\",\"createdDate\":\"2021-06-18T12:29:32Z\"},{\"contentType\":\"mfqjhhkxbp\",\"communicationDirection\":\"outbound\",\"sender\":\"jhxxjyn\",\"body\":\"divkrt\",\"createdDate\":\"2021-11-23T03:43:54Z\"},{\"contentType\":\"qzvszjf\",\"communicationDirection\":\"inbound\",\"sender\":\"fdxxivetvtcqaqtd\",\"body\":\"mcbxvwvxysl\",\"createdDate\":\"2021-11-03T16:17:43Z\"}],\"startTime\":\"2021-05-16T19:49:18Z\"},\"id\":\"obl\",\"name\":\"tkblmpewww\",\"type\":\"bkrvrnsvshqj\"}")
             .toObject(ChatTranscriptDetailsInner.class);
-        Assertions.assertEquals("j", model.messages().get(0).sender());
-        Assertions.assertEquals("xxivetv", model.messages().get(0).body());
+        Assertions.assertEquals("kdmoi", model.messages().get(0).sender());
+        Assertions.assertEquals("ostmgrcf", model.messages().get(0).body());
     }
 }

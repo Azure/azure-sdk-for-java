@@ -22,7 +22,7 @@ public final class ChatTranscriptsNoSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"xmysuxswqrntv\",\"communicationDirection\":\"inbound\",\"sender\":\"psttexoq\",\"body\":\"wcyyufmhruncu\",\"createdDate\":\"2021-10-04T02:15:36Z\"}],\"startTime\":\"2021-11-18T23:48:24Z\"},\"id\":\"cdqzhlctddu\",\"name\":\"qn\",\"type\":\"yfp\"}]}";
+            = "{\"value\":[{\"properties\":{\"messages\":[{\"contentType\":\"pfoobr\",\"communicationDirection\":\"inbound\",\"sender\":\"msjnygqdnfw\",\"body\":\"dzgtil\",\"createdDate\":\"2021-02-12T11:58:55Z\"},{\"contentType\":\"fhqlyvi\",\"communicationDirection\":\"inbound\",\"sender\":\"iv\",\"body\":\"oyzunbixxr\",\"createdDate\":\"2021-02-23T23:34:22Z\"},{\"contentType\":\"cpwpg\",\"communicationDirection\":\"inbound\",\"sender\":\"ivtsoxfrkenxpm\",\"body\":\"efrp\",\"createdDate\":\"2021-07-24T22:23:07Z\"},{\"contentType\":\"qqs\",\"communicationDirection\":\"inbound\",\"sender\":\"oqvm\",\"body\":\"npqfrtqlkzmeg\",\"createdDate\":\"2021-06-03T22:21:12Z\"}],\"startTime\":\"2021-04-26T07:00:30Z\"},\"id\":\"xlzyqd\",\"name\":\"fegcea\",\"type\":\"zxwhcansymoyqhlw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ChatTranscriptsNoSubscriptionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ChatTranscriptDetails> response
-            = manager.chatTranscriptsNoSubscriptions().list("hzyvlixqnrkcx", com.azure.core.util.Context.NONE);
+            = manager.chatTranscriptsNoSubscriptions().list("uemsly", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("psttexoq", response.iterator().next().messages().get(0).sender());
-        Assertions.assertEquals("wcyyufmhruncu", response.iterator().next().messages().get(0).body());
+        Assertions.assertEquals("msjnygqdnfw", response.iterator().next().messages().get(0).sender());
+        Assertions.assertEquals("dzgtil", response.iterator().next().messages().get(0).body());
     }
 }

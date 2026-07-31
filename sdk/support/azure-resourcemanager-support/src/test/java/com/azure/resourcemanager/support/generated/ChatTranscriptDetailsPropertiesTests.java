@@ -12,9 +12,9 @@ public final class ChatTranscriptDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChatTranscriptDetailsProperties model = BinaryData.fromString(
-            "{\"messages\":[{\"contentType\":\"srfbjfdtwss\",\"communicationDirection\":\"outbound\",\"sender\":\"pvjzbe\",\"body\":\"l\",\"createdDate\":\"2021-08-16T05:02:45Z\"},{\"contentType\":\"qqnvwpmq\",\"communicationDirection\":\"inbound\",\"sender\":\"oujmkcjhwqytj\",\"body\":\"bnw\",\"createdDate\":\"2021-08-28T18:20:54Z\"},{\"contentType\":\"drjervnaenqpehin\",\"communicationDirection\":\"inbound\",\"sender\":\"mifthnzdnd\",\"body\":\"gnayqigynduh\",\"createdDate\":\"2021-02-07T07:32:59Z\"},{\"contentType\":\"lkthu\",\"communicationDirection\":\"inbound\",\"sender\":\"lbg\",\"body\":\"duiertgcc\",\"createdDate\":\"2021-07-18T12:27:40Z\"}],\"startTime\":\"2021-09-08T08:41:54Z\"}")
+            "{\"messages\":[{\"contentType\":\"rsbfovasrruvw\",\"communicationDirection\":\"outbound\",\"sender\":\"fsubcgjbirxbpy\",\"body\":\"rfbjf\",\"createdDate\":\"2021-07-05T13:20:17Z\"}],\"startTime\":\"2021-10-31T01:03:52Z\"}")
             .toObject(ChatTranscriptDetailsProperties.class);
-        Assertions.assertEquals("pvjzbe", model.messages().get(0).sender());
-        Assertions.assertEquals("l", model.messages().get(0).body());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.messages().get(0).sender());
+        Assertions.assertEquals("rfbjf", model.messages().get(0).body());
     }
 }

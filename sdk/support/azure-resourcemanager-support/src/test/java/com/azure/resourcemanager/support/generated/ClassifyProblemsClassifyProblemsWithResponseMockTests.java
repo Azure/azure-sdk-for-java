@@ -22,7 +22,7 @@ public final class ClassifyProblemsClassifyProblemsWithResponseMockTests {
     @Test
     public void testClassifyProblemsWithResponse() throws Exception {
         String responseStr
-            = "{\"problemClassificationResults\":[{\"problemId\":\"dnw\",\"title\":\"mewzsyyc\",\"description\":\"zsoibjudpfrxtr\",\"serviceId\":\"zvaytdwkqbr\",\"problemClassificationId\":\"bpaxhexiilivpdt\",\"relatedService\":{\"serviceId\":\"q\",\"displayName\":\"qoaxoruzfgs\",\"resourceTypes\":[\"fxrxxle\",\"tramxjez\"]}},{\"problemId\":\"wnwxuqlcvyd\",\"title\":\"atdooaojkniod\",\"description\":\"oebwnujhemms\",\"serviceId\":\"dkcrodt\",\"problemClassificationId\":\"nfwjlfltkacjvefk\",\"relatedService\":{\"serviceId\":\"oakggkfpag\",\"displayName\":\"wpu\",\"resourceTypes\":[\"blylsyxkqjnsj\",\"r\",\"tiagx\"]}},{\"problemId\":\"sz\",\"title\":\"mpsbzkfzbeyv\",\"description\":\"qi\",\"serviceId\":\"invkjjxdxrbuu\",\"problemClassificationId\":\"clewyhm\",\"relatedService\":{\"serviceId\":\"aztz\",\"displayName\":\"fn\",\"resourceTypes\":[\"wyfzqwhxxbuyqa\",\"zfeqztppri\",\"lxorjaltolmncws\",\"bqwcsdbnwdcf\"]}},{\"problemId\":\"cqdpfuv\",\"title\":\"sbjjc\",\"description\":\"vxb\",\"serviceId\":\"vudutncor\",\"problemClassificationId\":\"lxqtvcofudfl\",\"relatedService\":{\"serviceId\":\"jub\",\"displayName\":\"knnqvsaznq\",\"resourceTypes\":[\"rudsg\",\"a\"]}}]}";
+            = "{\"problemClassificationResults\":[{\"problemId\":\"ichkoymkcdyhb\",\"title\":\"kpw\",\"description\":\"eqnovvqfovl\",\"serviceId\":\"ywsuwsy\",\"problemClassificationId\":\"ndsytgadg\",\"relatedService\":{\"serviceId\":\"ea\",\"displayName\":\"e\",\"resourceTypes\":[\"arrwlquu\"]}},{\"problemId\":\"fqka\",\"title\":\"wiipfpub\",\"description\":\"bwwift\",\"serviceId\":\"qkvpuvksgplsakn\",\"problemClassificationId\":\"fsynljphuop\",\"relatedService\":{\"serviceId\":\"lqiyntorzihl\",\"displayName\":\"sjswsrms\",\"resourceTypes\":[\"rpzbchckqqzqi\",\"xiy\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ClassifyProblemsClassifyProblemsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProblemClassificationsClassificationOutput response = manager.classifyProblems()
-            .classifyProblemsWithResponse("krmnjijpxacqqud",
-                new ProblemClassificationsClassificationInput().withIssueSummary("nbyxbaaabjyv")
-                    .withResourceId("ffimrzrtuzqogsex"),
+            .classifyProblemsWithResponse("pqwcciuqgbdbutau",
+                new ProblemClassificationsClassificationInput().withIssueSummary("fbtkuwhhmhyk")
+                    .withResourceId("oxafn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fxrxxle",
+        Assertions.assertEquals("arrwlquu",
             response.problemClassificationResults().get(0).relatedService().resourceTypes().get(0));
     }
 }

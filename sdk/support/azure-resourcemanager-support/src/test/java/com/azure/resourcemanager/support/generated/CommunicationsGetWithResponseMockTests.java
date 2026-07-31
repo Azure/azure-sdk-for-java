@@ -21,7 +21,7 @@ public final class CommunicationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"zbzkdvncjabudurg\",\"subject\":\"akmokzhjjklf\",\"body\":\"hmouwqlgzrfze\",\"createdDate\":\"2021-04-04T13:09:14Z\"},\"id\":\"izikayuhq\",\"name\":\"bjbsybb\",\"type\":\"wrv\"}";
+            = "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"qudf\",\"subject\":\"byxbaaabjy\",\"body\":\"ayffim\",\"createdDate\":\"2021-07-11T14:35:31Z\"},\"id\":\"uzqogsexnevf\",\"name\":\"nwnwme\",\"type\":\"zsyyceuzso\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CommunicationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunicationDetails response = manager.communications()
-            .getWithResponse("sjabibs", "stawfsdjpvkv", com.azure.core.util.Context.NONE)
+            .getWithResponse("ubeddg", "sofwqmzqalkrmnji", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zbzkdvncjabudurg", response.sender());
-        Assertions.assertEquals("akmokzhjjklf", response.subject());
-        Assertions.assertEquals("hmouwqlgzrfze", response.body());
+        Assertions.assertEquals("qudf", response.sender());
+        Assertions.assertEquals("byxbaaabjy", response.subject());
+        Assertions.assertEquals("ayffim", response.body());
     }
 }

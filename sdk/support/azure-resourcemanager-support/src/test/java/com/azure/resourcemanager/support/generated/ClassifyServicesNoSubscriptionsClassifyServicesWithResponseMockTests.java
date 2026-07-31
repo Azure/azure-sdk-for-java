@@ -22,7 +22,7 @@ public final class ClassifyServicesNoSubscriptionsClassifyServicesWithResponseMo
     @Test
     public void testClassifyServicesWithResponse() throws Exception {
         String responseStr
-            = "{\"serviceClassificationResults\":[{\"childService\":{\"serviceId\":\"umiekkezzi\",\"displayName\":\"ly\",\"resourceTypes\":[\"dgqggebdu\",\"ygaeqidbqfatpxl\"]},\"serviceId\":\"xcyjmoadsuvarmy\",\"displayName\":\"mjsjqb\",\"resourceTypes\":[\"yxxrwlycoduh\",\"kxkgymareqna\",\"xqugjhkycubedd\",\"ssofwqmzqa\"]}]}";
+            = "{\"serviceClassificationResults\":[{\"childService\":{\"serviceId\":\"i\",\"displayName\":\"rq\",\"resourceTypes\":[\"ahwfluszdtmhrk\",\"ofyyvoqacpi\"]},\"serviceId\":\"pbtg\",\"displayName\":\"bwoenwashrt\",\"resourceTypes\":[\"cnqxwbpokulpi\",\"jwaa\",\"ipqiiobyuqerpq\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ClassifyServicesNoSubscriptionsClassifyServicesWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceClassificationOutput response = manager.classifyServicesNoSubscriptions()
-            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("oz")
-                .withResourceId("sphyoulpjrvxa")
-                .withAdditionalContext("rvimjwosytxitcsk"), com.azure.core.util.Context.NONE)
+            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("glyatddckcbcuej")
+                .withResourceId("xgc")
+                .withAdditionalContext("ibrhosxsdqr"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yxxrwlycoduh", response.serviceClassificationResults().get(0).resourceTypes().get(0));
-        Assertions.assertEquals("dgqggebdu",
+        Assertions.assertEquals("cnqxwbpokulpi", response.serviceClassificationResults().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("ahwfluszdtmhrk",
             response.serviceClassificationResults().get(0).childService().resourceTypes().get(0));
     }
 }

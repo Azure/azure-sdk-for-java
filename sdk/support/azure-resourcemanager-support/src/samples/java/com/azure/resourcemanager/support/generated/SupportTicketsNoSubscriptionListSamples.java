@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class SupportTicketsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state.
@@ -24,7 +24,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsInOpenState.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsInOpenState.json
      */
     /**
      * Sample code: List support tickets in open state.
@@ -36,7 +36,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTickets.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTickets.json
      */
     /**
      * Sample code: List support tickets.
@@ -48,7 +48,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsInUpdatingState.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsInUpdatingState.json
      */
     /**
      * Sample code: List support tickets in updating state.
@@ -60,7 +60,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state.
@@ -74,7 +74,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsServiceIdEquals.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsServiceIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain service id.
@@ -88,7 +88,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListSupportTicketsProblemClassificationIdEquals.json
+     * x-ms-original-file: 2025-06-01-preview/ListSupportTicketsProblemClassificationIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id.

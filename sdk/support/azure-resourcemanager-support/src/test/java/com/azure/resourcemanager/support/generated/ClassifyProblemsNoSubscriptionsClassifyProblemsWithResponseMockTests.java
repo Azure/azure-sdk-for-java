@@ -22,7 +22,7 @@ public final class ClassifyProblemsNoSubscriptionsClassifyProblemsWithResponseMo
     @Test
     public void testClassifyProblemsWithResponse() throws Exception {
         String responseStr
-            = "{\"problemClassificationResults\":[{\"problemId\":\"vsmzlxwab\",\"title\":\"oefki\",\"description\":\"vtpuqujmqlgk\",\"serviceId\":\"tndoaongbjc\",\"problemClassificationId\":\"ujitcjedftww\",\"relatedService\":{\"serviceId\":\"kojvd\",\"displayName\":\"zfoqouicybxar\",\"resourceTypes\":[\"zuf\",\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\"]}},{\"problemId\":\"egokdwbwhkszzcmr\",\"title\":\"xztvbtqgsfraoyzk\",\"description\":\"wtl\",\"serviceId\":\"guxawqaldsyuuxi\",\"problemClassificationId\":\"rqf\",\"relatedService\":{\"serviceId\":\"yznkby\",\"displayName\":\"t\",\"resourceTypes\":[\"hpagm\",\"r\",\"kdsnfdsdoakgtdl\",\"kkze\"]}},{\"problemId\":\"l\",\"title\":\"wpusdsttwvogv\",\"description\":\"ejdcngqqmoakuf\",\"serviceId\":\"jzrwrdgrtw\",\"problemClassificationId\":\"nuuzkopbm\",\"relatedService\":{\"serviceId\":\"fdwoyuhh\",\"displayName\":\"u\",\"resourceTypes\":[\"ozbhdmsmlmzq\",\"oftrmaequia\",\"xicslfao\",\"z\"]}},{\"problemId\":\"yylhalnswhccsp\",\"title\":\"aivwitqscywu\",\"description\":\"woluhczbwemhair\",\"serviceId\":\"rgzdwmsweyp\",\"problemClassificationId\":\"dxggicccnxqhuexm\",\"relatedService\":{\"serviceId\":\"lstvlzywe\",\"displayName\":\"zrncsdt\",\"resourceTypes\":[\"siypbs\"]}}]}";
+            = "{\"problemClassificationResults\":[{\"problemId\":\"umnzgmwznmabik\",\"title\":\"orgjhxbldt\",\"description\":\"wrlkdmtn\",\"serviceId\":\"ok\",\"problemClassificationId\":\"llxdyhgs\",\"relatedService\":{\"serviceId\":\"ogjltdtbnnhad\",\"displayName\":\"crkvcikhnv\",\"resourceTypes\":[\"qgxqquezikyw\"]}},{\"problemId\":\"xkalla\",\"title\":\"elwuipi\",\"description\":\"jzkzi\",\"serviceId\":\"vvcnayr\",\"problemClassificationId\":\"rnxxmueed\",\"relatedService\":{\"serviceId\":\"dvstkw\",\"displayName\":\"tchealmf\",\"resourceTypes\":[\"aayg\"]}},{\"problemId\":\"wvgpiohg\",\"title\":\"rtfudxepxg\",\"description\":\"agvrvmnpkuk\",\"serviceId\":\"i\",\"problemClassificationId\":\"blxgwimf\",\"relatedService\":{\"serviceId\":\"fjxwmsz\",\"displayName\":\"foqreyfkzik\",\"resourceTypes\":[\"wneaiv\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class ClassifyProblemsNoSubscriptionsClassifyProblemsWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProblemClassificationsClassificationOutput response = manager.classifyProblemsNoSubscriptions()
-            .classifyProblemsWithResponse("mkycgra",
-                new ProblemClassificationsClassificationInput().withIssueSummary("wjue").withResourceId("eburu"),
+            .classifyProblemsWithResponse("uiizynke",
+                new ProblemClassificationsClassificationInput().withIssueSummary("yatrwy")
+                    .withResourceId("mibzyhwitsmypyyn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zuf",
+        Assertions.assertEquals("qgxqquezikyw",
             response.problemClassificationResults().get(0).relatedService().resourceTypes().get(0));
     }
 }

@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class SupportTicketsLookUpResourceIdWithResponseMockTests {
     @Test
     public void testLookUpResourceIdWithResponse() throws Exception {
-        String responseStr = "{\"resourceId\":\"asxifto\"}";
+        String responseStr = "{\"resourceId\":\"q\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class SupportTicketsLookUpResourceIdWithResponseMockTests {
 
         LookUpResourceIdResponse response = manager.supportTickets()
             .lookUpResourceIdWithResponse(
-                new LookUpResourceIdRequest().withIdentifier("ratiz")
+                new LookUpResourceIdRequest().withIdentifier("pdrhne")
                     .withType(LookUpResourceIdRequestType.MICROSOFT_SUPPORT_SUPPORT_TICKETS),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("asxifto", response.resourceId());
+        Assertions.assertEquals("q", response.resourceId());
     }
 }

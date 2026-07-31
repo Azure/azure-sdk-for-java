@@ -22,7 +22,7 @@ public final class CommunicationsNoSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"igovi\",\"subject\":\"rxkpmloazuruoc\",\"body\":\"goorbteo\",\"createdDate\":\"2021-12-07T06:56:11Z\"},\"id\":\"jxakv\",\"name\":\"jgslordilmyww\",\"type\":\"kgkxn\"}]}";
+            = "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"lgnyhmo\",\"subject\":\"sxkkg\",\"body\":\"h\",\"createdDate\":\"2021-04-03T23:15:39Z\"},\"id\":\"xjb\",\"name\":\"hqxvcxgfrpdsofbs\",\"type\":\"rnsvbuswd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CommunicationsNoSubscriptionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<CommunicationDetails> response
-            = manager.communicationsNoSubscriptions().list("kqqfk", 901895840, "s", com.azure.core.util.Context.NONE);
+        PagedIterable<CommunicationDetails> response = manager.communicationsNoSubscriptions()
+            .list("zh", 441985867, "wesgogczh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("igovi", response.iterator().next().sender());
-        Assertions.assertEquals("rxkpmloazuruoc", response.iterator().next().subject());
-        Assertions.assertEquals("goorbteo", response.iterator().next().body());
+        Assertions.assertEquals("lgnyhmo", response.iterator().next().sender());
+        Assertions.assertEquals("sxkkg", response.iterator().next().subject());
+        Assertions.assertEquals("h", response.iterator().next().body());
     }
 }

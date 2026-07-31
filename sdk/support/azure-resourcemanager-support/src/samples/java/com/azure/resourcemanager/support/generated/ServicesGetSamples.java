@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/GetService.json
+     * x-ms-original-file: 2025-06-01-preview/GetService.json
      */
     /**
      * Sample code: Gets details of the Azure service.

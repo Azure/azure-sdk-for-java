@@ -21,7 +21,7 @@ public final class ChatTranscriptsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"messages\":[{\"contentType\":\"mqt\",\"communicationDirection\":\"inbound\",\"sender\":\"ijddtvqc\",\"body\":\"adijaeukmrsie\",\"createdDate\":\"2021-10-17T06:17:44Z\"},{\"contentType\":\"dzaapmudqme\",\"communicationDirection\":\"inbound\",\"sender\":\"pibudqwyxebeybpm\",\"body\":\"nrtffyaqi\",\"createdDate\":\"2021-04-15T13:41:26Z\"}],\"startTime\":\"2021-06-15T17:15:43Z\"},\"id\":\"oqaqhvseufuq\",\"name\":\"rxpdlcgqlsi\",\"type\":\"mjqfrddgamquhio\"}";
+            = "{\"properties\":{\"messages\":[{\"contentType\":\"ttikteusqczkvykl\",\"communicationDirection\":\"outbound\",\"sender\":\"jaffmmfblcqcuu\",\"body\":\"qibrtalme\",\"createdDate\":\"2021-07-29T21:38:09Z\"},{\"contentType\":\"gdslqxihhrmoo\",\"communicationDirection\":\"outbound\",\"sender\":\"eypxiutcxapzhyr\",\"body\":\"togebjoxsl\",\"createdDate\":\"2020-12-28T12:20:27Z\"},{\"contentType\":\"labrqnkkzjcjbtr\",\"communicationDirection\":\"inbound\",\"sender\":\"vvib\",\"body\":\"jj\",\"createdDate\":\"2021-01-18T04:33:41Z\"},{\"contentType\":\"beitpkx\",\"communicationDirection\":\"inbound\",\"sender\":\"ob\",\"body\":\"ft\",\"createdDate\":\"2021-09-03T03:39:31Z\"}],\"startTime\":\"2020-12-22T14:36:49Z\"},\"id\":\"qmpimaqxzhem\",\"name\":\"yhohujswtwkozzwc\",\"type\":\"lkb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ChatTranscriptsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ChatTranscriptDetails response
-            = manager.chatTranscripts().getWithResponse("jpahlxvea", "f", com.azure.core.util.Context.NONE).getValue();
+            = manager.chatTranscripts().getWithResponse("f", "cvhrfsp", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ijddtvqc", response.messages().get(0).sender());
-        Assertions.assertEquals("adijaeukmrsie", response.messages().get(0).body());
+        Assertions.assertEquals("jaffmmfblcqcuu", response.messages().get(0).sender());
+        Assertions.assertEquals("qibrtalme", response.messages().get(0).body());
     }
 }

@@ -1,7 +1,8 @@
 # Release History
 
-## 1.2.0 (2026-07-30)
+## 1.2.0 (2026-07-31)
 
+- Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2025-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -59,9 +60,9 @@
 #### `models.MessageProperties` was modified
 
 * `MessageProperties()` was changed to private access
-* `withBody(java.lang.String)` was removed
 * `validate()` was removed
 * `models.TranscriptContentType contentType()` -> `java.lang.String contentType()`
+* `withBody(java.lang.String)` was removed
 * `withSender(java.lang.String)` was removed
 
 #### `models.SecondaryConsent` was modified
@@ -75,9 +76,9 @@
 #### `models.SecondaryConsentEnabled` was modified
 
 * `SecondaryConsentEnabled()` was changed to private access
-* `withType(java.lang.String)` was removed
 * `validate()` was removed
 * `withDescription(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 
 #### `models.UploadFile` was modified
 
@@ -102,8 +103,6 @@
 * `models.ClassifyServicesNoSubscriptions` was added
 
 * `models.LookUpResourceIdRequest` was added
-
-* `models.SupportChannel` was added
 
 * `models.ClassificationService` was added
 
@@ -131,8 +130,6 @@
 
 * `models.ProblemClassificationsClassificationInput` was added
 
-* `models.ChatConversationStatus` was added
-
 #### `models.ProblemClassification` was modified
 
 * `systemData()` was added
@@ -143,26 +140,26 @@
 
 #### `models.UpdateSupportTicket` was modified
 
-* `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
 * `directConnectEscalation()` was added
+* `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
 
 #### `models.Operation` was modified
 
-* `isDataAction()` was added
 * `actionType()` was added
+* `isDataAction()` was added
 * `origin()` was added
 
 #### `models.SupportTickets` was modified
 
-* `lookUpResourceId(models.LookUpResourceIdRequest)` was added
 * `lookUpResourceIdWithResponse(models.LookUpResourceIdRequest,com.azure.core.util.Context)` was added
+* `lookUpResourceId(models.LookUpResourceIdRequest)` was added
 
 #### `SupportManager` was modified
 
-* `classifyServicesNoSubscriptions()` was added
-* `classifyProblemsNoSubscriptions()` was added
-* `classifyServices()` was added
 * `classifyProblems()` was added
+* `classifyServicesNoSubscriptions()` was added
+* `classifyServices()` was added
+* `classifyProblemsNoSubscriptions()` was added
 
 #### `models.CommunicationDetails` was modified
 
@@ -170,10 +167,8 @@
 
 #### `models.SupportTicketDetails` was modified
 
-* `chatConversationStatus()` was added
-* `supportChannel()` was added
-* `directConnectEscalation()` was added
 * `communityForumPost()` was added
+* `directConnectEscalation()` was added
 * `systemData()` was added
 
 #### `models.SupportTicketDetails$Definition` was modified

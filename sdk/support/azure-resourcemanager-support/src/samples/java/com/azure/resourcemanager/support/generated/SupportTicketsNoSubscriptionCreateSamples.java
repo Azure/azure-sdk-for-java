@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class SupportTicketsNoSubscriptionCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/CreateBillingSupportTicket.json
+     * x-ms-original-file: 2025-06-01-preview/CreateBillingSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -48,7 +48,7 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/CreateSubMgmtSupportTicket.json
+     * x-ms-original-file: 2025-06-01-preview/CreateSubMgmtSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues.
@@ -79,7 +79,7 @@ public final class SupportTicketsNoSubscriptionCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/CreateTechnicalSupportTicket.json
+     * x-ms-original-file: 2025-06-01-preview/CreateTechnicalSupportTicket.json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource.

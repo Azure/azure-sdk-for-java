@@ -252,20 +252,6 @@ public interface SupportTicketDetails {
     String communityForumPost();
 
     /**
-     * Gets the supportChannel property: Support channel type for the support ticket.
-     * 
-     * @return the supportChannel value.
-     */
-    SupportChannel supportChannel();
-
-    /**
-     * Gets the chatConversationStatus property: Status of the chat conversation associated with the support ticket.
-     * 
-     * @return the chatConversationStatus value.
-     */
-    ChatConversationStatus chatConversationStatus();
-
-    /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner object.
      * 
      * @return the inner object.

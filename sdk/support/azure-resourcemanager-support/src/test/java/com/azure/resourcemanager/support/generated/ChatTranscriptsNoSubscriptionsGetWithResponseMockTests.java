@@ -21,7 +21,7 @@ public final class ChatTranscriptsNoSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"messages\":[{\"contentType\":\"izozsd\",\"communicationDirection\":\"outbound\",\"sender\":\"jmonfdgn\",\"body\":\"cypuuwwlt\",\"createdDate\":\"2021-11-20T18:00Z\"},{\"contentType\":\"ctzenkeifzzhmkd\",\"communicationDirection\":\"outbound\",\"sender\":\"lyhb\",\"body\":\"udchxgsrboldforo\",\"createdDate\":\"2021-04-07T12:53:34Z\"},{\"contentType\":\"vizbfhfo\",\"communicationDirection\":\"outbound\",\"sender\":\"qpbtuodxes\",\"body\":\"bbelawumuaslzk\",\"createdDate\":\"2021-08-29T09:46:53Z\"},{\"contentType\":\"oycqucwy\",\"communicationDirection\":\"outbound\",\"sender\":\"omd\",\"body\":\"ywuhpsvfuur\",\"createdDate\":\"2021-08-15T09:05:35Z\"}],\"startTime\":\"2021-11-04T07:23:46Z\"},\"id\":\"xwlalniexzsrzpg\",\"name\":\"pqtybb\",\"type\":\"wpgdak\"}";
+            = "{\"properties\":{\"messages\":[{\"contentType\":\"nzqodfvpg\",\"communicationDirection\":\"outbound\",\"sender\":\"gsgbpfgzdjt\",\"body\":\"zflbqvg\",\"createdDate\":\"2021-11-13T07:48:22Z\"},{\"contentType\":\"gafcqu\",\"communicationDirection\":\"inbound\",\"sender\":\"etnwsdtutnw\",\"body\":\"uycvuzhyrmewip\",\"createdDate\":\"2021-09-17T08:14:05Z\"},{\"contentType\":\"dxukuqgsjjxundxg\",\"communicationDirection\":\"outbound\",\"sender\":\"zhhzjhfjmhvvmu\",\"body\":\"pmuneqsx\",\"createdDate\":\"2020-12-27T00:07:16Z\"}],\"startTime\":\"2021-05-19T22:03:11Z\"},\"id\":\"zjyi\",\"name\":\"sasbhu\",\"type\":\"ypoh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ChatTranscriptsNoSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ChatTranscriptDetails response = manager.chatTranscriptsNoSubscriptions()
-            .getWithResponse("xlpm", "erbdk", com.azure.core.util.Context.NONE)
+            .getWithResponse("pijrajcivmmghf", "fiwrxgkn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jmonfdgn", response.messages().get(0).sender());
-        Assertions.assertEquals("cypuuwwlt", response.messages().get(0).body());
+        Assertions.assertEquals("gsgbpfgzdjt", response.messages().get(0).sender());
+        Assertions.assertEquals("zflbqvg", response.messages().get(0).body());
     }
 }

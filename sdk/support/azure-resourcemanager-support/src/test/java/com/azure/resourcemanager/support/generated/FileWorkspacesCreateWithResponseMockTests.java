@@ -20,7 +20,7 @@ public final class FileWorkspacesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"createdOn\":\"2021-03-03T11:33:05Z\",\"expirationTime\":\"2021-02-08T21:27:43Z\"},\"id\":\"asccbiui\",\"name\":\"zdlyjdfqw\",\"type\":\"kyoqufdv\"}";
+            = "{\"properties\":{\"createdOn\":\"2021-11-26T20:56:36Z\",\"expirationTime\":\"2021-06-24T15:18:16Z\"},\"id\":\"asi\",\"name\":\"ddyvvjskgfmo\",\"type\":\"wa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,9 @@ public final class FileWorkspacesCreateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        FileWorkspaceDetails response
-            = manager.fileWorkspaces().createWithResponse("xfuojrn", com.azure.core.util.Context.NONE).getValue();
+        FileWorkspaceDetails response = manager.fileWorkspaces()
+            .createWithResponse("uxakjsqzhzbezk", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

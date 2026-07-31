@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FileWorkspacesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/GetFileWorkspaceDetailsForSubscription.json
+     * x-ms-original-file: 2025-06-01-preview/GetFileWorkspaceDetailsForSubscription.json
      */
     /**
      * Sample code: Get details of a subscription file workspace.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.support.models.LookUpResourceIdRequestType;
  */
 public final class SupportTicketsLookUpResourceIdSamples {
     /*
-     * x-ms-original-file: 2026-06-01/LookUpResourceId.json
+     * x-ms-original-file: 2025-06-01-preview/LookUpResourceId.json
      */
     /**
      * Sample code: Look up resource id of support resource type.

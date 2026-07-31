@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/CreateSupportTicketCommunication.json
+     * x-ms-original-file: 2025-06-01-preview/CreateSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToSubscriptionTicket.

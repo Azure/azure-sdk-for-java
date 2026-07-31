@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/ListCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2025-06-01-preview/ListCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List communications for a subscription support ticket.
@@ -22,7 +22,7 @@ public final class CommunicationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSubscriptionSupportTicket.json
+     * x-ms-original-file: 2025-06-01-preview/ListWebCommunicationsForSubscriptionSupportTicket.json
      */
     /**
      * Sample code: List web communications for a subscription support ticket.
@@ -36,7 +36,7 @@ public final class CommunicationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+     * x-ms-original-file: 2025-06-01-preview/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
      */
     /**
      * Sample code: List web communication created on or after a specific date for a subscription support ticket.

@@ -22,7 +22,7 @@ public final class ClassifyServicesClassifyServicesWithResponseMockTests {
     @Test
     public void testClassifyServicesWithResponse() throws Exception {
         String responseStr
-            = "{\"serviceClassificationResults\":[{\"childService\":{\"serviceId\":\"rpzbchckqqzqi\",\"displayName\":\"iysui\",\"resourceTypes\":[\"nkedyatrwyhqmib\",\"yhwitsmypyynpcdp\",\"mnzgmwznmabi\",\"nsorgjhxbldt\"]},\"serviceId\":\"wrlkdmtn\",\"displayName\":\"ok\",\"resourceTypes\":[\"lxdy\",\"gsyocogj\"]},{\"childService\":{\"serviceId\":\"tbnnha\",\"displayName\":\"ocrkvcikh\",\"resourceTypes\":[\"amqgxqquezikyw\"]},\"serviceId\":\"xkalla\",\"displayName\":\"elwuipi\",\"resourceTypes\":[\"zkzivgvvcnay\",\"hyrnxxmu\"]},{\"childService\":{\"serviceId\":\"ndrdvstkwq\",\"displayName\":\"chea\",\"resourceTypes\":[\"mtdaa\",\"gdv\",\"vgpiohgwxrt\",\"udxepxgyqagv\"]},\"serviceId\":\"mnpkukghimdblxg\",\"displayName\":\"mfnjh\",\"resourceTypes\":[\"wmszkk\"]},{\"childService\":{\"serviceId\":\"rey\",\"displayName\":\"zi\",\"resourceTypes\":[\"aw\",\"eaivxwczel\"]},\"serviceId\":\"irels\",\"displayName\":\"aenwabf\",\"resourceTypes\":[\"lddxbjhwua\"]}]}";
+            = "{\"serviceClassificationResults\":[{\"childService\":{\"serviceId\":\"bobzdopcjwvnhd\",\"displayName\":\"wmgxcxrsl\",\"resourceTypes\":[\"twuoegrpkhjwni\"]},\"serviceId\":\"sluicpdggkzz\",\"displayName\":\"mbmpaxmodfvuefy\",\"resourceTypes\":[\"pfvmwyhrfou\",\"ft\"]},{\"childService\":{\"serviceId\":\"cpwi\",\"displayName\":\"vqtmnub\",\"resourceTypes\":[\"pzk\",\"mond\",\"mquxvypo\"]},\"serviceId\":\"kopkwhojvpajqgx\",\"displayName\":\"mocmbqfqvmk\",\"resourceTypes\":[\"zapvhelx\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ClassifyServicesClassifyServicesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceClassificationOutput response = manager.classifyServices()
-            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("jphuopxodlqi")
-                .withResourceId("torzih")
-                .withAdditionalContext("osjswsr"), com.azure.core.util.Context.NONE)
+            .classifyServicesWithResponse(new ServiceClassificationRequest().withIssueSummary("vpk")
+                .withResourceId("dcvd")
+                .withAdditionalContext("vo"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lxdy", response.serviceClassificationResults().get(0).resourceTypes().get(0));
-        Assertions.assertEquals("nkedyatrwyhqmib",
+        Assertions.assertEquals("pfvmwyhrfou", response.serviceClassificationResults().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("twuoegrpkhjwni",
             response.serviceClassificationResults().get(0).childService().resourceTypes().get(0));
     }
 }

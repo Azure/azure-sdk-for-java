@@ -7,7 +7,6 @@ package com.azure.resourcemanager.support.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
-import com.azure.resourcemanager.support.models.ChatConversationStatus;
 import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.DirectConnectEscalation;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.Status;
-import com.azure.resourcemanager.support.models.SupportChannel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.SupportTicketDetails;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
@@ -168,14 +166,6 @@ public final class SupportTicketDetailsImpl
 
     public String communityForumPost() {
         return this.innerModel().communityForumPost();
-    }
-
-    public SupportChannel supportChannel() {
-        return this.innerModel().supportChannel();
-    }
-
-    public ChatConversationStatus chatConversationStatus() {
-        return this.innerModel().chatConversationStatus();
     }
 
     public SupportTicketDetailsInner innerModel() {

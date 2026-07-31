@@ -9,7 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FilesCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/CreateFileForSubscription.json
+     * x-ms-original-file: 2025-06-01-preview/CreateFileForSubscription.json
      */
     /**
      * Sample code: Create a file under a subscription workspace.

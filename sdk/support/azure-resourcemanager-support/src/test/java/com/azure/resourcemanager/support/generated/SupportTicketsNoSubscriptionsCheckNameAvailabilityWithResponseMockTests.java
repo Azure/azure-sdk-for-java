@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class SupportTicketsNoSubscriptionsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"oyjathwtzol\",\"message\":\"emwmdxmebwjs\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"vekqvgqo\",\"message\":\"ifzmpjwyivqi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,11 @@ public final class SupportTicketsNoSubscriptionsCheckNameAvailabilityWithRespons
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CheckNameAvailabilityOutput response = manager.supportTicketsNoSubscriptions()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityInput().withName("wxdzaumweoohgu")
-                .withType(Type.MICROSOFT_SUPPORT_COMMUNICATIONS), com.azure.core.util.Context.NONE)
-            .getValue();
+        CheckNameAvailabilityOutput response
+            = manager.supportTicketsNoSubscriptions()
+                .checkNameAvailabilityWithResponse(new CheckNameAvailabilityInput().withName("txmwoteyow")
+                    .withType(Type.MICROSOFT_SUPPORT_COMMUNICATIONS), com.azure.core.util.Context.NONE)
+                .getValue();
 
     }
 }
