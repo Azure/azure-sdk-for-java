@@ -249,6 +249,35 @@ public class AiaCertificateChainTest {
         }
     }
 
+    @Test
+    void completeChainViaAiaRejectsExpiredIssuer() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        // Build an issuer that is a valid CA in every respect EXCEPT that it has already expired.
+        // Chain completion must reject it so it is never inserted into the chain.
+        Date expiredNotBefore = new Date(System.currentTimeMillis() - 86_400_000L * 30);
+        Date expiredNotAfter = new Date(System.currentTimeMillis() - 86_400_000L);
+        KeyPair expiredIssuerKeyPair = keyGen.generateKeyPair();
+        X509Certificate expiredIssuerCert
+            = buildCertificate(expiredIssuerKeyPair.getPublic(), "CN=Expired Issuer", "CN=Expired Issuer",
+                expiredIssuerKeyPair.getPrivate(), true, null, KeyUsage.keyCertSign, expiredNotBefore, expiredNotAfter);
+
+        KeyPair leafKeyPair = keyGen.generateKeyPair();
+        X509Certificate leafWithExpiredAia = buildCertificate(leafKeyPair.getPublic(), "CN=Leaf", "CN=Expired Issuer",
+            expiredIssuerKeyPair.getPrivate(), false, AIA_BAD_ISSUER_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_BAD_ISSUER_URL)).thenReturn(expiredIssuerCert.getEncoded());
+
+            Certificate[] result = CertificateUtil.completeChainViaAia(new Certificate[] { leafWithExpiredAia });
+
+            assertEquals(1, result.length,
+                "An expired issuer certificate must be rejected and not inserted into the chain");
+            assertEquals(leafWithExpiredAia, result[0]);
+        }
+    }
+
     // -----------------------------------------------------------------------
     // PKIX path-building tests – reproduce and verify the reported bug
     //
@@ -442,6 +471,33 @@ public class AiaCertificateChainTest {
         }
     }
 
+    @Test
+    void loadCertificatesKeepsChainWithExpiredIssuerUntouched() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        // An expired CA that still is the issuer of the leaf. Expiry is only rejected for certificates downloaded
+        // via AIA, so a chain returned by Key Vault must keep its order and must not trigger a download.
+        Date expiredNotBefore = new Date(System.currentTimeMillis() - 86_400_000L * 30);
+        Date expiredNotAfter = new Date(System.currentTimeMillis() - 86_400_000L);
+        KeyPair expiredCaKeyPair = keyGen.generateKeyPair();
+        X509Certificate expiredCaCert = buildCertificate(expiredCaKeyPair.getPublic(), "CN=Expired CA", "CN=Expired CA",
+            expiredCaKeyPair.getPrivate(), true, null, KeyUsage.keyCertSign, expiredNotBefore, expiredNotAfter);
+
+        KeyPair leafKeyPair = keyGen.generateKeyPair();
+        X509Certificate leafOfExpiredCa = buildCertificate(leafKeyPair.getPublic(), "CN=Leaf Of Expired CA",
+            "CN=Expired CA", expiredCaKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            Certificate[] result
+                = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafOfExpiredCa) + toPem(expiredCaCert));
+
+            assertArrayEquals(new Certificate[] { leafOfExpiredCa, expiredCaCert }, result,
+                "An expired certificate already in the chain must not change how the chain is ordered");
+            httpMock.verifyNoInteractions();
+        }
+    }
+
     // -----------------------------------------------------------------------
     // AIA response cache tests
     //
@@ -556,10 +612,19 @@ public class AiaCertificateChainTest {
     private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
         String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags) throws Exception {
 
-        X500Name subject = new X500Name(subjectDn);
-        X500Name issuer = new X500Name(issuerDn);
         Date notBefore = new Date(System.currentTimeMillis() - 86_400_000L);
         Date notAfter = new Date(System.currentTimeMillis() + 86_400_000L * 365);
+
+        return buildCertificate(subjectPublicKey, subjectDn, issuerDn, signingKey, isCa, aiaUrl, keyUsageFlags,
+            notBefore, notAfter);
+    }
+
+    private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
+        String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags, Date notBefore,
+        Date notAfter) throws Exception {
+
+        X500Name subject = new X500Name(subjectDn);
+        X500Name issuer = new X500Name(issuerDn);
         BigInteger serial = BigInteger.valueOf(SERIAL_COUNTER.getAndIncrement());
 
         JcaX509v3CertificateBuilder builder

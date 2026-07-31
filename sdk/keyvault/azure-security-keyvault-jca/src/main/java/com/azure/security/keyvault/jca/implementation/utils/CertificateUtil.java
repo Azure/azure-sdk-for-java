@@ -29,7 +29,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import javax.security.auth.x500.X500Principal;
 import java.util.ArrayList;
@@ -645,12 +647,19 @@ public final class CertificateUtil {
     /**
      * Validates that an issuer certificate is legitimate for signing another certificate.
      *
-     * <p>This method performs two checks:
+     * <p>This method performs the following checks:
      * <ol>
      *   <li>Verifies that the signature on the certificate was created by the issuer's private key</li>
      *   <li>Verifies that the issuer is authorized to be a CA
      *       (either self-signed root or has CA bit set in basicConstraints)</li>
+     *   <li>Verifies that, when a KeyUsage extension is present, the keyCertSign bit is set (RFC 5280)</li>
      * </ol>
+     *
+     * <p>The issuer's validity period is deliberately not checked here, because this method also decides how a
+     * chain returned by Azure Key Vault is ordered and how far it can be walked. Rejecting an expired certificate
+     * at that point would reorder existing chains and trigger downloads that were previously never performed.
+     * Certificates entering the chain from the network are checked instead by
+     * {@link #isCurrentlyValid(X509Certificate)}.
      *
      * @param issuer the potential issuer certificate
      * @param cert the certificate to verify
@@ -686,8 +695,32 @@ public final class CertificateUtil {
     }
 
     /**
+     * Verifies that a certificate is currently within its validity period.
+     *
+     * <p>An expired, or not yet valid, intermediate downloaded via AIA must not be inserted into the chain:
+     * embedding it would still fail PKIX path validation at verify time, and silently accepting it would mask the
+     * real "this CA certificate needs to be renewed" condition.
+     *
+     * @param certificate the certificate to check
+     * @return true if the certificate is currently valid, false if it is expired or not yet valid
+     */
+    private static boolean isCurrentlyValid(X509Certificate certificate) {
+        try {
+            certificate.checkValidity();
+            return true;
+        } catch (CertificateExpiredException | CertificateNotYetValidException e) {
+            LOGGER.log(FINE, "Issuer certificate [{0}] is expired or not yet valid; rejecting it as an issuer.",
+                certificate.getSubjectX500Principal().getName());
+            return false;
+        }
+    }
+
+    /**
      * Downloads the issuer certificate for the given certificate using the CA Issuers URL
      * found in the certificate's AIA (Authority Information Access) extension.
+     *
+     * <p>A downloaded certificate is only accepted when its subject matches the expected issuer DN, it is currently
+     * within its validity period, and it can validly issue the given certificate.
      *
      * @param cert the certificate whose issuer should be downloaded
      * @return the issuer {@link X509Certificate}, or {@code null} if it cannot be retrieved
@@ -720,8 +753,9 @@ public final class CertificateUtil {
                 X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
                 for (X509Certificate candidate : fetchCertificatesFromAiaUrl(url)) {
                     // Validation runs on every use, including cache hits, so a cached certificate can never
-                    // shortcut signature or CA verification.
+                    // shortcut subject, validity or issuer verification.
                     if (expectedIssuerPrincipal.equals(candidate.getSubjectX500Principal())
+                        && isCurrentlyValid(candidate)
                         && isValidIssuer(candidate, cert)) {
                         return candidate;
                     }
