@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. The fix downloads missing intermediate CA certificates at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
+- Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault is incomplete, the missing intermediate CA certificates are now downloaded at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Chains that are already contiguous are used as-is, so no network request is made. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 - Fixed an issue where a disabled certificate in Azure Key Vault caused keystore initialization to fail with an HTTP 403 error. Disabled certificates are now skipped when loading aliases and a warning is logged for each skipped certificate. [#49730](https://github.com/Azure/azure-sdk-for-java/pull/49730)
 
 ### Other Changes

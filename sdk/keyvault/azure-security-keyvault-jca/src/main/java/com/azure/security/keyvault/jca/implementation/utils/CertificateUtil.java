@@ -63,11 +63,41 @@ public final class CertificateUtil {
         // Ensure certificates are in the correct order: end-entity (leaf) → intermediate(s) → root CA
         // This is required for jarsigner and other Java security tools
         certificates = orderCertificateChain(certificates);
-        // Complete the chain by downloading any missing intermediate CA certificates via the AIA extension.
-        // This handles the case where only the leaf certificate was stored in Azure Key Vault
-        // (e.g. a non-exportable certificate where the caller only merged the leaf cert during CSR completion).
-        certificates = completeChainViaAia(certificates);
+
+        // Only an incomplete chain needs the missing intermediate CA certificates downloaded via the AIA
+        // extension. A contiguous chain keeps the previous, fully offline behavior.
+        if (isChainIncomplete(certificates)) {
+            certificates = completeChainViaAia(certificates);
+        }
+
         return certificates;
+    }
+
+    /**
+     * Determines whether a certificate chain has to be completed with issuer certificates downloaded via AIA.
+     *
+     * <p>Completion is only required when the chain cannot be walked from the leaf upwards: either Azure Key Vault
+     * returned a leaf-only bundle (the non-exportable case behind the {@code jarsigner} PKIX failure), or an
+     * intermediate CA is missing in the middle of the chain. A contiguous chain is left untouched: {@code jarsigner}
+     * and PKIX path building only need the path up to a trust anchor, and the root CA already is a trust anchor in
+     * the trust store, so it does not have to be embedded in the chain.
+     *
+     * <p><strong>Known limitation:</strong> a chain whose missing link sits above its last certificate is reported
+     * as complete. A multi-level PKI returning {@code [leaf, intermediate1]} while {@code intermediate2} is also
+     * required looks contiguous, so no download is attempted even though PKIX path building can still fail.
+     * Detecting that case would require an AIA download on every certificate load, which is the network dependency
+     * this check exists to avoid; such deployments should merge the full chain into the Key Vault certificate.
+     *
+     * @param certificates the ordered certificate chain
+     * @return true if the chain is leaf-only or has a broken issuer link, false if it is contiguous or empty
+     */
+    private static boolean isChainIncomplete(Certificate[] certificates) {
+        if (certificates == null || certificates.length == 0) {
+            return false;
+        }
+
+        // A leaf-only chain is contiguous by definition, hence the explicit check.
+        return certificates.length == 1 || findValidChainEnd(Arrays.asList(certificates)) < certificates.length - 1;
     }
 
     private static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
@@ -313,6 +343,9 @@ public final class CertificateUtil {
      * (e.g. when the caller merged only the leaf cert during CSR completion for a non-exportable key).
      * Without the intermediate CA certificates, jarsigner cannot build a valid PKIX path to a trusted
      * root CA, producing "PKIX path building failed" warnings on verify.
+     *
+     * <p>Because completion issues outbound HTTP requests, callers must restrict it to chains that need it
+     * (see {@link #isChainIncomplete(Certificate[])}).
      *
      * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
      * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted

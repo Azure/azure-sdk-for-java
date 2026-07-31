@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -376,6 +377,65 @@ public class AiaCertificateChainTest {
             } else {
                 System.clearProperty(CertificateUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
             }
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Chain-completion gating tests
+    //
+    // Loading a certificate must only reach out to the network when the chain
+    // cannot be walked from the leaf upwards. A contiguous chain already
+    // satisfies jarsigner and PKIX path building, so loading it has to stay a
+    // fully offline operation.
+    // -----------------------------------------------------------------------
+
+    @Test
+    void loadCertificatesCompletesLeafOnlyChain() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+
+            Certificate[] result = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert));
+
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, result,
+                "A leaf-only bundle must be completed up to the root CA");
+        }
+    }
+
+    @Test
+    void loadCertificatesCompletesChainWithMissingIntermediate() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+
+            Certificate[] result
+                = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(rootCert));
+
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, result,
+                "An intermediate missing in the middle of the chain must still be downloaded");
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.never());
+        }
+    }
+
+    @Test
+    void loadCertificatesSkipsAiaForChainWithoutRoot() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            Certificate[] result
+                = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(intermediateCert));
+
+            // The root CA is a trust anchor, so a contiguous leaf -> intermediate chain needs no download.
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert }, result);
+            httpMock.verifyNoInteractions();
+        }
+    }
+
+    @Test
+    void loadCertificatesSkipsAiaForCompleteChain() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            Certificate[] result = CertificateUtil
+                .loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(intermediateCert) + toPem(rootCert));
+
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, result);
+            httpMock.verifyNoInteractions();
         }
     }
 
