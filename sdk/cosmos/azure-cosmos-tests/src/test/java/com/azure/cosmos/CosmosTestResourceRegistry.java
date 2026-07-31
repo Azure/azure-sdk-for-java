@@ -154,18 +154,35 @@ public final class CosmosTestResourceRegistry {
             return currentTest;
         }
 
-        // Outside an invoked test method (for example @BeforeSuite) walk the stack for the first
-        // non-infrastructure frame so the leak report still names something actionable.
+        // Outside an invoked test method (for example @BeforeSuite) walk the stack for the first frame
+        // that is not test infrastructure. Skipping the shared helpers matters: naming
+        // TestSuiteBase.createDatabaseInternal tells nobody which test leaked, which is the whole point
+        // of the report. Fall back to the first infrastructure frame only if nothing better exists.
+        String infrastructureFrame = null;
         for (StackTraceElement frame : Thread.currentThread().getStackTrace()) {
             String className = frame.getClassName();
-            if (className.startsWith("com.azure.cosmos")
-                && !className.equals(CosmosTestResourceRegistry.class.getName())
-                && !className.equals(CosmosDatabaseForTest.class.getName())) {
-                return className + "." + frame.getMethodName();
+            if (!className.startsWith("com.azure.cosmos")) {
+                continue;
             }
+
+            if (isInfrastructure(className)) {
+                if (infrastructureFrame == null) {
+                    infrastructureFrame = className + "." + frame.getMethodName();
+                }
+                continue;
+            }
+
+            return className + "." + frame.getMethodName();
         }
 
-        return "<unknown>";
+        return infrastructureFrame != null ? infrastructureFrame + " (no test frame on stack)" : "<unknown>";
+    }
+
+    private static boolean isInfrastructure(String className) {
+        return className.equals(CosmosTestResourceRegistry.class.getName())
+            || className.equals(CosmosDatabaseForTest.class.getName())
+            || className.equals(CosmosTestResourceJanitor.class.getName())
+            || className.equals("com.azure.cosmos.rx.TestSuiteBase");
     }
 
     private static String key(String databaseId, String containerId) {
