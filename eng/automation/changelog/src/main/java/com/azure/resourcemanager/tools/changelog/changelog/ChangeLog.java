@@ -7,10 +7,13 @@ import com.azure.resourcemanager.tools.changelog.utils.AllMethods;
 import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
 import com.azure.resourcemanager.tools.changelog.utils.ClassName;
 import com.azure.resourcemanager.tools.changelog.utils.MethodName;
+import japicmp.model.AccessModifier;
 import japicmp.model.JApiChangeStatus;
 import japicmp.model.JApiClass;
 import japicmp.model.JApiConstructor;
+import japicmp.model.JApiField;
 import japicmp.model.JApiMethod;
+import japicmp.model.StaticModifier;
 import javassist.bytecode.AccessFlag;
 
 import java.util.ArrayList;
@@ -125,6 +128,7 @@ public class ChangeLog {
                 boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
                 allMethods.getConstructors().forEach(constructor -> this.calcChangelogForConstructor(constructor));
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
+                allMethods.getFields().forEach(field -> this.calcChangelogForField(field));
                 break;
         }
     }
@@ -170,6 +174,39 @@ public class ChangeLog {
                 if ((constructor.getOldConstructor().get().getModifiers() & AccessFlag.PUBLIC) == AccessFlag.PUBLIC
                         && (constructor.getNewConstructor().get().getModifiers() & AccessFlag.PRIVATE) == AccessFlag.PRIVATE) {
                     breakingChange.addMethodLevelChange(String.format("`%s` was changed to private access", MethodName.name(constructor.getOldConstructor().get())));
+                }
+                break;
+        }
+    }
+
+    private void calcChangelogForField(JApiField field) {
+        AccessModifier oldAccess = field.getAccessModifier().getOldModifier().isPresent()
+                ? field.getAccessModifier().getOldModifier().get() : null;
+        AccessModifier newAccess = field.getAccessModifier().getNewModifier().isPresent()
+                ? field.getAccessModifier().getNewModifier().get() : null;
+        StaticModifier oldStatic = field.getStaticModifier().getOldModifier().isPresent()
+                ? field.getStaticModifier().getOldModifier().get() : null;
+        StaticModifier newStatic = field.getStaticModifier().getNewModifier().isPresent()
+                ? field.getStaticModifier().getNewModifier().get() : null;
+
+        boolean wasPublicStatic = oldAccess == AccessModifier.PUBLIC && oldStatic == StaticModifier.STATIC;
+        boolean isPublicStatic = newAccess == AccessModifier.PUBLIC && newStatic == StaticModifier.STATIC;
+
+        switch (field.getChangeStatus()) {
+            case NEW:
+                if (isPublicStatic) {
+                    addClassTitle(newFeature);
+                    newFeature.add(String.format("* `%s` was added", field.getName()));
+                }
+                break;
+            case REMOVED:
+                if (wasPublicStatic) {
+                    breakingChange.addFieldLevelChange(String.format("`%s` was removed", field.getName()));
+                }
+                break;
+            case MODIFIED:
+                if (wasPublicStatic && !isPublicStatic) {
+                    breakingChange.addFieldLevelChange(String.format("`%s` is no longer public static", field.getName()));
                 }
                 break;
         }

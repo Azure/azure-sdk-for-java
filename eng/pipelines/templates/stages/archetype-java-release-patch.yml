@@ -109,6 +109,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
         - deployment: PublishESRPPackage
           displayName: "Publish to Maven Central via ESRP"
@@ -234,6 +235,7 @@ stages:
                 CommitMsg: "Increment package versions for patch releases"
                 PRTitle: "Increment versions for patch releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''
 
         - job: PublishDocsMs
           displayName: Docs.MS Release

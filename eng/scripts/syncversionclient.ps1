@@ -65,7 +65,7 @@ function ParseVersionClientFile($GroupId) {
 
 function SyncVersionClientFile([String[]]$GroupIds) {
     foreach ($groupId in $GroupIds) {
-        $artifactIds = GetAllAzComClientArtifactsFromMaven -GroupId $groupId
+        $artifactIds = GetAllAzComClientArtifactIds -GroupId $groupId
         $versionClientInfo = ParseVersionClientFile -GroupId $groupId
 
         foreach($artifactId in $artifactIds) {
