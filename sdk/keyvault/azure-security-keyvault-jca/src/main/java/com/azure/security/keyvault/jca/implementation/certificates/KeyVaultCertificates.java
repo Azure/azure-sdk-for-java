@@ -330,26 +330,24 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     private void refreshCertificates(boolean forceRefresh) {
-        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
-        if (currentKeyVaultClient == null) {
-            clearCachedState();
-            return;
-        }
-
-        List<String> refreshedAliases = Optional.ofNullable(currentKeyVaultClient.getAliases())
-            .orElse(Collections.emptyList())
-            .stream()
-            .filter(this::shouldIncludeAlias)
-            .sorted()
-            .collect(Collectors.toCollection(ArrayList::new));
-
+        // Listing aliases keeps the lock so concurrent refreshes cannot apply their results out of order.
         synchronized (this) {
-            if (currentKeyVaultClient != keyVaultClient || (!forceRefresh && !certificatesNeedRefresh())) {
+            if (keyVaultClient == null) {
+                clearCachedState();
+                return;
+            }
+
+            if (!forceRefresh && !certificatesNeedRefresh()) {
                 return;
             }
 
             // Discover aliases from Key Vault and apply include/exclude regex filters.
-            aliases = refreshedAliases;
+            aliases = Optional.ofNullable(keyVaultClient.getAliases())
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(this::shouldIncludeAlias)
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
 
             loadedCertificateAliases.clear();
             loadedCertificateChainAliases.clear();

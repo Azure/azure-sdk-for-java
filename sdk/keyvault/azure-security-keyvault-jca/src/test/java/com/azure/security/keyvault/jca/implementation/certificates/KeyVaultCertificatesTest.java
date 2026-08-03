@@ -19,11 +19,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class KeyVaultCertificatesTest {
+
+    private static final long TIMEOUT_MILLIS = 10_000;
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
@@ -372,6 +377,96 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.getCertificateChains().isEmpty());
         Assertions.assertTrue(keyVaultCertificates.getCertificateKeys().isEmpty());
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+    }
+
+    @Test
+    public void testConcurrentForceRefreshAppliesLatestAliases() throws Exception {
+        CountDownLatch firstListCallStarted = new CountDownLatch(1);
+        CountDownLatch firstListCallMayFinish = new CountDownLatch(1);
+        AtomicInteger listCallCount = new AtomicInteger();
+
+        when(keyVaultClient.getAliases()).thenAnswer(invocation -> {
+            if (listCallCount.getAndIncrement() == 0) {
+                firstListCallStarted.countDown();
+                awaitLatch(firstListCallMayFinish);
+                return Collections.singletonList("stale-alias");
+            }
+            return Collections.singletonList("fresh-alias");
+        });
+
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
+
+        Thread slowRefresh = new Thread(keyVaultCertificates::refreshCertificates);
+        slowRefresh.start();
+        awaitLatch(firstListCallStarted);
+
+        Thread fastRefresh = new Thread(keyVaultCertificates::refreshCertificates);
+        fastRefresh.start();
+        awaitThreadsParked(Collections.singletonList(fastRefresh));
+
+        firstListCallMayFinish.countDown();
+        slowRefresh.join(TIMEOUT_MILLIS);
+        fastRefresh.join(TIMEOUT_MILLIS);
+
+        Assertions.assertEquals(Collections.singletonList("fresh-alias"), keyVaultCertificates.getAliases());
+    }
+
+    @Test
+    public void testConcurrentRefreshIssuesSingleAliasListCall() throws Exception {
+        CountDownLatch listCallStarted = new CountDownLatch(1);
+        CountDownLatch listCallMayFinish = new CountDownLatch(1);
+
+        when(keyVaultClient.getAliases()).thenAnswer(invocation -> {
+            listCallStarted.countDown();
+            awaitLatch(listCallMayFinish);
+            return Collections.singletonList("myalias");
+        });
+
+        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
+
+        List<Thread> readers = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Thread reader = new Thread(keyVaultCertificates::getAliases);
+            readers.add(reader);
+            reader.start();
+        }
+
+        awaitLatch(listCallStarted);
+        awaitThreadsParked(readers);
+        listCallMayFinish.countDown();
+
+        for (Thread reader : readers) {
+            reader.join(TIMEOUT_MILLIS);
+        }
+
+        verify(keyVaultClient, times(1)).getAliases();
+    }
+
+    private static void awaitLatch(CountDownLatch latch) throws InterruptedException {
+        if (!latch.await(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
+            throw new IllegalStateException("Timed out waiting for the test latch.");
+        }
+    }
+
+    /**
+     * Waits until none of the threads can still reach Key Vault, so the pending call cannot be released too early.
+     */
+    private static void awaitThreadsParked(List<Thread> threads) throws InterruptedException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(TIMEOUT_MILLIS);
+
+        while (System.nanoTime() < deadline) {
+            boolean parked = threads.stream()
+                .map(Thread::getState)
+                .noneMatch(state -> state == Thread.State.NEW || state == Thread.State.RUNNABLE);
+
+            if (parked) {
+                return;
+            }
+
+            Thread.sleep(10);
+        }
+
+        throw new IllegalStateException("Timed out waiting for the threads to park.");
     }
 
 }
