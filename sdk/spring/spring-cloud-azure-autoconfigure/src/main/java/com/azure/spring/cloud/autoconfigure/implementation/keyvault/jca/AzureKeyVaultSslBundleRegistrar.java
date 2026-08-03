@@ -51,6 +51,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         "azure.keyvault.client-secret",
         "azure.keyvault.managed-identity",
         "azure.keyvault.jca.certificates-refresh-interval",
+        "azure.keyvault.jca.certificate-alias-filter-patterns",
         "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate",
         "azure.cert-path.well-known",
         "azure.cert-path.custom"
@@ -209,6 +210,10 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         pm.from(keyStoreProperties.getCertificatesRefreshInterval())
             .when(Objects::nonNull)
             .to(v -> System.setProperty("azure.keyvault.jca.certificates-refresh-interval", String.valueOf(v.toMillis())));
+        pm.from(keyStoreProperties.getCertificateAliasFilterPatterns())
+            .when(patterns -> !patterns.isEmpty())
+            .to(patterns -> System.setProperty("azure.keyvault.jca.certificate-alias-filter-patterns",
+                String.join(",", patterns)));
         pm.from(keyStoreProperties.isRefreshCertificatesWhenHaveUntrustedCertificate())
             .to(v -> System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", Boolean.toString(v)));
 
