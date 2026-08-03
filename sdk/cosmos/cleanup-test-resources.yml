@@ -5,9 +5,13 @@
 # of the job and deletes exactly the databases tagged with this job's run id, so it is safe on the long
 # lived shared accounts where several legs execute concurrently.
 #
-# It is a bonus layer, not the backstop: on cancellation it only gets cancelTimeoutInMinutes (5 by
-# default) to finish, which a cold Maven start plus a metadata sweep can exceed. Cancelled and
-# timed-out jobs are covered by the scheduled janitor pipeline (sdk/cosmos/janitor.yml).
+# It is a bonus layer, not the backstop, and it must never turn a job red: cleanup failing tells us
+# nothing about the code under test, and the accounts are unreachable in exactly the situations where the
+# tests were already failing. Anything it cannot delete is reported as a warning and left to the
+# scheduled janitor pipeline (sdk/cosmos/janitor.yml), which is the real backstop.
+#
+# On cancellation this only gets cancelTimeoutInMinutes (5 by default) to finish, which a cold Maven
+# start plus a metadata sweep can exceed - another reason janitor.yml, not this step, is the backstop.
 
 parameters:
   - name: AccountHost
@@ -19,25 +23,22 @@ parameters:
     default: 'Clean up Cosmos test resources for this run'
 
 steps:
-  - task: Maven@4
+  - pwsh: |
+      # Deliberately never fails: see the header comment. Errors are surfaced as warnings instead.
+      mvn -f sdk/cosmos/azure-cosmos-tests/pom.xml `
+        "-Dmaven.repo.local=$env:MAVEN_CACHE_FOLDER" `
+        --batch-mode `
+        "-Dexec.args=--account-host $env:CLEANUP_ACCOUNT_HOST --account-key $env:CLEANUP_ACCOUNT_KEY" `
+        exec:java
+
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "##vso[task.logissue type=warning]Cosmos test resource cleanup did not complete (mvn exit $LASTEXITCODE). Databases created by this job may still exist; the scheduled janitor pipeline will reclaim them."
+      }
+
+      exit 0
     displayName: ${{ parameters.DisplayName }}
-    # Cleanup must run even when the tests failed - that is exactly when resources are most likely to
-    # have been left behind. always() does also run on cancellation, but everything after a cancel has
-    # to finish inside cancelTimeoutInMinutes (5 by default), which a cold Maven start plus a metadata
-    # sweep can exceed. Cancelled and timed-out jobs are therefore covered by janitor.yml, not here.
     condition: always()
-    continueOnError: true
-    inputs:
-      mavenPomFile: sdk/cosmos/azure-cosmos-tests/pom.xml
-      goals: 'exec:java'
-      # DefaultOptions carries -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER). Without it Maven resolves against
-      # the agent's default ~/.m2, which does not contain the locally built azure-cosmos jar, and the step
-      # dies with "Could not find artifact com.azure:azure-cosmos" before deleting anything.
-      options: >-
-        $(DefaultOptions)
-        -Dexec.args="--account-host ${{ parameters.AccountHost }} --account-key ${{ parameters.AccountKey }}"
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
+    env:
+      # Passed as environment variables rather than on the command line so the key is not echoed.
+      CLEANUP_ACCOUNT_HOST: ${{ parameters.AccountHost }}
+      CLEANUP_ACCOUNT_KEY: ${{ parameters.AccountKey }}
