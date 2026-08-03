@@ -46,7 +46,10 @@ The emitted JSON conforms to the schema at
 ```
 
 Idempotent: existing accounts are left in place and missing capabilities are added; the
-JSON is regenerated with current endpoints/keys.
+JSON is regenerated with current endpoints/keys. A single run is enough for a fresh tenant -
+capabilities are applied by ARM PATCH after the account exists, and verified, rather than being
+passed to `New-AzCosmosDBAccount` (some Az.CosmosDB versions ignore `-Capabilities` silently,
+which previously produced accounts with no capabilities and required a second run).
 
 The multi-master accounts are separated by contention domain:
 
