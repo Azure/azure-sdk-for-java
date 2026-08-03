@@ -21,6 +21,8 @@ import java.util.Objects;
 public final class TopicRuntimeProperties {
     private final String name;
     private final int subscriptionCount;
+    private final int sqlFilterCount;
+    private final int correlationFilterCount;
     private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
@@ -39,6 +41,8 @@ public final class TopicRuntimeProperties {
 
         this.name = topicProperties.getName();
         this.subscriptionCount = topicProperties.getSubscriptionCount();
+        this.sqlFilterCount = topicProperties.getSqlFilterCount();
+        this.correlationFilterCount = topicProperties.getCorrelationFilterCount();
         this.sizeInBytes = topicProperties.getSizeInBytes();
         this.accessedAt = topicProperties.getAccessedAt();
         this.createdAt = topicProperties.getCreatedAt();
@@ -99,6 +103,24 @@ public final class TopicRuntimeProperties {
      */
     public int getSubscriptionCount() {
         return subscriptionCount;
+    }
+
+    /**
+     * Gets the total number of SQL filters across all subscriptions of the topic.
+     *
+     * @return The total number of SQL filters across all subscriptions of the topic.
+     */
+    public int getSqlFilterCount() {
+        return sqlFilterCount;
+    }
+
+    /**
+     * Gets the total number of correlation filters across all subscriptions of the topic.
+     *
+     * @return The total number of correlation filters across all subscriptions of the topic.
+     */
+    public int getCorrelationFilterCount() {
+        return correlationFilterCount;
     }
 
     /**

@@ -11,10 +11,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -62,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -539,6 +542,38 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertNotNull(runtimeProperties.getAccessedAt());
         assertTrue(nowUtc.isAfter(runtimeProperties.getAccessedAt()));
         assertEquals(0, runtimeProperties.getScheduledMessageCount());
+    }
+
+    @Test
+    void getTopicFilterCounts() {
+        // The topic-level SqlFilterCount / CorrelationFilterCount runtime properties are
+        // served by the 2024-05 service API version (the builder's getLatest() default) and
+        // are populated only on a service build carrying the feature, so run live.
+        assumeTrue(super.getTestMode() == TestMode.LIVE, "Filter counts require a live feature-enabled namespace.");
+
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = testResourceNamer.randomName("topicfc", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 10);
+
+        client.createTopic(topicName);
+        try {
+            client.createSubscription(topicName, subscriptionName);
+
+            // A new subscription carries a default $Default rule (a SQL TrueFilter). Add an
+            // explicit SQL rule and a correlation rule so the topic-level counts are non-zero.
+            client.createRule(topicName, "sqlRule", subscriptionName,
+                new CreateRuleOptions().setFilter(new SqlRuleFilter("1=1")));
+            client.createRule(topicName, "correlationRule", subscriptionName,
+                new CreateRuleOptions().setFilter(new CorrelationRuleFilter().setCorrelationId("abc")));
+
+            final TopicRuntimeProperties runtimeProperties = client.getTopicRuntimeProperties(topicName);
+
+            // $Default (TrueFilter) + sqlRule = 2 SQL filters; correlationRule = 1 correlation filter.
+            assertEquals(2, runtimeProperties.getSqlFilterCount());
+            assertEquals(1, runtimeProperties.getCorrelationFilterCount());
+        } finally {
+            client.deleteTopic(topicName);
+        }
     }
 
     @Test
