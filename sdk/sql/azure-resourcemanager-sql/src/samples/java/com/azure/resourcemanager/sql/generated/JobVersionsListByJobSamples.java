@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobVersionsListByJobSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobVersions.json
+     * x-ms-original-file: 2025-01-01/ListJobVersions.json
      */
     /**
      * Sample code: Get all versions of a job.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerDnsAliasesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerDnsAliasDelete.json
+     * x-ms-original-file: 2025-01-01/ServerDnsAliasDelete.json
      */
     /**
      * Sample code: Delete server DNS alias.

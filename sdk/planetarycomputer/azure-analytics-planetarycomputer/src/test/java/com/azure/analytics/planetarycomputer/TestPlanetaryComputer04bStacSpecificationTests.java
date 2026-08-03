@@ -147,7 +147,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
         System.out.println("Testing getItem for collection: " + collectionId);
 
         // First, get an item ID from the collection
-        StacItemCollection itemsResponse = stacClient.getItemCollection(collectionId, 1, null, null);
+        StacItemCollection itemsResponse = stacClient.getItemCollection(collectionId, 1, null, null, null, null, null);
 
         assertTrue(itemsResponse.getFeatures().size() > 0, "Should have at least one item to test");
 

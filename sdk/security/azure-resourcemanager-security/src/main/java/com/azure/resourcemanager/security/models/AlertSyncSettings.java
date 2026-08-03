@@ -114,15 +114,6 @@ public final class AlertSyncSettings extends SettingInner {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AlertSyncSettings withProperties(SettingProperties properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /**
      * Get the enabled property: Is the alert sync setting enabled.
      * 
      * @return the enabled value.
@@ -154,9 +145,6 @@ public final class AlertSyncSettings extends SettingInner {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (properties() != null) {
-            properties().validate();
         }
     }
 

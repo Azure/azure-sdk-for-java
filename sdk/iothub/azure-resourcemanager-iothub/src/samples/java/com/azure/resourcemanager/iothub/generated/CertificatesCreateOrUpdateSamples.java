@@ -11,7 +11,7 @@ import com.azure.resourcemanager.iothub.models.CertificateProperties;
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_certificatescreateorupdate.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_certificatescreateorupdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -27,7 +27,7 @@ public final class CertificatesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
+     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
      */
     /**
      * Sample code: CreateOrReplace_Certificates_With_DeviceRegistryPolicy.

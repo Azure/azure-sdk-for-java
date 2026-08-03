@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.ServerTrustCertificateInner;
  */
 public final class ServerTrustCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerTrustCertificatesCreate.json
+     * x-ms-original-file: 2025-01-01/ServerTrustCertificatesCreate.json
      */
     /**
      * Sample code: Create server trust certificate.

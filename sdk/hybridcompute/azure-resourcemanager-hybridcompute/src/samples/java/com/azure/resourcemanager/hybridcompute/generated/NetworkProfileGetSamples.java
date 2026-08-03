@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class NetworkProfileGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/NetworkProfile_Get.json
+     * x-ms-original-file: 2026-06-16-preview/NetworkProfile_Get.json
      */
     /**
      * Sample code: GET Network Profile.

@@ -299,7 +299,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<JsonNode> response = results.next();
             String diagnostics = response.getCosmosDiagnostics().toString();
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + generateHttp2OptedInUserAgentIfRequired(this.directClientUserAgent) + "\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + this.directClientUserAgent + "\"");
             assertThat(diagnostics).contains("\"requestOperationType\":\"ReadFeed\"");
         }
     }
@@ -1987,16 +1987,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     private String generateHttp2OptedInUserAgentIfRequired(String userAgent) {
-        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
-        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
-        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix.
+        // ThinClient is enabled-by-default (kept unless COSMOS.THINCLIENT_ENABLED is explicitly false), so its
+        // bit is set for every client. When HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is
+        // also effectively enabled (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
         // Tests here do not override Http2ConnectionConfig.setEnabled(...) so the per-client override branch
         // in addUserAgentSuffix is a no-op for this helper.
+        int featureValue = 0;
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
         if (Configs.isHttp2Enabled()) {
-            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
             if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
                 featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
             }
+        }
+        if (featureValue != 0) {
             userAgent = userAgent + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 
