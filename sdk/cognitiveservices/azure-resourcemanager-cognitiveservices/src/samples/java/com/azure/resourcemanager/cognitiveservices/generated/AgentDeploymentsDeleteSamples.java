@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/AgentDeployment/delete.json
+     * x-ms-original-file: 2026-07-01/AgentDeployment/delete.json
      */
     /**
      * Sample code: Delete Agent Deployment.

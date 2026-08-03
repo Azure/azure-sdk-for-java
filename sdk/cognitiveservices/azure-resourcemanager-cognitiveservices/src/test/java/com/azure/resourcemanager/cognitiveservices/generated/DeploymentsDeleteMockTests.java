@@ -28,7 +28,7 @@ public final class DeploymentsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deployments()
-            .delete("szxvctkbbxuhar", "sirncclabvoy", "gsuxxczbmyqj", com.azure.core.util.Context.NONE);
+            .delete("leqirccjclykcgxv", "pjlvczuoda", "punettepdjxq", com.azure.core.util.Context.NONE);
 
     }
 }

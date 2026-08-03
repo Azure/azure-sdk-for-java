@@ -12,10 +12,10 @@ public final class RaiBlockListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"uzqgnjdgkynsc\",\"value\":[{\"properties\":{\"description\":\"vhxnk\"},\"etag\":\"tkubotppn\",\"tags\":{\"frbbc\":\"zxhi\"},\"id\":\"qagt\",\"name\":\"tdhlfkqo\",\"type\":\"py\"},{\"properties\":{\"description\":\"trdcnifmzzs\"},\"etag\":\"m\",\"tags\":{\"ocxvdfffwafqr\":\"ysuxmprafwgck\",\"vkbunzozudh\":\"udaspavehh\",\"moy\":\"xg\",\"f\":\"cdyuibhmfdnbzyd\"},\"id\":\"cjnaeoisrvhmgor\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"},{\"properties\":{\"description\":\"eyqxtjjfzql\"},\"etag\":\"ycavodggxdbees\",\"tags\":{\"wqfbylyrfgiagt\":\"knlrariaawiuagy\",\"zjvusfzldmo\":\"ojocqwogf\"},\"id\":\"xylfsb\",\"name\":\"kadpysown\",\"type\":\"tgkbugrjqctojc\"}]}")
+            "{\"nextLink\":\"xnavvwxq\",\"value\":[{\"properties\":{\"description\":\"nyowxwlmdjrkvfg\"},\"etag\":\"fvpdbo\",\"tags\":{\"bdeibqipqk\":\"izsjqlhkrr\",\"rwkq\":\"hvxndzwmkrefajpj\",\"sjabibs\":\"yhgbijtjivfx\",\"bjxbkzbzk\":\"stawfsdjpvkv\"},\"id\":\"ncj\",\"name\":\"budurgkakmo\",\"type\":\"zhjjklffhmouwq\"}]}")
             .toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("uzqgnjdgkynsc", model.nextLink());
-        Assertions.assertEquals("vhxnk", model.value().get(0).properties().description());
-        Assertions.assertEquals("zxhi", model.value().get(0).tags().get("frbbc"));
+        Assertions.assertEquals("xnavvwxq", model.nextLink());
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.value().get(0).properties().description());
+        Assertions.assertEquals("izsjqlhkrr", model.value().get(0).tags().get("bdeibqipqk"));
     }
 }

@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuRestrictionInfo model = BinaryData
-            .fromString(
-                "{\"locations\":[\"ncaqttiekoifu\"],\"zones\":[\"ttzgixgyrihlg\",\"gbehlqtxnr\",\"lkndrndpgfjodh\"]}")
+        ResourceSkuRestrictionInfo model = BinaryData.fromString(
+            "{\"locations\":[\"jfkakfqfrke\",\"yildudxjascow\",\"f\",\"jkpdxphlkksnm\"],\"zones\":[\"yfijdkzuqnws\",\"thuqolyahluq\",\"qulsutrjbhxykfhy\"]}")
             .toObject(ResourceSkuRestrictionInfo.class);
-        Assertions.assertEquals("ncaqttiekoifu", model.locations().get(0));
-        Assertions.assertEquals("ttzgixgyrihlg", model.zones().get(0));
+        Assertions.assertEquals("jfkakfqfrke", model.locations().get(0));
+        Assertions.assertEquals("yfijdkzuqnws", model.zones().get(0));
     }
 }

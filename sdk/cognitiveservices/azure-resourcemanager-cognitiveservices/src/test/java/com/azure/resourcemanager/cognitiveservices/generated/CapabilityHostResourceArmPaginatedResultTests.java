@@ -13,17 +13,17 @@ public final class CapabilityHostResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityHostResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"tgdstyouambe\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"moweg\",\"mut\",\"yxey\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"gijiitnspxlzd\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"ijwai\",\"fanraybfu\"],\"threadStorageConnections\":[\"rojsydg\",\"h\",\"dkygywezski\"],\"vectorStoreConnections\":[\"f\",\"gzmxieqv\",\"smaklixqcahy\",\"xalybxawoijpo\"],\"enablePublicHostingEnvironment\":true,\"description\":\"xpkk\",\"tags\":{\"emehllizh\":\"jodqhykincn\",\"adppyibn\":\"eumoqod\"}},\"id\":\"ladywrxwhyd\",\"name\":\"luvvad\",\"type\":\"wzsnuy\"}]}")
+            "{\"nextLink\":\"updwv\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"zqtpjhmq\",\"hvthlaiwdcxsm\",\"zzhz\",\"txetlgydl\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"n\",\"provisioningState\":\"Creating\",\"storageConnections\":[\"afiqgeaarbgjekg\"],\"threadStorageConnections\":[\"byu\",\"idwcwvmzegjon\",\"hj\",\"rwgdnqzbrfks\"],\"vectorStoreConnections\":[\"zmtksjci\",\"digsxcdgl\"],\"enablePublicHostingEnvironment\":false,\"description\":\"euachtomfl\",\"tags\":{\"ycxnmskw\":\"swfpfmd\",\"shhkvpedw\":\"qjjyslurl\",\"wwsko\":\"slsrhmpq\",\"josovyrrl\":\"dcbrwimuvq\"}},\"id\":\"esi\",\"name\":\"uqtljqobbpih\",\"type\":\"hcecybmrqbr\"},{\"properties\":{\"aiServicesConnections\":[\"mpxdlvy\",\"frexcrseqw\",\"ksghudgzhxogjgg\",\"voujkxibdafhrk\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"mkxfbvfbhdyir\",\"provisioningState\":\"Creating\",\"storageConnections\":[\"ddei\",\"awzovgkk\"],\"threadStorageConnections\":[\"ikjcjcazt\"],\"vectorStoreConnections\":[\"nsq\",\"wxwcomli\",\"ytwvczcswkacve\"],\"enablePublicHostingEnvironment\":false,\"description\":\"vlvhbwrnfxtgd\",\"tags\":{\"hn\":\"th\"}},\"id\":\"aoyankcoeqswa\",\"name\":\"kltytmhdroz\",\"type\":\"nhd\"}]}")
             .toObject(CapabilityHostResourceArmPaginatedResult.class);
-        Assertions.assertEquals("tgdstyouambe", model.nextLink());
-        Assertions.assertEquals("xpkk", model.value().get(0).properties().description());
-        Assertions.assertEquals("jodqhykincn", model.value().get(0).properties().tags().get("emehllizh"));
-        Assertions.assertEquals("moweg", model.value().get(0).properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("updwv", model.nextLink());
+        Assertions.assertEquals("euachtomfl", model.value().get(0).properties().description());
+        Assertions.assertEquals("swfpfmd", model.value().get(0).properties().tags().get("ycxnmskw"));
+        Assertions.assertEquals("zqtpjhmq", model.value().get(0).properties().aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, model.value().get(0).properties().capabilityHostKind());
-        Assertions.assertEquals("gijiitnspxlzd", model.value().get(0).properties().customerSubnet());
-        Assertions.assertEquals("ijwai", model.value().get(0).properties().storageConnections().get(0));
-        Assertions.assertEquals("rojsydg", model.value().get(0).properties().threadStorageConnections().get(0));
-        Assertions.assertEquals("f", model.value().get(0).properties().vectorStoreConnections().get(0));
-        Assertions.assertTrue(model.value().get(0).properties().enablePublicHostingEnvironment());
+        Assertions.assertEquals("n", model.value().get(0).properties().customerSubnet());
+        Assertions.assertEquals("afiqgeaarbgjekg", model.value().get(0).properties().storageConnections().get(0));
+        Assertions.assertEquals("byu", model.value().get(0).properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("zmtksjci", model.value().get(0).properties().vectorStoreConnections().get(0));
+        Assertions.assertFalse(model.value().get(0).properties().enablePublicHostingEnvironment());
     }
 }

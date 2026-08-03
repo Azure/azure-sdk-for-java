@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingMeterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingMeterInfo model
-            = BinaryData.fromString("{\"name\":\"jljyoxgv\",\"meterId\":\"tbgsncghkj\",\"unit\":\"zz\"}")
-                .toObject(BillingMeterInfo.class);
-        Assertions.assertEquals("jljyoxgv", model.name());
-        Assertions.assertEquals("tbgsncghkj", model.meterId());
-        Assertions.assertEquals("zz", model.unit());
+        BillingMeterInfo model = BinaryData
+            .fromString("{\"name\":\"debfqkkrbmpukgri\",\"meterId\":\"lzlfbxzpuz\",\"unit\":\"ispnqzahmgkbrp\"}")
+            .toObject(BillingMeterInfo.class);
+        Assertions.assertEquals("debfqkkrbmpukgri", model.name());
+        Assertions.assertEquals("lzlfbxzpuz", model.meterId());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.unit());
     }
 }

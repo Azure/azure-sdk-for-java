@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class SubscriptionRaiPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutSubscriptionRaiPolicy.json
+     * x-ms-original-file: 2026-07-01/PutSubscriptionRaiPolicy.json
      */
     /**
      * Sample code: PutRaiPolicy.

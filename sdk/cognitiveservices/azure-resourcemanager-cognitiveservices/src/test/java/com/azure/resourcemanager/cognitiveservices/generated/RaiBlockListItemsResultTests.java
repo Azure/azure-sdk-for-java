@@ -12,11 +12,11 @@ public final class RaiBlockListItemsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListItemsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"bzevwrd\",\"value\":[{\"properties\":{\"pattern\":\"uvsj\",\"isRegex\":true},\"etag\":\"myst\",\"tags\":{\"er\":\"qypfcv\",\"bm\":\"hp\",\"sspuunnoxyhkx\":\"pjbabwidfc\"},\"id\":\"ddrihpf\",\"name\":\"oqcaaewdaomdj\",\"type\":\"l\"},{\"properties\":{\"pattern\":\"xkzb\",\"isRegex\":false},\"etag\":\"eivsiykzkdnc\",\"tags\":{\"pgogtqxepny\":\"onbzoggculapzwy\",\"uajlyj\":\"b\",\"uxrkjp\":\"lvofqzhvfcibyfmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"id\":\"kambtrnegvmnvuqe\",\"name\":\"vldspa\",\"type\":\"tjb\"},{\"properties\":{\"pattern\":\"mflvest\",\"isRegex\":false},\"etag\":\"rriloz\",\"tags\":{\"iycslevuf\":\"ewchpxlktwku\",\"tqedcgzulwm\":\"ztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\"},\"id\":\"oepry\",\"name\":\"t\",\"type\":\"wytpzdmovz\"},{\"properties\":{\"pattern\":\"aawzqadfl\",\"isRegex\":false},\"etag\":\"iglaecx\",\"tags\":{\"mlqtmldgxob\":\"icokpv\"},\"id\":\"rclnpkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"}]}")
+            "{\"nextLink\":\"lfaoqzpiyylhaln\",\"value\":[{\"properties\":{\"pattern\":\"sp\",\"isRegex\":true},\"etag\":\"vwitqscyw\",\"tags\":{\"brgz\":\"woluhczbwemhair\"},\"id\":\"msweypqwdxggicc\",\"name\":\"n\",\"type\":\"qhuexm\"}]}")
             .toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("bzevwrd", model.nextLink());
-        Assertions.assertEquals("uvsj", model.value().get(0).properties().pattern());
+        Assertions.assertEquals("lfaoqzpiyylhaln", model.nextLink());
+        Assertions.assertEquals("sp", model.value().get(0).properties().pattern());
         Assertions.assertTrue(model.value().get(0).properties().isRegex());
-        Assertions.assertEquals("qypfcv", model.value().get(0).tags().get("er"));
+        Assertions.assertEquals("woluhczbwemhair", model.value().get(0).tags().get("brgz"));
     }
 }

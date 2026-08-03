@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPlanAccountAssociationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPlanAccountAssociationProperties model = BinaryData.fromString("{\"accountId\":\"cxzbfvoowvr\"}")
-            .toObject(CommitmentPlanAccountAssociationProperties.class);
-        Assertions.assertEquals("cxzbfvoowvr", model.accountId());
+        CommitmentPlanAccountAssociationProperties model
+            = BinaryData.fromString("{\"accountId\":\"y\"}").toObject(CommitmentPlanAccountAssociationProperties.class);
+        Assertions.assertEquals("y", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanAccountAssociationProperties model
-            = new CommitmentPlanAccountAssociationProperties().withAccountId("cxzbfvoowvr");
+            = new CommitmentPlanAccountAssociationProperties().withAccountId("y");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationProperties.class);
-        Assertions.assertEquals("cxzbfvoowvr", model.accountId());
+        Assertions.assertEquals("y", model.accountId());
     }
 }

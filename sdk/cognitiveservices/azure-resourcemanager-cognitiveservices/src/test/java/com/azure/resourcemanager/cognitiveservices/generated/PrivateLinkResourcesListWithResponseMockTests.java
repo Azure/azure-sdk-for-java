@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"rhikwsbzrhdug\",\"requiredMembers\":[\"trgzfr\",\"njfhrjh\"],\"requiredZoneNames\":[\"bauseqnczk\",\"ihvtuwyjsqw\"],\"displayName\":\"zoszjg\"},\"id\":\"nkfnyskwwunq\",\"name\":\"czavoj\",\"type\":\"slhip\"},{\"properties\":{\"groupId\":\"vbljpxprrvc\",\"requiredMembers\":[\"uqalpcufjjfxt\",\"ztqdstahhh\"],\"requiredZoneNames\":[\"xxsri\",\"rcwbaae\"],\"displayName\":\"yefmxwoqotii\"},\"id\":\"gpasrvrmtisty\",\"name\":\"kjhorlxkpy\",\"type\":\"k\"},{\"properties\":{\"groupId\":\"ycntrqxxwtdmb\",\"requiredMembers\":[\"suhqhtoxt\",\"yqavfxbqmzxsyaks\",\"npaami\"],\"requiredZoneNames\":[\"ghvwtgp\"],\"displayName\":\"chcgsfz\"},\"id\":\"jkiysqbjsdj\",\"name\":\"gxe\",\"type\":\"sgw\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"fmhl\",\"requiredMembers\":[\"xspmrjc\",\"ryldsxeb\",\"hsxrznmgsdaluyc\"],\"requiredZoneNames\":[\"frbhseuerbg\",\"xebjl\",\"dcaytujraxd\"],\"displayName\":\"ryjmgtnsewou\"},\"id\":\"yms\",\"name\":\"vyljurkeposehqq\",\"type\":\"lmpctwj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("kqmxvpor", "wbwggijts", com.azure.core.util.Context.NONE)
+            .listWithResponse("xjtgzgtai", "wbqgroigbsfsgsa", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bauseqnczk", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("frbhseuerbg", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

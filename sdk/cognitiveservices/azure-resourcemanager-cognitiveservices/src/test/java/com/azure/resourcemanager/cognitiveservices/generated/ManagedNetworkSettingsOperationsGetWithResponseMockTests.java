@@ -27,7 +27,7 @@ public final class ManagedNetworkSettingsOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"Disabled\",\"Disabled\"],\"isolationMode\":\"AllowInternetOutbound\",\"networkId\":\"ydtdtftmizuzjd\",\"outboundRules\":{\"lpbybkisb\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Deleting\",\"errorInformation\":\"a\",\"parentRuleNames\":[\"kqoyimxpggk\",\"teagbgac\",\"qpjuytvude\"]},\"c\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Failed\",\"errorInformation\":\"lpwdjraurf\",\"parentRuleNames\":[\"nurttu\",\"aaaxx\"]},\"spsaneyvaerpiob\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Inactive\",\"errorInformation\":\"txfrm\",\"parentRuleNames\":[\"xstowagehxuihwes\",\"tjaqgbl\",\"kncypmte\"]}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V2\",\"firewallPublicIpAddress\":\"jwqdmr\",\"provisioningState\":\"Deleting\"},\"provisioningState\":\"Deferred\"},\"id\":\"pqcaigazwfwlrfd\",\"name\":\"w\",\"type\":\"zseodtqfdrslzymq\"}";
+            = "{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowInternetOutbound\",\"Disabled\"],\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"cwdgujjgnf\",\"outboundRules\":{\"udxdyyrudmahswt\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Inactive\",\"errorInformation\":\"bpaefzqsymjw\",\"parentRuleNames\":[\"cytesmf\",\"crtfodqhuauzm\",\"iv\",\"trfzhhezvh\"]},\"o\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Active\",\"errorInformation\":\"ssgfenffdxbvwfqj\",\"parentRuleNames\":[\"vdrijanxndm\",\"vardlmzjotprrm\",\"hcuhtuzlxiw\"]},\"tsewkaupwhlz\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Active\",\"errorInformation\":\"ctwrapcz\",\"parentRuleNames\":[\"qyvzesipiysnjq\",\"owa\",\"dcndazabun\"]}},\"status\":{\"status\":\"Inactive\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"ms\",\"provisioningState\":\"Deleted\"},\"provisioningState\":\"Updating\"},\"id\":\"rxxhyrkqakof\",\"name\":\"jfrepr\",\"type\":\"vmkinwtey\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,17 +37,18 @@ public final class ManagedNetworkSettingsOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedNetworkSettingsPropertiesBasicResource response = manager.managedNetworkSettingsOperations()
-            .getWithResponse("cimbrsv", "phtjnh", "tjl", com.azure.core.util.Context.NONE)
+            .getWithResponse("jfdizhrjqfya", "tvslye", "cgniuarlc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(IsolationMode.ALLOW_INTERNET_OUTBOUND,
+        Assertions.assertEquals(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND,
             response.properties().managedNetwork().isolationMode());
-        Assertions.assertEquals(RuleCategory.RECOMMENDED,
-            response.properties().managedNetwork().outboundRules().get("lpbybkisb").category());
-        Assertions.assertEquals(RuleStatus.DELETING,
-            response.properties().managedNetwork().outboundRules().get("lpbybkisb").status());
-        Assertions.assertEquals(ManagedNetworkStatus.ACTIVE, response.properties().managedNetwork().status().status());
+        Assertions.assertEquals(RuleCategory.REQUIRED,
+            response.properties().managedNetwork().outboundRules().get("udxdyyrudmahswt").category());
+        Assertions.assertEquals(RuleStatus.INACTIVE,
+            response.properties().managedNetwork().outboundRules().get("udxdyyrudmahswt").status());
+        Assertions.assertEquals(ManagedNetworkStatus.INACTIVE,
+            response.properties().managedNetwork().status().status());
         Assertions.assertEquals(FirewallSku.STANDARD, response.properties().managedNetwork().firewallSku());
-        Assertions.assertEquals(ManagedNetworkKind.V2, response.properties().managedNetwork().managedNetworkKind());
+        Assertions.assertEquals(ManagedNetworkKind.V1, response.properties().managedNetwork().managedNetworkKind());
     }
 }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RuleStatus;
  */
 public final class OutboundRuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ManagedNetwork/createOrUpdateRuleV2.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/createOrUpdateRuleV2.json
      */
     /**
      * Sample code: CreateOrUpdate OutboundRule.

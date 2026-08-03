@@ -181,11 +181,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private List<NetworkInjection> networkInjections;
 
     /*
-     * Represents the foundry auto-upgrade configuration for a Cognitive Services account.
-     */
-    private FoundryAutoUpgrade foundryAutoUpgrade;
-
-    /*
      * Specifies whether this resource support project management as child resources, used as containers for access
      * management, data isolation and cost in AI Foundry.
      */
@@ -687,28 +682,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the foundryAutoUpgrade property: Represents the foundry auto-upgrade configuration for a Cognitive Services
-     * account.
-     * 
-     * @return the foundryAutoUpgrade value.
-     */
-    public FoundryAutoUpgrade foundryAutoUpgrade() {
-        return this.foundryAutoUpgrade;
-    }
-
-    /**
-     * Set the foundryAutoUpgrade property: Represents the foundry auto-upgrade configuration for a Cognitive Services
-     * account.
-     * 
-     * @param foundryAutoUpgrade the foundryAutoUpgrade value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withFoundryAutoUpgrade(FoundryAutoUpgrade foundryAutoUpgrade) {
-        this.foundryAutoUpgrade = foundryAutoUpgrade;
-        return this;
-    }
-
-    /**
      * Get the allowProjectManagement property: Specifies whether this resource support project management as child
      * resources, used as containers for access management, data isolation and cost in AI Foundry.
      * 
@@ -801,7 +774,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
         jsonWriter.writeJsonField("raiMonitorConfig", this.raiMonitorConfig);
         jsonWriter.writeArrayField("networkInjections", this.networkInjections,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("foundryAutoUpgrade", this.foundryAutoUpgrade);
         jsonWriter.writeBooleanField("allowProjectManagement", this.allowProjectManagement);
         jsonWriter.writeStringField("defaultProject", this.defaultProject);
         jsonWriter.writeArrayField("associatedProjects", this.associatedProjects,
@@ -902,8 +874,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     List<NetworkInjection> networkInjections
                         = reader.readArray(reader1 -> NetworkInjection.fromJson(reader1));
                     deserializedAccountProperties.networkInjections = networkInjections;
-                } else if ("foundryAutoUpgrade".equals(fieldName)) {
-                    deserializedAccountProperties.foundryAutoUpgrade = FoundryAutoUpgrade.fromJson(reader);
                 } else if ("allowProjectManagement".equals(fieldName)) {
                     deserializedAccountProperties.allowProjectManagement = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultProject".equals(fieldName)) {
