@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -58,8 +59,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
-    static final String CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY
-        = "azure.keyvault.jca.certificate-alias-filter-patterns";
+    static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-pattern";
 
     /**
      * Stores the Jre key store certificates.
@@ -175,12 +176,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     }
 
     Set<String> getKeyVaultCertificateAliasFilterPatterns() {
-        return Optional.ofNullable(System.getProperty(CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY))
-            .map(value -> Stream.of(value.split(","))
-                .map(String::trim)
-                .filter(pattern -> !pattern.isEmpty())
-                .collect(Collectors.toSet()))
-            .orElse(Collections.emptySet());
+        // Each pattern gets its own property because any delimiter character can be part of a regex.
+        Properties properties = System.getProperties();
+        String suffixedPropertyPrefix = CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".";
+
+        return properties.stringPropertyNames()
+            .stream()
+            .filter(name -> name.equals(CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY)
+                || name.startsWith(suffixedPropertyPrefix))
+            .map(properties::getProperty)
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(pattern -> !pattern.isEmpty())
+            .collect(Collectors.toSet());
     }
 
     /**

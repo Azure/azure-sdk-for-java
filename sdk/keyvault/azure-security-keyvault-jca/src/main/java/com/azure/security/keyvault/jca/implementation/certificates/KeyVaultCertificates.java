@@ -29,8 +29,8 @@ import static java.util.logging.Level.WARNING;
  */
 public final class KeyVaultCertificates implements AzureCertificates {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificates.class.getName());
-    private static final String CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY
-        = "azure.keyvault.jca.certificate-alias-filter-patterns";
+    private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-pattern";
 
     /**
      * Stores the list of aliases.
@@ -146,8 +146,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
             return Pattern.compile(regexPattern);
         } catch (PatternSyntaxException exception) {
             throw new IllegalArgumentException("Invalid certificate alias filter regex pattern: " + regexPattern
-                + ". If configured via system property, check '" + CERTIFICATE_ALIAS_FILTER_PATTERNS_PROPERTY + "'.",
-                exception);
+                + ". If configured via system property, check '" + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + "' and '"
+                + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".<suffix>'.", exception);
         }
     }
 

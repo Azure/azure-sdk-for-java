@@ -141,7 +141,7 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
 * `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
-* `azure.keyvault.jca.certificate-alias-filter-patterns`: Comma-separated Key Vault alias regex filters. Use include regexes directly and exclude regexes with a `!` prefix. Regex patterns use full-alias matching (`Pattern.matcher(alias).matches()`). An alias is loaded only if it matches at least one include regex (or if no include regex is configured) and matches no exclude regex. Example: `^prod-.*,!^prod-deprecated$,!.*-old$`. If this property is not configured, all discovered Key Vault aliases are eligible for lazy loading.
+* `azure.keyvault.jca.certificate-alias-filter-pattern`: A regex that filters which Key Vault certificate aliases are eligible for lazy loading. Append a suffix to the property name to configure more than one filter, for example `azure.keyvault.jca.certificate-alias-filter-pattern.1` or `azure.keyvault.jca.certificate-alias-filter-pattern.prod`. If no such property is configured, all discovered Key Vault aliases are eligible for lazy loading. See "Filtering Key Vault certificate aliases" below.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
 You can configure these properties using:
@@ -152,6 +152,30 @@ or as a JVM argument:
 ```shell
 -Dazure.keyvault.uri=<your-azure-keyvault-uri>
 ```
+
+#### Filtering Key Vault certificate aliases
+
+Each filter is configured as its own property, so no delimiter is required and a pattern may contain any character:
+
+```shell
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^prod-.*'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.2='^cert-\d{1,5}$'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.exclude-old='!.*-old$'
+```
+
+* Use an include pattern directly and an exclude pattern with a `!` prefix.
+* A suffix can be a number or a string. It only keeps the property names unique and does not affect evaluation, so the filters are unordered. Property names are case-sensitive, which means `.prod` and `.PROD` are two different filters.
+* Patterns use full-alias matching (`Pattern.matcher(alias).matches()`).
+* An alias is loaded only if it matches at least one include pattern, or if no include pattern is configured, and matches no exclude pattern.
+* An invalid pattern fails fast with an `IllegalArgumentException` that names the offending pattern.
+
+Quote the value as required by your shell, otherwise characters such as `^` and `\` can be altered before the JVM receives them:
+
+| Shell | Example |
+| --- | --- |
+| Bash, including Git Bash | `-Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^prod-.*'` |
+| PowerShell | `'-Dazure.keyvault.jca.certificate-alias-filter-pattern.1=^prod-.*'` |
+| Windows `cmd.exe` | `"-Dazure.keyvault.jca.certificate-alias-filter-pattern.1=^^prod-.*"` |
 
 ### SSL/TLS
 #### Server side SSL

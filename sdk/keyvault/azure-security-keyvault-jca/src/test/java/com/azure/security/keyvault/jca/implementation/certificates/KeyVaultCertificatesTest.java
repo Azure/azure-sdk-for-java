@@ -287,6 +287,16 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testFilterPatternWithBoundedQuantifier() {
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("cert-42", "cert-1234567", "cert-abc"));
+
+        keyVaultCertificates
+            = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("^cert-\\d{1,5}$"));
+
+        Assertions.assertEquals(Collections.singletonList("cert-42"), keyVaultCertificates.getAliases());
+    }
+
+    @Test
     public void testGetCertificateWithUnconfiguredAliasDoesNotFetchDetails() {
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
 
