@@ -541,10 +541,12 @@ if ($script:FoundError)
     exit 1
 }
 
-# Loop through every client and data POM file and perform the verification. Right now
-# management isn't being processed, when it is the checks below will go away and every
-# POM file under the sdk directory will get processed.
-Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
+# Loop through POM files under sdk/spring and sdk/boms directories only.
+$ScanPaths = @(
+    (Join-Path $SdkRoot "spring"),
+    (Join-Path $SdkRoot "boms")
+)
+Get-ChildItem -Path $ScanPaths -Filter pom*.xml -Recurse -File | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
 
