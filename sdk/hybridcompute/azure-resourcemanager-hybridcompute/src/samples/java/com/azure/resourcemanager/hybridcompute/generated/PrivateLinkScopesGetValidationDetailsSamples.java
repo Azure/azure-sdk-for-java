@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class PrivateLinkScopesGetValidationDetailsSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
      */
     /**
      * Sample code: PrivateLinkScopeGet.

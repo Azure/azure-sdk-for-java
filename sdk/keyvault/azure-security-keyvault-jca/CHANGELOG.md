@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
 - Added lazy loading for Key Vault certificate details in the JCA keystore. Certificate details are now loaded by alias when requested, avoiding unnecessary reads for unconfigured certificates. ([#49774](https://github.com/Azure/azure-sdk-for-java/pull/49774))
@@ -11,6 +11,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.12.0 (2026-07-24)
+
+### Bugs Fixed
+- Fixed an issue where a disabled certificate in Azure Key Vault caused keystore initialization to fail with an HTTP 403 error. Disabled certificates are now skipped when loading aliases and a warning is logged for each skipped certificate. [#49730](https://github.com/Azure/azure-sdk-for-java/pull/49730)
 
 ## 2.11.0 (2026-02-28)
 

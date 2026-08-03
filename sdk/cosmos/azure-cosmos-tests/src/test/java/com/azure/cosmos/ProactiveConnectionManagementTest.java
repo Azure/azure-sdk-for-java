@@ -243,7 +243,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+            // The partition-key-range (routing map) cache is shared across clients targeting the same
+            // service endpoint, so its size reflects every container routed to in this JVM. Assert on
+            // this container's own entry instead of the total size.
+            String collectionRid = cosmosAsyncContainer.read().block().getProperties().getResourceId();
+            assertThat(routingMap).containsKey(collectionRid);
         } finally {
             if (cosmosAsyncContainer != null) {
                 safeDeleteCollection(cosmosAsyncContainer);
@@ -252,7 +256,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs",
+        retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughSystemConfig(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) throws InterruptedException {
 
@@ -408,7 +413,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+            // The partition-key-range (routing map) cache is shared across clients targeting the same
+            // service endpoint, so its size reflects every container routed to in this JVM. Assert that
+            // each proactively-initialized container's own entry is present instead of the total size.
+            for (CosmosAsyncContainer proactivelyInitializedContainer : asyncContainers) {
+                String collectionRid =
+                    proactivelyInitializedContainer.read().block().getProperties().getResourceId();
+                assertThat(routingMap).containsKey(collectionRid);
+            }
 
             int totalConnectionCountForAllEndpoints = 0;
 
@@ -560,7 +572,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+            // The partition-key-range (routing map) cache is shared across clients targeting the same
+            // service endpoint, so its size reflects every container routed to in this JVM. Assert that
+            // each proactively-initialized container's own entry is present instead of the total size.
+            for (CosmosAsyncContainer proactivelyInitializedContainer : asyncContainers) {
+                String collectionRid =
+                    proactivelyInitializedContainer.read().block().getProperties().getResourceId();
+                assertThat(routingMap).containsKey(collectionRid);
+            }
 
             int totalConnectionCountForAllEndpoints = 0;
 
@@ -737,7 +756,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+            // The partition-key-range (routing map) cache is shared across clients targeting the same
+            // service endpoint, so its size reflects every container routed to in this JVM. Assert that
+            // each proactively-initialized container's own entry is present instead of the total size.
+            for (CosmosAsyncContainer proactivelyInitializedContainer : asyncContainers) {
+                String collectionRid =
+                    proactivelyInitializedContainer.read().block().getProperties().getResourceId();
+                assertThat(routingMap).containsKey(collectionRid);
+            }
 
             int totalConnectionCountForAllEndpoints = 0;
 

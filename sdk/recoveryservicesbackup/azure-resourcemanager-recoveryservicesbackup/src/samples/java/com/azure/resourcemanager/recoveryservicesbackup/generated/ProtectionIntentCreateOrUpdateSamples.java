@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProt
  */
 public final class ProtectionIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Azure Vm Protection Intent.
