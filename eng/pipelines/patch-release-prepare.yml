@@ -41,7 +41,8 @@ extends:
                 workingDirectory: $(Build.SourcesDirectory)
                 displayName: 'Create release branch'
 
-              # Push the release branch to the repo
+              - template: /eng/common/pipelines/templates/steps/login-to-github.yml
+
               - task: PowerShell@2
                 displayName: 'Push release branch to the repo'
                 inputs:
@@ -51,7 +52,7 @@ extends:
                   arguments: >
                     -PRBranchName $(BaseBranchName)
                     -CommitMsg "none"
-                    -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
+                    -GitUrl "https://x-access-token:$(GH_TOKEN)@github.com/Azure/azure-sdk-for-java.git"
                     -SkipCommit $true
 
               # Run the script to generate patches for automatic releases
@@ -63,6 +64,9 @@ extends:
                   arguments: >
                     -SourcesDirectory .
                     -PackagesYmlPath eng/pipelines/patch-release.yml
+                    -UseCurrentBranch
+                env:
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
               # Create a PR with the patches prepared
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
@@ -72,3 +76,4 @@ extends:
                   PROwner: Azure
                   CommitMsg: "Patch release preparation $(PatchDate)"
                   PRTitle: "Prepare patch release $(PatchDate)"
+                  AuthToken: $(GH_TOKEN)
