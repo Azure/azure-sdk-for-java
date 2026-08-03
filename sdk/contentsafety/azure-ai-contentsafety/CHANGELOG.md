@@ -30,8 +30,8 @@
 
 #### `models.AddOrUpdateTextBlocklistItemsResult` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `BlocklistAsyncClient` was modified
 
@@ -39,8 +39,8 @@
 
 #### `models.AnalyzeTextResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.TextBlocklistMatch` was modified
 
@@ -49,18 +49,18 @@
 
 #### `models.AnalyzeImageOptions` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.TextBlocklistItem` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.RemoveTextBlocklistItemsOptions` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.TextBlocklist` was modified
 
@@ -74,13 +74,13 @@
 
 #### `models.ImageCategoriesAnalysis` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.AnalyzeImageResult` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.AddOrUpdateTextBlocklistItemsOptions` was modified
 
@@ -89,8 +89,8 @@
 
 #### `models.ContentSafetyImageData` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.TextCategoriesAnalysis` was modified
 

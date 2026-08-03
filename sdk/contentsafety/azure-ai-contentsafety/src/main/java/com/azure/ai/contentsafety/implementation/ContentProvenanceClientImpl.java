@@ -161,7 +161,7 @@ public final class ContentProvenanceClientImpl {
     @Host("{endpoint}/contentsafety")
     @ServiceInterface(name = "ContentProvenanceClient")
     public interface ContentProvenanceClientService {
-        @Post(":detect")
+        @Post("/provenance:detect")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -172,7 +172,7 @@ public final class ContentProvenanceClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
             RequestOptions requestOptions, Context context);
 
-        @Post(":detect")
+        @Post("/provenance:detect")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -183,7 +183,7 @@ public final class ContentProvenanceClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
             RequestOptions requestOptions, Context context);
 
-        @Get("/operations/{operationId}")
+        @Get("/provenance/operations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -193,7 +193,7 @@ public final class ContentProvenanceClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/operations/{operationId}")
+        @Get("/provenance/operations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
