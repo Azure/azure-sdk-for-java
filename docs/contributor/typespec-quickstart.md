@@ -101,7 +101,7 @@ Set `partial-update: true` in `tspconfig.yaml` emitter options. TypeSpec-Java wi
   customization-class: customization/src/main/java/MyCustomization.java
 ```
 
-See [AutoRest Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest-java-customization.md) for guidance on writing AST-based Java customizations.
+See [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-java-customization.md) for guidance on writing AST-based Java customizations.
 
 ---
 
