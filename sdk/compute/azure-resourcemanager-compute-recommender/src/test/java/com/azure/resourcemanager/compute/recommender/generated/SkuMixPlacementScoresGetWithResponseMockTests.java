@@ -6,22 +6,22 @@ package com.azure.resourcemanager.compute.recommender.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager;
-import com.azure.resourcemanager.compute.recommender.models.Operation;
+import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementBase;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListMockTests {
+public final class SkuMixPlacementScoresGetWithResponseMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"nohjt\",\"isDataAction\":true,\"display\":{\"provider\":\"soifiyipjxsqw\",\"resource\":\"rjb\",\"operation\":\"orcjxvsnby\",\"description\":\"abnmocpcyshu\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"properties\":{\"supportedResourceTypes\":[\"qidtqajzyu\",\"pku\"]},\"id\":\"krlkhbzhfepg\",\"name\":\"gqexzlocxs\",\"type\":\"paierh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,10 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        SkuMixPlacementBase response = manager.skuMixPlacementScores()
+            .getWithResponse("ljjgpbtoqcjmkl", com.azure.core.util.Context.NONE)
+            .getValue();
 
+        Assertions.assertEquals("qidtqajzyu", response.properties().supportedResourceTypes().get(0));
     }
 }

@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.compute.recommender.generated;
 
 /**
- * Samples for SpotPlacementScores Get.
+ * Samples for SkuMixPlacementScores Get.
  */
-public final class SpotPlacementScoresGetSamples {
+public final class SkuMixPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GetSpotPlacementScores.json
+     * x-ms-original-file: 2026-05-05-preview/GetSkuMixPlacementScores.json
      */
     /**
-     * Sample code: Gets the metadata of Spot Placement Scores.
+     * Sample code: Gets the metadata of SkuMixPlacement Scores.
      * 
      * @param manager Entry point to ComputeRecommenderManager.
      */
-    public static void getsTheMetadataOfSpotPlacementScores(
+    public static void getsTheMetadataOfSkuMixPlacementScores(
         com.azure.resourcemanager.compute.recommender.ComputeRecommenderManager manager) {
-        manager.spotPlacementScores().getWithResponse("eastus", com.azure.core.util.Context.NONE);
+        manager.skuMixPlacementScores().getWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }
