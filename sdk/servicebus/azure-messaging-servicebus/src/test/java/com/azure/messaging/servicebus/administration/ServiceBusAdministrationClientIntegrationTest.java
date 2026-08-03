@@ -11,9 +11,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
@@ -64,7 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -545,12 +545,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    @LiveOnly
     void getTopicFilterCounts() {
-        // The topic-level SqlFilterCount / CorrelationFilterCount runtime properties are
-        // served by the 2024-05 service API version (the builder's getLatest() default) and
-        // are populated only on a service build carrying the feature, so run live.
-        assumeTrue(super.getTestMode() == TestMode.LIVE, "Filter counts require a live feature-enabled namespace.");
-
+        // The topic-level SqlFilterCount / CorrelationFilterCount runtime properties are served by
+        // the 2024-05 service API version (the builder's getLatest() default) and are populated only
+        // on a service build carrying the feature, so this test runs live only (no recording).
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName("topicfc", 10);
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
@@ -664,6 +663,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .connectionString(connectionStringUpdated);
+
+        // Recorded at api-version 2021-05; pin the recorded modes so requests match the recordings.
+        if (!interceptorManager.isLiveMode()) {
+            builder.serviceVersion(ServiceBusServiceVersion.V2021_05);
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
