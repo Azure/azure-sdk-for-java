@@ -108,12 +108,10 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
                     reader.skipElement();
                 }
             }
-            {
-                QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
-                deserializedQueueSignedIdentifier.id = id;
-                deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
-                return deserializedQueueSignedIdentifier;
-            }
+            QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
+            deserializedQueueSignedIdentifier.id = id;
+            deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
+            return deserializedQueueSignedIdentifier;
         });
     }
 

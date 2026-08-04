@@ -20,7 +20,6 @@ import com.azure.storage.queue.models.QueuesSegmentOptions;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Base class for Azure Storage Queue tests.

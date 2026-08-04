@@ -181,15 +181,13 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
                     reader.skipElement();
                 }
             }
-            {
-                QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
-                deserializedQueueCorsRule.allowedOrigins = allowedOrigins;
-                deserializedQueueCorsRule.allowedMethods = allowedMethods;
-                deserializedQueueCorsRule.allowedHeaders = allowedHeaders;
-                deserializedQueueCorsRule.exposedHeaders = exposedHeaders;
-                deserializedQueueCorsRule.maxAgeInSeconds = maxAgeInSeconds;
-                return deserializedQueueCorsRule;
-            }
+            QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
+            deserializedQueueCorsRule.allowedOrigins = allowedOrigins;
+            deserializedQueueCorsRule.allowedMethods = allowedMethods;
+            deserializedQueueCorsRule.allowedHeaders = allowedHeaders;
+            deserializedQueueCorsRule.exposedHeaders = exposedHeaders;
+            deserializedQueueCorsRule.maxAgeInSeconds = maxAgeInSeconds;
+            return deserializedQueueCorsRule;
         });
     }
 

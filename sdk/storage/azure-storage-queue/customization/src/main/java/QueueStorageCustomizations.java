@@ -183,17 +183,23 @@ public class QueueStorageCustomizations extends Customization {
                 offset++;
             }
         } else {
-            // Shape: `return new X(args);` -> introduce a local, assign, and return it.
+            // Shape: `return new X(args);` -> introduce a local, assign its fields, and return it. The statements are
+            // inserted directly into the enclosing block (not wrapped in a nested block, which Checkstyle rejects).
             ReturnStmt ret = findAncestor(oce, ReturnStmt.class).orElseThrow(
                 () -> new IllegalStateException("Unexpected " + className + " construction context."));
+            BlockStmt block = (BlockStmt) ret.getParentNode().orElseThrow(
+                () -> new IllegalStateException("No enclosing block for " + className + " return."));
             String localName = "deserialized" + className;
-            BlockStmt rebuilt = new BlockStmt();
-            rebuilt.addStatement(StaticJavaParser.parseStatement(className + " " + localName + " = new " + className + "();"));
+            int idx = block.getStatements().indexOf(ret);
+            block.addStatement(idx,
+                StaticJavaParser.parseStatement(className + " " + localName + " = new " + className + "();"));
+            int offset = 1;
             for (String argName : argNames) {
-                rebuilt.addStatement(StaticJavaParser.parseStatement(fieldAssignment(clazz, localName, argName)));
+                block.addStatement(idx + offset, StaticJavaParser.parseStatement(
+                    fieldAssignment(clazz, localName, argName)));
+                offset++;
             }
-            rebuilt.addStatement(new ReturnStmt(StaticJavaParser.parseExpression(localName)));
-            ret.replace(rebuilt);
+            ret.setExpression(StaticJavaParser.parseExpression(localName));
         }
     }
 

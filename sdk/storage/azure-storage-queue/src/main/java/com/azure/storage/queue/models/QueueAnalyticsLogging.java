@@ -168,15 +168,13 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
                     reader.skipElement();
                 }
             }
-            {
-                QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
-                deserializedQueueAnalyticsLogging.version = version;
-                deserializedQueueAnalyticsLogging.delete = delete;
-                deserializedQueueAnalyticsLogging.read = read;
-                deserializedQueueAnalyticsLogging.write = write;
-                deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
-                return deserializedQueueAnalyticsLogging;
-            }
+            QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
+            deserializedQueueAnalyticsLogging.version = version;
+            deserializedQueueAnalyticsLogging.delete = delete;
+            deserializedQueueAnalyticsLogging.read = read;
+            deserializedQueueAnalyticsLogging.write = write;
+            deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
+            return deserializedQueueAnalyticsLogging;
         });
     }
 

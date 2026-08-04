@@ -191,18 +191,16 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
                     reader.skipElement();
                 }
             }
-            {
-                SendMessageResult deserializedSendMessageResult = new SendMessageResult();
-                deserializedSendMessageResult.messageId = messageId;
-                deserializedSendMessageResult.insertionTime
-                    = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
-                deserializedSendMessageResult.expirationTime
-                    = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
-                deserializedSendMessageResult.popReceipt = popReceipt;
-                deserializedSendMessageResult.timeNextVisible
-                    = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
-                return deserializedSendMessageResult;
-            }
+            SendMessageResult deserializedSendMessageResult = new SendMessageResult();
+            deserializedSendMessageResult.messageId = messageId;
+            deserializedSendMessageResult.insertionTime
+                = insertionTime == null ? null : new DateTimeRfc1123(insertionTime);
+            deserializedSendMessageResult.expirationTime
+                = expirationTime == null ? null : new DateTimeRfc1123(expirationTime);
+            deserializedSendMessageResult.popReceipt = popReceipt;
+            deserializedSendMessageResult.timeNextVisible
+                = timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible);
+            return deserializedSendMessageResult;
         });
     }
 

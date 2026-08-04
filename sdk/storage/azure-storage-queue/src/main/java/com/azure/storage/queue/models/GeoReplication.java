@@ -122,13 +122,10 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
                     reader.skipElement();
                 }
             }
-            {
-                GeoReplication deserializedGeoReplication = new GeoReplication();
-                deserializedGeoReplication.status = status;
-                deserializedGeoReplication.lastSyncTime
-                    = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
-                return deserializedGeoReplication;
-            }
+            GeoReplication deserializedGeoReplication = new GeoReplication();
+            deserializedGeoReplication.status = status;
+            deserializedGeoReplication.lastSyncTime = lastSyncTime == null ? null : new DateTimeRfc1123(lastSyncTime);
+            return deserializedGeoReplication;
         });
     }
 
