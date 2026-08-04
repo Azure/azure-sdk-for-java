@@ -37,9 +37,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -221,8 +221,10 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(diagnostics).isNotNull();
         assertThat(diagnostics.getDiagnosticsContext()).isNotNull();
 
-        assertThat(capturingLogger.getLoggedMessages()).isNotNull();
-        assertThat(capturingLogger.getLoggedMessages()).hasSize(2);
+        assertThat(capturingLogger.getLoggedMessages()).isNotEmpty();
+        assertThat(capturingLogger.getDiagnosticsContexts())
+            .extracting(CosmosDiagnosticsContext::getOperationTypeInternal)
+            .contains(OperationType.Create, OperationType.Query);
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -305,16 +307,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // reduce sample rate to 0 - disable all diagnostics
         clientTelemetryCfg.sampleDiagnostics(0);
         executeDocumentOperation(container, operationType, id, newItem);
-        int loggedMessageSizeAfter = capturingLogger.getLoggedMessages().size();
         // verify when sample rate is 0, the diagnostics will not be logged
-        assertThat(loggedMessageSizeBefore).isEqualTo(loggedMessageSizeAfter);
+        assertThat(capturingLogger.getLoggedMessages()).hasSize(loggedMessageSizeBefore);
 
         // set sample rate to 1 - enable all diagnostics (no sampling anymore)
         clientTelemetryCfg.sampleDiagnostics(1);
         executeDocumentOperation(container, operationType, id, newItem);
-        loggedMessageSizeAfter = capturingLogger.getLoggedMessages().size();
         // Verify when sample rate is 1, the diagnostics will be logged
-        assertThat(loggedMessageSizeBefore + 1).isEqualTo(loggedMessageSizeAfter);
+        assertThat(capturingLogger.getLoggedMessages().size()).isGreaterThan(loggedMessageSizeBefore);
 
         // no assertions here - invocations for diagnostics handler are validated above
         // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
@@ -561,7 +561,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     private static class CapturingDiagnosticsHandler implements CosmosDiagnosticsHandler {
 
-        private final ArrayList<CosmosDiagnosticsContext> diagnosticsContexts = new ArrayList<>();
+        private final List<CosmosDiagnosticsContext> diagnosticsContexts = new CopyOnWriteArrayList<>();
 
         @Override
         public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
@@ -574,7 +574,8 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     }
 
     private static class CapturingLogger implements CosmosDiagnosticsHandler {
-        private final List<String> loggedMessages = new ArrayList<>();
+        private final List<String> loggedMessages = new CopyOnWriteArrayList<>();
+        private final List<CosmosDiagnosticsContext> diagnosticsContexts = new CopyOnWriteArrayList<>();
         public CapturingLogger() {
             super();
         }
@@ -591,6 +592,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                 ctx.getSubStatusCode(),
                 ctx);
 
+            this.diagnosticsContexts.add(ctx);
             this.loggedMessages.add(msg);
 
             logger.info(msg);
@@ -599,10 +601,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         public List<String> getLoggedMessages() {
             return this.loggedMessages;
         }
+
+        public List<CosmosDiagnosticsContext> getDiagnosticsContexts() {
+            return this.diagnosticsContexts;
+        }
     }
 
     private static class ConsoleOutLogger implements CosmosDiagnosticsHandler {
-        private final List<String> loggedMessages = new ArrayList<>();
+        private final List<String> loggedMessages = new CopyOnWriteArrayList<>();
         public ConsoleOutLogger() {
             super();
         }

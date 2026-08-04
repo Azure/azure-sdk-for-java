@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -34,19 +35,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * Search
      */
     @Generated
-    private final Map<String, Object> search;
-
-    /*
-     * SQL WHERE clause representing the search filters
-     */
-    @Generated
-    private final String where;
-
-    /*
-     * SQL ORDER BY clause for sorting results
-     */
-    @Generated
-    private final String orderBy;
+    private final Map<String, BinaryData> search;
 
     /*
      * Timestamp when the search was last accessed
@@ -71,19 +60,15 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * 
      * @param hash the hash value to set.
      * @param search the search value to set.
-     * @param where the where value to set.
-     * @param orderBy the orderBy value to set.
      * @param lastUsed the lastUsed value to set.
      * @param useCount the useCount value to set.
      * @param metadata the metadata value to set.
      */
     @Generated
-    private TilerStacSearchDefinition(String hash, Map<String, Object> search, String where, String orderBy,
-        OffsetDateTime lastUsed, int useCount, MosaicMetadata metadata) {
+    private TilerStacSearchDefinition(String hash, Map<String, BinaryData> search, OffsetDateTime lastUsed,
+        int useCount, MosaicMetadata metadata) {
         this.hash = hash;
         this.search = search;
-        this.where = where;
-        this.orderBy = orderBy;
         this.lastUsed = lastUsed;
         this.useCount = useCount;
         this.metadata = metadata;
@@ -105,28 +90,8 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
      * @return the search value.
      */
     @Generated
-    public Map<String, Object> getSearch() {
+    public Map<String, BinaryData> getSearch() {
         return this.search;
-    }
-
-    /**
-     * Get the where property: SQL WHERE clause representing the search filters.
-     * 
-     * @return the where value.
-     */
-    @Generated
-    public String getWhere() {
-        return this.where;
-    }
-
-    /**
-     * Get the orderBy property: SQL ORDER BY clause for sorting results.
-     * 
-     * @return the orderBy value.
-     */
-    @Generated
-    public String getOrderBy() {
-        return this.orderBy;
     }
 
     /**
@@ -167,9 +132,13 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("hash", this.hash);
-        jsonWriter.writeMapField("search", this.search, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeStringField("_where", this.where);
-        jsonWriter.writeStringField("orderby", this.orderBy);
+        jsonWriter.writeMapField("search", this.search, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("lastused",
             this.lastUsed == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUsed));
         jsonWriter.writeIntField("usecount", this.useCount);
@@ -190,9 +159,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
     public static TilerStacSearchDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String hash = null;
-            Map<String, Object> search = null;
-            String where = null;
-            String orderBy = null;
+            Map<String, BinaryData> search = null;
             OffsetDateTime lastUsed = null;
             int useCount = 0;
             MosaicMetadata metadata = null;
@@ -203,11 +170,8 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
                 if ("hash".equals(fieldName)) {
                     hash = reader.getString();
                 } else if ("search".equals(fieldName)) {
-                    search = reader.readMap(reader1 -> reader1.readUntyped());
-                } else if ("_where".equals(fieldName)) {
-                    where = reader.getString();
-                } else if ("orderby".equals(fieldName)) {
-                    orderBy = reader.getString();
+                    search = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("lastused".equals(fieldName)) {
                     lastUsed = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -219,7 +183,7 @@ public final class TilerStacSearchDefinition implements JsonSerializable<TilerSt
                     reader.skipChildren();
                 }
             }
-            return new TilerStacSearchDefinition(hash, search, where, orderBy, lastUsed, useCount, metadata);
+            return new TilerStacSearchDefinition(hash, search, lastUsed, useCount, metadata);
         });
     }
 }

@@ -79,6 +79,11 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      */
     private RetryPolicy retryPolicy;
 
+    /*
+     * Resource notification details.
+     */
+    private ResourceNotificationDetails resourceNotificationDetails;
+
     /**
      * Creates an instance of ResourceOperationDetails class.
      */
@@ -195,6 +200,15 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
+     * Get the resourceNotificationDetails property: Resource notification details.
+     * 
+     * @return the resourceNotificationDetails value.
+     */
+    public ResourceNotificationDetails resourceNotificationDetails() {
+        return this.resourceNotificationDetails;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -214,6 +228,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
         jsonWriter.writeStringField("completedAt",
             this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
+        jsonWriter.writeJsonField("resourceNotificationDetails", this.resourceNotificationDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -260,6 +275,9 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("retryPolicy".equals(fieldName)) {
                     deserializedResourceOperationDetails.retryPolicy = RetryPolicy.fromJson(reader);
+                } else if ("resourceNotificationDetails".equals(fieldName)) {
+                    deserializedResourceOperationDetails.resourceNotificationDetails
+                        = ResourceNotificationDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

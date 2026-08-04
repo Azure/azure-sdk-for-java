@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.0 (2026-07-28)
+
+### Features Added
+
+- Added `withManagedIdentityCredentials()` and `withManagedIdentityCredentials(String userAssignedManagedIdentityClientId)` to `WebApp` and `FunctionApp` (definition and update) and deployment slots (`DeploymentSlot`/`FunctionDeploymentSlot` update), to pull a private container image (e.g. from Azure Container Registry) using the app's or slot's managed identity instead of a registry username and password.
 
 ## 2.55.4 (2026-07-07)
 

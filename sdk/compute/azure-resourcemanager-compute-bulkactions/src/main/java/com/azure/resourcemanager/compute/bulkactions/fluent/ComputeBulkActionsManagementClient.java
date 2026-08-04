@@ -59,4 +59,53 @@ public interface ComputeBulkActionsManagementClient {
      * @return the VirtualMachineBulkOperationsClient object.
      */
     VirtualMachineBulkOperationsClient getVirtualMachineBulkOperations();
+
+    /**
+     * Gets the LaunchBulkInstancesOperationsClient object to access its operations.
+     * 
+     * @return the LaunchBulkInstancesOperationsClient object.
+     */
+    LaunchBulkInstancesOperationsClient getLaunchBulkInstancesOperations();
+
+    /**
+     * Gets the BulkCreateCustomsClient object to access its operations.
+     * 
+     * @return the BulkCreateCustomsClient object.
+     */
+    BulkCreateCustomsClient getBulkCreateCustoms();
+
+    /**
+     * Gets the ScheduledActionsClient object to access its operations.
+     * 
+     * @return the ScheduledActionsClient object.
+     */
+    ScheduledActionsClient getScheduledActions();
+
+    /**
+     * Gets the ScheduledActionExtensionsClient object to access its operations.
+     * 
+     * @return the ScheduledActionExtensionsClient object.
+     */
+    ScheduledActionExtensionsClient getScheduledActionExtensions();
+
+    /**
+     * Gets the ScheduledActionOperationStatusClient object to access its operations.
+     * 
+     * @return the ScheduledActionOperationStatusClient object.
+     */
+    ScheduledActionOperationStatusClient getScheduledActionOperationStatus();
+
+    /**
+     * Gets the OccurrencesClient object to access its operations.
+     * 
+     * @return the OccurrencesClient object.
+     */
+    OccurrencesClient getOccurrences();
+
+    /**
+     * Gets the OccurrenceExtensionsClient object to access its operations.
+     * 
+     * @return the OccurrenceExtensionsClient object.
+     */
+    OccurrenceExtensionsClient getOccurrenceExtensions();
 }

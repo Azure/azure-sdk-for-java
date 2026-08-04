@@ -529,7 +529,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientCertMode property: This composes with ClientCertEnabled setting.
+     * Get the clientCertMode property:
+     * This composes with ClientCertEnabled setting.
      * - ClientCertEnabled: false means ClientCert is ignored.
      * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
      * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
@@ -541,7 +542,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientCertMode property: This composes with ClientCertEnabled setting.
+     * Set the clientCertMode property:
+     * This composes with ClientCertEnabled setting.
      * - ClientCertEnabled: false means ClientCert is ignored.
      * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
      * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
