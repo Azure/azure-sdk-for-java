@@ -630,7 +630,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of ProjectConnections. It manages ConnectionPropertiesV2BasicResource.
+     * Gets the resource collection API of ProjectConnections.
      * 
      * @return Resource collection API of ProjectConnections.
      */
@@ -730,7 +730,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of AccountConnections.
+     * Gets the resource collection API of AccountConnections. It manages ConnectionPropertiesV2BasicResource.
      * 
      * @return Resource collection API of AccountConnections.
      */

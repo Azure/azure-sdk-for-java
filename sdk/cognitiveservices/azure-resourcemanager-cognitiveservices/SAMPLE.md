@@ -363,7 +363,6 @@ public final class AccountCapabilityHostsListSamples {
 ### AccountConnections_Create
 
 ```java
-import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
 import com.azure.resourcemanager.cognitiveservices.models.NoneAuthTypeConnectionProperties;
 import java.time.OffsetDateTime;
@@ -383,12 +382,12 @@ public final class AccountConnectionsCreateSamples {
     public static void
         createAccountConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.accountConnections()
-            .createWithResponse("resourceGroup-1", "account-1", "connection-1",
-                new ConnectionPropertiesV2BasicResourceInner().withProperties(
-                    new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
-                        .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
-                        .withTarget("[target url]")),
-                com.azure.core.util.Context.NONE);
+            .define("connection-1")
+            .withExistingAccount("resourceGroup-1", "account-1")
+            .withProperties(new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
+                .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
+                .withTarget("[target url]"))
+            .create();
     }
 }
 ```
@@ -469,7 +468,7 @@ public final class AccountConnectionsListSamples {
 import com.azure.resourcemanager.cognitiveservices.models.AccessKeyAuthTypeConnectionProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionAccessKey;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
-import com.azure.resourcemanager.cognitiveservices.models.ConnectionUpdateContent;
+import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -488,16 +487,17 @@ public final class AccountConnectionsUpdateSamples {
      */
     public static void
         updateAccountConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.accountConnections()
-            .updateWithResponse("test-rg", "account-1", "connection-1",
-                new ConnectionUpdateContent().withProperties(
-                    new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
-                        .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
-                        .withMetadata(mapOf())
-                        .withTarget("some_string")
-                        .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
-                            .withSecretAccessKey("fakeTokenPlaceholder"))),
-                com.azure.core.util.Context.NONE);
+        ConnectionPropertiesV2BasicResource resource = manager.accountConnections()
+            .getWithResponse("test-rg", "account-1", "connection-1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
+                .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
+                .withMetadata(mapOf())
+                .withTarget("some_string")
+                .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
+                    .withSecretAccessKey("fakeTokenPlaceholder")))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -2862,6 +2862,7 @@ public final class ProjectCapabilityHostsListSamples {
 ### ProjectConnections_Create
 
 ```java
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
 import com.azure.resourcemanager.cognitiveservices.models.NoneAuthTypeConnectionProperties;
 import java.time.OffsetDateTime;
@@ -2881,12 +2882,12 @@ public final class ProjectConnectionsCreateSamples {
     public static void
         createProjectConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.projectConnections()
-            .define("connection-1")
-            .withExistingProject("resourceGroup-1", "account-1", "project-1")
-            .withProperties(new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
-                .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
-                .withTarget("[target url]"))
-            .create();
+            .createWithResponse("resourceGroup-1", "account-1", "project-1", "connection-1",
+                new ConnectionPropertiesV2BasicResourceInner().withProperties(
+                    new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
+                        .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
+                        .withTarget("[target url]")),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2969,7 +2970,7 @@ public final class ProjectConnectionsListSamples {
 import com.azure.resourcemanager.cognitiveservices.models.AccessKeyAuthTypeConnectionProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionAccessKey;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
-import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
+import com.azure.resourcemanager.cognitiveservices.models.ConnectionUpdateContent;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -2988,17 +2989,16 @@ public final class ProjectConnectionsUpdateSamples {
      */
     public static void
         updateProjectConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        ConnectionPropertiesV2BasicResource resource = manager.projectConnections()
-            .getWithResponse("test-rg", "account-1", "project-1", "connection-1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
-                .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
-                .withMetadata(mapOf())
-                .withTarget("some_string")
-                .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
-                    .withSecretAccessKey("fakeTokenPlaceholder")))
-            .apply();
+        manager.projectConnections()
+            .updateWithResponse("test-rg", "account-1", "project-1", "connection-1",
+                new ConnectionUpdateContent().withProperties(
+                    new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
+                        .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
+                        .withMetadata(mapOf())
+                        .withTarget("some_string")
+                        .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
+                            .withSecretAccessKey("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

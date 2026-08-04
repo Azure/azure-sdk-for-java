@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (2026-08-03)
+## 1.5.0 (2026-08-04)
 
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -56,10 +56,6 @@
 
 #### `models.RaiBlockListResult` was removed
 
-#### `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was modified
-
-* `withExistingAccount(java.lang.String,java.lang.String)` was removed in stage 1
-
 #### `models.RegenerateKeyParameters` was modified
 
 * `validate()` was removed
@@ -84,11 +80,11 @@
 #### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
 
 * `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
-* `withProfile(models.NetworkSecurityPerimeterProfileInfo)` was removed
 * `withProvisioningIssues(java.util.List)` was removed
 * `validate()` was removed
-* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
 * `withResourceAssociation(models.NetworkSecurityPerimeterConfigurationAssociationInfo)` was removed
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `withProfile(models.NetworkSecurityPerimeterProfileInfo)` was removed
 
 #### `models.DeploymentCapacitySettings` was modified
 
@@ -105,15 +101,15 @@
 
 #### `models.RaiBlocklistItems` was modified
 
-* `batchDeleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
 * `batchDelete(java.lang.String,java.lang.String,java.lang.String,java.lang.Object)` was removed
+* `batchDeleteWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Object,com.azure.core.util.Context)` was removed
 
 #### `models.NetworkSecurityPerimeterAccessRule` was modified
 
 * `NetworkSecurityPerimeterAccessRule()` was changed to private access
+* `withProperties(models.NetworkSecurityPerimeterAccessRuleProperties)` was removed
 * `withName(java.lang.String)` was removed
 * `validate()` was removed
-* `withProperties(models.NetworkSecurityPerimeterAccessRuleProperties)` was removed
 
 #### `models.CapabilityHostProperties` was modified
 
@@ -134,16 +130,8 @@
 #### `models.PrivateLinkResource` was modified
 
 * `PrivateLinkResource()` was changed to private access
-* `withProperties(models.PrivateLinkResourceProperties)` was removed
 * `validate()` was removed
-
-#### `models.AccountConnections` was modified
-
-* `define(java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteById(java.lang.String)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `withProperties(models.PrivateLinkResourceProperties)` was removed
 
 #### `models.RaiBlocklistProperties` was modified
 
@@ -152,24 +140,20 @@
 #### `models.SkuAvailability` was modified
 
 * `SkuAvailability()` was changed to private access
+* `validate()` was removed
 * `withSkuName(java.lang.String)` was removed
 * `withMessage(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
 * `withKind(java.lang.String)` was removed
-* `withReason(java.lang.String)` was removed
-* `validate()` was removed
 * `withSkuAvailable(java.lang.Boolean)` was removed
+* `withReason(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 
 #### `models.RequestMatchPattern` was modified
 
 * `RequestMatchPattern()` was changed to private access
-* `withPath(java.lang.String)` was removed
 * `withMethod(java.lang.String)` was removed
+* `withPath(java.lang.String)` was removed
 * `validate()` was removed
-
-#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
-
-* `withExistingAccount(java.lang.String,java.lang.String)` was removed
 
 #### `models.AccountKeyAuthTypeConnectionProperties` was modified
 
@@ -184,9 +168,9 @@
 #### `models.CommitmentQuota` was modified
 
 * `CommitmentQuota()` was changed to private access
+* `withQuantity(java.lang.Long)` was removed
 * `withUnit(java.lang.String)` was removed
 * `validate()` was removed
-* `withQuantity(java.lang.Long)` was removed
 
 #### `models.AccessKeyAuthTypeConnectionProperties` was modified
 
@@ -204,10 +188,10 @@
 
 * `ReplacementConfig()` was changed to private access
 * `validate()` was removed
-* `withUpgradeOnExpiryLeadTimeDays(java.lang.Integer)` was removed
+* `withTargetModelName(java.lang.String)` was removed
 * `withAutoUpgradeStartDate(java.time.OffsetDateTime)` was removed
 * `withTargetModelVersion(java.lang.String)` was removed
-* `withTargetModelName(java.lang.String)` was removed
+* `withUpgradeOnExpiryLeadTimeDays(java.lang.Integer)` was removed
 
 #### `models.CalculateModelCapacityParameter` was modified
 
@@ -224,23 +208,23 @@
 #### `models.NetworkSecurityPerimeterProfileInfo` was modified
 
 * `NetworkSecurityPerimeterProfileInfo()` was changed to private access
-* `withEnabledLogCategories(java.util.List)` was removed
-* `withName(java.lang.String)` was removed
 * `validate()` was removed
 * `withAccessRules(java.util.List)` was removed
 * `withDiagnosticSettingsVersion(java.lang.Long)` was removed
 * `withAccessRulesVersion(java.lang.Long)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ModelSku` was modified
 
 * `ModelSku()` was changed to private access
-* `withDeprecationDate(java.time.OffsetDateTime)` was removed
-* `withUsageName(java.lang.String)` was removed
-* `validate()` was removed
 * `withCapacity(models.CapacityConfig)` was removed
-* `withRateLimits(java.util.List)` was removed
-* `withCost(java.util.List)` was removed
+* `withUsageName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDeprecationDate(java.time.OffsetDateTime)` was removed
+* `withCost(java.util.List)` was removed
+* `validate()` was removed
+* `withRateLimits(java.util.List)` was removed
 
 #### `models.ProjectProperties` was modified
 
@@ -253,23 +237,23 @@
 #### `models.CommitmentPlanAssociation` was modified
 
 * `CommitmentPlanAssociation()` was changed to private access
+* `withCommitmentPlanLocation(java.lang.String)` was removed
 * `validate()` was removed
 * `withCommitmentPlanId(java.lang.String)` was removed
-* `withCommitmentPlanLocation(java.lang.String)` was removed
 
 #### `models.RaiPolicyProperties` was modified
 
-* `validate()` was removed
 * `withCustomTopics(java.util.List)` was removed
+* `validate()` was removed
 * `customTopics()` was removed
 
 #### `models.SkuChangeInfo` was modified
 
 * `SkuChangeInfo()` was changed to private access
-* `withLastChangeDate(java.lang.String)` was removed
-* `validate()` was removed
 * `withCountOfDowngrades(java.lang.Float)` was removed
+* `validate()` was removed
 * `withCountOfUpgradesAfterDowngrades(java.lang.Float)` was removed
+* `withLastChangeDate(java.lang.String)` was removed
 
 #### `models.NetworkSecurityPerimeterConfigurationAssociationInfo` was modified
 
@@ -285,10 +269,10 @@
 #### `models.QuotaLimit` was modified
 
 * `QuotaLimit()` was changed to private access
-* `withRenewalPeriod(java.lang.Float)` was removed
 * `validate()` was removed
 * `withCount(java.lang.Float)` was removed
 * `withRules(java.util.List)` was removed
+* `withRenewalPeriod(java.lang.Float)` was removed
 
 #### `models.OAuth2AuthTypeConnectionProperties` was modified
 
@@ -305,16 +289,16 @@
 #### `models.MetricName` was modified
 
 * `MetricName()` was changed to private access
-* `withLocalizedValue(java.lang.String)` was removed
 * `validate()` was removed
 * `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
 
 #### `models.AccountSku` was modified
 
 * `AccountSku()` was changed to private access
-* `validate()` was removed
 * `withResourceType(java.lang.String)` was removed
 * `withSku(models.Sku)` was removed
+* `validate()` was removed
 
 #### `models.MultiRegionSettings` was modified
 
@@ -335,10 +319,10 @@
 #### `models.ModelDeprecationInfo` was modified
 
 * `ModelDeprecationInfo()` was changed to private access
-* `validate()` was removed
 * `withInference(java.lang.String)` was removed
 * `withDeprecationStatus(models.DeprecationStatus)` was removed
 * `withFineTune(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.PrivateLinkServiceConnectionState` was modified
 
@@ -347,19 +331,19 @@
 #### `models.QuotaTierUpgradeEligibilityInfo` was modified
 
 * `QuotaTierUpgradeEligibilityInfo()` was changed to private access
-* `withUpgradeUnavailabilityReason(java.lang.String)` was removed
-* `withUpgradeApplicableDate(java.time.OffsetDateTime)` was removed
-* `withNextTierName(java.lang.String)` was removed
 * `withUpgradeAvailabilityStatus(models.UpgradeAvailabilityStatus)` was removed
+* `withUpgradeUnavailabilityReason(java.lang.String)` was removed
 * `validate()` was removed
+* `withNextTierName(java.lang.String)` was removed
+* `withUpgradeApplicableDate(java.time.OffsetDateTime)` was removed
 
 #### `models.BillingMeterInfo` was modified
 
 * `BillingMeterInfo()` was changed to private access
-* `withMeterId(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `withUnit(java.lang.String)` was removed
 * `validate()` was removed
+* `withMeterId(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ConnectionOAuth2` was modified
 
@@ -378,12 +362,12 @@
 #### `models.ProvisioningIssueProperties` was modified
 
 * `ProvisioningIssueProperties()` was changed to private access
+* `validate()` was removed
 * `withSuggestedAccessRules(java.util.List)` was removed
 * `withDescription(java.lang.String)` was removed
 * `withSuggestedResourceIds(java.util.List)` was removed
-* `withIssueType(java.lang.String)` was removed
-* `validate()` was removed
 * `withSeverity(java.lang.String)` was removed
+* `withIssueType(java.lang.String)` was removed
 
 #### `models.ResourceBase` was modified
 
@@ -401,37 +385,37 @@
 
 * `ThrottlingRule()` was changed to private access
 * `validate()` was removed
-* `withRenewalPeriod(java.lang.Float)` was removed
-* `withMatchPatterns(java.util.List)` was removed
 * `withKey(java.lang.String)` was removed
 * `withMinCount(java.lang.Float)` was removed
-* `withCount(java.lang.Float)` was removed
+* `withMatchPatterns(java.util.List)` was removed
+* `withRenewalPeriod(java.lang.Float)` was removed
 * `withDynamicThrottlingEnabled(java.lang.Boolean)` was removed
+* `withCount(java.lang.Float)` was removed
 
 #### `models.AbusePenalty` was modified
 
 * `AbusePenalty()` was changed to private access
-* `validate()` was removed
 * `withExpiration(java.time.OffsetDateTime)` was removed
-* `withAction(models.AbusePenaltyAction)` was removed
 * `withRateLimitPercentage(java.lang.Float)` was removed
+* `validate()` was removed
+* `withAction(models.AbusePenaltyAction)` was removed
 
 #### `models.CommitmentCost` was modified
 
 * `CommitmentCost()` was changed to private access
-* `withOverageMeterId(java.lang.String)` was removed
 * `withCommitmentMeterId(java.lang.String)` was removed
+* `withOverageMeterId(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.NetworkSecurityPerimeterAccessRuleProperties` was modified
 
 * `NetworkSecurityPerimeterAccessRuleProperties()` was changed to private access
-* `withSubscriptions(java.util.List)` was removed
-* `withNetworkSecurityPerimeters(java.util.List)` was removed
-* `withFullyQualifiedDomainNames(java.util.List)` was removed
-* `withDirection(models.NspAccessRuleDirection)` was removed
 * `validate()` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
 * `withAddressPrefixes(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withDirection(models.NspAccessRuleDirection)` was removed
 
 #### `models.PatchResourceTagsAndSku` was modified
 
@@ -440,43 +424,36 @@
 #### `models.CapacityConfig` was modified
 
 * `CapacityConfig()` was changed to private access
+* `withMinimum(java.lang.Integer)` was removed
 * `validate()` was removed
-* `withDefaultProperty(java.lang.Integer)` was removed
 * `withStep(java.lang.Integer)` was removed
 * `withMaximum(java.lang.Integer)` was removed
+* `withDefaultProperty(java.lang.Integer)` was removed
 * `withAllowedValues(java.util.List)` was removed
-* `withMinimum(java.lang.Integer)` was removed
 
 #### `models.RaiContentFilterProperties` was modified
 
 * `RaiContentFilterProperties()` was changed to private access
-* `withIsMultiLevelFilter(java.lang.Boolean)` was removed
 * `withName(java.lang.String)` was removed
-* `validate()` was removed
+* `withIsMultiLevelFilter(java.lang.Boolean)` was removed
 * `withSource(models.RaiPolicyContentSource)` was removed
+* `validate()` was removed
 
 #### `models.ModelSkuCapacityProperties` was modified
 
 * `ModelSkuCapacityProperties()` was changed to private access
+* `withAvailableCapacity(java.lang.Float)` was removed
+* `validate()` was removed
 * `withAvailableFinetuneCapacity(java.lang.Float)` was removed
 * `withSkuName(java.lang.String)` was removed
 * `withModel(models.DeploymentModel)` was removed
-* `validate()` was removed
-* `withAvailableCapacity(java.lang.Float)` was removed
-
-#### `models.ProjectConnections` was modified
-
-* `create(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
-* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
 
 #### `models.SkuCapability` was modified
 
 * `SkuCapability()` was changed to private access
+* `withName(java.lang.String)` was removed
 * `withValue(java.lang.String)` was removed
 * `validate()` was removed
-* `withName(java.lang.String)` was removed
 
 #### `models.NetworkRuleSet` was modified
 
@@ -485,23 +462,23 @@
 #### `models.Usage` was modified
 
 * `Usage()` was removed
-* `withStatus(models.QuotaUsageStatus)` was removed
-* `models.MetricName name()` -> `models.MetricName name()`
-* `java.lang.String nextResetTime()` -> `java.lang.String nextResetTime()`
-* `withNextResetTime(java.lang.String)` was removed
-* `java.lang.String quotaPeriod()` -> `java.lang.String quotaPeriod()`
-* `withName(models.MetricName)` was removed
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `withCurrentValue(java.lang.Double)` was removed
-* `java.lang.Double limit()` -> `java.lang.Double limit()`
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `withQuotaPeriod(java.lang.String)` was removed
-* `models.QuotaUsageStatus status()` -> `models.QuotaUsageStatus status()`
-* `withLimit(java.lang.Double)` was removed
-* `validate()` was removed
-* `models.UnitType unit()` -> `models.UnitType unit()`
 * `withUnit(models.UnitType)` was removed
+* `withCurrentValue(java.lang.Double)` was removed
+* `withNextResetTime(java.lang.String)` was removed
 * `java.lang.Double currentValue()` -> `java.lang.Double currentValue()`
+* `validate()` was removed
+* `withLimit(java.lang.Double)` was removed
+* `withStatus(models.QuotaUsageStatus)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `models.QuotaUsageStatus status()` -> `models.QuotaUsageStatus status()`
+* `java.lang.String nextResetTime()` -> `java.lang.String nextResetTime()`
+* `models.MetricName name()` -> `models.MetricName name()`
+* `java.lang.Double limit()` -> `java.lang.Double limit()`
+* `models.UnitType unit()` -> `models.UnitType unit()`
+* `withName(models.MetricName)` was removed
+* `withQuotaPeriod(java.lang.String)` was removed
+* `java.lang.String quotaPeriod()` -> `java.lang.String quotaPeriod()`
+* `toJson(com.azure.json.JsonWriter)` was removed
 
 #### `models.Encryption` was modified
 
@@ -526,9 +503,9 @@
 #### `models.ProvisioningIssue` was modified
 
 * `ProvisioningIssue()` was changed to private access
-* `withProperties(models.ProvisioningIssueProperties)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
+* `withProperties(models.ProvisioningIssueProperties)` was removed
 
 #### `models.Identity` was modified
 
@@ -545,10 +522,10 @@
 #### `models.NetworkSecurityPerimeter` was modified
 
 * `NetworkSecurityPerimeter()` was changed to private access
-* `withId(java.lang.String)` was removed
-* `validate()` was removed
 * `withLocation(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
 * `withPerimeterGuid(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.ConnectionUpdateContent` was modified
 
@@ -597,16 +574,16 @@
 #### `models.ResourceSkuRestrictionInfo` was modified
 
 * `ResourceSkuRestrictionInfo()` was changed to private access
+* `withZones(java.util.List)` was removed
 * `validate()` was removed
 * `withLocations(java.util.List)` was removed
-* `withZones(java.util.List)` was removed
 
 #### `models.CalculateModelCapacityResultEstimatedCapacity` was modified
 
 * `CalculateModelCapacityResultEstimatedCapacity()` was changed to private access
-* `validate()` was removed
 * `withDeployableValue(java.lang.Integer)` was removed
 * `withValue(java.lang.Integer)` was removed
+* `validate()` was removed
 
 #### `models.ModelCapacityCalculatorWorkload` was modified
 
@@ -654,9 +631,9 @@
 
 * `CallRateLimit()` was changed to private access
 * `withRenewalPeriod(java.lang.Float)` was removed
-* `withRules(java.util.List)` was removed
 * `withCount(java.lang.Float)` was removed
 * `validate()` was removed
+* `withRules(java.util.List)` was removed
 
 #### `models.CommitmentPlanProperties` was modified
 
@@ -665,8 +642,8 @@
 #### `models.PrivateLinkResourceProperties` was modified
 
 * `PrivateLinkResourceProperties()` was changed to private access
-* `validate()` was removed
 * `withRequiredZoneNames(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.IpRule` was modified
 
@@ -905,15 +882,8 @@
 
 #### `models.CapabilityHostProperties` was modified
 
-* `withEnablePublicHostingEnvironment(java.lang.Boolean)` was added
 * `enablePublicHostingEnvironment()` was added
-
-#### `models.AccountConnections` was modified
-
-* `create(java.lang.String,java.lang.String,java.lang.String)` was added
-* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
-* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
-* `update(java.lang.String,java.lang.String,java.lang.String)` was added
+* `withEnablePublicHostingEnvironment(java.lang.Boolean)` was added
 
 #### `models.ConnectionAuthType` was modified
 
@@ -925,23 +895,19 @@
 * `ACCOUNT_MANAGED_IDENTITY` was added
 * `DELEGATED_SAS` was added
 
-#### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
-
-* `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was added
-
 #### `CognitiveServicesManager` was modified
 
-* `agentDeployments()` was added
-* `raiExternalSafetyProvidersOperations()` was added
-* `outboundRules()` was added
-* `outboundRulesOperations()` was added
-* `raiToolLabels()` was added
-* `subscriptionRaiPolicies()` was added
 * `managedNetworkProvisions()` was added
-* `raiExternalSafetyProviders()` was added
-* `managedNetworkSettingsOperations()` was added
+* `outboundRules()` was added
+* `subscriptionRaiPolicies()` was added
+* `outboundRulesOperations()` was added
 * `agentApplications()` was added
+* `managedNetworkSettingsOperations()` was added
+* `raiToolLabels()` was added
+* `agentDeployments()` was added
 * `testRaiExternalSafetyProviders()` was added
+* `raiExternalSafetyProviders()` was added
+* `raiExternalSafetyProvidersOperations()` was added
 
 #### `models.RaiPolicyContentSource` was modified
 
@@ -957,12 +923,12 @@
 
 #### `models.DeploymentProperties` was modified
 
+* `deploymentState()` was added
+* `serviceTier()` was added
 * `withDeploymentState(models.DeploymentState)` was added
+* `withRouting(models.DeploymentRouting)` was added
 * `routing()` was added
 * `withServiceTier(models.ServiceTier)` was added
-* `withRouting(models.DeploymentRouting)` was added
-* `serviceTier()` was added
-* `deploymentState()` was added
 
 #### `models.ConnectionOAuth2` was modified
 
@@ -973,19 +939,11 @@
 * `scopeId()` was added
 * `scopeType()` was added
 
-#### `models.ProjectConnections` was modified
-
-* `deleteById(java.lang.String)` was added
-* `define(java.lang.String)` was added
-* `getById(java.lang.String)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-
 #### `models.Usage` was modified
 
-* `scopeId()` was added
-* `scopeType()` was added
 * `innerModel()` was added
+* `scopeType()` was added
+* `scopeId()` was added
 
 #### `models.AccountCapabilityHosts` was modified
 
@@ -1000,9 +958,9 @@
 #### `models.Deployment` was modified
 
 * `resumeWithResponse(com.azure.core.util.Context)` was added
-* `resume()` was added
 * `pause()` was added
 * `pauseWithResponse(com.azure.core.util.Context)` was added
+* `resume()` was added
 
 #### `models.ConnectionCategory` was modified
 
@@ -1024,18 +982,18 @@
 #### `models.ProjectCapabilityHosts` was modified
 
 * `define(java.lang.String)` was added
-* `deleteById(java.lang.String)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `list(java.lang.String,java.lang.String,java.lang.String)` was added
 * `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `getById(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,java.lang.String,java.lang.String)` was added
 
 #### `models.Deployments` was modified
 
-* `resumeWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `resume(java.lang.String,java.lang.String,java.lang.String)` was added
 * `pauseWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resumeWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `pause(java.lang.String,java.lang.String,java.lang.String)` was added
 
 ## 1.5.0-beta.3 (2026-06-26)

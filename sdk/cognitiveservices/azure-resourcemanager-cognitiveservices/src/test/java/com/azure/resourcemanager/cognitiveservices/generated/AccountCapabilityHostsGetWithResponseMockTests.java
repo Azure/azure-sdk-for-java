@@ -22,7 +22,7 @@ public final class AccountCapabilityHostsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aiServicesConnections\":[\"nejr\",\"min\",\"qplgtkihonikz\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"ffjilzfbpnt\",\"provisioningState\":\"Canceled\",\"storageConnections\":[\"sckhbmc\",\"rmoyfxxkwykuq\",\"ndx\",\"ykhkg\"],\"threadStorageConnections\":[\"vdgtfpeer\"],\"vectorStoreConnections\":[\"xrnrnjrcufmbga\"],\"enablePublicHostingEnvironment\":false,\"description\":\"fdtncmspsanma\",\"tags\":{\"qiqmlfvhlq\":\"b\",\"uugkw\":\"skkqjmxptuei\"}},\"id\":\"qmrpahuuonjk\",\"name\":\"xukguehv\",\"type\":\"pxjoegcjojll\"}";
+            = "{\"properties\":{\"aiServicesConnections\":[\"yazkjpir\",\"zxvbczwhyegbthms\",\"i\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"iggrunoz\",\"provisioningState\":\"Creating\",\"storageConnections\":[\"jthoivsdwsngkr\",\"ihscjvakmhzbhw\"],\"threadStorageConnections\":[\"bwihbnnxemvynu\",\"qkotauratn\"],\"vectorStoreConnections\":[\"pfzsclefyrl\",\"tndqlmf\",\"ggnbbuypwovvvsfl\"],\"enablePublicHostingEnvironment\":true,\"description\":\"oqayrehjuqwv\",\"tags\":{\"zihacen\":\"rlzh\",\"zubfo\":\"qzlxn\",\"cwtewfhxwyrkb\":\"fdbgmkfwm\"}},\"id\":\"hzlrynjpchamkae\",\"name\":\"lr\",\"type\":\"jub\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class AccountCapabilityHostsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapabilityHost response = manager.accountCapabilityHosts()
-            .getWithResponse("bdxmd", "esbrujbjpppktl", "dibfmthi", com.azure.core.util.Context.NONE)
+            .getWithResponse("qzqvabmhvsex", "uetbapfczew", "trlq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fdtncmspsanma", response.properties().description());
-        Assertions.assertEquals("b", response.properties().tags().get("qiqmlfvhlq"));
-        Assertions.assertEquals("nejr", response.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("oqayrehjuqwv", response.properties().description());
+        Assertions.assertEquals("rlzh", response.properties().tags().get("zihacen"));
+        Assertions.assertEquals("yazkjpir", response.properties().aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, response.properties().capabilityHostKind());
-        Assertions.assertEquals("ffjilzfbpnt", response.properties().customerSubnet());
-        Assertions.assertEquals("sckhbmc", response.properties().storageConnections().get(0));
-        Assertions.assertEquals("vdgtfpeer", response.properties().threadStorageConnections().get(0));
-        Assertions.assertEquals("xrnrnjrcufmbga", response.properties().vectorStoreConnections().get(0));
-        Assertions.assertFalse(response.properties().enablePublicHostingEnvironment());
+        Assertions.assertEquals("iggrunoz", response.properties().customerSubnet());
+        Assertions.assertEquals("jthoivsdwsngkr", response.properties().storageConnections().get(0));
+        Assertions.assertEquals("bwihbnnxemvynu", response.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("pfzsclefyrl", response.properties().vectorStoreConnections().get(0));
+        Assertions.assertTrue(response.properties().enablePublicHostingEnvironment());
     }
 }

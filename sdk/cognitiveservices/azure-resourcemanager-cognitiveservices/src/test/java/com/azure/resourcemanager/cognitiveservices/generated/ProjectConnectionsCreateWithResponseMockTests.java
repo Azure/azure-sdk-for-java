@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
@@ -28,7 +29,7 @@ public final class ProjectConnectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"AmazonS3Compatible\",\"createdByWorkspaceArmId\":\"bcpjstbhem\",\"error\":\"u\",\"expiryTime\":\"2021-08-20T09:23:22Z\",\"group\":\"NoSQL\",\"isSharedToAll\":true,\"metadata\":{\"uadulpodkaxpfo\":\"ufeapdrbzyvb\",\"qltd\":\"kzhmhj\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"adhfztlray\",\"rkgzkyhudbkuw\"],\"target\":\"qxlcweakfecjvx\",\"useWorkspaceManagedIdentity\":false},\"id\":\"fqi\",\"name\":\"jvppwooajeyy\",\"type\":\"mjjxizxpxh\"}";
+            = "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Pinecone\",\"createdByWorkspaceArmId\":\"iggbnv\",\"error\":\"o\",\"expiryTime\":\"2021-08-03T06:36Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"obdoey\":\"oeamo\",\"kwmnfeub\":\"fpnimtwuuhaueg\",\"kwfugiphrrkuu\":\"zjy\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"zzfopu\"],\"target\":\"qusvwlujopwnib\",\"useWorkspaceManagedIdentity\":false},\"id\":\"zt\",\"name\":\"dqumqvfm\",\"type\":\"caddtgc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,29 +39,30 @@ public final class ProjectConnectionsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConnectionPropertiesV2BasicResource response = manager.projectConnections()
-            .define("nqd")
-            .withExistingProject("kwmnfeub", "zjy", "kwfugiphrrkuu")
-            .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.SAP_TABLE)
-                .withError("oqusvwlu")
-                .withExpiryTime(OffsetDateTime.parse("2021-11-03T07:18:20Z"))
-                .withIsSharedToAll(true)
-                .withMetadata(mapOf("u", "toztjd", "tgctxe", "qvfmwcad"))
-                .withPeRequirement(ManagedPERequirement.NOT_REQUIRED)
-                .withPeStatus(ManagedPEStatus.INACTIVE)
-                .withSharedUserList(Arrays.asList("rbelfnzz", "yizwbxgdebxla"))
-                .withTarget("no")
-                .withUseWorkspaceManagedIdentity(false))
-            .create();
+            .createWithResponse("rrynjcwmhly", "gnukxrkemjpe", "ulrlzaudgjtfbcl", "kkucddwnh",
+                new ConnectionPropertiesV2BasicResourceInner()
+                    .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.HUBSPOT)
+                        .withError("rjwayhicqq")
+                        .withExpiryTime(OffsetDateTime.parse("2021-09-21T19:19:24Z"))
+                        .withIsSharedToAll(true)
+                        .withMetadata(mapOf("v", "lizedvbia", "wkhojqttbspvkhg", "srgekzyqxadyfhb"))
+                        .withPeRequirement(ManagedPERequirement.REQUIRED)
+                        .withPeStatus(ManagedPEStatus.INACTIVE)
+                        .withSharedUserList(Arrays.asList("zstuj", "zx", "kn", "fdrld"))
+                        .withTarget("ehi")
+                        .withUseWorkspaceManagedIdentity(false)),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(ConnectionCategory.AMAZON_S3COMPATIBLE, response.properties().category());
-        Assertions.assertEquals("u", response.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T09:23:22Z"), response.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.PINECONE, response.properties().category());
+        Assertions.assertEquals("o", response.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T06:36Z"), response.properties().expiryTime());
         Assertions.assertTrue(response.properties().isSharedToAll());
-        Assertions.assertEquals("ufeapdrbzyvb", response.properties().metadata().get("uadulpodkaxpfo"));
-        Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, response.properties().peRequirement());
+        Assertions.assertEquals("oeamo", response.properties().metadata().get("obdoey"));
+        Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, response.properties().peRequirement());
         Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, response.properties().peStatus());
-        Assertions.assertEquals("adhfztlray", response.properties().sharedUserList().get(0));
-        Assertions.assertEquals("qxlcweakfecjvx", response.properties().target());
+        Assertions.assertEquals("zzfopu", response.properties().sharedUserList().get(0));
+        Assertions.assertEquals("qusvwlujopwnib", response.properties().target());
         Assertions.assertFalse(response.properties().useWorkspaceManagedIdentity());
     }
 

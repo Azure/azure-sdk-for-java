@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.resourcemanager.cognitiveservices.models.AccessKeyAuthTypeConnectionProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionAccessKey;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
-import com.azure.resourcemanager.cognitiveservices.models.ConnectionUpdateContent;
+import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,16 +26,17 @@ public final class AccountConnectionsUpdateSamples {
      */
     public static void
         updateAccountConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.accountConnections()
-            .updateWithResponse("test-rg", "account-1", "connection-1",
-                new ConnectionUpdateContent().withProperties(
-                    new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
-                        .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
-                        .withMetadata(mapOf())
-                        .withTarget("some_string")
-                        .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
-                            .withSecretAccessKey("fakeTokenPlaceholder"))),
-                com.azure.core.util.Context.NONE);
+        ConnectionPropertiesV2BasicResource resource = manager.accountConnections()
+            .getWithResponse("test-rg", "account-1", "connection-1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
+                .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
+                .withMetadata(mapOf())
+                .withTarget("some_string")
+                .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
+                    .withSecretAccessKey("fakeTokenPlaceholder")))
+            .apply();
     }
 
     // Use "Map.of" if available

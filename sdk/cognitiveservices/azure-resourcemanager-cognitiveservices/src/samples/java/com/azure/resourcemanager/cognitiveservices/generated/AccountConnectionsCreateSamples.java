@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
 import com.azure.resourcemanager.cognitiveservices.models.NoneAuthTypeConnectionProperties;
 import java.time.OffsetDateTime;
@@ -24,11 +23,11 @@ public final class AccountConnectionsCreateSamples {
     public static void
         createAccountConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.accountConnections()
-            .createWithResponse("resourceGroup-1", "account-1", "connection-1",
-                new ConnectionPropertiesV2BasicResourceInner().withProperties(
-                    new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
-                        .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
-                        .withTarget("[target url]")),
-                com.azure.core.util.Context.NONE);
+            .define("connection-1")
+            .withExistingAccount("resourceGroup-1", "account-1")
+            .withProperties(new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
+                .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
+                .withTarget("[target url]"))
+            .create();
     }
 }
