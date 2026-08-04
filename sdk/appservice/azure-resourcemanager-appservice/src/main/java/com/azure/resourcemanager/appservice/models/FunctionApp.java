@@ -560,6 +560,33 @@ public interface FunctionApp
              * @return the next stage of the web app update
              */
             WithCreate withCredentials(String username, String password);
+
+            /**
+             * Specifies that the function app's system-assigned managed identity is used to authenticate (pull) the
+             * image from the container registry, instead of a username and password. This is the recommended,
+             * passwordless way to pull from Azure Container Registry: enable the app's system-assigned managed identity
+             * and grant it the {@code AcrPull} role on the registry.
+             *
+             * @return the next stage of the definition
+             */
+            default WithCreate withManagedIdentityCredentials() {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
+
+            /**
+             * Specifies that the given user-assigned managed identity is used to authenticate (pull) the image from the
+             * container registry, instead of a username and password. This is the recommended, passwordless way to pull
+             * from Azure Container Registry: assign the user-assigned managed identity to the app and grant it the
+             * {@code AcrPull} role on the registry.
+             *
+             * @param userAssignedManagedIdentityClientId the client ID of the user-assigned managed identity
+             * @return the next stage of the definition
+             */
+            default WithCreate withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
         }
     }
 
@@ -792,6 +819,33 @@ public interface FunctionApp
              * @return the next stage of the web app update
              */
             Update withCredentials(String username, String password);
+
+            /**
+             * Specifies that the function app's system-assigned managed identity is used to authenticate (pull) the
+             * image from the container registry, instead of a username and password. This is the recommended,
+             * passwordless way to pull from Azure Container Registry: enable the app's system-assigned managed identity
+             * and grant it the {@code AcrPull} role on the registry.
+             *
+             * @return the next stage of the function app update
+             */
+            default Update withManagedIdentityCredentials() {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
+
+            /**
+             * Specifies that the given user-assigned managed identity is used to authenticate (pull) the image from the
+             * container registry, instead of a username and password. This is the recommended, passwordless way to pull
+             * from Azure Container Registry: assign the user-assigned managed identity to the app and grant it the
+             * {@code AcrPull} role on the registry.
+             *
+             * @param userAssignedManagedIdentityClientId the client ID of the user-assigned managed identity
+             * @return the next stage of the function app update
+             */
+            default Update withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
         }
 
         /** A function app update allowing scale rules to be set if hosted on Azure Container Apps environment. */

@@ -7,8 +7,11 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,28 +20,45 @@ public final class ExecuteStartContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteStartContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":257181558,\"retryWindowInMinutes\":224823369,\"onFailureAction\":\"Hibernate\"}},\"resources\":{\"ids\":[\"f\"]}}")
+            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":111264928,\"retryWindowInMinutes\":1317068560,\"onFailureAction\":\"Unknown\"},\"verifyVmAgentHealth\":false},\"resources\":{\"ids\":[\"qjbasvms\",\"jqul\",\"gsntnbybkzgcwr\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"xxwr\",\"resourceContext\":\"jdous\"},{\"resourceId\":\"cqvkocrcjdkwtn\",\"resourceContext\":\"xbnjbiksq\"},{\"resourceId\":\"gls\",\"resourceContext\":\"ainqpjwnzlljfm\"},{\"resourceId\":\"pee\",\"resourceContext\":\"vmgxsab\"}]}}")
             .toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(257181558, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(224823369, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.HIBERNATE,
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(111264928, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1317068560, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.UNKNOWN,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("f", model.resources().ids().get(0));
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("qjbasvms", model.resources().ids().get(0));
+        Assertions.assertEquals("xxwr", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("jdous", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteStartContent model = new ExecuteStartContent()
             .withExecutionParameters(
-                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(257181558)
-                    .withRetryWindowInMinutes(224823369)
-                    .withOnFailureAction(ResourceOperationType.HIBERNATE)))
-            .withResources(new Resources().withIds(Arrays.asList("f")));
+                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(111264928)
+                        .withRetryWindowInMinutes(1317068560)
+                        .withOnFailureAction(ResourceOperationType.UNKNOWN))
+                    .withVerifyVmAgentHealth(false))
+            .withResources(new Resources().withIds(Arrays.asList("qjbasvms", "jqul", "gsntnbybkzgcwr")))
+            .withResourcesWithContext(new ResourcesWithContext().withResources(
+                Arrays.asList(new ResourceWithContext().withResourceId("xxwr").withResourceContext("jdous"),
+                    new ResourceWithContext().withResourceId("cqvkocrcjdkwtn").withResourceContext("xbnjbiksq"),
+                    new ResourceWithContext().withResourceId("gls").withResourceContext("ainqpjwnzlljfm"),
+                    new ResourceWithContext().withResourceId("pee").withResourceContext("vmgxsab"))));
         model = BinaryData.fromObject(model).toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(257181558, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(224823369, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.HIBERNATE,
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(111264928, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1317068560, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.UNKNOWN,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("f", model.resources().ids().get(0));
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("qjbasvms", model.resources().ids().get(0));
+        Assertions.assertEquals("xxwr", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("jdous", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 }
