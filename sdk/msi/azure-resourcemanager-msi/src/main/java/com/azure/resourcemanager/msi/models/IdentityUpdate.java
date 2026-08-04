@@ -201,31 +201,6 @@ public final class IdentityUpdate extends ProxyResource {
     }
 
     /**
-     * Get the assignmentRestrictions property: Restrictions on which resource providers this identity can be assigned
-     * to.
-     * 
-     * @return the assignmentRestrictions value.
-     */
-    public AssignmentRestrictions assignmentRestrictions() {
-        return this.innerProperties() == null ? null : this.innerProperties().assignmentRestrictions();
-    }
-
-    /**
-     * Set the assignmentRestrictions property: Restrictions on which resource providers this identity can be assigned
-     * to.
-     * 
-     * @param assignmentRestrictions the assignmentRestrictions value to set.
-     * @return the IdentityUpdate object itself.
-     */
-    public IdentityUpdate withAssignmentRestrictions(AssignmentRestrictions assignmentRestrictions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UserAssignedIdentityProperties();
-        }
-        this.innerProperties().withAssignmentRestrictions(assignmentRestrictions);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

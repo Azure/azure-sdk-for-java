@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class CommunityGalleryImageVersionsListSamples {
     /*
-     * x-ms-original-file: 2025-03-03/communityGalleryExamples/CommunityGalleryImageVersion_List.json
+     * x-ms-original-file: 2025-12-03/communityGalleryExamples/CommunityGalleryImageVersion_List.json
      */
     /**
      * Sample code: List community gallery image versions.

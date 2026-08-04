@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class QuotaRequestStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusFailed.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusFailed.json
      */
     /**
      * Sample code: QuotaRequestFailed.
@@ -24,7 +24,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusById.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusById.json
      */
     /**
      * Sample code: QuotaRequestStatus.
@@ -39,7 +39,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusInProgress.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusInProgress.json
      */
     /**
      * Sample code: QuotaRequestInProgress.

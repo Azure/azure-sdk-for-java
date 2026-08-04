@@ -20,7 +20,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -185,13 +184,6 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        StorageAccount storageAccount = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 17))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess()
-            .create();
-
         VirtualMachine vm = this.computeManager.virtualMachines()
             .define(generateRandomResourceName("vm", 10))
             .withRegion(region)
@@ -202,17 +194,9 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername(userName)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks()
-            .defineUnmanagedDataDisk("disk-1")
-            .withNewVhd(100)
-            .withLun(1)
-            .attach()
-            .defineUnmanagedDataDisk("disk-2")
-            .withNewVhd(50)
-            .withLun(2)
-            .attach()
+            .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
+            .withNewDataDisk(50, 2, CachingTypes.READ_WRITE)
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
-            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(vm);

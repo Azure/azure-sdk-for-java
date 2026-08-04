@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ElasticPoolOperationsListByElasticPoolSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListElasticPoolOperations.json
+     * x-ms-original-file: 2025-01-01/ListElasticPoolOperations.json
      */
     /**
      * Sample code: List the elastic pool management operations.

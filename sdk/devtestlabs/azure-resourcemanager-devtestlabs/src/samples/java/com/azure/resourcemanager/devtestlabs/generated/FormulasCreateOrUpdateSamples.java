@@ -44,7 +44,7 @@ public final class FormulasCreateOrUpdateSamples {
                     .withParameters(Arrays.asList())))
                 .withGalleryImageReference(new GalleryImageReference().withOffer("0001-com-ubuntu-server-groovy")
                     .withPublisher("canonical")
-                    .withSku("2010")
+                    .withSku("20_10")
                     .withOsType("Linux")
                     .withVersion("latest"))
                 .withNetworkInterface(new NetworkInterfaceProperties().withSharedPublicIpAddressConfiguration(

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceOperationsCancelSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CancelManagedInstanceOperation.json
+     * x-ms-original-file: 2025-01-01/CancelManagedInstanceOperation.json
      */
     /**
      * Sample code: Cancel the managed instance management operation.

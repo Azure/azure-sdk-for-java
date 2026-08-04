@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/enclave/ci.yml
+      - sdk/enclave/azure-resourcemanager-enclave/
+    exclude:
+      - sdk/enclave/pom.xml
+      - sdk/enclave/azure-resourcemanager-enclave/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/enclave/ci.yml
+      - sdk/enclave/azure-resourcemanager-enclave/
+    exclude:
+      - sdk/enclave/pom.xml
+      - sdk/enclave/azure-resourcemanager-enclave/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerenclave
+    displayName: azure-resourcemanager-enclave
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: enclave
+    Artifacts:
+      - name: azure-resourcemanager-enclave
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerenclave
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerenclave }}

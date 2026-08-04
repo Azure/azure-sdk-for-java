@@ -127,7 +127,7 @@
  */
 public final class ExtensionMetadataGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionMetadata_Get.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionMetadata_Get.json
      */
     /**
      * Sample code: GET an extensions metadata.
@@ -150,7 +150,7 @@ public final class ExtensionMetadataGetSamples {
  */
 public final class ExtensionMetadataListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionMetadata_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionMetadata_List.json
      */
     /**
      * Sample code: GET a list of extensions.
@@ -172,7 +172,7 @@ public final class ExtensionMetadataListSamples {
  */
 public final class ExtensionMetadataV2GetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionMetadataV2_Get.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionMetadataV2_Get.json
      */
     /**
      * Sample code: GET an extension metadata.
@@ -195,7 +195,7 @@ public final class ExtensionMetadataV2GetSamples {
  */
 public final class ExtensionMetadataV2ListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionMetadataV2_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionMetadataV2_List.json
      */
     /**
      * Sample code: GET a list of extension metadata.
@@ -218,7 +218,7 @@ public final class ExtensionMetadataV2ListSamples {
  */
 public final class ExtensionPublisherListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionPublisher_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionPublisher_List.json
      */
     /**
      * Sample code: GET a list of extension publishers.
@@ -240,7 +240,7 @@ public final class ExtensionPublisherListSamples {
  */
 public final class ExtensionTypeListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/ExtensionType_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/ExtensionType_List.json
      */
     /**
      * Sample code: GET a list of extension types.
@@ -264,7 +264,7 @@ import java.util.Arrays;
  */
 public final class GatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Gateway.
@@ -278,6 +278,7 @@ public final class GatewaysCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withGatewayType(GatewayType.PUBLIC)
             .withAllowedFeatures(Arrays.asList("*"))
+            .withGatewayBypass(Arrays.asList("contoso.com", "internal.corp.net"))
             .create();
     }
 }
@@ -291,7 +292,7 @@ public final class GatewaysCreateOrUpdateSamples {
  */
 public final class GatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_Delete.json
      */
     /**
      * Sample code: Delete a Gateway.
@@ -312,7 +313,7 @@ public final class GatewaysDeleteSamples {
  */
 public final class GatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_Get.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_Get.json
      */
     /**
      * Sample code: Get Gateway.
@@ -334,7 +335,7 @@ public final class GatewaysGetByResourceGroupSamples {
  */
 public final class GatewaysListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_ListBySubscription.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_ListBySubscription.json
      */
     /**
      * Sample code: List Gateways by Subscription.
@@ -356,7 +357,7 @@ public final class GatewaysListSamples {
  */
 public final class GatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_ListByResourceGroup.json
      */
     /**
      * Sample code: List Gateways by Resource Group.
@@ -381,7 +382,7 @@ import java.util.Arrays;
  */
 public final class GatewaysUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_Update.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_Update.json
      */
     /**
      * Sample code: Update a Gateway.
@@ -392,7 +393,10 @@ public final class GatewaysUpdateSamples {
         Gateway resource = manager.gateways()
             .getByResourceGroupWithResponse("myResourceGroup", "{gatewayName}", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withAllowedFeatures(Arrays.asList("*")).apply();
+        resource.update()
+            .withAllowedFeatures(Arrays.asList("*"))
+            .withGatewayBypass(Arrays.asList("contoso.com", "internal.corp.net"))
+            .apply();
     }
 }
 ```
@@ -410,7 +414,7 @@ import java.util.Arrays;
  */
 public final class LicenseProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a License Profile.
@@ -442,7 +446,7 @@ public final class LicenseProfilesCreateOrUpdateSamples {
  */
 public final class LicenseProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_Delete.json
      */
     /**
      * Sample code: Delete a License Profile.
@@ -463,7 +467,7 @@ public final class LicenseProfilesDeleteSamples {
  */
 public final class LicenseProfilesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_Get.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_Get.json
      */
     /**
      * Sample code: Get License Profile.
@@ -484,7 +488,7 @@ public final class LicenseProfilesGetSamples {
  */
 public final class LicenseProfilesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_List.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_List.json
      */
     /**
      * Sample code: List all License Profiles.
@@ -511,7 +515,7 @@ import java.util.Arrays;
  */
 public final class LicenseProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_Update.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_Update.json
      */
     /**
      * Sample code: Update a License Profile.
@@ -549,7 +553,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
  */
 public final class LicensesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a License.
@@ -580,7 +584,7 @@ public final class LicensesCreateOrUpdateSamples {
  */
 public final class LicensesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_Delete.json
      */
     /**
      * Sample code: Delete a License.
@@ -601,7 +605,7 @@ public final class LicensesDeleteSamples {
  */
 public final class LicensesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_Get.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_Get.json
      */
     /**
      * Sample code: Get License.
@@ -623,7 +627,7 @@ public final class LicensesGetByResourceGroupSamples {
  */
 public final class LicensesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_ListBySubscription.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_ListBySubscription.json
      */
     /**
      * Sample code: List Licenses by Subscription.
@@ -645,7 +649,7 @@ public final class LicensesListSamples {
  */
 public final class LicensesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_ListByResourceGroup.json
      */
     /**
      * Sample code: GET all Machine Extensions.
@@ -673,7 +677,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
  */
 public final class LicensesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_Update.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_Update.json
      */
     /**
      * Sample code: Update a License.
@@ -712,7 +716,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
  */
 public final class LicensesValidateLicenseSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_ValidateLicense.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_ValidateLicense.json
      */
     /**
      * Sample code: Validate a License.
@@ -745,7 +749,7 @@ import java.util.Map;
  */
 public final class MachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.
@@ -789,7 +793,7 @@ public final class MachineExtensionsCreateOrUpdateSamples {
  */
 public final class MachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Delete.json
      */
     /**
      * Sample code: Delete a Machine Extension.
@@ -810,7 +814,7 @@ public final class MachineExtensionsDeleteSamples {
  */
 public final class MachineExtensionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_Get.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Get.json
      */
     /**
      * Sample code: GET Machine Extension.
@@ -832,7 +836,7 @@ public final class MachineExtensionsGetSamples {
  */
 public final class MachineExtensionsListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_List.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_List.json
      */
     /**
      * Sample code: GET all Machine Extensions - List.
@@ -858,7 +862,7 @@ import java.util.Map;
  */
 public final class MachineExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_Update.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Update.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.
@@ -906,7 +910,7 @@ import java.util.Arrays;
  */
 public final class MachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/runCommand/RunCommands_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/runCommand/RunCommands_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Run Command.
@@ -941,7 +945,7 @@ public final class MachineRunCommandsCreateOrUpdateSamples {
  */
 public final class MachineRunCommandsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/runCommand/RunCommands_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/runCommand/RunCommands_Delete.json
      */
     /**
      * Sample code: Delete a Machine Run Command.
@@ -963,7 +967,7 @@ public final class MachineRunCommandsDeleteSamples {
  */
 public final class MachineRunCommandsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/runCommand/RunCommands_Get.json
+     * x-ms-original-file: 2026-06-16-preview/runCommand/RunCommands_Get.json
      */
     /**
      * Sample code: Get a Run Command.
@@ -985,7 +989,7 @@ public final class MachineRunCommandsGetSamples {
  */
 public final class MachineRunCommandsListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/runCommand/RunCommands_List.json
+     * x-ms-original-file: 2026-06-16-preview/runCommand/RunCommands_List.json
      */
     /**
      * Sample code: GET all Machine Run Commands.
@@ -1006,7 +1010,7 @@ public final class MachineRunCommandsListSamples {
  */
 public final class MachinesAssessPatchesSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machine_AssessPatches.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machine_AssessPatches.json
      */
     /**
      * Sample code: Assess patch state of a machine.
@@ -1023,19 +1027,19 @@ public final class MachinesAssessPatchesSamples {
 ### Machines_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
+import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
-import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
 
 /**
  * Samples for Machines CreateOrUpdate.
  */
 public final class MachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine.
@@ -1047,7 +1051,7 @@ public final class MachinesCreateOrUpdateSamples {
             .define("myMachine")
             .withRegion("eastus2euap")
             .withExistingResourceGroup("myResourceGroup")
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .withLocationData(new LocationData().withName("Redmond"))
             .withOsProfile(new OSProfile()
                 .withWindowsConfiguration(new OSProfileWindowsConfiguration().withEnableHotpatching(true)))
@@ -1056,9 +1060,9 @@ public final class MachinesCreateOrUpdateSamples {
             .withIdentityKeyStore(IdentityKeyStore.TPM)
             .withTpmEkCertificate("string")
             .withPrivateLinkScopeResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
             .withParentClusterResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
             .create();
     }
 }
@@ -1072,7 +1076,7 @@ public final class MachinesCreateOrUpdateSamples {
  */
 public final class MachinesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Delete.json
      */
     /**
      * Sample code: Delete a Machine.
@@ -1095,7 +1099,7 @@ import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
  */
 public final class MachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
      */
     /**
      * Sample code: Get Machine with License Profile Instance View.
@@ -1110,7 +1114,7 @@ public final class MachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Get.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Get.json
      */
     /**
      * Sample code: Get Machine.
@@ -1140,7 +1144,7 @@ import java.util.Arrays;
  */
 public final class MachinesInstallPatchesSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machine_InstallPatches.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machine_InstallPatches.json
      */
     /**
      * Sample code: Install patch state of a machine.
@@ -1172,7 +1176,7 @@ public final class MachinesInstallPatchesSamples {
  */
 public final class MachinesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_ListBySubscription.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_ListBySubscription.json
      */
     /**
      * Sample code: List Machines by resource group.
@@ -1194,7 +1198,7 @@ public final class MachinesListSamples {
  */
 public final class MachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_ListByResourceGroup.json
      */
     /**
      * Sample code: List Machines by resource group.
@@ -1212,21 +1216,21 @@ public final class MachinesListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.hybridcompute.models.AssessmentModeTypes;
-import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
+import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileLinuxConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.PatchModeTypes;
-import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
 
 /**
  * Samples for Machines Update.
  */
 public final class MachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Update.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Update.json
      */
     /**
      * Sample code: Update a Machine.
@@ -1238,7 +1242,7 @@ public final class MachinesUpdateSamples {
             .getByResourceGroupWithResponse("myResourceGroup", "myMachine", null, com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .withLocationData(new LocationData().withName("Redmond"))
             .withOsProfile(new OSProfile()
                 .withWindowsConfiguration(
@@ -1249,9 +1253,9 @@ public final class MachinesUpdateSamples {
                     new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
                         .withPatchMode(PatchModeTypes.MANUAL)))
             .withParentClusterResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster")
             .withPrivateLinkScopeResourceId(
-                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName")
             .withIdentityKeyStore("TPM")
             .withTpmEkCertificate("string")
             .apply();
@@ -1267,7 +1271,7 @@ public final class MachinesUpdateSamples {
  */
 public final class NetworkProfileGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/NetworkProfile_Get.json
+     * x-ms-original-file: 2026-06-16-preview/NetworkProfile_Get.json
      */
     /**
      * Sample code: GET Network Profile.
@@ -1289,7 +1293,7 @@ public final class NetworkProfileGetSamples {
 public final class NetworkSecurityPerimeterConfigurationsGetByPrivateLinkScopeSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
+     * 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
      */
     /**
      * Sample code: Gets the network security perimeter configuration of the private link scope.
@@ -1314,7 +1318,7 @@ public final class NetworkSecurityPerimeterConfigurationsGetByPrivateLinkScopeSa
 public final class NetworkSecurityPerimeterConfigurationsListByPrivateLinkScopeSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
+     * 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
      */
     /**
      * Sample code: Gets the list of network security perimeter configurations of the private link scope.
@@ -1338,7 +1342,7 @@ public final class NetworkSecurityPerimeterConfigurationsListByPrivateLinkScopeS
 public final class NetworkSecurityPerimeterConfigurationsReconcileForPrivateLinkScopeSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
+     * 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
      */
     /**
      * Sample code: Reconciles the network security perimeter configuration of the private link scope.
@@ -1362,7 +1366,7 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileForPrivateLink
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/Operations_List.json
+     * x-ms-original-file: 2026-06-16-preview/Operations_List.json
      */
     /**
      * Sample code: List Hybrid Compute Provider Operations.
@@ -1387,7 +1391,7 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkServiceConnecti
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateEndpoint/PrivateEndpointConnection_Update.json
+     * x-ms-original-file: 2026-06-16-preview/privateEndpoint/PrivateEndpointConnection_Update.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
@@ -1415,7 +1419,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateEndpoint/PrivateEndpointConnection_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/privateEndpoint/PrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
@@ -1439,7 +1443,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateEndpoint/PrivateEndpointConnection_Get.json
+     * x-ms-original-file: 2026-06-16-preview/privateEndpoint/PrivateEndpointConnection_Get.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -1463,7 +1467,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByPrivateLinkScopeSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateEndpoint/PrivateEndpointConnection_List.json
+     * x-ms-original-file: 2026-06-16-preview/privateEndpoint/PrivateEndpointConnection_List.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a private link scope.
@@ -1486,7 +1490,7 @@ public final class PrivateEndpointConnectionsListByPrivateLinkScopeSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopePrivateLinkResource_Get.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopePrivateLinkResource_Get.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -1510,7 +1514,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListByPrivateLinkScopeSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopePrivateLinkResource_ListGet.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopePrivateLinkResource_ListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -1536,7 +1540,7 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
      */
     /**
      * Sample code: PrivateLinkScopeCreate.
@@ -1552,7 +1556,7 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdate.
@@ -1590,7 +1594,7 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
  */
 public final class PrivateLinkScopesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Delete.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Delete.json
      */
     /**
      * Sample code: PrivateLinkScopesDelete.
@@ -1612,7 +1616,7 @@ public final class PrivateLinkScopesDeleteSamples {
  */
 public final class PrivateLinkScopesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Get.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Get.json
      */
     /**
      * Sample code: PrivateLinkScopeGet.
@@ -1635,7 +1639,7 @@ public final class PrivateLinkScopesGetByResourceGroupSamples {
  */
 public final class PrivateLinkScopesGetValidationDetailsSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
      */
     /**
      * Sample code: PrivateLinkScopeGet.
@@ -1658,7 +1662,7 @@ public final class PrivateLinkScopesGetValidationDetailsSamples {
  */
 public final class PrivateLinkScopesGetValidationDetailsForMachineSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
      */
     /**
      * Sample code: PrivateLinkScopeGet.
@@ -1681,7 +1685,7 @@ public final class PrivateLinkScopesGetValidationDetailsForMachineSamples {
  */
 public final class PrivateLinkScopesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_List.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_List.json
      */
     /**
      * Sample code: PrivateLinkScopesList.json.
@@ -1702,7 +1706,7 @@ public final class PrivateLinkScopesListSamples {
  */
 public final class PrivateLinkScopesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
      */
     /**
      * Sample code: PrivateLinkScopeListByResourceGroup.
@@ -1728,7 +1732,7 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+     * x-ms-original-file: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdateTagsOnly.
@@ -1770,7 +1774,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderSetupExtensionsSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_Add.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Add.json
      */
     /**
      * Sample code: Setup Machine Extensions.
@@ -1803,7 +1807,7 @@ import java.util.Map;
  */
 public final class ResourceProviderUpgradeExtensionsSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extensions_Upgrade.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.
@@ -1841,7 +1845,7 @@ public final class ResourceProviderUpgradeExtensionsSamples {
  */
 public final class SettingsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/settings/SettingsGet.json
+     * x-ms-original-file: 2026-06-16-preview/settings/SettingsGet.json
      */
     /**
      * Sample code: NetworkConfigurationsGet.
@@ -1866,7 +1870,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
  */
 public final class SettingsOperationPatchSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/settings/SettingsPatch.json
+     * x-ms-original-file: 2026-06-16-preview/settings/SettingsPatch.json
      */
     /**
      * Sample code: NetworkConfigurationsPatch.
@@ -1894,7 +1898,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
  */
 public final class SettingsOperationUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/settings/SettingsUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/settings/SettingsUpdate.json
      */
     /**
      * Sample code: SettingsUpdate.

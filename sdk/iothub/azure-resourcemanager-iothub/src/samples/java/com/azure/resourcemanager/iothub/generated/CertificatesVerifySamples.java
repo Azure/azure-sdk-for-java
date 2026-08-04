@@ -11,7 +11,7 @@ import com.azure.resourcemanager.iothub.models.CertificateVerificationDescriptio
  */
 public final class CertificatesVerifySamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_certverify.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_certverify.json
      */
     /**
      * Sample code: Certificates_Verify.

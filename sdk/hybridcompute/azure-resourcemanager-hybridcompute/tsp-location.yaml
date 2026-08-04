@@ -1,4 +1,4 @@
 directory: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/HybridCompute
-commit: e64d37d1c60bdfc5dce4673808c09a50a12d1fd5
+commit: 0e55128a206a1be3feb030e748074722e98e5dcf
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
