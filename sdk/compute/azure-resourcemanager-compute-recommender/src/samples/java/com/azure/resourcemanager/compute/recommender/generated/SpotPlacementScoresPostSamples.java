@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class SpotPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2025-06-05/GenerateSpotPlacementScores.json
+     * x-ms-original-file: 2026-05-05-preview/GenerateSpotPlacementScores.json
      */
     /**
      * Sample code: Returns spot VM placement scores for given configurations.
