@@ -127,6 +127,10 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
+        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            containerName = sessionOptions.getContainerName();
+        }
+
         BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
 
         /*
@@ -168,6 +172,10 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
+        }
+
+        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            containerName = sessionOptions.getContainerName();
         }
 
         BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);

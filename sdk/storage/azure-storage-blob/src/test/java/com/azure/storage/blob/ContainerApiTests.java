@@ -2493,4 +2493,5 @@ public class ContainerApiTests extends BlobTestBase {
             .setAccountName(cc.getAccountName());
         return getOAuthServiceClient(sessionOptions, policies).getBlobContainerClient(cc.getBlobContainerName());
     }
+
 }
