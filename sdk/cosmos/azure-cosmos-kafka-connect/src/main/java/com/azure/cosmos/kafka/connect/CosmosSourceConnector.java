@@ -447,6 +447,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                 containerFeedRange,
                 this.getContinuationStateFromOffset(
                     feedRangeContinuationTopicOffset,
+                    containerFeedRange,
                     containerFeedRange));
 
             return Mono.just(effectiveContinuationMap);
@@ -481,11 +482,14 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                             );
 
                             if (continuationTopicOffset == null) {
-                                effectiveContinuationMap.put(overlappedFeedRangesFromOffset.get(0), null);
+                                effectiveContinuationMap.put(containerFeedRange, null);
                             } else {
                                 effectiveContinuationMap.put(
                                     containerFeedRange,
-                                    this.getContinuationStateFromOffset(continuationTopicOffset, containerFeedRange));
+                                    this.getContinuationStateFromOffset(
+                                        continuationTopicOffset,
+                                        overlappedFeedRangesFromOffset.get(0),
+                                        containerFeedRange));
                             }
 
                             return Mono.just(effectiveContinuationMap);
@@ -507,6 +511,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                                         overlappedRangeFromOffset,
                                         this.getContinuationStateFromOffset(
                                             this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(databaseName, containerRid, overlappedRangeFromOffset),
+                                            overlappedRangeFromOffset,
                                             overlappedRangeFromOffset));
                                 }
                             }
@@ -522,15 +527,16 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
     private KafkaCosmosChangeFeedState getContinuationStateFromOffset(
         FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset,
-        FeedRange feedRange) {
+        FeedRange offsetFeedRange,
+        FeedRange targetFeedRange) {
 
-        KafkaCosmosChangeFeedState changeFeedState =
+        KafkaCosmosChangeFeedState offsetState =
             new KafkaCosmosChangeFeedState(
                 feedRangeContinuationTopicOffset.getResponseContinuation(),
-                feedRange,
+                offsetFeedRange,
                 feedRangeContinuationTopicOffset.getItemLsn());
 
-        return changeFeedState;
+        return offsetState.extractForFeedRange(targetFeedRange);
     }
 
     private List<FeedRange> getFeedRanges(CosmosContainerProperties containerProperties) {

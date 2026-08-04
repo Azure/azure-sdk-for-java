@@ -433,6 +433,7 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
+            String extractContinuationForFeedRange(String continuation, FeedRange targetRange);
 
             CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
 

@@ -25,7 +25,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -318,33 +318,68 @@ public final class CosmosChangeFeedRequestOptions {
      */
     static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation, FeedRange targetRange, String continuationLsn) {
-        if (targetRange instanceof FeedRangeEpkImpl) {
-            Range<String> normalizedRange =
-                FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
+        return createForProcessingFromContinuation(
+            projectContinuationToFeedRange(continuation, targetRange, continuationLsn));
+    }
 
-            final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
+    static String extractContinuationForFeedRange(String continuation, FeedRange targetRange) {
+        return projectContinuationToFeedRange(continuation, targetRange, null).toString();
+    }
 
-            if (StringUtils.isEmpty(continuationLsn)) {
-                continuationLsn = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
-            }
+    private static ChangeFeedState projectContinuationToFeedRange(
+        String continuation,
+        FeedRange targetRange,
+        String continuationLsn) {
 
-            ChangeFeedState targetChangeFeedState =
-                new ChangeFeedStateV1(
-                    changeFeedState.getContainerRid(),
-                    (FeedRangeEpkImpl) targetRange,
-                    changeFeedState.getMode(),
-                    changeFeedState.getStartFromSettings(),
-                    FeedRangeContinuation.create(
-                        changeFeedState.getContainerRid(),
-                        (FeedRangeEpkImpl) targetRange,
-                        Arrays.asList(new CompositeContinuationToken(continuationLsn, normalizedRange))
-                    )
-                );
-
-            return createForProcessingFromContinuation(targetChangeFeedState);
+        if (!(targetRange instanceof FeedRangeEpkImpl)) {
+            throw new IllegalStateException(
+                "createForProcessingFromContinuation does not support feedRange type "
+                    + (targetRange == null ? "null" : targetRange.getClass()));
         }
 
-        throw new IllegalStateException("createForProcessingFromContinuation does not support feedRange type " + targetRange.getClass());
+        Range<String> normalizedRange =
+            FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
+        ChangeFeedState parentState = ChangeFeedState.fromString(continuation);
+        FeedRangeContinuation parentContinuation = parentState.getContinuation();
+        if (parentContinuation == null) {
+            throw new IllegalStateException("The change feed continuation does not contain continuation tokens.");
+        }
+
+        CompositeContinuationToken parentCurrentToken = parentContinuation.getCurrentContinuationToken();
+        boolean overlapsTarget = parentState.extractContinuationTokens().stream()
+            .anyMatch(token -> Range.checkOverlapping(token.getRange(), normalizedRange));
+        if (!overlapsTarget) {
+            throw new IllegalStateException(
+                "The change feed continuation does not overlap target feed range " + targetRange);
+        }
+
+        ChangeFeedState targetState = parentState.extractForEffectiveRange(normalizedRange);
+        List<CompositeContinuationToken> targetTokens = targetState.extractContinuationTokens();
+
+        if (StringUtils.isEmpty(continuationLsn)
+            || parentCurrentToken == null
+            || !Range.checkOverlapping(parentCurrentToken.getRange(), normalizedRange)) {
+            return targetState;
+        }
+
+        List<CompositeContinuationToken> updatedTokens = new ArrayList<>(targetTokens.size());
+        for (CompositeContinuationToken targetToken : targetTokens) {
+            String token = Range.checkOverlapping(parentCurrentToken.getRange(), targetToken.getRange())
+                ? continuationLsn
+                : targetToken.getToken();
+            updatedTokens.add(new CompositeContinuationToken(token, targetToken.getRange()));
+        }
+
+        FeedRangeEpkImpl effectiveTargetRange = (FeedRangeEpkImpl) targetState.getFeedRange();
+        return new ChangeFeedStateV1(
+            targetState.getContainerRid(),
+            effectiveTargetRange,
+            targetState.getMode(),
+            targetState.getStartFromSettings(),
+            FeedRangeContinuation.create(
+                targetState.getContainerRid(),
+                effectiveTargetRange,
+                updatedTokens));
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
@@ -750,6 +785,11 @@ public final class CosmosChangeFeedRequestOptions {
                     String continuationLsn) {
 
                     return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation, targetRange, continuationLsn);
+                }
+
+                @Override
+                public String extractContinuationForFeedRange(String continuation, FeedRange targetRange) {
+                    return CosmosChangeFeedRequestOptions.extractContinuationForFeedRange(continuation, targetRange);
                 }
 
                 @Override

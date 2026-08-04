@@ -372,6 +372,19 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                     multiPartitionContainer.getResourceId(),
                     FeedRange.forFullRange());
 
+            List<FeedRange> currentFeedRanges = cosmosAsyncClient
+                .getDatabase(databaseName)
+                .getContainer(multiPartitionContainer.getId())
+                .getFeedRanges()
+                .block();
+            List<CompositeContinuationToken> childContinuationTokens = new ArrayList<>();
+            for (int i = 0; i < currentFeedRanges.size(); i++) {
+                childContinuationTokens.add(
+                    new CompositeContinuationToken(
+                        String.valueOf(100 + i),
+                        ((FeedRangeEpkImpl) currentFeedRanges.get(i)).getRange()));
+            }
+
             String initialContinuationState = new ChangeFeedStateV1(
                 multiPartitionContainer.getResourceId(),
                 FeedRangeEpkImpl.forFullRange(),
@@ -380,10 +393,10 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 FeedRangeContinuation.create(
                     multiPartitionContainer.getResourceId(),
                     FeedRangeEpkImpl.forFullRange(),
-                    Arrays.asList(new CompositeContinuationToken("1", FeedRangeEpkImpl.forFullRange().getRange())))).toString();
+                    childContinuationTokens)).toString();
 
             FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
-                new FeedRangeContinuationTopicOffset(initialContinuationState, "1"); // using the same itemLsn as in the continuationToken
+                new FeedRangeContinuationTopicOffset(initialContinuationState, "100");
             Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
             initialOffsetMap.put(
                 FeedRangeContinuationTopicPartition.toMap(feedRangeContinuationTopicPartition),
@@ -844,11 +857,13 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState = null;
                 if (StringUtils.isNotEmpty(continuationState)) {
                     ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(continuationState);
+                    ChangeFeedState projectedState = changeFeedState.extractForEffectiveRange(
+                        ((FeedRangeEpkImpl) feedRange).getRange());
                     kafkaCosmosChangeFeedState =
                         new KafkaCosmosChangeFeedState(
-                            continuationState,
+                            projectedState.toString(),
                             feedRange,
-                            changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
+                            null);
                 }
 
                 return new FeedRangeTaskUnit(
