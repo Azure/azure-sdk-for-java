@@ -20,7 +20,7 @@ public final class MachineUpdate extends ResourceUpdate {
     /*
      * Identity for the resource.
      */
-    private Identity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
@@ -43,7 +43,7 @@ public final class MachineUpdate extends ResourceUpdate {
      * 
      * @return the identity value.
      */
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -53,7 +53,7 @@ public final class MachineUpdate extends ResourceUpdate {
      * @param identity the identity value to set.
      * @return the MachineUpdate object itself.
      */
-    public MachineUpdate withIdentity(Identity identity) {
+    public MachineUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -320,7 +320,7 @@ public final class MachineUpdate extends ResourceUpdate {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMachineUpdate.withTags(tags);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedMachineUpdate.identity = Identity.fromJson(reader);
+                    deserializedMachineUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedMachineUpdate.kind = ArcKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {

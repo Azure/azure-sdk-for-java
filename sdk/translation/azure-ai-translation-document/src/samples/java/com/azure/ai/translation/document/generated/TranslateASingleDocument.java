@@ -17,7 +17,8 @@ public class TranslateASingleDocument {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.translate.translate-a-single-document
-        BinaryData response = singleDocumentTranslationClient.translate("es", null, "en", null, null);
+        BinaryData response
+            = singleDocumentTranslationClient.translate("es", null, "en", null, "gpt-4o-mini", null, true);
         // END:com.azure.ai.translation.document.generated.translate.translate-a-single-document
     }
 }

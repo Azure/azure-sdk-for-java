@@ -43,6 +43,15 @@ public interface Identity
     String clientId();
 
     /**
+     * Gets the isolation scope of the identity, which configures regional restrictions on identity assignment.
+     *
+     * @return the isolation scope of the identity
+     */
+    default IsolationScope isolationScope() {
+        throw new UnsupportedOperationException("[isolationScope] is not supported in " + getClass());
+    }
+
+    /**
      * Container interface for all the definitions related to identity.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
@@ -137,11 +146,27 @@ public interface Identity
         }
 
         /**
+         * The stage of the identity definition allowing to specify the isolation scope.
+         */
+        interface WithIsolationScope {
+            /**
+             * Specifies the isolation scope of the identity, which configures regional restrictions
+             * on identity assignment.
+             *
+             * @param isolationScope the isolation scope of the identity
+             * @return the next stage of the definition
+             */
+            default WithCreate withIsolationScope(IsolationScope isolationScope) {
+                throw new UnsupportedOperationException("[withIsolationScope] is not supported in " + getClass());
+            }
+        }
+
+        /**
          * The stage of the identity definition which contains all the minimum required inputs for
          * the resource to be created but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Resource.DefinitionWithTags<WithCreate>, Creatable<Identity>, DefinitionStages.WithAccess {
+        interface WithCreate extends Resource.DefinitionWithTags<WithCreate>, Creatable<Identity>,
+            DefinitionStages.WithAccess, DefinitionStages.WithIsolationScope {
         }
     }
 
@@ -237,11 +262,28 @@ public interface Identity
              */
             Update withoutAccessTo(String resourceId, BuiltInRole role);
         }
+
+        /**
+         * The stage of the identity update allowing to specify the isolation scope.
+         */
+        interface WithIsolationScope {
+            /**
+             * Specifies the isolation scope of the identity, which configures regional restrictions
+             * on identity assignment.
+             *
+             * @param isolationScope the isolation scope of the identity
+             * @return the next stage of the update
+             */
+            default Update withIsolationScope(IsolationScope isolationScope) {
+                throw new UnsupportedOperationException("[withIsolationScope] is not supported in " + getClass());
+            }
+        }
     }
 
     /**
      * The template for an identity update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Identity>, UpdateStages.WithAccess, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<Identity>, UpdateStages.WithAccess, UpdateStages.WithIsolationScope,
+        Resource.UpdateWithTags<Update> {
     }
 }

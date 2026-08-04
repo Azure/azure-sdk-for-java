@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class ResourceProviderCommonGetSubscriptionQuotaSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_usages.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_usages.json
      */
     /**
      * Sample code: ResourceProviderCommon_GetSubscriptionQuota.

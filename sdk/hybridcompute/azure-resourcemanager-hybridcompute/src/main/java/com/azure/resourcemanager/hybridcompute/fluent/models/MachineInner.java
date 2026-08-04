@@ -17,10 +17,11 @@ import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
-import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
+import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
@@ -48,7 +49,7 @@ public final class MachineInner extends Resource {
     /*
      * Identity for the resource.
      */
-    private Identity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
@@ -104,7 +105,7 @@ public final class MachineInner extends Resource {
      * 
      * @return the identity value.
      */
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -114,7 +115,7 @@ public final class MachineInner extends Resource {
      * @param identity the identity value to set.
      * @return the MachineInner object itself.
      */
-    public MachineInner withIdentity(Identity identity) {
+    public MachineInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -371,6 +372,16 @@ public final class MachineInner extends Resource {
         }
         this.innerProperties().withLicenseProfile(licenseProfile);
         return this;
+    }
+
+    /**
+     * Get the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    public MachineStatusReason statusReason() {
+        return this.innerProperties() == null ? null : this.innerProperties().statusReason();
     }
 
     /**
@@ -814,7 +825,7 @@ public final class MachineInner extends Resource {
                         = reader.readArray(reader1 -> MachineExtensionInner.fromJson(reader1));
                     deserializedMachineInner.resources = resources;
                 } else if ("identity".equals(fieldName)) {
-                    deserializedMachineInner.identity = Identity.fromJson(reader);
+                    deserializedMachineInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedMachineInner.kind = ArcKindEnum.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {

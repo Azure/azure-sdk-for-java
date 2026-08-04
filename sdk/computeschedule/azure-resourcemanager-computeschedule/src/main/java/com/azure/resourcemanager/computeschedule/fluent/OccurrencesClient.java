@@ -145,7 +145,7 @@ public interface OccurrencesClient {
         String occurrenceId, CancelOccurrenceRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -162,7 +162,7 @@ public interface OccurrencesClient {
         beginDelay(String resourceGroupName, String scheduledActionName, String occurrenceId, DelayRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -181,7 +181,7 @@ public interface OccurrencesClient {
             Context context);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -197,7 +197,7 @@ public interface OccurrencesClient {
         String occurrenceId, DelayRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.

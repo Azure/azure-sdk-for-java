@@ -76,8 +76,8 @@ public final class FinalCoverageTests {
 
     @Test
     public void testStacQueryableRoundTrip() throws Exception {
-        Map<String, Object> def = new HashMap<>();
-        def.put("type", "string");
+        Map<String, BinaryData> def = new HashMap<>();
+        def.put("type", BinaryData.fromString("\"string\""));
         StacQueryable model = new StacQueryable("platform", def).setCreateIndex(false)
             .setDataType(StacQueryableDefinitionDataType.fromString("string"));
         model = BinaryData.fromObject(model).toObject(StacQueryable.class);

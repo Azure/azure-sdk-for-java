@@ -1523,7 +1523,8 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
      * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
@@ -1557,7 +1558,8 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1584,7 +1586,8 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param contentType Request content type.
      * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
@@ -1620,7 +1623,8 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param contentType Request content type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
