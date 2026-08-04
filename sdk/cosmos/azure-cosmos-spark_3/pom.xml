@@ -429,6 +429,9 @@
               <source>${maven.compiler.source}</source>
               <target>${maven.compiler.target}</target>
               <scalaVersion>${scala.version}</scalaVersion>
+              <!-- Per-module bridge cache. The default (~/.sbt/1.0/zinc/org.scala-sbt) is shared, and the
+                   plugin installs the bridge with no lock, so parallel builds (-T) can read a half-written jar. -->
+              <secondaryCacheDir>${project.build.directory}/scala-compiler-bridge</secondaryCacheDir>
             </configuration>
             <executions>
               <execution>
