@@ -1,0 +1,14 @@
+services:
+  translator-sample:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-}translator-agent:latest
+    ports:
+      - "8088:8088"
+
+    env_file:
+      - ../../.env
+
+    environment:
+      - APPLICATIONINSIGHTS_CONNECTION_STRING=${APPLICATIONINSIGHTS_CONNECTION_STRING}
