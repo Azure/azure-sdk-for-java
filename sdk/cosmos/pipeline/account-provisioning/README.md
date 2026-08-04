@@ -23,6 +23,11 @@ regenerate the fresh endpoints/keys.
 | `New-CosmosLiveTestAccounts.ps1` | Creates `sdk-ci` RG (if missing) + accounts; outputs accounts JSON. |
 | `cosmos-live-test-accounts.definition.json` | Desired accounts (logical selector + config). |
 
+An account entry may set `"regions": [...]` to pin its own regions when `regionDefaults` does not
+suit it. `gsi-single-session` uses this to sit in **East US 2**, because
+`live-gsi-platform-matrix.json` runs it single-region with `PREFERRED_LOCATIONS=["East US 2"]`, and a
+preferred region the account does not have leaves the client with nothing to prefer.
+
 The emitted JSON conforms to the schema at
 `../live-test-accounts.schema.json`, which the pipeline pre-step
 `../resolve-cosmos-test-account.sh` parses.

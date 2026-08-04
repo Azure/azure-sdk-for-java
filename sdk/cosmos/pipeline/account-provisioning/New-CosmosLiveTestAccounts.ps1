@@ -220,7 +220,17 @@ foreach ($acct in $definition.accounts) {
 
     $multiRegion = [bool]$acct.enableMultipleRegions
     $multiWrite  = [bool]$acct.enableMultipleWriteLocations
-    $regionList  = if ($multiRegion) { $multiRegionList } else { $singleRegionList }
+    # An account may pin its own regions when the defaults do not suit it - the GSI account, for
+    # example, must live in East US 2 because live-gsi-platform-matrix.json sets
+    # PREFERRED_LOCATIONS=["East US 2"] on a single-region account, and a preferred region the account
+    # does not have leaves the client with nothing to prefer.
+    $regionList = if ($acct.PSObject.Properties.Name -contains 'regions' -and $acct.regions) {
+        @($acct.regions)
+    } elseif ($multiRegion) {
+        $multiRegionList
+    } else {
+        $singleRegionList
+    }
     $locations   = New-LocationObjects $regionList
 
     $capabilities = @()
