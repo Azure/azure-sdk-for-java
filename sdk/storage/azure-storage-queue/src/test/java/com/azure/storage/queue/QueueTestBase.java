@@ -43,13 +43,6 @@ public class QueueTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager
                 .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                    // The TypeSpec-generated protocol layer carries the queue name in the client base URL and addresses
-                    // queue-scoped operations with query-only path templates (e.g. @Get("?comp=metadata")). azure-core's
-                    // RestProxy assembles those into '.../{queue}/?comp=metadata' (a slash before the query), whereas the
-                    // AutoRest recordings captured '.../{queue}?comp=metadata'. The trailing slash is semantically
-                    // insignificant to the Queue service (LIVE behavior is identical), so normalize it away for playback
-                    // matching rather than treating it as a behavior change.
-                    new TestProxySanitizer("(?<s>/)[?]comp=", "", TestProxySanitizerType.URL).setGroupForReplace("s"),
                     // Strip the empty 'include=' left in older recordings; non-empty 'include=metadata' is preserved.
                     new TestProxySanitizer("(?<inc>&include=)(?=&|$)", "", TestProxySanitizerType.URL)
                         .setGroupForReplace("inc")));
