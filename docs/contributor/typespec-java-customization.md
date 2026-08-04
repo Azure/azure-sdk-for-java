@@ -37,8 +37,11 @@ public void customize(LibraryCustomization customization, Logger logger) {
 
 Configure the generator to use the class:
 
-```yaml
-customization-class: customization/src/main/java/MyCustomization.java
+```diff
+  "@azure-tools/typespec-java":
+    emitter-output-dir: "{output-dir}/{service-dir}/azure-contoso-widgetmanager"
+    namespace: com.azure.contoso.widgetmanager
++    customization-class: customization/src/main/java/MyCustomization.java
 ```
 
 ## Navigate generated code
