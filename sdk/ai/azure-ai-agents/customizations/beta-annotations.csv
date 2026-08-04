@@ -4,7 +4,6 @@ class;com.azure.ai.agents.models.A2APreviewToolboxTool;Preview API. preview_tool
 class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
-class;com.azure.ai.agents.models.AzureFunctionToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BingCustomSearchConfiguration;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BingCustomSearchPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BingCustomSearchToolCall;Preview API. preview_tool;
