@@ -13,29 +13,26 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The retention policy.
+ * the retention policy.
  */
 @Fluent
 public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentionPolicy> {
 
     /*
-     * Whether to enable the retention policy.
+     * Indicates whether a retention policy is enabled for the storage service.
      */
     @Generated
     private boolean enabled;
 
     /*
-     * The number of days to retain the logs.
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted.
      */
     @Generated
     private Integer days;
 
-    @Generated
-    public QueueRetentionPolicy() {
-    }
-
     /**
-     * Get the enabled property: Whether to enable the retention policy.
+     * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
      *
      * @return the enabled value.
      */
@@ -44,14 +41,9 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
         return this.enabled;
     }
 
-    @Generated
-    public QueueRetentionPolicy setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
     /**
-     * Get the days property: The number of days to retain the logs.
+     * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @return the days value.
      */
@@ -61,7 +53,8 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     }
 
     /**
-     * Set the days property: The number of days to retain the logs.
+     * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @param days the days value to set.
      * @return the QueueRetentionPolicy object itself.
@@ -135,5 +128,24 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
             deserializedQueueRetentionPolicy.days = days;
             return deserializedQueueRetentionPolicy;
         });
+    }
+
+    /**
+     * Creates an instance of QueueRetentionPolicy class.
+     */
+    @Generated
+    public QueueRetentionPolicy() {
+    }
+
+    /**
+     * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
+     *
+     * @param enabled the enabled value to set.
+     * @return the QueueRetentionPolicy object itself.
+     */
+    @Generated
+    public QueueRetentionPolicy setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 }

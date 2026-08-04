@@ -13,29 +13,25 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The signed identifier.
+ * signed identifier.
  */
 @Fluent
 public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedIdentifier> {
 
     /*
-     * The unique ID for the signed identifier.
+     * a unique id.
      */
     @Generated
     private String id;
 
     /*
-     * The access policy for the signed identifier.
+     * The access policy.
      */
     @Generated
     private QueueAccessPolicy accessPolicy;
 
-    @Generated
-    public QueueSignedIdentifier() {
-    }
-
     /**
-     * Get the id property: The unique ID for the signed identifier.
+     * Get the id property: a unique id.
      *
      * @return the id value.
      */
@@ -44,26 +40,14 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
         return this.id;
     }
 
-    @Generated
-    public QueueSignedIdentifier setId(String id) {
-        this.id = id;
-        return this;
-    }
-
     /**
-     * Get the accessPolicy property: The access policy for the signed identifier.
+     * Get the accessPolicy property: The access policy.
      *
      * @return the accessPolicy value.
      */
     @Generated
     public QueueAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
-    }
-
-    @Generated
-    public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
-        this.accessPolicy = accessPolicy;
-        return this;
     }
 
     @Generated
@@ -131,5 +115,36 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
                 return deserializedQueueSignedIdentifier;
             }
         });
+    }
+
+    /**
+     * Creates an instance of QueueSignedIdentifier class.
+     */
+    @Generated
+    public QueueSignedIdentifier() {
+    }
+
+    /**
+     * Set the id property: a unique id.
+     *
+     * @param id the id value to set.
+     * @return the QueueSignedIdentifier object itself.
+     */
+    @Generated
+    public QueueSignedIdentifier setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Set the accessPolicy property: The access policy.
+     *
+     * @param accessPolicy the accessPolicy value to set.
+     * @return the QueueSignedIdentifier object itself.
+     */
+    @Generated
+    public QueueSignedIdentifier setAccessPolicy(QueueAccessPolicy accessPolicy) {
+        this.accessPolicy = accessPolicy;
+        return this;
     }
 }

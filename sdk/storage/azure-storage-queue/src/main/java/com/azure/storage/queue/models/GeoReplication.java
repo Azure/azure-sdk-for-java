@@ -16,7 +16,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Geo replication information for the secondary storage location.
+ * The GeoReplication model.
  */
 @Fluent
 public final class GeoReplication implements XmlSerializable<GeoReplication> {
@@ -35,10 +35,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     @Generated
     private DateTimeRfc1123 lastSyncTime;
 
-    @Generated
-    public GeoReplication() {
-    }
-
     /**
      * Get the status property: The status of the secondary location.
      *
@@ -47,12 +43,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     @Generated
     public GeoReplicationStatus getStatus() {
         return this.status;
-    }
-
-    @Generated
-    public GeoReplication setStatus(GeoReplicationStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -69,16 +59,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
             return null;
         }
         return this.lastSyncTime.getDateTime();
-    }
-
-    @Generated
-    public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
-        if (lastSyncTime == null) {
-            this.lastSyncTime = null;
-        } else {
-            this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
-        }
-        return this;
     }
 
     @Generated
@@ -150,5 +130,43 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
                 return deserializedGeoReplication;
             }
         });
+    }
+
+    /**
+     * Creates an instance of GeoReplication class.
+     */
+    @Generated
+    public GeoReplication() {
+    }
+
+    /**
+     * Set the status property: The status of the secondary location.
+     *
+     * @param status the status value to set.
+     * @return the GeoReplication object itself.
+     */
+    @Generated
+    public GeoReplication setStatus(GeoReplicationStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Set the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
+     * guaranteed to be available
+     * for read operations at the secondary. Primary writes after this point in time may or may not be available
+     * for reads.
+     *
+     * @param lastSyncTime the lastSyncTime value to set.
+     * @return the GeoReplication object itself.
+     */
+    @Generated
+    public GeoReplication setLastSyncTime(OffsetDateTime lastSyncTime) {
+        if (lastSyncTime == null) {
+            this.lastSyncTime = null;
+        } else {
+            this.lastSyncTime = new DateTimeRfc1123(lastSyncTime);
+        }
+        return this;
     }
 }

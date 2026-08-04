@@ -26,6 +26,8 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -38,31 +40,40 @@ import java.util.Optional;
  */
 public class QueueStorageCustomizations extends Customization {
 
-    private static final String ROOT_FILE_PATH = "src/main/java/com/azure/storage/queue/";
+    private static final String PKG_ROOT = "src/main/java/com/azure/storage/queue/";
 
-    private static final String[] FILES_TO_REMOVE = new String[] {
-        ROOT_FILE_PATH + "QueueClient.java",
-        ROOT_FILE_PATH + "QueueAsyncClient.java",
-        ROOT_FILE_PATH + "ServiceClient.java",
-        ROOT_FILE_PATH + "ServiceAsyncClient.java",
-        ROOT_FILE_PATH + "MessagesClient.java",
-        ROOT_FILE_PATH + "MessagesAsyncClient.java",
-        ROOT_FILE_PATH + "MessageIdsClient.java",
-        ROOT_FILE_PATH + "MessageIdsAsyncClient.java",
-        ROOT_FILE_PATH + "AzureQueueStorageBuilder.java",
-        ROOT_FILE_PATH + "QueuesServiceVersion.java",
-        // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
-        ROOT_FILE_PATH + "implementation/models/ReceivedMessages.java",
-        ROOT_FILE_PATH + "implementation/models/PeekedMessages.java",
-        ROOT_FILE_PATH + "implementation/models/ListOfSentMessage.java",
-        ROOT_FILE_PATH + "implementation/models/SignedIdentifiers.java",
-        // Generated module-info replaced by the hand-written module descriptor.
-        "src/main/java/module-info.java"
-    };
+    private static final String MODELS_PACKAGE = "com.azure.storage.queue.models";
 
-    private static final List<String> FLUENT_MODELS = Arrays.asList(
+    private static final String IMPL_PACKAGE = "com.azure.storage.queue.implementation";
+
+    // Models that shipped as @Fluent (public no-arg ctor + setters) before the TypeSpec migration. With
+    // required-fields-as-ctor-args:true these regenerate as @Immutable with a required-args ctor and no setters --
+    // a breaking change. restoreFluentModels restores the shipped fluent shape per-model. Expand from the RevApi
+    // "method removed" report.
+    private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "QueueRetentionPolicy", "QueueMetrics", "QueueCorsRule", "QueueAnalyticsLogging", "QueueSignedIdentifier",
         "GeoReplication", "QueueItem", "QueueServiceStatistics", "SendMessageResult", "UserDelegationKey");
+
+    // Generated convenience clients + builder + service version emitted by typespec-java on top of the
+    // implementation/*Impl operation layer. The public surface is the hand-written clients, so delete the
+    // generated ones (removeFile is a no-op when a name is absent).
+    private static final List<String> GENERATED_CLIENTS_TO_REMOVE = Arrays.asList(
+        "QueueClient", "QueueAsyncClient",
+        "ServiceClient", "ServiceAsyncClient",
+        "MessagesClient", "MessagesAsyncClient",
+        "MessageIdsClient", "MessageIdsAsyncClient",
+        "AzureQueueStorageBuilder",
+        "QueuesServiceVersion");
+
+    // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
+    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList(
+        "ReceivedMessages", "PeekedMessages", "ListOfSentMessage", "SignedIdentifiers");
+
+    // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
+    // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
+    // it, so drop the generated copy and keep the hand-written descriptor.
+    private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
+        "src/main/java/module-info.java");
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -70,13 +81,13 @@ public class QueueStorageCustomizations extends Customization {
         removeGeneratedFiles(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
-        exposeRawListQueuesResponse(customization.getPackage("com.azure.storage.queue.implementation"), logger);
-        updateImplToMapInternalException(customization.getPackage("com.azure.storage.queue.implementation"), logger);
+        exposeRawListQueuesResponse(customization.getPackage(IMPL_PACKAGE), logger);
+        updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
     }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
-        PackageCustomization models = customization.getPackage("com.azure.storage.queue.models");
-        for (String className : FLUENT_MODELS) {
+        PackageCustomization models = customization.getPackage(MODELS_PACKAGE);
+        for (String className : FLUENT_MODELS_TO_RESTORE) {
             if (models.getClass(className) == null) {
                 logger.info("Model {} not present; skipping fluent restoration.", className);
                 continue;
@@ -107,6 +118,8 @@ public class QueueStorageCustomizations extends Customization {
         new ArrayList<>(clazz.getConstructors()).forEach(ConstructorDeclaration::remove);
         ConstructorDeclaration ctor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
         ctor.addMarkerAnnotation("Generated");
+        ctor.setJavadocComment(
+            new Javadoc(JavadocDescription.parseText("Creates an instance of " + className + " class.")));
         ctor.setBody(new BlockStmt());
 
         for (FieldDeclaration field : clazz.getFields()) {
@@ -131,6 +144,13 @@ public class QueueStorageCustomizations extends Customization {
             setter.addMarkerAnnotation("Generated");
             setter.setType(className);
             setter.addParameter(new Parameter(accessorType, fieldName));
+            String description = accessorDescription(clazz, fieldName);
+            String summary = description == null
+                ? "Set the " + fieldName + " property."
+                : "Set the " + fieldName + " property: " + description;
+            setter.setJavadocComment(new Javadoc(JavadocDescription.parseText(summary))
+                .addBlockTag("param", fieldName, "the " + fieldName + " value to set.")
+                .addBlockTag("return", "the " + className + " object itself."));
             setter.setBody(StaticJavaParser.parseBlock(body));
         }
 
@@ -199,6 +219,20 @@ public class QueueStorageCustomizations extends Customization {
         return Optional.empty();
     }
 
+    private static String accessorDescription(ClassOrInterfaceDeclaration clazz, String fieldName) {
+        String suffix = capitalize(fieldName);
+        for (String prefix : new String[] { "get", "is" }) {
+            for (MethodDeclaration getter : clazz.getMethodsByName(prefix + suffix)) {
+                if (getter.getParameters().isEmpty() && getter.getJavadoc().isPresent()) {
+                    String text = getter.getJavadoc().get().getDescription().toText().trim();
+                    int idx = text.indexOf(": ");
+                    return idx >= 0 ? text.substring(idx + 2).trim() : text;
+                }
+            }
+        }
+        return null;
+    }
+
     private static String capitalize(String value) {
         return Character.toUpperCase(value.charAt(0)) + value.substring(1);
     }
@@ -240,7 +274,7 @@ public class QueueStorageCustomizations extends Customization {
     }
 
     private static void retargetServiceVersionReferences(Editor editor, Logger logger) {
-        String implDir = "src/main/java/com/azure/storage/queue/implementation/";
+        String implDir = PKG_ROOT + "implementation/";
         for (String fileName : new String[] {
             "AzureQueueStorageImpl.java", "ServicesImpl.java", "QueuesImpl.java",
             "MessagesImpl.java", "MessageIdsImpl.java" }) {
@@ -256,13 +290,23 @@ public class QueueStorageCustomizations extends Customization {
     }
 
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
-        for (String path : FILES_TO_REMOVE) {
-            if (editor.getContents().containsKey(path)) {
-                editor.removeFile(path);
-                logger.info("Removed generated file {}", path);
-            } else {
-                logger.info("Generated file {} not present; skipping removal.", path);
-            }
+        for (String className : GENERATED_CLIENTS_TO_REMOVE) {
+            removeFileIfPresent(editor, PKG_ROOT + className + ".java", logger);
+        }
+        for (String modelName : GENERATED_MODELS_TO_REMOVE) {
+            removeFileIfPresent(editor, PKG_ROOT + "implementation/models/" + modelName + ".java", logger);
+        }
+        for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
+            removeFileIfPresent(editor, path, logger);
+        }
+    }
+
+    private static void removeFileIfPresent(Editor editor, String path, Logger logger) {
+        if (editor.getContents().containsKey(path)) {
+            editor.removeFile(path);
+            logger.info("Removed generated file {}", path);
+        } else {
+            logger.info("Generated file {} not present; skipping removal.", path);
         }
     }
 

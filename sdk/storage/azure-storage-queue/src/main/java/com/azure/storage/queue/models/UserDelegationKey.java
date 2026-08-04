@@ -22,6 +22,18 @@ import javax.xml.stream.XMLStreamException;
 public final class UserDelegationKey implements XmlSerializable<UserDelegationKey> {
 
     /*
+     * The Azure Active Directory object ID in GUID format.
+     */
+    @Generated
+    private String signedObjectId;
+
+    /*
+     * The Azure Active Directory tenant ID in GUID format.
+     */
+    @Generated
+    private String signedTenantId;
+
+    /*
      * The date-time the key is active.
      */
     @Generated
@@ -34,16 +46,22 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     private OffsetDateTime signedExpiry;
 
     /*
-     * The service that created the key.
+     * Abbreviation of the Azure Storage service that accepts the key.
      */
     @Generated
     private String signedService;
 
     /*
-     * The service version used when creating the key.
+     * The service version that created the key.
      */
     @Generated
     private String signedVersion;
+
+    /*
+     * The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+     */
+    @Generated
+    private String signedDelegatedUserTenantId;
 
     /*
      * The key as a base64 string.
@@ -51,8 +69,24 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     @Generated
     private String value;
 
+    /**
+     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     *
+     * @return the signedObjectId value.
+     */
     @Generated
-    public UserDelegationKey() {
+    public String getSignedObjectId() {
+        return this.signedObjectId;
+    }
+
+    /**
+     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     *
+     * @return the signedTenantId value.
+     */
+    @Generated
+    public String getSignedTenantId() {
+        return this.signedTenantId;
     }
 
     /**
@@ -65,12 +99,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedStart;
     }
 
-    @Generated
-    public UserDelegationKey setSignedStart(OffsetDateTime signedStart) {
-        this.signedStart = signedStart;
-        return this;
-    }
-
     /**
      * Get the signedExpiry property: The date-time the key expires.
      *
@@ -81,14 +109,8 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedExpiry;
     }
 
-    @Generated
-    public UserDelegationKey setSignedExpiry(OffsetDateTime signedExpiry) {
-        this.signedExpiry = signedExpiry;
-        return this;
-    }
-
     /**
-     * Get the signedService property: The service that created the key.
+     * Get the signedService property: Abbreviation of the Azure Storage service that accepts the key.
      *
      * @return the signedService value.
      */
@@ -97,14 +119,8 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedService;
     }
 
-    @Generated
-    public UserDelegationKey setSignedService(String signedService) {
-        this.signedService = signedService;
-        return this;
-    }
-
     /**
-     * Get the signedVersion property: The service version used when creating the key.
+     * Get the signedVersion property: The service version that created the key.
      *
      * @return the signedVersion value.
      */
@@ -113,10 +129,15 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         return this.signedVersion;
     }
 
+    /**
+     * Get the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * DelegatedUserTid is specified.
+     *
+     * @return the signedDelegatedUserTenantId value.
+     */
     @Generated
-    public UserDelegationKey setSignedVersion(String signedVersion) {
-        this.signedVersion = signedVersion;
-        return this;
+    public String getSignedDelegatedUserTenantId() {
+        return this.signedDelegatedUserTenantId;
     }
 
     /**
@@ -127,12 +148,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     @Generated
     public String getValue() {
         return this.value;
-    }
-
-    @Generated
-    public UserDelegationKey setValue(String value) {
-        this.value = value;
-        return this;
     }
 
     @Generated
@@ -234,34 +249,19 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
         });
     }
 
-    /*
-     * The Entra ID object ID in GUID format.
-     */
-    @Generated
-    private String signedObjectId;
-
-    /*
-     * The Entra ID tenant ID in GUID format.
-     */
-    @Generated
-    private String signedTenantId;
-
-    /*
-     * The delegated user tenant ID in Entra ID. Return if DelegatedUserTid is specified.
-     */
-    @Generated
-    private String signedDelegatedUserTenantId;
-
     /**
-     * Get the signedObjectId property: The Entra ID object ID in GUID format.
-     *
-     * @return the signedObjectId value.
+     * Creates an instance of UserDelegationKey class.
      */
     @Generated
-    public String getSignedObjectId() {
-        return this.signedObjectId;
+    public UserDelegationKey() {
     }
 
+    /**
+     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     *
+     * @param signedObjectId the signedObjectId value to set.
+     * @return the UserDelegationKey object itself.
+     */
     @Generated
     public UserDelegationKey setSignedObjectId(String signedObjectId) {
         this.signedObjectId = signedObjectId;
@@ -269,15 +269,11 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedTenantId property: The Entra ID tenant ID in GUID format.
+     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
      *
-     * @return the signedTenantId value.
+     * @param signedTenantId the signedTenantId value to set.
+     * @return the UserDelegationKey object itself.
      */
-    @Generated
-    public String getSignedTenantId() {
-        return this.signedTenantId;
-    }
-
     @Generated
     public UserDelegationKey setSignedTenantId(String signedTenantId) {
         this.signedTenantId = signedTenantId;
@@ -285,19 +281,75 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedDelegatedUserTenantId property: The delegated user tenant ID in Entra ID. Return if
-     * DelegatedUserTid is specified.
+     * Set the signedStart property: The date-time the key is active.
      *
-     * @return the signedDelegatedUserTenantId value.
+     * @param signedStart the signedStart value to set.
+     * @return the UserDelegationKey object itself.
      */
     @Generated
-    public String getSignedDelegatedUserTenantId() {
-        return this.signedDelegatedUserTenantId;
+    public UserDelegationKey setSignedStart(OffsetDateTime signedStart) {
+        this.signedStart = signedStart;
+        return this;
     }
 
+    /**
+     * Set the signedExpiry property: The date-time the key expires.
+     *
+     * @param signedExpiry the signedExpiry value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    @Generated
+    public UserDelegationKey setSignedExpiry(OffsetDateTime signedExpiry) {
+        this.signedExpiry = signedExpiry;
+        return this;
+    }
+
+    /**
+     * Set the signedService property: Abbreviation of the Azure Storage service that accepts the key.
+     *
+     * @param signedService the signedService value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    @Generated
+    public UserDelegationKey setSignedService(String signedService) {
+        this.signedService = signedService;
+        return this;
+    }
+
+    /**
+     * Set the signedVersion property: The service version that created the key.
+     *
+     * @param signedVersion the signedVersion value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    @Generated
+    public UserDelegationKey setSignedVersion(String signedVersion) {
+        this.signedVersion = signedVersion;
+        return this;
+    }
+
+    /**
+     * Set the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * DelegatedUserTid is specified.
+     *
+     * @param signedDelegatedUserTenantId the signedDelegatedUserTenantId value to set.
+     * @return the UserDelegationKey object itself.
+     */
     @Generated
     public UserDelegationKey setSignedDelegatedUserTenantId(String signedDelegatedUserTenantId) {
         this.signedDelegatedUserTenantId = signedDelegatedUserTenantId;
+        return this;
+    }
+
+    /**
+     * Set the value property: The key as a base64 string.
+     *
+     * @param value the value value to set.
+     * @return the UserDelegationKey object itself.
+     */
+    @Generated
+    public UserDelegationKey setValue(String value) {
+        this.value = value;
         return this;
     }
 }

@@ -19,41 +19,37 @@ import javax.xml.stream.XMLStreamException;
 public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyticsLogging> {
 
     /*
-     * The version of the logging properties.
+     * The version of Storage Analytics to configure.
      */
     @Generated
     private String version;
 
     /*
-     * Whether delete operation is logged.
+     * Indicates whether all delete requests should be logged.
      */
     @Generated
     private boolean delete;
 
     /*
-     * Whether read operation is logged.
+     * Indicates whether all read requests should be logged.
      */
     @Generated
     private boolean read;
 
     /*
-     * Whether write operation is logged.
+     * Indicates whether all write requests should be logged.
      */
     @Generated
     private boolean write;
 
     /*
-     * The retention policy of the logs.
+     * the retention policy.
      */
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
-    @Generated
-    public QueueAnalyticsLogging() {
-    }
-
     /**
-     * Get the version property: The version of the logging properties.
+     * Get the version property: The version of Storage Analytics to configure.
      *
      * @return the version value.
      */
@@ -62,14 +58,8 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.version;
     }
 
-    @Generated
-    public QueueAnalyticsLogging setVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
     /**
-     * Get the delete property: Whether delete operation is logged.
+     * Get the delete property: Indicates whether all delete requests should be logged.
      *
      * @return the delete value.
      */
@@ -78,14 +68,8 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.delete;
     }
 
-    @Generated
-    public QueueAnalyticsLogging setDelete(boolean delete) {
-        this.delete = delete;
-        return this;
-    }
-
     /**
-     * Get the read property: Whether read operation is logged.
+     * Get the read property: Indicates whether all read requests should be logged.
      *
      * @return the read value.
      */
@@ -94,14 +78,8 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.read;
     }
 
-    @Generated
-    public QueueAnalyticsLogging setRead(boolean read) {
-        this.read = read;
-        return this;
-    }
-
     /**
-     * Get the write property: Whether write operation is logged.
+     * Get the write property: Indicates whether all write requests should be logged.
      *
      * @return the write value.
      */
@@ -110,26 +88,14 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return this.write;
     }
 
-    @Generated
-    public QueueAnalyticsLogging setWrite(boolean write) {
-        this.write = write;
-        return this;
-    }
-
     /**
-     * Get the retentionPolicy property: The retention policy of the logs.
+     * Get the retentionPolicy property: the retention policy.
      *
      * @return the retentionPolicy value.
      */
     @Generated
     public QueueRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
-    }
-
-    @Generated
-    public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
-        return this;
     }
 
     @Generated
@@ -212,5 +178,72 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
                 return deserializedQueueAnalyticsLogging;
             }
         });
+    }
+
+    /**
+     * Creates an instance of QueueAnalyticsLogging class.
+     */
+    @Generated
+    public QueueAnalyticsLogging() {
+    }
+
+    /**
+     * Set the version property: The version of Storage Analytics to configure.
+     *
+     * @param version the version value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Set the delete property: Indicates whether all delete requests should be logged.
+     *
+     * @param delete the delete value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setDelete(boolean delete) {
+        this.delete = delete;
+        return this;
+    }
+
+    /**
+     * Set the read property: Indicates whether all read requests should be logged.
+     *
+     * @param read the read value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setRead(boolean read) {
+        this.read = read;
+        return this;
+    }
+
+    /**
+     * Set the write property: Indicates whether all write requests should be logged.
+     *
+     * @param write the write value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setWrite(boolean write) {
+        this.write = write;
+        return this;
+    }
+
+    /**
+     * Set the retentionPolicy property: the retention policy.
+     *
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the QueueAnalyticsLogging object itself.
+     */
+    @Generated
+    public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
     }
 }

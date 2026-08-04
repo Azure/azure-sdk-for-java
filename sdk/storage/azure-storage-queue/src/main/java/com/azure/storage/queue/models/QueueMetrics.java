@@ -13,41 +13,37 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The metrics properties.
+ * a summary of request statistics grouped by API in hour or minute aggregates for queues.
  */
 @Fluent
 public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
 
     /*
-     * The version of the metrics properties.
+     * The version of Storage Analytics to configure.
      */
     @Generated
     private String version;
 
     /*
-     * Whether it is enabled.
+     * Indicates whether metrics are enabled for the Queue service.
      */
     @Generated
     private boolean enabled;
 
     /*
-     * Whether to include API in the metrics.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @Generated
     private Boolean includeApis;
 
     /*
-     * The retention policy of the metrics.
+     * the retention policy.
      */
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
-    @Generated
-    public QueueMetrics() {
-    }
-
     /**
-     * Get the version property: The version of the metrics properties.
+     * Get the version property: The version of Storage Analytics to configure.
      *
      * @return the version value.
      */
@@ -57,7 +53,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the version property: The version of the metrics properties.
+     * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
      * @return the QueueMetrics object itself.
@@ -69,7 +65,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Get the enabled property: Whether it is enabled.
+     * Get the enabled property: Indicates whether metrics are enabled for the Queue service.
      *
      * @return the enabled value.
      */
@@ -78,14 +74,9 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
         return this.enabled;
     }
 
-    @Generated
-    public QueueMetrics setEnabled(boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
     /**
-     * Get the includeApis property: Whether to include API in the metrics.
+     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @return the includeApis value.
      */
@@ -95,7 +86,8 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the includeApis property: Whether to include API in the metrics.
+     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @param includeApis the includeApis value to set.
      * @return the QueueMetrics object itself.
@@ -107,7 +99,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Get the retentionPolicy property: The retention policy of the metrics.
+     * Get the retentionPolicy property: the retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -117,7 +109,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the retentionPolicy property: The retention policy of the metrics.
+     * Set the retentionPolicy property: the retention policy.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueMetrics object itself.
@@ -201,5 +193,24 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
             deserializedQueueMetrics.retentionPolicy = retentionPolicy;
             return deserializedQueueMetrics;
         });
+    }
+
+    /**
+     * Creates an instance of QueueMetrics class.
+     */
+    @Generated
+    public QueueMetrics() {
+    }
+
+    /**
+     * Set the enabled property: Indicates whether metrics are enabled for the Queue service.
+     *
+     * @param enabled the enabled value to set.
+     * @return the QueueMetrics object itself.
+     */
+    @Generated
+    public QueueMetrics setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 }

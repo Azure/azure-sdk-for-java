@@ -13,47 +13,53 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The CORS rules.
+ * CORS is an HTTP feature that enables a web application running under one domain to access resources in another
+ * domain. Web browsers implement a security restriction known as same-origin policy that prevents a web page from
+ * calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs
+ * in another domain.
  */
 @Fluent
 public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
 
     /*
-     * The allowed origins.
+     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+     * is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
+     * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
+     * origin domains to make requests via CORS.
      */
     @Generated
     private String allowedOrigins;
 
     /*
-     * The allowed methods.
+     * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated).
      */
     @Generated
     private String allowedMethods;
 
     /*
-     * The allowed headers.
+     * the request headers that the origin domain may specify on the CORS request.
      */
     @Generated
     private String allowedHeaders;
 
     /*
-     * The exposed headers.
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
+     * request issuer.
      */
     @Generated
     private String exposedHeaders;
 
     /*
-     * The maximum age in seconds.
+     * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
     @Generated
     private int maxAgeInSeconds;
 
-    @Generated
-    public QueueCorsRule() {
-    }
-
     /**
-     * Get the allowedOrigins property: The allowed origins.
+     * Get the allowedOrigins property: The origin domains that are permitted to make a request against the storage
+     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be
+     * an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
+     * wildcard character '*' to allow all origin domains to make requests via CORS.
      *
      * @return the allowedOrigins value.
      */
@@ -62,14 +68,9 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
         return this.allowedOrigins;
     }
 
-    @Generated
-    public QueueCorsRule setAllowedOrigins(String allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-        return this;
-    }
-
     /**
-     * Get the allowedMethods property: The allowed methods.
+     * Get the allowedMethods property: The methods (HTTP request verbs) that the origin domain may use for a CORS
+     * request. (comma separated).
      *
      * @return the allowedMethods value.
      */
@@ -78,14 +79,8 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
         return this.allowedMethods;
     }
 
-    @Generated
-    public QueueCorsRule setAllowedMethods(String allowedMethods) {
-        this.allowedMethods = allowedMethods;
-        return this;
-    }
-
     /**
-     * Get the allowedHeaders property: The allowed headers.
+     * Get the allowedHeaders property: the request headers that the origin domain may specify on the CORS request.
      *
      * @return the allowedHeaders value.
      */
@@ -94,14 +89,9 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
         return this.allowedHeaders;
     }
 
-    @Generated
-    public QueueCorsRule setAllowedHeaders(String allowedHeaders) {
-        this.allowedHeaders = allowedHeaders;
-        return this;
-    }
-
     /**
-     * Get the exposedHeaders property: The exposed headers.
+     * Get the exposedHeaders property: The response headers that may be sent in the response to the CORS request and
+     * exposed by the browser to the request issuer.
      *
      * @return the exposedHeaders value.
      */
@@ -110,26 +100,15 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
         return this.exposedHeaders;
     }
 
-    @Generated
-    public QueueCorsRule setExposedHeaders(String exposedHeaders) {
-        this.exposedHeaders = exposedHeaders;
-        return this;
-    }
-
     /**
-     * Get the maxAgeInSeconds property: The maximum age in seconds.
+     * Get the maxAgeInSeconds property: The maximum amount time that a browser should cache the preflight OPTIONS
+     * request.
      *
      * @return the maxAgeInSeconds value.
      */
     @Generated
     public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
-    }
-
-    @Generated
-    public QueueCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
-        this.maxAgeInSeconds = maxAgeInSeconds;
-        return this;
     }
 
     @Generated
@@ -212,5 +191,78 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
                 return deserializedQueueCorsRule;
             }
         });
+    }
+
+    /**
+     * Creates an instance of QueueCorsRule class.
+     */
+    @Generated
+    public QueueCorsRule() {
+    }
+
+    /**
+     * Set the allowedOrigins property: The origin domains that are permitted to make a request against the storage
+     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be
+     * an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
+     * wildcard character '*' to allow all origin domains to make requests via CORS.
+     *
+     * @param allowedOrigins the allowedOrigins value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedOrigins(String allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+        return this;
+    }
+
+    /**
+     * Set the allowedMethods property: The methods (HTTP request verbs) that the origin domain may use for a CORS
+     * request. (comma separated).
+     *
+     * @param allowedMethods the allowedMethods value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedMethods(String allowedMethods) {
+        this.allowedMethods = allowedMethods;
+        return this;
+    }
+
+    /**
+     * Set the allowedHeaders property: the request headers that the origin domain may specify on the CORS request.
+     *
+     * @param allowedHeaders the allowedHeaders value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setAllowedHeaders(String allowedHeaders) {
+        this.allowedHeaders = allowedHeaders;
+        return this;
+    }
+
+    /**
+     * Set the exposedHeaders property: The response headers that may be sent in the response to the CORS request and
+     * exposed by the browser to the request issuer.
+     *
+     * @param exposedHeaders the exposedHeaders value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setExposedHeaders(String exposedHeaders) {
+        this.exposedHeaders = exposedHeaders;
+        return this;
+    }
+
+    /**
+     * Set the maxAgeInSeconds property: The maximum amount time that a browser should cache the preflight OPTIONS
+     * request.
+     *
+     * @param maxAgeInSeconds the maxAgeInSeconds value to set.
+     * @return the QueueCorsRule object itself.
+     */
+    @Generated
+    public QueueCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
+        this.maxAgeInSeconds = maxAgeInSeconds;
+        return this;
     }
 }

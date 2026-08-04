@@ -21,23 +21,19 @@ import javax.xml.stream.XMLStreamException;
 public final class QueueItem implements XmlSerializable<QueueItem> {
 
     /*
-     * The name of the queue.
+     * The name of the Queue.
      */
     @Generated
     private String name;
 
     /*
-     * The metadata of the queue.
+     * Dictionary of <string>.
      */
     @Generated
     private Map<String, String> metadata;
 
-    @Generated
-    public QueueItem() {
-    }
-
     /**
-     * Get the name property: The name of the queue.
+     * Get the name property: The name of the Queue.
      *
      * @return the name value.
      */
@@ -46,26 +42,14 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
         return this.name;
     }
 
-    @Generated
-    public QueueItem setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
-     * Get the metadata property: The metadata of the queue.
+     * Get the metadata property: Dictionary of &lt;string&gt;.
      *
      * @return the metadata value.
      */
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
-    }
-
-    @Generated
-    public QueueItem setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
     }
 
     @Generated
@@ -141,5 +125,36 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
             deserializedQueueItem.metadata = metadata;
             return deserializedQueueItem;
         });
+    }
+
+    /**
+     * Creates an instance of QueueItem class.
+     */
+    @Generated
+    public QueueItem() {
+    }
+
+    /**
+     * Set the name property: The name of the Queue.
+     *
+     * @param name the name value to set.
+     * @return the QueueItem object itself.
+     */
+    @Generated
+    public QueueItem setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Set the metadata property: Dictionary of &lt;string&gt;.
+     *
+     * @param metadata the metadata value to set.
+     * @return the QueueItem object itself.
+     */
+    @Generated
+    public QueueItem setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
     }
 }

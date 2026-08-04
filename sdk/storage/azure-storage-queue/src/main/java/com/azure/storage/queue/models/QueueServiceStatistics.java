@@ -13,35 +13,25 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Statistics for the storage queue service.
+ * Stats for the storage service.
  */
 @Fluent
 public final class QueueServiceStatistics implements XmlSerializable<QueueServiceStatistics> {
 
     /*
-     * The geo replication stats.
+     * Geo-Replication information for the Secondary Storage Service.
      */
     @Generated
     private GeoReplication geoReplication;
 
-    @Generated
-    public QueueServiceStatistics() {
-    }
-
     /**
-     * Get the geoReplication property: The geo replication stats.
+     * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *
      * @return the geoReplication value.
      */
     @Generated
     public GeoReplication getGeoReplication() {
         return this.geoReplication;
-    }
-
-    @Generated
-    public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
-        this.geoReplication = geoReplication;
-        return this;
     }
 
     @Generated
@@ -101,5 +91,24 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
             }
             return deserializedQueueServiceStatistics;
         });
+    }
+
+    /**
+     * Creates an instance of QueueServiceStatistics class.
+     */
+    @Generated
+    public QueueServiceStatistics() {
+    }
+
+    /**
+     * Set the geoReplication property: Geo-Replication information for the Secondary Storage Service.
+     *
+     * @param geoReplication the geoReplication value to set.
+     * @return the QueueServiceStatistics object itself.
+     */
+    @Generated
+    public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
+        this.geoReplication = geoReplication;
+        return this;
     }
 }

@@ -16,48 +16,44 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The sent queue message.
+ * The object returned in the QueueMessageList array when calling Put Message on a Queue.
  */
 @Fluent
 public final class SendMessageResult implements XmlSerializable<SendMessageResult> {
 
     /*
-     * The ID of the message.
+     * The Id of the Message.
      */
     @Generated
     private String messageId;
 
     /*
-     * The time the message was inserted into the queue.
+     * The time the Message was inserted into the Queue.
      */
     @Generated
     private DateTimeRfc1123 insertionTime;
 
     /*
-     * The time that the message will expire and be automatically deleted.
+     * The time that the Message will expire and be automatically deleted.
      */
     @Generated
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * An opaque value required to delete the message. If deletion fails using this
-     * PopReceipt then the message has been dequeued by another client.
+     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
+     * dequeued by another client.
      */
     @Generated
     private String popReceipt;
 
     /*
-     * The time that the message will again become visible in the queue.
+     * The time that the message will again become visible in the Queue.
      */
     @Generated
     private DateTimeRfc1123 timeNextVisible;
 
-    @Generated
-    public SendMessageResult() {
-    }
-
     /**
-     * Get the messageId property: The ID of the message.
+     * Get the messageId property: The Id of the Message.
      *
      * @return the messageId value.
      */
@@ -66,14 +62,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.messageId;
     }
 
-    @Generated
-    public SendMessageResult setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
     /**
-     * Get the insertionTime property: The time the message was inserted into the queue.
+     * Get the insertionTime property: The time the Message was inserted into the Queue.
      *
      * @return the insertionTime value.
      */
@@ -85,18 +75,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.insertionTime.getDateTime();
     }
 
-    @Generated
-    public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
-        if (insertionTime == null) {
-            this.insertionTime = null;
-        } else {
-            this.insertionTime = new DateTimeRfc1123(insertionTime);
-        }
-        return this;
-    }
-
     /**
-     * Get the expirationTime property: The time that the message will expire and be automatically deleted.
+     * Get the expirationTime property: The time that the Message will expire and be automatically deleted.
      *
      * @return the expirationTime value.
      */
@@ -108,19 +88,9 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.expirationTime.getDateTime();
     }
 
-    @Generated
-    public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
-        if (expirationTime == null) {
-            this.expirationTime = null;
-        } else {
-            this.expirationTime = new DateTimeRfc1123(expirationTime);
-        }
-        return this;
-    }
-
     /**
-     * Get the popReceipt property: An opaque value required to delete the message. If deletion fails using this
-     * PopReceipt then the message has been dequeued by another client.
+     * Get the popReceipt property: This value is required to delete the Message. If deletion fails using this
+     * popreceipt then the message has been dequeued by another client.
      *
      * @return the popReceipt value.
      */
@@ -129,14 +99,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return this.popReceipt;
     }
 
-    @Generated
-    public SendMessageResult setPopReceipt(String popReceipt) {
-        this.popReceipt = popReceipt;
-        return this;
-    }
-
     /**
-     * Get the timeNextVisible property: The time that the message will again become visible in the queue.
+     * Get the timeNextVisible property: The time that the message will again become visible in the Queue.
      *
      * @return the timeNextVisible value.
      */
@@ -146,16 +110,6 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
             return null;
         }
         return this.timeNextVisible.getDateTime();
-    }
-
-    @Generated
-    public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
-        if (timeNextVisible == null) {
-            this.timeNextVisible = null;
-        } else {
-            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
-        }
-        return this;
     }
 
     @Generated
@@ -250,5 +204,85 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
                 return deserializedSendMessageResult;
             }
         });
+    }
+
+    /**
+     * Creates an instance of SendMessageResult class.
+     */
+    @Generated
+    public SendMessageResult() {
+    }
+
+    /**
+     * Set the messageId property: The Id of the Message.
+     *
+     * @param messageId the messageId value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
+
+    /**
+     * Set the insertionTime property: The time the Message was inserted into the Queue.
+     *
+     * @param insertionTime the insertionTime value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
+        if (insertionTime == null) {
+            this.insertionTime = null;
+        } else {
+            this.insertionTime = new DateTimeRfc1123(insertionTime);
+        }
+        return this;
+    }
+
+    /**
+     * Set the expirationTime property: The time that the Message will expire and be automatically deleted.
+     *
+     * @param expirationTime the expirationTime value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
+        if (expirationTime == null) {
+            this.expirationTime = null;
+        } else {
+            this.expirationTime = new DateTimeRfc1123(expirationTime);
+        }
+        return this;
+    }
+
+    /**
+     * Set the popReceipt property: This value is required to delete the Message. If deletion fails using this
+     * popreceipt then the message has been dequeued by another client.
+     *
+     * @param popReceipt the popReceipt value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setPopReceipt(String popReceipt) {
+        this.popReceipt = popReceipt;
+        return this;
+    }
+
+    /**
+     * Set the timeNextVisible property: The time that the message will again become visible in the Queue.
+     *
+     * @param timeNextVisible the timeNextVisible value to set.
+     * @return the SendMessageResult object itself.
+     */
+    @Generated
+    public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
+        if (timeNextVisible == null) {
+            this.timeNextVisible = null;
+        } else {
+            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
+        }
+        return this;
     }
 }
