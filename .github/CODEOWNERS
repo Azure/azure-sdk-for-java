@@ -289,6 +289,9 @@
 # ServiceLabel: %Container Registry
 # ServiceOwners:                                                   @northtyphoon @toddysm
 
+# PRLabel: %Container Service
+/sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
+
 # PRLabel: %Cosmos
 /sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
 
@@ -432,10 +435,10 @@
 # ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
 
 # PRLabel: %Planetary Computer
-/sdk/planetarycomputer/                                            @chahibi @mandarinamdar @karthick-rn @Azure/azure-java-sdk
+/sdk/planetarycomputer/                                            @chahibi @gmoralessanchez @mandarinamdar @karthick-rn @Azure/azure-java-sdk
 
 # ServiceLabel: %Planetary Computer
-# ServiceOwners:                                                   @chahibi @mandarinamdar @karthick-rn
+# ServiceOwners:                                                   @chahibi @gmoralessanchez @mandarinamdar @karthick-rn
 
 # PRLabel: %Purview
 /sdk/purview/                                                      @yifan-zhou922 @Azure/azure-java-sdk
@@ -637,7 +640,7 @@
 # ServiceOwners:                                                   @macolso
 
 # ServiceLabel: %Container Service
-# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+# ServiceOwners:                                                   @elvazhu521 @FumingZhang
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                                   @ccmbpxpcrew
