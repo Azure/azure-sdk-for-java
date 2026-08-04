@@ -38,7 +38,7 @@ public void customize(LibraryCustomization customization, Logger logger) {
 Configure the generator to use the class:
 
 ```yaml
-customization-class: src/main/java/MyCustomization.java
+customization-class: customization/src/main/java/MyCustomization.java
 ```
 
 ## Navigate generated code
