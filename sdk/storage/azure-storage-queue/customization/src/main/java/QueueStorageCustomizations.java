@@ -79,6 +79,7 @@ public class QueueStorageCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
         removeGeneratedFiles(editor, logger);
+        fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         exposeRawListQueuesResponse(customization.getPackage(IMPL_PACKAGE), logger);
@@ -307,6 +308,25 @@ public class QueueStorageCustomizations extends Customization {
             logger.info("Removed generated file {}", path);
         } else {
             logger.info("Generated file {} not present; skipping removal.", path);
+        }
+    }
+
+    // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant
+    // cast that trips the module's -Werror build. The file is emitter-generated and wired into ServicesImpl (XML
+    // pageable responses), so it can't be removed; drop the redundant cast here instead.
+    private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/XmlSerializer.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("XmlSerializer not present in editor; skipping cast fix.");
+            return;
+        }
+        String updated = content.replace("(Class<T>) typeReference.getJavaClass()", "typeReference.getJavaClass()");
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Removed redundant cast in XmlSerializer.");
+        } else {
+            logger.info("XmlSerializer redundant cast not found; skipping.");
         }
     }
 

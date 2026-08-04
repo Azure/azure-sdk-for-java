@@ -19,17 +19,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
-import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
-import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
@@ -488,8 +483,7 @@ public final class QueueClient {
             .getPropertiesWithResponse(ModelHelper.requestOptions(finalContext));
 
         Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
-        return new SimpleResponse<>(response,
-            ModelHelper.transformQueueProperties(new QueuesGetPropertiesHeaders(response.getHeaders())));
+        return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getHeaders()));
     }
 
     /**
@@ -609,7 +603,7 @@ public final class QueueClient {
             = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
                 responseBase.getHeaders(),
                 ModelHelper.deserializeXmlBody(responseBase.getValue(), QueueSignedIdentifierWrapper::fromXml).items(),
-                null, new QueuesGetAccessPolicyHeaders(responseBase.getHeaders()));
+                null, null);
 
         return new PagedIterable<>(response);
     }
@@ -1047,18 +1041,15 @@ public final class QueueClient {
 
         Response<BinaryData> response = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages
-            = transformMessagesDequeueResponse(response);
+        PagedResponseBase<Void, QueueMessageItem> transformedMessages = transformMessagesDequeueResponse(response);
 
-        Supplier<PagedResponse<QueueMessageItem>> res
-            = () -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                transformedMessages, new MessagesDequeueHeaders(response.getHeaders()));
+        Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), transformedMessages, null);
 
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>
-        transformMessagesDequeueResponse(Response<BinaryData> response) {
+    private PagedResponseBase<Void, QueueMessageItem> transformMessagesDequeueResponse(Response<BinaryData> response) {
         QueueMessageItemInternalWrapper wrapper
             = ModelHelper.deserializeXmlBody(response.getValue(), QueueMessageItemInternalWrapper::fromXml);
         List<QueueMessageItemInternal> queueMessageInternalItems
@@ -1092,7 +1083,7 @@ public final class QueueClient {
             }
         }
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            messageItems, null, new MessagesDequeueHeaders(response.getHeaders()));
+            messageItems, null, null);
     }
 
     /**
@@ -1173,16 +1164,13 @@ public final class QueueClient {
 
         Response<BinaryData> response = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformedMessages
-            = transformMessagesPeekResponse(response);
-        Supplier<PagedResponse<PeekedMessageItem>> res
-            = () -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                transformedMessages, new MessagesPeekHeaders(response.getHeaders()));
+        PagedResponseBase<Void, PeekedMessageItem> transformedMessages = transformMessagesPeekResponse(response);
+        Supplier<PagedResponse<PeekedMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), transformedMessages, null);
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>
-        transformMessagesPeekResponse(Response<BinaryData> response) {
+    private PagedResponseBase<Void, PeekedMessageItem> transformMessagesPeekResponse(Response<BinaryData> response) {
         PeekedMessageItemInternalWrapper wrapper
             = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessageItemInternalWrapper::fromXml);
         List<PeekedMessageItemInternal> peekedMessageInternalItems
@@ -1216,7 +1204,7 @@ public final class QueueClient {
             }
         }
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            messageItems, null, new MessagesPeekHeaders(response.getHeaders()));
+            messageItems, null, null);
     }
 
     /**
@@ -1314,9 +1302,7 @@ public final class QueueClient {
 
         Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
 
-        MessageIdsUpdateHeaders headers = new MessageIdsUpdateHeaders(response.getHeaders());
-        UpdateMessageResult result
-            = new UpdateMessageResult(headers.getXMsPopreceipt(), headers.getXMsTimeNextVisible());
+        UpdateMessageResult result = ModelHelper.transformUpdateMessageResult(response.getHeaders());
         return new SimpleResponse<>(response, result);
     }
 

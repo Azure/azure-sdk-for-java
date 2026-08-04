@@ -691,7 +691,14 @@ public final class ServicesImpl {
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Queues"), null, null));
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(com.azure.storage.queue.models.QueueItem.fromXml(reader, "Queue"),
+                            XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Queues", "Queue"), null, null));
     }
 
     /**
@@ -796,7 +803,14 @@ public final class ServicesImpl {
             Response<BinaryData> res = service.getQueuesSync(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Queues"), null, null);
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(com.azure.storage.queue.models.QueueItem.fromXml(reader, "Queue"),
+                            XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Queues", "Queue"), null, null);
         } catch (QueueStorageExceptionInternal internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }
@@ -852,11 +866,14 @@ public final class ServicesImpl {
         return new PagedIterable<>(() -> getQueuesSinglePage(requestOptions));
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                List<?> values = (List<?>) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                List<?> values = (List<?>) value;
                 return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
             } catch (RuntimeException e) {
                 return null;
@@ -866,14 +883,85 @@ public final class ServicesImpl {
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                return (String) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                return (String) value;
             } catch (RuntimeException e) {
                 return null;
             }
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    private static final com.azure.core.util.serializer.ObjectSerializer XML_SERIALIZER
+        = XmlSerializerProviders.createInstance();
+
+    private List<BinaryData> getXmlValues(BinaryData binaryData,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlValues(reader, valueReader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    private List<BinaryData> getXmlValues(com.azure.xml.XmlReader reader,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            List<BinaryData> values = new java.util.ArrayList<>();
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    values.add(valueReader.apply(reader));
+                } else {
+                    values.addAll(getXmlValues(reader, valueReader, path, pathIndex + 1));
+                }
+            }
+            return values;
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(BinaryData binaryData, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlNextLink(reader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (QueueStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToQueueStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(com.azure.xml.XmlReader reader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    return reader.getStringElement();
+                } else {
+                    return getXmlNextLink(reader, path, pathIndex + 1);
+                }
+            }
+            return null;
         } catch (QueueStorageExceptionInternal internalException) {
             throw ModelHelper.mapToQueueStorageException(internalException);
         }

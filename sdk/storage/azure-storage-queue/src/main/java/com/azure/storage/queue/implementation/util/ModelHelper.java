@@ -3,12 +3,16 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
@@ -16,12 +20,12 @@ import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -30,11 +34,19 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    private static final String X_MS_META_PREFIX = "x-ms-meta-";
+    private static final HttpHeaderName X_MS_APPROXIMATE_MESSAGES_COUNT
+        = HttpHeaderName.fromString("x-ms-approximate-messages-count");
+    private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
+    private static final HttpHeaderName X_MS_TIME_NEXT_VISIBLE = HttpHeaderName.fromString("x-ms-time-next-visible");
 
     private static BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
@@ -100,8 +112,22 @@ public class ModelHelper {
         }
     }
 
-    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
-        return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
+    public static QueueProperties transformQueueProperties(HttpHeaders headers) {
+        Map<String, String> metadata = new LinkedHashMap<>();
+        for (HttpHeader header : headers) {
+            String name = header.getName();
+            if (name.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {
+                metadata.put(name.substring(X_MS_META_PREFIX.length()), header.getValue());
+            }
+        }
+        String count = headers.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
+        return new QueueProperties(metadata, count == null ? null : Long.parseLong(count));
+    }
+
+    public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
+        String timeNextVisible = headers.getValue(X_MS_TIME_NEXT_VISIBLE);
+        return new UpdateMessageResult(headers.getValue(X_MS_POPRECEIPT),
+            timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible).getDateTime());
     }
 
     /**

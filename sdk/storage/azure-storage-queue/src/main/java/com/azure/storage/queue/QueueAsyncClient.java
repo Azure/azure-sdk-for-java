@@ -20,17 +20,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
-import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
-import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
@@ -501,7 +496,7 @@ public final class QueueAsyncClient {
             return withContext(context -> client.getQueues()
                 .getPropertiesWithResponseAsync(ModelHelper.requestOptions(context))
                 .map(response -> new SimpleResponse<>(response,
-                    ModelHelper.transformQueueProperties(new QueuesGetPropertiesHeaders(response.getHeaders())))));
+                    ModelHelper.transformQueueProperties(response.getHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -620,7 +615,7 @@ public final class QueueAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(),
                     ModelHelper.deserializeXmlBody(response.getValue(), QueueSignedIdentifierWrapper::fromXml).items(),
-                    null, new QueuesGetAccessPolicyHeaders(response.getHeaders())));
+                    null, null));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1092,7 +1087,7 @@ public final class QueueAsyncClient {
         }
     }
 
-    private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>>
+    private Mono<PagedResponseBase<Void, QueueMessageItem>>
         transformMessagesDequeueResponse(Response<BinaryData> response) {
         QueueMessageItemInternalWrapper wrapper
             = ModelHelper.deserializeXmlBody(response.getValue(), QueueMessageItemInternalWrapper::fromXml);
@@ -1127,7 +1122,7 @@ public final class QueueAsyncClient {
                 }))
             .collectList()
             .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), queueMessageItems, null, new MessagesDequeueHeaders(response.getHeaders())));
+                response.getHeaders(), queueMessageItems, null, null));
     }
 
     /**
@@ -1209,7 +1204,7 @@ public final class QueueAsyncClient {
         }
     }
 
-    private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>>
+    private Mono<PagedResponseBase<Void, PeekedMessageItem>>
         transformMessagesPeekResponse(Response<BinaryData> response) {
         PeekedMessageItemInternalWrapper wrapper
             = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessageItemInternalWrapper::fromXml);
@@ -1244,7 +1239,7 @@ public final class QueueAsyncClient {
                 }))
             .collectList()
             .map(peekedMessageItems -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), peekedMessageItems, null, new MessagesPeekHeaders(response.getHeaders())));
+                response.getHeaders(), peekedMessageItems, null, null));
     }
 
     /**
@@ -1353,9 +1348,8 @@ public final class QueueAsyncClient {
                 return client.getMessageIds()
                     .updateWithResponseAsync(messageId, popReceipt, (int) visTimeout.getSeconds(), requestOptions)
                     .map(response -> {
-                        MessageIdsUpdateHeaders headers = new MessageIdsUpdateHeaders(response.getHeaders());
                         return new SimpleResponse<>(response,
-                            new UpdateMessageResult(headers.getXMsPopreceipt(), headers.getXMsTimeNextVisible()));
+                            ModelHelper.transformUpdateMessageResult(response.getHeaders()));
                     });
             });
         } catch (RuntimeException ex) {
