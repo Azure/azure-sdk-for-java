@@ -39,6 +39,7 @@ import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -46,6 +47,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -574,6 +579,55 @@ public class AiaCertificateChainTest {
 
             httpMock.verify(() -> HttpUtil.getBytes(firstUrl), Mockito.times(2));
         }
+    }
+
+    @Test
+    void cachedIssuerIsNotReportedAsADownload() throws Exception {
+        List<String> messages = new ArrayList<>();
+        Handler collector = new Handler() {
+            @Override
+            public void publish(LogRecord logRecord) {
+                messages.add(logRecord.getMessage());
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
+
+        Logger logger = Logger.getLogger(AiaCertificateChainUtil.class.getName());
+        Level originalLevel = logger.getLevel();
+        boolean originalUseParentHandlers = logger.getUseParentHandlers();
+
+        logger.addHandler(collector);
+        logger.setLevel(Level.FINE);
+        logger.setUseParentHandlers(false);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+
+            // The second run resolves the same two issuers entirely from the cache.
+            AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafCert });
+            AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafCert });
+
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.times(1));
+        } finally {
+            logger.removeHandler(collector);
+            logger.setLevel(originalLevel);
+            logger.setUseParentHandlers(originalUseParentHandlers);
+        }
+
+        assertEquals(4L, messages.stream().filter(m -> m.startsWith("Resolved issuer certificate via AIA")).count(),
+            "Both runs must report resolving the intermediate and the root");
+        assertEquals(2L,
+            messages.stream().filter(m -> m.startsWith("Downloading issuer certificate from AIA URL")).count(),
+            "Only the first run performs downloads; a cache hit must not be reported as one");
     }
 
     // -----------------------------------------------------------------------

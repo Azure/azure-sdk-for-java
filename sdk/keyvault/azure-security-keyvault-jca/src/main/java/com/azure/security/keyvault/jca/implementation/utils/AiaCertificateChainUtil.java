@@ -231,8 +231,9 @@ final class AiaCertificateChainUtil {
                 break;
             }
 
-            LOGGER.log(FINE, "Downloaded intermediate CA certificate via AIA: {0}",
-                issuer.getSubjectX500Principal().getName());
+            // The certificate may come from the response cache, and it may be a root rather than an intermediate,
+            // so this message must not claim either.
+            LOGGER.log(FINE, "Resolved issuer certificate via AIA: {0}", issuer.getSubjectX500Principal().getName());
             // Insert the downloaded issuer immediately after the valid chain end, before any extra certs
             chain.add(validChainEnd + 1, issuer);
         }
