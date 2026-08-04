@@ -289,6 +289,9 @@
 # ServiceLabel: %Container Registry
 # ServiceOwners:                                                   @northtyphoon @toddysm
 
+# PRLabel: %Container Service
+/sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
+
 # PRLabel: %Cosmos
 /sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
 
@@ -637,7 +640,7 @@
 # ServiceOwners:                                                   @macolso
 
 # ServiceLabel: %Container Service
-# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+# ServiceOwners:                                                   @elvazhu521 @FumingZhang
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                                   @ccmbpxpcrew
