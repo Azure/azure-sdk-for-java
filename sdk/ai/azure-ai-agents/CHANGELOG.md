@@ -1,12 +1,14 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed `BetaAgentsClient` / `BetaAgentsAsyncClient` `beginCreateOptimizationJob` long-running operations, which were failing because poll requests carried `Foundry-Features: MemoryStores=V1Preview` instead of the beta-agents preview opt-ins the endpoint requires. The offending header was being injected into the polling context by a customization that predated the builder-level `Foundry-Features` policy; the customization has been removed so that poll GETs now inherit the same per-client preview-features value the pipeline already stamps on the initial request.
 
 ### Other Changes
 
