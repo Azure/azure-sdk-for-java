@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed source connector data loss after partition splits when a stale parent continuation contained divergent child LSNs.
+* Fixed source connector data loss after partition splits when a stale parent continuation contained divergent child LSNs. - See [PR 50031](https://github.com/Azure/azure-sdk-for-java/pull/50031)
 
 #### Other Changes
 
