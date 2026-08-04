@@ -1,7 +1,7 @@
 # TypeSpec Java Customization
 
 The `azure-autorest-customization` package provides APIs to safely customize generated Java code for cases that
-TypeSpec Java cannot represent directly. It uses the Eclipse language server to validate the Java code it changes.
+TypeSpec Java cannot represent directly. Customizations use JavaParser ASTs through `ClassCustomization.customizeAst`.
 
 ## Before you customize
 
@@ -155,18 +155,8 @@ Use `return` for a return-value tag and `throws` with the exception type and des
 
 ## Troubleshooting
 
-### TypeSpec Java reports “Unable to format output file”
+### TypeSpec Java reports “Failed to format file: `<path>`. File content: `<file-content>`.”
 
 Customized Java code likely contains a syntax error.
 
-1. Add the `skip-formatting` flag to bypass formatting while diagnosing the generated source.
-2. Compile or inspect the generated code to find the error.
-3. Fix the customization code, or report a defect in the TypeSpec Java generator if it produced invalid code.
-4. Remove `skip-formatting`.
-
-## Developer note
-
-TypeSpec Java sends generated source files to an Eclipse language server for IDE-like analysis. Its dummy `pom.xml` in
-`src/main/resources` supplies the language server dependencies. When generator changes cause customizations to fail,
-verify that this POM contains all required dependencies; otherwise processing can fall back to less reliable text-based
-behavior.
+Inspect the source shown after `File content:` to locate the malformed code, then fix the customization and regenerate SDK.
