@@ -290,7 +290,7 @@
 # ServiceOwners:                                                   @northtyphoon @toddysm
 
 # PRLabel: %Container Service
-/sdk/containerservice/                                             @elvazhu521 @FumingZhang
+/sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
