@@ -263,7 +263,9 @@ public class ModelHelper {
         addOptionalQueryParam(requestOptions, "prefix", prefix);
         addOptionalQueryParam(requestOptions, "marker", marker);
         addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        if (include != null && !include.isEmpty()) {
+        // Match the AutoRest wire behavior: emit "include=" whenever the list is non-null (an empty list produces an
+        // empty value), rather than omitting it. Keeps the request URL identical to the pre-migration implementation.
+        if (include != null) {
             requestOptions.addQueryParam("include", String.join(",", include));
         }
         return requestOptions;

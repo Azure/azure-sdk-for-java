@@ -41,11 +41,8 @@ public class QueueTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager
-                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                    // Strip the empty 'include=' left in older recordings; non-empty 'include=metadata' is preserved.
-                    new TestProxySanitizer("(?<inc>&include=)(?=&|$)", "", TestProxySanitizerType.URL)
-                        .setGroupForReplace("inc")));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
