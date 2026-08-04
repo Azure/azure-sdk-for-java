@@ -53,7 +53,8 @@ public final class StacCollectionTests {
         Assertions.assertEquals(2, model.getStacExtensions().size());
         Assertions.assertEquals("S2 L2A data", model.getShortDescription());
         Assertions.assertNotNull(model.getAdditionalProperties());
-        Assertions.assertEquals("custom_value", model.getAdditionalProperties().get("custom_key"));
+        Assertions.assertEquals("custom_value",
+            model.getAdditionalProperties().get("custom_key").toObject(String.class));
     }
 
     @Test
@@ -70,10 +71,10 @@ public final class StacCollectionTests {
                 .setType("Collection")
                 .setKeywords(Arrays.asList("sentinel", "satellite", "imagery"))
                 .setProviders(Arrays.asList(new StacProvider().setName("ESA").setRoles(Arrays.asList("producer"))))
-                .setSummaries(mapOf("platform", Arrays.asList("Sentinel-2A", "Sentinel-2B")))
+                .setSummaries(mapOf("platform", BinaryData.fromObject(Arrays.asList("Sentinel-2A", "Sentinel-2B"))))
                 .setStacExtensions(Arrays.asList("eo", "sat"))
                 .setShortDescription("S2 L2A data")
-                .setAdditionalProperties(mapOf("custom_key", "custom_value"));
+                .setAdditionalProperties(mapOf("custom_key", BinaryData.fromString("\"custom_value\"")));
         model = BinaryData.fromObject(model).toObject(StacCollection.class);
         Assertions.assertEquals("Sentinel 2 Level-2A", model.getDescription());
         Assertions.assertEquals("1.0.0", model.getStacVersion());

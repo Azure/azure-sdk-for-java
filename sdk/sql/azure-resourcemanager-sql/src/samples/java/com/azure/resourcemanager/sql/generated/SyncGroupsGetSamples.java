@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupGet.json
+     * x-ms-original-file: 2025-01-01/SyncGroupGet.json
      */
     /**
      * Sample code: Get a sync group.
@@ -17,21 +17,6 @@ public final class SyncGroupsGetSamples {
      * @param manager Entry point to SqlServerManager.
      */
     public static void getASyncGroup(com.azure.resourcemanager.sql.SqlServerManager manager) {
-        manager.serviceClient()
-            .getSyncGroups()
-            .getWithResponse("syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187",
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupGetWithIdentity.json
-     */
-    /**
-     * Sample code: Get a sync group with user assigned identity.
-     * 
-     * @param manager Entry point to SqlServerManager.
-     */
-    public static void getASyncGroupWithUserAssignedIdentity(com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getSyncGroups()
             .getWithResponse("syncgroupcrud-65440", "syncgroupcrud-8475", "syncgroupcrud-4328", "syncgroupcrud-3187",

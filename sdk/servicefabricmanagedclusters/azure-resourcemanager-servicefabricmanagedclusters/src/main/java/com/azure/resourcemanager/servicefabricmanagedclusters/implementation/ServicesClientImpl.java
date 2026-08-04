@@ -907,7 +907,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -931,7 +931,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -953,7 +953,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -976,7 +976,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -998,7 +998,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1019,7 +1019,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1041,7 +1041,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1061,7 +1061,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1079,7 +1079,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The restartReplica operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.

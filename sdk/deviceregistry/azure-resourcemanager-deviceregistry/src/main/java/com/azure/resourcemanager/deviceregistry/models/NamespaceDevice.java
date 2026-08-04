@@ -293,7 +293,7 @@ public interface NamespaceDevice {
     NamespaceDevice refresh(Context context);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +303,7 @@ public interface NamespaceDevice {
     void revoke(DeviceCredentialsRevokeRequest body);
 
     /**
-     * A long-running resource action.
+     * The revoke operation.
      * 
      * @param body The content of the action request.
      * @param context The context to associate with this operation.

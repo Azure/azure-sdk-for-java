@@ -12,14 +12,14 @@ public final class FeatureEnableRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureEnableRequest model
-            = BinaryData.fromString("{\"serviceTreeId\":\"wrljdouskc\"}").toObject(FeatureEnableRequest.class);
-        Assertions.assertEquals("wrljdouskc", model.serviceTreeId());
+            = BinaryData.fromString("{\"serviceTreeId\":\"ynqgoulzndlikwyq\"}").toObject(FeatureEnableRequest.class);
+        Assertions.assertEquals("ynqgoulzndlikwyq", model.serviceTreeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeatureEnableRequest model = new FeatureEnableRequest().withServiceTreeId("wrljdouskc");
+        FeatureEnableRequest model = new FeatureEnableRequest().withServiceTreeId("ynqgoulzndlikwyq");
         model = BinaryData.fromObject(model).toObject(FeatureEnableRequest.class);
-        Assertions.assertEquals("wrljdouskc", model.serviceTreeId());
+        Assertions.assertEquals("ynqgoulzndlikwyq", model.serviceTreeId());
     }
 }

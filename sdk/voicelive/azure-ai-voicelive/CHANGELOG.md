@@ -1,6 +1,16 @@
 # Release History
 
-## 1.1.0 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0 (2026-08-03)
 
 ### Features Added
 
@@ -14,8 +24,6 @@
   - `ResponseCreateParams.setInvokeInput(Map<String, BinaryData>)` / `getInvokeInput()` to attach input data for a hosted agent invocation on a single response request
   - New `ServerEventResponseInvocationDelta` (`response.invocation.delta`) and `ServerEventType.RESPONSE_INVOCATION_DELTA` pass through non-speech SSE events from the hosted agent
 - **Session expiration**: `VoiceLiveSessionResponse.getExpiresAt()` / `setExpiresAt(OffsetDateTime)` expose the server-assigned session expiration time (serialized on the wire as seconds since epoch)
-
-### Bugs Fixed
 
 ### Other Changes
 

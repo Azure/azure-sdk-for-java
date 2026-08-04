@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.UpdateLongTermRetentionBackupParamet
  */
 public final class LongTermRetentionBackupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/LongTermRetentionBackupUpdate.json
+     * x-ms-original-file: 2025-01-01/LongTermRetentionBackupUpdate.json
      */
     /**
      * Sample code: Update the long term retention backup.

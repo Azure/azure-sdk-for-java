@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesListOutboundNetworkDependenciesByManagedInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListOutboundNetworkDependenciesByManagedInstance.json
+     * x-ms-original-file: 2025-01-01/ListOutboundNetworkDependenciesByManagedInstance.json
      */
     /**
      * Sample code: Gets the collection of outbound network dependencies for the given managed instance.

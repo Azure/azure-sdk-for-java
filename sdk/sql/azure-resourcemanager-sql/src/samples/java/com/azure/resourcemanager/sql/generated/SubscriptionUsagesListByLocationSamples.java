@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SubscriptionUsagesListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SubscriptionUsageListByLocation.json
+     * x-ms-original-file: 2025-01-01/SubscriptionUsageListByLocation.json
      */
     /**
      * Sample code: List subscription usages in the given location.

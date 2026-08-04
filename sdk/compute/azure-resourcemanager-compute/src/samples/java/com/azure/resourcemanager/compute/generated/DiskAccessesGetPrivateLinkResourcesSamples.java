@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
      */
     /**
      * Sample code: list all possible private link resources under disk access resource.
