@@ -13,6 +13,8 @@ harmful than silence.
 For every candidate, verify in order:
 
 1. The cited file and symbol or release entry exist at the session SHA.
+   `MGMT-RELEASE-PLAN` instead cites the PR description and verifies that it
+   contains no accepted release-plan URL.
 2. The evidence was introduced by this PR.
 3. The concern matches one rule ID defined by the management review skill.
 4. The claimed pattern satisfies every condition of that rule, including

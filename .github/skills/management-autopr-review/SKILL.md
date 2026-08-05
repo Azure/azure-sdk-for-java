@@ -34,7 +34,8 @@ Normalize casing and Markdown emphasis. Accept both plain
 `Release Plan link: <url>` and formatted
 `**Release plan link:** [text](<url>)`. Require an HTTP(S) URL.
 
-Missing link is `MGMT-RELEASE-PLAN`; stop before code review.
+Missing link is `MGMT-RELEASE-PLAN`. Cite the PR description and continue the
+remaining review passes so other high-value concerns are not hidden.
 
 ## Review rules
 

@@ -137,10 +137,7 @@ stimuli:
         name: "release plan concern detected"
         config:
           pattern: "\\[MGMT-RELEASE-PLAN\\]"
-      - type: output-not-matches
-        name: "code review stops at release-plan gate"
-        config:
-          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
       - type: prompt
     rubric:
-      - Missing release-plan URL must produce MGMT-RELEASE-PLAN and stop further review.
+      - Missing release-plan URL must produce MGMT-RELEASE-PLAN citing the PR description.
+      - The reviewer may continue other review passes.

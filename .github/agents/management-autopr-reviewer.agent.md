@@ -82,7 +82,8 @@ Run in this order:
 3. **Prior state.** Read the latest workflow marker comment. If it records the
    same head SHA, stop. Classify prior concerns as unresolved, resolved, or no
    longer applicable.
-4. **Release-plan gate.** Validate the field before code review.
+4. **Release-plan check.** Validate the field. A missing link is a candidate
+   concern but does not stop the remaining review passes.
 5. **Targeted passes.** Run the five review passes from the skill, excluding
    every path with a `generated` segment. For GA breaking-change review, use
    the current CHANGELOG section as the main source. Produce candidates, not

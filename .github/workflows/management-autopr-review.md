@@ -129,6 +129,8 @@ Missing PR, SHA, or candidates returns `FAIL / missing-inputs`.
 For every candidate, verify in order:
 
 1. The cited file and symbol or release entry exist at the session SHA.
+   `MGMT-RELEASE-PLAN` instead cites the PR description and verifies that no
+   accepted release-plan URL is present.
 2. The evidence was introduced by this PR.
 3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-LRO`,
    `MGMT-CHANGELOG`, `MGMT-BREAKING`, or `MGMT-RELEASE-PLAN`.
