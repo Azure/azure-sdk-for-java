@@ -54,38 +54,35 @@ final class AiaCertificateChainUtil {
     private static final Map<String, CachedAiaResponse> AIA_CACHE = new ConcurrentHashMap<>();
 
     /**
-     * Determines whether a certificate chain has to be completed with issuer certificates downloaded via AIA.
+     * Determines whether a certificate chain should be completed with issuer certificates resolved via AIA.
      *
-     * <p>Completion is only required when the chain cannot be walked from the leaf upwards: either Azure Key Vault
-     * returned a leaf-only bundle (the non-exportable case behind the {@code jarsigner} PKIX failure), or an
-     * intermediate CA is missing in the middle of the chain. A contiguous chain is left untouched: {@code jarsigner}
-     * and PKIX path building only need the path up to a trust anchor, and the root CA already is a trust anchor in
-     * the trust store, so it does not have to be embedded in the chain.
-     *
-     * <p><strong>Known limitation:</strong> a chain whose missing link sits above its last certificate is reported
-     * as complete. A multi-level PKI returning {@code [leaf, intermediate1]} while {@code intermediate2} is also
-     * required looks contiguous, so no download is attempted even though PKIX path building can still fail.
-     * Detecting that case would require an AIA download on every certificate load, which is the network dependency
-     * this check exists to avoid; such deployments should merge the full chain into the Key Vault certificate.
+     * <p>The chain is complete only when its valid, contiguous path from the leaf ends in a self-signed root.
+     * A contiguous chain that ends in a non-self-signed intermediate may still be missing one or more issuer
+     * certificates above that intermediate. Resolution remains cache-first, so a valid cached response avoids a
+     * repeated network request.
      *
      * @param certificates the ordered certificate chain
-     * @return true if the chain is leaf-only or has a broken issuer link, false if it is contiguous or empty
+     * @return true if the valid chain ends in a non-self-signed X.509 certificate, false otherwise
      */
-    static boolean isChainIncomplete(Certificate[] certificates) {
+    static boolean shouldCompleteChainViaAia(Certificate[] certificates) {
         if (certificates == null || certificates.length == 0) {
             return false;
         }
 
-        // A leaf-only chain is contiguous by definition, hence the explicit check.
-        return certificates.length == 1 || findValidChainEnd(Arrays.asList(certificates)) < certificates.length - 1;
+        int validChainEnd = findValidChainEnd(Arrays.asList(certificates));
+        if (validChainEnd < 0 || !(certificates[validChainEnd] instanceof X509Certificate)) {
+            return false;
+        }
+
+        return !CertificateUtil.isSelfSignedCertificate((X509Certificate) certificates[validChainEnd]);
     }
 
     /**
      * Completes an incomplete certificate chain by downloading missing intermediate CA certificates
      * using the AIA (Authority Information Access) extension embedded in each certificate.
      *
-     * <p>Because completion issues outbound HTTP requests, callers must restrict it to chains that need it
-     * (see {@link #isChainIncomplete(Certificate[])}).
+        * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
+        * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
      *
      * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
      * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted

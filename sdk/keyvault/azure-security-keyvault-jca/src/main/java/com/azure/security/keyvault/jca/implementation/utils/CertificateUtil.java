@@ -54,9 +54,9 @@ public final class CertificateUtil {
         // This is required for jarsigner and other Java security tools
         certificates = orderCertificateChain(certificates);
 
-        // Only an incomplete chain needs the missing intermediate CA certificates downloaded via the AIA
-        // extension. A contiguous chain keeps the previous, fully offline behavior.
-        if (AiaCertificateChainUtil.isChainIncomplete(certificates)) {
+        // A contiguous chain may still be missing issuers above its terminal certificate. Resolution remains
+        // cache-first, and a chain ending in a self-signed root does not enter the AIA completion path.
+        if (AiaCertificateChainUtil.shouldCompleteChainViaAia(certificates)) {
             certificates = AiaCertificateChainUtil.completeChainViaAia(certificates);
         }
 

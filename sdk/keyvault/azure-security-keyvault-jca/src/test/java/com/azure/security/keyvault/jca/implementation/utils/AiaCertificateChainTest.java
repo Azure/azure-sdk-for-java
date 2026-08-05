@@ -54,6 +54,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -115,6 +116,34 @@ public class AiaCertificateChainTest {
         // Clear the property after each test to prevent interference with subsequent tests
         System.clearProperty(AiaCertificateChainUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
         AiaCertificateChainUtil.clearAiaCache();
+    }
+
+    // -----------------------------------------------------------------------
+    // Chain-completion gating tests
+    // -----------------------------------------------------------------------
+
+    @Test
+    void shouldNotCompleteNullOrEmptyChainViaAia() {
+        assertFalse(AiaCertificateChainUtil.shouldCompleteChainViaAia(null));
+        assertFalse(AiaCertificateChainUtil.shouldCompleteChainViaAia(new Certificate[0]));
+    }
+
+    @Test
+    void shouldNotCompleteChainEndingInSelfSignedRootViaAia() {
+        assertFalse(AiaCertificateChainUtil.shouldCompleteChainViaAia(new Certificate[] { rootCert }));
+        assertFalse(AiaCertificateChainUtil
+            .shouldCompleteChainViaAia(new Certificate[] { leafCert, intermediateCert, rootCert }));
+    }
+
+    @Test
+    void shouldCompleteChainEndingInNonSelfSignedCertificateViaAia() {
+        assertTrue(AiaCertificateChainUtil.shouldCompleteChainViaAia(new Certificate[] { leafCert }));
+        assertTrue(AiaCertificateChainUtil.shouldCompleteChainViaAia(new Certificate[] { leafCert, intermediateCert }));
+    }
+
+    @Test
+    void shouldCompleteChainWithMissingIntermediateViaAia() {
+        assertTrue(AiaCertificateChainUtil.shouldCompleteChainViaAia(new Certificate[] { leafCert, rootCert }));
     }
 
     // -----------------------------------------------------------------------
@@ -420,12 +449,7 @@ public class AiaCertificateChainTest {
     }
 
     // -----------------------------------------------------------------------
-    // Chain-completion gating tests
-    //
-    // Loading a certificate must only reach out to the network when the chain
-    // cannot be walked from the leaf upwards. A contiguous chain already
-    // satisfies jarsigner and PKIX path building, so loading it has to stay a
-    // fully offline operation.
+    // Certificate-loading integration tests
     // -----------------------------------------------------------------------
 
     @Test
@@ -456,14 +480,21 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void loadCertificatesSkipsAiaForChainWithoutRoot() throws Exception {
+    void loadCertificatesCompletesChainWithoutRootAndCachesIssuer() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            Certificate[] result
+            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+
+            Certificate[] firstResult
+                = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(intermediateCert));
+            Certificate[] secondResult
                 = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(intermediateCert));
 
-            // The root CA is a trust anchor, so a contiguous leaf -> intermediate chain needs no download.
-            assertArrayEquals(new Certificate[] { leafCert, intermediateCert }, result);
-            httpMock.verifyNoInteractions();
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, firstResult,
+                "A contiguous chain must still be completed when its terminal certificate is not self-signed");
+            assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, secondResult,
+                "A subsequent load must reuse the cached root certificate");
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.never());
         }
     }
 
