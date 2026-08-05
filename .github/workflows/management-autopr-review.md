@@ -37,7 +37,7 @@ checkout: false
 
 engine:
   id: copilot
-model: claude-sonnet-4.6
+model: gpt-5.6-terra
 
 tools:
   github:
@@ -96,6 +96,6 @@ Read that file first and follow it exactly.
 ## agent: `management-autopr-review-critic`
 ---
 description: Verifies Management AutoPR review candidates and rejects false positives, duplicates, and unsupported assertions.
-model: claude-sonnet-4.6
+model: gpt-5.6-terra
 ---
 {{#runtime-import .github/agents/management-autopr-review-critic.agent.md}}

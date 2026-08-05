@@ -7,8 +7,8 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: claude-sonnet-4.6
-  judge_model: claude-sonnet-4.6
+  model: gpt-5.6-terra
+  judge_model: gpt-5.6-terra
 
 scoring:
   threshold: 0.8
@@ -88,4 +88,3 @@ stimuli:
     rubric:
       - The existing MGMT-CHANGELOG concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.
-
