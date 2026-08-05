@@ -19,9 +19,12 @@ public final class AddOrUpdateBlocklistItemsToTextBlocklistTests extends Content
     @Disabled
     public void testAddOrUpdateBlocklistItemsToTextBlocklistTests() {
         // method invocation
-        AddOrUpdateTextBlocklistItemsResult response
-            = blocklistClient.addOrUpdateBlocklistItems("TestBlocklist", new AddOrUpdateTextBlocklistItemsOptions(
-                Arrays.asList(new TextBlocklistItem("hate").setDescription("Hate word"))));
+        AddOrUpdateTextBlocklistItemsResult response = blocklistClient.addOrUpdateBlocklistItems("TestBlocklist",
+            new AddOrUpdateTextBlocklistItemsOptions(
+                Arrays.asList(new TextBlocklistItem("hate").setDescription("Hate word"),
+                    new TextBlocklistItem("b[i1][a@][s\\$]")
+                        .setDescription("A regular expression that matches harmful words.")
+                        .setIsRegex(true))));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -33,5 +36,6 @@ public final class AddOrUpdateBlocklistItemsToTextBlocklistTests extends Content
             responseBlocklistItemsFirstItem.getBlocklistItemId());
         Assertions.assertEquals("Hate word", responseBlocklistItemsFirstItem.getDescription());
         Assertions.assertEquals("hate", responseBlocklistItemsFirstItem.getText());
+        Assertions.assertEquals(false, responseBlocklistItemsFirstItem.isRegex());
     }
 }

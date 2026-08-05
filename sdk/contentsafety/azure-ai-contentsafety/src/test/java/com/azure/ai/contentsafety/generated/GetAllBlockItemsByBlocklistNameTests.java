@@ -28,5 +28,7 @@ public final class GetAllBlockItemsByBlocklistNameTests extends ContentSafetyCli
         Assertions.assertEquals("Hate word", firstItem.getDescription());
         // verify property "text"
         Assertions.assertEquals("hate", firstItem.getText());
+        // verify property "isRegex"
+        Assertions.assertEquals(false, firstItem.isRegex());
     }
 }

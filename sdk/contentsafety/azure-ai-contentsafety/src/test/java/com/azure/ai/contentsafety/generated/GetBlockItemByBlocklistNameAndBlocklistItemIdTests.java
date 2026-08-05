@@ -26,5 +26,7 @@ public final class GetBlockItemByBlocklistNameAndBlocklistItemIdTests extends Co
         Assertions.assertEquals("Hate word", response.getDescription());
         // verify property "text"
         Assertions.assertEquals("hate", response.getText());
+        // verify property "isRegex"
+        Assertions.assertEquals(false, response.isRegex());
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.ai.contentsafety.generated;
 
-import com.azure.core.util.BinaryData;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
@@ -21,8 +20,8 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Disabled
     public void testAnalyzeImageTests() {
         // method invocation
-        AnalyzeImageResult response = contentSafetyClient.analyzeImage(new AnalyzeImageOptions(
-            new ContentSafetyImageData().setContent(BinaryData.fromBytes("Y29udGVudDE=".getBytes()))));
+        AnalyzeImageResult response = contentSafetyClient
+            .analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData().setContent("Y29udGVudDE=".getBytes())));
 
         // response assertion
         Assertions.assertNotNull(response);

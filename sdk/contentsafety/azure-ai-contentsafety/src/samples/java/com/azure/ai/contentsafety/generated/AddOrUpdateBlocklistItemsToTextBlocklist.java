@@ -20,9 +20,12 @@ public class AddOrUpdateBlocklistItemsToTextBlocklist {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.add-or-update-blocklist-items.add-or-update-blocklist-items-to-text-blocklist
-        AddOrUpdateTextBlocklistItemsResult response
-            = blocklistClient.addOrUpdateBlocklistItems("TestBlocklist", new AddOrUpdateTextBlocklistItemsOptions(
-                Arrays.asList(new TextBlocklistItem("hate").setDescription("Hate word"))));
+        AddOrUpdateTextBlocklistItemsResult response = blocklistClient.addOrUpdateBlocklistItems("TestBlocklist",
+            new AddOrUpdateTextBlocklistItemsOptions(
+                Arrays.asList(new TextBlocklistItem("hate").setDescription("Hate word"),
+                    new TextBlocklistItem("b[i1][a@][s\\$]")
+                        .setDescription("A regular expression that matches harmful words.")
+                        .setIsRegex(true))));
         // END:com.azure.ai.contentsafety.generated.add-or-update-blocklist-items.add-or-update-blocklist-items-to-text-blocklist
     }
 }
