@@ -20,6 +20,9 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SecureWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
@@ -1026,6 +1029,98 @@ public class CryptographyClient {
         } else {
             return implClient.unwrapKey(algorithm, encryptedKey, context);
         }
+    }
+
+    /**
+     * Wraps the specified key using secure wrap. 
+     * It is only available with service API version {@code 2026-01-01-preview} and newer.
+     *
+     * @param algorithm The algorithm to use for wrapping the generated key.
+     *
+     * @return The {@link SecureWrapResult} whose {@link SecureWrapResult#getEncryptedKey() encrypted key} contains the
+     * wrapped key result.
+     *
+     * @throws NullPointerException If {@code algorithm} is {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecureWrapResult secureWrapKey(SecureKeyWrapAlgorithm algorithm) {
+        return secureWrapKey(algorithm, Context.NONE);
+    }
+
+    /**
+     * Wraps the specified key using secure wrap. 
+     * It is only available with service API version {@code 2026-01-01-preview} and newer.
+     *
+     * @param algorithm The algorithm to use for wrapping the generated key.
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
+     *
+     * @return The {@link SecureWrapResult} whose {@link SecureWrapResult#getEncryptedKey() encrypted key} contains the
+     * wrapped key result.
+     *
+     * @throws NullPointerException If {@code algorithm} is {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecureWrapResult secureWrapKey(SecureKeyWrapAlgorithm algorithm, Context context) {
+        if (implClient == null) {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "The secure wrap operation is not supported for local-only cryptography clients."));
+        }
+
+        return implClient.secureWrapKey(algorithm, context);
+    }
+
+    /**
+     * Unwraps the specified wrapped key using secure unwrap.
+     *
+     * <p>This operation is remote-only and is not supported by a client created from a {@link JsonWebKey}. It is only
+     * available with service API version {@code 2026-01-01-preview} and newer.</p>
+     *
+     * @param algorithm The algorithm that was used to wrap the key.
+     * @param encryptedKey The encrypted key content to unwrap.
+     * @param targetAttestationToken The MAA attestation token identifying the target TEE.
+     *
+     * @return The {@link SecureUnwrapResult} whose {@link SecureUnwrapResult#getKey() decrypted key} contains the
+     * unwrapped key result.
+     *
+     * @throws NullPointerException If {@code algorithm}, {@code encryptedKey}, or {@code targetAttestationToken} are
+     * {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecureUnwrapResult secureUnwrapKey(SecureKeyWrapAlgorithm algorithm, byte[] encryptedKey,
+        String targetAttestationToken) {
+        return secureUnwrapKey(algorithm, encryptedKey, targetAttestationToken, Context.NONE);
+    }
+
+    /**
+     * Unwraps the specified wrapped key using secure unwrap.
+     *
+     * <p>This operation is remote-only and is not supported by a client created from a {@link JsonWebKey}. It is only
+     * available with service API version {@code 2026-01-01-preview} and newer.</p>
+     *
+     * @param algorithm The algorithm that was used to wrap the key.
+     * @param encryptedKey The encrypted key content to unwrap.
+     * @param targetAttestationToken The MAA attestation token identifying the target TEE.
+     * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
+     *
+     * @return The {@link SecureUnwrapResult} whose {@link SecureUnwrapResult#getKey() decrypted key} contains the
+     * unwrapped key result.
+     *
+     * @throws NullPointerException If {@code algorithm}, {@code encryptedKey}, or {@code targetAttestationToken} are
+     * {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecureUnwrapResult secureUnwrapKey(SecureKeyWrapAlgorithm algorithm, byte[] encryptedKey,
+        String targetAttestationToken, Context context) {
+        if (implClient == null) {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "The secure unwrap operation is not supported for local-only cryptography clients."));
+        }
+
+        return implClient.secureUnwrapKey(algorithm, encryptedKey, targetAttestationToken, context);
     }
 
     /**
