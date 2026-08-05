@@ -6,22 +6,29 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.AzureStorageSmbFileShareEndpointUpdateProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageSmbFileShareEndpointUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageSmbFileShareEndpointUpdateProperties model
-            = BinaryData.fromString("{\"endpointType\":\"AzureStorageSmbFileShare\",\"description\":\"i\"}")
-                .toObject(AzureStorageSmbFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("i", model.description());
+        AzureStorageSmbFileShareEndpointUpdateProperties model = BinaryData.fromString(
+            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"enableCrossTenantTransfer\":true,\"allowedStorageAccounts\":[\"tgrhpdjpjumas\",\"azjpqyegualhbxxh\",\"jj\"],\"description\":\"v\"}")
+            .toObject(AzureStorageSmbFileShareEndpointUpdateProperties.class);
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertTrue(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("tgrhpdjpjumas", model.allowedStorageAccounts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageSmbFileShareEndpointUpdateProperties model
-            = new AzureStorageSmbFileShareEndpointUpdateProperties().withDescription("i");
+            = new AzureStorageSmbFileShareEndpointUpdateProperties().withDescription("v")
+                .withEnableCrossTenantTransfer(true)
+                .withAllowedStorageAccounts(Arrays.asList("tgrhpdjpjumas", "azjpqyegualhbxxh", "jj"));
         model = BinaryData.fromObject(model).toObject(AzureStorageSmbFileShareEndpointUpdateProperties.class);
-        Assertions.assertEquals("i", model.description());
+        Assertions.assertEquals("v", model.description());
+        Assertions.assertTrue(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("tgrhpdjpjumas", model.allowedStorageAccounts().get(0));
     }
 }

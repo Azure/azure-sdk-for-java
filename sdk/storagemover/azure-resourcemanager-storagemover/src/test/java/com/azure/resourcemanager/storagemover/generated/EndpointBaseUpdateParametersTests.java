@@ -18,21 +18,23 @@ public final class EndpointBaseUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointBaseUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"hjq\"},\"identity\":{\"principalId\":\"yeicxmqciwqvhk\",\"tenantId\":\"xuigdtopbobj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"uhrzayvvt\":{\"principalId\":\"w\",\"clientId\":\"m\"}}}}")
+            "{\"properties\":{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"yb\"},\"identity\":{\"principalId\":\"h\",\"tenantId\":\"fbowskanyk\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"pec\":{\"principalId\":\"iywgqywgndrvynh\",\"clientId\":\"pphrcgynco\"},\"sxlzevgbmqj\":{\"principalId\":\"m\",\"clientId\":\"oo\"},\"zuvccfwnfnbacfio\":{\"principalId\":\"bcypmi\",\"clientId\":\"w\"}}}}")
             .toObject(EndpointBaseUpdateParameters.class);
-        Assertions.assertEquals("hjq", model.properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("yb", model.properties().description());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointBaseUpdateParameters model = new EndpointBaseUpdateParameters()
-            .withProperties(new EndpointBaseUpdateProperties().withDescription("hjq"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("uhrzayvvt", new UserAssignedIdentity())));
+            .withProperties(new EndpointBaseUpdateProperties().withDescription("yb"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("pec", new UserAssignedIdentity(), "sxlzevgbmqj",
+                        new UserAssignedIdentity(), "zuvccfwnfnbacfio", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(EndpointBaseUpdateParameters.class);
-        Assertions.assertEquals("hjq", model.properties().description());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("yb", model.properties().description());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

@@ -6,22 +6,20 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
-import com.azure.resourcemanager.storagemover.models.Operation;
+import com.azure.resourcemanager.storagemover.models.JobRunResourceId;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListMockTests {
+public final class JobDefinitionsReconcileJobWithResponseMockTests {
     @Test
-    public void testList() throws Exception {
-        String responseStr
-            = "{\"value\":[{\"name\":\"syocogjltdtbnnha\",\"isDataAction\":true,\"display\":{\"provider\":\"kvci\",\"resource\":\"nvpamq\",\"operation\":\"qqu\",\"description\":\"ik\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
+    public void testReconcileJobWithResponse() throws Exception {
+        String responseStr = "{\"jobRunResourceId\":\"xkk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +28,9 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        JobRunResourceId response = manager.jobDefinitions()
+            .reconcileJobWithResponse("ozqyzh", "tw", "sgogczhonnxk", "lgnyhmo", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }
