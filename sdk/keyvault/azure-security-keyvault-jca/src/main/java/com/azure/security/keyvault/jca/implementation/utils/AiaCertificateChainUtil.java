@@ -81,8 +81,8 @@ final class AiaCertificateChainUtil {
      * Completes an incomplete certificate chain by downloading missing intermediate CA certificates
      * using the AIA (Authority Information Access) extension embedded in each certificate.
      *
-        * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
-        * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
+     * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
+     * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
      *
      * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
      * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted
