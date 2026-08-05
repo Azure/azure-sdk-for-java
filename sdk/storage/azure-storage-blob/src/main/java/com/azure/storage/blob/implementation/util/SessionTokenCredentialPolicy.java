@@ -14,6 +14,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +39,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final String SESSION_OPS_UNAVAILABLE = "SessionOperationsTemporarilyUnavailable";
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
-    private final StorageSessionCredentialCache sessionCredentialCache;
+    private final AutoRefreshingCache<StorageSessionCredential> sessionCredentialCache;
     private final SessionOptions sessionOptions;
 
     /**
@@ -52,7 +53,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        StorageSessionCredentialCache sessionCredentialCache, SessionOptions sessionOptions) {
+        AutoRefreshingCache<StorageSessionCredential> sessionCredentialCache, SessionOptions sessionOptions) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionCredentialCache
             = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
@@ -213,15 +214,15 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     Mono<StorageSessionCredential> getValidSessionAsync() {
-        return sessionCredentialCache.getValidSessionAsync();
+        return sessionCredentialCache.getValidValueAsync();
     }
 
     StorageSessionCredential getValidSessionSync() {
-        return sessionCredentialCache.getValidSessionSync();
+        return sessionCredentialCache.getValidValueSync();
     }
 
     void invalidateSession(StorageSessionCredential target) {
-        sessionCredentialCache.invalidateSession(target);
+        sessionCredentialCache.invalidateValue(target);
     }
 
     private void signRequest(HttpPipelineCallContext context, StorageSessionCredential cred) {
@@ -231,7 +232,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private void handleSessionExpiringHeader(HttpResponse response) {
         String authInfo = response.getHeaderValue(X_MS_AUTH_INFO);
         if (authInfo != null && authInfo.contains(SESSION_EXPIRING)) {
-            sessionCredentialCache.forceRefreshSessionInBackground();
+            sessionCredentialCache.forceRefreshValueInBackground();
         }
     }
 

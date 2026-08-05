@@ -32,7 +32,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             = new BlobSessionClient(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName(), cc.getBlobContainerName());
 
-        StorageSessionCredential credential = sessionClient.createSessionSync();
+        StorageSessionCredential credential = sessionClient.createSync();
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -48,7 +48,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName(), ccAsync.getBlobContainerName());
 
-        StepVerifier.create(sessionClient.createSessionAsync()).assertNext(credential -> {
+        StepVerifier.create(sessionClient.createAsync()).assertNext(credential -> {
             assertNotNull(credential);
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
@@ -63,7 +63,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName(), cc.getBlobContainerName());
 
-        StorageSessionCredential credential = sessionClient.createSessionSync();
+        StorageSessionCredential credential = sessionClient.createSync();
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -79,7 +79,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName(), ccAsync.getBlobContainerName());
 
-        StepVerifier.create(sessionClient.createSessionAsync()).assertNext(credential -> {
+        StepVerifier.create(sessionClient.createAsync()).assertNext(credential -> {
             assertNotNull(credential);
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
@@ -105,7 +105,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName(), sasCc.getBlobContainerName());
 
-        StorageSessionCredential credential = sessionClient.createSessionSync();
+        StorageSessionCredential credential = sessionClient.createSync();
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -129,7 +129,7 @@ public class BlobSessionClientTests extends BlobTestBase {
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName(), ccAsync.getBlobContainerName());
 
-        StepVerifier.create(sessionClient.createSessionAsync()).assertNext(credential -> {
+        StepVerifier.create(sessionClient.createAsync()).assertNext(credential -> {
             assertNotNull(credential);
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());

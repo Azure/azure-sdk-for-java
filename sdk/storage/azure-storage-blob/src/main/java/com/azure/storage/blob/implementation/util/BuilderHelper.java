@@ -35,6 +35,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
@@ -162,8 +163,8 @@ public final class BuilderHelper {
             if (effectiveSessionOptions.getSessionMode() == SessionMode.NONE) {
                 policies.add(bearerPolicy);
             } else {
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy,
-                    new StorageSessionCredentialCache(sessionClient), effectiveSessionOptions));
+                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, new AutoRefreshingCache<>(sessionClient),
+                    effectiveSessionOptions));
             }
         }
 
