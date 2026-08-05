@@ -4,9 +4,14 @@
 
 ### Features Added
 
+- Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed GraalVM native-image compilation with SLF4J 2 by no longer forcing Azure Core logging and logging provider
+  classes to initialize at image build time. ([#49844](https://github.com/Azure/azure-sdk-for-java/issues/49844))
 
 ### Other Changes
 

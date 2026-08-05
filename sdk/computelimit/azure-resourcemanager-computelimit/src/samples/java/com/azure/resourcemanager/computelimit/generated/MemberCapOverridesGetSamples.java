@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class MemberCapOverridesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_Get.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_Get.json
      */
     /**
      * Sample code: Get a single member cap override.

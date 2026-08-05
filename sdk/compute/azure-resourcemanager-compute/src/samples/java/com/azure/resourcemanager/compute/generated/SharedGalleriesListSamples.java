@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SharedGalleriesListSamples {
     /*
-     * x-ms-original-file: 2025-03-03/sharedGalleryExamples/SharedGallery_List.json
+     * x-ms-original-file: 2025-12-03/sharedGalleryExamples/SharedGallery_List.json
      */
     /**
      * Sample code: List shared galleries.

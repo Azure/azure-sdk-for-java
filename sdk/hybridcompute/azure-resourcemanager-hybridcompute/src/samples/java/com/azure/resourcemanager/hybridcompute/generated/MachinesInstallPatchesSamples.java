@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class MachinesInstallPatchesSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machine_InstallPatches.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machine_InstallPatches.json
      */
     /**
      * Sample code: Install patch state of a machine.

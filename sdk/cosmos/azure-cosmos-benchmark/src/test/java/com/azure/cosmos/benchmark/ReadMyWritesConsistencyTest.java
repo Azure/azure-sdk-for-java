@@ -63,10 +63,9 @@ public class ReadMyWritesConsistencyTest {
     private DocumentCollection collection;
     private Database database;
 
-    @AfterClass(groups = "e2e")
+    @AfterClass(groups = "e2e", alwaysRun = true)
     public void afterClass() {
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
-        Utils.safeCleanDatabases(housekeepingClient);
         Utils.safeClean(housekeepingClient, database);
         Utils.safeClose(housekeepingClient);
     }
