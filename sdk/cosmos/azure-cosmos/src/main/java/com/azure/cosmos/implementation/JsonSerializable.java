@@ -631,9 +631,24 @@ public class JsonSerializable {
         }
     }
 
-    public ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer itemSerializer, Consumer<Map<String, Object>> onAfterSerialization, boolean isIdValidationEnabled) {
+    public ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer itemSerializer,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled) {
+
+        return this.serializeJsonToByteBuffer(
+            itemSerializer, onAfterSerialization, isIdValidationEnabled, false);
+    }
+
+    public ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer itemSerializer,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled,
+        boolean binaryEncodingEnabled) {
+
         this.populatePropertyBag();
-        return Utils.serializeJsonToByteBuffer(itemSerializer, propertyBag, onAfterSerialization, isIdValidationEnabled);
+        return Utils.serializeJsonToByteBuffer(
+            itemSerializer, propertyBag, onAfterSerialization, isIdValidationEnabled, binaryEncodingEnabled);
     }
 
     private String toJson(Object object) {

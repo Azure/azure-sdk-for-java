@@ -12,6 +12,8 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.BinaryEncodingHelper;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -592,7 +594,12 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         String pkRange = thresholds.getPartitionKeyRangeId();
         ServerOperationBatchRequest serverOperationBatchRequest =
-            BulkExecutorUtil.createBatchRequest(operations, pkRange, this.maxMicroBatchPayloadSizeInBytes, this.effectiveItemSerializer);
+            BulkExecutorUtil.createBatchRequest(
+                operations,
+                pkRange,
+                this.maxMicroBatchPayloadSizeInBytes,
+                this.effectiveItemSerializer,
+                BinaryEncodingHelper.canUseBinaryBatch(this.docClientWrapper.getConnectionPolicy().getConnectionMode()));
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
             serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
         }

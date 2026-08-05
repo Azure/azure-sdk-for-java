@@ -2076,6 +2076,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Map<String, String> getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
+        return getRequestHeaders(options, resourceType, operationType, null);
+    }
+
+    private Map<String, String> getRequestHeaders(
+        RequestOptions options,
+        ResourceType resourceType,
+        OperationType operationType,
+        Boolean binaryEncodingEnabled) {
+
         Map<String, String> headers = new HashMap<>();
 
         // Apply client-level additional headers first (e.g., workload-id from CosmosClientBuilder.additionalHeaders())
@@ -2085,6 +2094,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (this.useMultipleWriteLocations) {
             headers.put(HttpConstants.HttpHeaders.ALLOW_TENTATIVE_WRITES, Boolean.TRUE.toString());
+        }
+
+        boolean useBinaryEncoding = binaryEncodingEnabled != null
+            ? binaryEncodingEnabled
+            : BinaryEncodingHelper.canUseBinaryEncoding(
+                this.connectionPolicy.getConnectionMode(), resourceType, operationType, options);
+        if (useBinaryEncoding) {
+            headers.put(
+                HttpConstants.HttpHeaders.CONTENT_SERIALIZATION_FORMAT,
+                ContentSerializationFormat.CosmosBinary.toString());
         }
 
         if (consistencyLevel != null) {
@@ -2406,7 +2425,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId, true);
+        boolean binaryEncodingEnabled = BinaryEncodingHelper.canUseBinaryEncoding(
+            this.connectionPolicy.getConnectionMode(), ResourceType.Document, operationType, options);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(
+            document,
+            options.getEffectiveItemSerializer(),
+            trackingId,
+            true,
+            binaryEncodingEnabled);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -2415,7 +2441,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, operationType);
+        Map<String, String> requestHeaders = this.getRequestHeaders(
+            options, ResourceType.Document, operationType, binaryEncodingEnabled);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             getEffectiveClientContext(clientContextOverride),
@@ -2463,7 +2490,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = ByteBuffer.wrap(Utils.getUTF8Bytes(serverBatchRequest.getRequestBody()));
+        ByteBuffer content = ByteBuffer.wrap(serverBatchRequest.getRequestBody());
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -3579,8 +3606,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
-        final Map<String, String> requestHeaders =
-            getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
+        boolean binaryEncodingEnabled = BinaryEncodingHelper.canUseBinaryEncoding(
+            this.connectionPolicy.getConnectionMode(), ResourceType.Document, OperationType.Replace, options);
+        final Map<String, String> requestHeaders = getRequestHeaders(
+            options, ResourceType.Document, OperationType.Replace, binaryEncodingEnabled);
         Instant serializationStartTimeUTC = Instant.now();
         Consumer<Map<String, Object>> onAfterSerialization = null;
         if (options != null) {
@@ -3597,7 +3626,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosItemSerializer serializerForContent = itemAlreadySerialized
             ? CosmosItemSerializer.DEFAULT_SERIALIZER
             : options.getEffectiveItemSerializer();
-        ByteBuffer content = document.serializeJsonToByteBuffer(serializerForContent, onAfterSerialization, false);
+        ByteBuffer content = document.serializeJsonToByteBuffer(
+            serializerForContent, onAfterSerialization, false, binaryEncodingEnabled);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(

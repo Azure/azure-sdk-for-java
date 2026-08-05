@@ -6,15 +6,19 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.implementation.batch.hybridrow.HybridRowBatchCodec;
+import com.azure.cosmos.implementation.json.CosmosBinaryJacksonCodec;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,18 +44,21 @@ public final class BatchResponseParser {
 
         CosmosBatchResponse response = null;
         final JsonNode responseContentAsJson = documentServiceResponse.getResponseBody();
+        byte[] rawResponse = documentServiceResponse.getResponseBodyAsBytes();
 
-        if (responseContentAsJson != null) {
+        if (rawResponse != null && rawResponse.length > 0 && (rawResponse[0] & 0xFF) == 0x81) {
+            try {
+                response = populateFromHybridRow(
+                    documentServiceResponse, request, shouldPromoteOperationStatus, rawResponse);
+            } catch (RuntimeException decodingFailure) {
+                response = deserializationFailure(documentServiceResponse, decodingFailure);
+            }
+        } else if (responseContentAsJson != null) {
             response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
 
             if (response == null) {
                 // Convert any payload read failures as InternalServerError
-                response = ModelBridgeInternal.createCosmosBatchResponse(
-                    HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
-                    HttpConstants.SubStatusCodes.UNKNOWN,
-                    "ServerResponseDeserializationFailure",
-                    documentServiceResponse.getResponseHeaders(),
-                    documentServiceResponse.getCosmosDiagnostics());
+                response = deserializationFailure(documentServiceResponse, null);
             }
         }
 
@@ -92,6 +99,85 @@ public final class BatchResponseParser {
             "Number of responses should be equal to number of operations in request.");
 
         return response;
+    }
+
+    private static CosmosBatchResponse deserializationFailure(
+        RxDocumentServiceResponse serviceResponse, RuntimeException cause) {
+        String message = cause == null
+            ? "ServerResponseDeserializationFailure"
+            : "ServerResponseDeserializationFailure: " + cause.getMessage();
+        return ModelBridgeInternal.createCosmosBatchResponse(
+            HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
+            HttpConstants.SubStatusCodes.UNKNOWN,
+            message,
+            serviceResponse.getResponseHeaders(),
+            serviceResponse.getCosmosDiagnostics());
+    }
+
+    private static CosmosBatchResponse populateFromHybridRow(
+        RxDocumentServiceResponse serviceResponse,
+        ServerBatchRequest request,
+        boolean shouldPromoteOperationStatus,
+        byte[] payload) {
+
+        List<CosmosItemOperation> operations = request.getOperations();
+        List<HybridRowBatchCodec.Result> wireResults = HybridRowBatchCodec.decodeResponse(
+            payload, operations.size());
+        if (wireResults.size() != operations.size()) {
+            return null;
+        }
+        List<CosmosBatchOperationResult> results = new ArrayList<>(wireResults.size());
+        for (int index = 0; index < wireResults.size(); index++) {
+            HybridRowBatchCodec.Result wireResult = wireResults.get(index);
+            results.add(ModelBridgeInternal.createCosmosBatchResult(
+                wireResult.getETag(),
+                wireResult.getRequestCharge(),
+                decodeResourceBody(wireResult.getResourceBody()),
+                wireResult.getStatusCode(),
+                Duration.ofMillis(wireResult.getRetryAfterMilliseconds()),
+                wireResult.getSubStatusCode(),
+                operations.get(index)));
+        }
+        int statusCode = promotedStatus(serviceResponse.getStatusCode(), results, shouldPromoteOperationStatus);
+        int subStatusCode = statusCode == serviceResponse.getStatusCode()
+            ? BatchExecUtils.getSubStatusCode(serviceResponse.getResponseHeaders())
+            : results.stream().filter(result -> result.getStatusCode() == statusCode)
+                .map(CosmosBatchOperationResult::getSubStatusCode).findFirst().orElse(HttpConstants.SubStatusCodes.UNKNOWN);
+        CosmosBatchResponse response = ModelBridgeInternal.createCosmosBatchResponse(
+            statusCode, subStatusCode, null, serviceResponse.getResponseHeaders(), serviceResponse.getCosmosDiagnostics());
+        ModelBridgeInternal.addCosmosBatchResultInResponse(response, results);
+        return response;
+    }
+
+    private static ObjectNode decodeResourceBody(byte[] resourceBody) {
+        if (resourceBody == null || resourceBody.length == 0) {
+            return null;
+        }
+        JsonNode value;
+        try {
+            value = CosmosBinaryJacksonCodec.isBinaryFormat(resourceBody)
+                ? CosmosBinaryJacksonCodec.decode(resourceBody)
+                : Utils.getSimpleObjectMapper().readTree(resourceBody);
+        } catch (IOException error) {
+            throw new IllegalStateException("Unable to decode batch resource body", error);
+        }
+        if (!(value instanceof ObjectNode)) {
+            throw new IllegalStateException("Batch resource body is not an object");
+        }
+        return (ObjectNode) value;
+    }
+
+    private static int promotedStatus(
+        int responseStatus, List<CosmosBatchOperationResult> results, boolean shouldPromoteOperationStatus) {
+        if (responseStatus == HttpResponseStatus.MULTI_STATUS.code() && shouldPromoteOperationStatus) {
+            for (CosmosBatchOperationResult result : results) {
+                if (result.getStatusCode() != HttpResponseStatus.FAILED_DEPENDENCY.code()
+                    && result.getStatusCode() >= 400) {
+                    return result.getStatusCode();
+                }
+            }
+        }
+        return responseStatus;
     }
 
     private static CosmosBatchResponse populateFromResponseContent(
@@ -147,10 +233,7 @@ public final class BatchResponseParser {
     }
 
     /**
-     * Read batch operation result result.
-     *
-     *  TODO(rakkuma): Similarly hybrid row result needs to be parsed.
-     *  Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
+     * Read a JSON batch operation result.
      *
      * @param objectNode having response for a single operation.
      *

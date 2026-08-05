@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.BinaryEncodingHelper;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
@@ -47,6 +48,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdReadFeedKeyType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRemoteStorageType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdSupportedSerializationFormats;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
@@ -99,6 +101,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addCollectionRemoteStorageSecurityIdentifier(headers);
         this.addConsistencyLevelHeader(headers);
         this.addContentSerializationFormat(headers);
+        this.addBinaryChangeFeedResponseFormat(request);
+        this.addSupportedSerializationFormats(request);
         this.addContinuationToken(request, headers);
         this.addDateHeader(headers);
         this.addDisableRUPerMinuteUsage(headers);
@@ -297,6 +301,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getContentSerializationFormat() {
         return this.get(RntbdRequestHeader.ContentSerializationFormat);
+    }
+
+    private RntbdToken getSupportedSerializationFormats() {
+        return this.get(RntbdRequestHeader.SupportedSerializationFormats);
     }
 
     private RntbdToken getContinuationToken() {
@@ -782,6 +790,20 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                 default:
                     assert false;
             }
+        }
+    }
+
+    private void addBinaryChangeFeedResponseFormat(final RxDocumentServiceRequest request) {
+        if (BinaryEncodingHelper.canUseBinaryChangeFeedResponse(request)) {
+            this.getContentSerializationFormat().setValue(RntbdContentSerializationFormat.CosmosBinary.id());
+        }
+    }
+
+    private void addSupportedSerializationFormats(final RxDocumentServiceRequest request) {
+        if (BinaryEncodingHelper.canUseBinaryQueryResponse(request)) {
+            this.getSupportedSerializationFormats().setValue((byte) (
+                RntbdSupportedSerializationFormats.JsonText.id()
+                    | RntbdSupportedSerializationFormats.CosmosBinary.id()));
         }
     }
 

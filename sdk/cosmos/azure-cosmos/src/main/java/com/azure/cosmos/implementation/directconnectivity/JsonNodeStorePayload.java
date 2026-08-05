@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.json.CosmosBinaryJacksonCodec;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.internal.StringUtil;
@@ -27,13 +28,17 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final CharsetDecoder fallbackCharsetDecoder = getFallbackCharsetDecoder();
     private final int responsePayloadSize;
     private final JsonNode jsonValue;
+    private final byte[] rawPayload;
 
     public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = parseJson(bufferStream, readableBytes, () -> responseHeaders);
+            byte[] payload = readPayload(bufferStream, readableBytes);
+            this.rawPayload = isHybridRow(payload) ? payload : null;
+            this.jsonValue = parsePayload(payload, () -> responseHeaders);
         } else {
             this.responsePayloadSize = 0;
+            this.rawPayload = null;
             this.jsonValue = null;
         }
     }
@@ -50,22 +55,54 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
 
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = parseJson(bufferStream, readableBytes, () -> buildHeaderMap(headerNames, headerValues));
+            byte[] payload = readPayload(bufferStream, readableBytes);
+            this.rawPayload = isHybridRow(payload) ? payload : null;
+            this.jsonValue = parsePayload(payload, () -> buildHeaderMap(headerNames, headerValues));
         } else {
             this.responsePayloadSize = 0;
+            this.rawPayload = null;
             this.jsonValue = null;
         }
     }
 
-    private static JsonNode parseJson(
-        ByteBufInputStream bufferStream,
-        int readableBytes,
-        Supplier<Map<String, String>> headersSupplier) {
-
+    private static byte[] readPayload(ByteBufInputStream bufferStream, int readableBytes) {
         byte[] bytes = new byte[readableBytes];
         try {
-            bufferStream.read(bytes);
+            int offset = 0;
+            while (offset < bytes.length) {
+                int read = bufferStream.read(bytes, offset, bytes.length - offset);
+                if (read < 0) {
+                    throw new IOException("Unexpected end of store payload");
+                }
+                offset += read;
+            }
+            return bytes;
+        } catch (IOException error) {
+            throw new IllegalStateException("Unable to read store payload", error);
+        }
+    }
+
+    private static JsonNode parsePayload(
+        byte[] bytes,
+        Supplier<Map<String, String>> headersSupplier) {
+
+        try {
+            if (CosmosBinaryJacksonCodec.isBinaryFormat(bytes)) {
+                return CosmosBinaryJacksonCodec.decode(bytes);
+            }
+            if (isHybridRow(bytes)) {
+                return null;
+            }
             return Utils.getSimpleObjectMapper().readTree(bytes);
+        } catch (RuntimeException error) {
+            if (!CosmosBinaryJacksonCodec.isBinaryFormat(bytes)) {
+                throw error;
+            }
+            throw Utils.createCosmosException(
+                HttpConstants.StatusCodes.BADREQUEST,
+                HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                new IllegalStateException("Unable to parse Cosmos Binary response.", error),
+                headersSupplier.get());
         } catch (IOException e) {
             Map<String, String> responseHeaders = headersSupplier.get();
             if (fallbackCharsetDecoder != null) {
@@ -90,6 +127,10 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                     responseHeaders);
             }
         }
+    }
+
+    private static boolean isHybridRow(byte[] bytes) {
+        return bytes.length > 0 && (bytes[0] & 0xFF) == 0x81;
     }
 
     private static Map<String, String> buildHeaderMap(String[] headerNames, String[] headerValues) {
@@ -138,6 +179,10 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     @Override
     public JsonNode getPayload() {
         return jsonValue;
+    }
+
+    byte[] getRawPayload() {
+        return rawPayload == null ? null : rawPayload.clone();
     }
 
     private static CharsetDecoder getFallbackCharsetDecoder() {

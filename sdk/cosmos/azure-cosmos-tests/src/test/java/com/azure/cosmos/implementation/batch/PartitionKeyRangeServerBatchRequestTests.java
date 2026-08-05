@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -11,7 +12,10 @@ import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,6 +101,51 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().get(0).getId()).isEqualTo(operations.get(1).getId());
         assertThat(serverOperationBatchRequest.getBatchPendingOperations().size()).isEqualTo(1);
         assertThat(serverOperationBatchRequest.getBatchPendingOperations().get(0).getId()).isEqualTo(operations.get(2).getId());
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void hybridRowSerializesEachItemOnce() {
+        AtomicInteger serializationCount = new AtomicInteger();
+        CosmosItemSerializer serializer = new CosmosItemSerializer() {
+            @Override
+            public <T> Map<String, Object> serialize(T item) {
+                serializationCount.incrementAndGet();
+                return Collections.singletonMap("id", item);
+            }
+
+            @Override
+            public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                throw new UnsupportedOperationException();
+            }
+        };
+        List<CosmosItemOperation> operations = Collections.singletonList(new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE, "one", PartitionKey.NONE, null, "one", null));
+
+        PartitionKeyRangeServerBatchRequest.createBatchRequest(
+            "0", operations, Integer.MAX_VALUE, 100, serializer, true);
+
+        assertThat(serializationCount).hasValue(1);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void hybridRowUsesExactEncodedSizeForOverflow() {
+        JsonSerializable item = new JsonSerializable();
+        item.set("payload", StringUtils.repeat("x", 128));
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        operations.add(new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE, "one", PartitionKey.NONE, null, item, null));
+        operations.add(new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE, "two", PartitionKey.NONE, null, item, null));
+
+        ServerOperationBatchRequest single = PartitionKeyRangeServerBatchRequest.createBatchRequest(
+            "0", operations.subList(0, 1), Integer.MAX_VALUE, 100, null, true);
+        int exactOneOperationLength = single.getBatchRequest().getRequestBody().length;
+        ServerOperationBatchRequest split = PartitionKeyRangeServerBatchRequest.createBatchRequest(
+            "0", operations, exactOneOperationLength, 100, null, true);
+
+        assertThat(split.getBatchRequest().getOperations()).hasSize(1);
+        assertThat(split.getBatchPendingOperations()).hasSize(1);
+        assertThat(split.getBatchRequest().getRequestBody()).hasSize(exactOneOperationLength);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 10)

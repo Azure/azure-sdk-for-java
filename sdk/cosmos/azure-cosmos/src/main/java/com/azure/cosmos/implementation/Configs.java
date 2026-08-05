@@ -94,6 +94,9 @@ public class Configs {
     public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT = "COSMOS.HTTP_PENDING_ACQUIRE_MAX_COUNT";
     public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE = "COSMOS_HTTP_PENDING_ACQUIRE_MAX_COUNT";
 
+    static final String BINARY_ENCODING_ENABLED = "azure.cosmos.binaryEncodingEnabled";
+    static final String BINARY_ENCODING_ENABLED_VARIABLE = "AZURE_COSMOS_BINARY_ENCODING_ENABLED";
+
     public static final String ITEM_SERIALIZATION_INCLUSION_MODE = "COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE";
     public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
 
@@ -1722,6 +1725,12 @@ public class Configs {
         }
 
         return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+    }
+
+    static boolean isBinaryEncodingEnabled() {
+        return Boolean.parseBoolean(System.getProperty(
+            BINARY_ENCODING_ENABLED,
+            firstNonNull(emptyToNull(System.getenv(BINARY_ENCODING_ENABLED_VARIABLE)), Boolean.FALSE.toString())));
     }
 
     public static boolean isNonParseableDocumentLoggingEnabled() {
