@@ -39,6 +39,8 @@ reviewers. You are not the last defense. That changes the cost balance:
   question. Do not phrase uncertainty as a defect.
 - Ordinary generated churn, dependency alignment, POM updates, additive APIs,
   formatting, and documentation wording are not findings by themselves.
+- Ignore every file whose normalized repository-relative path contains a
+  `generated` segment. Do not use generated samples or tests as evidence.
 
 The objective is not to prove that the agent inspected every line. It is to
 surface a small number of concerns that a human reviewer would be glad to see.
@@ -81,8 +83,10 @@ Run in this order:
    same head SHA, stop. Classify prior concerns as unresolved, resolved, or no
    longer applicable.
 4. **Release-plan gate.** Validate the field before code review.
-5. **Targeted passes.** Run the five review passes from the skill. Produce
-   candidates, not final concerns.
+5. **Targeted passes.** Run the five review passes from the skill, excluding
+   every path with a `generated` segment. For GA breaking-change review, use
+   the current CHANGELOG section as the main source. Produce candidates, not
+   final concerns.
 6. **Self-verification.** Re-fetch cited evidence at the pinned SHA, confirm it
    is introduced by this PR, and drop weak or cosmetic candidates.
 7. **Critic.** If no candidate survives, use `noop`. Otherwise dispatch exactly

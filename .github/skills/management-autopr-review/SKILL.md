@@ -15,13 +15,18 @@ repository, or replace other automated and human review.
 
 ## Java-change gate
 
+Never review a file whose normalized repository-relative path contains a
+`generated` segment (`(^|/)generated(/|$)`). This includes generated samples
+and tests.
+
 Review `opened`, `reopened`, and `ready_for_review` only when the PR contains a
-changed `.java` file. On `synchronize`, review only when the pushed
-`before..after` range changes a `.java` file. POM-only, CHANGELOG-only,
-metadata-only, and refresh-only pushes produce no comment.
+changed `.java` file outside a `generated` path. On `synchronize`, review only
+when the pushed `before..after` range changes such a `.java` file. POM-only,
+CHANGELOG-only, metadata-only, generated-only, and refresh-only pushes produce
+no comment.
 
 Once the Java gate passes, supporting POM, CHANGELOG, metadata, and CI files may
-be read as evidence.
+be read as evidence, except files under a `generated` path.
 
 ## Release-plan gate
 
@@ -35,10 +40,19 @@ Missing link is `MGMT-RELEASE-PLAN`; stop before code review.
 
 ### `MGMT-FOLDER`: unrelated service-folder collision
 
-For a newly added
-`sdk/<service>/azure-resourcemanager-<module-tail>/pom.xml`, report only when:
+For a newly added management module, split its directory name on `-`. The
+expected service identity is always the third segment:
 
-1. `<service>` differs materially from `<module-tail>`, and
+`azure-resourcemanager-<service-identity>[-<module-suffix>...]`
+
+Ignore the fourth and later segments when comparing the module with its
+`sdk/<service>/` folder. For example,
+`azure-resourcemanager-compute-bulkactions` belongs in `sdk/compute`.
+
+Report only when:
+
+1. the folder `<service>` differs materially from the module's third segment,
+   and
 2. the folder already contains a management module for a different service.
 
 Do not report established branding differences or a folder containing only its
@@ -76,14 +90,24 @@ Ordinary dependency, POM, or release metadata changes are expected.
 
 ### `MGMT-BREAKING`: generated public API break
 
-Report only changes introduced by the PR:
+Use the current CHANGELOG release section as the primary and authoritative
+source. For a GA package version, its breaking-change section compares the
+release with the previous GA release and can identify a break that entered the
+main branch during an earlier beta.
 
-- removed or renamed public methods,
-- changed return types on existing public methods, or
-- generated response/header types that alter an existing method signature and
-  also satisfy the LRO suspicion above.
+Do not require the current Java diff to contain the break. Cite the CHANGELOG
+file and affected release entry. Optionally cite a non-`generated` Java file
+when it provides useful corroboration.
 
-Additive methods, models, overloads, and properties are not breaking.
+For a GA release, report one `MGMT-BREAKING` concern summarizing substantive
+breaking items listed in the current CHANGELOG section, including removed
+public types or methods, changed access, renamed APIs, and changed public
+signatures or return types. Request human confirmation that the GA breaks are
+intended.
+
+Do not raise `MGMT-BREAKING` for a beta package version. Beta packages may
+break, and their CHANGELOG comparison may be against a prior beta. Additive
+items are not breaking.
 
 ## Verification and output
 
@@ -112,4 +136,3 @@ Output:
 ```
 
 Silence or `noop` is correct when no review state changes.
-

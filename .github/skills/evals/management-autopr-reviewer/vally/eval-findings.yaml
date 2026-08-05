@@ -96,7 +96,8 @@ stimuli:
           pattern: "\\[MGMT-BREAKING\\]"
       - type: prompt
     rubric:
-      - The existing public method return type changed and must be flagged with MGMT-BREAKING.
+      - The GA CHANGELOG is authoritative even though the break entered main during an earlier beta.
+      - The changed return type must be flagged with MGMT-BREAKING and cite the CHANGELOG release entry.
 
   - name: suspicious-changelog-regeneration
     environment:

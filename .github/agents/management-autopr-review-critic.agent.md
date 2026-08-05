@@ -17,6 +17,9 @@ For every candidate, verify in order:
 3. The concern matches one rule ID defined by the management review skill.
 4. The claimed pattern satisfies every condition of that rule, including
    documented exceptions and false-positive defenses.
+   - Reject any evidence from a path containing a `generated` segment.
+   - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
+     entry. Do not require the current Java diff to contain the break.
 5. The prior workflow comment does not already contain the same concern under
    another ID or as an unchanged question.
 6. The requested action is concrete and does not require this workflow to edit

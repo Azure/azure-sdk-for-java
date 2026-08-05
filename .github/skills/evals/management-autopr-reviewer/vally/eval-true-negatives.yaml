@@ -39,6 +39,52 @@ stimuli:
       - The public Java changes are additive and the POM dependency alignment is expected generated churn.
       - No concern should be raised.
 
+  - name: beta-breaking-changelog-is-not-main-concern
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-beta-breaking-changelog.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no beta breaking concern"
+        config:
+          pattern: "\\[MGMT-BREAKING\\]"
+      - type: prompt
+    rubric:
+      - A beta package may contain breaking changes relative to a prior beta.
+      - The reviewer must not raise MGMT-BREAKING.
+
+  - name: generated-only-java-is-not-reviewed
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-generated-only-java.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no generated-path concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
+      - type: prompt
+    rubric:
+      - The only changed Java file has a generated path segment and must be excluded.
+      - The Java-change gate therefore fails and no review concern is emitted.
+
   - name: established-branding-folder-is-clean
     environment:
       skills:
@@ -60,6 +106,30 @@ stimuli:
       - type: prompt
     rubric:
       - appservice/web is an established branding difference and the folder contains only its own module.
+      - The reviewer must not raise MGMT-FOLDER.
+
+  - name: four-segment-module-folder-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-four-segment-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md. Focus on
+      service-folder and module identity.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no module suffix false positive"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The third module-name segment is compute and matches sdk/compute.
+      - The fourth segment, bulkactions, is a module suffix and must be ignored.
       - The reviewer must not raise MGMT-FOLDER.
 
   - name: prior-concern-is-carried-once
