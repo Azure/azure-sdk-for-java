@@ -9,6 +9,7 @@ import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
 import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
 import com.azure.ai.contentsafety.models.ImageCategory;
+import com.azure.core.util.BinaryData;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -21,7 +22,8 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     public void testAnalyzeImageTests() {
         // method invocation
         AnalyzeImageResult response = contentSafetyClient
-            .analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData().setContent("Y29udGVudDE=".getBytes())));
+            .analyzeImage(new AnalyzeImageOptions(
+                new ContentSafetyImageData().setContent(BinaryData.fromBytes("Y29udGVudDE=".getBytes()))));
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -9,6 +9,7 @@ import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -20,7 +21,8 @@ public class AnalyzeImage {
                 .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.analyze-image.analyze-image
         AnalyzeImageResult response = contentSafetyClient
-            .analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData().setContent("Y29udGVudDE=".getBytes())));
+            .analyzeImage(new AnalyzeImageOptions(
+                new ContentSafetyImageData().setContent(BinaryData.fromBytes("Y29udGVudDE=".getBytes()))));
         // END:com.azure.ai.contentsafety.generated.analyze-image.analyze-image
     }
 }
