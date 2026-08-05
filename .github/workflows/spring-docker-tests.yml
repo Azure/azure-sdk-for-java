@@ -1,4 +1,6 @@
 name: Spring Docker Tests
+# This workflow runs Spring Docker integration tests for the spring-cloud-azure-testcontainers
+# and spring-cloud-azure-docker-compose modules on pull requests and manual triggers.
 
 on:
   pull_request:
