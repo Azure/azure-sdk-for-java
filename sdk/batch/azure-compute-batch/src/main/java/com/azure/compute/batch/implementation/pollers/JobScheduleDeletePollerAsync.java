@@ -18,7 +18,8 @@ import java.util.function.Function;
 
 /**
  * Async poller class used by {@code beginDeleteJobSchedule} to implement polling logic for deleting a {@link BatchJobSchedule}.
- * Returns {@link BatchJobSchedule} values during polling and {@code null} upon successful deletion.
+ * Returns {@link BatchJobSchedule} values during polling and the final {@link BatchJobSchedule} state observed before
+ * deletion completes.
  */
 public final class JobScheduleDeletePollerAsync {
 
@@ -72,7 +73,8 @@ public final class JobScheduleDeletePollerAsync {
             })
                 .onErrorResume(HttpResponseException.class,
                     ex -> ex.getResponse() != null && ex.getResponse().getStatusCode() == 404
-                        ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null))
+                        ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            context.getLatestResponse() == null ? null : context.getLatestResponse().getValue()))
                         : Mono.error(ex));
         };
     }
@@ -88,11 +90,15 @@ public final class JobScheduleDeletePollerAsync {
     }
 
     /**
-     * Final result fetch operation (returns null; not required).
+     * Final result fetch operation.
      *
-     * @return A function that returns an empty Mono, indicating no final fetch is required.
+     * @return A function that returns the final {@link BatchJobSchedule} state observed during polling, or an empty
+     * {@link Mono} if no state was captured.
      */
-    public Function<PollingContext<BatchJobSchedule>, Mono<Void>> getFetchResultOperation() {
-        return context -> Mono.empty();
+    public Function<PollingContext<BatchJobSchedule>, Mono<BatchJobSchedule>> getFetchResultOperation() {
+        return context -> {
+            PollResponse<BatchJobSchedule> latestResponse = context.getLatestResponse();
+            return latestResponse == null ? Mono.empty() : Mono.justOrEmpty(latestResponse.getValue());
+        };
     }
 }

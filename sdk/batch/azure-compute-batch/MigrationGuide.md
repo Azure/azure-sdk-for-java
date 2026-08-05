@@ -301,7 +301,7 @@ With `Azure-Compute-Batch`, you can call `beginDeletePool` directly on the clien
 Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
 
 ```java com.azure.compute.batch.pool.delete-pool-simple
-SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
+SyncPoller<BatchPool, BatchPool> deletePoolPoller = batchClient.beginDeletePool("poolId");
 ```
 
 ```java com.azure.compute.batch.pool.delete-pool-async-simple
@@ -311,7 +311,7 @@ batchAsyncClient.beginDeletePool("poolId").subscribe();
 Here are examples for the synchronous and asynchronous client of how to wait for the polling to finish and retrieve the final result:
 
 ```java com.azure.compute.batch.pool.delete-pool-complex
-SyncPoller<BatchPool, Void> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
+SyncPoller<BatchPool, BatchPool> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
 PollResponse<BatchPool> finalDeletePoolResponse = complexDeletePoolPoller.waitForCompletion();
 ```
 
@@ -586,7 +586,7 @@ batchClient.jobOperations().deleteJob("jobId");
 With `Azure-Compute-Batch`, you can call `beginDeleteJob` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.delete-job.job-delete
-SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
+SyncPoller<BatchJob, BatchJob> deleteJobPoller = batchClient.beginDeleteJob("jobId");
 
 PollResponse<BatchJob> initialDeleteJobResponse = deleteJobPoller.poll();
 if (initialDeleteJobResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
@@ -850,7 +850,7 @@ batchClient.jobScheduleOperations().deleteJobSchedule("jobScheduleId");
 With `Azure-Compute-Batch`, you can call `beginDeleteJobSchedule` directly on the client. It is also now an LRO (Long Running Operation).
 
 ```java com.azure.compute.batch.job-schedule.delete-job-schedule
-SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
+SyncPoller<BatchJobSchedule, BatchJobSchedule> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
 
 PollResponse<BatchJobSchedule> initialJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
 if (initialJobScheduleDeleteResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {

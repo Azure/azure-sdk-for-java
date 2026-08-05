@@ -138,7 +138,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         Assertions.assertEquals((Integer) 100, jobScheduleAfterUpdate.getJobSpecification().getPriority());
 
         // DELETE
-        SyncPoller<BatchJobSchedule, Void> poller = setPlaybackSyncPollerPollInterval(
+        SyncPoller<BatchJobSchedule, BatchJobSchedule> poller = setPlaybackSyncPollerPollInterval(
             SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
 
@@ -218,7 +218,7 @@ public class JobScheduleTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJobSchedule, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchJobSchedule, BatchJobSchedule> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeleteJobSchedule(jobScheduleId), () -> Mono
                     .fromCallable(() -> batchAsyncClient.beginDeleteJobSchedule(jobScheduleId).getSyncPoller())));
 

@@ -110,7 +110,7 @@ public class FileTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -197,7 +197,7 @@ public class FileTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 

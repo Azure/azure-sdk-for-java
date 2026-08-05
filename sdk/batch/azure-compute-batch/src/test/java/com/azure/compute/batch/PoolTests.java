@@ -114,7 +114,7 @@ public class PoolTests extends BatchClientTestBase {
             pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -274,7 +274,7 @@ public class PoolTests extends BatchClientTestBase {
         Assertions.assertEquals(1, (long) resizedPool.getTargetLowPriorityNodes());
 
         // DELETE using LRO
-        SyncPoller<BatchPool, Void> poller
+        SyncPoller<BatchPool, BatchPool> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -394,7 +394,7 @@ public class PoolTests extends BatchClientTestBase {
             disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -512,7 +512,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
@@ -690,7 +690,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Clean-up
         try {
-            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+            SyncPoller<BatchPool, BatchPool> deletePoller = setPlaybackSyncPollerPollInterval(
                 SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
             deletePoller.waitForCompletion();

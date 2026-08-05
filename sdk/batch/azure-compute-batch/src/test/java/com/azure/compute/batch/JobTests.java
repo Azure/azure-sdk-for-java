@@ -91,7 +91,7 @@ public class JobTests extends BatchClientTestBase {
         sleepIfRunningAgainstService(1000);
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -231,7 +231,7 @@ public class JobTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -272,7 +272,7 @@ public class JobTests extends BatchClientTestBase {
         Assertions.assertEquals(jobId, job.getId());
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 

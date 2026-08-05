@@ -123,7 +123,7 @@ public class TaskTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -171,7 +171,7 @@ public class TaskTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -322,7 +322,7 @@ public class TaskTests extends BatchClientTestBase {
         }
 
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -384,7 +384,7 @@ public class TaskTests extends BatchClientTestBase {
         Assertions.assertEquals(taskListCount, taskCount);
 
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -461,7 +461,7 @@ public class TaskTests extends BatchClientTestBase {
         try {
             batchClient.createTasks(jobId, tasksToAdd);
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
@@ -472,7 +472,7 @@ public class TaskTests extends BatchClientTestBase {
         } catch (BatchErrorException err) {
             // DELETE
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
 
                 deletePoller.waitForCompletion();
@@ -484,7 +484,7 @@ public class TaskTests extends BatchClientTestBase {
         } catch (Exception err) {
             // DELETE
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
 
                 deletePoller.waitForCompletion();
@@ -529,7 +529,7 @@ public class TaskTests extends BatchClientTestBase {
             batchAsyncClient.createTasks(jobId, tasksToAdd).block();
 
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
@@ -540,7 +540,7 @@ public class TaskTests extends BatchClientTestBase {
         } catch (BatchErrorException err) {
             // DELETE
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
 
                 deletePoller.waitForCompletion();
@@ -593,7 +593,7 @@ public class TaskTests extends BatchClientTestBase {
         try {
             batchClient.createTasks(jobId, tasksToAdd, option);
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
@@ -644,7 +644,7 @@ public class TaskTests extends BatchClientTestBase {
         try {
             batchAsyncClient.createTasks(jobId, tasksToAdd, option).block();
             try {
-                SyncPoller<BatchJob, Void> deletePoller
+                SyncPoller<BatchJob, BatchJob> deletePoller
                     = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
@@ -708,7 +708,7 @@ public class TaskTests extends BatchClientTestBase {
         // One slot per task
         Assertions.assertEquals(taskCount, allSlots);
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
             deletePoller.waitForCompletion();
@@ -812,7 +812,7 @@ public class TaskTests extends BatchClientTestBase {
             if (getTestMode() == TestMode.RECORD) {
                 containerClient.deleteIfExists();
             }
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
             deletePoller.waitForCompletion();
@@ -859,7 +859,7 @@ public class TaskTests extends BatchClientTestBase {
 
         // Clean up
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 

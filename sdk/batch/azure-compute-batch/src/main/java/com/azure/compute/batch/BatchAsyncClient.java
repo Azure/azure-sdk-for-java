@@ -10950,10 +10950,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId) {
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId) {
         RequestOptions requestOptions = new RequestOptions();
         PoolDeletePollerAsync poller = new PoolDeletePollerAsync(this, poolId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11206,10 +11207,10 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId) {
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId) {
         RequestOptions requestOptions = new RequestOptions();
         JobDeletePollerAsync poller = new JobDeletePollerAsync(this, jobId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11573,10 +11574,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId) {
         RequestOptions requestOptions = new RequestOptions();
         JobScheduleDeletePollerAsync poller = new JobScheduleDeletePollerAsync(this, jobScheduleId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -12831,10 +12833,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
         Duration timeout = options == null ? null : options.getTimeout();
@@ -13181,10 +13184,10 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
         Duration timeout = options == null ? null : options.getTimeout();
@@ -13812,10 +13815,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId,
         BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
         Duration timeout = options == null ? null : options.getTimeout();

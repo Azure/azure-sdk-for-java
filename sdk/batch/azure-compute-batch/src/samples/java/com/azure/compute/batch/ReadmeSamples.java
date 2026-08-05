@@ -176,11 +176,11 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-pools.pool-list
 
         // BEGIN: com.azure.compute.batch.pool.delete-pool-simple
-        SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
+        SyncPoller<BatchPool, BatchPool> deletePoolPoller = batchClient.beginDeletePool("poolId");
         // END: com.azure.compute.batch.pool.delete-pool-simple
 
         // BEGIN: com.azure.compute.batch.pool.delete-pool-complex
-        SyncPoller<BatchPool, Void> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
+        SyncPoller<BatchPool, BatchPool> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
         PollResponse<BatchPool> finalDeletePoolResponse = complexDeletePoolPoller.waitForCompletion();
         // END: com.azure.compute.batch.pool.delete-pool-complex
 
@@ -272,7 +272,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-jobs.job-list
 
         // BEGIN: com.azure.compute.batch.delete-job.job-delete
-        SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
+        SyncPoller<BatchJob, BatchJob> deleteJobPoller = batchClient.beginDeleteJob("jobId");
 
         PollResponse<BatchJob> initialDeleteJobResponse = deleteJobPoller.poll();
         if (initialDeleteJobResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
@@ -409,7 +409,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job-schedule.list-job-schedules
 
         // BEGIN: com.azure.compute.batch.job-schedule.delete-job-schedule
-        SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
+        SyncPoller<BatchJobSchedule, BatchJobSchedule> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
 
         PollResponse<BatchJobSchedule> initialJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
         if (initialJobScheduleDeleteResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {

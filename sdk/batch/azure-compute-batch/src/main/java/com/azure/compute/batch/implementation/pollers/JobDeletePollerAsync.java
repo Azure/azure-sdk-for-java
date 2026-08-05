@@ -19,7 +19,8 @@ import java.util.function.Function;
 
 /**
  * Async poller class used by {@code beginDeleteJob} to implement polling logic for deleting a {@link BatchJob}.
- * Returns {@link BatchJob} values during polling and {@code null} upon successful deletion.
+ * Returns {@link BatchJob} values during polling and the final {@link BatchJob} state observed before deletion
+ * completes.
  */
 public final class JobDeletePollerAsync {
 
@@ -71,7 +72,8 @@ public final class JobDeletePollerAsync {
             })
                 .onErrorResume(HttpResponseException.class,
                     ex -> ex.getResponse() != null && ex.getResponse().getStatusCode() == 404
-                        ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null))
+                        ? Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            context.getLatestResponse() == null ? null : context.getLatestResponse().getValue()))
                         : Mono.error(ex));
         };
     }
@@ -86,11 +88,15 @@ public final class JobDeletePollerAsync {
     }
 
     /**
-     * Final result fetch operation (returns null; not required).
+     * Final result fetch operation.
      *
-     * @return A function that returns an empty Mono, indicating no final fetch is required.
+     * @return A function that returns the final {@link BatchJob} state observed during polling, or an empty
+     * {@link Mono} if no state was captured.
      */
-    public Function<PollingContext<BatchJob>, Mono<Void>> getFetchResultOperation() {
-        return context -> Mono.empty();
+    public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation() {
+        return context -> {
+            PollResponse<BatchJob> latestResponse = context.getLatestResponse();
+            return latestResponse == null ? Mono.empty() : Mono.justOrEmpty(latestResponse.getValue());
+        };
     }
 }
