@@ -33,8 +33,8 @@ import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
- * Completes an incomplete certificate chain with the issuer certificates published in the AIA (Authority Information
- * Access) extension of the certificates it already holds.
+ * Utility class used for completing an incomplete certificate chain with the issuer certificates published in the AIA
+ * (Authority Information Access) extension of the certificates it already holds.
  *
  * <p>Azure Key Vault's secrets endpoint returns only the leaf certificate for a non-exportable certificate whose
  * caller merged just the leaf during CSR completion. Without the intermediate CA certificates, jarsigner cannot build
