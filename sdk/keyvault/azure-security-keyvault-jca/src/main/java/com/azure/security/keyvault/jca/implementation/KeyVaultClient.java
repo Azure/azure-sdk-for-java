@@ -512,7 +512,7 @@ public class KeyVaultClient {
         String bodyString = "{\"alg\": \"" + digestName + "\", \"value\": \"" + digestValue + "\"}";
         Map<String, String> headers = Collections.singletonMap("Authorization", "Bearer " + getAccessToken());
 
-        String response = httpPost("/sign" + API_VERSION_POSTFIX, headers, bodyString, "application/json");
+        String response = httpPost(headers, bodyString);
 
         if (response != null) {
             try {
@@ -591,8 +591,8 @@ public class KeyVaultClient {
         return HttpUtil.get(uri, headers);
     }
 
-    String httpPost(String uri, Map<String, String> headers, String body, String contentType) {
-        return HttpUtil.post(uri, headers, body, contentType);
+    String httpPost(Map<String, String> headers, String body) {
+        return HttpUtil.post("/sign?api-version=7.1", headers, body, "application/json");
     }
 
     AccessToken getAccessToken(String resource, String identity) {

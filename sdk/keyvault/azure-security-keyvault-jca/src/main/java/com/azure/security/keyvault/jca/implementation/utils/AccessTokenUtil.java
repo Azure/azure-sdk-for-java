@@ -188,7 +188,6 @@ public final class AccessTokenUtil {
      * @param resource The resource scope (will be appended with /.default if not already present).
      * @param tenantId Tenant ID to use. If blank, fallback to environment variable AZURE_TENANT_ID.
      * @param clientId Client ID of the managed identity to use. If blank, fallback to environment variable AZURE_CLIENT_ID.
-     * @param tokenFilePath Path to the federated token file. If blank, fallback to environment variable AZURE_FEDERATED_TOKEN_FILE.
      * @return An access token, or null if the operation fails.
      */
     public static AccessToken getAccessTokenWithWorkloadIdentity(String resource, String tenantId, String clientId) {
@@ -219,7 +218,7 @@ public final class AccessTokenUtil {
         String requestUrl = buildTokenRequestUrl(authorityHost, effectiveTenantId);
         String requestBody = buildTokenRequestBody(effectiveClientId, federatedToken, scope);
 
-        String response = HttpUtil.post(requestUrl, requestBody, "application/x-www-form-urlencoded");
+        String response = HttpUtil.post(requestUrl, null, requestBody, "application/x-www-form-urlencoded");
         AccessToken result = parseAccessTokenResponse(response);
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", result);
