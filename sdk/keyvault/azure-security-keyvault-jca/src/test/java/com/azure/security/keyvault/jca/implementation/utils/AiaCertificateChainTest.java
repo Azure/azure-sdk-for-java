@@ -26,6 +26,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -39,6 +40,8 @@ import java.security.cert.PKIXBuilderParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -46,6 +49,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -156,8 +160,8 @@ public class AiaCertificateChainTest {
         Certificate[] leafOnly = new Certificate[] { leafCert };
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
 
             Certificate[] completed = AiaCertificateChainUtil.completeChainViaAia(leafOnly);
 
@@ -174,7 +178,7 @@ public class AiaCertificateChainTest {
         Certificate[] partial = new Certificate[] { leafCert, intermediateCert };
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
 
             Certificate[] completed = AiaCertificateChainUtil.completeChainViaAia(partial);
 
@@ -201,7 +205,7 @@ public class AiaCertificateChainTest {
         Certificate[] leafOnly = new Certificate[] { leafCert };
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(null);
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, null);
 
             Certificate[] result = AiaCertificateChainUtil.completeChainViaAia(leafOnly);
 
@@ -227,7 +231,7 @@ public class AiaCertificateChainTest {
     @Test
     void downloadIssuerCertificateFromAiaReturnsDerEncodedCert() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
 
             X509Certificate result = AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert);
 
@@ -248,8 +252,7 @@ public class AiaCertificateChainTest {
         String pemBundle = toPem(rootCert) + toPem(intermediateCert);
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL))
-                .thenReturn(pemBundle.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, pemBundle.getBytes(StandardCharsets.UTF_8));
 
             X509Certificate result = AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert);
 
@@ -273,7 +276,7 @@ public class AiaCertificateChainTest {
             "CN=Bad Issuer", badIssuerKeyPair.getPrivate(), false, AIA_BAD_ISSUER_URL);
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_BAD_ISSUER_URL)).thenReturn(badIssuerCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_BAD_ISSUER_URL, badIssuerCert.getEncoded());
 
             Certificate[] result
                 = AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafWithBadIssuerAia });
@@ -303,7 +306,7 @@ public class AiaCertificateChainTest {
             expiredIssuerKeyPair.getPrivate(), false, AIA_BAD_ISSUER_URL);
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_BAD_ISSUER_URL)).thenReturn(expiredIssuerCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_BAD_ISSUER_URL, expiredIssuerCert.getEncoded());
 
             Certificate[] result
                 = AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafWithExpiredAia });
@@ -380,8 +383,8 @@ public class AiaCertificateChainTest {
         Certificate[] completedChain;
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
             completedChain = AiaCertificateChainUtil.completeChainViaAia(leafOnly);
         }
 
@@ -436,7 +439,7 @@ public class AiaCertificateChainTest {
                 assertEquals(leafCert, result[0], "The returned certificate should be the leaf certificate");
 
                 // Verify that no HTTP calls were made (HttpUtil.getBytes should not be called)
-                httpMock.verify(() -> HttpUtil.getBytes(Mockito.anyString()), Mockito.never());
+                httpMock.verify(() -> HttpUtil.getBytesWithMetadata(Mockito.anyString()), Mockito.never());
             }
         } finally {
             // Clean up: restore the original property value
@@ -455,8 +458,8 @@ public class AiaCertificateChainTest {
     @Test
     void loadCertificatesCompletesLeafOnlyChain() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
 
             Certificate[] result = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert));
 
@@ -468,21 +471,21 @@ public class AiaCertificateChainTest {
     @Test
     void loadCertificatesCompletesChainWithMissingIntermediate() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
 
             Certificate[] result
                 = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(rootCert));
 
             assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, result,
                 "An intermediate missing in the middle of the chain must still be downloaded");
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.never());
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_ROOT_URL), Mockito.never());
         }
     }
 
     @Test
     void loadCertificatesCompletesChainWithoutRootAndCachesIssuer() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
 
             Certificate[] firstResult
                 = CertificateUtil.loadCertificatesFromSecretBundleValue(toPem(leafCert) + toPem(intermediateCert));
@@ -493,8 +496,8 @@ public class AiaCertificateChainTest {
                 "A contiguous chain must still be completed when its terminal certificate is not self-signed");
             assertArrayEquals(new Certificate[] { leafCert, intermediateCert, rootCert }, secondResult,
                 "A subsequent load must reuse the cached root certificate");
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.times(1));
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.never());
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_ROOT_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.never());
         }
     }
 
@@ -547,12 +550,12 @@ public class AiaCertificateChainTest {
     @Test
     void aiaResponseIsCachedAcrossDownloads() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
 
             assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
             assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
 
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
         }
     }
 
@@ -569,46 +572,249 @@ public class AiaCertificateChainTest {
             "CN=Test Intermediate CA", impostorKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
 
             assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
             assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(certSignedByAnotherKey),
                 "A cache hit must still fail issuer validation when the signature does not match");
 
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
         }
     }
 
     @Test
     void clearAiaCacheForcesNewDownload() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
 
             AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert);
             AiaCertificateChainUtil.clearAiaCache();
             AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert);
 
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(2));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
         }
     }
 
     @Test
-    void aiaCacheEvictsEntriesWhenFull() throws Exception {
+    void failedAiaResponseIsNegativelyCached() {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, null);
+
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void emptyAiaResponseIsNegativelyCached() {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, new byte[0]);
+
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void unparseableAiaResponseIsNegativelyCached() {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, "not a certificate".getBytes(StandardCharsets.UTF_8));
+
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void noStoreAiaResponseIsNotCached() throws Exception {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded(), "no-store"));
+
+            assertEquals(intermediateCert,
+                AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).get(0));
+            assertEquals(intermediateCert,
+                AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).get(0));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void noStoreFailedAiaResponseIsNotCached() {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(null, "no-store"));
+
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void noCacheUnparseableAiaResponseIsNotCached() {
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse("not a certificate".getBytes(StandardCharsets.UTF_8), "no-cache"));
+
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+            assertTrue(AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(AIA_INTERMEDIATE_URL).isEmpty());
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void successfulResponseUsesFallbackTtlWithoutHeaders() {
+        long now = 1_000L;
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }),
+            Collections.emptyList(), now);
+
+        assertEquals(now + TimeUnit.HOURS.toMillis(24), expiresAt);
+    }
+
+    @Test
+    void successfulResponseHonorsMaxAgeAndAgeHeaders() {
+        long now = 1_000L;
+        HttpUtil.BinaryHttpResponse response
+            = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300", null, "30", null);
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now + TimeUnit.SECONDS.toMillis(270), expiresAt);
+    }
+
+    @Test
+    void successfulResponseAccountsForApparentAgeFromDateHeader() {
+        long now = ZonedDateTime.parse("Wed, 5 Aug 2026 12:00:00 GMT", DateTimeFormatter.RFC_1123_DATE_TIME)
+            .toInstant()
+            .toEpochMilli();
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=3600",
+            "Wed, 5 Aug 2026 10:00:00 GMT", "0", null);
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now, expiresAt);
+    }
+
+    @Test
+    void successfulResponseUsesGreaterOfAgeAndApparentAge() {
+        long now = ZonedDateTime.parse("Wed, 5 Aug 2026 10:01:00 GMT", DateTimeFormatter.RFC_1123_DATE_TIME)
+            .toInstant()
+            .toEpochMilli();
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300",
+            "Wed, 5 Aug 2026 10:00:00 GMT", "120", null);
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now + TimeUnit.SECONDS.toMillis(180), expiresAt);
+    }
+
+    @Test
+    void successfulResponseWithNoStoreExpiresImmediately() {
+        long now = 1_000L;
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }, "no-store"),
+            Collections.emptyList(), now);
+
+        assertEquals(now, expiresAt);
+    }
+
+    @Test
+    void successfulResponseWithNoCacheExpiresImmediately() {
+        long now = 1_000L;
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }, "no-cache"),
+            Collections.emptyList(), now);
+
+        assertEquals(now, expiresAt);
+    }
+
+    @Test
+    void successfulResponseHonorsExpiresDateAndAgeHeaders() {
+        long now = 1_000L;
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, null,
+            "Wed, 5 Aug 2026 10:00:00 GMT", "30", "Wed, 5 Aug 2026 10:05:00 GMT");
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now + TimeUnit.SECONDS.toMillis(270), expiresAt);
+    }
+
+    @Test
+    void successfulResponseDoesNotReuseExpiredExpiresHeader() {
+        long now = ZonedDateTime.parse("Wed, 5 Aug 2026 12:00:00 GMT", DateTimeFormatter.RFC_1123_DATE_TIME)
+            .toInstant()
+            .toEpochMilli();
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, null,
+            "Wed, 5 Aug 2026 10:00:00 GMT", "0", "Wed, 5 Aug 2026 11:00:00 GMT");
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now, expiresAt);
+    }
+
+    @Test
+    void malformedFreshnessHeadersUseFallbackTtl() {
+        long now = 1_000L;
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=invalid",
+            "not-a-date", "invalid", "also-not-a-date");
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now + TimeUnit.HOURS.toMillis(24), expiresAt);
+    }
+
+    @Test
+    void overflowingAgeMakesResponseImmediatelyStale() {
+        long now = 1_000L;
+        HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300", null,
+            "999999999999999999999999999999999999999999", null);
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+
+        assertEquals(now, expiresAt);
+    }
+
+    @Test
+    void successfulResponseDoesNotOutliveCertificate() {
+        long now = 1_000L;
+        X509Certificate certificate = Mockito.mock(X509Certificate.class);
+        Mockito.when(certificate.getNotAfter()).thenReturn(new Date(now + 5_000L));
+
+        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }),
+            Collections.singletonList(certificate), now);
+
+        assertEquals(now + 5_000L, expiresAt);
+    }
+
+    @Test
+    void aiaCacheEvictsLeastRecentlyUsedEntryWhenFull() throws Exception {
         String firstUrl = "http://aia.example.com/cache-0.crt";
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(Mockito.anyString())).thenReturn(intermediateCert.getEncoded());
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(Mockito.anyString()))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded()));
 
             AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(firstUrl);
 
             // Fill the cache past its maximum size so its first entry can no longer be retained.
-            for (int i = 1; i <= 64; i++) {
+            for (int i = 1; i <= 128; i++) {
                 AiaCertificateChainUtil.fetchCertificatesFromAiaUrl("http://aia.example.com/cache-" + i + ".crt");
             }
 
             AiaCertificateChainUtil.fetchCertificatesFromAiaUrl(firstUrl);
 
-            httpMock.verify(() -> HttpUtil.getBytes(firstUrl), Mockito.times(2));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(firstUrl), Mockito.times(2));
         }
     }
 
@@ -639,15 +845,15 @@ public class AiaCertificateChainTest {
         logger.setUseParentHandlers(false);
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL)).thenReturn(intermediateCert.getEncoded());
-            httpMock.when(() -> HttpUtil.getBytes(AIA_ROOT_URL)).thenReturn(rootCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
+            mockAiaResponse(httpMock, AIA_ROOT_URL, rootCert.getEncoded());
 
             // The second run resolves the same two issuers entirely from the cache.
             AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafCert });
             AiaCertificateChainUtil.completeChainViaAia(new Certificate[] { leafCert });
 
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_INTERMEDIATE_URL), Mockito.times(1));
-            httpMock.verify(() -> HttpUtil.getBytes(AIA_ROOT_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_ROOT_URL), Mockito.times(1));
         } finally {
             logger.removeHandler(collector);
             logger.setLevel(originalLevel);
@@ -691,6 +897,18 @@ public class AiaCertificateChainTest {
     // -----------------------------------------------------------------------
     // Helper
     // -----------------------------------------------------------------------
+
+    private static void mockAiaResponse(MockedStatic<HttpUtil> httpMock, String url, byte[] body) {
+        httpMock.when(() -> HttpUtil.getBytesWithMetadata(url)).thenReturn(binaryResponse(body));
+    }
+
+    private static HttpUtil.BinaryHttpResponse binaryResponse(byte[] body) {
+        return new HttpUtil.BinaryHttpResponse(body, null, null, null, null);
+    }
+
+    private static HttpUtil.BinaryHttpResponse binaryResponse(byte[] body, String cacheControl) {
+        return new HttpUtil.BinaryHttpResponse(body, cacheControl, null, null, null);
+    }
 
     private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
         String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl) throws Exception {

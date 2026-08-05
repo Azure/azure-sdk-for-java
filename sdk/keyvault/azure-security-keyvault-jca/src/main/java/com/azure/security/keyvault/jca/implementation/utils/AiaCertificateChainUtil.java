@@ -18,14 +18,16 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.security.auth.x500.X500Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -47,11 +49,11 @@ import static java.util.logging.Level.WARNING;
 final class AiaCertificateChainUtil {
     private static final Logger LOGGER = Logger.getLogger(AiaCertificateChainUtil.class.getName());
     static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
-    private static final int AIA_CACHE_MAX_SIZE = 32;
-    private static final long AIA_CACHE_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
-    // Issuer certificates are immutable, so caching them per CA Issuers URL avoids re-downloading the same
-    // certificate for every alias sharing an issuer and on every certificates refresh cycle.
-    private static final Map<String, CachedAiaResponse> AIA_CACHE = new ConcurrentHashMap<>();
+    private static final int AIA_CACHE_MAX_SIZE = 128;
+    private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
+    private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
+    private static final AiaResponseCache AIA_CACHE
+        = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis);
 
     /**
      * Determines whether a certificate chain should be completed with issuer certificates resolved via AIA.
@@ -361,34 +363,144 @@ final class AiaCertificateChainUtil {
     /**
      * Retrieves the certificates published at a CA Issuers URL, reusing a previously cached response when possible.
      *
-     * <p>Issuer certificates are immutable, so downloading them once per URL removes repeated round trips to public
-     * CA endpoints across aliases sharing an issuer and across certificate refresh cycles. Only the parsed
-     * certificates are cached, never the result of validating them against a specific certificate: callers must
-     * still run {@code CertificateUtil.isValidIssuer} on every use.
+    * Successful responses honor HTTP freshness metadata with a 24-hour upper bound and never outlive their
+    * certificates. Failed, empty, or unparseable responses are cached briefly to avoid repeated calls to an
+    * unavailable endpoint. Only the parsed response is cached, never validation against a specific certificate:
+    * callers must still run {@code CertificateUtil.isValidIssuer} on every use.
      *
      * @param url the CA Issuers URL taken from an AIA extension
      * @return the certificates published at the URL, or an empty list if they cannot be retrieved or parsed
      */
     static List<X509Certificate> fetchCertificatesFromAiaUrl(String url) {
-        CachedAiaResponse cachedResponse = AIA_CACHE.get(url);
-        if (cachedResponse != null && !cachedResponse.isExpired()) {
-            LOGGER.log(FINE, "Reusing the cached AIA response for URL: {0}", url);
-            return cachedResponse.certificates;
-        }
+        return AIA_CACHE.getOrLoad(url, () -> loadAiaResponse(url),
+            () -> LOGGER.log(FINE, "Reusing the cached AIA response for URL: {0}", url));
+    }
 
+    private static AiaResponseCache.Entry loadAiaResponse(String url) {
         LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
-        byte[] certBytes = HttpUtil.getBytes(url);
+        long now = System.currentTimeMillis();
+        HttpUtil.BinaryHttpResponse response = HttpUtil.getBytesWithMetadata(url);
+        byte[] certBytes = response.getBody();
         if (certBytes == null) {
             LOGGER.log(FINE, "Failed to download issuer certificate from AIA URL: {0}", url);
-            return Collections.emptyList();
+            return new AiaResponseCache.Entry(Collections.emptyList(), calculateNegativeExpiration(response, now));
         }
 
         List<X509Certificate> certificates = parseCertificates(certBytes);
-        if (!certificates.isEmpty()) {
-            cacheAiaResponse(url, certificates);
+        if (certificates.isEmpty()) {
+            return new AiaResponseCache.Entry(certificates, calculateNegativeExpiration(response, now));
         }
 
-        return certificates;
+        return new AiaResponseCache.Entry(certificates, calculateExpiration(response, certificates, now));
+    }
+
+    static long calculateExpiration(HttpUtil.BinaryHttpResponse response, List<X509Certificate> certificates,
+        long nowInMillis) {
+        String cacheControl = response.getCacheControl();
+        if (hasCacheDirective(cacheControl, "no-store") || hasCacheDirective(cacheControl, "no-cache")) {
+            return nowInMillis;
+        }
+
+        long expiresAt = safeAdd(nowInMillis, MAX_SUCCESS_TTL_IN_MILLIS);
+        Long maxAgeInSeconds = getCacheDirectiveSeconds(cacheControl, "max-age");
+        long ageInSeconds = parseNonNegativeLong(response.getAge(), 0L);
+        Long dateHeader = parseHttpDate(response.getDate());
+        long apparentAgeInMillis = dateHeader == null ? 0L : Math.max(0L, nowInMillis - dateHeader);
+        long currentAgeInMillis = Math.max(apparentAgeInMillis, secondsToMillis(ageInSeconds));
+        if (maxAgeInSeconds != null) {
+            long freshnessLifetime = secondsToMillis(maxAgeInSeconds);
+            long remaining = Math.max(0L, freshnessLifetime - currentAgeInMillis);
+            expiresAt = Math.min(expiresAt, safeAdd(nowInMillis, remaining));
+        } else {
+            Long expiresHeader = parseHttpDate(response.getExpires());
+            if (expiresHeader != null) {
+                long freshnessLifetime = Math.max(0L, expiresHeader - (dateHeader == null ? nowInMillis : dateHeader));
+                long remaining = Math.max(0L, freshnessLifetime - currentAgeInMillis);
+                expiresAt = Math.min(expiresAt, safeAdd(nowInMillis, remaining));
+            }
+        }
+
+        for (X509Certificate certificate : certificates) {
+            expiresAt = Math.min(expiresAt, certificate.getNotAfter().getTime());
+        }
+        return expiresAt;
+    }
+
+    private static long calculateNegativeExpiration(HttpUtil.BinaryHttpResponse response, long nowInMillis) {
+        String cacheControl = response.getCacheControl();
+        return hasCacheDirective(cacheControl, "no-store") || hasCacheDirective(cacheControl, "no-cache")
+            ? nowInMillis
+            : safeAdd(nowInMillis, NEGATIVE_TTL_IN_MILLIS);
+    }
+
+    private static boolean hasCacheDirective(String cacheControl, String expectedDirective) {
+        if (cacheControl == null) {
+            return false;
+        }
+        for (String directive : cacheControl.split(",")) {
+            String normalized = directive.trim().toLowerCase(Locale.ROOT);
+            if (normalized.equals(expectedDirective) || normalized.startsWith(expectedDirective + "=")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Long getCacheDirectiveSeconds(String cacheControl, String expectedDirective) {
+        if (cacheControl == null) {
+            return null;
+        }
+        for (String directive : cacheControl.split(",")) {
+            String[] parts = directive.trim().split("=", 2);
+            if (parts.length == 2 && expectedDirective.equalsIgnoreCase(parts[0].trim())) {
+                String value = parts[1].trim();
+                if (value.length() >= 2 && value.startsWith("\"") && value.endsWith("\"")) {
+                    value = value.substring(1, value.length() - 1);
+                }
+                long parsed = parseNonNegativeLong(value, -1L);
+                return parsed < 0 ? null : parsed;
+            }
+        }
+        return null;
+    }
+
+    private static long parseNonNegativeLong(String value, long defaultValue) {
+        if (value == null) {
+            return defaultValue;
+        }
+        String normalized = value.trim();
+        if (normalized.isEmpty()) {
+            return defaultValue;
+        }
+        for (int i = 0; i < normalized.length(); i++) {
+            if (!Character.isDigit(normalized.charAt(i))) {
+                return defaultValue;
+            }
+        }
+        try {
+            return Long.parseLong(normalized);
+        } catch (NumberFormatException e) {
+            return Long.MAX_VALUE;
+        }
+    }
+
+    private static Long parseHttpDate(String value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return ZonedDateTime.parse(value, DateTimeFormatter.RFC_1123_DATE_TIME).toInstant().toEpochMilli();
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
+    private static long secondsToMillis(long seconds) {
+        return seconds > Long.MAX_VALUE / 1000L ? Long.MAX_VALUE : seconds * 1000L;
+    }
+
+    private static long safeAdd(long value, long increment) {
+        return increment > Long.MAX_VALUE - value ? Long.MAX_VALUE : value + increment;
     }
 
     /**
@@ -439,27 +551,6 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Caches an AIA response, keeping the cache bounded so that certificates advertising many distinct AIA URLs
-     * cannot grow it without limit.
-     *
-     * @param url the CA Issuers URL the certificates were published at
-     * @param certificates the certificates parsed from the response
-     */
-    private static void cacheAiaResponse(String url, List<X509Certificate> certificates) {
-        if (AIA_CACHE.size() >= AIA_CACHE_MAX_SIZE) {
-            AIA_CACHE.entrySet().removeIf(entry -> entry.getValue().isExpired());
-
-            if (AIA_CACHE.size() >= AIA_CACHE_MAX_SIZE) {
-                LOGGER.log(FINE, "The AIA response cache reached its maximum size of {0} entries. Clearing it.",
-                    AIA_CACHE_MAX_SIZE);
-                AIA_CACHE.clear();
-            }
-        }
-
-        AIA_CACHE.put(url, new CachedAiaResponse(certificates));
-    }
-
-    /**
      * Verifies that a certificate is currently within its validity period.
      *
      * <p>An expired, or not yet valid, intermediate downloaded via AIA must not be inserted into the chain:
@@ -480,21 +571,4 @@ final class AiaCertificateChainUtil {
         }
     }
 
-    /**
-     * A cached AIA response. Certificates are held with an expiration time so a reissued or revoked issuer is not
-     * served indefinitely.
-     */
-    private static final class CachedAiaResponse {
-        private final List<X509Certificate> certificates;
-        private final long expiresAtInMillis;
-
-        private CachedAiaResponse(List<X509Certificate> certificates) {
-            this.certificates = certificates;
-            this.expiresAtInMillis = System.currentTimeMillis() + AIA_CACHE_TTL_IN_MILLIS;
-        }
-
-        private boolean isExpired() {
-            return System.currentTimeMillis() >= expiresAtInMillis;
-        }
-    }
 }
