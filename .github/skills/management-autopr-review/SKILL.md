@@ -31,8 +31,8 @@ be read as evidence, except files under a `generated` path.
 ## Release-plan gate
 
 Normalize casing and Markdown emphasis. Accept both plain
-`Release Plan link: <url>` and formatted
-`**Release plan link:** [text](<url>)`. Require an HTTP(S) URL.
+`Release Plan link: https://example.com/release-plan` and formatted
+`**Release plan link:** [text](https://example.com/release-plan)`. Require an HTTP(S) URL.
 
 Missing link is `MGMT-RELEASE-PLAN`. Cite the PR description and continue the
 remaining review passes so other high-value concerns are not hidden.
