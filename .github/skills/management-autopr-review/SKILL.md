@@ -74,15 +74,20 @@ shape may indicate incorrect LRO modeling upstream.
 Do not report ordinary response wrappers or headers models without those
 headers.
 
-### `MGMT-CHANGELOG`: suspicious regeneration
+### `MGMT-API-VERSION-OVERLAP`: overlapping API-version generations
 
-Report either:
+Report when the branch contains package output from more than one API-version
+generation. Evidence includes either:
 
 - multiple package API-version lines in one release section, or
 - regeneration of a release section that was already dated before this PR.
 
-Ask which API version and release the package is intended to represent.
-Ordinary dependency, POM, or release metadata changes are expected.
+The likely root cause is either an earlier generated package that has not been
+released or multiple generation runs targeting different API versions on the
+same branch. Use the CHANGELOG as evidence, not as the defect itself. Ask which
+API-version generation should remain and whether the earlier package should be
+released or removed. Ordinary dependency, POM, or release metadata changes are
+expected.
 
 ### `MGMT-BREAKING`: generated public API break
 

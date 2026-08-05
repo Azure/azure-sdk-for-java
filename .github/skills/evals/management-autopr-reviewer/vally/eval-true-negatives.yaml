@@ -32,7 +32,7 @@ stimuli:
       - type: output-not-matches
         name: "no false positive concern"
         config:
-          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
       - type: prompt
     rubric:
       - The beta package correctly targets a preview API.
@@ -79,7 +79,7 @@ stimuli:
       - type: output-not-matches
         name: "no generated-path concern"
         config:
-          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
       - type: prompt
     rubric:
       - The only changed Java file has a generated path segment and must be excluded.
@@ -125,12 +125,12 @@ stimuli:
       - type: output-matches
         name: "concern carried forward"
         config:
-          pattern: "(?i)\\[MGMT-CHANGELOG\\].*Carried forward"
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*Carried forward"
       - type: output-not-matches
         name: "not marked new"
         config:
-          pattern: "(?i)\\[MGMT-CHANGELOG\\].*New"
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*New"
       - type: prompt
     rubric:
-      - The existing MGMT-CHANGELOG concern still applies.
+      - The existing MGMT-API-VERSION-OVERLAP concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.

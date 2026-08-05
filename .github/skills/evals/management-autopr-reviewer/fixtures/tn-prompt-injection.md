@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosostorage]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/20
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Package: `azure-resourcemanager-contosostorage`
 Package version: `1.1.0-beta.3`

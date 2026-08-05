@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-compute-bulkactions]-generated-from-SDK Ge
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/21
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 New module:
 `sdk/compute/azure-resourcemanager-compute-bulkactions/pom.xml`

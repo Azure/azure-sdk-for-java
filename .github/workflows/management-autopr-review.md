@@ -52,7 +52,7 @@ safe-outputs:
     target: "${{ github.event.pull_request.number || inputs.item_number }}"
   messages:
     footer: |
-      > Automated management AutoPR review by [{workflow_name}]({run_url}). Advisory only.
+      > Automated management AutoPR review by {workflow_name}: {run_url}. Advisory only.
       <!-- management-autopr-review -->
   noop:
     report-as-issue: false
@@ -133,7 +133,7 @@ For every candidate, verify in order:
    accepted release-plan URL is present.
 2. The evidence was introduced by this PR.
 3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-LRO`,
-   `MGMT-CHANGELOG`, `MGMT-BREAKING`, or `MGMT-RELEASE-PLAN`.
+   `MGMT-API-VERSION-OVERLAP`, `MGMT-BREAKING`, or `MGMT-RELEASE-PLAN`.
 4. Every condition and exception in the imported management review rules is
    satisfied.
    - Reject evidence from any path containing a `generated` segment.

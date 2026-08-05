@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosowidgets]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/12
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Package: `azure-resourcemanager-contosowidgets`
 Package version: `1.3.0-beta.2`

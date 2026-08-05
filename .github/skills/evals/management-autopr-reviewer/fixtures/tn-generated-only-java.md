@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosowidgets]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/23
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 The only changed Java file is:
 `sdk/contoso/azure-resourcemanager-contosowidgets/src/test/java/com/azure/resourcemanager/contoso/generated/WidgetTests.java`

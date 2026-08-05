@@ -4,9 +4,9 @@ Title: `[AutoPR azure-resourcemanager-contosomaintenance]-generated-from-SDK Gen
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/19
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
-CHANGELOG:
+Generation evidence in CHANGELOG:
 
 ```markdown
 ## 1.2.0-beta.1 (2026-07-15)
@@ -17,7 +17,7 @@ CHANGELOG:
 ```
 
 The dated `1.2.0-beta.1` section and its first API-version line already existed
-on the base branch. This PR regenerated the same section and added the second
-API-version line.
+on the base branch. This PR ran generation for a second API version on the same
+branch, regenerated the same section, and added the second API-version line.
 
 Changed Java adds operations from `2026-08-01-preview`.

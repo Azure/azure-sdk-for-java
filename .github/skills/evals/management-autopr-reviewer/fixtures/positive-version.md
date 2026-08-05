@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosocompute]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://example.invalid/releaseplan/15
+Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Package: `azure-resourcemanager-contosocompute`
 Package version: `2.1.0`

@@ -123,12 +123,12 @@ stimuli:
       - The GA CHANGELOG is authoritative even though the break entered main during an earlier beta.
       - The changed return type must be flagged with MGMT-BREAKING and cite the CHANGELOG release entry.
 
-  - name: suspicious-changelog-regeneration
+  - name: overlapping-api-version-generations
     environment:
       skills:
         - "../../../management-autopr-review"
       files:
-        - src: "../fixtures/positive-changelog.md"
+        - src: "../fixtures/positive-api-version-overlap.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -137,12 +137,13 @@ stimuli:
         - management-autopr-review
     graders:
       - type: output-matches
-        name: "CHANGELOG concern detected"
+        name: "API-version overlap detected"
         config:
-          pattern: "\\[MGMT-CHANGELOG\\]"
+          pattern: "\\[MGMT-API-VERSION-OVERLAP\\]"
       - type: prompt
     rubric:
-      - The same dated release was regenerated and contains two package API-version lines, so MGMT-CHANGELOG is required.
+      - The branch contains output from two API-version generations, so MGMT-API-VERSION-OVERLAP is required.
+      - The CHANGELOG is evidence of generation overlap, not the defect itself.
 
   - name: missing-release-plan
     environment:
