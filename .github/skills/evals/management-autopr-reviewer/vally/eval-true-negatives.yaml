@@ -1,0 +1,91 @@
+name: management-autopr-reviewer-true-negatives
+description: False-positive and deduplication tests for the unattended reviewer.
+
+tags:
+  area: management-autopr-reviewer
+
+defaults:
+  runs: 3
+  timeout: "300s"
+  model: claude-sonnet-4.6
+  judge_model: claude-sonnet-4.6
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: additive-beta-update-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-additive-beta-update.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR. Return the workflow review comment,
+      or say no concerns when no high-confidence rule matches.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no false positive concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
+      - type: prompt
+    rubric:
+      - The beta package correctly targets a preview API.
+      - The public Java changes are additive and the POM dependency alignment is expected generated churn.
+      - No concern should be raised.
+
+  - name: established-branding-folder-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-branding-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md. Focus on
+      service-folder and module identity.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no branding false positive"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - appservice/web is an established branding difference and the folder contains only its own module.
+      - The reviewer must not raise MGMT-FOLDER.
+
+  - name: prior-concern-is-carried-once
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-prior-concern.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to update the review state from
+      review-input.md. Do not repeat an unchanged question as a new concern.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "concern carried forward"
+        config:
+          pattern: "(?i)\\[MGMT-CHANGELOG\\].*Carried forward"
+      - type: output-not-matches
+        name: "not marked new"
+        config:
+          pattern: "(?i)\\[MGMT-CHANGELOG\\].*New"
+      - type: prompt
+    rubric:
+      - The existing MGMT-CHANGELOG concern still applies.
+      - It must retain the same ID and be marked Carried forward, without restating the question as new.
+

@@ -1,0 +1,146 @@
+name: management-autopr-reviewer-findings
+description: Detection tests for high-value generated management SDK concerns.
+
+tags:
+  area: management-autopr-reviewer
+
+defaults:
+  runs: 1
+  timeout: "300s"
+  model: claude-sonnet-4.6
+  judge_model: claude-sonnet-4.6
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: unrelated-service-folder-collision
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "folder collision detected"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - A distinct management service was added to a folder already owned by another module and must be flagged with MGMT-FOLDER.
+
+  - name: stable-package-on-preview-api
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-version.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "version mismatch detected"
+        config:
+          pattern: "\\[MGMT-VERSION\\]"
+      - type: prompt
+    rubric:
+      - The stable 2.1.0 package targets a preview API and must be flagged with MGMT-VERSION.
+
+  - name: suspicious-lro-response-shape
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-lro.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "LRO concern detected"
+        config:
+          pattern: "\\[MGMT-LRO\\]"
+      - type: prompt
+    rubric:
+      - The newly generated response and headers types expose Location and Retry-After and must be flagged with MGMT-LRO.
+
+  - name: changed-existing-return-type
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-breaking.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "breaking change detected"
+        config:
+          pattern: "\\[MGMT-BREAKING\\]"
+      - type: prompt
+    rubric:
+      - The existing public method return type changed and must be flagged with MGMT-BREAKING.
+
+  - name: suspicious-changelog-regeneration
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-changelog.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "CHANGELOG concern detected"
+        config:
+          pattern: "\\[MGMT-CHANGELOG\\]"
+      - type: prompt
+    rubric:
+      - The same dated release was regenerated and contains two package API-version lines, so MGMT-CHANGELOG is required.
+
+  - name: missing-release-plan
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-missing-release-plan.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "release plan concern detected"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: output-not-matches
+        name: "code review stops at release-plan gate"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|CHANGELOG|BREAKING)\\]"
+      - type: prompt
+    rubric:
+      - Missing release-plan URL must produce MGMT-RELEASE-PLAN and stop further review.
+
