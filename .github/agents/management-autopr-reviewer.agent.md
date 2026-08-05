@@ -85,9 +85,9 @@ Run in this order:
    candidates, not final concerns.
 6. **Self-verification.** Re-fetch cited evidence at the pinned SHA, confirm it
    is introduced by this PR, and drop weak or cosmetic candidates.
-7. **Critic.** Dispatch exactly once using the protocol. `FAIL` drops a
-   candidate. `DOWNGRADE` changes it to a question. No override exists in an
-   unattended run.
+7. **Critic.** If no candidate survives, use `noop`. Otherwise dispatch exactly
+   once using the protocol. `FAIL` drops a candidate. `DOWNGRADE` changes it to
+   a question. No override exists in an unattended run.
 8. **Report.** Emit one complete current-state replacement comment, or `noop`.
 
 ## Deduplication
