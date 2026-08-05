@@ -39,7 +39,7 @@ remaining review passes so other high-value concerns are not hidden.
 
 ## Review rules
 
-### `MGMT-FOLDER`: unrelated service-folder collision
+### `MGMT-FOLDER`: service-folder mismatch
 
 For a newly added management module, split its directory name on `-`. The
 expected service identity is always the third segment:
@@ -50,15 +50,10 @@ Ignore the fourth and later segments when comparing the module with its
 `sdk/<service>/` folder. For example,
 `azure-resourcemanager-compute-bulkactions` belongs in `sdk/compute`.
 
-Report only when:
-
-1. the folder `<service>` differs materially from the module's third segment,
-   and
-2. the folder already contains a management module for a different service.
-
-Do not report established branding differences or a folder containing only its
-own module. Explain that the likely source is upstream `service-dir`
-configuration without accessing that repository.
+Report whenever the folder `<service>` differs from the module's third segment.
+Do not treat established branding differences or a folder containing only the
+new module as exceptions. Explain that the likely source is upstream
+`service-dir` configuration without accessing that repository.
 
 ### `MGMT-VERSION`: stable package on a preview API
 

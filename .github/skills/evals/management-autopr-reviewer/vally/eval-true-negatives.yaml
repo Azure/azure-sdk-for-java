@@ -85,12 +85,12 @@ stimuli:
       - The only changed Java file has a generated path segment and must be excluded.
       - The Java-change gate therefore fails and no review concern is emitted.
 
-  - name: established-branding-folder-is-clean
+  - name: matching-service-folder-is-clean
     environment:
       skills:
         - "../../../management-autopr-review"
       files:
-        - src: "../fixtures/tn-branding-folder.md"
+        - src: "../fixtures/tn-service-folder-match.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md. Focus on
@@ -100,36 +100,12 @@ stimuli:
         - management-autopr-review
     graders:
       - type: output-not-matches
-        name: "no branding false positive"
-        config:
-          pattern: "\\[MGMT-FOLDER\\]"
-      - type: prompt
-    rubric:
-      - appservice/web is an established branding difference and the folder contains only its own module.
-      - The reviewer must not raise MGMT-FOLDER.
-
-  - name: four-segment-module-folder-is-clean
-    environment:
-      skills:
-        - "../../../management-autopr-review"
-      files:
-        - src: "../fixtures/tn-four-segment-folder.md"
-          dest: "review-input.md"
-    prompt: >
-      Use the management-autopr-review skill to review review-input.md. Focus on
-      service-folder and module identity.
-    constraints:
-      expect_skills:
-        - management-autopr-review
-    graders:
-      - type: output-not-matches
-        name: "no module suffix false positive"
+        name: "no service folder mismatch"
         config:
           pattern: "\\[MGMT-FOLDER\\]"
       - type: prompt
     rubric:
       - The third module-name segment is compute and matches sdk/compute.
-      - The fourth segment, bulkactions, is a module suffix and must be ignored.
       - The reviewer must not raise MGMT-FOLDER.
 
   - name: prior-concern-is-carried-once

@@ -33,7 +33,31 @@ stimuli:
           pattern: "\\[MGMT-FOLDER\\]"
       - type: prompt
     rubric:
-      - A distinct management service was added to a folder already owned by another module and must be flagged with MGMT-FOLDER.
+      - The new module's third package-name segment differs from its sdk service folder and must be flagged with MGMT-FOLDER.
+
+  - name: service-folder-name-mismatch
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-service-folder-mismatch.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md. Focus on
+      service-folder and module identity.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "service folder mismatch detected"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The new azure-resourcemanager-web module is under sdk/appservice, which does not match its third segment web.
+      - Branding differences and a folder containing only the new module are not exceptions.
+      - The reviewer must raise MGMT-FOLDER.
 
   - name: stable-package-on-preview-api
     environment:
