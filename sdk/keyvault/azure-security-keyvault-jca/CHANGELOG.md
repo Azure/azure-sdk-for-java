@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Stopped recording secrets in `FINER` level logs. Method entry logging passed the client secret, every Key Vault JSON response body and the private key PEM content as parameters, so enabling `FINER` (or a finer level) wrote the client secret in clear text along with access tokens and PKCS12 key bundles. Only non-secret parameters are logged now. Review any logs captured at `FINER` or finer with previous versions, and rotate the credentials they contain.
+- Stopped recording sensitive data in `FINER` level logs. Review any logs captured at the `FINER` level or lower in previous library versions and rotate any sensitive data contained there.
 - Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault is incomplete, the missing intermediate CA certificates are now downloaded at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Chains that are already contiguous are used as-is, so no network request is made. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 
 ### Other Changes
