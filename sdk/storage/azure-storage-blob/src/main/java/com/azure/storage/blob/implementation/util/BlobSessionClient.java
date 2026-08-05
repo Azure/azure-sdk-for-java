@@ -14,6 +14,7 @@ import com.azure.storage.blob.implementation.models.AuthenticationType;
 import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
 import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.models.SessionCredentials;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache.ValueProvider;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
  * takes an {@link HttpPipeline} (bearer-only, no SessionPolicy) and builds an
  * {@link AzureBlobStorageImpl} internally.
  */
-final class BlobSessionClient {
+final class BlobSessionClient implements ValueProvider<StorageSessionCredential> {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobSessionClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
@@ -39,7 +40,8 @@ final class BlobSessionClient {
         this.containerName = containerName;
     }
 
-    Mono<StorageSessionCredential> createSessionAsync() {
+    @Override
+    public Mono<StorageSessionCredential> createAsync() {
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
 
@@ -48,7 +50,8 @@ final class BlobSessionClient {
             .map(this::toCredential);
     }
 
-    StorageSessionCredential createSessionSync() {
+    @Override
+    public StorageSessionCredential createSync() {
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
 

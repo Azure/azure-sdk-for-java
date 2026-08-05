@@ -11,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache.ExpiringValue;
 
 import java.net.URL;
 import java.text.Collator;
@@ -25,7 +26,7 @@ import java.util.TreeMap;
  * Holds session credentials and signs requests using the Shared Key string-to-sign with the
  * Session scheme prefix.
  */
-final class StorageSessionCredential {
+final class StorageSessionCredential implements ExpiringValue {
 
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_PREFIX = "Session ";
@@ -164,7 +165,8 @@ final class StorageSessionCredential {
         return sessionKey;
     }
 
-    OffsetDateTime getExpiration() {
+    @Override
+    public OffsetDateTime getExpiration() {
         return expiration;
     }
 
