@@ -12,7 +12,6 @@
 
 ### Other Changes
 - Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
-- AIA chain completion caches the certificates published at each CA Issuers URL for 24 hours, so certificates sharing an issuer and successive refresh cycles no longer re-download the same immutable issuer certificates. Cached certificates are still fully validated on every use.
 
 ## 2.12.0 (2026-07-24)
 
