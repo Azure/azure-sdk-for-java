@@ -49,7 +49,8 @@ import java.util.zip.GZIPInputStream;
  * The mock server logs all received payloads (gunzipped) so you can inspect the generated
  * {@code Item_Dropped_Count} and {@code Item_Retry_Count} TelemetryItems in the console.</p>
  *
- * <p>Set {@code APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL} to a lower value (e.g. 60)
+ * <p>Set {@code APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true} to enable customer SDKStats.
+ * Set {@code APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL} to a lower value (e.g. 60)
  * so you don't have to wait 15 minutes for the first SDKStats export.</p>
  *
  * <p>Endpoints:</p>
@@ -64,16 +65,19 @@ import java.util.zip.GZIPInputStream;
  * <p>Usage:</p>
  * <pre>
  * # Test Item_Success_Count (default — goes to real Azure Monitor):
+ * set APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true
  * set APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60
  * mvn compile test-compile exec:java -Dexec.mainClass=...SimpleWebAppSample -Dexec.classpathScope=test
  *
  * # Test Item_Dropped_Count (mock server returns 400):
  * set TEST_MODE=drop
+ * set APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true
  * set APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60
  * mvn compile test-compile exec:java -Dexec.mainClass=...SimpleWebAppSample -Dexec.classpathScope=test
  *
  * # Test Item_Retry_Count (mock server returns 500):
  * set TEST_MODE=retry
+ * set APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true
  * set APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60
  * mvn compile test-compile exec:java -Dexec.mainClass=...SimpleWebAppSample -Dexec.classpathScope=test
  * </pre>
@@ -169,8 +173,9 @@ public class SimpleWebAppSample {
         System.out.println("   drop              — Item_Dropped_Count (mock → 400)");
         System.out.println("   retry             — Item_Retry_Count  (mock → 500)");
         System.out.println();
-        System.out.println(" Tip: set APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60");
-        System.out.println("      to see customer SDKStats sooner.");
+        System.out.println(" Tip: set APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true");
+        System.out.println("      and APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60");
+        System.out.println("      to enable customer SDKStats and see them sooner.");
         System.out.println("========================================================");
     }
 

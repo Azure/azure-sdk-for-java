@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * Categorizes exceptions into low-cardinality reason strings for customer-facing SDKStats
- * drop.reason and retry.reason dimensions.
+ * dropReason and retryReason dimensions.
  */
 final class CustomerSdkStatsExceptionCategory {
 
