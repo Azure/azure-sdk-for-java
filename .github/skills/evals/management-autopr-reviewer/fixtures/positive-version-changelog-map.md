@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-security]-generated-from-SDK Generation`
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release Plan link: https://example.invalid/releaseplan/27
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Package: `azure-resourcemanager-security`
 Package version: `1.1.0`
@@ -16,7 +16,7 @@ Current CHANGELOG section:
 
 - Azure Resource Manager Security client library for Java. Package api-version
   AlertsAPI: 2022-01-01, ApiCollectionsAPI: 2023-11-15,
-  ApplicationsAPI: 2022-07-01-preview, PricingsAPI: 2024-01-01.
+  ApplicationsAPI: 2022-07-01-preview.
 ```
 
 Changed Java outside generated paths:

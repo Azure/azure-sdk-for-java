@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-compute]-generated-from-SDK Generation`
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release Plan link: https://example.invalid/releaseplan/26
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Package: `azure-resourcemanager-compute`
 Package version: `1.2.0`
