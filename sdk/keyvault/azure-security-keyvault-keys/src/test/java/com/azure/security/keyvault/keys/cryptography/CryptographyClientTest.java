@@ -243,7 +243,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         assertEquals(SecureKeyWrapAlgorithm.RSA_OAEP_256, wrapResult.getAlgorithm());
         assertNotNull(wrapResult.getEncryptedKey());
-        assertNotNull(wrapResult.getKeyId());
+        assertEquals(wrappingKey.getId(), wrapResult.getKeyId());
 
         // Secure unwrap releases the wrapped key into a target TEE proven by a Microsoft Azure Attestation (MAA) token.
         String targetAttestationToken = "testAttestationToken";
@@ -261,7 +261,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         assertEquals(SecureKeyWrapAlgorithm.RSA_OAEP_256, unwrapResult.getAlgorithm());
         assertNotNull(unwrapResult.getKey());
-        assertNotNull(unwrapResult.getKeyId());
+        assertEquals(wrappingKey.getId(), unwrapResult.getKeyId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

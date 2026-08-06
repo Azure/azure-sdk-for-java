@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models and the `KeyOperation.SECURE_WRAP_KEY`/`SECURE_UNWRAP_KEY` values. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
+- Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
 
 ### Breaking Changes
 

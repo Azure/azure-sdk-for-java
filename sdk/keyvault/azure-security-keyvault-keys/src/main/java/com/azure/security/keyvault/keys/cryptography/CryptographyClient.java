@@ -1032,8 +1032,21 @@ public class CryptographyClient {
     }
 
     /**
-     * Wraps the specified key using secure wrap. 
+     * Performs a secure wrap operation using the configured key. This operation is remote-only and returns the
+     * wrapped key content produced with the specified algorithm.
      * It is only available with service API version {@code 2026-01-01-preview} and newer.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Performs a secure wrap operation and prints out the wrapped key details.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm -->
+     * <pre>
+     * SecureWrapResult secureWrapResult = cryptographyClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256&#41;;
+     *
+     * System.out.printf&#40;&quot;Received encrypted key of length: %d, with algorithm: %s.%n&quot;,
+     *     secureWrapResult.getEncryptedKey&#40;&#41;.length, secureWrapResult.getAlgorithm&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm -->
      *
      * @param algorithm The algorithm to use for wrapping the generated key.
      *
@@ -1049,8 +1062,22 @@ public class CryptographyClient {
     }
 
     /**
-     * Wraps the specified key using secure wrap. 
+     * Performs a secure wrap operation using the configured key. This operation is remote-only and returns the
+     * wrapped key content produced with the specified algorithm.
      * It is only available with service API version {@code 2026-01-01-preview} and newer.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Performs a secure wrap operation and prints out the wrapped key details.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm-Context -->
+     * <pre>
+     * SecureWrapResult secureWrapKeyResult =
+     *     cryptographyClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received encrypted key of length: %d, with algorithm: %s.%n&quot;,
+     *     secureWrapKeyResult.getEncryptedKey&#40;&#41;.length, secureWrapKeyResult.getAlgorithm&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm-Context -->
      *
      * @param algorithm The algorithm to use for wrapping the generated key.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
@@ -1077,6 +1104,19 @@ public class CryptographyClient {
      * <p>This operation is remote-only and is not supported by a client created from a {@link JsonWebKey}. It is only
      * available with service API version {@code 2026-01-01-preview} and newer.</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String -->
+     * <pre>
+     * SecureWrapResult wrappedKey = cryptographyClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256&#41;;
+     * SecureUnwrapResult secureUnwrapResult = cryptographyClient.secureUnwrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256,
+     *     wrappedKey.getEncryptedKey&#40;&#41;, &quot;&lt;target-attestation-token&gt;&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received key of length: %d.%n&quot;, secureUnwrapResult.getKey&#40;&#41;.length&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String -->
+     *
      * @param algorithm The algorithm that was used to wrap the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @param targetAttestationToken The MAA attestation token identifying the target TEE.
@@ -1099,6 +1139,21 @@ public class CryptographyClient {
      *
      * <p>This operation is remote-only and is not supported by a client created from a {@link JsonWebKey}. It is only
      * available with service API version {@code 2026-01-01-preview} and newer.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String-Context -->
+     * <pre>
+     * Context unwrapContext = new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;;
+     * SecureWrapResult secureWrappedKey =
+     *     cryptographyClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256, unwrapContext&#41;;
+     * SecureUnwrapResult secureUnwrapKeyResult = cryptographyClient.secureUnwrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256,
+     *     secureWrappedKey.getEncryptedKey&#40;&#41;, &quot;&lt;target-attestation-token&gt;&quot;, unwrapContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Received key of length: %d.%n&quot;, secureUnwrapKeyResult.getKey&#40;&#41;.length&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String-Context -->
      *
      * @param algorithm The algorithm that was used to wrap the key.
      * @param encryptedKey The encrypted key content to unwrap.
