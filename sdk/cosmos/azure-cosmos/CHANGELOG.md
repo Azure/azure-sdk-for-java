@@ -9,6 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
 * Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 * Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
 * Fixed thin-client (Gateway V2) queries with a prefix (partial) hierarchical partition key returning co-located documents from other logical partitions. - See PR [49688](https://github.com/Azure/azure-sdk-for-java/pull/49688).
