@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.ConnectionString;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT extends DeploymentSlotBaseImpl<FluentT, FluentImplT, ParentImplT, FluentWithCreateT, FluentUpdateT>, ParentImplT extends AppServiceBaseImpl<?, ?, ?, ?>, FluentWithCreateT, FluentUpdateT>
     extends WebAppBaseImpl<FluentT, FluentImplT>
     implements DeploymentSlotBase<FluentT>, DeploymentSlotBase.Update<FluentT> {
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final ParentImplT parent;
     private final String name;
     WebAppBase configurationSource;
@@ -464,6 +466,41 @@ abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT ex
 
     @Override
     @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials() {
+        ensureRegistryServerForManagedIdentity();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(null);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+        ensureRegistryServerForManagedIdentity();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(userAssignedManagedIdentityClientId);
+        return (FluentImplT) this;
+    }
+
+    // Managed identity image pull is an Azure Container Registry (private registry) feature. It is meaningless for a
+    // Docker Hub image, where no registry server is configured, so fail fast instead of producing an invalid config.
+    private void ensureRegistryServerForManagedIdentity() {
+        if (appSettingsToAdd == null || !appSettingsToAdd.containsKey(SETTING_REGISTRY_SERVER)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Managed identity image pull is only supported for a private container registry (e.g. Azure Container"
+                    + " Registry) configured via withPrivateRegistryImage(imageAndTag, serverUrl); it cannot be used"
+                    + " with a Docker Hub image."));
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public FluentImplT withStartUpCommand(String startUpCommand) {
         if (siteConfig == null) {
             siteConfig = new SiteConfigResourceInner();
@@ -484,5 +521,12 @@ abstract class DeploymentSlotBaseImpl<FluentT extends WebAppBase, FluentImplT ex
         withoutAppSetting(SETTING_REGISTRY_SERVER);
         withoutAppSetting(SETTING_REGISTRY_USERNAME);
         withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+        // ACR managed identity pull
+        if (siteConfig != null && siteConfig.acrUseManagedIdentityCreds() != null) {
+            siteConfig.withAcrUseManagedIdentityCreds(null);
+        }
+        if (siteConfig != null && siteConfig.acrUserManagedIdentityId() != null) {
+            siteConfig.withAcrUserManagedIdentityId(null);
+        }
     }
 }

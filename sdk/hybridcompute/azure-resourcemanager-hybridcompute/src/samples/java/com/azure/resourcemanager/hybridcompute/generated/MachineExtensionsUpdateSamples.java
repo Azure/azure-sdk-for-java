@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class MachineExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/extension/Extension_Update.json
+     * x-ms-original-file: 2026-06-16-preview/extension/Extension_Update.json
      */
     /**
      * Sample code: Create or Update a Machine Extension.

@@ -1,14 +1,22 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2026-08-05)
 
 ### Features Added
 
-### Breaking Changes
+#### `DeviceUpdateServiceVersion` was modified
 
-### Bugs Fixed
+* `V2026_06_01` was added
+
+## 1.0.34 (2026-07-01)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
 
 ## 1.0.33 (2026-05-05)
 

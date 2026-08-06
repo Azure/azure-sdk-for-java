@@ -47,7 +47,8 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
     private List<ResponseError> warnings;
 
     /*
-     * The string encoding format for content spans in the response.
+     * The string encoding format for content spans in the
+     * response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")
      */
     @Generated
@@ -110,7 +111,8 @@ public final class AnalysisResult implements JsonSerializable<AnalysisResult> {
     }
 
     /**
-     * Get the stringEncoding property: The string encoding format for content spans in the response.
+     * Get the stringEncoding property: The string encoding format for content spans in the
+     * response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * 
      * @return the stringEncoding value.

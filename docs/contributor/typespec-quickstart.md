@@ -1,7 +1,7 @@
 # TypeSpec Java Quickstart
 
 
-This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification. For OpenAPI 2.0 specs, see [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md).
+This guide covers the end-to-end workflow for generating, building, testing, and releasing a Java SDK from a TypeSpec specification.
 
 ---
 
@@ -100,6 +100,8 @@ Set `partial-update: true` in `tspconfig.yaml` emitter options. TypeSpec-Java wi
 "@azure-tools/typespec-java":
   customization-class: customization/src/main/java/MyCustomization.java
 ```
+
+See [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-java-customization.md) for guidance on writing AST-based Java customizations.
 
 ---
 
@@ -211,7 +213,6 @@ Key steps:
 
 ## See Also
 
-- [Working with AutoRest](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/autorest.md) — for OpenAPI 2.0 specs
 - [Adding a Module](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/adding-a-module.md)
 - [Building](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md)
 - [JavaDoc and Code Snippets](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md)

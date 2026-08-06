@@ -54,6 +54,18 @@ public final class AzureStorageContainer extends ProtectionContainer {
      */
     private OperationType operationType;
 
+    /*
+     * Whether access to the storage account is key-based or identity-based.
+     * When `IdentityBased`, `identityInfo` must be provided to identify the
+     * managed identity used to access the storage account.
+     */
+    private AccessType accessType;
+
+    /*
+     * Managed identity information required to access the storage account.
+     */
+    private IdentityInfo identityInfo;
+
     /**
      * Creates an instance of AzureStorageContainer class.
      */
@@ -197,6 +209,50 @@ public final class AzureStorageContainer extends ProtectionContainer {
     }
 
     /**
+     * Get the accessType property: Whether access to the storage account is key-based or identity-based.
+     * When `IdentityBased`, `identityInfo` must be provided to identify the
+     * managed identity used to access the storage account.
+     * 
+     * @return the accessType value.
+     */
+    public AccessType accessType() {
+        return this.accessType;
+    }
+
+    /**
+     * Set the accessType property: Whether access to the storage account is key-based or identity-based.
+     * When `IdentityBased`, `identityInfo` must be provided to identify the
+     * managed identity used to access the storage account.
+     * 
+     * @param accessType the accessType value to set.
+     * @return the AzureStorageContainer object itself.
+     */
+    public AzureStorageContainer withAccessType(AccessType accessType) {
+        this.accessType = accessType;
+        return this;
+    }
+
+    /**
+     * Get the identityInfo property: Managed identity information required to access the storage account.
+     * 
+     * @return the identityInfo value.
+     */
+    public IdentityInfo identityInfo() {
+        return this.identityInfo;
+    }
+
+    /**
+     * Set the identityInfo property: Managed identity information required to access the storage account.
+     * 
+     * @param identityInfo the identityInfo value to set.
+     * @return the AzureStorageContainer object itself.
+     */
+    public AzureStorageContainer withIdentityInfo(IdentityInfo identityInfo) {
+        this.identityInfo = identityInfo;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -261,6 +317,8 @@ public final class AzureStorageContainer extends ProtectionContainer {
         jsonWriter.writeStringField("acquireStorageAccountLock",
             this.acquireStorageAccountLock == null ? null : this.acquireStorageAccountLock.toString());
         jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
+        jsonWriter.writeStringField("accessType", this.accessType == null ? null : this.accessType.toString());
+        jsonWriter.writeJsonField("identityInfo", this.identityInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -306,6 +364,10 @@ public final class AzureStorageContainer extends ProtectionContainer {
                         = AcquireStorageAccountLock.fromString(reader.getString());
                 } else if ("operationType".equals(fieldName)) {
                     deserializedAzureStorageContainer.operationType = OperationType.fromString(reader.getString());
+                } else if ("accessType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.accessType = AccessType.fromString(reader.getString());
+                } else if ("identityInfo".equals(fieldName)) {
+                    deserializedAzureStorageContainer.identityInfo = IdentityInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
