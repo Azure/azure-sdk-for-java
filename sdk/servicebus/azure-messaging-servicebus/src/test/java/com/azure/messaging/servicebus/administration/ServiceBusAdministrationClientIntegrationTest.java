@@ -548,9 +548,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @LiveOnly
     void getTopicFilterCounts() {
         // The topic-level SqlFilterCount / CorrelationFilterCount runtime properties are served by
-        // the 2024-05 service API version (the builder's getLatest() default) and are populated only
-        // on a service build carrying the feature, so this test runs live only (no recording).
-        final ServiceBusAdministrationClient client = getClient();
+        // the 2024-05 service API version, so use an explicit V2024_05 client rather than relying on
+        // the builder default. The test is live only because the recorded modes are pinned to
+        // 2021-05 to match the existing cassettes, and no cassette covers this path yet.
+        final ServiceBusAdministrationClient client = getClient(ServiceBusServiceVersion.V2024_05);
         final String topicName = testResourceNamer.randomName("topicfc", 10);
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
 
@@ -881,9 +882,20 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getClient() {
+        return getClient(null);
+    }
+
+    // Builds a client, optionally overriding the api-version that configure() selects. Pass a
+    // version only from a @LiveOnly test: configure() pins the recorded modes to 2021-05 to match
+    // the existing cassettes, and the api-version participates in playback request matching, so
+    // overriding it in a recorded mode breaks playback.
+    private ServiceBusAdministrationClient getClient(ServiceBusServiceVersion serviceVersion) {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         configure(builder, null, interceptorManager, credentialCached);
+        if (serviceVersion != null) {
+            builder.serviceVersion(serviceVersion);
+        }
         return builder.buildClient();
     }
 }
