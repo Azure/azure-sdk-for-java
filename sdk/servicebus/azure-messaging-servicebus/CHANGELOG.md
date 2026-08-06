@@ -25,6 +25,8 @@
 
 ### Other Changes
 
+- The default service version used by `ServiceBusAdministrationClientBuilder` is now `2024-05`, previously `2021-05`. Existing operations behave the same; the newer version is required to surface the new topic filter count properties. Callers that need the previous wire behavior can pin it with `serviceVersion(ServiceBusServiceVersion.V2021_05)`.
+
 ## 7.17.19 (2026-07-01)
 
 ### Other Changes
