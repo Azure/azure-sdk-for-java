@@ -6,5 +6,5 @@ Initial general availability (GA) release of the Azure AI Discovery client libra
 
 ### Features Added
 
-- `WorkspaceClient` and `WorkspaceAsyncClient` for working with Discovery workspaces, including conversations, investigations, tasks, and tools.
+- `WorkspaceClientBuilder` for building clients that work with Discovery workspaces: `ConversationsClient`, `InvestigationsClient`, `TasksClient`, and `ToolsClient` (each with an asynchronous variant).
 - `BookshelfClient` and `BookshelfAsyncClient` for managing knowledge bases, including long-running create/update, indexing, and search operations.

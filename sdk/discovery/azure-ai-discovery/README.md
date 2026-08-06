@@ -39,6 +39,15 @@ Various documentation is available to help you get started
 ## Examples
 
 ```java com.azure.ai.discovery.readme
+ConversationsClient conversationsClient = new WorkspaceClientBuilder()
+    .endpoint("https://<workspace-name>.discovery.azure.com")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildConversationsClient();
+
+PagedConversation conversations = conversationsClient.list();
+for (Conversation conversation : conversations.getValue()) {
+    System.out.println(conversation.getName());
+}
 ```
 
 ### Service API versions

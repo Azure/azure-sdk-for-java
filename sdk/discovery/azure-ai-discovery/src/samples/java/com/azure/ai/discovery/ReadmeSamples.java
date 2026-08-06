@@ -4,9 +4,22 @@
 
 package com.azure.ai.discovery;
 
+import com.azure.ai.discovery.models.Conversation;
+import com.azure.ai.discovery.models.PagedConversation;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.discovery.readme
+        ConversationsClient conversationsClient = new WorkspaceClientBuilder()
+            .endpoint("https://<workspace-name>.discovery.azure.com")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildConversationsClient();
+
+        PagedConversation conversations = conversationsClient.list();
+        for (Conversation conversation : conversations.getValue()) {
+            System.out.println(conversation.getName());
+        }
         // END: com.azure.ai.discovery.readme
     }
 }
