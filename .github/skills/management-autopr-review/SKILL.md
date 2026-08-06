@@ -103,6 +103,33 @@ shape may indicate incorrect LRO modeling upstream.
 Do not report ordinary response wrappers or headers models without those
 headers.
 
+### `MGMT-MANAGER-NAME`: suspicious management entry-point name
+
+- **Severity:** Warning
+
+Review a public top-level class ending in `Manager` only when the PR adds or
+renames it in the management package's root Java namespace. Report when any one
+of these independent signals is apparent:
+
+- a compound service name has an apparent casing boundary error, such as
+  `ContainerserviceManager` instead of `ContainerServiceManager`;
+- the class name has an apparent spelling error, supported by the module name,
+  root Java package, or other public symbols; or
+- the class-name stem has no meaningful lexical overlap with either the Maven
+  module name after `azure-resourcemanager-` or the root Java package identity.
+
+For the lexical-overlap check, split CamelCase and hyphenated identities,
+compare case-insensitively, and allow a meaningful class token of at least four
+characters to occur within a combined package identity. Ignore generic tokens
+such as `azure`, `resource`, `resources`, `manager`, `management`, `service`,
+`api`, and `client`.
+
+Do not enforce exact branding, abbreviations, singular versus plural, token
+order, or optional suffixes. For example, `ContainerAppsApiManager` is related
+to `azure-resourcemanager-appcontainers`. Do not report an oddly named
+entry-point that was already present on the base branch. Identify the class and
+package evidence, then ask whether the generated entry-point name is intended.
+
 ### `MGMT-API-VERSION-OVERLAP`: overlapping API-version generations
 
 - **Severity:** Blocking
@@ -164,7 +191,8 @@ Use only these severity levels:
 | Informational | Useful context with no requested corrective action. |
 
 `MGMT-FOLDER`, `MGMT-VERSION`, and `MGMT-API-VERSION-OVERLAP` are Blocking.
-`MGMT-RELEASE-PLAN`, `MGMT-LRO`, and `MGMT-BREAKING` are Warning.
+`MGMT-RELEASE-PLAN`, `MGMT-LRO`, `MGMT-MANAGER-NAME`, and `MGMT-BREAKING` are
+Warning.
 `MGMT-API-VERSION` and `MGMT-NEW-MODULE` are Informational.
 
 Every item must cite a repository-relative file and affected symbol or release

@@ -1,5 +1,6 @@
 name: management-autopr-reviewer-findings
 description: Detection tests for high-value generated management SDK concerns.
+# cspell:ignore Contianer
 
 tags:
   area: management-autopr-reviewer
@@ -244,6 +245,72 @@ stimuli:
     rubric:
       - The newly generated response and headers types expose Location and Retry-After and must be flagged with MGMT-LRO.
       - MGMT-LRO must appear under Warning as a request for human verification.
+
+  - name: manager-name-casing-problem
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-manager-casing.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "manager casing concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*ContainerserviceManager"
+      - type: prompt
+    rubric:
+      - The newly added public root-package ContainerserviceManager has an apparent compound-name casing problem.
+      - MGMT-MANAGER-NAME must appear under Warning and ask whether the generated entry-point name is intended.
+
+  - name: manager-name-spelling-problem
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-manager-spelling.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "manager spelling concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*ContianerServiceManager"
+      - type: prompt
+    rubric:
+      - The newly added public root-package ContianerServiceManager has an apparent spelling problem.
+      - MGMT-MANAGER-NAME must appear under Warning and ask whether the generated entry-point name is intended.
+
+  - name: manager-name-unrelated-to-package
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/positive-manager-unrelated.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "unrelated manager concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*WidgetManager"
+      - type: prompt
+    rubric:
+      - WidgetManager has no meaningful lexical overlap with the containerservice module or root package identity.
+      - The unrelated identity condition is independently sufficient for MGMT-MANAGER-NAME under Warning.
 
   - name: changed-existing-return-type
     environment:

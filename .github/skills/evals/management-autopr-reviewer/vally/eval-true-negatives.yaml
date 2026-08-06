@@ -124,3 +124,60 @@ stimuli:
     rubric:
       - The existing MGMT-API-VERSION-OVERLAP concern still applies.
       - It must retain the same ID and be marked Carried forward, without restating the question as new.
+
+  - name: standard-manager-name-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-manager-clean.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no standard manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: reordered-manager-identity-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-manager-reordered.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no reordered manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: unchanged-legacy-manager-name-is-clean
+    environment:
+      skills:
+        - "../../../management-autopr-review"
+      files:
+        - src: "../fixtures/tn-manager-legacy.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no legacy manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
