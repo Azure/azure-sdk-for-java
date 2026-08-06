@@ -4,15 +4,24 @@ Title: `[AutoPR azure-resourcemanager-contosowidgets]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
-Changed method:
+PR: `Azure/azure-sdk-for-java#12345`
+Head SHA: `2222222222222222222222222222222222222222`
+Package: `azure-resourcemanager-contosowidgets`
+Package version: `2.0.0-beta.1`
+
+Changed method in
+`sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java`:
 
 ```java
 public Response<WidgetCreateResponse> createWithResponse(...)
 ```
 
-New generated models:
+New response models in
+`sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateResponse.java`
+and
+`sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateHeaders.java`:
 
 ```java
 public final class WidgetCreateResponse { ... }

@@ -4,7 +4,9 @@ Title: `[AutoPR azure-resourcemanager-contosowidgets]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+
+Head SHA: `2222222222222222222222222222222222222222`
 
 Package: `azure-resourcemanager-contosowidgets`
 Package version: `2.0.0`
@@ -24,5 +26,6 @@ Current CHANGELOG section:
 ```
 
 The status return-type change entered the main branch in an earlier beta, so
-the current Java diff contains only unrelated additive APIs. This GA CHANGELOG
-compares 2.0.0 with the previous GA release.
+the current Java diff contains only an unrelated additive method in
+`sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java`.
+This GA CHANGELOG compares 2.0.0 with the previous GA release.

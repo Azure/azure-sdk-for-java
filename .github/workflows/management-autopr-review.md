@@ -121,8 +121,9 @@ Required dispatch inputs:
 - full session head SHA
 - package and release type
 - prior workflow comment, or `none`
-- candidate concerns with ID, state, cited file, affected symbol or release
-  entry, evidence, explanation, and requested action
+- candidate concerns with ID, severity, state, cited file, affected symbol or
+  release entry, evidence, explanation, and requested action when Blocking or
+  Warning
 
 Missing PR, SHA, or candidates returns `FAIL / missing-inputs`.
 
@@ -132,24 +133,30 @@ For every candidate, verify in order:
    `MGMT-RELEASE-PLAN` instead cites the PR description and verifies that no
    accepted release-plan URL is present.
 2. The evidence was introduced by this PR.
-3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-LRO`,
-   `MGMT-API-VERSION-OVERLAP`, `MGMT-BREAKING`, or `MGMT-RELEASE-PLAN`.
+3. The ID is one of `MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-API-VERSION`,
+   `MGMT-LRO`, `MGMT-API-VERSION-OVERLAP`, `MGMT-BREAKING`,
+   `MGMT-NEW-MODULE`, or `MGMT-RELEASE-PLAN`.
 4. Every condition and exception in the imported management review rules is
    satisfied.
    - Reject evidence from any path containing a `generated` segment.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break because
      it may have entered the main branch in an earlier beta.
-5. The prior workflow comment does not already contain the concern under
+5. The severity matches the rule: `MGMT-FOLDER`, `MGMT-VERSION`,
+   `MGMT-API-VERSION-OVERLAP`, and `MGMT-RELEASE-PLAN` are Blocking;
+   `MGMT-LRO` and `MGMT-BREAKING` are Warning; `MGMT-API-VERSION` and
+   `MGMT-NEW-MODULE` are Informational.
+6. The prior workflow comment does not already contain the concern under
    another ID or as an unchanged question.
-6. The requested action is concrete and does not ask the workflow to modify
-   code or another repository.
-7. The evidence supports an assertion. Otherwise return `DOWNGRADE`.
+7. A Blocking or Warning requested action is concrete and does not ask the
+   workflow to modify code or another repository. Informational items request
+   no action.
+8. The evidence supports an assertion. Otherwise return `DOWNGRADE`.
 
 Verdicts:
 
 - `PASS`: keep the concern.
-- `DOWNGRADE`: convert it to one concise question.
+- `DOWNGRADE`: convert it to one concise Warning verification question.
 - `FAIL`: drop it.
 
 Allowed reason codes: `missing-inputs`, `citation-mismatch`, `not-in-diff`,
@@ -163,9 +170,9 @@ Return only:
 
 **Session SHA:** `<sha>`
 
-| Concern | Verdict | Reason |
-| --- | --- | --- |
-| MGMT-... | PASS|DOWNGRADE|FAIL | <reason code or --> |
+| Concern | Severity | Verdict | Reason |
+| --- | --- | --- | --- |
+| MGMT-... | Blocking|Warning|Informational | PASS|DOWNGRADE|FAIL | <reason code or --> |
 
 **Summary:** <counts>
 ```

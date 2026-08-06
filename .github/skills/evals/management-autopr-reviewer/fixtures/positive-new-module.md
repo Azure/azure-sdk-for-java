@@ -4,12 +4,13 @@ Title: `[AutoPR azure-resourcemanager-compute-bulkactions]-generated-from-SDK Ge
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+Release Plan link: https://example.invalid/releaseplan/25
 
 New module:
 `sdk/compute/azure-resourcemanager-compute-bulkactions/pom.xml`
 
 The module name's third segment is `compute`, matching the `sdk/compute`
-service directory.
+service directory. Its package version is `1.0.0-beta.1` and it targets API
+version `2026-10-01-preview`.
 
-Changed Java contains only additive clients and models.
+Changed Java outside generated paths contains additive clients and models.

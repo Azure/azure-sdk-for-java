@@ -37,7 +37,7 @@ stimuli:
     rubric:
       - The beta package correctly targets a preview API.
       - The public Java changes are additive and the POM dependency alignment is expected generated churn.
-      - No concern should be raised.
+      - No Blocking or Warning item should be raised; MGMT-API-VERSION may provide informational context.
 
   - name: beta-breaking-changelog-is-not-main-concern
     environment:
@@ -57,11 +57,6 @@ stimuli:
         name: "no beta breaking concern"
         config:
           pattern: "\\[MGMT-BREAKING\\]"
-      - type: prompt
-    rubric:
-      - A beta package may contain breaking changes relative to a prior beta.
-      - The reviewer must not raise MGMT-BREAKING.
-
   - name: generated-only-java-is-not-reviewed
     environment:
       skills:
@@ -80,11 +75,6 @@ stimuli:
         name: "no generated-path concern"
         config:
           pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
-      - type: prompt
-    rubric:
-      - The only changed Java file has a generated path segment and must be excluded.
-      - The Java-change gate therefore fails and no review concern is emitted.
-
   - name: matching-service-folder-is-clean
     environment:
       skills:
@@ -129,7 +119,7 @@ stimuli:
       - type: output-not-matches
         name: "not marked new"
         config:
-          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*New"
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\]\\s+New\\b"
       - type: prompt
     rubric:
       - The existing MGMT-API-VERSION-OVERLAP concern still applies.

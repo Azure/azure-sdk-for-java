@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosomaintenance]-generated-from-SDK Gen
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Generation evidence in CHANGELOG:
 

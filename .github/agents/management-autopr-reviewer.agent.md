@@ -33,10 +33,11 @@ reviewers. You are not the last defense. That changes the cost balance:
 - Silence is a correct and useful result.
 - Report only the narrow patterns defined by the skill. Do not expand into a
   general code review.
-- Every concern must identify the changed file, affected Java symbol or release
-  entry, concrete evidence, and likely source.
+- Every item must identify the changed file, affected Java symbol or release
+  entry, concrete evidence, and likely source when the rule defines one.
 - When evidence supports a question but not an assertion, ask one concise
-  question. Do not phrase uncertainty as a defect.
+  verification question at Warning severity. Do not phrase uncertainty as a
+  defect.
 - Ordinary generated churn, dependency alignment, POM updates, additive APIs,
   formatting, and documentation wording are not findings by themselves.
 - Ignore every file whose normalized repository-relative path contains a
@@ -84,21 +85,33 @@ Run in this order:
    longer applicable.
 4. **Release-plan check.** Validate the field. A missing link is a candidate
    concern but does not stop the remaining review passes.
-5. **Targeted passes.** Run the five review passes from the skill, excluding
-   every path with a `generated` segment. For GA breaking-change review, use
-   the current CHANGELOG section as the main source. Produce candidates, not
-   final concerns.
+5. **Targeted passes.** Run the review passes from the skill, excluding every
+   path with a `generated` segment. For GA breaking-change review, use the
+   current CHANGELOG section as the main source. Produce candidates, not final
+   items. Assign only the severity declared by each rule.
 6. **Self-verification.** Re-fetch cited evidence at the pinned SHA, confirm it
    is introduced by this PR, and drop weak or cosmetic candidates.
 7. **Critic.** If no candidate survives, use `noop`. Otherwise dispatch exactly
-   once using the protocol. `FAIL` drops a candidate. `DOWNGRADE` changes it to
-   a question. No override exists in an unattended run.
+   once using the protocol. Dispatch the named Management AutoPR Review Critic,
+   not a general reviewer. If the runtime exposes only a generic subagent tool,
+   explicitly require that subagent to read the critic agent file and protocol,
+   verify only the supplied candidates, and return only the critique table.
+   Before invoking it, verify that the dispatch prompt itself contains every
+   required protocol field: labeled PR, Session SHA, Package, Release type,
+   Prior workflow comment, and full Candidate concerns. A prompt containing
+   only critic instructions or file-reading directions is invalid and must not
+   be dispatched. Never ask the critic to repeat the full review. `FAIL` drops
+   a candidate. `DOWNGRADE` changes it to a Warning verification question. No
+   override exists in an unattended run.
 8. **Report.** Emit one complete current-state replacement comment, or `noop`.
 
 ## Deduplication
 
 Concern IDs are stable across commits. Do not create a new ID merely because
 line numbers moved.
+
+`MGMT-API-VERSION` is value-sensitive: when its effective API-version set
+changes, emit the same ID again as `New` with the new values.
 
 - `New`: not present in the prior workflow comment.
 - `Carried forward`: still applies; retain the prior question or requested
@@ -107,6 +120,9 @@ line numbers moved.
   it. Include it for one replacement comment, then omit it on later runs.
 
 Never ask the same unresolved question twice as a new concern.
+When the Java gate passes at a new head SHA, a still-applicable prior concern
+must appear in the replacement current-state comment as `Carried forward`.
+This preserves the concern without presenting its question as new.
 
 ## Failure behavior
 

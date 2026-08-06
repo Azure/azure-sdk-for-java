@@ -4,7 +4,7 @@ Title: `[AutoPR azure-resourcemanager-contosowidgets]-generated-from-SDK Generat
 Author: `app/azure-sdk-automation`
 Base: `main`
 Draft: `false`
-Release plan: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
+Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926
 
 Head SHA: `2222222222222222222222222222222222222222`
 
@@ -19,4 +19,6 @@ Prior workflow comment:
 ```
 
 Current CHANGELOG still contains the same two API-version lines. The new Java
-commit adds one unrelated generated model and does not address the question.
+commit adds one unrelated method in
+`sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/WidgetManager.java`,
+outside any `generated` path, and does not address the question.
