@@ -783,7 +783,9 @@ public class CryptographyAsyncClient {
     /**
      * Performs a secure wrap operation using the configured key. This operation is remote-only and returns the
      * wrapped key content produced with the specified algorithm.
-     * It is only available with service API version {@code 2026-01-01-preview} and newer.
+     *
+     * <p>This operation requires a Managed HSM and is only available with service API version
+     * {@code 2026-01-01-preview} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Performs a secure wrap operation and prints out the wrapped key details when a response is received.</p>
@@ -823,8 +825,8 @@ public class CryptographyAsyncClient {
     /**
      * Unwraps the specified wrapped key using secure unwrap.
      *
-     * <p>This operation is remote-only and is not supported by a client created from a {@link JsonWebKey}. It is only
-     * available with service API version {@code 2026-01-01-preview} and newer.</p>
+     * <p>This operation requires a Managed HSM and is only available with service API version
+     * {@code 2026-01-01-preview} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details when a response is
