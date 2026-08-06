@@ -534,6 +534,7 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
                 + " property(doubleProperty).op(add),"
                 + " property(arrayProperty).path(/listProperty/0).op(replace),"
                 + " property(toBeRemovedProperty).op(remove)");
+        sinkConfigMap.put("azure.cosmos.sink.write.patch.filter", "FROM c WHERE c.intProperty = 1");
         sinkConfigMap.put("azure.cosmos.sink.task.id", UUID.randomUUID().toString());
 
         CosmosSinkTask sinkTask = new CosmosSinkTask();
@@ -607,6 +608,13 @@ public class CosmosSinkTaskTest extends KafkaCosmosTestSuiteBase {
                 assertThat(expectedItem.get("doubleProperty").doubleValue()).isEqualTo(itemFromContainer.get("doubleProperty").doubleValue());
                 assertThat(expectedItem.get("toBeRemovedProperty")).isNull();
             }
+
+            // Replay the same records. The filter now excludes every item, so the resulting 412 responses
+            // should be treated as successful no-op skips by both the point and bulk writers.
+            sinkTask.put(sinkRecordList);
+            List<ObjectNode> itemsAfterReplay = this.getAllItems(container);
+            assertThat(itemsAfterReplay.size()).isEqualTo(itemsFromContainer.size());
+            assertThat(itemsAfterReplay.containsAll(itemsFromContainer)).isTrue();
         } finally {
             if (cosmosClient != null) {
                 cleanUpContainer(cosmosClient, databaseName, singlePartitionContainerProperties.getId());
