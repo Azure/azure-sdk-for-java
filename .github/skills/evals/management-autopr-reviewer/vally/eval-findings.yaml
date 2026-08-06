@@ -317,11 +317,11 @@ stimuli:
         config:
           pattern: "\\[MGMT-RELEASE-PLAN\\]"
       - type: output-matches
-        name: "release plan concern is blocking"
+        name: "release plan concern is warning"
         config:
-          pattern: "(?s)### Blocking.*\\[MGMT-RELEASE-PLAN\\]"
+          pattern: "(?s)### Warning.*\\[MGMT-RELEASE-PLAN\\]"
       - type: prompt
     rubric:
       - Missing release-plan URL must produce MGMT-RELEASE-PLAN citing the PR description.
-      - MGMT-RELEASE-PLAN must appear under Blocking.
+      - MGMT-RELEASE-PLAN must appear under Warning.
       - The reviewer may continue other review passes.

@@ -22,10 +22,10 @@ For every candidate, verify in order:
    - Reject any evidence from a path containing a `generated` segment.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break.
-5. The severity matches the rule: `MGMT-FOLDER`, `MGMT-VERSION`,
-   `MGMT-API-VERSION-OVERLAP`, and `MGMT-RELEASE-PLAN` are Blocking;
-   `MGMT-LRO` and `MGMT-BREAKING` are Warning; `MGMT-API-VERSION` and
-   `MGMT-NEW-MODULE` are Informational.
+5. The severity matches the rule: `MGMT-FOLDER`, `MGMT-VERSION`, and
+   `MGMT-API-VERSION-OVERLAP` are Blocking; `MGMT-RELEASE-PLAN`, `MGMT-LRO`,
+   and `MGMT-BREAKING` are Warning; `MGMT-API-VERSION` and `MGMT-NEW-MODULE`
+   are Informational.
 6. The prior workflow comment does not already contain the same concern under
    another ID or as an unchanged question.
 7. A Blocking or Warning requested action is concrete and does not require this

@@ -32,7 +32,7 @@ be read as evidence, except files under a `generated` path.
 
 ### `MGMT-RELEASE-PLAN`: missing release-plan link
 
-- **Severity:** Blocking
+- **Severity:** Warning
 
 Normalize casing and Markdown emphasis. Accept both plain
 `Release Plan link: https://example.com/release-plan` and formatted
@@ -163,8 +163,8 @@ Use only these severity levels:
 | Warning | A suspicious generated shape or compatibility signal that needs human verification; it is not an assertion that code must be fixed. |
 | Informational | Useful context with no requested corrective action. |
 
-`MGMT-FOLDER`, `MGMT-VERSION`, `MGMT-API-VERSION-OVERLAP`, and
-`MGMT-RELEASE-PLAN` are Blocking. `MGMT-LRO` and `MGMT-BREAKING` are Warning.
+`MGMT-FOLDER`, `MGMT-VERSION`, and `MGMT-API-VERSION-OVERLAP` are Blocking.
+`MGMT-RELEASE-PLAN`, `MGMT-LRO`, and `MGMT-BREAKING` are Warning.
 `MGMT-API-VERSION` and `MGMT-NEW-MODULE` are Informational.
 
 Every item must cite a repository-relative file and affected symbol or release
