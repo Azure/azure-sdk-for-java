@@ -39,7 +39,7 @@ public class BatchFileProperties {
      *
      * @return True if the file object represents a directory, false otherwise.
      */
-    public boolean isOcpBatchFileIsDirectory() {
+    public boolean isDirectory() {
         String headerValue = headers.getValue(HttpHeaderName.fromString("ocp-batch-file-isdirectory"));
         return Boolean.parseBoolean(headerValue);
     }
