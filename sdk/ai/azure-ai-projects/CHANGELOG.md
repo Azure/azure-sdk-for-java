@@ -16,8 +16,6 @@
 - `BetaDatasetsClient` / `BetaDatasetsAsyncClient` data generation job creation is now a long-running operation. `createGenerationJob(DataGenerationJob, String)`, `createGenerationJob(DataGenerationJob)`, and `createGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateGenerationJob` overloads returning `SyncPoller<DataGenerationJob, DataGenerationJobResult>` / `PollerFlux<DataGenerationJob, DataGenerationJobResult>`. Call `.poll().getValue()` (or the async equivalent) to obtain the created `DataGenerationJob`.
 - `BetaEvaluatorsClient` / `BetaEvaluatorsAsyncClient` evaluator generation job creation is now a long-running operation. `createEvaluatorGenerationJob(EvaluatorGenerationJob, String)`, `createEvaluatorGenerationJob(EvaluatorGenerationJob)`, and `createEvaluatorGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateEvaluatorGenerationJob` overloads returning `SyncPoller<EvaluatorGenerationJob, EvaluatorVersion>` / `PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>`.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Updated version of `openai` client library to `4.45.0`.

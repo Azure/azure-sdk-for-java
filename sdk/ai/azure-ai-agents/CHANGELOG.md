@@ -19,8 +19,6 @@
 - `BetaAgentsClient.createOptimizationJob(OptimizationJob)` and `createOptimizationJob(OptimizationJob, String)` were replaced by long-running operations `beginCreateOptimizationJob(OptimizationJob)` and `beginCreateOptimizationJob(OptimizationJob, String)`, which return `SyncPoller<OptimizationJob, OptimizationJobResult>` instead of `OptimizationJob`. The corresponding `BetaAgentsAsyncClient` methods now return `PollerFlux<OptimizationJob, OptimizationJobResult>`. The protocol method was likewise replaced by `beginCreateOptimizationJob(BinaryData, RequestOptions)` returning `SyncPoller<BinaryData, BinaryData>` / `PollerFlux<BinaryData, BinaryData>`.
 - `ResponseUsageInputTokensDetails` now also carries a `cacheWriteTokens` field. Deserialized instances continue to work, but any code depending on the previous single-field structure should be updated to read the new value.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Refined preview annotations. `AgentDefinition` and `CreateAgentVersionInput` are no longer marked `@Beta` at the class level; instead the preview-only fields (for example, `CreateAgentVersionInput.getDefinition()` and `CreateAgentVersionInput.isDraft()`) are individually annotated. Additional preview tool classes such as `A2APreviewTool`, `BingCustomSearchPreviewTool`, `BrowserAutomationPreviewTool`, `FabricIqPreviewTool`, `MemorySearchPreviewTool`, `MicrosoftFabricPreviewTool`, `SharepointPreviewTool`, `WorkIqPreviewTool`, and their toolbox counterparts are now marked `@Beta` so preview surface area is explicit in generated API docs.
