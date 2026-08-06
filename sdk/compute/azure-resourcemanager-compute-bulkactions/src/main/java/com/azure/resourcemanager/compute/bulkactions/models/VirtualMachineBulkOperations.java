@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -105,6 +106,68 @@ public interface VirtualMachineBulkOperations {
         ExecuteStartContent requestBody);
 
     /**
+     * BulkCreate: Execute create operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    Response<CreateResourceOperationResponse> bulkCreateOperationWithResponse(String resourceGroupName, String location,
+        ExecuteCreateContent requestBody, Context context);
+
+    /**
+     * BulkCreate: Execute create operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    CreateResourceOperationResponse bulkCreateOperation(String resourceGroupName, String location,
+        ExecuteCreateContent requestBody);
+
+    /**
+     * BulkVdiFlexCreate: Bulk create operation for a batch of virtual machines, this operation supports flex properties
+     * to give options on Sku and zone selection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    Response<CreateResourceOperationResponse> bulkVdiFlexCreateOperationWithResponse(String resourceGroupName,
+        String location, ExecuteVdiCreateRequest requestBody, Context context);
+
+    /**
+     * BulkVdiFlexCreate: Bulk create operation for a batch of virtual machines, this operation supports flex properties
+     * to give options on Sku and zone selection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    CreateResourceOperationResponse bulkVdiFlexCreateOperation(String resourceGroupName, String location,
+        ExecuteVdiCreateRequest requestBody);
+
+    /**
      * BulkDelete: Execute delete operation for a batch of virtual machines, this operation is triggered as soon as
      * Computeschedule receives it.
      * 
@@ -192,4 +255,91 @@ public interface VirtualMachineBulkOperations {
      */
     CancelOperationsResponse bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody);
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request along with {@link Response}.
+     */
+    Response<ReimageResourceOperationResponse> bulkReimageOperationWithResponse(String resourceGroupName,
+        String location, ExecuteReimageRequest requestBody, Context context);
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request.
+     */
+    ReimageResourceOperationResponse bulkReimageOperation(String resourceGroupName, String location,
+        ExecuteReimageRequest requestBody);
+
+    /**
+     * BulkListOperationErrors: List bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from listing bulk operation errors as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location);
+
+    /**
+     * BulkListOperationErrors: List bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes to look back for errors.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from listing bulk operation errors as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location,
+        Integer lookbackInMinutes, Context context);
+
+    /**
+     * BulkAcknowledgeOperationErrors: Acknowledge bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The list of operation ids to acknowledge.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from acknowledging bulk operation errors along with {@link Response}.
+     */
+    Response<AcknowledgeBulkOperationErrorsResponse> bulkAcknowledgeOperationErrorsWithResponse(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context);
+
+    /**
+     * BulkAcknowledgeOperationErrors: Acknowledge bulk operation errors for a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The list of operation ids to acknowledge.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from acknowledging bulk operation errors.
+     */
+    AcknowledgeBulkOperationErrorsResponse bulkAcknowledgeOperationErrors(String resourceGroupName, String location,
+        AcknowledgeBulkOperationErrorsRequest body);
 }

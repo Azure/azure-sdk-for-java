@@ -24,6 +24,20 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
      */
     private ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation autoInstrumentation;
 
+    /*
+     * Application Monitoring Open Telemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application
+     * using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+     * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics openTelemetryMetrics;
+
+    /*
+     * Application Monitoring Open Telemetry Logs and Traces Profile for AKS. Collects OpenTelemetry logs and traces of
+     * the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and
+     * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces;
+
     /**
      * Creates an instance of ManagedClusterAzureMonitorProfileAppMonitoring class.
      */
@@ -58,6 +72,56 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     }
 
     /**
+     * Get the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @return the openTelemetryMetrics value.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics openTelemetryMetrics() {
+        return this.openTelemetryMetrics;
+    }
+
+    /**
+     * Set the openTelemetryMetrics property: Application Monitoring Open Telemetry Metrics Profile for AKS. Collects
+     * OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @param openTelemetryMetrics the openTelemetryMetrics value to set.
+     * @return the ManagedClusterAzureMonitorProfileAppMonitoring object itself.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoring withOpenTelemetryMetrics(
+        ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics openTelemetryMetrics) {
+        this.openTelemetryMetrics = openTelemetryMetrics;
+        return this;
+    }
+
+    /**
+     * Get the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @return the openTelemetryLogsAndTraces value.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces() {
+        return this.openTelemetryLogsAndTraces;
+    }
+
+    /**
+     * Set the openTelemetryLogsAndTraces property: Application Monitoring Open Telemetry Logs and Traces Profile for
+     * AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based SDKs. See
+     * https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+     * 
+     * @param openTelemetryLogsAndTraces the openTelemetryLogsAndTraces value to set.
+     * @return the ManagedClusterAzureMonitorProfileAppMonitoring object itself.
+     */
+    public ManagedClusterAzureMonitorProfileAppMonitoring withOpenTelemetryLogsAndTraces(
+        ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces openTelemetryLogsAndTraces) {
+        this.openTelemetryLogsAndTraces = openTelemetryLogsAndTraces;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -65,6 +129,12 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     public void validate() {
         if (autoInstrumentation() != null) {
             autoInstrumentation().validate();
+        }
+        if (openTelemetryMetrics() != null) {
+            openTelemetryMetrics().validate();
+        }
+        if (openTelemetryLogsAndTraces() != null) {
+            openTelemetryLogsAndTraces().validate();
         }
     }
 
@@ -75,6 +145,8 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("autoInstrumentation", this.autoInstrumentation);
+        jsonWriter.writeJsonField("openTelemetryMetrics", this.openTelemetryMetrics);
+        jsonWriter.writeJsonField("openTelemetryLogsAndTraces", this.openTelemetryLogsAndTraces);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +169,12 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoring
                 if ("autoInstrumentation".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileAppMonitoring.autoInstrumentation
                         = ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation.fromJson(reader);
+                } else if ("openTelemetryMetrics".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileAppMonitoring.openTelemetryMetrics
+                        = ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics.fromJson(reader);
+                } else if ("openTelemetryLogsAndTraces".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileAppMonitoring.openTelemetryLogsAndTraces
+                        = ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

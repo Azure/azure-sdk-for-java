@@ -16,7 +16,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
  */
 public final class LicensesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/license/License_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-16-preview/license/License_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a License.

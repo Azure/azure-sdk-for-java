@@ -132,12 +132,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.55.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
+      <version>2.56.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.54.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.55.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -313,6 +313,29 @@
             </manifest>
           </archive>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <!-- Makes files under src/samples/resources available to samples (which run as tests). -->
+          <execution>
+            <id>add-samples-resources</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>src/samples/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>

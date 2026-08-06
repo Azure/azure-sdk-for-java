@@ -12,8 +12,8 @@ public final class ComputeDiagnosticBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeDiagnosticBaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"supportedResourceTypes\":[\"bpzvgn\",\"zsymglzufcyzkohd\",\"ihanuf\",\"fcbjysagithxqha\"]},\"id\":\"fpikxwczb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}")
+            "{\"properties\":{\"supportedResourceTypes\":[\"ftyhxhurokf\"]},\"id\":\"xolniwpwcukjfk\",\"name\":\"iawxklry\",\"type\":\"lwckbasyypnddhs\"}")
             .toObject(ComputeDiagnosticBaseInner.class);
-        Assertions.assertEquals("bpzvgn", model.properties().supportedResourceTypes().get(0));
+        Assertions.assertEquals("ftyhxhurokf", model.properties().supportedResourceTypes().get(0));
     }
 }

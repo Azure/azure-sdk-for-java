@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -47,6 +48,7 @@ public class ServiceBusSessionAcquirerIsolatedTest {
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final ServiceBusReceiveMode RECEIVE_MODE = ServiceBusReceiveMode.PEEK_LOCK;
     private static final Duration TRY_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration RETRY_BACKOFF = Duration.ofSeconds(2);
     private static final Duration AWAIT_DURATION = TRY_TIMEOUT.plusSeconds(5);
     private static final AmqpException BROKER_TIMEOUT_ERROR = new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
         "com.microsoft:timeout", new AmqpErrorContext(ENTITY_PATH));
@@ -109,6 +111,56 @@ public class ServiceBusSessionAcquirerIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldClientSideTimeoutAndDisposeLinkWhenAcquireHangsIfRetryDisabled() {
+        // A receive link whose getSessionProperties() never emits simulates a hung acquire where the
+        // broker accepts the link but never sends its detach. Without a client-side guard this would
+        // block the caller for the full operation timeout (issue #49093).
+        final ServiceBusReceiveLink hungLink = mock(ServiceBusReceiveLink.class);
+        when(hungLink.getSessionProperties()).thenReturn(Mono.never());
+        final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(1);
+        sessionLinks.add(Mono.just(hungLink));
+        final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
+        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, true);
+
+        // The client-side guard is 2 * tryTimeout; await slightly longer so it fires.
+        final Duration awaitPastGuard = TRY_TIMEOUT.multipliedBy(2).plusSeconds(1);
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(sessionAcquirer::acquire).thenAwait(awaitPastGuard).verifyErrorSatisfies(e -> {
+                Assertions.assertInstanceOf(TimeoutException.class, e);
+            });
+        }
+        Assertions.assertEquals(0, onCreateSessionLink.pending());
+        // The half-open link must be disposed when the client-side guard cancels the acquire.
+        Mockito.verify(hungLink).dispose();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldBackOffBetweenRetriesIfRetryEnabled() {
+        // First attempt fails with a (retriable) broker timeout, then a terminal error. The retry must
+        // wait for the backoff before the second acquire attempt, i.e. it must not spin (issue #49093).
+        final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(2);
+        sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));
+        final RuntimeException error = new RuntimeException();
+        sessionLinks.add(Mono.error(error));
+        final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
+        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, false);
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(sessionAcquirer::acquire)
+                .thenAwait(RETRY_BACKOFF.dividedBy(2))
+                // Before the backoff elapses the second attempt must not have been made yet.
+                .then(() -> Assertions.assertEquals(1, onCreateSessionLink.pending()))
+                .thenAwait(RETRY_BACKOFF)
+                .verifyErrorSatisfies(e -> Assertions.assertEquals(error, e));
+        }
+        Assertions.assertEquals(0, onCreateSessionLink.pending());
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
     public void shouldRetryOnBrokerTimeoutErrorIfRetryEnabled() {
         final Deque<Mono<ServiceBusReceiveLink>> sessionLinks = new ArrayDeque<>(2);
         sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));
@@ -155,6 +207,7 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         final ConnectionCacheWrapper cacheWrapper = Mockito.mock(ConnectionCacheWrapper.class);
         when(cacheWrapper.isV2()).thenReturn(true);
         when(cacheWrapper.getConnection()).thenReturn(Mono.just(connection));
+        when(cacheWrapper.getRetryOptions()).thenReturn(new AmqpRetryOptions().setDelay(RETRY_BACKOFF));
         return cacheWrapper;
     }
 
