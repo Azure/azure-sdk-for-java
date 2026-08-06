@@ -28,17 +28,20 @@ no comment.
 Once the Java gate passes, supporting POM, CHANGELOG, metadata, and CI files may
 be read as evidence, except files under a `generated` path.
 
-## Release-plan gate
+## Review rules
+
+### `MGMT-RELEASE-PLAN`: missing release-plan link
+
+- **Severity:** Blocking
 
 Normalize casing and Markdown emphasis. Accept both plain
 `Release Plan link: https://example.com/release-plan` and formatted
-`**Release plan link:** [text](https://example.com/release-plan)`. Require an HTTP(S) URL.
+`**Release plan link:** [text](https://example.com/release-plan)`. Require an
+HTTP(S) URL.
 
-Missing link is `MGMT-RELEASE-PLAN`. Cite the PR description and continue the
-remaining review passes so other high-value concerns are not hidden.
-`MGMT-RELEASE-PLAN` has Blocking severity.
-
-## Review rules
+Report when the PR description contains no accepted release-plan link. Cite the
+PR description and continue the remaining review passes so other high-value
+concerns are not hidden.
 
 ### `MGMT-FOLDER`: service-folder mismatch
 
