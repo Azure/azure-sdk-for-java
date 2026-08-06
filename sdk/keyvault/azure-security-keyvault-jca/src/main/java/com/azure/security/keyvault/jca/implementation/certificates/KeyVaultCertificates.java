@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
+import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
 import java.security.Key;
@@ -18,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ import java.util.regex.PatternSyntaxException;
 import static java.util.logging.Level.WARNING;
 
 /**
- * Store certificates loaded from KeyVault.
+ * Caches certificate material loaded from Azure Key Vault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificates.class.getName());
@@ -69,6 +70,16 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * Stores the certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
+
+    /**
+     * Stores the resolved certificate version by alias.
+     */
+    private final Map<String, CertificateVersion> certificateVersions = new HashMap<>();
+
+    /**
+     * Stores certificate version resolutions currently in progress by alias.
+     */
+    private final Map<String, CompletableFuture<Void>> inFlightCertificateVersionResolutions = new HashMap<>();
 
     /**
      * Stores certificate loads currently in progress by alias.
@@ -234,6 +245,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         certificateKeys.clear();
         certificates.clear();
         certificateChains.clear();
+        certificateVersions.clear();
+        completeAndClear(inFlightCertificateVersionResolutions);
         completeAndClear(inFlightCertificateLoads);
         completeAndClear(inFlightCertificateChainLoads);
         completeAndClear(inFlightCertificateKeyLoads);
@@ -392,23 +405,24 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void loadCertificateIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateAliases, certificates, inFlightCertificateLoads,
-            client -> client.getCertificate(alias), Objects::nonNull, "certificate");
+            (client, version) -> client.getCertificateForVersion(version), Objects::nonNull, "certificate");
     }
 
     private void loadCertificateChainIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateChainAliases, certificateChains, inFlightCertificateChainLoads,
-            client -> client.getCertificateChain(alias), chain -> chain != null && chain.length > 0,
-            "certificate chain");
+            (client, version) -> client.getCertificateChainForVersion(version),
+            chain -> chain != null && chain.length > 0, "certificate chain");
     }
 
     private void loadCertificateKeyIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateKeyAliases, certificateKeys, inFlightCertificateKeyLoads,
-            client -> client.getKey(alias, null), Objects::nonNull, "certificate key");
+            (client, version) -> client.getKeyForVersion(version, null), Objects::nonNull, "certificate key");
     }
 
     private <T> void loadMaterialIfNeeded(String alias, Set<String> loadedAliases, Map<String, T> loadedMaterials,
-        Map<String, CompletableFuture<Void>> inFlightLoads, Function<KeyVaultClient, T> loadMaterial,
-        Predicate<T> isUsable, String materialDescription) {
+        Map<String, CompletableFuture<Void>> inFlightLoads,
+        BiFunction<KeyVaultClient, CertificateVersion, T> loadMaterial, Predicate<T> isUsable,
+        String materialDescription) {
 
         refreshCertificatesIfNeeded();
         if (alias == null) {
@@ -416,6 +430,11 @@ public final class KeyVaultCertificates implements AzureCertificates {
         }
 
         while (true) {
+            CertificateVersion certificateVersion = resolveCertificateVersionIfNeeded(alias);
+            if (certificateVersion == null) {
+                return;
+            }
+
             KeyVaultClient loadClient;
             long loadGeneration;
             CompletableFuture<Void> inFlightLoad;
@@ -425,6 +444,9 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 loadClient = keyVaultClient;
                 if (loadClient == null || loadedAliases.contains(alias) || !aliases.contains(alias)) {
                     return;
+                }
+                if (certificateVersions.get(alias) != certificateVersion) {
+                    continue;
                 }
 
                 loadGeneration = cacheGeneration;
@@ -451,14 +473,16 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
             T loadedMaterial = null;
             try {
-                loadedMaterial = loadMaterial.apply(loadClient);
+                loadedMaterial = loadMaterial.apply(loadClient, certificateVersion);
             } catch (RuntimeException exception) {
                 LOGGER.log(WARNING, exception, () -> "Failed to load " + materialDescription + " for alias: " + alias);
             }
 
             boolean retryWithCurrentGeneration;
             synchronized (this) {
-                boolean sameGeneration = loadClient == keyVaultClient && loadGeneration == cacheGeneration;
+                boolean sameGeneration = loadClient == keyVaultClient
+                    && loadGeneration == cacheGeneration
+                    && certificateVersions.get(alias) == certificateVersion;
                 if (sameGeneration
                     && !loadedAliases.contains(alias)
                     && aliases.contains(alias)
@@ -478,6 +502,79 @@ public final class KeyVaultCertificates implements AzureCertificates {
                     && !loadedAliases.contains(alias);
                 if (!retryWithCurrentGeneration) {
                     return;
+                }
+            }
+        }
+    }
+
+    private CertificateVersion resolveCertificateVersionIfNeeded(String alias) {
+        while (true) {
+            KeyVaultClient resolvingClient;
+            long resolutionGeneration;
+            CompletableFuture<Void> inFlightResolution;
+            boolean resolutionOwner;
+
+            synchronized (this) {
+                resolvingClient = keyVaultClient;
+                if (resolvingClient == null || !aliases.contains(alias)) {
+                    return null;
+                }
+
+                CertificateVersion certificateVersion = certificateVersions.get(alias);
+                if (certificateVersion != null) {
+                    return certificateVersion;
+                }
+
+                resolutionGeneration = cacheGeneration;
+                inFlightResolution = inFlightCertificateVersionResolutions.get(alias);
+                resolutionOwner = inFlightResolution == null;
+                if (resolutionOwner) {
+                    inFlightResolution = new CompletableFuture<>();
+                    inFlightCertificateVersionResolutions.put(alias, inFlightResolution);
+                }
+            }
+
+            if (!resolutionOwner) {
+                inFlightResolution.join();
+                synchronized (this) {
+                    CertificateVersion certificateVersion = certificateVersions.get(alias);
+                    if (certificateVersion != null) {
+                        return certificateVersion;
+                    }
+                    if (resolvingClient == keyVaultClient && resolutionGeneration == cacheGeneration) {
+                        return null;
+                    }
+                }
+                continue;
+            }
+
+            CertificateVersion certificateVersion = null;
+            try {
+                certificateVersion = resolvingClient.resolveCertificateVersion(alias);
+            } catch (RuntimeException exception) {
+                LOGGER.log(WARNING, exception, () -> "Failed to resolve certificate version for alias: " + alias);
+            }
+
+            boolean retryWithCurrentGeneration;
+            synchronized (this) {
+                boolean sameGeneration = resolvingClient == keyVaultClient && resolutionGeneration == cacheGeneration;
+                if (sameGeneration && aliases.contains(alias) && certificateVersion != null) {
+                    certificateVersions.put(alias, certificateVersion);
+                }
+
+                if (inFlightCertificateVersionResolutions.get(alias) == inFlightResolution) {
+                    inFlightCertificateVersionResolutions.remove(alias);
+                }
+                inFlightResolution.complete(null);
+
+                CertificateVersion currentVersion = certificateVersions.get(alias);
+                if (currentVersion != null) {
+                    return currentVersion;
+                }
+
+                retryWithCurrentGeneration = !sameGeneration && keyVaultClient != null && aliases.contains(alias);
+                if (!retryWithCurrentGeneration) {
+                    return null;
                 }
             }
         }
@@ -534,6 +631,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
         certificates.remove(alias);
         certificateChains.remove(alias);
         certificateKeys.remove(alias);
+        certificateVersions.remove(alias);
+        completeAndRemove(inFlightCertificateVersionResolutions, alias);
         completeAndRemove(inFlightCertificateLoads, alias);
         completeAndRemove(inFlightCertificateChainLoads, alias);
         completeAndRemove(inFlightCertificateKeyLoads, alias);

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import java.security.Key;
 import java.security.cert.Certificate;
@@ -38,6 +39,8 @@ public class KeyVaultCertificatesTest {
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
+    private final CertificateVersion certificateVersion = mock(CertificateVersion.class);
+
     private final Key key = mock(Key.class);
 
     private final Certificate certificate = mock(Certificate.class);
@@ -51,9 +54,10 @@ public class KeyVaultCertificatesTest {
         List<String> aliases = new ArrayList<>();
         aliases.add("myalias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
-        when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
-        when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
-        when(keyVaultClient.getCertificateChain("myalias")).thenReturn(certificateChain);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(certificateVersion);
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenReturn(key);
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenReturn(certificate);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenReturn(certificateChain);
         keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
     }
 
@@ -160,9 +164,10 @@ public class KeyVaultCertificatesTest {
     public void testGetAliasesDoesNotLoadCertificateDetailsEagerly() {
         keyVaultCertificates.getAliases();
 
-        verify(keyVaultClient, never()).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, never()).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
@@ -171,39 +176,92 @@ public class KeyVaultCertificatesTest {
         aliases.add("myalias");
         aliases.add("otheralias");
 
-        Key otherKey = mock(Key.class);
-        Certificate otherCertificate = mock(Certificate.class);
-
         when(keyVaultClient.getAliases()).thenReturn(aliases);
-        when(keyVaultClient.getKey("otheralias", null)).thenReturn(otherKey);
-        when(keyVaultClient.getCertificate("otheralias")).thenReturn(otherCertificate);
 
         keyVaultCertificates.getCertificate("myalias");
 
-        verify(keyVaultClient, times(1)).getCertificate("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
-        verify(keyVaultClient, never()).getKey("otheralias", null);
-        verify(keyVaultClient, never()).getCertificate("otheralias");
-        verify(keyVaultClient, never()).getCertificateChain("otheralias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, never()).resolveCertificateVersion("otheralias");
     }
 
     @Test
     public void testGetKeyLoadsOnlyKeyForRequestedAlias() {
         keyVaultCertificates.getCertificateKey("myalias");
 
-        verify(keyVaultClient, times(1)).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testGetCertificateChainLoadsOnlyChainForRequestedAlias() {
         keyVaultCertificates.getCertificateChain("myalias");
 
-        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificate("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+    }
+
+    @Test
+    public void testCertificateChainAndKeyUseSameResolvedVersionUntilRefresh() {
+        CertificateVersion version1 = mock(CertificateVersion.class);
+        CertificateVersion version2 = mock(CertificateVersion.class);
+        Certificate version1Certificate = mock(Certificate.class);
+        Certificate[] version1Chain = new Certificate[] { version1Certificate };
+        Key version1Key = mock(Key.class);
+        Key version2Key = mock(Key.class);
+
+        // These stubs reproduce the pre-fix behavior when material was fetched independently by alias.
+        when(keyVaultClient.getCertificateChain("myalias")).thenReturn(version1Chain);
+        when(keyVaultClient.getKey("myalias", null)).thenReturn(version2Key);
+
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(version1, version2);
+        when(keyVaultClient.getCertificateForVersion(version1)).thenReturn(version1Certificate);
+        when(keyVaultClient.getCertificateChainForVersion(version1)).thenReturn(version1Chain);
+        when(keyVaultClient.getKeyForVersion(version1, null)).thenReturn(version1Key);
+        when(keyVaultClient.getKeyForVersion(version2, null)).thenReturn(version2Key);
+
+        Assertions.assertArrayEquals(version1Chain, keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertSame(version1Certificate, keyVaultCertificates.getCertificate("myalias"));
+        Assertions.assertSame(version1Key, keyVaultCertificates.getCertificateKey("myalias"));
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, never()).getKeyForVersion(version2, null);
+
+        keyVaultCertificates.refreshCertificates();
+
+        Assertions.assertSame(version2Key, keyVaultCertificates.getCertificateKey("myalias"));
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getKeyForVersion(version2, null);
+    }
+
+    @Test
+    public void testConcurrentMaterialLoadsShareCertificateVersionResolution() throws Exception {
+        BlockingAnswer<CertificateVersion> blockingAnswer = new BlockingAnswer<>(certificateVersion);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenAnswer(blockingAnswer);
+        CountDownLatch readersReady = new CountDownLatch(3);
+        CountDownLatch readersMayStart = new CountDownLatch(1);
+        List<Thread> readers = Arrays.asList(
+            newMaterialReader(readersReady, readersMayStart, () -> keyVaultCertificates.getCertificate("myalias")),
+            newMaterialReader(readersReady, readersMayStart, () -> keyVaultCertificates.getCertificateChain("myalias")),
+            newMaterialReader(readersReady, readersMayStart, () -> keyVaultCertificates.getCertificateKey("myalias")));
+
+        readers.forEach(Thread::start);
+        awaitLatch(readersReady);
+        readersMayStart.countDown();
+        blockingAnswer.awaitStarted();
+        awaitThreadsWaiting(readers);
+        blockingAnswer.release();
+        joinThreads(readers);
+
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getKeyForVersion(certificateVersion, null);
     }
 
     @Test
@@ -308,77 +366,86 @@ public class KeyVaultCertificatesTest {
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("otheralias"));
 
-        verify(keyVaultClient, never()).getKey("otheralias", null);
-        verify(keyVaultClient, never()).getCertificate("otheralias");
-        verify(keyVaultClient, never()).getCertificateChain("otheralias");
+        verify(keyVaultClient, never()).resolveCertificateVersion("otheralias");
     }
 
     @Test
     public void testAliasCertificateLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificate("myalias")).thenThrow(new RuntimeException("transient error"))
+        when(keyVaultClient.getCertificateForVersion(certificateVersion))
+            .thenThrow(new RuntimeException("transient error"))
             .thenReturn(certificate);
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
-        verify(keyVaultClient, times(2)).getCertificate("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testAliasCertificateNullLoadIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificate("myalias")).thenReturn(null).thenReturn(certificate);
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenReturn(null).thenReturn(certificate);
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
-        verify(keyVaultClient, times(2)).getCertificate("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testAliasKeyLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getKey("myalias", null)).thenThrow(new RuntimeException("transient error")).thenReturn(key);
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null))
+            .thenThrow(new RuntimeException("transient error"))
+            .thenReturn(key);
 
         Assertions.assertNull(keyVaultCertificates.getCertificateKey("myalias"));
         Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
-        verify(keyVaultClient, times(2)).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testAliasKeyNullLoadIsRetriedOnNextAccess() {
-        when(keyVaultClient.getKey("myalias", null)).thenReturn(null).thenReturn(key);
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenReturn(null).thenReturn(key);
 
         Assertions.assertNull(keyVaultCertificates.getCertificateKey("myalias"));
         Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
-        verify(keyVaultClient, times(2)).getKey("myalias", null);
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testAliasChainLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificateChain("myalias")).thenThrow(new RuntimeException("transient error"))
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion))
+            .thenThrow(new RuntimeException("transient error"))
             .thenReturn(certificateChain);
 
         Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
         Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
-        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
     }
 
     @Test
     public void testAliasChainEmptyLoadIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificateChain("myalias")).thenReturn(new Certificate[0]).thenReturn(certificateChain);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenReturn(new Certificate[0])
+            .thenReturn(certificateChain);
 
         Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
         Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
-        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
-        verify(keyVaultClient, never()).getCertificate("myalias");
-        verify(keyVaultClient, never()).getKey("myalias", null);
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(2)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
     }
 
     @Test
@@ -398,76 +465,94 @@ public class KeyVaultCertificatesTest {
     @Test
     public void testConcurrentCertificateLoadsShareSingleRequest() throws Exception {
         BlockingAnswer<Certificate> blockingAnswer = new BlockingAnswer<>(certificate);
-        when(keyVaultClient.getCertificate("myalias")).thenAnswer(blockingAnswer);
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenAnswer(blockingAnswer);
 
         assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificate("myalias"), blockingAnswer,
             loadedCertificate -> Assertions.assertSame(certificate, loadedCertificate));
 
-        verify(keyVaultClient, times(1)).getCertificate("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
     }
 
     @Test
     public void testConcurrentCertificateChainLoadsShareSingleRequest() throws Exception {
         BlockingAnswer<Certificate[]> blockingAnswer = new BlockingAnswer<>(certificateChain);
-        when(keyVaultClient.getCertificateChain("myalias")).thenAnswer(blockingAnswer);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenAnswer(blockingAnswer);
 
         assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificateChain("myalias"),
             blockingAnswer, loadedChain -> Assertions.assertArrayEquals(certificateChain, loadedChain));
 
-        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
     }
 
     @Test
     public void testConcurrentKeyLoadsShareSingleRequest() throws Exception {
         BlockingAnswer<Key> blockingAnswer = new BlockingAnswer<>(key);
-        when(keyVaultClient.getKey("myalias", null)).thenAnswer(blockingAnswer);
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenAnswer(blockingAnswer);
 
         assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificateKey("myalias"), blockingAnswer,
             loadedKey -> Assertions.assertSame(key, loadedKey));
 
-        verify(keyVaultClient, times(1)).getKey("myalias", null);
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getKeyForVersion(certificateVersion, null);
     }
 
     @Test
     public void testRefreshDiscardsInFlightCertificateFromPreviousGeneration() throws Exception {
         Certificate freshCertificate = mock(Certificate.class);
+        CertificateVersion freshVersion = mock(CertificateVersion.class);
         BlockingAnswer<Certificate> staleAnswer = new BlockingAnswer<>(certificate);
-        when(keyVaultClient.getCertificate("myalias")).thenAnswer(staleAnswer).thenReturn(freshCertificate);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(certificateVersion, freshVersion);
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenAnswer(staleAnswer);
+        when(keyVaultClient.getCertificateForVersion(freshVersion)).thenReturn(freshCertificate);
 
         assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificate("myalias"), staleAnswer,
             loadedCertificate -> Assertions.assertSame(freshCertificate, loadedCertificate));
 
-        verify(keyVaultClient, times(2)).getCertificate("myalias");
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getCertificateForVersion(freshVersion);
     }
 
     @Test
     public void testRefreshDiscardsInFlightCertificateChainFromPreviousGeneration() throws Exception {
         Certificate[] freshChain = new Certificate[] { mock(Certificate.class) };
+        CertificateVersion freshVersion = mock(CertificateVersion.class);
         BlockingAnswer<Certificate[]> staleAnswer = new BlockingAnswer<>(certificateChain);
-        when(keyVaultClient.getCertificateChain("myalias")).thenAnswer(staleAnswer).thenReturn(freshChain);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(certificateVersion, freshVersion);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenAnswer(staleAnswer);
+        when(keyVaultClient.getCertificateChainForVersion(freshVersion)).thenReturn(freshChain);
 
         assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificateChain("myalias"), staleAnswer,
             loadedChain -> Assertions.assertArrayEquals(freshChain, loadedChain));
 
-        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(freshVersion);
     }
 
     @Test
     public void testRefreshDiscardsInFlightKeyFromPreviousGeneration() throws Exception {
         Key freshKey = mock(Key.class);
+        CertificateVersion freshVersion = mock(CertificateVersion.class);
         BlockingAnswer<Key> staleAnswer = new BlockingAnswer<>(key);
-        when(keyVaultClient.getKey("myalias", null)).thenAnswer(staleAnswer).thenReturn(freshKey);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(certificateVersion, freshVersion);
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenAnswer(staleAnswer);
+        when(keyVaultClient.getKeyForVersion(freshVersion, null)).thenReturn(freshKey);
 
         assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificateKey("myalias"), staleAnswer,
             loadedKey -> Assertions.assertSame(freshKey, loadedKey));
 
-        verify(keyVaultClient, times(2)).getKey("myalias", null);
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getKeyForVersion(certificateVersion, null);
+        verify(keyVaultClient, times(1)).getKeyForVersion(freshVersion, null);
     }
 
     @Test
     public void testClientReplacementDiscardsInFlightCertificate() throws Exception {
         BlockingAnswer<Certificate> staleAnswer = new BlockingAnswer<>(certificate);
-        when(keyVaultClient.getCertificate("myalias")).thenAnswer(staleAnswer);
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenAnswer(staleAnswer);
         List<Certificate> loadedValues = Collections.synchronizedList(new ArrayList<>());
         Thread reader = new Thread(() -> loadedValues.add(keyVaultCertificates.getCertificate("myalias")));
         reader.start();
@@ -480,7 +565,7 @@ public class KeyVaultCertificatesTest {
         Assertions.assertEquals(1, loadedValues.size());
         Assertions.assertNull(loadedValues.get(0));
         Assertions.assertTrue(keyVaultCertificates.getCertificates().isEmpty());
-        verify(keyVaultClient, times(1)).getCertificate("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
     }
 
     @Test
@@ -601,6 +686,19 @@ public class KeyVaultCertificatesTest {
             thread.join(TIMEOUT_MILLIS);
             Assertions.assertFalse(thread.isAlive(), "Timed out waiting for test thread to finish.");
         }
+    }
+
+    private static Thread newMaterialReader(CountDownLatch readersReady, CountDownLatch readersMayStart,
+        Runnable loadMaterial) {
+        return new Thread(() -> {
+            readersReady.countDown();
+            try {
+                awaitLatch(readersMayStart);
+                loadMaterial.run();
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+            }
+        });
     }
 
     private static void awaitLatch(CountDownLatch latch) throws InterruptedException {

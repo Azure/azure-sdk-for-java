@@ -339,55 +339,101 @@ public class KeyVaultClient {
     }
 
     /**
-     * Get the certificate.
+     * Resolves the certificate, secret, and key references for one certificate version.
+     *
+     * @param alias The certificate alias.
+     * @return The resolved certificate version, or {@code null} if it could not be resolved.
+     */
+    public CertificateVersion resolveCertificateVersion(String alias) {
+        CertificateBundle certificateBundle = getCertificateBundle(alias);
+        if (certificateBundle == null) {
+            return null;
+        }
+
+        boolean exportable = Optional.ofNullable(certificateBundle.getPolicy())
+            .map(CertificatePolicy::getKeyProperties)
+            .map(KeyProperties::isExportable)
+            .orElse(false);
+        String keyType = Optional.ofNullable(certificateBundle.getPolicy())
+            .map(CertificatePolicy::getKeyProperties)
+            .map(KeyProperties::getKty)
+            .orElse(null);
+
+        return new CertificateVersion(alias, certificateBundle.getCer(), certificateBundle.getKid(),
+            certificateBundle.getSid(), exportable, keyType);
+    }
+
+    /**
+     * Gets the certificate from the latest version of an alias.
      *
      * @param alias The alias.
      *
-     * @return The certificate, or null if not found.
+     * @return The certificate, or {@code null} if not found.
      */
     public Certificate getCertificate(String alias) {
-        LOGGER.entering("KeyVaultClient", "getCertificate", alias);
+        return getCertificateForVersion(resolveCertificateVersion(alias));
+    }
+
+    /**
+     * Gets the certificate from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+     * @return The certificate, or {@code null} if not found.
+     */
+    public Certificate getCertificateForVersion(CertificateVersion certificateVersion) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getCertificateForVersion", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
 
         X509Certificate certificate = null;
-        CertificateBundle certificateBundle = getCertificateBundle(alias);
+        String certificateData = certificateVersion == null ? null : certificateVersion.getCertificateData();
 
-        if (certificateBundle != null) {
-            String certificateString = certificateBundle.getCer();
-
-            if (certificateString != null) {
-                try {
-                    CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                    certificate = (X509Certificate) cf
-                        .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateString)));
-                } catch (CertificateException ce) {
-                    LOGGER.log(WARNING, "Certificate error", ce);
-                }
+        if (certificateData != null) {
+            try {
+                CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+                certificate = (X509Certificate) certificateFactory
+                    .generateCertificate(new ByteArrayInputStream(Base64.getDecoder().decode(certificateData)));
+            } catch (CertificateException exception) {
+                LOGGER.log(WARNING, "Unable to decode certificate", exception);
             }
         }
 
-        LOGGER.exiting("KeyVaultClient", "getCertificate", certificate);
+        LOGGER.exiting("KeyVaultClient", "getCertificateForVersion", certificate);
 
         return certificate;
     }
 
     /**
-     * Get the certificate chain.
+     * Gets the certificate chain from the latest version of an alias.
      *
      * @param alias The alias.
      *
-     * @return The certificate chain, or null if not found.
+     * @return The certificate chain, or an empty array if not found.
      */
     public Certificate[] getCertificateChain(String alias) {
-        LOGGER.entering("KeyVaultClient", "getCertificateChain", alias);
+        return getCertificateChainForVersion(resolveCertificateVersion(alias));
+    }
+
+    /**
+     * Gets the certificate chain from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+     * @return The certificate chain, or an empty array if not found.
+     */
+    public Certificate[] getCertificateChainForVersion(CertificateVersion certificateVersion) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getCertificateChainForVersion", alias);
         LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
+
+        if (certificateVersion == null || certificateVersion.getSecretId() == null) {
+            return new Certificate[0];
+        }
 
         HashMap<String, String> headers = new HashMap<>();
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(uri, headers);
+        String response = HttpUtil.get(certificateVersion.getSecretId() + API_VERSION_POSTFIX, headers);
 
         if (response == null) {
             throw new NullPointerException();
@@ -410,52 +456,59 @@ public class KeyVaultClient {
             LOGGER.log(WARNING, "Unable to decode certificate chain", e);
         }
 
-        LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
+        LOGGER.exiting("KeyVaultClient", "getCertificateChainForVersion", alias);
 
         return certificates;
     }
 
     /**
-     * Get the key.
+     * Gets the key from the latest version of an alias.
      *
      * @param alias The alias.
      * @param password The password.
      *
-     * @return The key.
+     * @return The key, or {@code null} if not found.
      */
     public Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
+        return getKeyForVersion(resolveCertificateVersion(alias), password);
+    }
+
+    /**
+     * Gets the key from a resolved certificate version.
+     *
+     * @param certificateVersion The resolved certificate version.
+     * @param password The password.
+     * @return The key, or {@code null} if not found.
+     */
+    public Key getKeyForVersion(CertificateVersion certificateVersion, char[] password) {
+        String alias = certificateVersion == null ? null : certificateVersion.getAlias();
+        LOGGER.entering("KeyVaultClient", "getKeyForVersion", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
 
-        CertificateBundle certificateBundle = getCertificateBundle(alias);
-        boolean isExportable = Optional.ofNullable(certificateBundle)
-            .map(CertificateBundle::getPolicy)
-            .map(CertificatePolicy::getKeyProperties)
-            .map(KeyProperties::isExportable)
-            .orElse(false);
-        String keyType = Optional.ofNullable(certificateBundle)
-            .map(CertificateBundle::getPolicy)
-            .map(CertificatePolicy::getKeyProperties)
-            .map(KeyProperties::getKty)
-            .orElse(null);
+        if (certificateVersion == null) {
+            return null;
+        }
 
-        if (!isExportable) {
-            // Return KeyVaultPrivateKey if certificate is not exportable because if the service needs to obtain the
-            // private key for authentication, and we can't access private key(which is not exportable), we will use
-            // the Azure Key Vault Secrets API to obtain the private key (keyless).
-            String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
+        boolean exportable = certificateVersion.isExportable();
+        String keyType = certificateVersion.getKeyType();
 
-            KeyVaultPrivateKey key = Optional.ofNullable(certificateBundle)
-                .map(CertificateBundle::getKid)
-                .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
+        if (!exportable) {
+            // Keyless signing uses the versioned key ID instead of exporting private key material.
+            String keyAlgorithm = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
+
+            KeyVaultPrivateKey key = Optional.ofNullable(certificateVersion.getKeyId())
+                .map(keyId -> new KeyVaultPrivateKey(keyAlgorithm, keyId, this))
                 .orElse(null);
 
-            LOGGER.exiting("KeyVaultClient", "getKey", key);
+            LOGGER.exiting("KeyVaultClient", "getKeyForVersion", key);
 
             return key;
         }
 
-        String certificateSecretUri = certificateBundle.getSid();
+        String certificateSecretUri = certificateVersion.getSecretId();
+        if (certificateSecretUri == null) {
+            return null;
+        }
         Map<String, String> headers = new HashMap<>();
 
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -465,7 +518,7 @@ public class KeyVaultClient {
         if (body == null) {
             // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
             // Then we do not know the intent of the usage at this stage we skip this key.
-            LOGGER.exiting("KeyVaultClient", "getKey", null);
+            LOGGER.exiting("KeyVaultClient", "getKeyForVersion", null);
 
             // We return null because it is really not needed.
             // The private key is only used for identity authentication.
@@ -511,7 +564,7 @@ public class KeyVaultClient {
 
         // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
         // Then we do not know the intent of the usage at this stage we skip this key.
-        LOGGER.exiting("KeyVaultClient", "getKey", key);
+        LOGGER.exiting("KeyVaultClient", "getKeyForVersion", key);
 
         return key;
     }
