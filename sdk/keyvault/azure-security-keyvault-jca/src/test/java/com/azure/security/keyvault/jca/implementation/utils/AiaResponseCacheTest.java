@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,6 +70,130 @@ public class AiaResponseCacheTest {
         cache.getOrLoad("url", () -> entry(certificates, loads));
 
         assertEquals(2, loads.get());
+    }
+
+    @Test
+    void lookupResultReportsSourceAndGeneration() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+
+        AiaResponseCache.LookupResult loaded
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
+            });
+        AiaResponseCache.LookupResult cached
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
+            });
+
+        assertEquals(AiaResponseCache.Source.LOAD, loaded.getSource());
+        assertEquals(AiaResponseCache.Source.CACHE, cached.getSource());
+        assertTrue(loaded.getGeneration() > 0);
+        assertEquals(loaded.getGeneration(), cached.getGeneration());
+        assertSame(certificates, cached.getCertificates());
+    }
+
+    @Test
+    void refreshIfUnchangedSkipsLoaderWhenEntryChanged() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        AtomicInteger refreshLoads = new AtomicInteger();
+        List<X509Certificate> firstCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> secondCertificates = Collections.singletonList(mock(X509Certificate.class));
+
+        AiaResponseCache.LookupResult first
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(firstCertificates, 2_000L), () -> {
+            });
+        cache.clear();
+        AiaResponseCache.LookupResult second
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(secondCertificates, 2_000L), () -> {
+            });
+
+        AiaResponseCache.LookupResult refreshed = cache.refreshIfUnchanged("url", first.getGeneration(), () -> {
+            refreshLoads.incrementAndGet();
+            return new AiaResponseCache.Entry(firstCertificates, 2_000L);
+        });
+
+        assertEquals(0, refreshLoads.get());
+        assertEquals(second.getGeneration(), refreshed.getGeneration());
+        assertSame(secondCertificates, refreshed.getCertificates());
+    }
+
+    @Test
+    void coalescesConcurrentForcedRefreshes() throws Exception {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        List<X509Certificate> oldCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> newCertificates = Collections.singletonList(mock(X509Certificate.class));
+        AiaResponseCache.LookupResult initial
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(oldCertificates, 2_000L), () -> {
+            });
+        AtomicInteger refreshLoads = new AtomicInteger();
+        CountDownLatch refreshStarted = new CountDownLatch(1);
+        CountDownLatch releaseRefresh = new CountDownLatch(1);
+        List<Future<AiaResponseCache.LookupResult>> futures = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            futures.add(executor.submit(() -> cache.refreshIfUnchanged("url", initial.getGeneration(), () -> {
+                refreshLoads.incrementAndGet();
+                refreshStarted.countDown();
+                await(releaseRefresh);
+                return new AiaResponseCache.Entry(newCertificates, 2_000L);
+            })));
+        }
+
+        assertTrue(refreshStarted.await(5, TimeUnit.SECONDS));
+        releaseRefresh.countDown();
+        for (Future<AiaResponseCache.LookupResult> future : futures) {
+            AiaResponseCache.LookupResult result = future.get(5, TimeUnit.SECONDS);
+            assertSame(newCertificates, result.getCertificates());
+        }
+        assertEquals(1, refreshLoads.get());
+    }
+
+    @Test
+    void negativeForcedRefreshKeepsPositiveEntry() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        List<X509Certificate> positiveCertificates = Collections.singletonList(mock(X509Certificate.class));
+        AiaResponseCache.LookupResult initial
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(positiveCertificates, 2_000L), () -> {
+            });
+
+        AiaResponseCache.LookupResult refreshed = cache.refreshIfUnchanged("url", initial.getGeneration(),
+            () -> new AiaResponseCache.Entry(Collections.emptyList(), 2_000L));
+        AiaResponseCache.LookupResult cached
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(Collections.emptyList(), 2_000L), () -> {
+            });
+
+        assertTrue(refreshed.isNegative());
+        assertSame(positiveCertificates, cached.getCertificates());
+        assertEquals(initial.getGeneration(), cached.getGeneration());
+    }
+
+    @Test
+    void targetSuppressionsAreIndependent() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+
+        cache.suppressRefresh("url", "target-1", 1L, 1_000L);
+
+        assertTrue(cache.isRefreshSuppressed("url", "target-1", 1L));
+        assertFalse(cache.isRefreshSuppressed("url", "target-2", 1L));
+    }
+
+    @Test
+    void targetSuppressionIsScopedToEntryGeneration() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+
+        cache.suppressRefresh("url", "target", 1L, 1_000L);
+
+        assertTrue(cache.isRefreshSuppressed("url", "target", 1L));
+        assertFalse(cache.isRefreshSuppressed("url", "target", 2L));
+    }
+
+    @Test
+    void targetSuppressionExpires() {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        cache.suppressRefresh("url", "target", 1L, 1_000L);
+
+        clock.set(2_001L);
+
+        assertFalse(cache.isRefreshSuppressed("url", "target", 1L));
     }
 
     @Test
@@ -208,6 +333,30 @@ public class AiaResponseCacheTest {
         cache.getOrLoad("url", () -> entry(certificates, loads));
         cache.clear();
         cache.getOrLoad("url", () -> entry(certificates, loads));
+
+        assertEquals(2, loads.get());
+    }
+
+    @Test
+    void clearDuringLoadDoesNotRepopulateCache() throws Exception {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        AtomicInteger loads = new AtomicInteger();
+        CountDownLatch loadStarted = new CountDownLatch(1);
+        CountDownLatch releaseLoad = new CountDownLatch(1);
+        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+
+        Future<List<X509Certificate>> first = executor.submit(() -> cache.getOrLoad("url", () -> {
+            loads.incrementAndGet();
+            loadStarted.countDown();
+            await(releaseLoad);
+            return new AiaResponseCache.Entry(certificates, 2_000L);
+        }));
+
+        assertTrue(loadStarted.await(5, TimeUnit.SECONDS));
+        cache.clear();
+        releaseLoad.countDown();
+        assertSame(certificates, first.get(5, TimeUnit.SECONDS));
+        assertSame(certificates, cache.getOrLoad("url", () -> entry(certificates, loads)));
 
         assertEquals(2, loads.get());
     }

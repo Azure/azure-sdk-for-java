@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.CertPathBuilder;
 import java.security.cert.CertPathBuilderException;
 import java.security.cert.CertPathBuilderResult;
@@ -560,12 +561,12 @@ public class AiaCertificateChainTest {
     }
 
     @Test
-    void cachedAiaResponseIsStillValidatedOnEveryUse() throws Exception {
+    void cachedAiaResponseIsValidatedBeforeAndAfterForcedRefresh() throws Exception {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(2048);
 
-        // A certificate claiming the cached issuer's DN but signed by a different key. Reusing the cached
-        // response must not let it skip signature verification.
+        // A certificate claiming the cached issuer's DN but signed by a different key. Neither the cached response
+        // nor the forced refresh may skip signature verification.
         KeyPair impostorKeyPair = keyGen.generateKeyPair();
         KeyPair subjectKeyPair = keyGen.generateKeyPair();
         X509Certificate certSignedByAnotherKey = buildCertificate(subjectKeyPair.getPublic(), "CN=Other Leaf",
@@ -576,9 +577,9 @@ public class AiaCertificateChainTest {
 
             assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
             assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(certSignedByAnotherKey),
-                "A cache hit must still fail issuer validation when the signature does not match");
+                "A cache hit and its forced refresh must both reject a signature mismatch");
 
-            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
         }
     }
 
@@ -602,6 +603,87 @@ public class AiaCertificateChainTest {
             assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
 
             httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
+    void refreshesCachedResponseWhenIssuerRotates() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        KeyPair rotatedIssuerKeyPair = keyGen.generateKeyPair();
+        X509Certificate rotatedIssuer = buildCertificate(rotatedIssuerKeyPair.getPublic(), "CN=Test Intermediate CA",
+            "CN=Test Intermediate CA", rotatedIssuerKeyPair.getPrivate(), true, null);
+        KeyPair rotatedLeafKeyPair = keyGen.generateKeyPair();
+        X509Certificate rotatedLeaf = buildCertificate(rotatedLeafKeyPair.getPublic(), "CN=Rotated Leaf",
+            "CN=Test Intermediate CA", rotatedIssuerKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded()), binaryResponse(rotatedIssuer.getEncoded()));
+
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertEquals(rotatedIssuer, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void suppressesRepeatedMissForSameTarget() throws Exception {
+        X509Certificate rotatedLeaf = buildRotatedLeafWithoutMatchingIssuer("CN=Suppressed Leaf");
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded()));
+
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        }
+    }
+
+    @Test
+    void doesNotSuppressDifferentTarget() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+        X509Certificate firstRotatedLeaf = buildRotatedLeafWithoutMatchingIssuer("CN=First Rotated Leaf");
+
+        KeyPair secondIssuerKeyPair = keyGen.generateKeyPair();
+        X509Certificate secondIssuer = buildCertificate(secondIssuerKeyPair.getPublic(), "CN=Test Intermediate CA",
+            "CN=Test Intermediate CA", secondIssuerKeyPair.getPrivate(), true, null);
+        KeyPair secondLeafKeyPair = keyGen.generateKeyPair();
+        X509Certificate secondRotatedLeaf = buildCertificate(secondLeafKeyPair.getPublic(), "CN=Second Rotated Leaf",
+            "CN=Test Intermediate CA", secondIssuerKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded()),
+                    binaryResponse(intermediateCert.getEncoded()), binaryResponse(secondIssuer.getEncoded()));
+
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(firstRotatedLeaf));
+            assertEquals(secondIssuer, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(secondRotatedLeaf));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(3));
+        }
+    }
+
+    @Test
+    void failedRefreshDoesNotReplaceUsefulPositiveEntry() throws Exception {
+        X509Certificate rotatedLeaf = buildRotatedLeafWithoutMatchingIssuer("CN=Failed Refresh Leaf");
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                .thenReturn(binaryResponse(intermediateCert.getEncoded()), binaryResponse(null));
+
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
         }
     }
 
@@ -880,6 +962,7 @@ public class AiaCertificateChainTest {
 
         assertEquals(4L, messages.stream().filter(m -> m.startsWith("Resolved issuer certificate via AIA")).count(),
             "Both runs must report resolving the intermediate and the root");
+
         assertEquals(2L,
             messages.stream().filter(m -> m.startsWith("Downloading issuer certificate from AIA URL")).count(),
             "Only the first run performs downloads; a cache hit must not be reported as one");
@@ -928,13 +1011,22 @@ public class AiaCertificateChainTest {
         return new HttpUtil.BinaryHttpResponse(body, cacheControl, null, null, null);
     }
 
-    private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
-        String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl) throws Exception {
+    private static X509Certificate buildRotatedLeafWithoutMatchingIssuer(String subjectDn) throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+        KeyPair rotatedIssuerKeyPair = keyGen.generateKeyPair();
+        KeyPair rotatedLeafKeyPair = keyGen.generateKeyPair();
+        return buildCertificate(rotatedLeafKeyPair.getPublic(), subjectDn, "CN=Test Intermediate CA",
+            rotatedIssuerKeyPair.getPrivate(), false, AIA_INTERMEDIATE_URL);
+    }
+
+    private static X509Certificate buildCertificate(PublicKey subjectPublicKey, String subjectDn, String issuerDn,
+        PrivateKey signingKey, boolean isCa, String aiaUrl) throws Exception {
         return buildCertificate(subjectPublicKey, subjectDn, issuerDn, signingKey, isCa, aiaUrl, null);
     }
 
-    private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
-        String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags) throws Exception {
+    private static X509Certificate buildCertificate(PublicKey subjectPublicKey, String subjectDn, String issuerDn,
+        PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags) throws Exception {
 
         Date notBefore = new Date(System.currentTimeMillis() - 86_400_000L);
         Date notAfter = new Date(System.currentTimeMillis() + 86_400_000L * 365);
@@ -943,9 +1035,9 @@ public class AiaCertificateChainTest {
             notBefore, notAfter);
     }
 
-    private static X509Certificate buildCertificate(java.security.PublicKey subjectPublicKey, String subjectDn,
-        String issuerDn, PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags, Date notBefore,
-        Date notAfter) throws Exception {
+    private static X509Certificate buildCertificate(PublicKey subjectPublicKey, String subjectDn, String issuerDn,
+        PrivateKey signingKey, boolean isCa, String aiaUrl, Integer keyUsageFlags, Date notBefore, Date notAfter)
+        throws Exception {
 
         X500Name subject = new X500Name(subjectDn);
         X500Name issuer = new X500Name(issuerDn);

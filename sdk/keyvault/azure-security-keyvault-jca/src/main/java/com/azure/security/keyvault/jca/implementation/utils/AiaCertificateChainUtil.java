@@ -11,6 +11,7 @@ import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -28,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -240,7 +242,7 @@ final class AiaCertificateChainUtil {
         Certificate[] result = chain.toArray(new Certificate[0]);
 
         // Log the completed chain for debugging
-        if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
+        if (LOGGER.isLoggable(FINE)) {
             CertificateUtil.logCertificateChain("Certificate chain after AIA completion", result);
         }
 
@@ -309,11 +311,7 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Downloads the issuer certificate for the given certificate using the CA Issuers URL
-     * found in the certificate's AIA (Authority Information Access) extension.
-     *
-     * <p>A downloaded certificate is only accepted when its subject matches the expected issuer DN, it is currently
-     * within its validity period, and it can validly issue the given certificate.
+     * Resolves and validates the issuer, refreshing a cached miss once before briefly suppressing that target.
      *
      * @param cert the certificate whose issuer should be downloaded
      * @return the issuer {@link X509Certificate}, or {@code null} if it cannot be retrieved
@@ -343,16 +341,36 @@ final class AiaCertificateChainUtil {
                     continue; // Only HTTP/HTTPS URLs are supported
                 }
 
-                X500Principal expectedIssuerPrincipal = cert.getIssuerX500Principal();
-                for (X509Certificate candidate : fetchCertificatesFromAiaUrl(url)) {
-                    // Validation runs on every use, including cache hits, so a cached certificate can never
-                    // shortcut subject, validity or issuer verification.
-                    if (expectedIssuerPrincipal.equals(candidate.getSubjectX500Principal())
-                        && isCurrentlyValid(candidate)
-                        && CertificateUtil.isValidIssuer(candidate, cert)) {
-                        return candidate;
-                    }
+                AiaResponseCache.LookupResult initial = getAiaResponse(url);
+                X509Certificate issuer = findValidIssuer(cert, initial.getCertificates());
+                if (issuer != null) {
+                    return issuer;
                 }
+
+                if (initial.isNegative()) {
+                    continue;
+                }
+
+                TargetIdentity targetIdentity
+                    = new TargetIdentity(cert.getIssuerX500Principal(), cert.getSerialNumber());
+                // A normal load already performed HTTP, so do not download twice in one resolution attempt.
+                if (initial.getSource() != AiaResponseCache.Source.CACHE) {
+                    AIA_CACHE.suppressRefresh(url, targetIdentity, initial.getGeneration(), NEGATIVE_TTL_IN_MILLIS);
+                    continue;
+                }
+                if (AIA_CACHE.isRefreshSuppressed(url, targetIdentity, initial.getGeneration())) {
+                    continue;
+                }
+
+                // Refresh only the generation observed above; concurrent callers share the same refresh.
+                AiaResponseCache.LookupResult refreshed
+                    = AIA_CACHE.refreshIfUnchanged(url, initial.getGeneration(), () -> loadAiaResponse(url));
+                issuer = findValidIssuer(cert, refreshed.getCertificates());
+                if (issuer != null) {
+                    AIA_CACHE.clearRefreshSuppression(url, targetIdentity);
+                    return issuer;
+                }
+                AIA_CACHE.suppressRefresh(url, targetIdentity, refreshed.getGeneration(), NEGATIVE_TTL_IN_MILLIS);
             }
         } catch (Exception e) {
             LOGGER.log(FINE, "Failed to download issuer certificate from AIA extension.", e);
@@ -361,21 +379,53 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Retrieves the certificates published at a CA Issuers URL, reusing a previously cached response when possible.
-     *
-    * Successful responses honor HTTP freshness metadata with a 24-hour upper bound and never outlive their
-    * certificates. Failed, empty, or unparseable responses are cached briefly to avoid repeated calls to an
-    * unavailable endpoint. Only the parsed response is cached, never validation against a specific certificate:
-    * callers must still run {@code CertificateUtil.isValidIssuer} on every use.
+     * Retrieves a cached AIA response while validating certificate candidates on every use.
      *
      * @param url the CA Issuers URL taken from an AIA extension
      * @return the certificates published at the URL, or an empty list if they cannot be retrieved or parsed
      */
     static List<X509Certificate> fetchCertificatesFromAiaUrl(String url) {
-        return AIA_CACHE.getOrLoad(url, () -> loadAiaResponse(url),
+        return getAiaResponse(url).getCertificates();
+    }
+
+    /**
+     * Gets an AIA response and the cache metadata needed by the refresh decision.
+     *
+     * @param url the CA Issuers URL
+     * @return the cached or loaded response
+     */
+    private static AiaResponseCache.LookupResult getAiaResponse(String url) {
+        return AIA_CACHE.getOrLoadResult(url, () -> loadAiaResponse(url),
             () -> LOGGER.log(FINE, "Reusing the cached AIA response for URL: {0}", url));
     }
 
+    /**
+     * Finds a currently valid candidate that can issue the target certificate.
+     *
+     * @param target the certificate that needs an issuer
+     * @param candidates the certificates published by the AIA endpoint
+     * @return a valid issuer, or null when no candidate matches
+     */
+    private static X509Certificate findValidIssuer(X509Certificate target, List<X509Certificate> candidates) {
+        X500Principal expectedIssuerPrincipal = target.getIssuerX500Principal();
+        for (X509Certificate candidate : candidates) {
+            // Validation runs on every use, including cache hits, so a cached certificate can never shortcut
+            // subject, validity or issuer verification.
+            if (expectedIssuerPrincipal.equals(candidate.getSubjectX500Principal())
+                && isCurrentlyValid(candidate)
+                && CertificateUtil.isValidIssuer(candidate, target)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Downloads and parses one AIA response into a cache entry.
+     *
+     * @param url the CA Issuers URL
+     * @return a positive or negative cache entry
+     */
     private static AiaResponseCache.Entry loadAiaResponse(String url) {
         LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
         long now = System.currentTimeMillis();
@@ -394,6 +444,13 @@ final class AiaCertificateChainUtil {
         return new AiaResponseCache.Entry(certificates, calculateResponseExpiration(response, now));
     }
 
+    /**
+     * Calculates how long an HTTP response may remain cached.
+     *
+     * @param response the HTTP response and its freshness headers
+     * @param nowInMillis the current time in epoch milliseconds
+     * @return the expiration time in epoch milliseconds
+     */
     static long calculateResponseExpiration(HttpUtil.BinaryHttpResponse response, long nowInMillis) {
         String cacheControl = response.getCacheControl();
         if (hasCacheDirective(cacheControl, "no-store") || hasCacheDirective(cacheControl, "no-cache")) {
@@ -422,6 +479,13 @@ final class AiaCertificateChainUtil {
         return expiresAt;
     }
 
+    /**
+     * Calculates the short cache period for a failed or empty response.
+     *
+     * @param response the HTTP response and its cache directives
+     * @param nowInMillis the current time in epoch milliseconds
+     * @return the expiration time in epoch milliseconds
+     */
     private static long calculateNegativeExpiration(HttpUtil.BinaryHttpResponse response, long nowInMillis) {
         String cacheControl = response.getCacheControl();
         return hasCacheDirective(cacheControl, "no-store") || hasCacheDirective(cacheControl, "no-cache")
@@ -564,6 +628,38 @@ final class AiaCertificateChainUtil {
             LOGGER.log(FINE, "Issuer certificate [{0}] is expired or not yet valid; rejecting it as an issuer.",
                 certificate.getSubjectX500Principal().getName());
             return false;
+        }
+    }
+
+    /**
+     * Identifies the target certificate for refresh suppression.
+     *
+     * <p>The issuer principal and serial number distinguish certificates that use the same AIA URL.
+     */
+    private static final class TargetIdentity {
+        private final X500Principal issuerPrincipal;
+        private final BigInteger serialNumber;
+
+        private TargetIdentity(X500Principal issuerPrincipal, BigInteger serialNumber) {
+            this.issuerPrincipal = issuerPrincipal;
+            this.serialNumber = serialNumber;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof TargetIdentity)) {
+                return false;
+            }
+            TargetIdentity other = (TargetIdentity) obj;
+            return issuerPrincipal.equals(other.issuerPrincipal) && serialNumber.equals(other.serialNumber);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(issuerPrincipal, serialNumber);
         }
     }
 
