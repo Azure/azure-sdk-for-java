@@ -34,6 +34,7 @@ public class KafkaCosmosTestConfigurations {
     public static final String DEFAULT_CONNECT_PLUGIN_PATH = "/kafka/connect/cosmos-connector";
     public static final String DEFAULT_CONNECT_REST_ADVERTISED_HOST_NAME = "connect";
     public static final String DEFAULT_ACR_NAME = "confluentinc";
+    
 
     public final static String ACR_NAME =
         properties
