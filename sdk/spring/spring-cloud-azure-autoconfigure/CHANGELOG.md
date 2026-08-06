@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -245,4 +247,3 @@ Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-jav
 ## 4.0.0-beta.2 (2021-11-22)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#400-beta2-2021-11-22) for more details.
-
