@@ -583,6 +583,29 @@ public class AiaCertificateChainTest {
     }
 
     @Test
+    void expiredExtraCertificateDoesNotPreventCachingValidIssuer() throws Exception {
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+
+        Date expiredNotBefore = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(30));
+        Date expiredNotAfter = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1));
+        KeyPair expiredExtraKeyPair = keyGen.generateKeyPair();
+        X509Certificate expiredExtra
+            = buildCertificate(expiredExtraKeyPair.getPublic(), "CN=Expired Extra CA", "CN=Expired Extra CA",
+                expiredExtraKeyPair.getPrivate(), true, null, KeyUsage.keyCertSign, expiredNotBefore, expiredNotAfter);
+        String pemBundle = toPem(expiredExtra) + toPem(intermediateCert);
+
+        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+            mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, pemBundle.getBytes(StandardCharsets.UTF_8));
+
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+
+            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(1));
+        }
+    }
+
+    @Test
     void clearAiaCacheForcesNewDownload() throws Exception {
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
             mockAiaResponse(httpMock, AIA_INTERMEDIATE_URL, intermediateCert.getEncoded());
@@ -676,8 +699,7 @@ public class AiaCertificateChainTest {
     void successfulResponseUsesFallbackTtlWithoutHeaders() {
         long now = 1_000L;
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }),
-            Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(binaryResponse(new byte[] { 1 }), now);
 
         assertEquals(now + TimeUnit.HOURS.toMillis(24), expiresAt);
     }
@@ -688,7 +710,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response
             = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300", null, "30", null);
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now + TimeUnit.SECONDS.toMillis(270), expiresAt);
     }
@@ -701,7 +723,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=3600",
             "Wed, 5 Aug 2026 10:00:00 GMT", "0", null);
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now, expiresAt);
     }
@@ -714,7 +736,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300",
             "Wed, 5 Aug 2026 10:00:00 GMT", "120", null);
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now + TimeUnit.SECONDS.toMillis(180), expiresAt);
     }
@@ -723,8 +745,8 @@ public class AiaCertificateChainTest {
     void successfulResponseWithNoStoreExpiresImmediately() {
         long now = 1_000L;
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }, "no-store"),
-            Collections.emptyList(), now);
+        long expiresAt
+            = AiaCertificateChainUtil.calculateResponseExpiration(binaryResponse(new byte[] { 1 }, "no-store"), now);
 
         assertEquals(now, expiresAt);
     }
@@ -733,8 +755,8 @@ public class AiaCertificateChainTest {
     void successfulResponseWithNoCacheExpiresImmediately() {
         long now = 1_000L;
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }, "no-cache"),
-            Collections.emptyList(), now);
+        long expiresAt
+            = AiaCertificateChainUtil.calculateResponseExpiration(binaryResponse(new byte[] { 1 }, "no-cache"), now);
 
         assertEquals(now, expiresAt);
     }
@@ -745,7 +767,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, null,
             "Wed, 5 Aug 2026 10:00:00 GMT", "30", "Wed, 5 Aug 2026 10:05:00 GMT");
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now + TimeUnit.SECONDS.toMillis(270), expiresAt);
     }
@@ -758,7 +780,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, null,
             "Wed, 5 Aug 2026 10:00:00 GMT", "0", "Wed, 5 Aug 2026 11:00:00 GMT");
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now, expiresAt);
     }
@@ -769,7 +791,7 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=invalid",
             "not-a-date", "invalid", "also-not-a-date");
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now + TimeUnit.HOURS.toMillis(24), expiresAt);
     }
@@ -780,21 +802,17 @@ public class AiaCertificateChainTest {
         HttpUtil.BinaryHttpResponse response = new HttpUtil.BinaryHttpResponse(new byte[] { 1 }, "max-age=300", null,
             "999999999999999999999999999999999999999999", null);
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(response, Collections.emptyList(), now);
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(response, now);
 
         assertEquals(now, expiresAt);
     }
 
     @Test
-    void successfulResponseDoesNotOutliveCertificate() {
+    void responseExpirationIsIndependentOfCandidateValidity() {
         long now = 1_000L;
-        X509Certificate certificate = Mockito.mock(X509Certificate.class);
-        Mockito.when(certificate.getNotAfter()).thenReturn(new Date(now + 5_000L));
+        long expiresAt = AiaCertificateChainUtil.calculateResponseExpiration(binaryResponse(new byte[] { 1 }), now);
 
-        long expiresAt = AiaCertificateChainUtil.calculateExpiration(binaryResponse(new byte[] { 1 }),
-            Collections.singletonList(certificate), now);
-
-        assertEquals(now + 5_000L, expiresAt);
+        assertEquals(now + TimeUnit.HOURS.toMillis(24), expiresAt);
     }
 
     @Test

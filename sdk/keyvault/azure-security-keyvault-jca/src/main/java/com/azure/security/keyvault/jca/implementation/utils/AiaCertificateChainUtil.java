@@ -391,11 +391,10 @@ final class AiaCertificateChainUtil {
             return new AiaResponseCache.Entry(certificates, calculateNegativeExpiration(response, now));
         }
 
-        return new AiaResponseCache.Entry(certificates, calculateExpiration(response, certificates, now));
+        return new AiaResponseCache.Entry(certificates, calculateResponseExpiration(response, now));
     }
 
-    static long calculateExpiration(HttpUtil.BinaryHttpResponse response, List<X509Certificate> certificates,
-        long nowInMillis) {
+    static long calculateResponseExpiration(HttpUtil.BinaryHttpResponse response, long nowInMillis) {
         String cacheControl = response.getCacheControl();
         if (hasCacheDirective(cacheControl, "no-store") || hasCacheDirective(cacheControl, "no-cache")) {
             return nowInMillis;
@@ -420,9 +419,6 @@ final class AiaCertificateChainUtil {
             }
         }
 
-        for (X509Certificate certificate : certificates) {
-            expiresAt = Math.min(expiresAt, certificate.getNotAfter().getTime());
-        }
         return expiresAt;
     }
 
