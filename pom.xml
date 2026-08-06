@@ -203,7 +203,6 @@
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
-    <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
     <module>sdk/planetarycomputer</module>
     <module>sdk/playwright</module>

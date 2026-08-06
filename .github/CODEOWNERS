@@ -215,12 +215,6 @@
 # ServiceLabel: %Cognitive - Metrics Advisor
 # ServiceOwners:                                                   @bowgong
 
-# PRLabel: %Cognitive - Personalizer
-/sdk/personalizer/                                                 @sharathmalladi @Azure/azure-java-sdk
-
-# ServiceLabel: %Cognitive - Personalizer
-# ServiceOwners:                                                   @Azure/azure-java-sdk
-
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                                @Azure/azure-java-sdk @quentinRobinson @samvaity
 
