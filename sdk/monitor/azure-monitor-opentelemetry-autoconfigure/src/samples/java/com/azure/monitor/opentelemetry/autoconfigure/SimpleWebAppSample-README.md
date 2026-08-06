@@ -44,18 +44,15 @@ mvn compile test-compile
 
 ### 4. Choose a test mode
 
-Customer-facing SDKStats are opt-in. Enable them and set the export interval to 60 seconds
-(instead of the default 900) so results appear sooner:
+Set the SDKStats export interval to 60 seconds (instead of the default 900) so results appear sooner:
 
 **Windows (PowerShell):**
 ```powershell
-$env:APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW = "true"
 $env:APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL = "60"
 ```
 
 **Linux / macOS:**
 ```bash
-export APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW=true
 export APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL=60
 ```
 

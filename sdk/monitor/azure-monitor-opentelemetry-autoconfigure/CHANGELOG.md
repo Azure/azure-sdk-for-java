@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-- Make customer-facing SDKStats opt-in through `APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW` and align custom dimension names with the stable specification.
+- Align customer-facing SDKStats configuration and custom dimension names with the stable specification.
 
 ## 1.5.0 (2026-06-11)
 

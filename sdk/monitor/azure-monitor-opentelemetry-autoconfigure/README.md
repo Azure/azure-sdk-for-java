@@ -152,13 +152,13 @@ Learn more about [OpenTelemetry SDK logging][logging_otel_sdk].
 You can disable the [live metrics][live_metrics] by setting the `APPLICATIONINSIGHTS_LIVE_METRICS_ENABLED` environment variable to false, the `applicationinsights.live.metrics.enabled` Java system property to false,
 or programmatically with a properties supplier: `sdkBuilder.addPropertiesSupplier(() -> Collections.singletonMap("applicationinsights.live.metrics.enabled", "false"))`.
 
-### Enable customer-facing SDKStats
+### Customer-facing SDKStats
 
-Customer-facing SDKStats are disabled by default. Set the
-`APPLICATIONINSIGHTS_SDKSTATS_ENABLED_PREVIEW` environment variable to `true` to emit
-`Item_Success_Count`, `Item_Dropped_Count`, and `Item_Retry_Count` custom metrics to the configured
-Application Insights resource. Metrics are exported every 900 seconds by default; set
-`APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL` to a positive number of seconds to change the interval.
+Customer-facing SDKStats emit `Item_Success_Count`, `Item_Dropped_Count`, and `Item_Retry_Count`
+custom metrics to the configured Application Insights resource by default. Set
+`APPLICATIONINSIGHTS_SDKSTATS_DISABLED` to `true` to disable them. Metrics are exported every 900
+seconds by default; set `APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL` to a positive number of
+seconds to change the interval.
 
 ## Next steps
 Learn more about [OpenTelemetry][opentelemetry_io]

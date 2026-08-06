@@ -68,7 +68,6 @@ class AzureMonitorExporterBuilder {
     private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
         = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
-    private static final String SDKSTATS_ENABLED_PREVIEW_PROPERTY_NAME = "applicationinsights.sdkstats.enabled.preview";
     private static final String SDKSTATS_DISABLED_PROPERTY_NAME = "applicationinsights.sdkstats.disabled";
     private static final String SDKSTATS_DISABLED_ALL_ENV_VAR = "APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL";
     private static final String SDKSTATS_EXPORT_INTERVAL_PROPERTY_NAME = "applicationinsights.sdkstats.export.interval";
@@ -284,7 +283,7 @@ class AzureMonitorExporterBuilder {
                 SDKSTATS_DISABLED_PROPERTY_NAME);
             return false;
         }
-        return "true".equalsIgnoreCase(configProperties.getString(SDKSTATS_ENABLED_PREVIEW_PROPERTY_NAME));
+        return true;
     }
 
     private void startCustomerSdkStats(CustomerSdkStats customerSdkStats,

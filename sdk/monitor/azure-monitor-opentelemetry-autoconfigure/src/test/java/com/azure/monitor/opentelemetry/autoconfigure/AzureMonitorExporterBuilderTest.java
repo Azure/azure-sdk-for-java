@@ -16,58 +16,46 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AzureMonitorExporterBuilderTest {
 
     @Test
-    public void customerSdkStatsDisabledByDefault() {
+    public void customerSdkStatsEnabledByDefault() {
         ConfigProperties config = DefaultConfigProperties.createFromMap(Collections.emptyMap());
-        assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
-    }
-
-    @Test
-    public void customerSdkStatsEnabledByPreviewProperty() {
-        ConfigProperties config = DefaultConfigProperties
-            .createFromMap(Collections.singletonMap("applicationinsights.sdkstats.enabled.preview", "true"));
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isTrue();
     }
 
     @Test
     public void customerSdkStatsDisabledByPublicProperty() {
-        Map<String, String> props = new HashMap<>();
-        props.put("applicationinsights.sdkstats.enabled.preview", "true");
-        props.put("applicationinsights.sdkstats.disabled", "true");
-        ConfigProperties config = DefaultConfigProperties.createFromMap(props);
+        ConfigProperties config = DefaultConfigProperties
+            .createFromMap(Collections.singletonMap("applicationinsights.sdkstats.disabled", "true"));
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
     }
 
     @Test
     public void customerSdkStatsDisabledByAllProperty() {
-        Map<String, String> props = new HashMap<>();
-        props.put("applicationinsights.sdkstats.enabled.preview", "true");
-        props.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "true");
-        ConfigProperties config = DefaultConfigProperties.createFromMap(props);
+        ConfigProperties config = DefaultConfigProperties
+            .createFromMap(Collections.singletonMap("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "true"));
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
     }
 
     @Test
     public void customerSdkStatsDisabledAllTakesPrecedence() {
         Map<String, String> props = new HashMap<>();
-        props.put("applicationinsights.sdkstats.enabled.preview", "true");
+        props.put("applicationinsights.sdkstats.disabled", "false");
         props.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "true");
         ConfigProperties config = DefaultConfigProperties.createFromMap(props);
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
     }
 
     @Test
-    public void customerSdkStatsDisabledAllFalseLeavesOptInEnabled() {
+    public void customerSdkStatsDisabledAllFalseLeavesEnabled() {
         Map<String, String> props = new HashMap<>();
-        props.put("applicationinsights.sdkstats.enabled.preview", "true");
         props.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "false");
         ConfigProperties config = DefaultConfigProperties.createFromMap(props);
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isTrue();
     }
 
     @Test
-    public void customerSdkStatsDisabledFalseDoesNotEnableByItself() {
+    public void customerSdkStatsDisabledFalseLeavesEnabled() {
         ConfigProperties config = DefaultConfigProperties
             .createFromMap(Collections.singletonMap("applicationinsights.sdkstats.disabled", "false"));
-        assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
+        assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isTrue();
     }
 }
