@@ -54,9 +54,8 @@ public class ToolboxSamplesTests extends ClientTestBase {
         }
 
         try {
-            ToolSearchToolboxTool toolboxSearchTool
-                = new ToolSearchToolboxTool().setName("search_tools")
-                    .setDescription("Search over available toolbox tools at runtime.");
+            ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool().setName("search_tools")
+                .setDescription("Search over available toolbox tools at runtime.");
 
             ToolboxVersionDetails version
                 = toolboxesClient.createToolboxVersion(toolboxName, Collections.singletonList(toolboxSearchTool),
