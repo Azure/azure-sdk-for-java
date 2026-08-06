@@ -155,21 +155,21 @@ or as a JVM argument:
 
 #### Filtering Key Vault certificate aliases
 
-Each filter is configured as its own property, so no delimiter is required and a pattern may contain any character:
+Each filter is configured as its own property, so no delimiter is required and a pattern may contain any character. Filters use Java-based regex:
 
 ```shell
--Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^prod-.*'
--Dazure.keyvault.jca.certificate-alias-filter-pattern.2='^cert-\d{1,5}$'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.1='^cert-.*'
+-Dazure.keyvault.jca.certificate-alias-filter-pattern.prod='^prod-\d{1,5}$'
 -Dazure.keyvault.jca.certificate-alias-filter-pattern.exclude-old='!.*-old$'
 ```
 
-* Use an include pattern directly and an exclude pattern with a `!` prefix.
-* A suffix can be a number or a string. It only keeps the property names unique and does not affect evaluation, so the filters are unordered. Property names are case-sensitive, which means `.prod` and `.PROD` are two different filters.
+* Inclusion patterns are used directly and exclusion patterns start with a `!` prefix.
+* A suffix for the property name can be a number or a string; it is used to keep the property names unique and does not affect evaluation. The filters are unordered. Property names are case-sensitive, which means `.prod` and `.PROD` are two different filters.
 * Patterns use full-alias matching (`Pattern.matcher(alias).matches()`).
-* An alias is loaded only if it matches at least one include pattern, or if no include pattern is configured, and matches no exclude pattern.
+* An alias is loaded only if it matches at least one inclusion pattern, or if no inclusion pattern is configured, and matches no exclusion pattern.
 * An invalid pattern fails fast with an `IllegalArgumentException` that names the offending pattern.
 
-Quote the value as required by your shell, otherwise characters such as `^` and `\` can be altered before the JVM receives them:
+Quote the filter value as required by your shell, otherwise characters such as `^` and `\` can be altered before the JVM receives them:
 
 | Shell | Example |
 | --- | --- |
