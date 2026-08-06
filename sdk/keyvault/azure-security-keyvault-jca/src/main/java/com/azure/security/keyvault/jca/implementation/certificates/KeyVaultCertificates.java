@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.regex.Pattern;
@@ -66,6 +69,26 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * Stores the certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
+
+    /**
+     * Stores certificate loads currently in progress by alias.
+     */
+    private final Map<String, CompletableFuture<Void>> inFlightCertificateLoads = new HashMap<>();
+
+    /**
+     * Stores certificate chain loads currently in progress by alias.
+     */
+    private final Map<String, CompletableFuture<Void>> inFlightCertificateChainLoads = new HashMap<>();
+
+    /**
+     * Stores certificate key loads currently in progress by alias.
+     */
+    private final Map<String, CompletableFuture<Void>> inFlightCertificateKeyLoads = new HashMap<>();
+
+    /**
+     * Identifies the current material cache generation.
+     */
+    private long cacheGeneration;
 
     /**
      * Stores the last time refresh certificates and alias.
@@ -199,13 +222,26 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private synchronized void clearCachedState() {
         aliases = new ArrayList<>();
+        invalidateCachedMaterials();
+        lastRefreshTime = null;
+    }
+
+    private void invalidateCachedMaterials() {
+        cacheGeneration++;
         loadedCertificateAliases.clear();
         loadedCertificateChainAliases.clear();
         loadedCertificateKeyAliases.clear();
         certificateKeys.clear();
         certificates.clear();
         certificateChains.clear();
-        lastRefreshTime = null;
+        completeAndClear(inFlightCertificateLoads);
+        completeAndClear(inFlightCertificateChainLoads);
+        completeAndClear(inFlightCertificateKeyLoads);
+    }
+
+    private void completeAndClear(Map<String, CompletableFuture<Void>> inFlightLoads) {
+        inFlightLoads.values().forEach(load -> load.complete(null));
+        inFlightLoads.clear();
     }
 
     synchronized boolean certificatesNeedRefresh() {
@@ -349,113 +385,101 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
 
-            loadedCertificateAliases.clear();
-            loadedCertificateChainAliases.clear();
-            loadedCertificateKeyAliases.clear();
-            certificateKeys.clear();
-            certificates.clear();
-            certificateChains.clear();
-
+            invalidateCachedMaterials();
             lastRefreshTime = new Date();
         }
     }
 
     private void loadCertificateIfNeeded(String alias) {
-        refreshCertificatesIfNeeded();
-        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
-
-        if (alias == null || currentKeyVaultClient == null) {
-            return;
-        }
-
-        synchronized (this) {
-            if (loadedCertificateAliases.contains(alias) || !aliases.contains(alias)) {
-                return;
-            }
-        }
-
-        try {
-            Certificate loadedCertificate = currentKeyVaultClient.getCertificate(alias);
-            synchronized (this) {
-                if (currentKeyVaultClient != keyVaultClient
-                    || loadedCertificateAliases.contains(alias)
-                    || !aliases.contains(alias)) {
-                    return;
-                }
-
-                if (loadedCertificate != null) {
-                    certificates.put(alias, loadedCertificate);
-                    loadedCertificateAliases.add(alias);
-                }
-            }
-        } catch (RuntimeException exception) {
-            LOGGER.log(WARNING, exception, () -> "Failed to load certificate for alias: " + alias);
-        }
+        loadMaterialIfNeeded(alias, loadedCertificateAliases, certificates, inFlightCertificateLoads,
+            client -> client.getCertificate(alias), Objects::nonNull, "certificate");
     }
 
     private void loadCertificateChainIfNeeded(String alias) {
-        refreshCertificatesIfNeeded();
-        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
-
-        if (alias == null || currentKeyVaultClient == null) {
-            return;
-        }
-
-        synchronized (this) {
-            if (loadedCertificateChainAliases.contains(alias) || !aliases.contains(alias)) {
-                return;
-            }
-        }
-
-        try {
-            Certificate[] loadedCertificateChain = currentKeyVaultClient.getCertificateChain(alias);
-            synchronized (this) {
-                if (currentKeyVaultClient != keyVaultClient
-                    || loadedCertificateChainAliases.contains(alias)
-                    || !aliases.contains(alias)) {
-                    return;
-                }
-
-                if (loadedCertificateChain != null && loadedCertificateChain.length > 0) {
-                    certificateChains.put(alias, loadedCertificateChain);
-                    loadedCertificateChainAliases.add(alias);
-                }
-            }
-        } catch (RuntimeException exception) {
-            LOGGER.log(WARNING, exception, () -> "Failed to load certificate chain for alias: " + alias);
-        }
+        loadMaterialIfNeeded(alias, loadedCertificateChainAliases, certificateChains, inFlightCertificateChainLoads,
+            client -> client.getCertificateChain(alias), chain -> chain != null && chain.length > 0,
+            "certificate chain");
     }
 
     private void loadCertificateKeyIfNeeded(String alias) {
-        refreshCertificatesIfNeeded();
-        KeyVaultClient currentKeyVaultClient = getKeyVaultClient();
+        loadMaterialIfNeeded(alias, loadedCertificateKeyAliases, certificateKeys, inFlightCertificateKeyLoads,
+            client -> client.getKey(alias, null), Objects::nonNull, "certificate key");
+    }
 
-        if (alias == null || currentKeyVaultClient == null) {
+    private <T> void loadMaterialIfNeeded(String alias, Set<String> loadedAliases, Map<String, T> loadedMaterials,
+        Map<String, CompletableFuture<Void>> inFlightLoads, Function<KeyVaultClient, T> loadMaterial,
+        Predicate<T> isUsable, String materialDescription) {
+
+        refreshCertificatesIfNeeded();
+        if (alias == null) {
             return;
         }
 
-        synchronized (this) {
-            if (loadedCertificateKeyAliases.contains(alias) || !aliases.contains(alias)) {
-                return;
-            }
-        }
+        while (true) {
+            KeyVaultClient loadClient;
+            long loadGeneration;
+            CompletableFuture<Void> inFlightLoad;
+            boolean loadOwner;
 
-        try {
-            Key loadedKey = currentKeyVaultClient.getKey(alias, null);
             synchronized (this) {
-                if (currentKeyVaultClient != keyVaultClient
-                    || loadedCertificateKeyAliases.contains(alias)
-                    || !aliases.contains(alias)) {
+                loadClient = keyVaultClient;
+                if (loadClient == null || loadedAliases.contains(alias) || !aliases.contains(alias)) {
                     return;
                 }
 
-                if (loadedKey != null) {
-                    certificateKeys.put(alias, loadedKey);
-                    loadedCertificateKeyAliases.add(alias);
+                loadGeneration = cacheGeneration;
+                inFlightLoad = inFlightLoads.get(alias);
+                loadOwner = inFlightLoad == null;
+                if (loadOwner) {
+                    inFlightLoad = new CompletableFuture<>();
+                    inFlightLoads.put(alias, inFlightLoad);
                 }
             }
-        } catch (RuntimeException exception) {
-            LOGGER.log(WARNING, exception, () -> "Failed to load certificate key for alias: " + alias);
+
+            if (!loadOwner) {
+                inFlightLoad.join();
+                synchronized (this) {
+                    if (loadedAliases.contains(alias) || keyVaultClient == null || !aliases.contains(alias)) {
+                        return;
+                    }
+                    if (loadClient == keyVaultClient && loadGeneration == cacheGeneration) {
+                        return;
+                    }
+                }
+                continue;
+            }
+
+            T loadedMaterial = null;
+            try {
+                loadedMaterial = loadMaterial.apply(loadClient);
+            } catch (RuntimeException exception) {
+                LOGGER.log(WARNING, exception, () -> "Failed to load " + materialDescription + " for alias: " + alias);
+            }
+
+            boolean retryWithCurrentGeneration;
+            synchronized (this) {
+                boolean sameGeneration = loadClient == keyVaultClient && loadGeneration == cacheGeneration;
+                if (sameGeneration
+                    && !loadedAliases.contains(alias)
+                    && aliases.contains(alias)
+                    && isUsable.test(loadedMaterial)) {
+                    loadedMaterials.put(alias, loadedMaterial);
+                    loadedAliases.add(alias);
+                }
+
+                if (inFlightLoads.get(alias) == inFlightLoad) {
+                    inFlightLoads.remove(alias);
+                }
+                inFlightLoad.complete(null);
+
+                retryWithCurrentGeneration = !sameGeneration
+                    && keyVaultClient != null
+                    && aliases.contains(alias)
+                    && !loadedAliases.contains(alias);
+                if (!retryWithCurrentGeneration) {
+                    return;
+                }
+            }
         }
     }
 
@@ -510,5 +534,15 @@ public final class KeyVaultCertificates implements AzureCertificates {
         certificates.remove(alias);
         certificateChains.remove(alias);
         certificateKeys.remove(alias);
+        completeAndRemove(inFlightCertificateLoads, alias);
+        completeAndRemove(inFlightCertificateChainLoads, alias);
+        completeAndRemove(inFlightCertificateKeyLoads, alias);
+    }
+
+    private void completeAndRemove(Map<String, CompletableFuture<Void>> inFlightLoads, String alias) {
+        CompletableFuture<Void> inFlightLoad = inFlightLoads.remove(alias);
+        if (inFlightLoad != null) {
+            inFlightLoad.complete(null);
+        }
     }
 }

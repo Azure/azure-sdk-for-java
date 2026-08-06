@@ -22,11 +22,17 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 public class KeyVaultCertificatesTest {
+
+    private static final int CONCURRENT_READERS = 4;
 
     private static final long TIMEOUT_MILLIS = 10_000;
 
@@ -390,6 +396,94 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
+    public void testConcurrentCertificateLoadsShareSingleRequest() throws Exception {
+        BlockingAnswer<Certificate> blockingAnswer = new BlockingAnswer<>(certificate);
+        when(keyVaultClient.getCertificate("myalias")).thenAnswer(blockingAnswer);
+
+        assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificate("myalias"), blockingAnswer,
+            loadedCertificate -> Assertions.assertSame(certificate, loadedCertificate));
+
+        verify(keyVaultClient, times(1)).getCertificate("myalias");
+    }
+
+    @Test
+    public void testConcurrentCertificateChainLoadsShareSingleRequest() throws Exception {
+        BlockingAnswer<Certificate[]> blockingAnswer = new BlockingAnswer<>(certificateChain);
+        when(keyVaultClient.getCertificateChain("myalias")).thenAnswer(blockingAnswer);
+
+        assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificateChain("myalias"),
+            blockingAnswer, loadedChain -> Assertions.assertArrayEquals(certificateChain, loadedChain));
+
+        verify(keyVaultClient, times(1)).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testConcurrentKeyLoadsShareSingleRequest() throws Exception {
+        BlockingAnswer<Key> blockingAnswer = new BlockingAnswer<>(key);
+        when(keyVaultClient.getKey("myalias", null)).thenAnswer(blockingAnswer);
+
+        assertConcurrentLoadsShareSingleRequest(() -> keyVaultCertificates.getCertificateKey("myalias"), blockingAnswer,
+            loadedKey -> Assertions.assertSame(key, loadedKey));
+
+        verify(keyVaultClient, times(1)).getKey("myalias", null);
+    }
+
+    @Test
+    public void testRefreshDiscardsInFlightCertificateFromPreviousGeneration() throws Exception {
+        Certificate freshCertificate = mock(Certificate.class);
+        BlockingAnswer<Certificate> staleAnswer = new BlockingAnswer<>(certificate);
+        when(keyVaultClient.getCertificate("myalias")).thenAnswer(staleAnswer).thenReturn(freshCertificate);
+
+        assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificate("myalias"), staleAnswer,
+            loadedCertificate -> Assertions.assertSame(freshCertificate, loadedCertificate));
+
+        verify(keyVaultClient, times(2)).getCertificate("myalias");
+    }
+
+    @Test
+    public void testRefreshDiscardsInFlightCertificateChainFromPreviousGeneration() throws Exception {
+        Certificate[] freshChain = new Certificate[] { mock(Certificate.class) };
+        BlockingAnswer<Certificate[]> staleAnswer = new BlockingAnswer<>(certificateChain);
+        when(keyVaultClient.getCertificateChain("myalias")).thenAnswer(staleAnswer).thenReturn(freshChain);
+
+        assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificateChain("myalias"), staleAnswer,
+            loadedChain -> Assertions.assertArrayEquals(freshChain, loadedChain));
+
+        verify(keyVaultClient, times(2)).getCertificateChain("myalias");
+    }
+
+    @Test
+    public void testRefreshDiscardsInFlightKeyFromPreviousGeneration() throws Exception {
+        Key freshKey = mock(Key.class);
+        BlockingAnswer<Key> staleAnswer = new BlockingAnswer<>(key);
+        when(keyVaultClient.getKey("myalias", null)).thenAnswer(staleAnswer).thenReturn(freshKey);
+
+        assertRefreshDiscardsStaleLoad(() -> keyVaultCertificates.getCertificateKey("myalias"), staleAnswer,
+            loadedKey -> Assertions.assertSame(freshKey, loadedKey));
+
+        verify(keyVaultClient, times(2)).getKey("myalias", null);
+    }
+
+    @Test
+    public void testClientReplacementDiscardsInFlightCertificate() throws Exception {
+        BlockingAnswer<Certificate> staleAnswer = new BlockingAnswer<>(certificate);
+        when(keyVaultClient.getCertificate("myalias")).thenAnswer(staleAnswer);
+        List<Certificate> loadedValues = Collections.synchronizedList(new ArrayList<>());
+        Thread reader = new Thread(() -> loadedValues.add(keyVaultCertificates.getCertificate("myalias")));
+        reader.start();
+
+        staleAnswer.awaitStarted();
+        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false);
+        staleAnswer.release();
+        joinThreads(Collections.singletonList(reader));
+
+        Assertions.assertEquals(1, loadedValues.size());
+        Assertions.assertNull(loadedValues.get(0));
+        Assertions.assertTrue(keyVaultCertificates.getCertificates().isEmpty());
+        verify(keyVaultClient, times(1)).getCertificate("myalias");
+    }
+
+    @Test
     public void testConcurrentForceRefreshAppliesLatestAliases() throws Exception {
         CountDownLatch firstListCallStarted = new CountDownLatch(1);
         CountDownLatch firstListCallMayFinish = new CountDownLatch(1);
@@ -452,6 +546,63 @@ public class KeyVaultCertificatesTest {
         verify(keyVaultClient, times(1)).getAliases();
     }
 
+    private <T> void assertConcurrentLoadsShareSingleRequest(Supplier<T> load, BlockingAnswer<T> blockingAnswer,
+        Consumer<T> assertLoaded) throws Exception {
+
+        CountDownLatch readersReady = new CountDownLatch(CONCURRENT_READERS);
+        CountDownLatch readersMayStart = new CountDownLatch(1);
+        List<T> loadedValues = Collections.synchronizedList(new ArrayList<>());
+        List<Thread> readers = new ArrayList<>();
+
+        for (int i = 0; i < CONCURRENT_READERS; i++) {
+            Thread reader = new Thread(() -> {
+                readersReady.countDown();
+                try {
+                    awaitLatch(readersMayStart);
+                    loadedValues.add(load.get());
+                } catch (InterruptedException exception) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            readers.add(reader);
+            reader.start();
+        }
+
+        awaitLatch(readersReady);
+        readersMayStart.countDown();
+        blockingAnswer.awaitStarted();
+        awaitThreadsWaiting(readers);
+        blockingAnswer.release();
+        joinThreads(readers);
+
+        Assertions.assertEquals(CONCURRENT_READERS, loadedValues.size());
+        loadedValues.forEach(assertLoaded);
+    }
+
+    private <T> void assertRefreshDiscardsStaleLoad(Supplier<T> load, BlockingAnswer<T> staleAnswer,
+        Consumer<T> assertFresh) throws Exception {
+
+        List<T> loadedValues = Collections.synchronizedList(new ArrayList<>());
+        Thread reader = new Thread(() -> loadedValues.add(load.get()));
+        reader.start();
+
+        staleAnswer.awaitStarted();
+        keyVaultCertificates.refreshCertificates();
+        staleAnswer.release();
+        joinThreads(Collections.singletonList(reader));
+
+        Assertions.assertEquals(1, loadedValues.size());
+        assertFresh.accept(loadedValues.get(0));
+        assertFresh.accept(load.get());
+    }
+
+    private static void joinThreads(List<Thread> threads) throws InterruptedException {
+        for (Thread thread : threads) {
+            thread.join(TIMEOUT_MILLIS);
+            Assertions.assertFalse(thread.isAlive(), "Timed out waiting for test thread to finish.");
+        }
+    }
+
     private static void awaitLatch(CountDownLatch latch) throws InterruptedException {
         if (!latch.await(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
             throw new IllegalStateException("Timed out waiting for the test latch.");
@@ -477,6 +628,52 @@ public class KeyVaultCertificatesTest {
         }
 
         throw new IllegalStateException("Timed out waiting for the threads to park.");
+    }
+
+    private static void awaitThreadsWaiting(List<Thread> threads) throws InterruptedException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(TIMEOUT_MILLIS);
+
+        while (System.nanoTime() < deadline) {
+            boolean waiting = threads.stream()
+                .map(Thread::getState)
+                .allMatch(state -> state == Thread.State.WAITING || state == Thread.State.TIMED_WAITING);
+
+            if (waiting) {
+                return;
+            }
+
+            Thread.sleep(10);
+        }
+
+        throw new IllegalStateException("Timed out waiting for the threads to wait.");
+    }
+
+    private static final class BlockingAnswer<T> implements Answer<T> {
+
+        private final CountDownLatch started = new CountDownLatch(1);
+
+        private final CountDownLatch mayFinish = new CountDownLatch(1);
+
+        private final T result;
+
+        private BlockingAnswer(T result) {
+            this.result = result;
+        }
+
+        @Override
+        public T answer(InvocationOnMock invocation) throws InterruptedException {
+            started.countDown();
+            awaitLatch(mayFinish);
+            return result;
+        }
+
+        private void awaitStarted() throws InterruptedException {
+            awaitLatch(started);
+        }
+
+        private void release() {
+            mayFinish.countDown();
+        }
     }
 
 }
