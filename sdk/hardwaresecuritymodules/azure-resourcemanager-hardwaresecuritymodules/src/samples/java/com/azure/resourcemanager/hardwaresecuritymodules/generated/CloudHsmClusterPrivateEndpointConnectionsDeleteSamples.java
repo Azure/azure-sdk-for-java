@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class CloudHsmClusterPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.

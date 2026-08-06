@@ -106,6 +106,7 @@
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/disconnectedoperations</module>
+    <module>sdk/discovery</module>
     <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
@@ -202,7 +203,6 @@
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
-    <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
     <module>sdk/planetarycomputer</module>
     <module>sdk/playwright</module>
