@@ -16,7 +16,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -123,7 +122,7 @@ public class CosmosDatabaseForTestTest {
     @Test(groups = {"unit"})
     public void legacyIdsAreStillRecognized() {
         // Builds predating the run id keep creating three segment ids on the same accounts during
-        // rollout. If these stopped parsing, the age based sweep would silently stop cleaning them up.
+        // rollout. If these stopped parsing they would look like hand created fixtures.
         assertThat(CosmosDatabaseForTest.isTestDatabaseId(
             "RxJava.SDKTest.SharedDatabase_20240101T101010_abc")).isTrue();
     }
@@ -222,24 +221,6 @@ public class CosmosDatabaseForTestTest {
         assertThat(result.isComplete()).isTrue();
     }
 
-    @Test(groups = {"unit"})
-    public void ageBasedCleanupSparesYoungDatabasesAndNonTestIds() {
-        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
-        String old = idFor(now.minusHours(9), "runold");
-        String young = idFor(now.minusMinutes(30), "runyoung");
-        String oldLegacy = "RxJava.SDKTest.SharedDatabase_20200101T101010_abc";
-
-        FakeDatabaseManager manager = new FakeDatabaseManager(
-            old, young, oldLegacy, PINNED_FIXTURE, UNRELATED_FIXTURE);
-
-        List<String> deleted = CosmosDatabaseForTest.cleanupTestDatabasesOlderThan(manager, Duration.ofHours(8))
-            .getDeletedDatabaseIds();
-
-        // The young database may belong to a run that is still executing, and neither fixture is ours -
-        // PINNED_FIXTURE in particular reaches the production code because it matches the query prefix.
-        assertThat(deleted).containsExactlyInAnyOrder(old, oldLegacy);
-    }
-
     private static List<String> registeredDatabaseIds() {
         List<String> ids = new ArrayList<>();
         for (CosmosTestResourceRegistry.TrackedResource resource : CosmosTestResourceRegistry.leakedSnapshot()) {
@@ -249,10 +230,6 @@ public class CosmosDatabaseForTestTest {
         }
 
         return ids;
-    }
-
-    private static String idFor(LocalDateTime createdAt, String runId) {
-        return idFor(createdAt, runId, "abcdefghij");
     }
 
     private static String idFor(LocalDateTime createdAt, String runId, String randomSuffix) {

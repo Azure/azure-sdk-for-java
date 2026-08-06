@@ -16,13 +16,10 @@ import java.util.Map;
  * Standalone cleanup entry point for the long lived shared test accounts.
  * <p>
  * The in-process janitor cannot help when a CI job is cancelled or times out - the JVM is killed
- * before any listener or shutdown hook runs. This class is invoked from the pipeline instead:
- * <ul>
- *     <li>as an always-run post step of a test stage, with {@code --run-id} set to that job's run id,
- *     to delete exactly what the job created;</li>
- *     <li>from the scheduled janitor pipeline, with {@code --older-than}, to sweep orphans left by
- *     jobs that died before their post step could run.</li>
- * </ul>
+ * before any listener or shutdown hook runs. This class is invoked from the pipeline instead, as an
+ * always-run post step of a test stage, with {@code --run-id} set to that job's run id, to delete
+ * exactly what the job created.
+ * <p>
  * Only databases whose id follows the test naming convention are ever deleted, so hand created
  * fixtures on these accounts are safe.
  * <p>
@@ -31,7 +28,7 @@ import java.util.Map;
  * mvn -f sdk/cosmos/azure-cosmos-tests/pom.xml exec:java \
  *   -Dexec.mainClass=com.azure.cosmos.CosmosTestAccountJanitor \
  *   -Dexec.classpathScope=test \
- *   -Dexec.args="--account-host &lt;uri&gt; --account-key &lt;key&gt; --older-than 8"
+ *   -Dexec.args="--account-host &lt;uri&gt; --account-key &lt;key&gt;"
  * </pre>
  */
 public final class CosmosTestAccountJanitor {
@@ -63,7 +60,6 @@ public final class CosmosTestAccountJanitor {
         String host = parsed.get("account-host");
         String key = parsed.get("account-key");
         String runId = parsed.get("run-id");
-        String olderThan = parsed.get("older-than");
 
         if (host == null || key == null) {
             System.err.println("--account-host and --account-key are required");
@@ -72,20 +68,14 @@ public final class CosmosTestAccountJanitor {
         }
 
         // An unresolved pipeline variable arrives as the literal "$(name)". Without this check the client
-        // build throws, continueOnError swallows it, and a misconfigured janitor pipeline reports success
+        // build throws, continueOnError swallows it, and a misconfigured cleanup step reports success
         // while sweeping nothing.
         if (!host.startsWith("http://") && !host.startsWith("https://")) {
             System.err.println("--account-host must be an http(s) URI but was: " + host);
             return EXIT_BAD_ARGS;
         }
 
-        if (runId != null && olderThan != null) {
-            System.err.println("--run-id and --older-than are mutually exclusive");
-            printUsage();
-            return EXIT_BAD_ARGS;
-        }
-
-        if (olderThan == null && runId == null) {
+        if (runId == null) {
             // Post step of a test job: the same job environment produces the same run id the tests used.
             runId = CosmosTestRunId.get();
         }
@@ -94,15 +84,9 @@ public final class CosmosTestAccountJanitor {
         try (CosmosAsyncClient client = buildClient(host, key)) {
             CosmosDatabaseForTest.DatabaseManager manager = new CliDatabaseManager(client);
 
-            CosmosDatabaseForTest.CleanupResult result;
-            if (olderThan == null) {
-                System.out.println("Deleting test databases for run " + runId + " on " + host);
-                result = CosmosDatabaseForTest.cleanupDatabasesForRun(manager, runId);
-            } else {
-                Duration threshold = Duration.ofHours(Long.parseLong(olderThan));
-                System.out.println("Deleting test databases older than " + threshold + " on " + host);
-                result = CosmosDatabaseForTest.cleanupTestDatabasesOlderThan(manager, threshold);
-            }
+            System.out.println("Deleting test databases for run " + runId + " on " + host);
+            CosmosDatabaseForTest.CleanupResult result
+                = CosmosDatabaseForTest.cleanupDatabasesForRun(manager, runId);
 
             result.getDeletedDatabaseIds().forEach(id -> System.out.println("  deleted " + id));
 
@@ -160,11 +144,9 @@ public final class CosmosTestAccountJanitor {
 
     private static void printUsage() {
         System.err.println("Usage: CosmosTestAccountJanitor --account-host <uri> --account-key <key>"
-            + " [--run-id <id> | --older-than <hours>]");
+            + " [--run-id <id>]");
         System.err.println("  --run-id     delete databases created by that run. Defaults to the run id of"
             + " the current job environment, which is what a test job post step wants.");
-        System.err.println("  --older-than delete test databases older than the given number of hours,"
-            + " regardless of which run created them.");
     }
 
     private static final class CliDatabaseManager implements CosmosDatabaseForTest.DatabaseManager {

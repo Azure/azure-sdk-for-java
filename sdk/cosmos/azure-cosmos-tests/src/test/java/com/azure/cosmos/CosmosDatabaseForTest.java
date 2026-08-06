@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -27,8 +26,8 @@ import java.util.function.Predicate;
  * Ids follow {@code RxJava.SDKTest.SharedDatabase_<timestamp>_<runId>_<random>}. The run id lets cleanup
  * delete exactly the databases created by the current run without touching resources that a concurrently
  * executing matrix leg or pipeline run is still using on the same shared account. The legacy three
- * segment form (without a run id) is still parsed so databases left behind by builds predating this
- * change are still recognized as ours by the age based sweep.
+ * segment form (without a run id) is still parsed, so those ids are recognized as test databases and
+ * never mistaken for hand created fixtures.
  * <p>
  * Timestamps are UTC: an id is written by the test agent and may be compared on a different machine.
  */
@@ -104,9 +103,11 @@ public final class CosmosDatabaseForTest {
         }
 
         try {
-            LocalDateTime parsedTime = LocalDateTime.parse(parts[1], TIME_FORMATTER);
+            // Parsed purely to validate the id: a malformed timestamp means this is not one of ours, so
+            // it is left alone. The value itself is not needed - deletion is only ever run scoped.
+            LocalDateTime.parse(parts[1], TIME_FORMATTER);
             String runId = parts.length == 4 ? parts[2] : null;
-            return new ParsedId(parsedTime, runId);
+            return new ParsedId(runId);
         } catch (Exception e) {
             return null;
         }
@@ -134,31 +135,12 @@ public final class CosmosDatabaseForTest {
     public static CleanupResult cleanupDatabasesForRun(DatabaseManager client, String runId) {
         if (StringUtils.isEmpty(runId)) {
             // Matching a null run id would match every legacy (pre run id) database, which may belong to a
-            // run that is still executing. Age based cleanup is the only safe option for those.
+            // run that is still executing.
             throw new IllegalArgumentException("runId must not be empty");
         }
 
         LOGGER.info("Cleaning test databases for run {} ...", runId);
         return deleteMatching(client, dbForTest -> StringUtils.equals(dbForTest.runId, runId));
-    }
-
-    /**
-     * Deletes test databases older than the given duration, whichever run created them. Used by the
-     * scheduled janitor pipeline to recover resources from jobs that were cancelled or timed out, where
-     * nothing in the job itself ever got the chance to clean up.
-     * <p>
-     * The threshold must be comfortably longer than the longest test stage so in-flight runs are never
-     * touched. This is deliberately not called from inside a test run - a run only ever deletes its own
-     * resources.
-     *
-     * @param client the database manager to clean up with.
-     * @param threshold the minimum age a database must have to be deleted.
-     * @return what the sweep deleted, and whether it ran to completion.
-     */
-    public static CleanupResult cleanupTestDatabasesOlderThan(DatabaseManager client, Duration threshold) {
-        LOGGER.info("Cleaning test databases older than {} ...", threshold);
-        LocalDateTime cutoff = nowUtc().minus(threshold);
-        return deleteMatching(client, dbForTest -> dbForTest.createdTime.isBefore(cutoff));
     }
 
     private static CleanupResult deleteMatching(DatabaseManager client, Predicate<ParsedId> predicate) {
@@ -228,11 +210,9 @@ public final class CosmosDatabaseForTest {
     }
 
     private static final class ParsedId {
-        private final LocalDateTime createdTime;
         private final String runId;
 
-        private ParsedId(LocalDateTime createdTime, String runId) {
-            this.createdTime = createdTime;
+        private ParsedId(String runId) {
             this.runId = runId;
         }
     }

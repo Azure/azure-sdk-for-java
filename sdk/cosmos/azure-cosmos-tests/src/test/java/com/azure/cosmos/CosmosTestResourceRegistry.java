@@ -64,8 +64,8 @@ public final class CosmosTestResourceRegistry {
     /**
      * Fails the test when a database id cannot be attributed to this run.
      * <p>
-     * The in-process janitor can clean up any database it was told about, but the pipeline post step and
-     * the scheduled janitor find databases by <em>name</em>. A database whose id does not carry the run
+     * The in-process janitor can clean up any database it was told about, but the pipeline post step
+     * finds databases by <em>name</em>. A database whose id does not carry the run
      * id is therefore invisible to them, and if the JVM is killed - a cancelled or timed out job, which
      * is exactly when cleanup matters most - it leaks permanently on a shared account.
      * <p>

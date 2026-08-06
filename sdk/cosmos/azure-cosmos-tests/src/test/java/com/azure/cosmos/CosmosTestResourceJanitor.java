@@ -37,7 +37,7 @@ import static org.assertj.core.api.Fail.fail;
  *     without going through the sanctioned helpers.</li>
  *     <li>a JVM shutdown hook, which is the only thing that runs when the JVM dies unexpectedly.</li>
  * </ol>
- * Databases belonging to other runs are only removed by the age based sweep, so this is safe to run
+ * Databases belonging to other runs are never touched, so this is safe to run
  * against the long lived shared accounts where several matrix legs execute concurrently.
  * <p>
  * Registered alongside {@link CosmosNettyLeakDetectorFactory} in every {@code *-testng.xml} suite.
@@ -96,7 +96,8 @@ public final class CosmosTestResourceJanitor implements IExecutionListener, IInv
             // Never report an all clear here: cleanup did not finish, so "found nothing" and "did not
             // look" are indistinguishable. This is the normal outcome on suites that sever connectivity.
             LOGGER.warn("Cosmos test resource cleanup did not complete for run {} - resources may have been"
-                + " left behind and the scheduled janitor is the only remaining backstop for this run",
+                + " left behind and the always-run pipeline post step is the only remaining backstop for"
+                + " this run",
                 CosmosTestRunId.get());
         } else if (leaks.isEmpty()) {
             LOGGER.info("No leaked Cosmos test resources for run {}{}",
@@ -257,9 +258,8 @@ public final class CosmosTestResourceJanitor implements IExecutionListener, IInv
                 swept.add("database " + databaseId + " (deleted; created by <not registered>)");
             }
 
-            // Deliberately no age based sweep here: a test run only ever deletes its own resources.
-            // Reclaiming other runs' orphans is the scheduled janitor pipeline's job, where an 8h
-            // threshold cannot race an in-flight job.
+            // Deliberately no age based sweep here: a test run only ever deletes its own resources, so it
+            // can never race a concurrently executing leg on the same shared account.
             return new SweepResult(swept, runScoped.isComplete());
         }).subscribeOn(Schedulers.boundedElastic()).timeout(ACCOUNT_SWEEP_TIMEOUT).block();
     }

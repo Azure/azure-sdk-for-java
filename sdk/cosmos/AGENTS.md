@@ -27,25 +27,24 @@ When adding or changing tests in `azure-cosmos-tests`:
 | `CosmosTestResourceRegistry` + `CosmosTestResourceJanitor` | in the test JVM, at the end of the run | normal completion; deletes leftovers and **fails the run** naming the offending test |
 | JVM shutdown hook | in the test JVM | crashes and hard aborts |
 | `cleanup-test-resources.yml` post step | pipeline, `condition: always()` | failed jobs, and jobs whose JVM died. Runs on cancellation too, but only within `cancelTimeoutInMinutes` (5 by default), so treat it as best effort there |
-| `janitor.yml` | scheduled every 6h | cancelled and timed-out jobs, where nothing in the job ever ran |
 
 Every layer scopes deletion by the run id (`CosmosTestRunId`), derived from `System.JobId` (a GUID that
 is unique per job), with the build id carried along so a stray database can be traced back to a build.
+A run only ever deletes its own resources, so concurrent legs on a shared account cannot interfere.
 
 When a leak fails a run, TestNG has already written its reports by the time the janitor runs, so the
 **published test results show `Tests run: 0` rather than the leak** — which reads like an infrastructure
 fault. The leak is reported in the build log and as an ADO issue annotation; look there, not in the Tests
-tab. Databases from *other* runs are only removed by the age based
-sweep, whose threshold (8h) is comfortably longer than the longest test stage.
+tab.
 
-`CosmosTestAccountJanitor` is the standalone entry point used by both pipeline layers:
+`CosmosTestAccountJanitor` is the standalone entry point used by the pipeline post step:
 
 ```bash
 mvn -f sdk/cosmos/azure-cosmos-tests/pom.xml exec:java \
-  -Dexec.args="--account-host <uri> --account-key <key> --older-than 8"
+  -Dexec.args="--account-host <uri> --account-key <key>"
 ```
 
-Omit `--older-than` to delete only the current job's databases.
+It deletes only the current job's databases; pass `--run-id` to target another run.
 
 ### Guardrails
 
