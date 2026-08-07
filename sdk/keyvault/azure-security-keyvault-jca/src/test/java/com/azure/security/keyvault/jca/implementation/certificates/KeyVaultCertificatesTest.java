@@ -789,7 +789,7 @@ public class KeyVaultCertificatesTest {
         awaitLatch(readersReady);
         readersMayStart.countDown();
         blockingFailure.awaitStarted();
-        awaitThreadsWaiting(readers);
+        awaitSingleFlightWaiters(readers);
         blockingFailure.release();
         joinThreads(readers);
 
@@ -860,6 +860,33 @@ public class KeyVaultCertificatesTest {
         }
 
         throw new IllegalStateException("Timed out waiting for the threads to wait.");
+    }
+
+    private static void awaitSingleFlightWaiters(List<Thread> readers) throws InterruptedException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(TIMEOUT_MILLIS);
+
+        while (System.nanoTime() < deadline) {
+            long ownerCount = readers.stream()
+                .filter(reader -> hasStackFrame(reader, BlockingFailureAnswer.class, "answer"))
+                .count();
+            long waiterCount = readers.stream()
+                .filter(reader -> hasStackFrame(reader, KeyVaultCertificates.class, "awaitInFlightOperation"))
+                .count();
+
+            if (ownerCount == 1 && waiterCount == readers.size() - 1) {
+                return;
+            }
+
+            Thread.sleep(10);
+        }
+
+        throw new IllegalStateException("Timed out waiting for all readers to join the single-flight operation.");
+    }
+
+    private static boolean hasStackFrame(Thread thread, Class<?> declaringClass, String methodName) {
+        return Arrays.stream(thread.getStackTrace())
+            .anyMatch(frame -> frame.getClassName().equals(declaringClass.getName())
+                && frame.getMethodName().equals(methodName));
     }
 
     private static final class BlockingAnswer<T> implements Answer<T> {
