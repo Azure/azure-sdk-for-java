@@ -11,7 +11,7 @@ public final class PermissionErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PermissionError model = BinaryData.fromString(
-            "{\"resourceId\":\"ktcqio\",\"missingPermissions\":[\"gbzahgxqdlyr\",\"ltlaprltzkatbhj\",\"znnbsoqeqalarvl\",\"gunbtgfebwlnbm\"],\"requiredPermissions\":[\"reeudzqavb\",\"dqmjxly\"],\"recommendedRoles\":[\"glgou\"],\"identity\":{\"objectId\":\"lmjjyuo\",\"tenantId\":\"qtobaxkjeyt\"}}")
+            "{\"resourceId\":\"xff\",\"missingPermissions\":[\"hkwfbkgozxwop\",\"bydpizqaclnapxb\",\"yg\",\"ugjknf\"],\"requiredPermissions\":[\"fcttuxuuyilfl\",\"oiquvrehmrnjhvs\"],\"recommendedRoles\":[\"ztczytq\",\"t\",\"h\"],\"identity\":{\"objectId\":\"unfprnjletlxs\",\"tenantId\":\"rpddouifamo\"},\"errorMessage\":\"z\"}")
             .toObject(PermissionError.class);
     }
 }

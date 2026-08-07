@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class PrivateAccessesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_List.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_List.json
      */
     /**
      * Sample code: List all private access in a resource group.

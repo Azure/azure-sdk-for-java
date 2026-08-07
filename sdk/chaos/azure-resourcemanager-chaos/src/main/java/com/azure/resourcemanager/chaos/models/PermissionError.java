@@ -42,6 +42,13 @@ public final class PermissionError implements JsonSerializable<PermissionError> 
      */
     private EntraIdentity identity;
 
+    /*
+     * The error message describing the permission validation failure, when the
+     * failure carries a distinct message (for example, when the target could not
+     * be read to evaluate access).
+     */
+    private String errorMessage;
+
     /**
      * Creates an instance of PermissionError class.
      */
@@ -94,6 +101,17 @@ public final class PermissionError implements JsonSerializable<PermissionError> 
     }
 
     /**
+     * Get the errorMessage property: The error message describing the permission validation failure, when the
+     * failure carries a distinct message (for example, when the target could not
+     * be read to evaluate access).
+     * 
+     * @return the errorMessage value.
+     */
+    public String errorMessage() {
+        return this.errorMessage;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -131,6 +149,8 @@ public final class PermissionError implements JsonSerializable<PermissionError> 
                     deserializedPermissionError.recommendedRoles = recommendedRoles;
                 } else if ("identity".equals(fieldName)) {
                     deserializedPermissionError.identity = EntraIdentity.fromJson(reader);
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedPermissionError.errorMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

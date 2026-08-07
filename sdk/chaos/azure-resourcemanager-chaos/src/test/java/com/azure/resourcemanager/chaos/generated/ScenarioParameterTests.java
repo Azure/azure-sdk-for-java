@@ -13,27 +13,27 @@ public final class ScenarioParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScenarioParameter model = BinaryData.fromString(
-            "{\"name\":\"embnkbw\",\"type\":\"array\",\"default\":\"xk\",\"required\":true,\"description\":\"ihebwtsw\"}")
+            "{\"name\":\"xk\",\"type\":\"array\",\"default\":\"qihebw\",\"required\":true,\"description\":\"zuwfmdur\"}")
             .toObject(ScenarioParameter.class);
-        Assertions.assertEquals("embnkbw", model.name());
+        Assertions.assertEquals("xk", model.name());
         Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("xk", model.defaultProperty());
+        Assertions.assertEquals("qihebw", model.defaultProperty());
         Assertions.assertTrue(model.required());
-        Assertions.assertEquals("ihebwtsw", model.description());
+        Assertions.assertEquals("zuwfmdur", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScenarioParameter model = new ScenarioParameter().withName("embnkbw")
+        ScenarioParameter model = new ScenarioParameter().withName("xk")
             .withType(ParameterType.ARRAY)
-            .withDefaultProperty("xk")
+            .withDefaultProperty("qihebw")
             .withRequired(true)
-            .withDescription("ihebwtsw");
+            .withDescription("zuwfmdur");
         model = BinaryData.fromObject(model).toObject(ScenarioParameter.class);
-        Assertions.assertEquals("embnkbw", model.name());
+        Assertions.assertEquals("xk", model.name());
         Assertions.assertEquals(ParameterType.ARRAY, model.type());
-        Assertions.assertEquals("xk", model.defaultProperty());
+        Assertions.assertEquals("qihebw", model.defaultProperty());
         Assertions.assertTrue(model.required());
-        Assertions.assertEquals("ihebwtsw", model.description());
+        Assertions.assertEquals("zuwfmdur", model.description());
     }
 }
