@@ -62,6 +62,7 @@ Licensed under the MIT License.
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.changefeed.common=com.azure.cosmos.kafka.connect
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.feedranges=com.azure.cosmos.kafka.connect
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.query=com.azure.cosmos.kafka.connect
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.routing=com.azure.cosmos.kafka.connect
 
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>

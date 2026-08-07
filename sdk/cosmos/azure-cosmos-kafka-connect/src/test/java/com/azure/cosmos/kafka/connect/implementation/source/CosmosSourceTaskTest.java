@@ -5,16 +5,29 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestConfigurations;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.TestItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import org.apache.kafka.connect.data.Struct;
@@ -26,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,6 +240,99 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             }
         }
     }
+
+    @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
+    public void pollWithDivergentChildContinuations() {
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sourceConfigMap.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
+        sourceConfigMap.put(
+            "azure.cosmos.source.containers.includedList",
+            Arrays.asList(multiPartitionContainerName).toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosClientCacheItem clientItem =
+            CosmosClientCache.getCosmosClient(sourceConfig.getAccountConfig(), "pollWithDivergentChildContinuations");
+        CosmosSourceTask sourceTask = null;
+
+        try {
+            CosmosAsyncContainer container = clientItem
+                .getClient()
+                .getDatabase(databaseName)
+                .getContainer(multiPartitionContainerName);
+            CosmosContainerProperties containerProperties = container.read().block().getProperties();
+            List<FeedRangeEpkImpl> childRanges = container.getFeedRanges().block().stream()
+                .map(range -> (FeedRangeEpkImpl) range)
+                .sorted(Comparator.comparing(range -> range.getRange().getMin()))
+                .collect(Collectors.toList());
+            assertThat(childRanges.size()).isGreaterThanOrEqualTo(2);
+
+            FeedRangeEpkImpl childA = childRanges.get(0);
+            FeedRangeEpkImpl childB = childRanges.get(1);
+            ChangeFeedState baselineB = snapshotNow(container, childB);
+
+            ChangeFeedState advancedA = snapshotNow(container, childA);
+            int writesToChildA = 0;
+            while (numericToken(advancedA) <= numericToken(baselineB) && writesToChildA < 2_000) {
+                for (int i = 0; i < 50; i++) {
+                    container.createItem(new TestItem(
+                        UUID.randomUUID().toString(),
+                        partitionKeyForRange("advance-a", childA, containerProperties.getPartitionKeyDefinition()),
+                        "advance-a")).block();
+                    writesToChildA++;
+                }
+                advancedA = snapshotNow(container, childA);
+            }
+            assertThat(numericToken(advancedA)).isGreaterThan(numericToken(baselineB));
+
+            ChangeFeedState parentState = new ChangeFeedStateV1(
+                containerProperties.getResourceId(),
+                FeedRangeEpkImpl.forFullRange(),
+                ChangeFeedMode.INCREMENTAL,
+                ChangeFeedStartFromInternal.createFromNow(),
+                FeedRangeContinuation.create(
+                    containerProperties.getResourceId(),
+                    FeedRangeEpkImpl.forFullRange(),
+                    Arrays.asList(
+                        new CompositeContinuationToken(rawToken(advancedA), childA.getRange()),
+                        new CompositeContinuationToken(rawToken(baselineB), childB.getRange()))));
+
+            String markerId = UUID.randomUUID().toString();
+            container.createItem(
+                new TestItem(
+                    markerId,
+                    partitionKeyForRange("marker-b", childB, containerProperties.getPartitionKeyDefinition()),
+                    "marker-b")).block();
+
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                multiPartitionContainerName,
+                containerProperties.getResourceId(),
+                childB,
+                new KafkaCosmosChangeFeedState(parentState.toString(), childB),
+                multiPartitionContainerName);
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+            taskConfigMap.putAll(
+                CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            sourceTask = new CosmosSourceTask();
+            sourceTask.initialize(new TestSourceTaskContext(taskConfigMap));
+            sourceTask.start(taskConfigMap);
+
+            List<SourceRecord> records = sourceTask.poll();
+            assertThat(records.stream().anyMatch(record ->
+                markerId.equals(((Struct) record.value()).get("id").toString()))).isTrue();
+        } finally {
+            if (sourceTask != null) {
+                sourceTask.stop();
+            }
+            CosmosClientCache.releaseCosmosClient(clientItem.getClientConfig());
+            clientItem.getClient().close();
+        }
+    }
+
     @Test(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void pollWithSpecificFeedRange() {
         // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
@@ -511,6 +618,43 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
 
         return testItems;
+    }
+
+    private ChangeFeedState snapshotNow(CosmosAsyncContainer container, FeedRangeEpkImpl feedRange) {
+        FeedResponse<com.fasterxml.jackson.databind.JsonNode> response = container
+            .queryChangeFeed(
+                CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange),
+                com.fasterxml.jackson.databind.JsonNode.class)
+            .byPage()
+            .next()
+            .block();
+        return ChangeFeedState.fromString(response.getContinuationToken());
+    }
+
+    private String partitionKeyForRange(
+        String prefix,
+        FeedRangeEpkImpl targetRange,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        for (int i = 0; i < 100_000; i++) {
+            String id = prefix + "-" + UUID.randomUUID();
+            String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(id)),
+                partitionKeyDefinition);
+            if (targetRange.getRange().contains(effectivePartitionKey)) {
+                return id;
+            }
+        }
+
+        throw new IllegalStateException("Unable to generate an id for feed range " + targetRange);
+    }
+
+    private long numericToken(ChangeFeedState state) {
+        return Long.parseLong(rawToken(state).replace("\"", ""));
+    }
+
+    private String rawToken(ChangeFeedState state) {
+        return state.getContinuation().getCurrentContinuationToken().getToken();
     }
 
     public static class TestSourceTaskContext implements SourceTaskContext {

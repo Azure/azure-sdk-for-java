@@ -407,7 +407,11 @@ public class CosmosSourceTask extends SourceTask {
             .getOverlappingFeedRanges(container, feedRangeTaskUnit.getFeedRange(), true)
             .flatMap(overlappedRanges -> {
 
-                if (overlappedRanges.size() == 1) {
+                if (overlappedRanges.isEmpty()) {
+                    return Mono.error(
+                        new IllegalStateException(
+                            "No overlapping feed ranges found for " + feedRangeTaskUnit.getFeedRange()));
+                } else if (overlappedRanges.size() == 1) {
                     // merge happens
                     LOGGER.info(
                         "FeedRange {} is merged into {}, but we will continue polling data from feedRange {}",
@@ -478,7 +482,7 @@ public class CosmosSourceTask extends SourceTask {
         KafkaCosmosChangeFeedState parent,
         FeedRange feedRange) {
         return parent == null
-            ? null : new KafkaCosmosChangeFeedState(parent.getResponseContinuation(), feedRange);
+            ? null : parent.extractForFeedRange(feedRange);
     }
 
     private CosmosChangeFeedRequestOptions getChangeFeedRequestOptions(FeedRangeTaskUnit feedRangeTaskUnit) {

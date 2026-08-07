@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -50,6 +51,18 @@ public class KafkaCosmosChangeFeedState {
 
     public String getItemLsn() {
         return itemLsn;
+    }
+
+    public KafkaCosmosChangeFeedState extractForFeedRange(FeedRange feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
+
+        String projectedContinuation = ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .extractContinuationForFeedRange(this.responseContinuation, feedRange);
+        String projectedItemLsn = this.targetRange.equals(feedRange) ? this.itemLsn : null;
+
+        return new KafkaCosmosChangeFeedState(projectedContinuation, feedRange, projectedItemLsn);
     }
 
     @Override
@@ -108,7 +121,11 @@ public class KafkaCosmosChangeFeedState {
             final JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
             String continuationState = rootNode.get("responseContinuation").asText();
             FeedRange targetRange = FeedRange.fromString(rootNode.get("targetRange").asText());
-            String continuationLsn = rootNode.get("itemLsn").asText();
+            String continuationLsn = null;
+            if (rootNode.hasNonNull("itemLsn")) {
+                String itemLsnValue = rootNode.get("itemLsn").asText();
+                continuationLsn = "null".equals(itemLsnValue) ? null : itemLsnValue;
+            }
             return new KafkaCosmosChangeFeedState(continuationState, targetRange, continuationLsn);
         }
     }
