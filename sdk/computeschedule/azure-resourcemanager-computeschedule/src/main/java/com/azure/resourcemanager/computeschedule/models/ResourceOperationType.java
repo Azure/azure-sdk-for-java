@@ -32,6 +32,16 @@ public final class ResourceOperationType extends ExpandableStringEnum<ResourceOp
     public static final ResourceOperationType HIBERNATE = fromString("Hibernate");
 
     /**
+     * Create operations on the resources.
+     */
+    public static final ResourceOperationType CREATE = fromString("Create");
+
+    /**
+     * Delete operations on the resources.
+     */
+    public static final ResourceOperationType DELETE = fromString("Delete");
+
+    /**
      * Creates a new instance of ResourceOperationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

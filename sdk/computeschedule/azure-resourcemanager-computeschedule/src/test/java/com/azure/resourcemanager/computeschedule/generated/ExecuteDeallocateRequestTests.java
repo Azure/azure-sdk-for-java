@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -17,28 +18,36 @@ public final class ExecuteDeallocateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeallocateRequest model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":2070892597,\"retryWindowInMinutes\":412158498}},\"resources\":{\"ids\":[\"sntnbybkzgcw\",\"wclxxwrl\",\"douskcqvkocrcjdk\",\"tnhxbn\"]},\"correlationid\":\"biksq\"}")
+            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":775754231,\"retryWindowInMinutes\":1098993569,\"onFailureAction\":\"Start\"}},\"resources\":{\"ids\":[\"gxsabkyq\",\"uujitcjc\"]},\"correlationid\":\"dzevndhkrw\"}")
             .toObject(ExecuteDeallocateRequest.class);
-        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(2070892597, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(412158498, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("sntnbybkzgcw", model.resources().ids().get(0));
-        Assertions.assertEquals("biksq", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(775754231, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1098993569, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START,
+            model.executionParameters().retryPolicy().onFailureAction());
+        Assertions.assertEquals("gxsabkyq", model.resources().ids().get(0));
+        Assertions.assertEquals("dzevndhkrw", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteDeallocateRequest model = new ExecuteDeallocateRequest()
-            .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                .withRetryPolicy(new RetryPolicy().withRetryCount(2070892597).withRetryWindowInMinutes(412158498)))
-            .withResources(
-                new Resources().withIds(Arrays.asList("sntnbybkzgcw", "wclxxwrl", "douskcqvkocrcjdk", "tnhxbn")))
-            .withCorrelationid("biksq");
+            .withExecutionParameters(
+                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(775754231)
+                        .withRetryWindowInMinutes(1098993569)
+                        .withOnFailureAction(ResourceOperationType.START)))
+            .withResources(new Resources().withIds(Arrays.asList("gxsabkyq", "uujitcjc")))
+            .withCorrelationid("dzevndhkrw");
         model = BinaryData.fromObject(model).toObject(ExecuteDeallocateRequest.class);
-        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(2070892597, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(412158498, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("sntnbybkzgcw", model.resources().ids().get(0));
-        Assertions.assertEquals("biksq", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(775754231, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1098993569, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START,
+            model.executionParameters().retryPolicy().onFailureAction());
+        Assertions.assertEquals("gxsabkyq", model.resources().ids().get(0));
+        Assertions.assertEquals("dzevndhkrw", model.correlationid());
     }
 }

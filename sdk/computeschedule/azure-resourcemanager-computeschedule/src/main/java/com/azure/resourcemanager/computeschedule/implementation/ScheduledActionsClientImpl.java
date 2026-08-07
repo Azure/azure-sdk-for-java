@@ -36,6 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateFlexResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
@@ -51,6 +52,7 @@ import com.azure.resourcemanager.computeschedule.implementation.models.ResourceL
 import com.azure.resourcemanager.computeschedule.implementation.models.ScheduledActionListResult;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
@@ -219,6 +221,26 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartRequest requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CreateFlexResourceOperationResponseInner>> virtualMachinesExecuteCreateFlex(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexRequest body,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexRequest body,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate")
@@ -1121,8 +1143,88 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CreateFlexResourceOperationResponseInner>>
+        virtualMachinesExecuteCreateFlexWithResponseAsync(String locationparameter, ExecuteCreateFlexRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.virtualMachinesExecuteCreateFlex(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), locationparameter, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CreateFlexResourceOperationResponseInner>
+        virtualMachinesExecuteCreateFlexAsync(String locationparameter, ExecuteCreateFlexRequest body) {
+        return virtualMachinesExecuteCreateFlexWithResponseAsync(locationparameter, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
+        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesExecuteCreateFlexSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, body, context);
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
+        ExecuteCreateFlexRequest body) {
+        return virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, Context.NONE).getValue();
+    }
+
+    /**
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1144,8 +1246,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1162,8 +1264,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1183,8 +1285,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1200,8 +1302,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1223,8 +1325,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1241,8 +1343,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1262,8 +1364,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
