@@ -19,20 +19,16 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import static java.util.logging.Level.WARNING;
 
 /**
  * Caches certificate material loaded from Azure Key Vault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
-    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificates.class.getName());
     private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
         = "azure.keyvault.jca.certificate-alias-filter-pattern";
 
@@ -405,24 +401,22 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private void loadCertificateIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateAliases, certificates, inFlightCertificateLoads,
-            (client, version) -> client.getCertificateForVersion(version), Objects::nonNull, "certificate");
+            (client, version) -> client.getCertificateForVersion(version));
     }
 
     private void loadCertificateChainIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateChainAliases, certificateChains, inFlightCertificateChainLoads,
-            (client, version) -> client.getCertificateChainForVersion(version),
-            chain -> chain != null && chain.length > 0, "certificate chain");
+            (client, version) -> client.getCertificateChainForVersion(version));
     }
 
     private void loadCertificateKeyIfNeeded(String alias) {
         loadMaterialIfNeeded(alias, loadedCertificateKeyAliases, certificateKeys, inFlightCertificateKeyLoads,
-            (client, version) -> client.getKeyForVersion(version, null), Objects::nonNull, "certificate key");
+            (client, version) -> client.getKeyForVersion(version, null));
     }
 
     private <T> void loadMaterialIfNeeded(String alias, Set<String> loadedAliases, Map<String, T> loadedMaterials,
         Map<String, CompletableFuture<Void>> inFlightLoads,
-        BiFunction<KeyVaultClient, CertificateVersion, T> loadMaterial, Predicate<T> isUsable,
-        String materialDescription) {
+        BiFunction<KeyVaultClient, CertificateVersion, T> loadMaterial) {
 
         refreshCertificatesIfNeeded();
         if (alias == null) {
@@ -459,7 +453,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             if (!loadOwner) {
-                inFlightLoad.join();
+                awaitInFlightOperation(inFlightLoad);
                 synchronized (this) {
                     if (loadedAliases.contains(alias) || keyVaultClient == null || !aliases.contains(alias)) {
                         return;
@@ -472,21 +466,25 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             T loadedMaterial = null;
+            RuntimeException materialLoadFailure = null;
             try {
                 loadedMaterial = loadMaterial.apply(loadClient, certificateVersion);
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, exception, () -> "Failed to load " + materialDescription + " for alias: " + alias);
+                // Release the single-flight state before rethrowing the original failure.
+                materialLoadFailure = exception;
             }
 
             boolean retryWithCurrentGeneration;
+            boolean propagateMaterialLoadFailure;
             synchronized (this) {
-                boolean sameGeneration = loadClient == keyVaultClient
+                boolean currentRequest = loadClient == keyVaultClient
                     && loadGeneration == cacheGeneration
-                    && certificateVersions.get(alias) == certificateVersion;
-                if (sameGeneration
+                    && certificateVersions.get(alias) == certificateVersion
+                    && aliases.contains(alias);
+                if (currentRequest
+                    && materialLoadFailure == null
                     && !loadedAliases.contains(alias)
-                    && aliases.contains(alias)
-                    && isUsable.test(loadedMaterial)) {
+                    && loadedMaterial != null) {
                     loadedMaterials.put(alias, loadedMaterial);
                     loadedAliases.add(alias);
                 }
@@ -494,16 +492,26 @@ public final class KeyVaultCertificates implements AzureCertificates {
                 if (inFlightLoads.get(alias) == inFlightLoad) {
                     inFlightLoads.remove(alias);
                 }
-                inFlightLoad.complete(null);
+                propagateMaterialLoadFailure = currentRequest && materialLoadFailure != null;
+                if (propagateMaterialLoadFailure) {
+                    inFlightLoad.completeExceptionally(materialLoadFailure);
+                } else {
+                    inFlightLoad.complete(null);
+                }
 
-                retryWithCurrentGeneration = !sameGeneration
+                retryWithCurrentGeneration = !currentRequest
                     && keyVaultClient != null
                     && aliases.contains(alias)
                     && !loadedAliases.contains(alias);
-                if (!retryWithCurrentGeneration) {
-                    return;
-                }
             }
+
+            if (retryWithCurrentGeneration) {
+                continue;
+            }
+            if (propagateMaterialLoadFailure) {
+                throw materialLoadFailure;
+            }
+            return;
         }
     }
 
@@ -535,7 +543,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             if (!resolutionOwner) {
-                inFlightResolution.join();
+                awaitInFlightOperation(inFlightResolution);
                 synchronized (this) {
                     CertificateVersion certificateVersion = certificateVersions.get(alias);
                     if (certificateVersion != null) {
@@ -549,34 +557,61 @@ public final class KeyVaultCertificates implements AzureCertificates {
             }
 
             CertificateVersion certificateVersion = null;
+            RuntimeException resolutionFailure = null;
             try {
                 certificateVersion = resolvingClient.resolveCertificateVersion(alias);
             } catch (RuntimeException exception) {
-                LOGGER.log(WARNING, exception, () -> "Failed to resolve certificate version for alias: " + alias);
+                // Release the single-flight state before rethrowing the original failure.
+                resolutionFailure = exception;
             }
 
             boolean retryWithCurrentGeneration;
+            boolean propagateResolutionFailure;
             synchronized (this) {
-                boolean sameGeneration = resolvingClient == keyVaultClient && resolutionGeneration == cacheGeneration;
-                if (sameGeneration && aliases.contains(alias) && certificateVersion != null) {
+                boolean currentResolution = resolvingClient == keyVaultClient
+                    && resolutionGeneration == cacheGeneration
+                    && aliases.contains(alias);
+                if (currentResolution && resolutionFailure == null && certificateVersion != null) {
                     certificateVersions.put(alias, certificateVersion);
                 }
 
                 if (inFlightCertificateVersionResolutions.get(alias) == inFlightResolution) {
                     inFlightCertificateVersionResolutions.remove(alias);
                 }
-                inFlightResolution.complete(null);
+                propagateResolutionFailure = currentResolution && resolutionFailure != null;
+                if (propagateResolutionFailure) {
+                    inFlightResolution.completeExceptionally(resolutionFailure);
+                } else {
+                    inFlightResolution.complete(null);
+                }
 
                 CertificateVersion currentVersion = certificateVersions.get(alias);
                 if (currentVersion != null) {
                     return currentVersion;
                 }
 
-                retryWithCurrentGeneration = !sameGeneration && keyVaultClient != null && aliases.contains(alias);
-                if (!retryWithCurrentGeneration) {
-                    return null;
-                }
+                retryWithCurrentGeneration = !currentResolution && keyVaultClient != null && aliases.contains(alias);
             }
+
+            if (retryWithCurrentGeneration) {
+                continue;
+            }
+            if (propagateResolutionFailure) {
+                throw resolutionFailure;
+            }
+            return null;
+        }
+    }
+
+    private static void awaitInFlightOperation(CompletableFuture<Void> inFlightOperation) {
+        try {
+            inFlightOperation.join();
+        } catch (CompletionException exception) {
+            Throwable cause = exception.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            }
+            throw exception;
         }
     }
 

@@ -371,11 +371,13 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testAliasCertificateLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificateForVersion(certificateVersion))
-            .thenThrow(new RuntimeException("transient error"))
+        RuntimeException loadFailure = new RuntimeException("transient certificate error");
+        when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenThrow(loadFailure)
             .thenReturn(certificate);
 
-        Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+        RuntimeException thrown
+            = Assertions.assertThrows(RuntimeException.class, () -> keyVaultCertificates.getCertificate("myalias"));
+        Assertions.assertSame(loadFailure, thrown);
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
         verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
         verify(keyVaultClient, times(2)).getCertificateForVersion(certificateVersion);
@@ -397,11 +399,12 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testAliasKeyLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getKeyForVersion(certificateVersion, null))
-            .thenThrow(new RuntimeException("transient error"))
-            .thenReturn(key);
+        RuntimeException loadFailure = new RuntimeException("transient key error");
+        when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenThrow(loadFailure).thenReturn(key);
 
-        Assertions.assertNull(keyVaultCertificates.getCertificateKey("myalias"));
+        RuntimeException thrown
+            = Assertions.assertThrows(RuntimeException.class, () -> keyVaultCertificates.getCertificateKey("myalias"));
+        Assertions.assertSame(loadFailure, thrown);
         Assertions.assertEquals(key, keyVaultCertificates.getCertificateKey("myalias"));
         verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
         verify(keyVaultClient, times(2)).getKeyForVersion(certificateVersion, null);
@@ -423,11 +426,13 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testAliasChainLoadFailureIsRetriedOnNextAccess() {
-        when(keyVaultClient.getCertificateChainForVersion(certificateVersion))
-            .thenThrow(new RuntimeException("transient error"))
+        RuntimeException loadFailure = new RuntimeException("Key Vault returned HTTP 403");
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenThrow(loadFailure)
             .thenReturn(certificateChain);
 
-        Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
+            () -> keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertSame(loadFailure, thrown);
         Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
         verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
         verify(keyVaultClient, times(2)).getCertificateChainForVersion(certificateVersion);
@@ -436,16 +441,93 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testAliasChainEmptyLoadIsRetriedOnNextAccess() {
+    public void testAliasChainEmptyLoadIsCached() {
         when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenReturn(new Certificate[0])
             .thenReturn(certificateChain);
 
-        Assertions.assertNull(keyVaultCertificates.getCertificateChain("myalias"));
-        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertArrayEquals(new Certificate[0], keyVaultCertificates.getCertificateChain("myalias"));
+        Assertions.assertArrayEquals(new Certificate[0], keyVaultCertificates.getCertificateChain("myalias"));
         verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
-        verify(keyVaultClient, times(2)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
         verify(keyVaultClient, never()).getCertificateForVersion(certificateVersion);
         verify(keyVaultClient, never()).getKeyForVersion(certificateVersion, null);
+    }
+
+    @Test
+    public void testCertificateVersionResolutionFailureIsRetriedOnNextAccess() {
+        RuntimeException resolutionFailure = new RuntimeException("Key Vault returned HTTP 403");
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenThrow(resolutionFailure)
+            .thenReturn(certificateVersion);
+
+        RuntimeException thrown
+            = Assertions.assertThrows(RuntimeException.class, () -> keyVaultCertificates.getCertificate("myalias"));
+        Assertions.assertSame(resolutionFailure, thrown);
+        Assertions.assertSame(certificate, keyVaultCertificates.getCertificate("myalias"));
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
+    }
+
+    @Test
+    public void testConcurrentChainLoadFailureIsSharedAndRetried() throws Exception {
+        RuntimeException loadFailure = new RuntimeException("Key Vault returned HTTP 429");
+        BlockingFailureAnswer<Certificate[]> blockingFailure = new BlockingFailureAnswer<>(loadFailure);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenAnswer(blockingFailure)
+            .thenReturn(certificateChain);
+
+        assertConcurrentFailureIsShared(() -> keyVaultCertificates.getCertificateChain("myalias"), blockingFailure,
+            loadFailure);
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
+
+        Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
+        verify(keyVaultClient, times(2)).getCertificateChainForVersion(certificateVersion);
+    }
+
+    @Test
+    public void testConcurrentCertificateVersionResolutionFailureIsSharedAndRetried() throws Exception {
+        RuntimeException resolutionFailure = new RuntimeException("Key Vault returned HTTP 403");
+        BlockingFailureAnswer<CertificateVersion> blockingFailure = new BlockingFailureAnswer<>(resolutionFailure);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenAnswer(blockingFailure)
+            .thenReturn(certificateVersion);
+
+        assertConcurrentFailureIsShared(() -> keyVaultCertificates.getCertificate("myalias"), blockingFailure,
+            resolutionFailure);
+        verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
+
+        Assertions.assertSame(certificate, keyVaultCertificates.getCertificate("myalias"));
+        verify(keyVaultClient, times(2)).resolveCertificateVersion("myalias");
+        verify(keyVaultClient, times(1)).getCertificateForVersion(certificateVersion);
+    }
+
+    @Test
+    public void testRefreshDiscardsInFlightFailureFromPreviousGeneration() throws Exception {
+        RuntimeException staleFailure = new RuntimeException("stale generation failure");
+        CertificateVersion freshVersion = mock(CertificateVersion.class);
+        Certificate[] freshChain = new Certificate[] { mock(Certificate.class) };
+        BlockingFailureAnswer<Certificate[]> blockingFailure = new BlockingFailureAnswer<>(staleFailure);
+        when(keyVaultClient.resolveCertificateVersion("myalias")).thenReturn(certificateVersion, freshVersion);
+        when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenAnswer(blockingFailure);
+        when(keyVaultClient.getCertificateChainForVersion(freshVersion)).thenReturn(freshChain);
+        List<Certificate[]> loadedChains = Collections.synchronizedList(new ArrayList<>());
+        List<RuntimeException> failures = Collections.synchronizedList(new ArrayList<>());
+        Thread reader = new Thread(() -> {
+            try {
+                loadedChains.add(keyVaultCertificates.getCertificateChain("myalias"));
+            } catch (RuntimeException exception) {
+                failures.add(exception);
+            }
+        });
+        reader.start();
+
+        blockingFailure.awaitStarted();
+        keyVaultCertificates.refreshCertificates();
+        blockingFailure.release();
+        joinThreads(Collections.singletonList(reader));
+
+        Assertions.assertTrue(failures.isEmpty());
+        Assertions.assertEquals(1, loadedChains.size());
+        Assertions.assertArrayEquals(freshChain, loadedChains.get(0));
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
+        verify(keyVaultClient, times(1)).getCertificateChainForVersion(freshVersion);
     }
 
     @Test
@@ -681,6 +763,40 @@ public class KeyVaultCertificatesTest {
         assertFresh.accept(load.get());
     }
 
+    private void assertConcurrentFailureIsShared(Runnable load, BlockingFailureAnswer<?> blockingFailure,
+        RuntimeException expectedFailure) throws Exception {
+        List<RuntimeException> failures = Collections.synchronizedList(new ArrayList<>());
+        CountDownLatch readersReady = new CountDownLatch(CONCURRENT_READERS);
+        CountDownLatch readersMayStart = new CountDownLatch(1);
+        List<Thread> readers = new ArrayList<>();
+
+        for (int i = 0; i < CONCURRENT_READERS; i++) {
+            Thread reader = new Thread(() -> {
+                readersReady.countDown();
+                try {
+                    awaitLatch(readersMayStart);
+                    load.run();
+                } catch (InterruptedException exception) {
+                    Thread.currentThread().interrupt();
+                } catch (RuntimeException exception) {
+                    failures.add(exception);
+                }
+            });
+            readers.add(reader);
+            reader.start();
+        }
+
+        awaitLatch(readersReady);
+        readersMayStart.countDown();
+        blockingFailure.awaitStarted();
+        awaitThreadsWaiting(readers);
+        blockingFailure.release();
+        joinThreads(readers);
+
+        Assertions.assertEquals(CONCURRENT_READERS, failures.size());
+        failures.forEach(failure -> Assertions.assertSame(expectedFailure, failure));
+    }
+
     private static void joinThreads(List<Thread> threads) throws InterruptedException {
         for (Thread thread : threads) {
             thread.join(TIMEOUT_MILLIS);
@@ -771,6 +887,34 @@ public class KeyVaultCertificatesTest {
 
         private void release() {
             mayFinish.countDown();
+        }
+    }
+
+    private static final class BlockingFailureAnswer<T> implements Answer<T> {
+
+        private final CountDownLatch started = new CountDownLatch(1);
+
+        private final CountDownLatch mayFail = new CountDownLatch(1);
+
+        private final RuntimeException failure;
+
+        private BlockingFailureAnswer(RuntimeException failure) {
+            this.failure = failure;
+        }
+
+        @Override
+        public T answer(InvocationOnMock invocation) throws InterruptedException {
+            started.countDown();
+            awaitLatch(mayFail);
+            throw failure;
+        }
+
+        private void awaitStarted() throws InterruptedException {
+            awaitLatch(started);
+        }
+
+        private void release() {
+            mayFail.countDown();
         }
     }
 
