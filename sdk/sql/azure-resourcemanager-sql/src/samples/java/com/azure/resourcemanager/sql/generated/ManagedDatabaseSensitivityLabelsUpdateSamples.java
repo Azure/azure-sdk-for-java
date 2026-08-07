@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ManagedDatabaseSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ManagedDatabaseSensitivityLabelsCurrentUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/ManagedDatabaseSensitivityLabelsCurrentUpdate.json
      */
     /**
      * Sample code: Update sensitivity labels of a given database using an operations batch.

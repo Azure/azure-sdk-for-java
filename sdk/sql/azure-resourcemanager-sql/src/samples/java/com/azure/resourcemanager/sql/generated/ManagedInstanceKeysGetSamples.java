@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstanceKeysGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ManagedInstanceKeyGet.json
+     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceKeyGet.json
      */
     /**
      * Sample code: Get the managed instance key.

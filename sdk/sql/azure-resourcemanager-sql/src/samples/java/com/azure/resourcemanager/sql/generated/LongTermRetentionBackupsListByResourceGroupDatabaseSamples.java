@@ -9,7 +9,23 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsListByResourceGroupDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
+     * x-ms-original-file: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabaseWithPagination.json
+     */
+    /**
+     * Sample code: Get long term retention backups under the database based on resource group with pagination.
+     * 
+     * @param manager Entry point to SqlServerManager.
+     */
+    public static void getLongTermRetentionBackupsUnderTheDatabaseBasedOnResourceGroupWithPagination(
+        com.azure.resourcemanager.sql.SqlServerManager manager) {
+        manager.serviceClient()
+            .getLongTermRetentionBackups()
+            .listByResourceGroupDatabase("testResourceGroup", "japaneast", "testserver", "testDatabase", null, null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
      */
     /**
      * Sample code: Get all long term retention backups under the database.
