@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class EventHubsListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubListByNameSpace.json
+     * x-ms-original-file: 2026-07-01-preview/EventHubs/EHEventHubListByNameSpace.json
      */
     /**
      * Sample code: EventHubsListAll.

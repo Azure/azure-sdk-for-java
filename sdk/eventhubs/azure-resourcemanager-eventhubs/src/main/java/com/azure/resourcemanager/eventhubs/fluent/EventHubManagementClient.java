@@ -96,6 +96,20 @@ public interface EventHubManagementClient {
     ConsumerGroupsClient getConsumerGroups();
 
     /**
+     * Gets the FabricShortcutsClient object to access its operations.
+     * 
+     * @return the FabricShortcutsClient object.
+     */
+    FabricShortcutsClient getFabricShortcuts();
+
+    /**
+     * Gets the UpgradePreferencesOperationsClient object to access its operations.
+     * 
+     * @return the UpgradePreferencesOperationsClient object.
+     */
+    UpgradePreferencesOperationsClient getUpgradePreferencesOperations();
+
+    /**
      * Gets the ConfigurationsClient object to access its operations.
      * 
      * @return the ConfigurationsClient object.
