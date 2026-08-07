@@ -222,7 +222,8 @@ stages:
           displayName: Publish auto-release packages to Maven Central via ESRP
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
           timeoutInMinutes: 120
-          environment: ${{ parameters.PublicPublishEnvironment }}
+          # Auto-release is post-merge automation, so use an environment with no approval checks.
+          environment: none
           dependsOn: TagRepository
           templateContext:
             type: releaseJob
