@@ -485,7 +485,7 @@ jobs:
         # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
         # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
         # Overall, using a large batch size reduces overall CI time.
-        PRJobBatchSize: 50
+        PRJobBatchSize: 5
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:
