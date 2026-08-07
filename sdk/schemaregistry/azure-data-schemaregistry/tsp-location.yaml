@@ -1,0 +1,4 @@
+directory: specification/schemaregistry/data-plane/SchemaRegistry
+commit: 563ec395b73746bfa3c9f16f72af235d6009f816
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

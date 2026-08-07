@@ -30,6 +30,10 @@ import org.junit.jupiter.api.Test;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,8 +51,6 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
         = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
-    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING
-        = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
@@ -57,33 +59,29 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
     private String eventHubName;
-    private String connectionString;
+    private TokenCredential tokenCredential;
+    private String fullyQualifiedNamespace;
 
     @Override
     protected void beforeTest() {
-        String endpoint;
-        TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
 
-            endpoint = PLAYBACK_ENDPOINT;
+            fullyQualifiedNamespace = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
-            connectionString = "foo-bar";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            fullyQualifiedNamespace = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
             eventHubName = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
-            connectionString = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING);
 
             assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
-            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(fullyQualifiedNamespace, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
-            assertNotNull(connectionString, "'connectionString' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(fullyQualifiedNamespace);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -172,10 +170,19 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxy
 
         EventHubProducerClient producer = null;
         EventHubConsumerAsyncClient consumer = null;
+
+        String fullyQualifedNamespaceToUse;
+        try {
+            final URL url = new URI(fullyQualifiedNamespace).toURL();
+            fullyQualifedNamespaceToUse = url.getHost();
+        } catch (MalformedURLException | URISyntaxException e) {
+            fullyQualifedNamespaceToUse = fullyQualifiedNamespace;
+        }
+
         try {
             producer
-                = new EventHubClientBuilder().connectionString(connectionString, eventHubName).buildProducerClient();
-            consumer = new EventHubClientBuilder().connectionString(connectionString, eventHubName)
+                = new EventHubClientBuilder().credential(fullyQualifedNamespaceToUse, eventHubName, tokenCredential).buildProducerClient();
+            consumer = new EventHubClientBuilder().credential(fullyQualifedNamespaceToUse, eventHubName, tokenCredential)
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildAsyncConsumerClient();
 
