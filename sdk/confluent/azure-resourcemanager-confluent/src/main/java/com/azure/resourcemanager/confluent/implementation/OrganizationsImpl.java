@@ -11,19 +11,25 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SaaSResourceDetailsResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
 import com.azure.resourcemanager.confluent.models.ApiKeyRecord;
 import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
+import com.azure.resourcemanager.confluent.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.Organizations;
 import com.azure.resourcemanager.confluent.models.SCClusterRecord;
 import com.azure.resourcemanager.confluent.models.SCEnvironmentRecord;
+import com.azure.resourcemanager.confluent.models.SaaSData;
+import com.azure.resourcemanager.confluent.models.SaaSResourceDetailsResponse;
 import com.azure.resourcemanager.confluent.models.SchemaRegistryClusterRecord;
 
 public final class OrganizationsImpl implements Organizations {
@@ -126,6 +132,62 @@ public final class OrganizationsImpl implements Organizations {
             = this.serviceClient().listRegions(resourceGroupName, organizationName, body);
         if (inner != null) {
             return new ListRegionsSuccessResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
+        OrganizationResourceInner inner = this.serviceClient().linkSaaS(resourceGroupName, organizationName, body);
+        if (inner != null) {
+            return new OrganizationResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
+        Context context) {
+        OrganizationResourceInner inner
+            = this.serviceClient().linkSaaS(resourceGroupName, organizationName, body, context);
+        if (inner != null) {
+            return new OrganizationResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String organizationName, Context context) {
+        Response<LatestLinkedSaaSResponseInner> inner
+            = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, organizationName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String organizationName) {
+        LatestLinkedSaaSResponseInner inner
+            = this.serviceClient().latestLinkedSaaS(resourceGroupName, organizationName);
+        if (inner != null) {
+            return new LatestLinkedSaaSResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body) {
+        SaaSResourceDetailsResponseInner inner = this.serviceClient().activateResource(body);
+        if (inner != null) {
+            return new SaaSResourceDetailsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body, Context context) {
+        SaaSResourceDetailsResponseInner inner = this.serviceClient().activateResource(body, context);
+        if (inner != null) {
+            return new SaaSResourceDetailsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -12,11 +12,11 @@ public final class RegionSpecEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionSpecEntity model = BinaryData.fromString(
-            "{\"name\":\"jjugwdkcglhslaz\",\"cloud\":\"yggdtjixh\",\"regionName\":\"uofqwe\",\"packages\":[\"menevfyexfwh\",\"bcibvyvdcsitynn\",\"amdecte\",\"f\"]}")
+            "{\"name\":\"poczvyifqrvkdvjs\",\"cloud\":\"rm\",\"regionName\":\"d\",\"packages\":[\"t\",\"pnpulexxbczwtru\"]}")
             .toObject(RegionSpecEntity.class);
-        Assertions.assertEquals("jjugwdkcglhslaz", model.name());
-        Assertions.assertEquals("yggdtjixh", model.cloud());
-        Assertions.assertEquals("uofqwe", model.regionName());
-        Assertions.assertEquals("menevfyexfwh", model.packages().get(0));
+        Assertions.assertEquals("poczvyifqrvkdvjs", model.name());
+        Assertions.assertEquals("rm", model.cloud());
+        Assertions.assertEquals("d", model.regionName());
+        Assertions.assertEquals("t", model.packages().get(0));
     }
 }

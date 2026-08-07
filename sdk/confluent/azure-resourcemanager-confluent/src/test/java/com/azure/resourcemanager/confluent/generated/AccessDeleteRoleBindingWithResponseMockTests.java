@@ -28,8 +28,7 @@ public final class AccessDeleteRoleBindingWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.access()
-            .deleteRoleBindingWithResponse("ptfujgicgaaoept", "aqutdewemxswvruu", "zzjgehkfki",
-                com.azure.core.util.Context.NONE);
+            .deleteRoleBindingWithResponse("kqmhhaowjr", "zvuporqzdfuydz", "kfvxcnq", com.azure.core.util.Context.NONE);
 
     }
 }

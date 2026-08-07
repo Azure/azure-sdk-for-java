@@ -23,7 +23,7 @@ public final class OrganizationsListEnvironmentsMockTests {
     @Test
     public void testListEnvironments() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"fdgnwncypuuwwlt\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"e\",\"resourceName\":\"eifzzhmk\",\"createdTimestamp\":\"svflyhbxcudch\",\"updatedTimestamp\":\"srboldforobw\",\"deletedTimestamp\":\"vizbfhfo\"}},\"id\":\"acqpbtuodxesza\",\"name\":\"belawumuaslzkwr\",\"type\":\"woycqucwyha\"}]}";
+            = "{\"value\":[{\"kind\":\"rqwexjkmfxapjwog\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"dcdab\",\"resourceName\":\"wpwyawbz\",\"createdTimestamp\":\"qbucljgkyexaoguy\",\"updatedTimestamp\":\"p\",\"deletedTimestamp\":\"sdaultxij\"}},\"id\":\"mfqwa\",\"name\":\"lnqnmcjn\",\"type\":\"zqdqxt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class OrganizationsListEnvironmentsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SCEnvironmentRecord> response = manager.organizations()
-            .listEnvironments("shcxlpmjerbdk", "lvidizozs", 1027236790, "ccxjm", com.azure.core.util.Context.NONE);
+            .listEnvironments("ubwefqs", "ap", 1449009668, "tf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fdgnwncypuuwwlt", response.iterator().next().kind());
-        Assertions.assertEquals(Package.ADVANCED,
+        Assertions.assertEquals("rqwexjkmfxapjwog", response.iterator().next().kind());
+        Assertions.assertEquals(Package.ESSENTIALS,
             response.iterator().next().streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("e", response.iterator().next().metadata().self());
-        Assertions.assertEquals("eifzzhmk", response.iterator().next().metadata().resourceName());
-        Assertions.assertEquals("svflyhbxcudch", response.iterator().next().metadata().createdTimestamp());
-        Assertions.assertEquals("srboldforobw", response.iterator().next().metadata().updatedTimestamp());
-        Assertions.assertEquals("vizbfhfo", response.iterator().next().metadata().deletedTimestamp());
+        Assertions.assertEquals("dcdab", response.iterator().next().metadata().self());
+        Assertions.assertEquals("wpwyawbz", response.iterator().next().metadata().resourceName());
+        Assertions.assertEquals("qbucljgkyexaoguy", response.iterator().next().metadata().createdTimestamp());
+        Assertions.assertEquals("p", response.iterator().next().metadata().updatedTimestamp());
+        Assertions.assertEquals("sdaultxij", response.iterator().next().metadata().deletedTimestamp());
     }
 }

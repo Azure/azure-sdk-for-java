@@ -13,17 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ListAccessRequestModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListAccessRequestModel model = BinaryData.fromString("{\"searchFilters\":{\"crmnohjtckwhds\":\"jdkirsoodqx\"}}")
-            .toObject(ListAccessRequestModel.class);
-        Assertions.assertEquals("jdkirsoodqx", model.searchFilters().get("crmnohjtckwhds"));
+        ListAccessRequestModel model
+            = BinaryData.fromString("{\"searchFilters\":{\"enjbdlwtgrhp\":\"eyy\",\"umasxazjpq\":\"jp\"}}")
+                .toObject(ListAccessRequestModel.class);
+        Assertions.assertEquals("eyy", model.searchFilters().get("enjbdlwtgrhp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListAccessRequestModel model
-            = new ListAccessRequestModel().withSearchFilters(mapOf("crmnohjtckwhds", "jdkirsoodqx"));
+            = new ListAccessRequestModel().withSearchFilters(mapOf("enjbdlwtgrhp", "eyy", "umasxazjpq", "jp"));
         model = BinaryData.fromObject(model).toObject(ListAccessRequestModel.class);
-        Assertions.assertEquals("jdkirsoodqx", model.searchFilters().get("crmnohjtckwhds"));
+        Assertions.assertEquals("eyy", model.searchFilters().get("enjbdlwtgrhp"));
     }
 
     // Use "Map.of" if available
