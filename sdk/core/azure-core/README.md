@@ -114,6 +114,31 @@ consumer requests more data until the consumer finishes processing or all pages 
 `PollerFlux` manages sending an initial service request and requesting processing updates on a fix interval until
 polling is cancelled or reaches a terminal state.
 
+#### Handling a failed long-running operation
+
+When a long-running operation reaches a terminal state that indicates failure
+(`LongRunningOperationStatus.FAILED`), requesting the final result throws an exception describing the failure,
+rather than returning a value. For the synchronous `SyncPoller<T, U>`, `waitForCompletion()` and `getFinalResult()`
+will throw once the operation completes unsuccessfully:
+
+```java
+SyncPoller<PollResponseType, ResultType> poller = client.beginLongRunningOperation();
+try {
+    ResultType result = poller.getFinalResult();
+} catch (RuntimeException exception) {
+    // The exception (or its cause) carries the failure details reported by the service, e.g. an
+    // HttpResponseException, or a service-specific subtype such as ManagementException for Azure Resource
+    // Manager operations, which exposes the error code and message returned by the service.
+}
+```
+
+For the asynchronous `PollerFlux<T, U>`, the `Mono<U>` returned from `.last().flatMap(AsyncPollResponse::getFinalResult)`
+(or the equivalent obtained by converting to a `SyncPoller`) emits an error signal instead of a value when the
+operation fails, so handle it with the usual reactive operators, such as `onErrorResume` or `doOnError`.
+
+If you'd rather react to a failure without waiting for an exception to be thrown, you can inspect each
+`PollResponse`/`AsyncPollResponse` as it's emitted and compare `getStatus()` to `LongRunningOperationStatus.FAILED`.
+
 ### Configuring Builders
 
 Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
