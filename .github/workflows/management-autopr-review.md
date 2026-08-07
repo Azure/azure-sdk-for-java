@@ -8,6 +8,7 @@ on:
   pull_request_target:
     types: [opened, reopened, ready_for_review, synchronize]
     branches: [main]
+  bots: [azure-sdk-automation]
   workflow_dispatch:
     inputs:
       item_number:

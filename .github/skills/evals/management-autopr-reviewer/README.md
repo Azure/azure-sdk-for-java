@@ -13,6 +13,8 @@ expected result; expected behavior belongs in the eval rubric.
 
 The workflow and eval defaults must use the same review model. Run the
 `true-negatives` suite repeatedly before broadening scope or adding a rule.
+The evaluation runner also verifies that the source and compiled workflow allow
+`azure-sdk-automation` through the generated pre-activation role gate.
 
 Run from the repository root:
 
