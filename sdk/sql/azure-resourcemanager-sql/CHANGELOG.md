@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+- Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
+  SQL authentication, and doesn't support Microsoft Entra ID or managed identities. Depending on the scenario, consider
+  Azure SQL Managed Instance link, failover groups or geo-replication, Azure Data Factory or Synapse pipelines with
+  change data capture (CDC) or Change Tracking, or transactional replication.
+
 ## 2.54.0 (2026-07-16)
 
 ### Features Added

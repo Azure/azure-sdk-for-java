@@ -15,7 +15,18 @@ import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An immutable client-side representation of an Azure SQL Server Sync Group. */
+/**
+ * An immutable client-side representation of an Azure SQL Server Sync Group.
+ *
+ * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+ * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+ * standards. Depending on the scenario, consider Azure SQL Managed Instance link, failover groups or geo-replication;
+ * Azure Data Factory or Synapse pipelines with change data capture (CDC) or Change Tracking; or transactional
+ * replication. See the
+ * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">migration
+ * guidance</a>.
+ */
+@Deprecated
 @Fluent
 public interface SqlSyncGroup extends ExternalChildResource<SqlSyncGroup, SqlDatabase>, HasInnerModel<SyncGroupInner>,
     HasResourceGroup, Refreshable<SqlSyncGroup>, Updatable<SqlSyncGroup.Update> {
@@ -168,7 +179,11 @@ public interface SqlSyncGroup extends ExternalChildResource<SqlSyncGroup, SqlDat
      * Gets the SQL Sync Member entry point.
      *
      * @return the SQL Sync Member entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+     * standards.
      */
+    @Deprecated
     SqlSyncMemberOperations.SqlSyncMemberActionsDefinition syncMembers();
 
     /**************************************************************

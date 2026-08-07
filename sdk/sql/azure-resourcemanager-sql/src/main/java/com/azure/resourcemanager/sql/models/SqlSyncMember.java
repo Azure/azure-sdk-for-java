@@ -14,7 +14,18 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import reactor.core.publisher.Mono;
 
-/** An immutable client-side representation of an Azure SQL Server Sync Member. */
+/**
+ * An immutable client-side representation of an Azure SQL Server Sync Member.
+ *
+ * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+ * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+ * standards. Depending on the scenario, consider Azure SQL Managed Instance link, failover groups or geo-replication;
+ * Azure Data Factory or Synapse pipelines with change data capture (CDC) or Change Tracking; or transactional
+ * replication. See the
+ * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">migration
+ * guidance</a>.
+ */
+@Deprecated
 @Fluent
 public interface SqlSyncMember extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
     HasInnerModel<SyncMemberInner>, HasResourceGroup, Refreshable<SqlSyncMember>, Updatable<SqlSyncMember.Update> {

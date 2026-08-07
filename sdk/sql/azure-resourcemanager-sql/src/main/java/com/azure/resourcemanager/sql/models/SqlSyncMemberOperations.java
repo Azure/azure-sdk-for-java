@@ -7,7 +7,18 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-/** A representation of the Azure SQL Sync Member operations. */
+/**
+ * A representation of the Azure SQL Sync Member operations.
+ *
+ * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+ * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+ * standards. Depending on the scenario, consider Azure SQL Managed Instance link, failover groups or geo-replication;
+ * Azure Data Factory or Synapse pipelines with change data capture (CDC) or Change Tracking; or transactional
+ * replication. See the
+ * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">migration
+ * guidance</a>.
+ */
+@Deprecated
 @Fluent
 public interface SqlSyncMemberOperations
     extends SupportsCreating<SqlSyncMemberOperations.DefinitionStages.WithSqlServer> {
@@ -182,7 +193,14 @@ public interface SqlSyncMemberOperations
         }
     }
 
-    /** Grouping of the Azure SQL Server Sync Member common actions. */
+    /**
+     * Grouping of the Azure SQL Server Sync Member common actions.
+     *
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+     * standards.
+     */
+    @Deprecated
     interface SqlSyncMemberActionsDefinition extends SqlChildrenOperations.SqlChildrenActionsDefinition<SqlSyncMember> {
         /**
          * Begins the definition of a new SQL Sync Member to be added to this server.

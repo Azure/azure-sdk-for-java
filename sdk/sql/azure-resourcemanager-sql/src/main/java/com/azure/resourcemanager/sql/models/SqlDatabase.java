@@ -326,7 +326,11 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
      * Gets the SQL Sync Group entry point for the current database.
      *
      * @return the SQL Sync Group entry point for the current database
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+     * standards.
      */
+    @Deprecated
     SqlSyncGroupOperations.SqlSyncGroupActionsDefinition syncGroups();
 
     /**************************************************************

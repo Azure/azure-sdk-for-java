@@ -81,14 +81,22 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
      * Gets the entry point of the SQL Sync Group.
      *
      * @return the SQL Sync Group entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+     * standards.
      */
+    @Deprecated
     SqlSyncGroupOperations syncGroups();
 
     /**
      * Gets the entry point of the SQL Sync Group.
      *
      * @return the SQL Sync Group entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+     * standards.
      */
+    @Deprecated
     SqlSyncMemberOperations syncMembers();
 
     /**

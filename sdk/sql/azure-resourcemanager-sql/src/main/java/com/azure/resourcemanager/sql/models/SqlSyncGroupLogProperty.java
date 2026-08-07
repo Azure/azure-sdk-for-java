@@ -7,7 +7,14 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.sql.fluent.models.SyncGroupLogPropertiesInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of an Azure SQL Server Sync Group. */
+/**
+ * An immutable client-side representation of an Azure SQL Server Sync Group log.
+ *
+ * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+ * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+ * standards.
+ */
+@Deprecated
 @Fluent
 public interface SqlSyncGroupLogProperty extends HasInnerModel<SyncGroupLogPropertiesInner> {
 

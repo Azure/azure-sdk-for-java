@@ -8,7 +8,14 @@ import com.azure.resourcemanager.sql.fluent.models.SyncFullSchemaPropertiesInner
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of an Azure SQL Server Sync Group. */
+/**
+ * An immutable client-side representation of an Azure SQL Server Sync Group schema.
+ *
+ * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+ * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
+ * standards.
+ */
+@Deprecated
 @Fluent
 public interface SqlSyncFullSchemaProperty extends HasInnerModel<SyncFullSchemaPropertiesInner> {
 
