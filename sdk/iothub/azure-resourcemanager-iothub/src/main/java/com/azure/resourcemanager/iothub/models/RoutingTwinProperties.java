@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * The RoutingTwinProperties model.
@@ -20,12 +19,12 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     /*
      * Twin desired properties
      */
-    private Map<String, Object> desired;
+    private Object desired;
 
     /*
      * Twin reported properties
      */
-    private Map<String, Object> reported;
+    private Object reported;
 
     /**
      * Creates an instance of RoutingTwinProperties class.
@@ -38,7 +37,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
      * 
      * @return the desired value.
      */
-    public Map<String, Object> desired() {
+    public Object desired() {
         return this.desired;
     }
 
@@ -48,7 +47,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
      * @param desired the desired value to set.
      * @return the RoutingTwinProperties object itself.
      */
-    public RoutingTwinProperties withDesired(Map<String, Object> desired) {
+    public RoutingTwinProperties withDesired(Object desired) {
         this.desired = desired;
         return this;
     }
@@ -58,7 +57,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
      * 
      * @return the reported value.
      */
-    public Map<String, Object> reported() {
+    public Object reported() {
         return this.reported;
     }
 
@@ -68,7 +67,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
      * @param reported the reported value to set.
      * @return the RoutingTwinProperties object itself.
      */
-    public RoutingTwinProperties withReported(Map<String, Object> reported) {
+    public RoutingTwinProperties withReported(Object reported) {
         this.reported = reported;
         return this;
     }
@@ -79,8 +78,12 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("desired", this.desired, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeMapField("reported", this.reported, (writer, element) -> writer.writeUntyped(element));
+        if (this.desired != null) {
+            jsonWriter.writeUntypedField("desired", this.desired);
+        }
+        if (this.reported != null) {
+            jsonWriter.writeUntypedField("reported", this.reported);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -100,11 +103,9 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
                 reader.nextToken();
 
                 if ("desired".equals(fieldName)) {
-                    Map<String, Object> desired = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedRoutingTwinProperties.desired = desired;
+                    deserializedRoutingTwinProperties.desired = reader.readUntyped();
                 } else if ("reported".equals(fieldName)) {
-                    Map<String, Object> reported = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedRoutingTwinProperties.reported = reported;
+                    deserializedRoutingTwinProperties.reported = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }
