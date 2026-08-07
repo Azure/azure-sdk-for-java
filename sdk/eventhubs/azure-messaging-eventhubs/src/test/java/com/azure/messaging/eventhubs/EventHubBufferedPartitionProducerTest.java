@@ -23,6 +23,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.util.concurrent.Queues;
 
@@ -35,6 +37,7 @@ import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.eventhubs.EventDataAggregatorTest.setupBatchMock;
@@ -61,6 +64,7 @@ public class EventHubBufferedPartitionProducerTest {
     private static final int QUEUE_SIZE = 5;
 
     private AutoCloseable mockCloseable;
+    private Scheduler scheduler;
 
     private final Semaphore successSemaphore = new Semaphore(1);
     private final Semaphore failedSemaphore = new Semaphore(1);
@@ -98,6 +102,7 @@ public class EventHubBufferedPartitionProducerTest {
     @BeforeEach
     public void beforeEach() {
         mockCloseable = MockitoAnnotations.openMocks(this);
+        scheduler = Schedulers.newSingle("buffered-producer-test");
 
         returnedBatches.add(batch);
         returnedBatches.add(batch2);
@@ -107,6 +112,7 @@ public class EventHubBufferedPartitionProducerTest {
 
         when(client.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(client.getEventHubName()).thenReturn(EVENT_HUB_NAME);
+        when(client.getScheduler()).thenReturn(scheduler);
         when(client.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS));
 
         when(client.createBatch(any(CreateBatchOptions.class))).thenAnswer(invocation -> {
@@ -125,7 +131,42 @@ public class EventHubBufferedPartitionProducerTest {
             mockCloseable.close();
         }
 
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
+
         Mockito.framework().clearInlineMock(this);
+    }
+
+    @Test
+    public void publishesUsingClientScheduler() throws InterruptedException {
+        successSemaphore.acquire();
+        failedSemaphore.acquire();
+
+        final AtomicReference<String> callbackThread = new AtomicReference<>();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(5));
+        options.setSendSucceededContext(context -> {
+            callbackThread.set(Thread.currentThread().getName());
+            successSemaphore.release();
+        });
+        options.setSendFailedContext(context -> failedSemaphore.release());
+
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1, event2);
+        when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
+
+        StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        final Duration waitTime = options.getMaxWaitTime().plus(options.getMaxWaitTime());
+        assertTrue(successSemaphore.tryAcquire(waitTime.toMillis(), TimeUnit.MILLISECONDS));
+        assertNotNull(callbackThread.get());
+        assertTrue(callbackThread.get().contains("buffered-producer-test"));
     }
 
     @Test

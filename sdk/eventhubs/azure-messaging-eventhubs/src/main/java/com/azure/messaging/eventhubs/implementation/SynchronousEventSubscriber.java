@@ -12,8 +12,11 @@ import reactor.util.context.Context;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 
@@ -21,10 +24,12 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SUBSC
  * Subscriber that takes {@link SynchronousReceiveWork} and publishes events to them in the order received.
  */
 public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
-    private final Timer timer = new Timer();
+    private static final ScheduledExecutorService TIMEOUT_SCHEDULER = createTimeoutScheduler();
+
     private final ClientLogger logger;
     private final SynchronousReceiveWork work;
     private volatile Subscription subscription;
+    private volatile ScheduledFuture<?> timeoutTask;
     private final Context context;
     private final String subscriberId;
 
@@ -55,7 +60,8 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         logger.atInfo().addKeyValue("pendingEvents", work.getNumberOfEvents()).log("Scheduling receive timeout task.");
         subscription.request(work.getNumberOfEvents());
 
-        timer.schedule(new ReceiveTimeoutTask(this::dispose, this.logger), work.getTimeout().toMillis());
+        timeoutTask = TIMEOUT_SCHEDULER.schedule(new ReceiveTimeoutTask(this::dispose, this.logger),
+            work.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -96,12 +102,29 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
     @Override
     public void dispose() {
         work.complete();
-        subscription.cancel();
-        timer.cancel();
+        if (subscription != null) {
+            subscription.cancel();
+        }
+
+        if (timeoutTask != null) {
+            timeoutTask.cancel(false);
+        }
+
         super.dispose();
     }
 
-    private static class ReceiveTimeoutTask extends TimerTask {
+    static ScheduledExecutorService getTimeoutScheduler() {
+        return TIMEOUT_SCHEDULER;
+    }
+
+    private static ScheduledExecutorService createTimeoutScheduler() {
+        final ScheduledThreadPoolExecutor scheduler
+            = new ScheduledThreadPoolExecutor(1, new ReceiveTimeoutThreadFactory());
+        scheduler.setRemoveOnCancelPolicy(true);
+        return scheduler;
+    }
+
+    private static class ReceiveTimeoutTask implements Runnable {
         private final ClientLogger logger;
         private final Runnable onDispose;
 
@@ -110,10 +133,18 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
             this.logger = logger;
         }
 
-        @Override
         public void run() {
             logger.info("Timeout encountered, disposing of subscriber.");
             onDispose.run();
+        }
+    }
+
+    private static class ReceiveTimeoutThreadFactory implements ThreadFactory {
+        @Override
+        public Thread newThread(Runnable runnable) {
+            final Thread thread = new Thread(runnable, "eventhubs-sync-receive-timeout");
+            thread.setDaemon(true);
+            return thread;
         }
     }
 }

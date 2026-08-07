@@ -1,0 +1,118 @@
+--- a/src/main/java/com/azure/messaging/eventhubs/implementation/AmqpReceiveLinkProcessor.java
++++ b/src/main/java/com/azure/messaging/eventhubs/implementation/AmqpReceiveLinkProcessor.java
+@@ -49,10 +49,20 @@ final class AmqpReceiveLinkProcessor extends Flux<Message> implements AmqpRecei
+     private final String linkName;
+     private final AmqpReceiveLink receiveLink;
+     private final MessageSerializer messageSerializer;
+-    private final ConcurrentLinkedDeque<Message> messageQueue = new ConcurrentLinkedDeque<>();
++    private final BlockingQueue<Message> messageQueue;
++    private final int maxQueueSize;
+     private final AtomicBoolean isDisposed = new AtomicBoolean();
+     private final CompositeDisposable upstream = new CompositeDisposable();
+ 
++    // Configuration options
++    private static final int DEFAULT_MAX_QUEUE_SIZE = 10_000;
++    private final BackpressureStrategy backpressureStrategy;
++    
++    public enum BackpressureStrategy {
++        DROP_OLDEST,    // Drop oldest message when queue full
++        BLOCK,          // Block until space available  
++        DROP_NEWEST     // Drop new message when queue full
++    }
+     /**
+      * The prefetch count set by the developer.
+      */
+@@ -63,6 +73,12 @@ final class AmqpReceiveLinkProcessor extends Flux<Message> implements AmqpRecei
+ 
+     AmqpReceiveLinkProcessor(String linkName, AmqpReceiveLink receiveLink, 
+                             MessageSerializer messageSerializer, int prefetch) {
++        this(linkName, receiveLink, messageSerializer, prefetch, 
++             DEFAULT_MAX_QUEUE_SIZE, BackpressureStrategy.DROP_OLDEST);
++    }
++
++    AmqpReceiveLinkProcessor(String linkName, AmqpReceiveLink receiveLink,
++                            MessageSerializer messageSerializer, int prefetch,
++                            int maxQueueSize, BackpressureStrategy strategy) {
+         this.linkName = linkName;
+         this.receiveLink = receiveLink;
+         this.messageSerializer = messageSerializer;
+         this.prefetch = prefetch;
++        this.maxQueueSize = maxQueueSize > 0 ? maxQueueSize : DEFAULT_MAX_QUEUE_SIZE;
++        this.backpressureStrategy = strategy;
++        this.messageQueue = new LinkedBlockingQueue<>(this.maxQueueSize);
+ 
+         this.receiveLink.setOnMessage(this::onNext);
+         this.receiveLink.setOnError(this::onError);
+@@ -95,12 +111,40 @@ final class AmqpReceiveLinkProcessor extends Flux<Message> implements AmqpRecei
+     @Override
+     public void onNext(Message message) {
+-        messageQueue.offer(message);
+-        onUpstreamSignal();
++        if (!messageQueue.offer(message)) {
++            // Queue is full - handle backpressure
++            handleBackpressure(message);
++        } else {
++            onUpstreamSignal();
++        }
++    }
++
++    private void handleBackpressure(Message message) {
++        switch (backpressureStrategy) {
++            case DROP_OLDEST:
++                Message dropped = messageQueue.poll();
++                messageQueue.offer(message);
++                if (dropped != null) {
++                    LOGGER.atWarning()
++                        .addKeyValue("queueSize", maxQueueSize)
++                        .addKeyValue("linkName", linkName)
++                        .log("Message queue full, dropped oldest message to prevent OOM");
++                }
++                break;
++                
++            case DROP_NEWEST:
++                LOGGER.atWarning()
++                    .addKeyValue("queueSize", maxQueueSize) 
++                    .addKeyValue("linkName", linkName)
++                    .log("Message queue full, dropping new message");
++                break;
++                
++            case BLOCK:
++                try {
++                    messageQueue.put(message); // Blocks until space available
++                } catch (InterruptedException e) {
++                    Thread.currentThread().interrupt();
++                    onError(new RuntimeException("Interrupted while waiting for queue space", e));
++                }
++                break;
++        }
+     }
+ 
+     @Override
+@@ -720,4 +764,13 @@ final class AmqpReceiveLinkProcessor extends Flux<Message> implements AmqpRecei
+             return String.format("connectionId: %s, linkName: %s, isDisposed: %s", connectionId, linkName,
+                 isDisposed.get());
+         }
++    
++    /**
++     * Gets current queue utilization for monitoring purposes.
++     */
++    public QueueStats getQueueStats() {
++        return new QueueStats(messageQueue.size(), maxQueueSize, backpressureStrategy);
++    }
++    
++    public static class QueueStats {
++        public final int currentSize;
++        public final int maxSize;
++        public final BackpressureStrategy strategy;
++        
++        QueueStats(int currentSize, int maxSize, BackpressureStrategy strategy) {
++            this.currentSize = currentSize;
++            this.maxSize = maxSize;
++            this.strategy = strategy;
++        }
++        
++        public double getUtilizationPercent() {
++            return 100.0 * currentSize / maxSize;
++        }
++    }
+ }

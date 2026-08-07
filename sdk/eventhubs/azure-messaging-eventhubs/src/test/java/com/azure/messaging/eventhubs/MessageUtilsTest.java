@@ -26,10 +26,13 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -191,6 +194,28 @@ public class MessageUtilsTest {
         assertMessageAnnotations(actual);
         assertNull(actual.getHeader());
         assertProperties(actual);
+    }
+
+    @Test
+    public void convertReturnsEmptyMapWhenSourceEmpty() {
+        final Map<Symbol, Object> actual = MessageUtils.convert(Collections.emptyMap());
+
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    public void convertConvertsInstantValuesToDate() {
+        final Instant instant = Instant.ofEpochSecond(1825644760L);
+        final Map<String, Object> source = new HashMap<>();
+        source.put("instant", instant);
+        source.put("value", 5L);
+
+        final Map<Symbol, Object> actual = MessageUtils.convert(source);
+
+        assertInstanceOf(java.util.Date.class, actual.get(Symbol.valueOf("instant")));
+        assertEquals(instant.toEpochMilli(), ((java.util.Date) actual.get(Symbol.valueOf("instant"))).getTime());
+        assertEquals(5L, actual.get(Symbol.valueOf("value")));
     }
 
     private void assertBody(Message actual) {
