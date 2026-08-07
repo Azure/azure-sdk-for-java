@@ -16,7 +16,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.fluent.models.PoolBootstrapDataInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
+import com.azure.resourcemanager.containerservice.models.ListBootstrapDataRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -916,6 +918,80 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName, Context context);
+
+    /**
+     * Lists bootstrap data for a FlexNode agent pool.
+     * 
+     * Returns pool-level bootstrap configuration for FlexNode machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bootstrap configuration for a FlexNode pool along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, ListBootstrapDataRequest body);
+
+    /**
+     * Lists bootstrap data for a FlexNode agent pool.
+     * 
+     * Returns pool-level bootstrap configuration for FlexNode machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bootstrap configuration for a FlexNode pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PoolBootstrapDataInner> listBootstrapDataAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, ListBootstrapDataRequest body);
+
+    /**
+     * Lists bootstrap data for a FlexNode agent pool.
+     * 
+     * Returns pool-level bootstrap configuration for FlexNode machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bootstrap configuration for a FlexNode pool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PoolBootstrapDataInner> listBootstrapDataWithResponse(String resourceGroupName, String resourceName,
+        String agentPoolName, ListBootstrapDataRequest body, Context context);
+
+    /**
+     * Lists bootstrap data for a FlexNode agent pool.
+     * 
+     * Returns pool-level bootstrap configuration for FlexNode machines.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bootstrap configuration for a FlexNode pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName, String agentPoolName,
+        ListBootstrapDataRequest body);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixSkuTier;
  */
 public final class PublicIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
+     * x-ms-original-file: 2025-07-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
      */
     /**
      * Sample code: Create public IP prefix defaults with StandardV2 Sku.
@@ -34,7 +34,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpPrefixCreateDefaults.json
+     * x-ms-original-file: 2025-07-01/PublicIpPrefixCreateDefaults.json
      */
     /**
      * Sample code: Create public IP prefix defaults.
@@ -52,7 +52,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: 2025-07-01/PublicIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP prefix allocation method.

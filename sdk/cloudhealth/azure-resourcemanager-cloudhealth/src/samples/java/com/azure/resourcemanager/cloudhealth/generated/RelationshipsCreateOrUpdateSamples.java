@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Relationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/Relationships_CreateOrUpdate.json
      */
     /**
      * Sample code: Relationships_CreateOrUpdate.
@@ -22,12 +22,12 @@ public final class RelationshipsCreateOrUpdateSamples {
      */
     public static void relationshipsCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.relationships()
-            .define("rel1")
-            .withExistingHealthmodel("rgopenapi", "model1")
-            .withProperties(new RelationshipProperties().withDisplayName("My relationship")
-                .withParentEntityName("Entity1")
-                .withChildEntityName("Entity2")
-                .withTags(mapOf("key9681", "fakeTokenPlaceholder")))
+            .define("web-frontend-to-orders-api")
+            .withExistingHealthmodel("online-store-rg", "online-store")
+            .withProperties(new RelationshipProperties().withDisplayName("Web Frontend depends on Orders API")
+                .withParentEntityName("web-frontend")
+                .withChildEntityName("orders-api")
+                .withTags(mapOf("environment", "production", "team", "online-store")))
             .create();
     }
 

@@ -100,6 +100,7 @@ public final class AzureCreateResponseOptions implements JsonSerializable<AzureC
                 element.writeTo(writer);
             }
         });
+        jsonWriter.writeJsonField("user_security_context", this.userSecurityContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,11 +125,54 @@ public final class AzureCreateResponseOptions implements JsonSerializable<AzureC
                     Map<String, BinaryData> structuredInputs = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAzureCreateResponseOptions.structuredInputs = structuredInputs;
+                } else if ("user_security_context".equals(fieldName)) {
+                    deserializedAzureCreateResponseOptions.userSecurityContext
+                        = AzureUserSecurityContext.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedAzureCreateResponseOptions;
         });
+    }
+
+    /*
+     * User security context contains several parameters that describe the application itself, and the end user that
+     * interacts with the application. These fields assist your security operations teams to investigate and mitigate
+     * security incidents by providing a comprehensive approach to protecting your AI applications. [Learn
+     * more](https://aka.ms/TP4AI/Documentation/EndUserContext) about protecting AI applications using Microsoft
+     * Defender for Cloud.
+     */
+    @Generated
+    private AzureUserSecurityContext userSecurityContext;
+
+    /**
+     * Get the userSecurityContext property: User security context contains several parameters that describe the
+     * application itself, and the end user that interacts with the application. These fields assist your security
+     * operations teams to investigate and mitigate security incidents by providing a comprehensive approach to
+     * protecting your AI applications. [Learn more](https://aka.ms/TP4AI/Documentation/EndUserContext) about protecting
+     * AI applications using Microsoft Defender for Cloud.
+     *
+     * @return the userSecurityContext value.
+     */
+    @Generated
+    public AzureUserSecurityContext getUserSecurityContext() {
+        return this.userSecurityContext;
+    }
+
+    /**
+     * Set the userSecurityContext property: User security context contains several parameters that describe the
+     * application itself, and the end user that interacts with the application. These fields assist your security
+     * operations teams to investigate and mitigate security incidents by providing a comprehensive approach to
+     * protecting your AI applications. [Learn more](https://aka.ms/TP4AI/Documentation/EndUserContext) about protecting
+     * AI applications using Microsoft Defender for Cloud.
+     *
+     * @param userSecurityContext the userSecurityContext value to set.
+     * @return the AzureCreateResponseOptions object itself.
+     */
+    @Generated
+    public AzureCreateResponseOptions setUserSecurityContext(AzureUserSecurityContext userSecurityContext) {
+        this.userSecurityContext = userSecurityContext;
+        return this;
     }
 }

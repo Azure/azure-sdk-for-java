@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedBackupShortTermRetentionPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetListManagedShortTermRetentionPolicy.json
+     * x-ms-original-file: 2025-01-01/GetListManagedShortTermRetentionPolicy.json
      */
     /**
      * Sample code: Get the short term retention policy list for the database.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ManagedComputeDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListVmManagedComputeDeployments.json
+     * x-ms-original-file: 2026-05-15-preview/ListVmManagedComputeDeployments.json
      */
     /**
      * Sample code: ListVmManagedComputeDeployments.
@@ -22,7 +22,7 @@ public final class ManagedComputeDeploymentsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListManagedComputeDeployments.json
+     * x-ms-original-file: 2026-05-15-preview/ListManagedComputeDeployments.json
      */
     /**
      * Sample code: ListManagedComputeDeployments.

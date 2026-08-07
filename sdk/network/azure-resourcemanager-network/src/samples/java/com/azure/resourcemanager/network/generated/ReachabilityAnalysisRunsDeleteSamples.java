@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ReachabilityAnalysisRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ReachabilityAnalysisRunDelete.json
+     * x-ms-original-file: 2025-07-01/ReachabilityAnalysisRunDelete.json
      */
     /**
      * Sample code: ReachabilityAnalysisRunDelete.

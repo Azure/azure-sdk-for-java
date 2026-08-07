@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityPerimeterLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLinkPut.json
+     * x-ms-original-file: 2025-07-01/NspLinkPut.json
      */
     /**
      * Sample code: NspLinksPut.

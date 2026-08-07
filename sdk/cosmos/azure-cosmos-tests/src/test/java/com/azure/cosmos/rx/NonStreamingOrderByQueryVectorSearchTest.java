@@ -11,10 +11,12 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
@@ -28,7 +30,6 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,21 +38,24 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
+import static com.azure.cosmos.rx.TestSuiteBase.createCollection;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
-import static com.azure.cosmos.rx.TestSuiteBase.waitForCollectionToBeAvailableToRead;
 import static org.assertj.core.api.Assertions.assertThat;
-import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
-
 public class NonStreamingOrderByQueryVectorSearchTest {
     protected static final int TIMEOUT = 30000;
-    protected static final int SETUP_TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
+    private static final Duration SPLIT_WAIT_TIMEOUT = Duration.ofMinutes(15);
+    private static final Duration SPLIT_POLL_INTERVAL = Duration.ofSeconds(10);
+    // Setup creates a database plus three indexed containers sequentially; each create can
+    // consume the bounded create/readiness/feed-range retry budget on a loaded live account.
+    protected static final int SETUP_TIMEOUT = 1_200_000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
     protected static Logger logger = LoggerFactory.getLogger(NonStreamingOrderByQueryVectorSearchTest.class.getSimpleName());
@@ -87,22 +91,27 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(flatContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
-        database.createContainer(containerProperties).block();
-        flatIndexContainer = database.getContainer(flatContainerId);
+        flatIndexContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         containerProperties = new CosmosContainerProperties(quantizedContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
-        database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(20000)).block();
-        quantizedIndexContainer = database.getContainer(quantizedContainerId);
+        quantizedIndexContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions(),
+            20000);
 
         containerProperties = new CosmosContainerProperties(largeDataContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(2));
-        database.createContainer(containerProperties).block();
-        largeDataContainer = database.getContainer(largeDataContainerId);
-
-        waitForCollectionToBeAvailableToRead(largeDataContainer, /* probeClient */ null);
+        largeDataContainer = createCollection(
+            database,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         for (Document doc : getVectorDocs()) {
             flatIndexContainer.createItem(doc).block();
@@ -110,7 +119,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         }
     }
 
-    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);
@@ -220,7 +229,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         validateOrdering(1000, resultDocs, false);
     }
 
-    @Test(groups = {"split"}, timeOut = TIMEOUT * 40, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
     public void splitHandlingVectorSearch() throws Exception {
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
         List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(flatContainerId, asyncDocumentClient);
@@ -236,25 +245,17 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         // Scale up the throughput for a split
         logger.info("Scaling up throughput for split");
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(16000);
-        ThroughputResponse throughputResponse = flatIndexContainer.replaceThroughput(throughputProperties).block();
+        Integer updatedThroughput = flatIndexContainer
+            .replaceThroughput(throughputProperties)
+            .map(response -> response.getProperties().getManualThroughput())
+            .block();
         logger.info("Throughput replace request submitted for {} ",
-            throughputResponse.getProperties().getManualThroughput());
-        throughputResponse = flatIndexContainer.readThroughput().block();
+            updatedThroughput);
 
-        // Wait for the throughput update to complete so that we get the partition split
-        while (true) {
-            assert throughputResponse != null;
-            if (!throughputResponse.isReplacePending()) {
-                break;
-            }
-            logger.info("Waiting for split to complete");
-            Thread.sleep(10 * 1000);
-            throughputResponse = flatIndexContainer.readThroughput().block();
-        }
-
-        List<PartitionKeyRange> partitionKeyRangesAfterSplit = getPartitionKeyRanges(flatContainerId, asyncDocumentClient);
-        assertThat(partitionKeyRangesAfterSplit.size()).isGreaterThan(partitionKeyRanges.size())
-            .as("Partition ranges should increase after split");
+        List<PartitionKeyRange> partitionKeyRangesAfterSplit = waitForPartitionCountToIncrease(
+            flatContainerId,
+            asyncDocumentClient,
+            partitionKeyRanges.size());
         logger.info("After split num partitions = {}", partitionKeyRangesAfterSplit.size());
 
         resultDocs = flatIndexContainer.queryItems(vanillaQuery, new CosmosQueryRequestOptions(), Document.class).byPage()
@@ -273,6 +274,33 @@ public class NonStreamingOrderByQueryVectorSearchTest {
             .collectList().block();
         partitionFeedResponseList.forEach(f -> partitionKeyRanges.addAll(f.getResults()));
         return partitionKeyRanges;
+    }
+
+    private List<PartitionKeyRange> waitForPartitionCountToIncrease(
+        String containerId,
+        AsyncDocumentClient asyncDocumentClient,
+        int initialPartitionCount) throws InterruptedException {
+
+        long deadlineNanos = System.nanoTime() + SPLIT_WAIT_TIMEOUT.toNanos();
+        List<PartitionKeyRange> currentRanges = getPartitionKeyRanges(containerId, asyncDocumentClient);
+        while (currentRanges.size() <= initialPartitionCount && System.nanoTime() < deadlineNanos) {
+            logger.info(
+                "Waiting for partition count to increase beyond {}; current count={}",
+                initialPartitionCount,
+                currentRanges.size());
+            Thread.sleep(SPLIT_POLL_INTERVAL.toMillis());
+            currentRanges = getPartitionKeyRanges(containerId, asyncDocumentClient);
+        }
+
+        if (currentRanges.size() <= initialPartitionCount) {
+            throw new SplitTimeoutException(String.format(
+                "Partition count for container '%s' did not increase beyond %d within %s",
+                containerId,
+                initialPartitionCount,
+                SPLIT_WAIT_TIMEOUT));
+        }
+
+        return currentRanges;
     }
 
     private void validateOrdering(int top, List<Document> docs, boolean isEucledian) {

@@ -21,7 +21,7 @@ public final class ManagedComputeCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"ekmuynfpkyvnhiy\",\"location\":\"horkslhraqk\",\"availableAccelerators\":1484484709,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":660956854,\"totalAvailableCapacity\":1744769282,\"largestDeploymentCapacity\":762391820},{\"modelInstanceAcceleratorCount\":1319501768,\"totalAvailableCapacity\":188009596,\"largestDeploymentCapacity\":306040449},{\"modelInstanceAcceleratorCount\":1419860271,\"totalAvailableCapacity\":1333192003,\"largestDeploymentCapacity\":258205065},{\"modelInstanceAcceleratorCount\":1810053258,\"totalAvailableCapacity\":398459789,\"largestDeploymentCapacity\":1378042679}]},\"id\":\"xnjtqbgysib\",\"name\":\"hnvxwtd\",\"type\":\"tcbjdbtqy\"}]}";
+            = "{\"value\":[{\"properties\":{\"acceleratorType\":\"na\",\"availableAccelerators\":1632518981,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":25042287,\"totalAvailableCapacity\":683575733,\"largestDeploymentCapacity\":1853132561}]},\"id\":\"moplukfykkfhsov\",\"name\":\"dkrmjxmwqpdk\",\"type\":\"sjqb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ManagedComputeCapacitiesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ManagedComputeCapacity> response = manager.managedComputeCapacities()
-            .list("tuipjclzjwaqdzq", "dewuwxyl", "zzzevtzqwczoc", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedComputeCapacity> response
+            = manager.managedComputeCapacities().list("a", "rvkgpogplbjuvl", "hxnrn", com.azure.core.util.Context.NONE);
 
     }
 }

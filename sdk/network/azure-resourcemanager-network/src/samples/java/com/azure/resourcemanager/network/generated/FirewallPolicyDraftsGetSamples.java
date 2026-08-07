@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyDraftsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyDraftGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyDraftGet.json
      */
     /**
      * Sample code: get firewall policy draft.

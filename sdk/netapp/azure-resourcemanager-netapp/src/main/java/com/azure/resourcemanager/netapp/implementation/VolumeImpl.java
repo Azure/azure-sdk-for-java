@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
@@ -347,6 +348,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Long inheritedSizeInBytes() {
         return this.innerModel().inheritedSizeInBytes();
+    }
+
+    public BreakthroughMode breakthroughMode() {
+        return this.innerModel().breakthroughMode();
     }
 
     public Region region() {
@@ -929,6 +934,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
+        return this;
+    }
+
+    public VolumeImpl withBreakthroughMode(BreakthroughMode breakthroughMode) {
+        this.innerModel().withBreakthroughMode(breakthroughMode);
         return this;
     }
 

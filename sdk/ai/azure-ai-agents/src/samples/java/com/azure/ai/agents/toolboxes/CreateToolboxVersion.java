@@ -4,10 +4,11 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaToolboxesClient;
-import com.azure.ai.agents.models.McpTool;
-import com.azure.ai.agents.models.Tool;
+import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.models.McpToolboxTool;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -15,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This sample demonstrates how to create a toolbox version using the BetaToolboxesClient.
+ * This sample demonstrates how to create a toolbox version using the ToolboxesClient.
  *
  * <p>A toolbox stores reusable tool definitions that can be shared across agents.
  * Each call to {@code createToolboxVersion} creates a new immutable version. If the
@@ -30,15 +31,15 @@ public class CreateToolboxVersion {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         // Code sample for creating a toolbox version
-        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .beta().buildBetaToolboxesClient();
+                .buildToolboxesClient();
 
-        List<Tool> tools = Arrays.asList(
-                new McpTool("api_specs")
+        List<ToolboxTool> tools = Arrays.asList(
+                new McpToolboxTool("api_specs")
                         .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                        .setRequireApproval("never")
+                        .setRequireApproval(BinaryData.fromString("\"never\""))
         );
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.createToolboxVersion(

@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.resourcemanager.cosmos.models.CommandPostBody;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for CassandraClusters InvokeCommand.
  */
 public final class CassandraClustersInvokeCommandSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraCommand.json
+     * x-ms-original-file: 2026-03-15/CosmosDBManagedCassandraCommand.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraCommand.
@@ -24,19 +22,7 @@ public final class CassandraClustersInvokeCommandSamples {
         manager.serviceClient()
             .getCassandraClusters()
             .invokeCommand("cassandra-prod-rg", "cassandra-prod",
-                new CommandPostBody().withCommand("nodetool").withArguments(mapOf("status", "")).withHost("10.0.1.12"),
+                new CommandPostBody().withCommand("nodetool status").withHost("10.0.1.12"),
                 com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

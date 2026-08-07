@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
@@ -331,6 +332,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /*
      * Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      */
     private EnableSubvolumes enableSubvolumes;
 
@@ -354,6 +356,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Space shared by short term clone volume with parent volume in bytes.
      */
     private Long inheritedSizeInBytes;
+
+    /*
+     * Specifies whether the volume operates in Breakthrough Mode.
+     */
+    private BreakthroughMode breakthroughMode;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -1336,7 +1343,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1345,7 +1353,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeProperties object itself.
@@ -1401,6 +1410,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public Long inheritedSizeInBytes() {
         return this.inheritedSizeInBytes;
+    }
+
+    /**
+     * Get the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @return the breakthroughMode value.
+     */
+    public BreakthroughMode breakthroughMode() {
+        return this.breakthroughMode;
+    }
+
+    /**
+     * Set the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @param breakthroughMode the breakthroughMode value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withBreakthroughMode(BreakthroughMode breakthroughMode) {
+        this.breakthroughMode = breakthroughMode;
+        return this;
     }
 
     /**
@@ -1490,6 +1519,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("enableSubvolumes",
             this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
+        jsonWriter.writeStringField("breakthroughMode",
+            this.breakthroughMode == null ? null : this.breakthroughMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1638,6 +1669,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
                 } else if ("inheritedSizeInBytes".equals(fieldName)) {
                     deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("breakthroughMode".equals(fieldName)) {
+                    deserializedVolumeProperties.breakthroughMode = BreakthroughMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

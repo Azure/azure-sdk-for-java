@@ -170,7 +170,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -224,7 +224,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -342,7 +342,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         } else {
             routingRule.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -403,7 +403,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         } else {
             routingRule.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -522,7 +522,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkManagerName, configurationName,
@@ -577,7 +577,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, ruleCollectionName, ruleName, force, context);
@@ -857,7 +857,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -915,7 +915,7 @@ public final class RoutingRulesClientImpl implements RoutingRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

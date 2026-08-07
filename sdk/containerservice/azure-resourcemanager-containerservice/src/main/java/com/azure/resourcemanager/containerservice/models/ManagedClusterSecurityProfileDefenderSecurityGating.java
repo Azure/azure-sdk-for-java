@@ -13,31 +13,31 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Microsoft Defender settings for security gating, validates container images eligibility for deployment based on
- * Defender for Containers security findings. Using Admission Controller, it either audits or prevents the deployment of
+ * Microsoft Defender settings for security gating. This validates container image eligibility for deployment based on
+ * Defender for Containers security findings. Using Admission Controller, it either audits or prevents deployment of
  * images that do not meet security standards.
  */
 @Fluent
 public final class ManagedClusterSecurityProfileDefenderSecurityGating
     implements JsonSerializable<ManagedClusterSecurityProfileDefenderSecurityGating> {
     /*
-     * Whether to enable Defender security gating. When enabled, the gating feature will scan container images and audit
-     * or block the deployment of images that do not meet security standards according to the configured security rules.
+     * Whether to enable Defender security gating. When enabled, the gating feature scans container images and audits or
+     * blocks deployment of images that do not meet security standards according to configured security rules. For more
+     * information, see https://aka.ms/KubernetesDefenderAuditRule.
      */
     private Boolean enabled;
 
     /*
-     * List of identities that the admission controller will make use of in order to pull security artifacts from the
-     * registry. These are the same identities used by the cluster to pull container images. Each identity provided
-     * should have federated identity credential attached to it.
+     * List of identities that the admission controller uses to pull security artifacts from registries. These are the
+     * same identities used by the cluster to pull container images. For more information on configuring this identity,
+     * see https://learn.microsoft.com/en-us/azure/defender-for-cloud/gated-deployment-infrastructure-as-code.
      */
-    private List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem> identities;
+    private List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentity> identities;
 
     /*
-     * In use only while registry access granted by secret rather than managed identity. Set whether to grant the
-     * Defender gating agent access to the cluster's secrets for pulling images from registries. If secret access is
-     * denied and the registry requires pull secrets, the add-on will not perform any image validation. Default value is
-     * false.
+     * In use only while registry access is granted by secret rather than managed identity. Sets whether to grant the
+     * Defender gating agent access to cluster secrets for pulling images from registries. If secret access is denied
+     * and the registry requires pull secrets, the add-on will not perform image validation. Default value is false.
      */
     private Boolean allowSecretAccess;
 
@@ -48,9 +48,9 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGating
     }
 
     /**
-     * Get the enabled property: Whether to enable Defender security gating. When enabled, the gating feature will scan
-     * container images and audit or block the deployment of images that do not meet security standards according to the
-     * configured security rules.
+     * Get the enabled property: Whether to enable Defender security gating. When enabled, the gating feature scans
+     * container images and audits or blocks deployment of images that do not meet security standards according to
+     * configured security rules. For more information, see https://aka.ms/KubernetesDefenderAuditRule.
      * 
      * @return the enabled value.
      */
@@ -59,9 +59,9 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGating
     }
 
     /**
-     * Set the enabled property: Whether to enable Defender security gating. When enabled, the gating feature will scan
-     * container images and audit or block the deployment of images that do not meet security standards according to the
-     * configured security rules.
+     * Set the enabled property: Whether to enable Defender security gating. When enabled, the gating feature scans
+     * container images and audits or blocks deployment of images that do not meet security standards according to
+     * configured security rules. For more information, see https://aka.ms/KubernetesDefenderAuditRule.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileDefenderSecurityGating object itself.
@@ -72,35 +72,37 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGating
     }
 
     /**
-     * Get the identities property: List of identities that the admission controller will make use of in order to pull
-     * security artifacts from the registry. These are the same identities used by the cluster to pull container images.
-     * Each identity provided should have federated identity credential attached to it.
+     * Get the identities property: List of identities that the admission controller uses to pull security artifacts
+     * from registries. These are the same identities used by the cluster to pull container images. For more information
+     * on configuring this identity, see
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/gated-deployment-infrastructure-as-code.
      * 
      * @return the identities value.
      */
-    public List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem> identities() {
+    public List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentity> identities() {
         return this.identities;
     }
 
     /**
-     * Set the identities property: List of identities that the admission controller will make use of in order to pull
-     * security artifacts from the registry. These are the same identities used by the cluster to pull container images.
-     * Each identity provided should have federated identity credential attached to it.
+     * Set the identities property: List of identities that the admission controller uses to pull security artifacts
+     * from registries. These are the same identities used by the cluster to pull container images. For more information
+     * on configuring this identity, see
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/gated-deployment-infrastructure-as-code.
      * 
      * @param identities the identities value to set.
      * @return the ManagedClusterSecurityProfileDefenderSecurityGating object itself.
      */
     public ManagedClusterSecurityProfileDefenderSecurityGating
-        withIdentities(List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem> identities) {
+        withIdentities(List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentity> identities) {
         this.identities = identities;
         return this;
     }
 
     /**
-     * Get the allowSecretAccess property: In use only while registry access granted by secret rather than managed
-     * identity. Set whether to grant the Defender gating agent access to the cluster's secrets for pulling images from
-     * registries. If secret access is denied and the registry requires pull secrets, the add-on will not perform any
-     * image validation. Default value is false.
+     * Get the allowSecretAccess property: In use only while registry access is granted by secret rather than managed
+     * identity. Sets whether to grant the Defender gating agent access to cluster secrets for pulling images from
+     * registries. If secret access is denied and the registry requires pull secrets, the add-on will not perform image
+     * validation. Default value is false.
      * 
      * @return the allowSecretAccess value.
      */
@@ -109,10 +111,10 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGating
     }
 
     /**
-     * Set the allowSecretAccess property: In use only while registry access granted by secret rather than managed
-     * identity. Set whether to grant the Defender gating agent access to the cluster's secrets for pulling images from
-     * registries. If secret access is denied and the registry requires pull secrets, the add-on will not perform any
-     * image validation. Default value is false.
+     * Set the allowSecretAccess property: In use only while registry access is granted by secret rather than managed
+     * identity. Sets whether to grant the Defender gating agent access to cluster secrets for pulling images from
+     * registries. If secret access is denied and the registry requires pull secrets, the add-on will not perform image
+     * validation. Default value is false.
      * 
      * @param allowSecretAccess the allowSecretAccess value to set.
      * @return the ManagedClusterSecurityProfileDefenderSecurityGating object itself.
@@ -166,9 +168,8 @@ public final class ManagedClusterSecurityProfileDefenderSecurityGating
                     deserializedManagedClusterSecurityProfileDefenderSecurityGating.enabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("identities".equals(fieldName)) {
-                    List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem> identities
-                        = reader.readArray(reader1 -> ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
-                            .fromJson(reader1));
+                    List<ManagedClusterSecurityProfileDefenderSecurityGatingIdentity> identities = reader.readArray(
+                        reader1 -> ManagedClusterSecurityProfileDefenderSecurityGatingIdentity.fromJson(reader1));
                     deserializedManagedClusterSecurityProfileDefenderSecurityGating.identities = identities;
                 } else if ("allowSecretAccess".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfileDefenderSecurityGating.allowSecretAccess

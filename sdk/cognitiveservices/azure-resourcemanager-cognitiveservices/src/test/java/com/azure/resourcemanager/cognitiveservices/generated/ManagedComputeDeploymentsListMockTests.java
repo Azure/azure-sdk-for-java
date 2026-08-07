@@ -24,7 +24,7 @@ public final class ManagedComputeDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"model\":\"ibenwsdfpvda\",\"deploymentTemplate\":\"lfrcqklpmvz\",\"acceleratorType\":\"reszyaqgom\",\"versionUpgradeOption\":\"OnceCurrentVersionExpired\",\"computeId\":\"gge\",\"priority\":\"fekcjjlwkye\",\"acceleratorsPerInstance\":1996693050,\"totalAccelerators\":1761607759,\"provisioningState\":\"ResolvingDNS\",\"provisioningDetails\":{\"message\":\"nrfcqu\",\"lastOperationTimestamp\":\"2021-05-07T21:53:58Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"pinowrerjp\",\"swagger\":\"tchdw\",\"messagesApiScoringPath\":\"qid\"}},\"sku\":{\"name\":\"mlgbbfjmdgjv\",\"tier\":\"Free\",\"size\":\"pm\",\"family\":\"ftyaphq\",\"capacity\":1778856588},\"etag\":\"tlsnlowmcmc\",\"id\":\"xuanccqvjfdgfq\",\"name\":\"mquxpjhcfaaradci\",\"type\":\"vmufzgug\"}]}";
+            = "{\"value\":[{\"properties\":{\"model\":\"myrhkvx\",\"deploymentTemplate\":\"miemqyftgpqos\",\"acceleratorType\":\"fqvjmghpakbqyhls\",\"versionUpgradeOption\":\"NoAutoUpgrade\",\"capabilities\":{\"yevztnjaw\":\"meqagkncjmyb\"},\"computeId\":\"ulem\",\"priority\":\"mbwppxirxbkitzmn\",\"acceleratorsPerInstance\":1863060049,\"totalAccelerators\":1276805401,\"provisioningState\":\"ResolvingDNS\",\"provisioningDetails\":{\"message\":\"tjlxsgcemegdzdvy\",\"lastOperationTimestamp\":\"2021-06-21T09:17:13Z\"},\"routes\":{\"chatCompletionsScoringPath\":\"f\",\"swagger\":\"zufldifnivlutg\",\"messagesApiScoringPath\":\"aacxauhvc\"}},\"sku\":{\"name\":\"xhklsqxt\",\"tier\":\"Free\",\"size\":\"gkts\",\"family\":\"yxxo\",\"capacity\":1864207532},\"etag\":\"bkvecnxfxphsowbe\",\"id\":\"nbwutlvuwmsu\",\"name\":\"ustihtgrafjajvky\",\"type\":\"mmjczvog\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,20 @@ public final class ManagedComputeDeploymentsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ManagedComputeDeployment> response = manager.managedComputeDeployments()
-            .list("zxezriwgo", "wapcqksaaapxjhc", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedComputeDeployment> response
+            = manager.managedComputeDeployments().list("edr", "hxg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ibenwsdfpvda", response.iterator().next().properties().model());
-        Assertions.assertEquals("lfrcqklpmvz", response.iterator().next().properties().deploymentTemplate());
-        Assertions.assertEquals("reszyaqgom", response.iterator().next().properties().acceleratorType());
-        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.ONCE_CURRENT_VERSION_EXPIRED,
+        Assertions.assertEquals("myrhkvx", response.iterator().next().properties().model());
+        Assertions.assertEquals("miemqyftgpqos", response.iterator().next().properties().deploymentTemplate());
+        Assertions.assertEquals("fqvjmghpakbqyhls", response.iterator().next().properties().acceleratorType());
+        Assertions.assertEquals(DeploymentModelVersionUpgradeOption.NO_AUTO_UPGRADE,
             response.iterator().next().properties().versionUpgradeOption());
-        Assertions.assertEquals("gge", response.iterator().next().properties().computeId());
-        Assertions.assertEquals("fekcjjlwkye", response.iterator().next().properties().priority());
-        Assertions.assertEquals("mlgbbfjmdgjv", response.iterator().next().sku().name());
+        Assertions.assertEquals("ulem", response.iterator().next().properties().computeId());
+        Assertions.assertEquals("mbwppxirxbkitzmn", response.iterator().next().properties().priority());
+        Assertions.assertEquals("xhklsqxt", response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("pm", response.iterator().next().sku().size());
-        Assertions.assertEquals("ftyaphq", response.iterator().next().sku().family());
-        Assertions.assertEquals(1778856588, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("gkts", response.iterator().next().sku().size());
+        Assertions.assertEquals("yxxo", response.iterator().next().sku().family());
+        Assertions.assertEquals(1864207532, response.iterator().next().sku().capacity());
     }
 }

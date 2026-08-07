@@ -74,6 +74,9 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
+        # required by azure-identity-broker tests (PopTokenAuthenticationPolicy uses public AccessTokenCache)
+      - name: azure-core
+        groupId: com.azure
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

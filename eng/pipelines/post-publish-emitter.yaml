@@ -1,0 +1,163 @@
+# Regenerates all TypeSpec-based SDKs in azure-sdk-for-java using the typespec-java emitter,
+# then opens an automated draft PR with the results.
+#
+# The typespec-java emitter lives in Azure/typespec-azure (packages/typespec-java).
+# Published route (EmitterVersion set): pins eng/emitter-package.json to that published
+# @azure-tools/typespec-java version, then regenerates. This is the post-publish path and does
+# not touch typespec-azure sources.
+# Dev route (EmitterVersion is 'none'): builds the emitter dev package from source instead
+# - from the typespec-azure PR or branch given by PRIdOrBranch, or from the default branch (main)
+#   when PRIdOrBranch is 'none'.
+trigger: none
+pr: none
+
+parameters:
+# Set EmitterVersion for the default (post-publish) route. Leave it as 'none' to build the
+# emitter from source, in which case PRIdOrBranch selects the typespec-azure PR / branch (or main).
+- name: EmitterVersion
+  displayName: 'Emitter Version (e.g. 0.45.4; none = build from source)'
+  type: string
+  default: 'none'
+- name: PRIdOrBranch
+  displayName: 'typespec-azure PR ID or branch — used only when Emitter Version is none (e.g. 43321 or my-branch; none = main)'
+  type: string
+  default: 'none'
+
+jobs:
+- job: Generate_SDK
+
+  timeoutInMinutes: 120
+
+  variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/image.yml
+  - name: NodeVersion
+    value: '24.x'
+  # Local clone target for the (public) Azure/typespec-azure emitter repo (dev route only).
+  - name: TypeSpecAzureDirectory
+    value: $(Agent.BuildDirectory)/typespec-azure
+  # For the published route this is the given version. For the dev route it is overwritten at
+  # runtime from the built emitter's package.json (see 'Get Package Version').
+  - name: PackageVersion
+    ${{ if ne(parameters.EmitterVersion, 'none') }}:
+      value: ${{ parameters.EmitterVersion }}
+    ${{ else }}:
+      value: ''
+  - name: PullRequestTitleSuffix
+    ${{ if eq(parameters.EmitterVersion, 'none') }}:
+      ${{ if ne(parameters.PRIdOrBranch, 'none') }}:
+        value: " DEV (typespec-azure ${{ parameters.PRIdOrBranch }})"
+      ${{ else }}:
+        value: " DEV (typespec-azure main)"
+    ${{ else }}:
+      value: ""
+
+  pool:
+    name: $(LINUXPOOL)
+    image: $(LINUXVMIMAGE)
+    os: linux
+
+  steps:
+  # azure-sdk-for-java (self) is the only repo resource, so it is checked out to
+  # $(Build.SourcesDirectory). Azure/typespec-azure is public, so it is cloned directly
+  # (below) instead of via a repository resource + GitHub service connection.
+  - checkout: self
+
+  - task: NodeTool@0
+    displayName: 'Install Node.js $(NodeVersion)'
+    inputs:
+      versionSpec: '$(NodeVersion)'
+
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+    parameters:
+      SourceDirectory: $(Build.SourcesDirectory)
+
+  - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+    parameters:
+      registryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
+
+  # Clone the public Azure/typespec-azure repo (dev route only; no service connection required).
+  # PRIdOrBranch selects what to build the emitter from: a bare PR number is expanded to
+  # refs/pull/<id>/merge; any other non-'none' value is treated as a branch name (or full ref) and
+  # fetched as-is. When PRIdOrBranch is 'none', the emitter is built from the default branch (main).
+  # Submodules are then initialized because typespec-azure vendors the TypeSpec compiler and the
+  # http-client-java generator via the 'core' submodule, which build:generator (Build-Generator.ps1)
+  # and tspd both require.
+  - task: PowerShell@2
+    displayName: 'Clone typespec-azure'
+    condition: and(succeeded(), eq('${{ parameters.EmitterVersion }}', 'none'))
+    inputs:
+      pwsh: true
+      targetType: 'inline'
+      script: |
+        git clone https://github.com/Azure/typespec-azure.git "$(TypeSpecAzureDirectory)"
+        $prIdOrBranch = '${{ parameters.PRIdOrBranch }}'
+        if ($prIdOrBranch -and $prIdOrBranch -ne 'none') {
+          if ($prIdOrBranch -match '^\d+$') {
+            # bare number -> PR merge ref
+            $ref = "refs/pull/$prIdOrBranch/merge"
+          } else {
+            # branch name (or full ref)
+            $ref = $prIdOrBranch
+          }
+          Write-Host "Fetching typespec-azure ref $ref"
+          git -C "$(TypeSpecAzureDirectory)" fetch origin $ref
+          git -C "$(TypeSpecAzureDirectory)" checkout FETCH_HEAD
+        }
+        git -C "$(TypeSpecAzureDirectory)" submodule update --init --recursive
+
+  # Build the emitter dev package (.tgz) from the typespec-azure PR.
+  # typespec-java depends on other workspace packages (workspace:^). First build only those
+  # upstream dependencies with turbo (the `^...` filter selects dependencies but excludes
+  # typespec-java itself). Then Build-TypeSpec.ps1 builds and packs typespec-java (its
+  # build:generator step runs Build-Generator.ps1, which needs JDK 11+ and Maven), producing
+  # the .tgz next to the package.json for sync_emitter.py to pick up.
+  - task: PowerShell@2
+    retryCountOnTaskFailure: 1
+    condition: and(succeeded(), eq('${{ parameters.EmitterVersion }}', 'none'))
+    displayName: 'Build typespec-java dev package'
+    inputs:
+      pwsh: true
+      targetType: 'inline'
+      script: |
+        corepack enable
+        pnpm install
+        pnpm turbo run build --filter "@azure-tools/typespec-java^..."
+        ./packages/typespec-java/Build-TypeSpec.ps1
+      workingDirectory: $(TypeSpecAzureDirectory)
+
+  - script: |
+      npm install -g @azure-tools/typespec-client-generator-cli
+    displayName: 'Install tsp-client'
+
+  # Dev route only: the built emitter's version drives the PR title. For the published route
+  # PackageVersion is already the given EmitterVersion.
+  - task: PowerShell@2
+    displayName: 'Get Package Version'
+    condition: and(succeeded(), eq('${{ parameters.EmitterVersion }}', 'none'))
+    inputs:
+      pwsh: true
+      targetType: 'inline'
+      script: |
+        $PACKAGE_VERSION = node -p -e "require('./packages/typespec-java/package.json').version"
+        Write-Host("##vso[task.setvariable variable=PackageVersion]$PACKAGE_VERSION")
+      workingDirectory: $(TypeSpecAzureDirectory)
+
+  - script: |
+      python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json
+    displayName: 'Generate SDK'
+    workingDirectory: $(Build.SourcesDirectory)
+
+  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+    parameters:
+      WorkingDirectory: $(Build.SourcesDirectory)
+      ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+      RepoName: azure-sdk-for-java
+      # Push the automation branch directly to the Azure org (default PROwner is azure-sdk).
+      PROwner: Azure
+      BaseBranchName: 'refs/heads/main'
+      PRBranchName: typespec-java-generation-$(Build.BuildId)
+      CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
+      PRTitle: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
+      PRLabels: 'DPG'
+      OpenAsDraft: 'true'

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBNotebookWorkspaceCreate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBNotebookWorkspaceCreate.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceCreate.
