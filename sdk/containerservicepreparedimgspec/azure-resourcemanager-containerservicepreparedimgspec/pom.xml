@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerservicepreparedimgspec</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Prepared Image Specification Management</name>
