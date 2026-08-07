@@ -3,15 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties;
 
-import com.azure.spring.cloud.core.implementation.properties.AzurePasswordlessPropertiesMapping;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Configuration properties for passwordless connections with Azure Redis.
@@ -19,16 +13,6 @@ import java.util.Properties;
 public class AzureRedisPasswordlessProperties implements PasswordlessProperties {
 
     private static final String REDIS_SCOPE_AZURE = "https://redis.azure.com/.default";
-    private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
-
-    private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
-        {
-            put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
-        }
-    };
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
@@ -45,23 +29,12 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
 
     /**
      * Get the scopes required for the access token.
-     * Returns null if scopes have not been explicitly set, so that the default
-     * scopes can be computed from the merged cloud type after property merging.
-     *
-     * @return scopes required for the access token, or null if not explicitly set
-     */
-    @Override
-    public String getScopes() {
-        return this.scopes;
-    }
-
-    /**
-     * Get the effective scopes, returning default cloud-specific scopes when not explicitly set.
      *
      * @return scopes required for the access token
      */
-    public String getEffectiveScopes() {
-        return this.scopes == null ? getDefaultScopes() : this.scopes;
+    @Override
+    public String getScopes() {
+        return this.scopes == null ? REDIS_SCOPE_AZURE : this.scopes;
     }
 
     /**
@@ -93,10 +66,6 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
     @Override
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
-    }
-
-    private String getDefaultScopes() {
-        return REDIS_SCOPE_MAP.getOrDefault(getProfile().getCloudType(), REDIS_SCOPE_AZURE);
     }
 
     /**
@@ -133,26 +102,5 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
      */
     public void setCredential(TokenCredentialProperties credential) {
         this.credential = credential;
-    }
-
-    /**
-     * Convert {@link AzureRedisPasswordlessProperties} to {@link Properties}.
-     * Uses the effective scopes (cloud-type-aware) rather than the raw scopes value,
-     * ensuring the correct default scope is used when scopes have not been explicitly set.
-     *
-     * @return converted {@link Properties} instance
-     */
-    @Override
-    public Properties toPasswordlessProperties() {
-        Properties properties = new Properties();
-        for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
-            String value = m == AzurePasswordlessPropertiesMapping.SCOPES
-                ? getEffectiveScopes()
-                : m.getGetter().apply(this);
-            if (value != null) {
-                m.getSetter().accept(properties, value);
-            }
-        }
-        return properties;
     }
 }
