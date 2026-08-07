@@ -830,6 +830,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             docClientWrapper,
             container,
             cosmosBatchBulkOperation.getPartitionKeyValue(),
+            null,
             null);
     }
 
