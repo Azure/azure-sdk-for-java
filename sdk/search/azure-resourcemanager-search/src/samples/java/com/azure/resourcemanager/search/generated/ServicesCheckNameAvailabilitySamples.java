@@ -11,7 +11,7 @@ import com.azure.resourcemanager.search.models.CheckNameAvailabilityInput;
  */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchCheckNameAvailability.json
+     * x-ms-original-file: 2026-09-01-preview/SearchCheckNameAvailability.json
      */
     /**
      * Sample code: SearchCheckNameAvailability.
