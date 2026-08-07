@@ -82,6 +82,11 @@ public final class RoleAssignmentProperties implements JsonSerializable<RoleAssi
      */
     private String delegatedManagedIdentityResourceId;
 
+    /*
+     * Time the role assignment expires
+     */
+    private String expirationTime;
+
     /**
      * Creates an instance of RoleAssignmentProperties class.
      */
@@ -278,6 +283,15 @@ public final class RoleAssignmentProperties implements JsonSerializable<RoleAssi
     }
 
     /**
+     * Get the expirationTime property: Time the role assignment expires.
+     * 
+     * @return the expirationTime value.
+     */
+    public String expirationTime() {
+        return this.expirationTime;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -355,6 +369,8 @@ public final class RoleAssignmentProperties implements JsonSerializable<RoleAssi
                     deserializedRoleAssignmentProperties.updatedBy = reader.getString();
                 } else if ("delegatedManagedIdentityResourceId".equals(fieldName)) {
                     deserializedRoleAssignmentProperties.delegatedManagedIdentityResourceId = reader.getString();
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedRoleAssignmentProperties.expirationTime = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

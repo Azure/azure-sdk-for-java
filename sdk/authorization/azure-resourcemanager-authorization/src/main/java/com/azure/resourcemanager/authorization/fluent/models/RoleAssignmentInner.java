@@ -309,6 +309,15 @@ public final class RoleAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the expirationTime property: Time the role assignment expires.
+     * 
+     * @return the expirationTime value.
+     */
+    public String expirationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTime();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

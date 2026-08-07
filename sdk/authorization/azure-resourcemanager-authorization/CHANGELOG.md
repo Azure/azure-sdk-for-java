@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added read-only `expirationTime` property to `RoleAssignment` returned by role assignment get and list operations.
+
 ### Breaking Changes
 
 ### Bugs Fixed
