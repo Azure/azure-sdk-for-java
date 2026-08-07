@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class EncryptionScopesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ListEncryptionScopes.json
+     * x-ms-original-file: 2026-07-01/ListEncryptionScopes.json
      */
     /**
      * Sample code: ListEncryptionScopes.

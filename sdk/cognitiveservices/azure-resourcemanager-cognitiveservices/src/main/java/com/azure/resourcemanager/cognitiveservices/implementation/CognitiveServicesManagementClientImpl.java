@@ -34,16 +34,11 @@ import com.azure.resourcemanager.cognitiveservices.fluent.AgentDeploymentsClient
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.ComputeOperationsClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.ComputesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DefenderForAISettingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.LocationBasedModelCapacitiesClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.ManagedComputeCapacitiesClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.ManagedComputeDeploymentsClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.ManagedComputeUsagesOperationGroupsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ManagedNetworkProvisionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ManagedNetworkSettingsOperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ModelCapacitiesClient;
@@ -71,7 +66,6 @@ import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.SubscriptionRaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.TestRaiExternalSafetyProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.WorkbenchesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -479,90 +473,6 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
-     * The ManagedComputeDeploymentsClient object to access its operations.
-     */
-    private final ManagedComputeDeploymentsClient managedComputeDeployments;
-
-    /**
-     * Gets the ManagedComputeDeploymentsClient object to access its operations.
-     * 
-     * @return the ManagedComputeDeploymentsClient object.
-     */
-    public ManagedComputeDeploymentsClient getManagedComputeDeployments() {
-        return this.managedComputeDeployments;
-    }
-
-    /**
-     * The ComputeOperationsClient object to access its operations.
-     */
-    private final ComputeOperationsClient computeOperations;
-
-    /**
-     * Gets the ComputeOperationsClient object to access its operations.
-     * 
-     * @return the ComputeOperationsClient object.
-     */
-    public ComputeOperationsClient getComputeOperations() {
-        return this.computeOperations;
-    }
-
-    /**
-     * The ManagedComputeUsagesOperationGroupsClient object to access its operations.
-     */
-    private final ManagedComputeUsagesOperationGroupsClient managedComputeUsagesOperationGroups;
-
-    /**
-     * Gets the ManagedComputeUsagesOperationGroupsClient object to access its operations.
-     * 
-     * @return the ManagedComputeUsagesOperationGroupsClient object.
-     */
-    public ManagedComputeUsagesOperationGroupsClient getManagedComputeUsagesOperationGroups() {
-        return this.managedComputeUsagesOperationGroups;
-    }
-
-    /**
-     * The ComputesClient object to access its operations.
-     */
-    private final ComputesClient computes;
-
-    /**
-     * Gets the ComputesClient object to access its operations.
-     * 
-     * @return the ComputesClient object.
-     */
-    public ComputesClient getComputes() {
-        return this.computes;
-    }
-
-    /**
-     * The WorkbenchesClient object to access its operations.
-     */
-    private final WorkbenchesClient workbenches;
-
-    /**
-     * Gets the WorkbenchesClient object to access its operations.
-     * 
-     * @return the WorkbenchesClient object.
-     */
-    public WorkbenchesClient getWorkbenches() {
-        return this.workbenches;
-    }
-
-    /**
-     * The ManagedComputeCapacitiesClient object to access its operations.
-     */
-    private final ManagedComputeCapacitiesClient managedComputeCapacities;
-
-    /**
-     * Gets the ManagedComputeCapacitiesClient object to access its operations.
-     * 
-     * @return the ManagedComputeCapacitiesClient object.
-     */
-    public ManagedComputeCapacitiesClient getManagedComputeCapacities() {
-        return this.managedComputeCapacities;
-    }
-
-    /**
      * The PrivateLinkResourcesClient object to access its operations.
      */
     private final PrivateLinkResourcesClient privateLinkResources;
@@ -817,7 +727,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-15-preview";
+        this.apiVersion = "2026-07-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
@@ -840,12 +750,6 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.projectCapabilityHosts = new ProjectCapabilityHostsClientImpl(this);
         this.quotaTiers = new QuotaTiersClientImpl(this);
         this.agentApplications = new AgentApplicationsClientImpl(this);
-        this.managedComputeDeployments = new ManagedComputeDeploymentsClientImpl(this);
-        this.computeOperations = new ComputeOperationsClientImpl(this);
-        this.managedComputeUsagesOperationGroups = new ManagedComputeUsagesOperationGroupsClientImpl(this);
-        this.computes = new ComputesClientImpl(this);
-        this.workbenches = new WorkbenchesClientImpl(this);
-        this.managedComputeCapacities = new ManagedComputeCapacitiesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.testRaiExternalSafetyProviders = new TestRaiExternalSafetyProvidersClientImpl(this);
         this.raiExternalSafetyProviders = new RaiExternalSafetyProvidersClientImpl(this);

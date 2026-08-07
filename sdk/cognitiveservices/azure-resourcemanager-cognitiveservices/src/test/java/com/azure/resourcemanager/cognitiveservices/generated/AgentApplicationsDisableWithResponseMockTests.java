@@ -28,7 +28,7 @@ public final class AgentApplicationsDisableWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.agentApplications()
-            .disableWithResponse("lbadp", "sjdle", "jvm", "vl", com.azure.core.util.Context.NONE);
+            .disableWithResponse("ybriop", "weoftnorw", "igsioctqkm", "ja", com.azure.core.util.Context.NONE);
 
     }
 }

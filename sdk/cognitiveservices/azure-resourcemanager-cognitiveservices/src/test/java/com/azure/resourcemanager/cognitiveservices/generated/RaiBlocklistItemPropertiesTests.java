@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiBlocklistItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiBlocklistItemProperties model = BinaryData.fromString("{\"pattern\":\"vbalxlllc\",\"isRegex\":true}")
+        RaiBlocklistItemProperties model = BinaryData.fromString("{\"pattern\":\"qhoftrmaequiah\",\"isRegex\":true}")
             .toObject(RaiBlocklistItemProperties.class);
-        Assertions.assertEquals("vbalxlllc", model.pattern());
+        Assertions.assertEquals("qhoftrmaequiah", model.pattern());
         Assertions.assertTrue(model.isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistItemProperties model = new RaiBlocklistItemProperties().withPattern("vbalxlllc").withIsRegex(true);
+        RaiBlocklistItemProperties model
+            = new RaiBlocklistItemProperties().withPattern("qhoftrmaequiah").withIsRegex(true);
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemProperties.class);
-        Assertions.assertEquals("vbalxlllc", model.pattern());
+        Assertions.assertEquals("qhoftrmaequiah", model.pattern());
         Assertions.assertTrue(model.isRegex());
     }
 }

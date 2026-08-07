@@ -13,7 +13,7 @@ public final class QuotaTierPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierProperties model = BinaryData.fromString(
-            "{\"currentTierName\":\"oqfyiaseqch\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-08-04T17:40:23Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"zisgykiuemvanb\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-07-11T14:17:07Z\",\"upgradeUnavailabilityReason\":\"rx\"}}")
+            "{\"currentTierName\":\"vuporqzdfuydzv\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-07-31T18:55:59Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"mx\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-01-20T08:33:12Z\",\"upgradeUnavailabilityReason\":\"mvkhlggd\"}}")
             .toObject(QuotaTierProperties.class);
         Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE, model.tierUpgradePolicy());
     }
