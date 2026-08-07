@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Azure SKU of the machines in the pool.
@@ -20,6 +21,22 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
      * The Azure SKU name of the machines in the pool.
      */
     private String name;
+
+    /*
+     * The drive letter for the NVMe striped volume on Windows (e.g., 'N'). Defaults to 'N' when not specified.
+     */
+    private String windowsNvmeDrive;
+
+    /*
+     * The mount path for the NVMe striped volume on Linux (e.g., '/mnt/azure_nvme_temp'). Defaults to
+     * '/mnt/azure_nvme_temp' when not specified.
+     */
+    private String linuxNvmePath;
+
+    /*
+     * Specifies VM sizes for instance-mix allocation.
+     */
+    private List<VmSize> vmSizes;
 
     /**
      * Creates an instance of DevOpsAzureSku class.
@@ -48,12 +65,79 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
     }
 
     /**
+     * Get the windowsNvmeDrive property: The drive letter for the NVMe striped volume on Windows (e.g., 'N'). Defaults
+     * to 'N' when not specified.
+     * 
+     * @return the windowsNvmeDrive value.
+     */
+    public String windowsNvmeDrive() {
+        return this.windowsNvmeDrive;
+    }
+
+    /**
+     * Set the windowsNvmeDrive property: The drive letter for the NVMe striped volume on Windows (e.g., 'N'). Defaults
+     * to 'N' when not specified.
+     * 
+     * @param windowsNvmeDrive the windowsNvmeDrive value to set.
+     * @return the DevOpsAzureSku object itself.
+     */
+    public DevOpsAzureSku withWindowsNvmeDrive(String windowsNvmeDrive) {
+        this.windowsNvmeDrive = windowsNvmeDrive;
+        return this;
+    }
+
+    /**
+     * Get the linuxNvmePath property: The mount path for the NVMe striped volume on Linux (e.g.,
+     * '/mnt/azure_nvme_temp'). Defaults to '/mnt/azure_nvme_temp' when not specified.
+     * 
+     * @return the linuxNvmePath value.
+     */
+    public String linuxNvmePath() {
+        return this.linuxNvmePath;
+    }
+
+    /**
+     * Set the linuxNvmePath property: The mount path for the NVMe striped volume on Linux (e.g.,
+     * '/mnt/azure_nvme_temp'). Defaults to '/mnt/azure_nvme_temp' when not specified.
+     * 
+     * @param linuxNvmePath the linuxNvmePath value to set.
+     * @return the DevOpsAzureSku object itself.
+     */
+    public DevOpsAzureSku withLinuxNvmePath(String linuxNvmePath) {
+        this.linuxNvmePath = linuxNvmePath;
+        return this;
+    }
+
+    /**
+     * Get the vmSizes property: Specifies VM sizes for instance-mix allocation.
+     * 
+     * @return the vmSizes value.
+     */
+    public List<VmSize> vmSizes() {
+        return this.vmSizes;
+    }
+
+    /**
+     * Set the vmSizes property: Specifies VM sizes for instance-mix allocation.
+     * 
+     * @param vmSizes the vmSizes value to set.
+     * @return the DevOpsAzureSku object itself.
+     */
+    public DevOpsAzureSku withVmSizes(List<VmSize> vmSizes) {
+        this.vmSizes = vmSizes;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("windowsNvmeDrive", this.windowsNvmeDrive);
+        jsonWriter.writeStringField("linuxNvmePath", this.linuxNvmePath);
+        jsonWriter.writeArrayField("vmSizes", this.vmSizes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -75,6 +159,13 @@ public final class DevOpsAzureSku implements JsonSerializable<DevOpsAzureSku> {
 
                 if ("name".equals(fieldName)) {
                     deserializedDevOpsAzureSku.name = reader.getString();
+                } else if ("windowsNvmeDrive".equals(fieldName)) {
+                    deserializedDevOpsAzureSku.windowsNvmeDrive = reader.getString();
+                } else if ("linuxNvmePath".equals(fieldName)) {
+                    deserializedDevOpsAzureSku.linuxNvmePath = reader.getString();
+                } else if ("vmSizes".equals(fieldName)) {
+                    List<VmSize> vmSizes = reader.readArray(reader1 -> VmSize.fromJson(reader1));
+                    deserializedDevOpsAzureSku.vmSizes = vmSizes;
                 } else {
                     reader.skipChildren();
                 }

@@ -232,7 +232,7 @@ public final class DevOpsInfrastructureManagementClientImpl implements DevOpsInf
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-01-21";
+        this.apiVersion = "2026-07-03-preview";
         this.operations = new OperationsClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.resourceDetails = new ResourceDetailsClientImpl(this);

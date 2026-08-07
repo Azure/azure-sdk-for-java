@@ -46,6 +46,11 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      */
     private String devCenterProjectResourceId;
 
+    /*
+     * The runtime configuration of the pool.
+     */
+    private RuntimeConfiguration runtimeConfiguration;
+
     /**
      * Creates an instance of PoolProperties class.
      */
@@ -173,6 +178,26 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     }
 
     /**
+     * Get the runtimeConfiguration property: The runtime configuration of the pool.
+     * 
+     * @return the runtimeConfiguration value.
+     */
+    public RuntimeConfiguration runtimeConfiguration() {
+        return this.runtimeConfiguration;
+    }
+
+    /**
+     * Set the runtimeConfiguration property: The runtime configuration of the pool.
+     * 
+     * @param runtimeConfiguration the runtimeConfiguration value to set.
+     * @return the PoolProperties object itself.
+     */
+    public PoolProperties withRuntimeConfiguration(RuntimeConfiguration runtimeConfiguration) {
+        this.runtimeConfiguration = runtimeConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -182,9 +207,10 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
         jsonWriter.writeJsonField("organizationProfile", this.organizationProfile);
         jsonWriter.writeJsonField("agentProfile", this.agentProfile);
         jsonWriter.writeJsonField("fabricProfile", this.fabricProfile);
-        jsonWriter.writeStringField("devCenterProjectResourceId", this.devCenterProjectResourceId);
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("devCenterProjectResourceId", this.devCenterProjectResourceId);
+        jsonWriter.writeJsonField("runtimeConfiguration", this.runtimeConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -212,10 +238,12 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
                     deserializedPoolProperties.agentProfile = AgentProfile.fromJson(reader);
                 } else if ("fabricProfile".equals(fieldName)) {
                     deserializedPoolProperties.fabricProfile = FabricProfile.fromJson(reader);
-                } else if ("devCenterProjectResourceId".equals(fieldName)) {
-                    deserializedPoolProperties.devCenterProjectResourceId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPoolProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("devCenterProjectResourceId".equals(fieldName)) {
+                    deserializedPoolProperties.devCenterProjectResourceId = reader.getString();
+                } else if ("runtimeConfiguration".equals(fieldName)) {
+                    deserializedPoolProperties.runtimeConfiguration = RuntimeConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

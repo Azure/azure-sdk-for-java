@@ -13,16 +13,16 @@ public final class AutomaticResourcePredictionsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomaticResourcePredictionsProfile model
-            = BinaryData.fromString("{\"kind\":\"Automatic\",\"predictionPreference\":\"BestPerformance\"}")
+            = BinaryData.fromString("{\"kind\":\"Automatic\",\"predictionPreference\":\"MostCostEffective\"}")
                 .toObject(AutomaticResourcePredictionsProfile.class);
-        Assertions.assertEquals(PredictionPreference.BEST_PERFORMANCE, model.predictionPreference());
+        Assertions.assertEquals(PredictionPreference.MOST_COST_EFFECTIVE, model.predictionPreference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomaticResourcePredictionsProfile model
-            = new AutomaticResourcePredictionsProfile().withPredictionPreference(PredictionPreference.BEST_PERFORMANCE);
+        AutomaticResourcePredictionsProfile model = new AutomaticResourcePredictionsProfile()
+            .withPredictionPreference(PredictionPreference.MOST_COST_EFFECTIVE);
         model = BinaryData.fromObject(model).toObject(AutomaticResourcePredictionsProfile.class);
-        Assertions.assertEquals(PredictionPreference.BEST_PERFORMANCE, model.predictionPreference());
+        Assertions.assertEquals(PredictionPreference.MOST_COST_EFFECTIVE, model.predictionPreference());
     }
 }

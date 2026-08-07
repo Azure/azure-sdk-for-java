@@ -12,7 +12,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsInfrastructur
  */
 public final class PoolsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-01-21/Pools_CheckNameAvailability.json
+     * x-ms-original-file: 2026-07-03-preview/Pools_CheckNameAvailability.json
      */
     /**
      * Sample code: Pools_CheckNameAvailability.

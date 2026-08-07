@@ -42,6 +42,31 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      */
     private EphemeralType ephemeralType;
 
+    /*
+     * Read only. Determines if the image is ephemeral.
+     */
+    private Boolean isEphemeral;
+
+    /*
+     * The ARM resource ID of the storage account hosting provisioning scripts for this image.
+     */
+    private String provisioningScriptStorageAccountResourceId;
+
+    /*
+     * The managed identity client ID used to access provisioning script content for this image.
+     */
+    private String provisioningScriptManagedIdentityClientId;
+
+    /*
+     * Determines whether the machine should be restarted after provisioning script execution for this image.
+     */
+    private Boolean provisioningScriptShouldRestart;
+
+    /*
+     * The provisioning script entry point for this image.
+     */
+    private String provisioningScriptEntryPoint;
+
     /**
      * Creates an instance of PoolImage class.
      */
@@ -151,6 +176,101 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
     }
 
     /**
+     * Get the isEphemeral property: Read only. Determines if the image is ephemeral.
+     * 
+     * @return the isEphemeral value.
+     */
+    public Boolean isEphemeral() {
+        return this.isEphemeral;
+    }
+
+    /**
+     * Get the provisioningScriptStorageAccountResourceId property: The ARM resource ID of the storage account hosting
+     * provisioning scripts for this image.
+     * 
+     * @return the provisioningScriptStorageAccountResourceId value.
+     */
+    public String provisioningScriptStorageAccountResourceId() {
+        return this.provisioningScriptStorageAccountResourceId;
+    }
+
+    /**
+     * Set the provisioningScriptStorageAccountResourceId property: The ARM resource ID of the storage account hosting
+     * provisioning scripts for this image.
+     * 
+     * @param provisioningScriptStorageAccountResourceId the provisioningScriptStorageAccountResourceId value to set.
+     * @return the PoolImage object itself.
+     */
+    public PoolImage withProvisioningScriptStorageAccountResourceId(String provisioningScriptStorageAccountResourceId) {
+        this.provisioningScriptStorageAccountResourceId = provisioningScriptStorageAccountResourceId;
+        return this;
+    }
+
+    /**
+     * Get the provisioningScriptManagedIdentityClientId property: The managed identity client ID used to access
+     * provisioning script content for this image.
+     * 
+     * @return the provisioningScriptManagedIdentityClientId value.
+     */
+    public String provisioningScriptManagedIdentityClientId() {
+        return this.provisioningScriptManagedIdentityClientId;
+    }
+
+    /**
+     * Set the provisioningScriptManagedIdentityClientId property: The managed identity client ID used to access
+     * provisioning script content for this image.
+     * 
+     * @param provisioningScriptManagedIdentityClientId the provisioningScriptManagedIdentityClientId value to set.
+     * @return the PoolImage object itself.
+     */
+    public PoolImage withProvisioningScriptManagedIdentityClientId(String provisioningScriptManagedIdentityClientId) {
+        this.provisioningScriptManagedIdentityClientId = provisioningScriptManagedIdentityClientId;
+        return this;
+    }
+
+    /**
+     * Get the provisioningScriptShouldRestart property: Determines whether the machine should be restarted after
+     * provisioning script execution for this image.
+     * 
+     * @return the provisioningScriptShouldRestart value.
+     */
+    public Boolean provisioningScriptShouldRestart() {
+        return this.provisioningScriptShouldRestart;
+    }
+
+    /**
+     * Set the provisioningScriptShouldRestart property: Determines whether the machine should be restarted after
+     * provisioning script execution for this image.
+     * 
+     * @param provisioningScriptShouldRestart the provisioningScriptShouldRestart value to set.
+     * @return the PoolImage object itself.
+     */
+    public PoolImage withProvisioningScriptShouldRestart(Boolean provisioningScriptShouldRestart) {
+        this.provisioningScriptShouldRestart = provisioningScriptShouldRestart;
+        return this;
+    }
+
+    /**
+     * Get the provisioningScriptEntryPoint property: The provisioning script entry point for this image.
+     * 
+     * @return the provisioningScriptEntryPoint value.
+     */
+    public String provisioningScriptEntryPoint() {
+        return this.provisioningScriptEntryPoint;
+    }
+
+    /**
+     * Set the provisioningScriptEntryPoint property: The provisioning script entry point for this image.
+     * 
+     * @param provisioningScriptEntryPoint the provisioningScriptEntryPoint value to set.
+     * @return the PoolImage object itself.
+     */
+    public PoolImage withProvisioningScriptEntryPoint(String provisioningScriptEntryPoint) {
+        this.provisioningScriptEntryPoint = provisioningScriptEntryPoint;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -161,6 +281,12 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
         jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("buffer", this.buffer);
         jsonWriter.writeStringField("ephemeralType", this.ephemeralType == null ? null : this.ephemeralType.toString());
+        jsonWriter.writeStringField("provisioningScriptStorageAccountResourceId",
+            this.provisioningScriptStorageAccountResourceId);
+        jsonWriter.writeStringField("provisioningScriptManagedIdentityClientId",
+            this.provisioningScriptManagedIdentityClientId);
+        jsonWriter.writeBooleanField("provisioningScriptShouldRestart", this.provisioningScriptShouldRestart);
+        jsonWriter.writeStringField("provisioningScriptEntryPoint", this.provisioningScriptEntryPoint);
         return jsonWriter.writeEndObject();
     }
 
@@ -190,6 +316,16 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
                     deserializedPoolImage.buffer = reader.getString();
                 } else if ("ephemeralType".equals(fieldName)) {
                     deserializedPoolImage.ephemeralType = EphemeralType.fromString(reader.getString());
+                } else if ("isEphemeral".equals(fieldName)) {
+                    deserializedPoolImage.isEphemeral = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningScriptStorageAccountResourceId".equals(fieldName)) {
+                    deserializedPoolImage.provisioningScriptStorageAccountResourceId = reader.getString();
+                } else if ("provisioningScriptManagedIdentityClientId".equals(fieldName)) {
+                    deserializedPoolImage.provisioningScriptManagedIdentityClientId = reader.getString();
+                } else if ("provisioningScriptShouldRestart".equals(fieldName)) {
+                    deserializedPoolImage.provisioningScriptShouldRestart = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningScriptEntryPoint".equals(fieldName)) {
+                    deserializedPoolImage.provisioningScriptEntryPoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

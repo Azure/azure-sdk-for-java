@@ -15,6 +15,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdatePropertie
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.RuntimeConfiguration;
 import com.azure.resourcemanager.devopsinfrastructure.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,36 +25,37 @@ public final class PoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"rcjxvsnbyxqabn\",\"tenantId\":\"cpc\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"pbtoqcjmkl\":{\"principalId\":\"zafb\",\"clientId\":\"j\"},\"kudjkrlkhb\":{\"principalId\":\"vbqid\",\"clientId\":\"ajzyul\"}}},\"tags\":{\"ocxscpaierhhbcs\":\"epgzgqexz\",\"mmajtjaodx\":\"l\"},\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":1399700283,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ajionpimexgstxg\"}}")
+            "{\"identity\":{\"principalId\":\"lzu\",\"tenantId\":\"c\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"rjfeallnwsubisnj\":{\"principalId\":\"bacfionlebxetq\",\"clientId\":\"zxdpnqbqqw\"}}},\"tags\":{\"ochcbonqvpkvl\":\"mngnzscxaqw\"},\"properties\":{\"provisioningState\":\"Failed\",\"maximumConcurrency\":635672501,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"oflokey\",\"runtimeConfiguration\":{\"workFolder\":\"nj\"}}}")
             .toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("epgzgqexz", model.tags().get("ocxscpaierhhbcs"));
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(1399700283, model.properties().maximumConcurrency());
-        Assertions.assertEquals("ajionpimexgstxg", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("mngnzscxaqw", model.tags().get("ochcbonqvpkvl"));
+        Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
+        Assertions.assertEquals(635672501, model.properties().maximumConcurrency());
+        Assertions.assertEquals("oflokey", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals("nj", model.properties().runtimeConfiguration().workFolder());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolUpdate model = new PoolUpdate()
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("pbtoqcjmkl", new UserAssignedIdentity(), "kudjkrlkhb", new UserAssignedIdentity())))
-            .withTags(mapOf("ocxscpaierhhbcs", "epgzgqexz", "mmajtjaodx", "l"))
-            .withProperties(new PoolUpdateProperties().withProvisioningState(ProvisioningState.CANCELED)
-                .withMaximumConcurrency(1399700283)
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("rjfeallnwsubisnj", new UserAssignedIdentity())))
+            .withTags(mapOf("ochcbonqvpkvl", "mngnzscxaqw"))
+            .withProperties(new PoolUpdateProperties().withProvisioningState(ProvisioningState.FAILED)
+                .withMaximumConcurrency(635672501)
                 .withOrganizationProfile(new OrganizationProfile())
                 .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                     .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
                 .withFabricProfile(new FabricProfile())
-                .withDevCenterProjectResourceId("ajionpimexgstxg"));
+                .withDevCenterProjectResourceId("oflokey")
+                .withRuntimeConfiguration(new RuntimeConfiguration().withWorkFolder("nj")));
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("epgzgqexz", model.tags().get("ocxscpaierhhbcs"));
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(1399700283, model.properties().maximumConcurrency());
-        Assertions.assertEquals("ajionpimexgstxg", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("mngnzscxaqw", model.tags().get("ochcbonqvpkvl"));
+        Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
+        Assertions.assertEquals(635672501, model.properties().maximumConcurrency());
+        Assertions.assertEquals("oflokey", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals("nj", model.properties().runtimeConfiguration().workFolder());
     }
 
     // Use "Map.of" if available
