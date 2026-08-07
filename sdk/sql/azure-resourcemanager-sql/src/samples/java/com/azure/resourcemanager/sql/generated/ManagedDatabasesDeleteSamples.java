@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabasesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ManagedDatabaseDelete.json
+     * x-ms-original-file: 2025-08-01-preview/ManagedDatabaseDelete.json
      */
     /**
      * Sample code: Delete managed database.

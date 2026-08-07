@@ -1,14 +1,66 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (2026-08-05)
 
-### Features Added
+- Package api-version 2025-08-01-preview.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DataMaskingFunction` was modified
 
-### Other Changes
+* `valueOf(java.lang.String)` was removed
+* `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.DataMaskingRuleState` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `READY` was removed
+* `APPROVING` was removed
+* `DROPPING` was removed
+* `REJECTING` was removed
+
+### Features Added
+
+* `models.ManagedInstanceAdministratorPrincipalType` was added
+
+* `models.LinkModeType` was added
+
+* `models.EndpointTrustedRootCertificateInfo` was added
+
+* `models.DataSyncParticipantUserAssignedIdentity` was added
+
+* `models.DataSyncParticipantIdentityType` was added
+
+* `models.DataSyncParticipantIdentity` was added
+
+#### `models.ElasticPoolUpdate` was modified
+
+* `currentSku()` was added
+
+#### `models.DataMaskingFunction` was modified
+
+* `DataMaskingFunction()` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `provisioningState()` was added
+
+#### `models.DataMaskingRuleState` was modified
+
+* `DataMaskingRuleState()` was added
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `IN_PROGRESS` was added
+* `CREATED` was added
+* `SUCCEEDED` was added
+* `CANCELED` was added
 
 - Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
   SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use

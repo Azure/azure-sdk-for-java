@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class JobExecutionsCancelSamples {
     /*
-     * x-ms-original-file: 2025-01-01/CancelJobExecution.json
+     * x-ms-original-file: 2025-08-01-preview/CancelJobExecution.json
      */
     /**
      * Sample code: Cancel a job execution.
