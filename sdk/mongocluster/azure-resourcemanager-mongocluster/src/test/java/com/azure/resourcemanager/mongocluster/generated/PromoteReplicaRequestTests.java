@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PromoteReplicaRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PromoteReplicaRequest model = BinaryData.fromString("{\"promoteOption\":\"Forced\",\"mode\":\"Switchover\"}")
+        PromoteReplicaRequest model = BinaryData.fromString("{\"promoteOption\":\"Planned\",\"mode\":\"Switchover\"}")
             .toObject(PromoteReplicaRequest.class);
-        Assertions.assertEquals(PromoteOption.FORCED, model.promoteOption());
+        Assertions.assertEquals(PromoteOption.PLANNED, model.promoteOption());
         Assertions.assertEquals(PromoteMode.SWITCHOVER, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PromoteReplicaRequest model
-            = new PromoteReplicaRequest().withPromoteOption(PromoteOption.FORCED).withMode(PromoteMode.SWITCHOVER);
+            = new PromoteReplicaRequest().withPromoteOption(PromoteOption.PLANNED).withMode(PromoteMode.SWITCHOVER);
         model = BinaryData.fromObject(model).toObject(PromoteReplicaRequest.class);
-        Assertions.assertEquals(PromoteOption.FORCED, model.promoteOption());
+        Assertions.assertEquals(PromoteOption.PLANNED, model.promoteOption());
         Assertions.assertEquals(PromoteMode.SWITCHOVER, model.mode());
     }
 }
