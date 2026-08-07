@@ -89,9 +89,9 @@ public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.
     SqlSyncGroupOperations syncGroups();
 
     /**
-     * Gets the entry point of the SQL Sync Group.
+     * Gets the entry point of the SQL Sync Member.
      *
-     * @return the SQL Sync Group entry point
+     * @return the SQL Sync Member entry point
      * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
      * Microsoft Entra ID or managed identities. Migrate to an alternative aligned with your organization's security
      * standards.
