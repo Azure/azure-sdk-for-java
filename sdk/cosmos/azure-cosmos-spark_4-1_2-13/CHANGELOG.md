@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Excluded `commons-lang` 2.6 from the shaded connector JAR. The existing `azure-core-http-netty` 1.16.5 and `azure-identity` 1.18.4 dependencies provide Netty 4.1.135.Final and MSAL4J 1.23.1, respectively.
+
 ### 4.49.2 (2026-07-27)
 
 #### Bugs Fixed
