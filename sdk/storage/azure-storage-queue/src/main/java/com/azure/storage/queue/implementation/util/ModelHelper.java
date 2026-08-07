@@ -3,24 +3,50 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
+import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.UpdateMessageResult;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlWriter;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    private static final String X_MS_META_PREFIX = "x-ms-meta-";
+    private static final HttpHeaderName X_MS_APPROXIMATE_MESSAGES_COUNT
+        = HttpHeaderName.fromString("x-ms-approximate-messages-count");
+    private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
+    private static final HttpHeaderName X_MS_TIME_NEXT_VISIBLE = HttpHeaderName.fromString("x-ms-time-next-visible");
 
     private static BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
@@ -86,8 +112,22 @@ public class ModelHelper {
         }
     }
 
-    public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
-        return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
+    public static QueueProperties transformQueueProperties(HttpHeaders headers) {
+        Map<String, String> metadata = new LinkedHashMap<>();
+        for (HttpHeader header : headers) {
+            String name = header.getName();
+            if (name.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {
+                metadata.put(name.substring(X_MS_META_PREFIX.length()), header.getValue());
+            }
+        }
+        String count = headers.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
+        return new QueueProperties(metadata, count == null ? null : Long.parseLong(count));
+    }
+
+    public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
+        String timeNextVisible = headers.getValue(X_MS_TIME_NEXT_VISIBLE);
+        return new UpdateMessageResult(headers.getValue(X_MS_POPRECEIPT),
+            timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible).getDateTime());
     }
 
     /**
@@ -106,5 +146,167 @@ public class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new QueueStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+    }
+
+    /**
+     * Creates a {@link RequestOptions} for a protocol call, threading the supplied {@link Context}.
+     * <p>
+     * The generated implementation layer exposes protocol methods that accept a {@link RequestOptions}. The
+     * hand-written clients translate their typed parameters into query parameters, headers and a request body on the
+     * returned instance. Callers add operation-specific query parameters via
+     * {@link #addOptionalQueryParam(RequestOptions, String, Object)}.
+     *
+     * @param context The context to thread onto the request, may be {@code null}.
+     * @return A new {@link RequestOptions} carrying the context.
+     */
+    public static RequestOptions requestOptions(Context context) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (context != null) {
+            requestOptions.setContext(context);
+        }
+        return requestOptions;
+    }
+
+    /**
+     * Adds a query parameter to the {@link RequestOptions} only when {@code value} is non-null, mirroring the optional
+     * parameter semantics of the previous typed implementation methods.
+     *
+     * @param requestOptions The request options to mutate.
+     * @param name The wire query parameter name (as documented on the generated protocol method).
+     * @param value The value, or {@code null} to omit the parameter.
+     */
+    public static void addOptionalQueryParam(RequestOptions requestOptions, String name, Object value) {
+        if (value != null) {
+            requestOptions.addQueryParam(name, String.valueOf(value));
+        }
+    }
+
+    /**
+     * Wire prefix for user-defined queue metadata headers. The generated protocol methods document a single
+     * {@code x-ms-meta} header collection; on the wire each entry is emitted as {@code x-ms-meta-<key>}.
+     */
+    private static final String METADATA_HEADER_PREFIX = "x-ms-meta-";
+
+    /**
+     * Translates a queue metadata map into {@code x-ms-meta-<key>} request headers on the supplied
+     * {@link RequestOptions}. Replaces the {@code @HeaderCollection("x-ms-meta-")} binding the previous typed
+     * implementation methods carried; {@code create} and {@code setMetadata} both delegate here.
+     *
+     * @param requestOptions The request options to mutate.
+     * @param metadata The metadata to serialize, may be {@code null} or empty.
+     */
+    public static void addMetadataHeaders(RequestOptions requestOptions, java.util.Map<String, String> metadata) {
+        if (metadata != null) {
+            for (java.util.Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.addHeader(METADATA_HEADER_PREFIX + entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * Serializes an {@link XmlSerializable} request body into XML {@link BinaryData} for the protocol layer.
+     *
+     * @param value The value to serialize, may be {@code null}.
+     * @return The XML-encoded {@link BinaryData}, or {@code null} if {@code value} is {@code null}.
+     */
+    public static BinaryData serializeXmlBody(XmlSerializable<?> value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
+                value.toXml(xmlWriter);
+                xmlWriter.flush();
+            }
+            return BinaryData.fromBytes(stream.toByteArray());
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Deserializes an XML {@link BinaryData} protocol response using the provided reader function.
+     *
+     * @param data The XML response body, may be {@code null}.
+     * @param deserializer The {@code fromXml} function of the target type.
+     * @param <T> The deserialized type.
+     * @return The deserialized value, or {@code null} if {@code data} is {@code null}.
+     */
+    public static <T> T deserializeXmlBody(BinaryData data, XmlDeserializer<T> deserializer) {
+        if (data == null) {
+            return null;
+        }
+        try (XmlReader xmlReader = XmlReader.fromBytes(data.toBytes())) {
+            return deserializer.deserialize(xmlReader);
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for a {@code List Queues} protocol call, translating the typed listing
+     * parameters into the wire query parameters documented on the generated {@code getQueuesWithResponse} accessor
+     * ({@code prefix}, {@code marker}, {@code maxresults}, {@code include}). The {@code include} values are sent as a
+     * single comma-separated query parameter, matching the previous typed implementation method.
+     *
+     * @param context The context to thread onto the request, may be {@code null}.
+     * @param prefix The queue name prefix filter, may be {@code null}.
+     * @param marker The continuation marker for the page to fetch, may be {@code null}.
+     * @param maxResults The maximum number of queues per page, may be {@code null}.
+     * @param include The optional listing details (e.g. {@code metadata}), may be {@code null} or empty.
+     * @return The configured {@link RequestOptions}.
+     */
+    public static RequestOptions listQueuesRequestOptions(Context context, String prefix, String marker,
+        Integer maxResults, List<String> include) {
+        RequestOptions requestOptions = requestOptions(context);
+        addOptionalQueryParam(requestOptions, "prefix", prefix);
+        addOptionalQueryParam(requestOptions, "marker", marker);
+        addOptionalQueryParam(requestOptions, "maxresults", maxResults);
+        // Match the AutoRest wire behavior: emit "include=" whenever the list is non-null (an empty list produces an
+        // empty value), rather than omitting it. Keeps the request URL identical to the pre-migration implementation.
+        if (include != null) {
+            requestOptions.addQueryParam("include", String.join(",", include));
+        }
+        return requestOptions;
+    }
+
+    /**
+     * Converts a raw {@code List Queues} protocol response into a {@link PagedResponse} of {@link QueueItem}, preserving
+     * the {@code NextMarker}-based continuation the hand-written paging depends on.
+     * <p>
+     * The service returns an empty {@code NextMarker} element on the final page. {@link com.azure.core.http.rest.PagedFlux}
+     * / {@link com.azure.core.http.rest.PagedIterable} treat any non-null continuation token as "more pages available",
+     * so an empty marker is normalized to {@code null} to terminate paging (mirroring the {@code len(NextMarker) > 0}
+     * check the other language SDKs use).
+     *
+     * @param response The raw XML list response from {@code getQueuesWithResponse[Async]}.
+     * @return The page of queue items with the continuation token populated from {@code NextMarker}.
+     */
+    public static PagedResponse<QueueItem> toQueueItemPage(Response<BinaryData> response) {
+        ListQueuesSegmentResponse body = deserializeXmlBody(response.getValue(), ListQueuesSegmentResponse::fromXml);
+        List<QueueItem> items = (body == null) ? Collections.emptyList() : body.getQueueItems();
+        String nextMarker = (body == null) ? null : body.getNextMarker();
+        String continuationToken = (nextMarker == null || nextMarker.isEmpty()) ? null : nextMarker;
+        return new PagedResponseBase<Void, QueueItem>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), items, continuationToken, null);
+    }
+
+    /**
+     * Functional interface matching the generated {@code fromXml(XmlReader)} factory methods so protocol responses can
+     * be deserialized generically.
+     *
+     * @param <T> The deserialized type.
+     */
+    @FunctionalInterface
+    public interface XmlDeserializer<T> {
+        /**
+         * Reads an instance of {@code T} from the supplied {@link XmlReader}.
+         *
+         * @param reader The XML reader positioned at the response body.
+         * @return The deserialized value.
+         * @throws XMLStreamException If the XML is malformed.
+         */
+        T deserialize(XmlReader reader) throws XMLStreamException;
     }
 }
