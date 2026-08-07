@@ -37,9 +37,12 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purestorageblock.fluent.StoragePoolsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsConnectionInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsStatusInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleActivationCodeInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleAuthResultInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolHealthInfoInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner;
 import com.azure.resourcemanager.purestorageblock.implementation.models.StoragePoolListResult;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolUpdate;
@@ -326,6 +329,50 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/listPlatformConsoleActivationCode")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PlatformConsoleActivationCodeInner>> listPlatformConsoleActivationCode(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/listPlatformConsoleActivationCode")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PlatformConsoleActivationCodeInner> listPlatformConsoleActivationCodeSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/configurePlatformConsoleAuth")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PlatformConsoleAuthResultInner>> configurePlatformConsoleAuth(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") PlatformConsoleAuthConfig config,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/configurePlatformConsoleAuth")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PlatformConsoleAuthResultInner> configurePlatformConsoleAuthSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storagePoolName") String storagePoolName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") PlatformConsoleAuthConfig config,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1982,6 +2029,162 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void repairAvsConnection(String resourceGroupName, String storagePoolName, Context context) {
         beginRepairAvsConnection(resourceGroupName, storagePoolName, context).getFinalResult();
+    }
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PlatformConsoleActivationCodeInner>>
+        listPlatformConsoleActivationCodeWithResponseAsync(String resourceGroupName, String storagePoolName) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listPlatformConsoleActivationCode(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storagePoolName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PlatformConsoleActivationCodeInner> listPlatformConsoleActivationCodeAsync(String resourceGroupName,
+        String storagePoolName) {
+        return listPlatformConsoleActivationCodeWithResponseAsync(resourceGroupName, storagePoolName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlatformConsoleActivationCodeInner> listPlatformConsoleActivationCodeWithResponse(
+        String resourceGroupName, String storagePoolName, Context context) {
+        final String accept = "application/json";
+        return service.listPlatformConsoleActivationCodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, context);
+    }
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlatformConsoleActivationCodeInner listPlatformConsoleActivationCode(String resourceGroupName,
+        String storagePoolName) {
+        return listPlatformConsoleActivationCodeWithResponse(resourceGroupName, storagePoolName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PlatformConsoleAuthResultInner>> configurePlatformConsoleAuthWithResponseAsync(
+        String resourceGroupName, String storagePoolName, PlatformConsoleAuthConfig config) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.configurePlatformConsoleAuth(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storagePoolName,
+                contentType, accept, config, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PlatformConsoleAuthResultInner> configurePlatformConsoleAuthAsync(String resourceGroupName,
+        String storagePoolName, PlatformConsoleAuthConfig config) {
+        return configurePlatformConsoleAuthWithResponseAsync(resourceGroupName, storagePoolName, config)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlatformConsoleAuthResultInner> configurePlatformConsoleAuthWithResponse(String resourceGroupName,
+        String storagePoolName, PlatformConsoleAuthConfig config, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.configurePlatformConsoleAuthSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, contentType, accept, config, context);
+    }
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlatformConsoleAuthResultInner configurePlatformConsoleAuth(String resourceGroupName, String storagePoolName,
+        PlatformConsoleAuthConfig config) {
+        return configurePlatformConsoleAuthWithResponse(resourceGroupName, storagePoolName, config, Context.NONE)
+            .getValue();
     }
 
     /**

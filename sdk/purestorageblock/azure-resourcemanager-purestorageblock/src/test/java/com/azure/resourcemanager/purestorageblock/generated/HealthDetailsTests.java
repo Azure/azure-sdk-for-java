@@ -12,20 +12,20 @@ public final class HealthDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthDetails model = BinaryData.fromString(
-            "{\"usedCapacityPercentage\":86.70706848567121,\"bandwidthUsage\":{\"current\":7227919326419178637,\"provisioned\":5767639862165404734,\"max\":1778964673623605649},\"iopsUsage\":{\"current\":3706325358985550286,\"provisioned\":2021331363267121666,\"max\":7599641624551569114},\"space\":{\"totalUsed\":7902119571785822811,\"unique\":3209157136466060094,\"snapshots\":1649253814789212920,\"shared\":8358866216552319675},\"dataReductionRatio\":38.945365161426515,\"estimatedMaxCapacity\":8785236673495844841}")
+            "{\"usedCapacityPercentage\":73.92609873118205,\"bandwidthUsage\":{\"current\":6679760626312548131,\"provisioned\":5744286568716968585,\"max\":1238366971592199185},\"iopsUsage\":{\"current\":4790240939770837417,\"provisioned\":3450156772675162636,\"max\":609111947256097194},\"space\":{\"totalUsed\":7914857163807651319,\"unique\":6186305042394833028,\"snapshots\":4645704067973725569,\"shared\":2299728096259421603},\"dataReductionRatio\":52.051627656759926,\"estimatedMaxCapacity\":4291870996342138092}")
             .toObject(HealthDetails.class);
-        Assertions.assertEquals(86.70706848567121, model.usedCapacityPercentage());
-        Assertions.assertEquals(7227919326419178637L, model.bandwidthUsage().current());
-        Assertions.assertEquals(5767639862165404734L, model.bandwidthUsage().provisioned());
-        Assertions.assertEquals(1778964673623605649L, model.bandwidthUsage().max());
-        Assertions.assertEquals(3706325358985550286L, model.iopsUsage().current());
-        Assertions.assertEquals(2021331363267121666L, model.iopsUsage().provisioned());
-        Assertions.assertEquals(7599641624551569114L, model.iopsUsage().max());
-        Assertions.assertEquals(7902119571785822811L, model.space().totalUsed());
-        Assertions.assertEquals(3209157136466060094L, model.space().unique());
-        Assertions.assertEquals(1649253814789212920L, model.space().snapshots());
-        Assertions.assertEquals(8358866216552319675L, model.space().shared());
-        Assertions.assertEquals(38.945365161426515, model.dataReductionRatio());
-        Assertions.assertEquals(8785236673495844841L, model.estimatedMaxCapacity());
+        Assertions.assertEquals(73.92609873118205, model.usedCapacityPercentage());
+        Assertions.assertEquals(6679760626312548131L, model.bandwidthUsage().current());
+        Assertions.assertEquals(5744286568716968585L, model.bandwidthUsage().provisioned());
+        Assertions.assertEquals(1238366971592199185L, model.bandwidthUsage().max());
+        Assertions.assertEquals(4790240939770837417L, model.iopsUsage().current());
+        Assertions.assertEquals(3450156772675162636L, model.iopsUsage().provisioned());
+        Assertions.assertEquals(609111947256097194L, model.iopsUsage().max());
+        Assertions.assertEquals(7914857163807651319L, model.space().totalUsed());
+        Assertions.assertEquals(6186305042394833028L, model.space().unique());
+        Assertions.assertEquals(4645704067973725569L, model.space().snapshots());
+        Assertions.assertEquals(2299728096259421603L, model.space().shared());
+        Assertions.assertEquals(52.051627656759926, model.dataReductionRatio());
+        Assertions.assertEquals(4291870996342138092L, model.estimatedMaxCapacity());
     }
 }

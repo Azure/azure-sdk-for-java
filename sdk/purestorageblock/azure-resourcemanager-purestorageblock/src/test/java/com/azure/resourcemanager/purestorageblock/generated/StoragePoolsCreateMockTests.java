@@ -12,12 +12,16 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purestorageblock.PureStorageBlockManager;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAccessSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSubnet;
 import com.azure.resourcemanager.purestorageblock.models.StoragePool;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolProperties;
 import com.azure.resourcemanager.purestorageblock.models.UserAssignedIdentity;
 import com.azure.resourcemanager.purestorageblock.models.VnetInjection;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +32,7 @@ public final class StoragePoolsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"ethwwnpjhlfz\",\"availabilityZone\":\"wpchwahf\",\"vnetInjection\":{\"subnetId\":\"ousnfepgfewe\",\"vnetId\":\"wlyxgncxyk\"},\"dataRetentionPeriod\":7273208540565917930,\"provisionedBandwidthMbPerSec\":136880772984526370,\"provisionedIops\":1348597910469137076,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"f\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"po\"},\"identity\":{\"principalId\":\"xcjzhqizxfpxt\",\"tenantId\":\"scjavftju\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"wpijrajci\":{\"principalId\":\"k\",\"clientId\":\"gg\"},\"oxgsgbpfgzdjtx\":{\"principalId\":\"mghfcfiwrxgkne\",\"clientId\":\"yinzqodfvpgs\"},\"rdve\":{\"principalId\":\"flbqvgaq\",\"clientId\":\"gafcqu\"}}},\"location\":\"wsdtutnwl\",\"tags\":{\"dxukuqgsjjxundxg\":\"cvuzhyrmewipmve\",\"hhzjhfj\":\"etw\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\"},\"id\":\"slynsqyrpfoo\",\"name\":\"rlttymsjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"qepvufhbzeh\",\"availabilityZone\":\"whoqhnlbqnbldxe\",\"vnetInjection\":{\"subnetId\":\"clgsc\",\"vnetId\":\"orim\"},\"dataRetentionPeriod\":3947758974496733605,\"provisionedBandwidthMbPerSec\":392452782648364567,\"provisionedIops\":4768005601466800077,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"ldpuviy\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"abeolhbhlvbm\",\"platformConsoleSettings\":{\"enabled\":true,\"gui\":{\"enabled\":false},\"api\":{\"enabled\":true},\"cli\":{\"enabled\":true},\"subnets\":[{\"id\":\"fbsfarfsiow\",\"managementIpAddress\":\"jxnqp\",\"serviceBackendIps\":[\"fstmhqykizmdksao\"]},{\"id\":\"fcluqvo\",\"managementIpAddress\":\"ycjimryvwgcwwpbm\",\"serviceBackendIps\":[\"esyds\"]},{\"id\":\"wefohecbvo\",\"managementIpAddress\":\"ndyqleal\",\"serviceBackendIps\":[\"mtkhlowkxxpvbr\",\"fjmzsyzfho\",\"lhikcyychunsj\"]},{\"id\":\"pjrtws\",\"managementIpAddress\":\"vv\",\"serviceBackendIps\":[\"phvtrrmhwrb\"]}],\"defaultUsername\":\"pyf\"}},\"identity\":{\"principalId\":\"hvj\",\"tenantId\":\"r\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"emc\":{\"principalId\":\"lw\",\"clientId\":\"memhooclutnpq\"},\"fihotj\":{\"principalId\":\"kmmykyujxsglh\",\"clientId\":\"rryejylmbkzudnig\"}}},\"location\":\"lpxuzzjgnrefq\",\"tags\":{\"ydiw\":\"otoihiqa\",\"hcspo\":\"brkwpzdqt\",\"sipi\":\"aqa\",\"ulbmoichdlp\":\"tgbebj\"},\"id\":\"fpubntnbatz\",\"name\":\"iqsowsaaelc\",\"type\":\"ttcjuhplrvkmjc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,27 +42,36 @@ public final class StoragePoolsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StoragePool response = manager.storagePools()
-            .define("lhzdsqtzb")
-            .withRegion("b")
-            .withExistingResourceGroup("cwkhihi")
-            .withTags(mapOf("eitpkxztmo", "aehvvibrxjjstoq", "qxzhem", "bklftidgfcwqmpim", "lkb", "yhohujswtwkozzwc",
-                "jwltlwtjjgu", "wpfaj"))
-            .withProperties(new StoragePoolProperties().withAvailabilityZone("hfgmvecactxm")
-                .withVnetInjection(new VnetInjection().withSubnetId("oteyowc").withVnetId("uqovekqvgqouwif"))
-                .withProvisionedBandwidthMbPerSec(9183052747374666189L)
-                .withReservationResourceId("agr"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("brta", new UserAssignedIdentity(), "qseypxiutcxa",
-                    new UserAssignedIdentity(), "abrqnkkzj", new UserAssignedIdentity())))
+            .define("q")
+            .withRegion("iroqbosh")
+            .withExistingResourceGroup("reur")
+            .withTags(mapOf("pavbo", "gapyyrmfsv"))
+            .withProperties(new StoragePoolProperties().withAvailabilityZone("vkyfedevjbosl")
+                .withVnetInjection(new VnetInjection().withSubnetId("qxypokkhminq").withVnetId("ymc"))
+                .withProvisionedBandwidthMbPerSec(4891249123007115758L)
+                .withReservationResourceId("tvq")
+                .withPlatformConsoleSettings(new PlatformConsoleSettings().withEnabled(false)
+                    .withGui(new PlatformConsoleAccessSettings().withEnabled(true))
+                    .withApi(new PlatformConsoleAccessSettings().withEnabled(true))
+                    .withCli(new PlatformConsoleAccessSettings().withEnabled(false))
+                    .withSubnets(Arrays.asList(new PlatformConsoleSubnet().withId("dmflhuytx")))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("awpcbbnzqcykn", new UserAssignedIdentity(), "fmuvapckccr",
+                    new UserAssignedIdentity(), "haim", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("wsdtutnwl", response.location());
-        Assertions.assertEquals("cvuzhyrmewipmve", response.tags().get("dxukuqgsjjxundxg"));
-        Assertions.assertEquals("wpchwahf", response.properties().availabilityZone());
-        Assertions.assertEquals("ousnfepgfewe", response.properties().vnetInjection().subnetId());
-        Assertions.assertEquals("wlyxgncxyk", response.properties().vnetInjection().vnetId());
-        Assertions.assertEquals(136880772984526370L, response.properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("po", response.properties().reservationResourceId());
+        Assertions.assertEquals("lpxuzzjgnrefq", response.location());
+        Assertions.assertEquals("otoihiqa", response.tags().get("ydiw"));
+        Assertions.assertEquals("whoqhnlbqnbldxe", response.properties().availabilityZone());
+        Assertions.assertEquals("clgsc", response.properties().vnetInjection().subnetId());
+        Assertions.assertEquals("orim", response.properties().vnetInjection().vnetId());
+        Assertions.assertEquals(392452782648364567L, response.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("abeolhbhlvbm", response.properties().reservationResourceId());
+        Assertions.assertTrue(response.properties().platformConsoleSettings().enabled());
+        Assertions.assertFalse(response.properties().platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(response.properties().platformConsoleSettings().api().enabled());
+        Assertions.assertTrue(response.properties().platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("fbsfarfsiow", response.properties().platformConsoleSettings().subnets().get(0).id());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 

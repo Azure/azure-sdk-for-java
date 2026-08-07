@@ -21,7 +21,7 @@ public final class AvsVmVolumesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePoolInternalId\":\"cgyypro\",\"storagePoolResourceId\":\"ypundmbxhugc\",\"volumeInternalId\":\"k\",\"displayName\":\"lgorb\",\"space\":{\"totalUsed\":2304427621056901546,\"unique\":4613723734586965909,\"snapshots\":7226613213127469062,\"shared\":7430344282584886847},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"fvnz\"},\"createdTimestamp\":\"jtotpvopvpbd\",\"provisionedSize\":9002474166715105889,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"hedsvqwthmkyib\",\"diskName\":\"ysi\",\"folder\":\"sgqcwdho\",\"avsVmInternalId\":\"sdtmcdzs\",\"avsVmResourceId\":\"fcohdxbzlmcmu\",\"avsVmName\":\"pcvhdbevwqqxeys\",\"avsStorageContainerResourceId\":\"onqzinkfkbgbzbow\"},\"provisioningState\":\"Canceled\"},\"id\":\"clj\",\"name\":\"ygvkzqkjj\",\"type\":\"okbzef\"}";
+            = "{\"properties\":{\"storagePoolInternalId\":\"ttzrazisgyki\",\"storagePoolResourceId\":\"mvanbwzo\",\"volumeInternalId\":\"nrxxbsojklin\",\"displayName\":\"dptysprqs\",\"space\":{\"totalUsed\":881427609491244967,\"unique\":7614590099827037124,\"snapshots\":7503585143266118723,\"shared\":303212841014979298},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"g\"},\"createdTimestamp\":\"iufiqwo\",\"provisionedSize\":4307466245131466920,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"ohhoucqpqojxcxz\",\"diskName\":\"zdcgdzbenr\",\"folder\":\"bcawetz\",\"avsVmInternalId\":\"ddtjwfljhznam\",\"avsVmResourceId\":\"uatmzwcjjncqtj\",\"avsVmName\":\"mizvgbgatzuuvbx\",\"avsStorageContainerResourceId\":\"grebwggahttzlsw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"fu\",\"name\":\"lx\",\"type\":\"oqza\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class AvsVmVolumesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AvsVmVolume response = manager.avsVmVolumes()
-            .getWithResponse("fuxtyasiibmiybnn", "stgnl", "hnmgixhcm", "vmqfoud", com.azure.core.util.Context.NONE)
+            .getWithResponse("ohdbvqvwzkj", "pwbeonr", "kwzdqybxcea", "xcptsoqfyiaseqc",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.properties().softDeletion().destroyed());

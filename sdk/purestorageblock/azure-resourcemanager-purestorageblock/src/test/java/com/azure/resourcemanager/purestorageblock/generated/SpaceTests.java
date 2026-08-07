@@ -12,11 +12,11 @@ public final class SpaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Space model = BinaryData.fromString(
-            "{\"totalUsed\":6890446013965356970,\"unique\":5279167733168748347,\"snapshots\":7872879762734325914,\"shared\":6613981438658559852}")
+            "{\"totalUsed\":2758860525004415394,\"unique\":6938259574609186760,\"snapshots\":8831902609339042569,\"shared\":4566065121206336323}")
             .toObject(Space.class);
-        Assertions.assertEquals(6890446013965356970L, model.totalUsed());
-        Assertions.assertEquals(5279167733168748347L, model.unique());
-        Assertions.assertEquals(7872879762734325914L, model.snapshots());
-        Assertions.assertEquals(6613981438658559852L, model.shared());
+        Assertions.assertEquals(2758860525004415394L, model.totalUsed());
+        Assertions.assertEquals(6938259574609186760L, model.unique());
+        Assertions.assertEquals(8831902609339042569L, model.snapshots());
+        Assertions.assertEquals(4566065121206336323L, model.shared());
     }
 }

@@ -12,11 +12,11 @@ public final class ProtectionPolicyLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicyLimits model = BinaryData.fromString(
-            "{\"frequency\":{\"min\":7360318284111753754,\"max\":6563598327820568661},\"retention\":{\"min\":2529230432728826986,\"max\":5232700234439771330}}")
+            "{\"frequency\":{\"min\":9114569351870679024,\"max\":5712976136216097028},\"retention\":{\"min\":489725236273769678,\"max\":2446371757978717753}}")
             .toObject(ProtectionPolicyLimits.class);
-        Assertions.assertEquals(7360318284111753754L, model.frequency().min());
-        Assertions.assertEquals(6563598327820568661L, model.frequency().max());
-        Assertions.assertEquals(2529230432728826986L, model.retention().min());
-        Assertions.assertEquals(5232700234439771330L, model.retention().max());
+        Assertions.assertEquals(9114569351870679024L, model.frequency().min());
+        Assertions.assertEquals(5712976136216097028L, model.frequency().max());
+        Assertions.assertEquals(489725236273769678L, model.retention().min());
+        Assertions.assertEquals(2446371757978717753L, model.retention().max());
     }
 }

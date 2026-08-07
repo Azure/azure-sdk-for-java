@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RangeLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RangeLimits model = BinaryData.fromString("{\"min\":3455031391724056303,\"max\":2667969705485885831}")
+        RangeLimits model = BinaryData.fromString("{\"min\":8941192620574400347,\"max\":886477673791412708}")
             .toObject(RangeLimits.class);
-        Assertions.assertEquals(3455031391724056303L, model.min());
-        Assertions.assertEquals(2667969705485885831L, model.max());
+        Assertions.assertEquals(8941192620574400347L, model.min());
+        Assertions.assertEquals(886477673791412708L, model.max());
     }
 }

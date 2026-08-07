@@ -13,22 +13,22 @@ public final class StoragePoolHealthInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePoolHealthInfoInner model = BinaryData.fromString(
-            "{\"health\":{\"usedCapacityPercentage\":35.81887419990952,\"bandwidthUsage\":{\"current\":140341677696577800,\"provisioned\":5313229010418378323,\"max\":1731792145789040801},\"iopsUsage\":{\"current\":4071195826596998153,\"provisioned\":2507936832402771228,\"max\":3778047541183075264},\"space\":{\"totalUsed\":3270121833645921057,\"unique\":3973281254631070018,\"snapshots\":8890235474847299570,\"shared\":4683978347036523050},\"dataReductionRatio\":1.4486555360253672,\"estimatedMaxCapacity\":1882078303153240506},\"alerts\":[{\"level\":\"error\",\"message\":\"q\"},{\"level\":\"info\",\"message\":\"dfnbyxbaaabjyv\"},{\"level\":\"error\",\"message\":\"ffimrzrtuzqogsex\"},{\"level\":\"error\",\"message\":\"vfdnwnwmewzsyyce\"}]}")
+            "{\"health\":{\"usedCapacityPercentage\":65.45286770248899,\"bandwidthUsage\":{\"current\":2683403328100371700,\"provisioned\":8623333094540637378,\"max\":7064706580171927315},\"iopsUsage\":{\"current\":282081857130974978,\"provisioned\":820247449544562599,\"max\":2223326609364776386},\"space\":{\"totalUsed\":7097635139026517031,\"unique\":8112083907169848140,\"snapshots\":3059787385770886832,\"shared\":832648404577263349},\"dataReductionRatio\":6.958733142803009,\"estimatedMaxCapacity\":254698639474854306},\"alerts\":[{\"level\":\"error\",\"message\":\"ywdmjsjqbjh\"}]}")
             .toObject(StoragePoolHealthInfoInner.class);
-        Assertions.assertEquals(35.81887419990952, model.health().usedCapacityPercentage());
-        Assertions.assertEquals(140341677696577800L, model.health().bandwidthUsage().current());
-        Assertions.assertEquals(5313229010418378323L, model.health().bandwidthUsage().provisioned());
-        Assertions.assertEquals(1731792145789040801L, model.health().bandwidthUsage().max());
-        Assertions.assertEquals(4071195826596998153L, model.health().iopsUsage().current());
-        Assertions.assertEquals(2507936832402771228L, model.health().iopsUsage().provisioned());
-        Assertions.assertEquals(3778047541183075264L, model.health().iopsUsage().max());
-        Assertions.assertEquals(3270121833645921057L, model.health().space().totalUsed());
-        Assertions.assertEquals(3973281254631070018L, model.health().space().unique());
-        Assertions.assertEquals(8890235474847299570L, model.health().space().snapshots());
-        Assertions.assertEquals(4683978347036523050L, model.health().space().shared());
-        Assertions.assertEquals(1.4486555360253672, model.health().dataReductionRatio());
-        Assertions.assertEquals(1882078303153240506L, model.health().estimatedMaxCapacity());
+        Assertions.assertEquals(65.45286770248899, model.health().usedCapacityPercentage());
+        Assertions.assertEquals(2683403328100371700L, model.health().bandwidthUsage().current());
+        Assertions.assertEquals(8623333094540637378L, model.health().bandwidthUsage().provisioned());
+        Assertions.assertEquals(7064706580171927315L, model.health().bandwidthUsage().max());
+        Assertions.assertEquals(282081857130974978L, model.health().iopsUsage().current());
+        Assertions.assertEquals(820247449544562599L, model.health().iopsUsage().provisioned());
+        Assertions.assertEquals(2223326609364776386L, model.health().iopsUsage().max());
+        Assertions.assertEquals(7097635139026517031L, model.health().space().totalUsed());
+        Assertions.assertEquals(8112083907169848140L, model.health().space().unique());
+        Assertions.assertEquals(3059787385770886832L, model.health().space().snapshots());
+        Assertions.assertEquals(832648404577263349L, model.health().space().shared());
+        Assertions.assertEquals(6.958733142803009, model.health().dataReductionRatio());
+        Assertions.assertEquals(254698639474854306L, model.health().estimatedMaxCapacity());
         Assertions.assertEquals(AlertLevel.ERROR, model.alerts().get(0).level());
-        Assertions.assertEquals("q", model.alerts().get(0).message());
+        Assertions.assertEquals("ywdmjsjqbjh", model.alerts().get(0).message());
     }
 }
