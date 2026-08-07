@@ -53,10 +53,10 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        AutoRefreshingCache<StorageSessionCredential> sessionCredentialCache, SessionOptions sessionOptions) {
+        AutoRefreshingCache<StorageSessionCredential> autoRefreshingCache, SessionOptions sessionOptions) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionCredentialCache
-            = Objects.requireNonNull(sessionCredentialCache, "'sessionCredentialCache' cannot be null.");
+            = Objects.requireNonNull(autoRefreshingCache, "'sessionCredentialCache' cannot be null.");
         this.sessionOptions = SessionOptions.orDefault(sessionOptions);
 
         if (this.sessionOptions.getSessionMode().resolve() == SessionMode.SINGLE_SPECIFIED_CONTAINER
