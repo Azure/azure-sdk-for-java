@@ -6,6 +6,8 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -134,6 +136,110 @@ public class AutoRefreshingCacheTest {
 
         verify(sessionClient, times(1)).createSync();
         verify(sessionClient, never()).createAsync();
+    }
+
+    /**
+     * The async path on a cold cache must mint a value through {@code createAsync} and emit exactly one
+     * element before completing. The synchronous creation path must not be involved at all.
+     */
+    @Test
+    public void coldCacheCreatesValueAsync() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        BlobSessionClient sessionClient = mock(BlobSessionClient.class);
+        AutoRefreshingCache<StorageSessionCredential> cache = new AutoRefreshingCache<>(sessionClient, clock);
+
+        when(sessionClient.createAsync())
+            .thenReturn(Mono.just(credential(FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME))));
+
+        StepVerifier.create(cache.getValidValueAsync())
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+
+        verify(sessionClient, times(1)).createAsync();
+        verify(sessionClient, never()).createSync();
+    }
+
+    /**
+     * Once the async path has cached a usable value, later async requests made before the jittered refresh
+     * window must replay that cached value rather than creating a second one.
+     */
+    @Test
+    public void cachedValueIsReusedOnLaterAsyncRequests() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        BlobSessionClient sessionClient = mock(BlobSessionClient.class);
+        AutoRefreshingCache<StorageSessionCredential> cache = new AutoRefreshingCache<>(sessionClient, clock);
+
+        when(sessionClient.createAsync())
+            .thenReturn(Mono.just(credential(FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME))));
+
+        StepVerifier.create(cache.getValidValueAsync())
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+
+        // Advance well short of the earliest jittered refresh point (80% of lifetime).
+        clock.advance(Duration.ofSeconds(30));
+
+        StepVerifier.create(cache.getValidValueAsync())
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+
+        verify(sessionClient, times(1)).createAsync();
+        verify(sessionClient, never()).createSync();
+    }
+
+    /**
+     * Concurrent async callers arriving while a creation is still in flight must join that single in-flight
+     * creation instead of each triggering their own, and all of them must observe the same value.
+     */
+    @Test
+    public void concurrentAsyncRequestsShareASingleInFlightCreation() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        BlobSessionClient sessionClient = mock(BlobSessionClient.class);
+        AutoRefreshingCache<StorageSessionCredential> cache = new AutoRefreshingCache<>(sessionClient, clock);
+
+        // A sink that has not emitted yet models a creation that is still outstanding.
+        Sinks.One<StorageSessionCredential> pendingCreation = Sinks.one();
+        when(sessionClient.createAsync()).thenReturn(pendingCreation.asMono());
+
+        Mono<StorageSessionCredential> first = cache.getValidValueAsync();
+        Mono<StorageSessionCredential> second = cache.getValidValueAsync();
+
+        // The second caller joined the in-flight creation rather than starting another one.
+        verify(sessionClient, times(1)).createAsync();
+
+        pendingCreation.tryEmitValue(credential(FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME)));
+
+        StepVerifier.create(first)
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+        StepVerifier.create(second)
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+
+        verify(sessionClient, times(1)).createAsync();
+    }
+
+    /**
+     * A failed creation must surface to the caller as an error signal rather than an empty completion, and it
+     * must not poison the cache: the in-flight creation is cleared so a later request can retry successfully.
+     */
+    @Test
+    public void creationFailurePropagatesAndAllowsRetryAsync() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        BlobSessionClient sessionClient = mock(BlobSessionClient.class);
+        AutoRefreshingCache<StorageSessionCredential> cache = new AutoRefreshingCache<>(sessionClient, clock);
+
+        when(sessionClient.createAsync()).thenReturn(Mono.error(new IllegalStateException("CreateSession failed.")))
+            .thenReturn(Mono.just(credential(FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME))));
+
+        StepVerifier.create(cache.getValidValueAsync()).verifyErrorMessage("CreateSession failed.");
+
+        // The failure left no cached value behind, so the retry mints a fresh one.
+        StepVerifier.create(cache.getValidValueAsync())
+            .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
+            .verifyComplete();
+
+        verify(sessionClient, times(2)).createAsync();
     }
 
     private static OffsetDateTime now(Clock clock) {
