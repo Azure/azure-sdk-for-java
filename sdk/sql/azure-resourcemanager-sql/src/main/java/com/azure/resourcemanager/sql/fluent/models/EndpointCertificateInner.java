@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.EndpointTrustedRootCertificateInfo;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Certificate used on an endpoint on the Managed Instance.
@@ -103,6 +105,16 @@ public final class EndpointCertificateInner extends ProxyResource {
      */
     public String publicBlob() {
         return this.innerProperties() == null ? null : this.innerProperties().publicBlob();
+    }
+
+    /**
+     * Get the trustedRootCertificates property: Trusted root certificates required to validate the instance
+     * certificate.
+     * 
+     * @return the trustedRootCertificates value.
+     */
+    public List<EndpointTrustedRootCertificateInfo> trustedRootCertificates() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustedRootCertificates();
     }
 
     /**

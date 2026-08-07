@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerConfigurationOptionName;
  */
 public final class ServerConfigurationOptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ServerConfigurationOptionUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/ServerConfigurationOptionUpdate.json
      */
     /**
      * Sample code: Updates managed instance server configuration option.
