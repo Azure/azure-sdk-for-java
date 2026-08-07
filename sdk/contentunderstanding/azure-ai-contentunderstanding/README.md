@@ -552,6 +552,24 @@ ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
 
 For more information, see [Azure SDK for Java logging][logging].
 
+## What's New
+
+See [CHANGELOG.md][changelog] for the full release history.
+
+Recent highlights:
+
+- **Authoring skills for GitHub Copilot.** Two new skills,
+  [`cu-sdk-author-analyzer`][cu_sdk_author_analyzer_skill] (single document
+  type) and
+  [`cu-sdk-author-analyzer-classify-route`][cu_sdk_author_analyzer_classify_route_skill]
+  (mixed-document packets), guide the user and Copilot through an iterative
+  schema → test → review cycle for authoring custom Content Understanding
+  analyzers. See the [GitHub Copilot Skills](#github-copilot-skills) section
+  below.
+- **`LlmInputHelper.toLlmInput` helper** for converting `AnalysisResult` into
+  LLM-friendly Markdown with YAML front matter. See
+  [Sample05_CreateClassifierAsync][sample05].
+
 ## GitHub Copilot Skills
 
 This package includes [GitHub Copilot][github_copilot] skills under `.github/skills/` that provide interactive, AI-assisted workflows for common tasks. In VS Code, Copilot can use these skills to help with environment setup, running samples, and understanding the service.
@@ -563,6 +581,8 @@ This package includes [GitHub Copilot][github_copilot] skills under `.github/ski
 | [**cu-sdk-setup**][cu_sdk_setup_skill] | Interactive environment setup — creates and configures your `.env` file with endpoint, credentials, and model deployment settings | In VS Code Copilot Chat, ask: *"Set up my Java environment for Content Understanding"* or reference the skill directly |
 | [**cu-sdk-sample-run**][cu_sdk_sample_run_skill] | Guided sample runner — helps you build the SDK, configure credentials, and run specific samples with Maven | Ask: *"Run Sample02_AnalyzeUrl"* or *"Run the invoice analysis sample"* |
 | [**cu-sdk-common-knowledge**][cu_sdk_common_knowledge_skill] | Domain knowledge reference — answers questions about Content Understanding concepts, analyzers, field schemas, API operations, and Java SDK usage | Ask: *"What prebuilt analyzers are available?"* or *"How do I create a custom analyzer?"* |
+| [**cu-sdk-author-analyzer**][cu_sdk_author_analyzer_skill] | Iteratively author and test a custom analyzer for a single **document** type — layout extraction, schema drafting, local validation, batch test, agent review, and refine cycle. Document modality only today; audio/video/image are planned. | Ask: *"Help me author a custom analyzer for these invoices"* |
+| [**cu-sdk-author-analyzer-classify-route**][cu_sdk_author_analyzer_classify_route_skill] | Iteratively author and test a classify-and-route pipeline for mixed-document packets (e.g. invoice + bank statement + loan application in one PDF). Includes per-category agent review and refinement of both classifier descriptions and inner-schema field descriptions. | Ask: *"Help me author an analyzer for this mixed financial packet"* |
 
 ### Using Skills in VS Code
 
@@ -635,4 +655,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
 [cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
 [cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
+[cu_sdk_author_analyzer_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer
+[cu_sdk_author_analyzer_classify_route_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-author-analyzer-classify-route
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/CHANGELOG.md
+[sample05]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample05_CreateClassifierAsync.java
 [file_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new?labels=Cognitive%20-%20Content%20Understanding&title=[ContentUnderstanding]%20&body=%23%23%20Library%20Version%0A%0A%23%23%20Repro%20Steps%0A%0A%23%23%20Expected%20Result%0A%0A%23%23%20Actual%20Result
