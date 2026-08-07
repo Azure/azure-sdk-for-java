@@ -9,6 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed direct connectivity retries for `PartitionKeyRangeGoneException` thrown during address resolution so stale partition key ranges trigger routing-map refresh and exhausted retries surface as 503 with partition-key-range-gone retry-limit substatus. - See [Issue 49381](https://github.com/Azure/azure-sdk-for-java/issues/49381).
 * Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 * Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
 * Fixed thin-client (Gateway V2) queries with a prefix (partial) hierarchical partition key returning co-located documents from other logical partitions. - See PR [49688](https://github.com/Azure/azure-sdk-for-java/pull/49688).
