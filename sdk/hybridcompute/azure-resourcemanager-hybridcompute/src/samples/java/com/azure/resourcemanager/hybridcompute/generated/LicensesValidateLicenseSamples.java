@@ -17,7 +17,7 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
  */
 public final class LicensesValidateLicenseSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/license/License_ValidateLicense.json
+     * x-ms-original-file: 2026-07-15/license/License_ValidateLicense.json
      */
     /**
      * Sample code: Validate a License.
