@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +24,7 @@ public final class FabricCapacitiesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"state\":\"Failed\",\"administration\":{\"members\":[\"lovmclwhijcoe\",\"ctbzaq\",\"qsycbkbfkgu\",\"dkexxppofm\"]}},\"sku\":{\"name\":\"axcfjpgddtocjjx\",\"tier\":\"Fabric\"},\"location\":\"mouexhdzx\",\"tags\":{\"wndeicbtwnp\":\"eojnxqbzvddn\",\"hcffcyddglmjthjq\":\"aoqvuh\",\"hix\":\"wpyeicxmqciwqvh\",\"og\":\"igdtopbob\"},\"id\":\"m\",\"name\":\"w\",\"type\":\"a\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Updating\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":1410609059},\"administration\":{\"members\":[\"jjxhvpmo\"]}},\"sku\":{\"name\":\"exhd\",\"tier\":\"Fabric\"},\"location\":\"bqe\",\"tags\":{\"icbtwnpzao\":\"xqbzvddntwnd\",\"jthjqkwpyei\":\"vuhrhcffcyddgl\",\"q\":\"xmqci\"},\"id\":\"hkh\",\"name\":\"xuigdtopbobj\",\"type\":\"ghmewuam\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +34,16 @@ public final class FabricCapacitiesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FabricCapacity> response
-            = manager.fabricCapacities().listByResourceGroup("aajrm", com.azure.core.util.Context.NONE);
+            = manager.fabricCapacities().listByResourceGroup("ukdkexxppofmxa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mouexhdzx", response.iterator().next().location());
-        Assertions.assertEquals("eojnxqbzvddn", response.iterator().next().tags().get("wndeicbtwnp"));
-        Assertions.assertEquals("lovmclwhijcoe",
-            response.iterator().next().properties().administration().members().get(0));
-        Assertions.assertEquals("axcfjpgddtocjjx", response.iterator().next().sku().name());
+        Assertions.assertEquals("bqe", response.iterator().next().location());
+        Assertions.assertEquals("xqbzvddntwnd", response.iterator().next().tags().get("icbtwnpzao"));
+        Assertions.assertEquals(CapacityOverageState.DISABLED,
+            response.iterator().next().properties().overage().state());
+        Assertions.assertEquals(1410609059,
+            response.iterator().next().properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("jjxhvpmo", response.iterator().next().properties().administration().members().get(0));
+        Assertions.assertEquals("exhd", response.iterator().next().sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.iterator().next().sku().tier());
     }
 }

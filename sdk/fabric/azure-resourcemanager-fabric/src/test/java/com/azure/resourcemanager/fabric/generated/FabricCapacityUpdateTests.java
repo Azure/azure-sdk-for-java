@@ -6,6 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdate;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdateProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
@@ -19,26 +21,32 @@ public final class FabricCapacityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityUpdate model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"to\",\"tier\":\"Fabric\"},\"tags\":{\"kfo\":\"ouajpsqucmpoyf\"},\"properties\":{\"administration\":{\"members\":[\"gjofjd\",\"eqsrdeupewnwreit\"]}}}")
+            "{\"sku\":{\"name\":\"upewnwreitjzy\",\"tier\":\"Fabric\"},\"tags\":{\"rkdtmlxh\":\"arhmofcqhsmy\",\"arcryuanzwuxzdxt\":\"kuksjtxukcdm\"},\"properties\":{\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":906261877},\"administration\":{\"members\":[\"pmrqobm\"]}}}")
             .toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("to", model.sku().name());
+        Assertions.assertEquals("upewnwreitjzy", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("gjofjd", model.properties().administration().members().get(0));
+        Assertions.assertEquals("arhmofcqhsmy", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(906261877, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("pmrqobm", model.properties().administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FabricCapacityUpdate model
-            = new FabricCapacityUpdate().withSku(new RpSku().withName("to").withTier(RpSkuTier.FABRIC))
-                .withTags(mapOf("kfo", "ouajpsqucmpoyf"))
-                .withProperties(new FabricCapacityUpdateProperties().withAdministration(
-                    new CapacityAdministration().withMembers(Arrays.asList("gjofjd", "eqsrdeupewnwreit"))));
+            = new FabricCapacityUpdate().withSku(new RpSku().withName("upewnwreitjzy").withTier(RpSkuTier.FABRIC))
+                .withTags(mapOf("rkdtmlxh", "arhmofcqhsmy", "arcryuanzwuxzdxt", "kuksjtxukcdm"))
+                .withProperties(new FabricCapacityUpdateProperties()
+                    .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
+                        .withThresholdCapacityUnitHours(906261877))
+                    .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("pmrqobm"))));
         model = BinaryData.fromObject(model).toObject(FabricCapacityUpdate.class);
-        Assertions.assertEquals("to", model.sku().name());
+        Assertions.assertEquals("upewnwreitjzy", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("gjofjd", model.properties().administration().members().get(0));
+        Assertions.assertEquals("arhmofcqhsmy", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(906261877, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("pmrqobm", model.properties().administration().members().get(0));
     }
 
     // Use "Map.of" if available
