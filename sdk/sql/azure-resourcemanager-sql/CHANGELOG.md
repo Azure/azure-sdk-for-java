@@ -2,6 +2,8 @@
 
 ## 2.55.0-beta.1 (2026-08-05)
 
+- Package api-version 2025-08-01-preview.
+
 ### Breaking Changes
 
 #### `models.DataMaskingFunction` was modified
