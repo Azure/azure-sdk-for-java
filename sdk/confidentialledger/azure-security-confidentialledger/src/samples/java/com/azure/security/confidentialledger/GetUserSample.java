@@ -6,6 +6,7 @@ package com.azure.security.confidentialledger;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.models.JsonObject;
 import com.azure.json.models.JsonString;
@@ -14,7 +15,7 @@ public class GetUserSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
                         .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
