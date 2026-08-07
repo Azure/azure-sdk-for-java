@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 6.5.0 (2026-07-29)
+
+#### Other Changes
+* regular release
+
 ### 7.4.0 (2026-07-24)
 
 #### Bugs Fixed
