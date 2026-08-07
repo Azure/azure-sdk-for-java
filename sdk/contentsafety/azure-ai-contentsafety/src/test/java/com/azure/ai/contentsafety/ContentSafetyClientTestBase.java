@@ -26,6 +26,9 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyAsyncClient contentSafetyAsyncClient;
     protected BlocklistClient blocklistClient;
     protected BlocklistAsyncClient blocklistAsyncClient;
+    protected ContentProvenanceClient contentProvenanceClient;
+    protected String signedMediaUri;
+    protected String unsignedMediaUri;
 
     @Override
     protected void beforeTest() {
@@ -44,6 +47,26 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
             contentSafetyClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         contentSafetyClient = contentSafetyClientBuilder.buildClient();
+
+        // Blob SAS URIs for provenance detection; the real values carry a SAS token.
+        signedMediaUri = Configuration.getGlobalConfiguration()
+            .get("CONTENT_SAFETY_SIGNED_MEDIA_URI",
+                "https://fake_storage.blob.core.windows.net/provenance-test/signed.png");
+        unsignedMediaUri = Configuration.getGlobalConfiguration()
+            .get("CONTENT_SAFETY_UNSIGNED_MEDIA_URI",
+                "https://fake_storage.blob.core.windows.net/provenance-test/unsigned.png");
+
+        ContentProvenanceClientBuilder contentProvenanceClientBuilder
+            = new ContentProvenanceClientBuilder().credential(new KeyCredential(key))
+                .endpoint(endpoint)
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            contentProvenanceClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            contentProvenanceClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        contentProvenanceClient = contentProvenanceClientBuilder.buildClient();
 
         ContentSafetyClientBuilder contentSafetyClientAADBuilder
             = new ContentSafetyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
