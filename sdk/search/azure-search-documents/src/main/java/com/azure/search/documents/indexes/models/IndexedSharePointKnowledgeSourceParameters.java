@@ -151,6 +151,7 @@ public final class IndexedSharePointKnowledgeSourceParameters
         jsonWriter.writeStringField("containerName", this.containerName == null ? null : this.containerName.toString());
         jsonWriter.writeStringField("query", this.query);
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
+        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +171,7 @@ public final class IndexedSharePointKnowledgeSourceParameters
             IndexedSharePointContainerName containerName = null;
             String query = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
+            SearchIndexKnowledgeSourceQueryHints queryHints = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -182,6 +184,8 @@ public final class IndexedSharePointKnowledgeSourceParameters
                     query = reader.getString();
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
+                } else if ("queryHints".equals(fieldName)) {
+                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -192,8 +196,40 @@ public final class IndexedSharePointKnowledgeSourceParameters
                 = new IndexedSharePointKnowledgeSourceParameters(connectionString, containerName);
             deserializedIndexedSharePointKnowledgeSourceParameters.query = query;
             deserializedIndexedSharePointKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
+            deserializedIndexedSharePointKnowledgeSourceParameters.queryHints = queryHints;
             deserializedIndexedSharePointKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedIndexedSharePointKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
+     * Request-time query hints replace these defaults as a complete object.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHints;
+
+    /**
+     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @return the queryHints value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
+        return this.queryHints;
+    }
+
+    /**
+     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @param queryHints the queryHints value to set.
+     * @return the IndexedSharePointKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public IndexedSharePointKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
+        this.queryHints = queryHints;
+        return this;
     }
 }

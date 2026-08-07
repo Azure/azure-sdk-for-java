@@ -57,7 +57,7 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokensCount);
         jsonWriter.writeNumberField("outputTokens", this.outputTokensCount);
-        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeJsonField("model", this.model);
         return jsonWriter.writeEndObject();
     }
 
@@ -80,7 +80,7 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION;
             Integer inputTokensCount = null;
             Integer outputTokensCount = null;
-            String modelName = null;
+            KnowledgeBaseActivityRecordModel model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -98,8 +98,8 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
                     inputTokensCount = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokensCount = reader.getNullable(JsonReader::getInt);
-                } else if ("modelName".equals(fieldName)) {
-                    modelName = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = KnowledgeBaseActivityRecordModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -112,7 +112,7 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.type = type;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.inputTokensCount = inputTokensCount;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.outputTokensCount = outputTokensCount;
-            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.modelName = modelName;
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.model = model;
             return deserializedKnowledgeBaseModelWebSummarizationActivityRecord;
         });
     }
@@ -150,18 +150,18 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     }
 
     /*
-     * The name of the model used for the LLM web summarization activity.
+     * The model used for the LLM web summarization activity.
      */
     @Generated
-    private String modelName;
+    private KnowledgeBaseActivityRecordModel model;
 
     /**
-     * Get the modelName property: The name of the model used for the LLM web summarization activity.
+     * Get the model property: The model used for the LLM web summarization activity.
      *
-     * @return the modelName value.
+     * @return the model value.
      */
     @Generated
-    public String getModelName() {
-        return this.modelName;
+    public KnowledgeBaseActivityRecordModel getModel() {
+        return this.model;
     }
 }

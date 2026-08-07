@@ -34,12 +34,6 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
     @Generated
     private Integer outputTokens;
 
-    /*
-     * The name of the model used for the LLM answer synthesis activity.
-     */
-    @Generated
-    private String modelName;
-
     /**
      * Creates an instance of KnowledgeBaseModelAnswerSynthesisActivityRecord class.
      *
@@ -82,16 +76,6 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
     }
 
     /**
-     * Get the modelName property: The name of the model used for the LLM answer synthesis activity.
-     *
-     * @return the modelName value.
-     */
-    @Generated
-    public String getModelName() {
-        return this.modelName;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -105,7 +89,7 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokens);
         jsonWriter.writeNumberField("outputTokens", this.outputTokens);
-        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeJsonField("model", this.model);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,7 +112,7 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_ANSWER_SYNTHESIS;
             Integer inputTokens = null;
             Integer outputTokens = null;
-            String modelName = null;
+            KnowledgeBaseActivityRecordModel model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -146,8 +130,8 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
                     inputTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokens = reader.getNullable(JsonReader::getInt);
-                } else if ("modelName".equals(fieldName)) {
-                    modelName = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = KnowledgeBaseActivityRecordModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -160,8 +144,24 @@ public final class KnowledgeBaseModelAnswerSynthesisActivityRecord extends Knowl
             deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord.type = type;
             deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord.inputTokens = inputTokens;
             deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord.outputTokens = outputTokens;
-            deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord.modelName = modelName;
+            deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord.model = model;
             return deserializedKnowledgeBaseModelAnswerSynthesisActivityRecord;
         });
+    }
+
+    /*
+     * The model used for the LLM answer synthesis activity.
+     */
+    @Generated
+    private KnowledgeBaseActivityRecordModel model;
+
+    /**
+     * Get the model property: The model used for the LLM answer synthesis activity.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public KnowledgeBaseActivityRecordModel getModel() {
+        return this.model;
     }
 }

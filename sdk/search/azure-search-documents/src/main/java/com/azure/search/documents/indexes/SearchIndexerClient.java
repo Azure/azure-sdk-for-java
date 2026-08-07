@@ -32,6 +32,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
+import com.azure.search.documents.models.ListingSearchType;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -277,6 +278,12 @@ public final class SearchIndexerClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -323,6 +330,7 @@ public final class SearchIndexerClient {
      *             }
      *         }
      *     ]
+     *     &#64;odata.nextLink: String (Optional)
      * }
      * }
      * </pre>
@@ -647,6 +655,12 @@ public final class SearchIndexerClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -731,6 +745,7 @@ public final class SearchIndexerClient {
      *             }
      *         }
      *     ]
+     *     &#64;odata.nextLink: String (Optional)
      * }
      * }
      * </pre>
@@ -1099,6 +1114,12 @@ public final class SearchIndexerClient {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1222,6 +1243,7 @@ public final class SearchIndexerClient {
      *             }
      *         }
      *     ]
+     *     &#64;odata.nextLink: String (Optional)
      * }
      * }
      * </pre>
@@ -2993,90 +3015,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Lists all datasources available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListDataSourcesResult getDataSourceConnections(List<String> select) {
-        // Generated convenience method for getDataSourceConnectionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getDataSourceConnectionsWithResponse(requestOptions).getValue().toObject(ListDataSourcesResult.class);
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListIndexersResult getIndexers(List<String> select) {
-        // Generated convenience method for getIndexersWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getIndexersWithResponse(requestOptions).getValue().toObject(ListIndexersResult.class);
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSkillsetsResult getSkillsets(List<String> select) {
-        // Generated convenience method for getSkillsetsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
-    }
-
-    /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -3269,5 +3207,133 @@ public final class SearchIndexerClient {
         // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListDataSourcesResult getDataSourceConnections(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for getDataSourceConnectionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return getDataSourceConnectionsWithResponse(requestOptions).getValue().toObject(ListDataSourcesResult.class);
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListIndexersResult getIndexers(List<String> select, String search, Integer pageSize, ListingSearchType searchType) {
+        // Generated convenience method for getIndexersWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return getIndexersWithResponse(requestOptions).getValue().toObject(ListIndexersResult.class);
+    }
+
+    /**
+     * List all skillsets in a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @param search A string used to narrow down the listing so that fewer results need to be paged through. If omitted
+     * or an empty string is passed, no narrowing is applied.
+     * @param pageSize The maximum number of items to return in a single page. The server enforces a maximum; if
+     * omitted, the server determines a suitable default.
+     * @param searchType Specifies how the search parameter is interpreted. Currently only 'prefix' is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListSkillsetsResult getSkillsets(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
+        // Generated convenience method for getSkillsetsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
     }
 }

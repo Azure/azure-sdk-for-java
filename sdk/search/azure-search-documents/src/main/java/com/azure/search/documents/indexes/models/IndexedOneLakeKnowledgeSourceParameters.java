@@ -147,6 +147,7 @@ public final class IndexedOneLakeKnowledgeSourceParameters
         jsonWriter.writeStringField("lakehouseId", this.lakehouseId);
         jsonWriter.writeStringField("targetPath", this.targetPath);
         jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
+        jsonWriter.writeJsonField("queryHints", this.queryHints);
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +167,7 @@ public final class IndexedOneLakeKnowledgeSourceParameters
             String lakehouseId = null;
             String targetPath = null;
             KnowledgeSourceIngestionParameters ingestionParameters = null;
+            SearchIndexKnowledgeSourceQueryHints queryHints = null;
             CreatedResources createdResources = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -178,6 +180,8 @@ public final class IndexedOneLakeKnowledgeSourceParameters
                     targetPath = reader.getString();
                 } else if ("ingestionParameters".equals(fieldName)) {
                     ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
+                } else if ("queryHints".equals(fieldName)) {
+                    queryHints = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = CreatedResources.fromJson(reader);
                 } else {
@@ -188,8 +192,40 @@ public final class IndexedOneLakeKnowledgeSourceParameters
                 = new IndexedOneLakeKnowledgeSourceParameters(fabricWorkspaceId, lakehouseId);
             deserializedIndexedOneLakeKnowledgeSourceParameters.targetPath = targetPath;
             deserializedIndexedOneLakeKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
+            deserializedIndexedOneLakeKnowledgeSourceParameters.queryHints = queryHints;
             deserializedIndexedOneLakeKnowledgeSourceParameters.createdResources = createdResources;
             return deserializedIndexedOneLakeKnowledgeSourceParameters;
         });
+    }
+
+    /*
+     * Default hints that guide query planning toward useful filters and boosts for this index-backed knowledge source.
+     * Request-time query hints replace these defaults as a complete object.
+     */
+    @Generated
+    private SearchIndexKnowledgeSourceQueryHints queryHints;
+
+    /**
+     * Get the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @return the queryHints value.
+     */
+    @Generated
+    public SearchIndexKnowledgeSourceQueryHints getQueryHints() {
+        return this.queryHints;
+    }
+
+    /**
+     * Set the queryHints property: Default hints that guide query planning toward useful filters and boosts for this
+     * index-backed knowledge source. Request-time query hints replace these defaults as a complete object.
+     *
+     * @param queryHints the queryHints value to set.
+     * @return the IndexedOneLakeKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public IndexedOneLakeKnowledgeSourceParameters setQueryHints(SearchIndexKnowledgeSourceQueryHints queryHints) {
+        this.queryHints = queryHints;
+        return this;
     }
 }

@@ -15,6 +15,8 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBui
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.models.EntraAppAuthentication;
+import com.azure.search.documents.models.WorkIQKnowledgeSourceParameters;
 
 /**
  * Demonstrates creating and using a Work IQ knowledge source in the preview API.
@@ -40,8 +42,11 @@ public class KnowledgeSourceWorkIqPreviewExample {
             .buildClient();
 
         try {
-            // Create KS — Work IQ requires only a name, no extra parameters
-            WorkIQKnowledgeSource knowledgeSource = new WorkIQKnowledgeSource(KS_NAME);
+            // Create KS with the customer-owned Entra app used for Work IQ on-behalf-of authentication.
+            WorkIQKnowledgeSourceParameters parameters = new WorkIQKnowledgeSourceParameters(
+                new EntraAppAuthentication("<application-id>", "<federated-credential-id>")
+                    .setTenantId("<tenant-id>"));
+            WorkIQKnowledgeSource knowledgeSource = new WorkIQKnowledgeSource(KS_NAME, parameters);
             searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
 
             // Verify KS kind
