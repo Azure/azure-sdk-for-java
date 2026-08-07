@@ -1,0 +1,11 @@
+Write-Output "Current directory: $(get-location)"
+Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
+    Write-Output "Updating $($_.Name)"
+    [xml]$xml = Get-Content $_.FullName
+    $xml.SelectNodes("//testcase") | ForEach-Object {
+        $parts = $_.classname -split '\.'
+        $shortClassname = (($parts[0..($parts.Length - 2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
+        $_.name = "$shortClassname.$($_.name)"
+    }
+    $xml.Save($_.FullName)
+}
