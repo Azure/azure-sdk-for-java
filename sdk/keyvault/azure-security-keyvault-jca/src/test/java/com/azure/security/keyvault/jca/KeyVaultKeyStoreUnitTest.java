@@ -3,18 +3,28 @@
 
 package com.azure.security.keyvault.jca;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeyStoreUnitTest {
 
     /**
@@ -89,6 +99,58 @@ public class KeyVaultKeyStoreUnitTest {
 
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificate("setcert"));
+    }
+
+    @Test
+    public void testGetKeyVaultCertificateAliasFilterPatternsWhenNotConfigured() {
+        assertTrue(new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns().isEmpty());
+    }
+
+    @Test
+    public void testGetKeyVaultCertificateAliasFilterPatternsFromBaseProperty() {
+        System.setProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY, " ^prod-.* ");
+
+        assertEquals(Collections.singleton("^prod-.*"),
+            new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
+    }
+
+    @Test
+    public void testGetKeyVaultCertificateAliasFilterPatternsFromSuffixedProperties() {
+        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        System.setProperty(base, "myalias");
+        System.setProperty(base + ".1", "^prod-.*");
+        System.setProperty(base + ".prod", "^prod-a.*");
+        System.setProperty(base + ".PROD", "^prod-b.*");
+        System.setProperty(base + ".exclude-old", "!.*-old$");
+        System.setProperty(base + ".blank", "   ");
+
+        Set<String> expected
+            = new HashSet<>(Arrays.asList("myalias", "^prod-.*", "^prod-a.*", "^prod-b.*", "!.*-old$"));
+
+        assertEquals(expected, new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
+    }
+
+    @Test
+    public void testGetKeyVaultCertificateAliasFilterPatternsKeepsCommas() {
+        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        System.setProperty(base + ".1", "^cert-\\d{1,5}$");
+        System.setProperty(base + ".2", "![a-z]{2,}");
+
+        Set<String> expected = new HashSet<>(Arrays.asList("^cert-\\d{1,5}$", "![a-z]{2,}"));
+
+        assertEquals(expected, new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
+    }
+
+    @BeforeEach
+    @AfterEach
+    public void clearCertificateAliasFilterPatternProperties() {
+        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        System.clearProperty(base);
+        System.getProperties()
+            .stringPropertyNames()
+            .stream()
+            .filter(name -> name.startsWith(base + "."))
+            .forEach(System::clearProperty);
     }
 
 }
