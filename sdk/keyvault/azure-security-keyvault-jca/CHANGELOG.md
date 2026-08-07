@@ -7,8 +7,11 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Stopped recording sensitive data in `FINER` level logs. Review any logs captured at the `FINER` level or lower in previous library versions and rotate any sensitive data contained there.
+- Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault does not end in a self-signed root, the missing issuer certificates are now resolved at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Responses are cached by URL so subsequent loads can reuse them without another network request. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 
 ### Other Changes
+- Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
 
 ## 2.12.0 (2026-07-24)
 
