@@ -5,9 +5,12 @@ package com.azure.security.keyvault.jca.implementation;
 
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import org.junit.jupiter.api.Test;
+
 import java.security.cert.Certificate;
 import java.util.Map;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JreKeyStoreTest {
 
@@ -17,7 +20,7 @@ public class JreKeyStoreTest {
         assertNotNull(jreCertificates);
         assertNotNull(jreCertificates.getAliases());
         Map<String, Certificate> certs = jreCertificates.getCertificates();
-        assertTrue(certs.size() > 0);
+        assertFalse(certs.isEmpty());
         assertNotNull(jreCertificates.getCertificateKeys());
     }
 

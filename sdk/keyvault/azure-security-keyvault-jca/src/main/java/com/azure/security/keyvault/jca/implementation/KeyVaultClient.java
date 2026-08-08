@@ -37,7 +37,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -235,7 +235,7 @@ public class KeyVaultClient {
                 result = AccessTokenUtil.getAccessTokenWithWorkloadIdentity(keyVaultBaseUri, tenantId, clientId);
             } else if (managedIdentity != null) {
                 LOGGER.info("Using managed identity for authentication");
-                result = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                result = getAccessToken(resource, managedIdentity);
             } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
                 LOGGER.info("Using provided access token for authentication");
                 // Create an AccessToken object from the provided token string
@@ -243,9 +243,11 @@ public class KeyVaultClient {
                 // When the token actually expires, Azure will return authentication errors,
                 // which will inform the user to provide a new token.
                 result = new AccessToken(providedAccessToken, Long.MAX_VALUE / 1000);
-            } else {
-                LOGGER.info("Using managed identity for authentication (default)");
-                result = AccessTokenUtil.getAccessToken(resource, null);
+            } else if (tenantId != null && clientId != null && clientSecret != null) {
+                LOGGER.info("Using client credentials (client ID/secret) for authentication");
+                String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
+                    disableChallengeResourceVerification);
+                result = getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
@@ -264,15 +266,12 @@ public class KeyVaultClient {
     public List<String> getAliases() {
         LOGGER.entering("KeyVaultClient", "getAliases");
 
-        ArrayList<String> result = new ArrayList<>();
-        HashMap<String, String> headers = new HashMap<>();
-
-        headers.put("Authorization", "Bearer " + getAccessToken());
-
+        List<String> result = new ArrayList<>();
+        Map<String, String> headers = Collections.singletonMap("Authorization", "Bearer " + getAccessToken());
         String uri = keyVaultUri + "certificates" + API_VERSION_POSTFIX;
 
         while (uri != null && !uri.isEmpty()) {
-            String response = HttpUtil.get(uri, headers);
+            String response = httpGet(uri, headers);
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
@@ -318,12 +317,8 @@ public class KeyVaultClient {
         LOGGER.entering("KeyVaultClient", "getCertificateBundle", alias);
 
         CertificateBundle result = null;
-        HashMap<String, String> headers = new HashMap<>();
-
-        headers.put("Authorization", "Bearer " + getAccessToken());
-
-        String uri = keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(uri, headers);
+        String response = httpGet(keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX,
+            Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (response != null) {
             try {
@@ -382,12 +377,8 @@ public class KeyVaultClient {
         LOGGER.entering("KeyVaultClient", "getCertificateChain", alias);
         LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
 
-        HashMap<String, String> headers = new HashMap<>();
-
-        headers.put("Authorization", "Bearer " + getAccessToken());
-
         String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(uri, headers);
+        String response = httpGet(uri, Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (response == null) {
             throw new NullPointerException();
@@ -443,7 +434,8 @@ public class KeyVaultClient {
             // Return KeyVaultPrivateKey if certificate is not exportable because if the service needs to obtain the
             // private key for authentication, and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
-            String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
+            int index = keyType.indexOf("-HSM");
+            String keyType2 = (index == -1) ? keyType : keyType.substring(0, index);
 
             KeyVaultPrivateKey key = Optional.ofNullable(certificateBundle)
                 .map(CertificateBundle::getKid)
@@ -455,12 +447,8 @@ public class KeyVaultClient {
             return key;
         }
 
-        String certificateSecretUri = certificateBundle.getSid();
-        Map<String, String> headers = new HashMap<>();
-
-        headers.put("Authorization", "Bearer " + getAccessToken());
-
-        String body = HttpUtil.get(certificateSecretUri + API_VERSION_POSTFIX, headers);
+        String body = httpGet(certificateBundle.getSid() + API_VERSION_POSTFIX,
+            Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (body == null) {
             // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
@@ -529,13 +517,10 @@ public class KeyVaultClient {
         LOGGER.entering("KeyVaultClient", "getSignedWithPrivateKey", new Object[] { digestName, digestValue, keyId });
 
         SignResult result = null;
-        String bodyString = String.format("{\"alg\": \"" + digestName + "\", \"value\": \"%s\"}", digestValue);
-        Map<String, String> headers = new HashMap<>();
+        String bodyString = "{\"alg\": \"" + digestName + "\", \"value\": \"" + digestValue + "\"}";
+        Map<String, String> headers = Collections.singletonMap("Authorization", "Bearer " + getAccessToken());
 
-        headers.put("Authorization", "Bearer " + getAccessToken());
-
-        String uri = keyId + "/sign" + API_VERSION_POSTFIX;
-        String response = HttpUtil.post(uri, headers, bodyString, "application/json");
+        String response = httpPost(headers, bodyString);
 
         if (response != null) {
             try {
@@ -608,5 +593,22 @@ public class KeyVaultClient {
         LOGGER.exiting("KeyVaultClient", "createPrivateKeyFromPem", privateKey);
 
         return privateKey;
+    }
+
+    String httpGet(String uri, Map<String, String> headers) {
+        return HttpUtil.get(uri, headers);
+    }
+
+    String httpPost(Map<String, String> headers, String body) {
+        return HttpUtil.post("/sign?api-version=7.1", headers, body, "application/json");
+    }
+
+    AccessToken getAccessToken(String resource, String identity) {
+        return AccessTokenUtil.getAccessToken(resource, managedIdentity);
+    }
+
+    AccessToken getAccessToken(String resource, String aadAuthenticationUri, String tenantId, String clientId,
+        String clientSecret) {
+        return AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
     }
 }

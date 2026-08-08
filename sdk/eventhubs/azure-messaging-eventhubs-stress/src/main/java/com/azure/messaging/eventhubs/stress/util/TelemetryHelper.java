@@ -90,7 +90,7 @@ public class TelemetryHelper {
      */
     private static OpenTelemetry init() {
         System.setProperty("otel.java.global-autoconfigure.enabled", "true");
-        
+
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString == null) {

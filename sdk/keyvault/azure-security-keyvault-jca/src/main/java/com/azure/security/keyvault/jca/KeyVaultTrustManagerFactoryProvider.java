@@ -36,6 +36,7 @@ public final class KeyVaultTrustManagerFactoryProvider extends Provider {
     /**
      * Constructor.
      */
+    @SuppressWarnings("deprecation")
     public KeyVaultTrustManagerFactoryProvider() {
         super(NAME, VERSION, INFO);
         initialize();
