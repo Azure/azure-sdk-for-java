@@ -8,6 +8,7 @@ import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeResponseMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import org.junit.jupiter.api.Assertions;
@@ -111,5 +112,46 @@ public class DecoderTests {
 
         Assertions.assertEquals(WebPubSubDataFormat.TEXT, message.getDataType());
         Assertions.assertEquals("text", message.getData().toString());
+    }
+
+    @Test
+    public void testInvokeResponseSuccess() {
+        InvokeResponseMessage message = (InvokeResponseMessage) decoder
+            .decode("{\n" + "    \"type\": \"invokeResponse\",\n" + "    \"invocationId\": \"inv-1\",\n"
+                + "    \"success\": true,\n" + "    \"dataType\": \"text\",\n" + "    \"data\": \"pong\"\n" + "}");
+
+        Assertions.assertEquals("inv-1", message.getInvocationId());
+        Assertions.assertTrue(message.isSuccess());
+        Assertions.assertEquals(WebPubSubDataFormat.TEXT, message.getDataType());
+        Assertions.assertEquals("pong", message.getData().toString());
+        Assertions.assertNull(message.getError());
+    }
+
+    @Test
+    public void testInvokeResponseError() {
+        InvokeResponseMessage message
+            = (InvokeResponseMessage) decoder.decode("{\n" + "    \"type\": \"invokeResponse\",\n"
+                + "    \"invocationId\": \"inv-2\",\n" + "    \"success\": false,\n" + "    \"error\": {\n"
+                + "        \"name\": \"BadRequest\",\n" + "        \"message\": \"oops\"\n" + "    }\n" + "}");
+
+        Assertions.assertEquals("inv-2", message.getInvocationId());
+        Assertions.assertFalse(message.isSuccess());
+        Assertions.assertNull(message.getDataType());
+        Assertions.assertNull(message.getData());
+        Assertions.assertNotNull(message.getError());
+        Assertions.assertEquals("BadRequest", message.getError().getName());
+        Assertions.assertEquals("oops", message.getError().getMessage());
+    }
+
+    @Test
+    public void testInvokeResponseWithJsonData() {
+        InvokeResponseMessage message = (InvokeResponseMessage) decoder.decode("{\n"
+            + "    \"type\": \"invokeResponse\",\n" + "    \"invocationId\": \"inv-3\",\n" + "    \"success\": true,\n"
+            + "    \"dataType\": \"json\",\n" + "    \"data\": {\"key\":\"value\"}\n" + "}");
+
+        Assertions.assertEquals("inv-3", message.getInvocationId());
+        Assertions.assertTrue(message.isSuccess());
+        Assertions.assertEquals(WebPubSubDataFormat.JSON, message.getDataType());
+        Assertions.assertEquals("{\"key\":\"value\"}", message.getData().toString());
     }
 }
