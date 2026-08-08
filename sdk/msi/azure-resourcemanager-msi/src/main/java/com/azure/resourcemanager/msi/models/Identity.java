@@ -22,23 +22,23 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 public interface Identity
     extends GroupableResource<MsiManager, IdentityInner>, Refreshable<Identity>, Updatable<Identity.Update> {
     /**
-     * Gets the ID of the Azure Active Directory tenant to which the identity belongs to.
+     * Gets the ID of the Microsoft Entra ID tenant to which the identity belongs to.
      *
-     * @return id of the Azure Active Directory tenant to which the identity belongs to
+     * @return id of the Microsoft Entra ID tenant to which the identity belongs to
      */
     String tenantId();
 
     /**
-     * Gets the ID of the Azure Active Directory service principal object associated with the identity.
+     * Gets the ID of the Microsoft Entra ID service principal object associated with the identity.
      *
-     * @return id of the Azure Active Directory service principal object associated with the identity
+     * @return id of the Microsoft Entra ID service principal object associated with the identity
      */
     String principalId();
 
     /**
-     * Gets the ID of the Azure Active Directory application associated with the identity.
+     * Gets the ID of the Microsoft Entra ID application associated with the identity.
      *
-     * @return id of the Azure Active Directory application associated with the identity
+     * @return id of the Microsoft Entra ID application associated with the identity
      */
     String clientId();
 

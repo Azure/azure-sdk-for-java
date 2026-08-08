@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The configuration settings of the Azure Active Directory token validation flow.
+ * The configuration settings of the Microsoft Entra ID token validation flow.
  */
 @Fluent
 public final class AzureActiveDirectoryValidation implements JsonSerializable<AzureActiveDirectoryValidation> {

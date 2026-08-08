@@ -138,7 +138,7 @@ public interface SqlServer
     /**
      * Sets an Active Directory administrator to this server.
      *
-     * <p>Azure Active Directory authentication allows you to centrally manage identity and access to your Azure SQL
+     * <p>Microsoft Entra ID authentication allows you to centrally manage identity and access to your Azure SQL
      * Database V12.
      *
      * @param userLogin the user or group login; it can be the name or the email address
@@ -158,9 +158,9 @@ public interface SqlServer
     void removeActiveDirectoryAdministrator();
 
     /**
-     * Checks whether Azure Active Directory (AAD) only authentication enabled.
+     * Checks whether Microsoft Entra ID (AAD) only authentication enabled.
      *
-     * @return true if Azure Active Directory (AAD) only authentication enabled
+     * @return true if Microsoft Entra ID (AAD) only authentication enabled
      */
     default boolean isAzureActiveDirectoryOnlyAuthenticationEnabled() {
         throw new UnsupportedOperationException(
@@ -279,7 +279,7 @@ public interface SqlServer
          */
         interface WithAzureActiveDirectoryOnlyAuthentication {
             /**
-             * Enables Microsoft Entra (Azure Active Directory) only authentication on the SQL Server.
+             * Enables Microsoft Entra (Microsoft Entra ID) only authentication on the SQL Server.
              *
              * <p>An external Microsoft Entra administrator must be specified on the next stage.</p>
              *
@@ -291,7 +291,7 @@ public interface SqlServer
         /** A SQL Server definition stage setting the external Microsoft Entra administrator on the server. */
         interface WithExternalActiveDirectoryAdministrator {
             /**
-             * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
+             * Sets the external Microsoft Entra (Microsoft Entra ID) administrator on the SQL Server.
              *
              * @param adminLogin the user, group, or application login name
              * @param sid the user, group, or application object ID
@@ -319,7 +319,7 @@ public interface SqlServer
             /**
              * Sets the SQL Active Directory administrator.
              *
-             * <p>Azure Active Directory authentication allows you to centrally manage identity and access to your Azure
+             * <p>Microsoft Entra ID authentication allows you to centrally manage identity and access to your Azure
              * SQL Database V12.
              *
              * @param userLogin the user or group login; it can be the name or the email address

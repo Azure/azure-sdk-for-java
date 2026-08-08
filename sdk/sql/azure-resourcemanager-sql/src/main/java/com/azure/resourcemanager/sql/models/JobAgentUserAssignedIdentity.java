@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * Azure Active Directory identity configuration for a resource.
+ * Microsoft Entra ID identity configuration for a resource.
  */
 @Immutable
 public final class JobAgentUserAssignedIdentity implements JsonSerializable<JobAgentUserAssignedIdentity> {
     /*
-     * The Azure Active Directory principal id.
+     * The Microsoft Entra ID principal id.
      */
     private UUID principalId;
 
     /*
-     * The Azure Active Directory client id.
+     * The Microsoft Entra ID client id.
      */
     private UUID clientId;
 
@@ -34,7 +34,7 @@ public final class JobAgentUserAssignedIdentity implements JsonSerializable<JobA
     }
 
     /**
-     * Get the principalId property: The Azure Active Directory principal id.
+     * Get the principalId property: The Microsoft Entra ID principal id.
      * 
      * @return the principalId value.
      */
@@ -43,7 +43,7 @@ public final class JobAgentUserAssignedIdentity implements JsonSerializable<JobA
     }
 
     /**
-     * Get the clientId property: The Azure Active Directory client id.
+     * Get the clientId property: The Microsoft Entra ID client id.
      * 
      * @return the clientId value.
      */

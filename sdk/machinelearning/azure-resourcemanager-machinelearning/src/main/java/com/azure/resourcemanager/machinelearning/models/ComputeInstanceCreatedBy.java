@@ -22,7 +22,7 @@ public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeI
     private String username;
 
     /*
-     * Uniquely identifies user' Azure Active Directory organization.
+     * Uniquely identifies user' Microsoft Entra ID organization.
      */
     private String userOrgId;
 
@@ -47,7 +47,7 @@ public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeI
     }
 
     /**
-     * Get the userOrgId property: Uniquely identifies user' Azure Active Directory organization.
+     * Get the userOrgId property: Uniquely identifies user' Microsoft Entra ID organization.
      * 
      * @return the userOrgId value.
      */

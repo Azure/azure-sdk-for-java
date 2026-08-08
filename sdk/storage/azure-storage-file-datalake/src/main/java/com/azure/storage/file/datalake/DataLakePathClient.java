@@ -1347,7 +1347,7 @@ public class DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
-     * user identity values returned as Azure Active Directory Object IDs. Default value is false.
+     * user identity values returned as Microsoft Entra ID Object IDs. Default value is false.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

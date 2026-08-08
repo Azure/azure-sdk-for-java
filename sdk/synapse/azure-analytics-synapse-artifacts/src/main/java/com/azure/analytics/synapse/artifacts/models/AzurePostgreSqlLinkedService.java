@@ -135,7 +135,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     private Object servicePrincipalCredentialType;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Specify the base64 encoded certificate of your application registered in Microsoft Entra ID. Type: string (or
      * Expression with resultType string).
      */
     @Generated
@@ -587,7 +587,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
@@ -598,7 +598,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the AzurePostgreSqlLinkedService object itself.

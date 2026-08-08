@@ -5099,7 +5099,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5138,7 +5138,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5209,7 +5209,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5247,7 +5247,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5287,7 +5287,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5326,7 +5326,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5397,7 +5397,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5469,7 +5469,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.
@@ -5503,7 +5503,7 @@ public final class PathsImpl {
      * Namespace must be enabled for the account), otherwise the properties are returned.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param leaseAccessConditions Parameter group.

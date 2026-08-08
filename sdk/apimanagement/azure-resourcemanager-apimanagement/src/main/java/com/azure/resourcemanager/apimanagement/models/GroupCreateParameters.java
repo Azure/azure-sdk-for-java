@@ -108,7 +108,7 @@ public final class GroupCreateParameters implements JsonSerializable<GroupCreate
 
     /**
      * Get the externalId property: Identifier of the external groups, this property contains the id of the group from
-     * the external identity provider, e.g. for Azure Active Directory
+     * the external identity provider, e.g. for Microsoft Entra ID
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
      * 
      * @return the externalId value.
@@ -119,7 +119,7 @@ public final class GroupCreateParameters implements JsonSerializable<GroupCreate
 
     /**
      * Set the externalId property: Identifier of the external groups, this property contains the id of the group from
-     * the external identity provider, e.g. for Azure Active Directory
+     * the external identity provider, e.g. for Microsoft Entra ID
      * `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object id&gt;`; otherwise the value is null.
      * 
      * @param externalId the externalId value to set.

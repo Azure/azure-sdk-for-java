@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Azure Active Directory identity configuration for a resource.
+ * Microsoft Entra ID identity configuration for a resource.
  */
 @Fluent
 public final class JobAgentIdentity implements JsonSerializable<JobAgentIdentity> {

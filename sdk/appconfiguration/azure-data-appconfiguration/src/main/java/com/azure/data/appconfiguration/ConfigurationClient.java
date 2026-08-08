@@ -74,7 +74,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * to connect to the service.</p>
  * <ol>
  *   <li>Connection string, see {@link ConfigurationClientBuilder#connectionString(String) connectionString}.</li>
- *   <li>Azure Active Directory, see {@link ConfigurationClientBuilder#credential(TokenCredential) TokenCredential}.</li>
+ *   <li>Microsoft Entra ID, see {@link ConfigurationClientBuilder#credential(TokenCredential) TokenCredential}.</li>
  * </ol>
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>

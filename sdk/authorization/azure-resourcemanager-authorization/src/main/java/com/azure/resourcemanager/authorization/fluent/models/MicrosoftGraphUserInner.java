@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents an user.
  * <p>
- * Represents an Azure Active Directory user object.
+ * Represents an Microsoft Entra ID user object.
  */
 @Fluent
 public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObjectInner {
@@ -80,7 +80,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /*
      * Indicates whether the user account was created as a regular school or work account (null), an external account
-     * (Invitation), a local account for an Azure Active Directory B2C tenant (LocalAccount) or self-service sign-up
+     * (Invitation), a local account for an Microsoft Entra ID B2C tenant (LocalAccount) or self-service sign-up
      * using email verification (EmailVerified). Read-only.
      */
     private String creationType;
@@ -203,7 +203,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /*
      * Contains the on-premises Active Directory distinguished name or DN. The property is only populated for customers
-     * who are synchronizing their on-premises directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * who are synchronizing their on-premises directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      */
     private String onPremisesDistinguishedName;
 
@@ -239,7 +239,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /*
      * Contains the on-premises samAccountName synchronized from the on-premises directory. The property is only
-     * populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD
+     * populated for customers who are synchronizing their on-premises directory to Microsoft Entra ID via Azure AD
      * Connect. Read-only.
      */
     private String onPremisesSamAccountName;
@@ -259,7 +259,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /*
      * Contains the on-premises userPrincipalName synchronized from the on-premises directory. The property is only
-     * populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD
+     * populated for customers who are synchronizing their on-premises directory to Microsoft Entra ID via Azure AD
      * Connect. Read-only.
      */
     private String onPremisesUserPrincipalName;
@@ -437,7 +437,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private List<MicrosoftGraphLicenseDetails> licenseDetails;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private MicrosoftGraphDirectoryObjectInner manager;
@@ -633,7 +633,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private MicrosoftGraphTodo todo;
 
     /*
-     * Represents an Azure Active Directory user object.
+     * Represents an Microsoft Entra ID user object.
      */
     private Map<String, Object> additionalProperties;
 
@@ -859,7 +859,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /**
      * Get the creationType property: Indicates whether the user account was created as a regular school or work account
-     * (null), an external account (Invitation), a local account for an Azure Active Directory B2C tenant (LocalAccount)
+     * (null), an external account (Invitation), a local account for an Microsoft Entra ID B2C tenant (LocalAccount)
      * or self-service sign-up using email verification (EmailVerified). Read-only.
      * 
      * @return the creationType value.
@@ -870,7 +870,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
 
     /**
      * Set the creationType property: Indicates whether the user account was created as a regular school or work account
-     * (null), an external account (Invitation), a local account for an Azure Active Directory B2C tenant (LocalAccount)
+     * (null), an external account (Invitation), a local account for an Microsoft Entra ID B2C tenant (LocalAccount)
      * or self-service sign-up using email verification (EmailVerified). Read-only.
      * 
      * @param creationType the creationType value to set.
@@ -1365,7 +1365,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Get the onPremisesDomainName property: Contains the on-premises domainFQDN, also called dnsDomainName
      * synchronized from the on-premises directory. The property is only populated for customers who are synchronizing
-     * their on-premises directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * their on-premises directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @return the onPremisesDomainName value.
      */
@@ -1376,7 +1376,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Set the onPremisesDomainName property: Contains the on-premises domainFQDN, also called dnsDomainName
      * synchronized from the on-premises directory. The property is only populated for customers who are synchronizing
-     * their on-premises directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * their on-premises directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @param onPremisesDomainName the onPremisesDomainName value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1479,7 +1479,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Get the onPremisesSamAccountName property: Contains the on-premises samAccountName synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @return the onPremisesSamAccountName value.
      */
@@ -1490,7 +1490,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Set the onPremisesSamAccountName property: Contains the on-premises samAccountName synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @param onPremisesSamAccountName the onPremisesSamAccountName value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1549,7 +1549,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Get the onPremisesUserPrincipalName property: Contains the on-premises userPrincipalName synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @return the onPremisesUserPrincipalName value.
      */
@@ -1560,7 +1560,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     /**
      * Set the onPremisesUserPrincipalName property: Contains the on-premises userPrincipalName synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect. Read-only.
      * 
      * @param onPremisesUserPrincipalName the onPremisesUserPrincipalName value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -2237,7 +2237,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Get the manager property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @return the manager value.
@@ -2247,7 +2247,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Set the manager property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @param manager the manager value to set.
@@ -3025,7 +3025,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory user object.
+     * Get the additionalProperties property: Represents an Microsoft Entra ID user object.
      * 
      * @return the additionalProperties value.
      */
@@ -3034,7 +3034,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory user object.
+     * Set the additionalProperties property: Represents an Microsoft Entra ID user object.
      * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphUserInner object itself.

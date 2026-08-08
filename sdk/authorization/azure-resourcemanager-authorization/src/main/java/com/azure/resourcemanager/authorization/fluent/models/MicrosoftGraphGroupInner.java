@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents a group.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -140,7 +140,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
 
     /*
      * Contains the on-premises SAM account name synchronized from the on-premises directory. The property is only
-     * populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD
+     * populated for customers who are synchronizing their on-premises directory to Microsoft Entra ID via Azure AD
      * Connect.Returned by default. Read-only.
      */
     private String onPremisesSamAccountName;
@@ -256,7 +256,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
@@ -393,7 +393,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private MicrosoftGraphTeamInner team;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -831,7 +831,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Get the onPremisesSamAccountName property: Contains the on-premises SAM account name synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect.Returned by default. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect.Returned by default. Read-only.
      * 
      * @return the onPremisesSamAccountName value.
      */
@@ -842,7 +842,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     /**
      * Set the onPremisesSamAccountName property: Contains the on-premises SAM account name synchronized from the
      * on-premises directory. The property is only populated for customers who are synchronizing their on-premises
-     * directory to Azure Active Directory via Azure AD Connect.Returned by default. Read-only.
+     * directory to Microsoft Entra ID via Azure AD Connect.Returned by default. Read-only.
      * 
      * @param onPremisesSamAccountName the onPremisesSamAccountName value to set.
      * @return the MicrosoftGraphGroupInner object itself.
@@ -1257,7 +1257,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Get the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * Get the createdOnBehalfOf property: Represents an Microsoft Entra ID object. The directoryObject type is the
      * base type for many other directory entity types.
      * 
      * @return the createdOnBehalfOf value.
@@ -1267,7 +1267,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * Set the createdOnBehalfOf property: Represents an Microsoft Entra ID object. The directoryObject type is the
      * base type for many other directory entity types.
      * 
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
@@ -1803,7 +1803,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -1813,7 +1813,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

@@ -1559,7 +1559,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1603,7 +1603,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1649,7 +1649,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1691,7 +1691,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1734,7 +1734,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1777,7 +1777,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1824,7 +1824,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1873,7 +1873,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
@@ -1918,7 +1918,7 @@ public final class FileSystemsImpl {
      * than 5,000, the response will include up to 5,000 items.
      * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
      * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
-     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Microsoft Entra ID Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
      * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For

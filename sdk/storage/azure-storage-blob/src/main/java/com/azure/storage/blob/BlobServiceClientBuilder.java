@@ -578,9 +578,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * Sets the Audience to use for authentication with Microsoft Entra ID (AAD). The audience is not considered
      * when using a shared key.
-     * @param audience {@link BlobAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @param audience {@link BlobAudience} to be used when requesting a token from Microsoft Entra ID (AAD).
      * @return the updated BlobServiceClientBuilder object
      */
     public BlobServiceClientBuilder audience(BlobAudience audience) {

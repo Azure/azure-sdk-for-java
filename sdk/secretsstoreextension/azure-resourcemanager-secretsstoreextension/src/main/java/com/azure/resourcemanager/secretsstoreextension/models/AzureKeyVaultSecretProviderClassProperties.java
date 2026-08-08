@@ -28,7 +28,7 @@ public final class AzureKeyVaultSecretProviderClassProperties
     private String clientId;
 
     /*
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the Azure Key Vault.
+     * The Microsoft Entra ID tenant ID that should be used for authenticating requests to the Azure Key Vault.
      */
     private String tenantId;
 
@@ -91,7 +91,7 @@ public final class AzureKeyVaultSecretProviderClassProperties
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Get the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the Azure Key Vault.
      * 
      * @return the tenantId value.
@@ -101,7 +101,7 @@ public final class AzureKeyVaultSecretProviderClassProperties
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Set the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the Azure Key Vault.
      * 
      * @param tenantId the tenantId value to set.

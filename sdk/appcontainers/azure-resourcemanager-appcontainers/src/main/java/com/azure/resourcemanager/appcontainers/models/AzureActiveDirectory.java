@@ -12,28 +12,28 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The configuration settings of the Azure Active directory provider.
+ * The configuration settings of the Microsoft Entra ID provider.
  */
 @Fluent
 public final class AzureActiveDirectory implements JsonSerializable<AzureActiveDirectory> {
     /*
-     * <code>false</code> if the Azure Active Directory provider should not be enabled despite the set registration;
+     * <code>false</code> if the Microsoft Entra ID provider should not be enabled despite the set registration;
      * otherwise, <code>true</code>.
      */
     private Boolean enabled;
 
     /*
-     * The configuration settings of the Azure Active Directory app registration.
+     * The configuration settings of the Microsoft Entra ID app registration.
      */
     private AzureActiveDirectoryRegistration registration;
 
     /*
-     * The configuration settings of the Azure Active Directory login flow.
+     * The configuration settings of the Microsoft Entra ID login flow.
      */
     private AzureActiveDirectoryLogin login;
 
     /*
-     * The configuration settings of the Azure Active Directory token validation flow.
+     * The configuration settings of the Microsoft Entra ID token validation flow.
      */
     private AzureActiveDirectoryValidation validation;
 
@@ -51,7 +51,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Active Directory provider should not be
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Microsoft Entra ID provider should not be
      * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      * 
      * @return the enabled value.
@@ -61,7 +61,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Active Directory provider should not be
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Microsoft Entra ID provider should not be
      * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      * 
      * @param enabled the enabled value to set.
@@ -73,7 +73,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Get the registration property: The configuration settings of the Azure Active Directory app registration.
+     * Get the registration property: The configuration settings of the Microsoft Entra ID app registration.
      * 
      * @return the registration value.
      */
@@ -82,7 +82,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Set the registration property: The configuration settings of the Azure Active Directory app registration.
+     * Set the registration property: The configuration settings of the Microsoft Entra ID app registration.
      * 
      * @param registration the registration value to set.
      * @return the AzureActiveDirectory object itself.
@@ -93,7 +93,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Get the login property: The configuration settings of the Azure Active Directory login flow.
+     * Get the login property: The configuration settings of the Microsoft Entra ID login flow.
      * 
      * @return the login value.
      */
@@ -102,7 +102,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Set the login property: The configuration settings of the Azure Active Directory login flow.
+     * Set the login property: The configuration settings of the Microsoft Entra ID login flow.
      * 
      * @param login the login value to set.
      * @return the AzureActiveDirectory object itself.
@@ -113,7 +113,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Get the validation property: The configuration settings of the Azure Active Directory token validation flow.
+     * Get the validation property: The configuration settings of the Microsoft Entra ID token validation flow.
      * 
      * @return the validation value.
      */
@@ -122,7 +122,7 @@ public final class AzureActiveDirectory implements JsonSerializable<AzureActiveD
     }
 
     /**
-     * Set the validation property: The configuration settings of the Azure Active Directory token validation flow.
+     * Set the validation property: The configuration settings of the Microsoft Entra ID token validation flow.
      * 
      * @param validation the validation value to set.
      * @return the AzureActiveDirectory object itself.

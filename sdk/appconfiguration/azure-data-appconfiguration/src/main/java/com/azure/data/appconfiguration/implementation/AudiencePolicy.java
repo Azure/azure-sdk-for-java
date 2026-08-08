@@ -14,7 +14,7 @@ import com.azure.data.appconfiguration.models.ConfigurationAudience;
 import reactor.core.publisher.Mono;
 
 /**
- * HTTP pipeline policy that handles Azure Active Directory audience-related authentication errors.
+ * HTTP pipeline policy that handles Microsoft Entra ID audience-related authentication errors.
  * This policy intercepts HTTP responses and provides more meaningful error messages when
  * audience configuration issues occur during authentication.
  */

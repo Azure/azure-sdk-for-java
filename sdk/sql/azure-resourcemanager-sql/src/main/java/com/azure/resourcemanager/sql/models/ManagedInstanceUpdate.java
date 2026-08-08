@@ -836,7 +836,7 @@ public final class ManagedInstanceUpdate implements JsonSerializable<ManagedInst
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator can be utilized during instance
+     * Get the administrators property: The Microsoft Entra ID administrator can be utilized during instance
      * creation and for instance updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 
@@ -847,7 +847,7 @@ public final class ManagedInstanceUpdate implements JsonSerializable<ManagedInst
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator can be utilized during instance
+     * Set the administrators property: The Microsoft Entra ID administrator can be utilized during instance
      * creation and for instance updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 

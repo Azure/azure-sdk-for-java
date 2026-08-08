@@ -805,7 +805,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the aadProfile property: The Azure Active Directory configuration.
+     * Get the aadProfile property: The Microsoft Entra ID configuration.
      * 
      * @return the aadProfile value.
      */
@@ -814,7 +814,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the aadProfile property: The Azure Active Directory configuration.
+     * Set the aadProfile property: The Microsoft Entra ID configuration.
      * 
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterInner object itself.

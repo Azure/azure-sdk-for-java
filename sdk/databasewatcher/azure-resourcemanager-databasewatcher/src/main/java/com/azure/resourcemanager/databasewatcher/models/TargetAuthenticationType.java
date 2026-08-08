@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class TargetAuthenticationType extends ExpandableStringEnum<TargetAuthenticationType> {
     /**
-     * The Azure Active Directory authentication.
+     * The Microsoft Entra ID authentication.
      */
     public static final TargetAuthenticationType AAD = fromString("Aad");
 

@@ -29,7 +29,7 @@ import org.springframework.web.client.RestClient;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
 /**
- * HTTP security configurer class for Azure Active Directory Web application scenario, used to
+ * HTTP security configurer class for Microsoft Entra ID Web application scenario, used to
  * make Azure client registration repository and OAuth2 request entity converter take effect.
  */
 public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigurer<AadWebApplicationHttpSecurityConfigurer, HttpSecurity> {

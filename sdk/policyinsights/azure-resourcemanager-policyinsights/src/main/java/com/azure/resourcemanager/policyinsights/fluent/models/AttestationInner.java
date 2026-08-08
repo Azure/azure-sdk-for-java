@@ -203,7 +203,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Get the owner property: The person responsible for setting the state of the resource. This value is typically an
-     * Azure Active Directory object ID.
+     * Microsoft Entra ID object ID.
      * 
      * @return the owner value.
      */
@@ -213,7 +213,7 @@ public final class AttestationInner extends ProxyResource {
 
     /**
      * Set the owner property: The person responsible for setting the state of the resource. This value is typically an
-     * Azure Active Directory object ID.
+     * Microsoft Entra ID object ID.
      * 
      * @param owner the owner value to set.
      * @return the AttestationInner object itself.

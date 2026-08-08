@@ -127,7 +127,7 @@ public final class RestServiceLinkedServiceTypeProperties
     private Object servicePrincipalCredentialType;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Specify the base64 encoded certificate of your application registered in Microsoft Entra ID. Type: string (or
      * Expression with resultType string).
      */
     private SecretBase servicePrincipalEmbeddedCert;
@@ -559,7 +559,7 @@ public final class RestServiceLinkedServiceTypeProperties
 
     /**
      * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
@@ -569,7 +569,7 @@ public final class RestServiceLinkedServiceTypeProperties
 
     /**
      * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the RestServiceLinkedServiceTypeProperties object itself.

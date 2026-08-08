@@ -115,7 +115,7 @@ public final class AccountEntity extends Entity {
     }
 
     /**
-     * Get the aadTenantId property: The Azure Active Directory tenant id.
+     * Get the aadTenantId property: The Microsoft Entra ID tenant id.
      * 
      * @return the aadTenantId value.
      */
@@ -124,7 +124,7 @@ public final class AccountEntity extends Entity {
     }
 
     /**
-     * Get the aadUserId property: The Azure Active Directory user id.
+     * Get the aadUserId property: The Microsoft Entra ID user id.
      * 
      * @return the aadUserId value.
      */
@@ -191,7 +191,7 @@ public final class AccountEntity extends Entity {
     }
 
     /**
-     * Get the puid property: The Azure Active Directory Passport User ID.
+     * Get the puid property: The Microsoft Entra ID Passport User ID.
      * 
      * @return the puid value.
      */

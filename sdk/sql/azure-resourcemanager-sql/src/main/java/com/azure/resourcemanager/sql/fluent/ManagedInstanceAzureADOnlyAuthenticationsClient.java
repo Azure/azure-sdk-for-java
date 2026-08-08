@@ -25,15 +25,15 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
     /**
-     * Gets a specific Azure Active Directory only authentication property.
+     * Gets a specific Microsoft Entra ID-only authentication property.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property along with {@link Response} on successful
+     * @return a specific Microsoft Entra ID-only authentication property along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -41,46 +41,46 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
         String managedInstanceName, AuthenticationName authenticationName);
 
     /**
-     * Gets a specific Azure Active Directory only authentication property.
+     * Gets a specific Microsoft Entra ID-only authentication property.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property on successful completion of {@link Mono}.
+     * @return a specific Microsoft Entra ID-only authentication property on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceAzureADOnlyAuthenticationInner> getAsync(String resourceGroupName, String managedInstanceName,
         AuthenticationName authenticationName);
 
     /**
-     * Gets a specific Azure Active Directory only authentication property.
+     * Gets a specific Microsoft Entra ID-only authentication property.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property along with {@link Response}.
+     * @return a specific Microsoft Entra ID-only authentication property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceAzureADOnlyAuthenticationInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, AuthenticationName authenticationName, Context context);
 
     /**
-     * Gets a specific Azure Active Directory only authentication property.
+     * Gets a specific Microsoft Entra ID-only authentication property.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Azure Active Directory only authentication property.
+     * @return a specific Microsoft Entra ID-only authentication property.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedInstanceAzureADOnlyAuthenticationInner get(String resourceGroupName, String managedInstanceName,
@@ -92,13 +92,13 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication along with {@link Response} on successful completion of
+     * @return Microsoft Entra ID-only authentication along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -112,13 +112,13 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure Active Directory only authentication.
+     * @return the {@link PollerFlux} for polling of Microsoft Entra ID-only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -131,13 +131,13 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
+     * @return the {@link SyncPoller} for polling of Microsoft Entra ID-only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -150,14 +150,14 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory only authentication.
+     * @return the {@link SyncPoller} for polling of Microsoft Entra ID-only authentication.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAzureADOnlyAuthenticationInner>, ManagedInstanceAzureADOnlyAuthenticationInner>
@@ -170,13 +170,13 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication on successful completion of {@link Mono}.
+     * @return Microsoft Entra ID-only authentication on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceAzureADOnlyAuthenticationInner> createOrUpdateAsync(String resourceGroupName,
@@ -189,13 +189,13 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication.
+     * @return Microsoft Entra ID-only authentication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -207,14 +207,14 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param parameters The required parameters for creating or updating an Active Directory only authentication
      * property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory only authentication.
+     * @return Microsoft Entra ID-only authentication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedInstanceAzureADOnlyAuthenticationInner createOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -226,7 +226,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,7 +241,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +256,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,7 +271,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -287,7 +287,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,7 +301,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,7 +314,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
-     * @param authenticationName The name of server azure active directory only authentication.
+     * @param authenticationName The name of server Microsoft Entra ID-only authentication.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -325,14 +325,14 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
         Context context);
 
     /**
-     * Gets a list of server Azure Active Directory only authentications.
+     * Gets a list of server Microsoft Entra ID-only authentications.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * @return a list of server Microsoft Entra ID-only authentications as paginated response with
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -340,14 +340,14 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
         String managedInstanceName);
 
     /**
-     * Gets a list of server Azure Active Directory only authentications.
+     * Gets a list of server Microsoft Entra ID-only authentications.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * @return a list of server Microsoft Entra ID-only authentications as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -355,7 +355,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
         String managedInstanceName);
 
     /**
-     * Gets a list of server Azure Active Directory only authentications.
+     * Gets a list of server Microsoft Entra ID-only authentications.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedInstanceName The name of the managed instance.
@@ -363,7 +363,7 @@ public interface ManagedInstanceAzureADOnlyAuthenticationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server Azure Active Directory only authentications as paginated response with
+     * @return a list of server Microsoft Entra ID-only authentications as paginated response with
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

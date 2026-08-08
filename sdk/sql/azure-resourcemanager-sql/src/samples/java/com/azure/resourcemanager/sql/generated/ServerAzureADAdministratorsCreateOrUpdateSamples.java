@@ -17,7 +17,7 @@ public final class ServerAzureADAdministratorsCreateOrUpdateSamples {
      * x-ms-original-file: 2025-01-01/AdministratorCreateOrUpdate.json
      */
     /**
-     * Sample code: Creates or updates an existing Azure Active Directory administrator.
+     * Sample code: Creates or updates an existing Microsoft Entra ID administrator.
      * 
      * @param manager Entry point to SqlServerManager.
      */

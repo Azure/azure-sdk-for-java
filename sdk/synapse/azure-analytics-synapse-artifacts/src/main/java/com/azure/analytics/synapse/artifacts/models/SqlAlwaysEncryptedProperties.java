@@ -24,7 +24,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
+     * The client ID of the application in Microsoft Entra ID used for Azure Key Vault authentication. Type: string
      * (or Expression with resultType string).
      */
     @Generated
@@ -73,7 +73,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
     }
 
     /**
-     * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for Azure
+     * Get the servicePrincipalId property: The client ID of the application in Microsoft Entra ID used for Azure
      * Key Vault authentication. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
@@ -84,7 +84,7 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
     }
 
     /**
-     * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for Azure
+     * Set the servicePrincipalId property: The client ID of the application in Microsoft Entra ID used for Azure
      * Key Vault authentication. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.

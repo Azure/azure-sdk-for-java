@@ -93,7 +93,7 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     private List<MicrosoftGraphChannel> channels;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private MicrosoftGraphGroupInner group;
@@ -423,7 +423,7 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the group property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Get the group property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @return the group value.
@@ -433,7 +433,7 @@ public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the group property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * Set the group property: Represents an Microsoft Entra ID object. The directoryObject type is the base type
      * for many other directory entity types.
      * 
      * @param group the group value to set.

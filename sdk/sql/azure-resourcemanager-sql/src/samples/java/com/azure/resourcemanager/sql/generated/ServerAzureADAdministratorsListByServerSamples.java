@@ -12,7 +12,7 @@ public final class ServerAzureADAdministratorsListByServerSamples {
      * x-ms-original-file: 2025-01-01/AdministratorList.json
      */
     /**
-     * Sample code: Gets a list of Azure Active Directory administrator.
+     * Sample code: Gets a list of Microsoft Entra ID administrator.
      * 
      * @param manager Entry point to SqlServerManager.
      */

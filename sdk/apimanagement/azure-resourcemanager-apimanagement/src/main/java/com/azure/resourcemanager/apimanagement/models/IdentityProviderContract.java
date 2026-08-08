@@ -67,7 +67,7 @@ public interface IdentityProviderContract {
     String signinTenant();
 
     /**
-     * Gets the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     * Gets the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID login.
      * 
      * @return the allowedTenants value.
      */
@@ -254,10 +254,10 @@ public interface IdentityProviderContract {
          */
         interface WithAllowedTenants {
             /**
-             * Specifies the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory
+             * Specifies the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID
              * login..
              * 
-             * @param allowedTenants List of Allowed Tenants when configuring Azure Active Directory login.
+             * @param allowedTenants List of Allowed Tenants when configuring Microsoft Entra ID login.
              * @return the next definition stage.
              */
             WithCreate withAllowedTenants(List<String> allowedTenants);
@@ -459,10 +459,10 @@ public interface IdentityProviderContract {
          */
         interface WithAllowedTenants {
             /**
-             * Specifies the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory
+             * Specifies the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID
              * login..
              * 
-             * @param allowedTenants List of Allowed Tenants when configuring Azure Active Directory login.
+             * @param allowedTenants List of Allowed Tenants when configuring Microsoft Entra ID login.
              * @return the next definition stage.
              */
             Update withAllowedTenants(List<String> allowedTenants);

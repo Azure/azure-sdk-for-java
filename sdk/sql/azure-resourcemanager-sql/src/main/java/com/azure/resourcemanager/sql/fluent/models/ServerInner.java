@@ -33,7 +33,7 @@ public final class ServerInner extends Resource {
     private ServerProperties innerProperties;
 
     /*
-     * The Azure Active Directory identity of the server.
+     * The Microsoft Entra ID identity of the server.
      */
     private ResourceIdentity identity;
 
@@ -78,7 +78,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the identity property: The Azure Active Directory identity of the server.
+     * Get the identity property: The Microsoft Entra ID identity of the server.
      * 
      * @return the identity value.
      */
@@ -87,7 +87,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the identity property: The Azure Active Directory identity of the server.
+     * Set the identity property: The Microsoft Entra ID identity of the server.
      * 
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
@@ -389,7 +389,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * Get the administrators property: The Microsoft Entra ID administrator can be utilized during server creation
      * and for server updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 
@@ -400,7 +400,7 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * Set the administrators property: The Microsoft Entra ID administrator can be utilized during server creation
      * and for server updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 

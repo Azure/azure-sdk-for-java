@@ -18,7 +18,7 @@ public final class ServerForCreate {
     private final ClientLogger logger = new ClientLogger(ServerForCreate.class);
 
     /*
-     * The Azure Active Directory identity of the server.
+     * The Microsoft Entra ID identity of the server.
      */
     @JsonProperty(value = "identity")
     private ResourceIdentity identity;
@@ -49,7 +49,7 @@ public final class ServerForCreate {
     private Map<String, String> tags;
 
     /**
-     * Get the identity property: The Azure Active Directory identity of the server.
+     * Get the identity property: The Microsoft Entra ID identity of the server.
      *
      * @return the identity value.
      */
@@ -58,7 +58,7 @@ public final class ServerForCreate {
     }
 
     /**
-     * Set the identity property: The Azure Active Directory identity of the server.
+     * Set the identity property: The Microsoft Entra ID identity of the server.
      *
      * @param identity the identity value to set.
      * @return the ServerForCreate object itself.

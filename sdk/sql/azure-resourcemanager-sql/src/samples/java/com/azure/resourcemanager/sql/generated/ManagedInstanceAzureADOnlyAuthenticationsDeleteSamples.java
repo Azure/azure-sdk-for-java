@@ -14,7 +14,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsDeleteSamples {
      * x-ms-original-file: 2025-01-01/ManagedInstanceAzureADOnlyAuthDelete.json
      */
     /**
-     * Sample code: Deletes Azure Active Directory only authentication object.
+     * Sample code: Deletes Microsoft Entra ID only authentication object.
      * 
      * @param manager Entry point to SqlServerManager.
      */

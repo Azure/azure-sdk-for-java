@@ -130,7 +130,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 credential.update("{new_key}");
 ```
 
-#### Create a Text Analytics client with Azure Active Directory credential
+#### Create a Text Analytics client with Microsoft Entra ID credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. 
 
@@ -146,7 +146,7 @@ Authentication with AAD requires some initial setup:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-* [Register a new Azure Active Directory application][register_AAD_application]
+* [Register a new Microsoft Entra ID application][register_AAD_application]
 * [Grant access][grant_access] to Language service by assigning the `"Cognitive Services User"` role to your service principal.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.

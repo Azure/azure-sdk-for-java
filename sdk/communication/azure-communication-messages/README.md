@@ -106,9 +106,9 @@ MessageTemplateClient messageTemplateClient = new MessageTemplateClientBuilder()
     .buildClient();
 ```
 
-### Using `Azure Active Directory` managed identity
+### Using `Microsoft Entra ID` managed identity
 
-Client API key authentication is used in most of the examples, but you can also authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. To use the [DefaultAzureCredential][defaultazurecredential] provider shown below,
+Client API key authentication is used in most of the examples, but you can also authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity]. To use the [DefaultAzureCredential][defaultazurecredential] provider shown below,
 
 The `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables are needed to create a `DefaultAzureCredential` object.
 

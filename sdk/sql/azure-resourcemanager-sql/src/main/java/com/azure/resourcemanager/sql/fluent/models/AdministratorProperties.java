@@ -41,7 +41,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
     private UUID tenantId;
 
     /*
-     * Azure Active Directory only Authentication enabled.
+     * Microsoft Entra ID only Authentication enabled.
      */
     private Boolean azureADOnlyAuthentication;
 
@@ -132,7 +132,7 @@ public final class AdministratorProperties implements JsonSerializable<Administr
     }
 
     /**
-     * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Get the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @return the azureADOnlyAuthentication value.
      */

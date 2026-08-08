@@ -17,16 +17,16 @@ import java.util.List;
 @Fluent
 public interface AccessPolicy extends ChildResource<Vault>, HasInnerModel<AccessPolicyEntry> {
     /**
-     * Gets the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * Gets the Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      *
-     * @return The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * @return The Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      */
     String tenantId();
 
     /**
-     * Gets the object ID of a user or service principal in the Azure Active Directory tenant for the vault.
+     * Gets the object ID of a user or service principal in the Microsoft Entra ID tenant for the vault.
      *
-     * @return The object ID of a user or service principal in the Azure Active Directory tenant for the vault.
+     * @return The object ID of a user or service principal in the Microsoft Entra ID tenant for the vault.
      */
     String objectId();
 
@@ -105,7 +105,7 @@ public interface AccessPolicy extends ChildResource<Vault>, HasInnerModel<Access
             WithAttach<ParentT> forApplicationId(String applicationId);
 
             /**
-             * Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key
+             * Specifies the Microsoft Entra ID tenant ID that should be used for authenticating requests to the key
              * vault.
              *
              * @param tenantId the tenant ID for the key vault.
@@ -307,7 +307,7 @@ public interface AccessPolicy extends ChildResource<Vault>, HasInnerModel<Access
             WithAttach<ParentT> forApplicationId(String applicationId);
 
             /**
-             * Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key
+             * Specifies the Microsoft Entra ID tenant ID that should be used for authenticating requests to the key
              * vault.
              *
              * @param tenantId the tenant ID for the key vault.

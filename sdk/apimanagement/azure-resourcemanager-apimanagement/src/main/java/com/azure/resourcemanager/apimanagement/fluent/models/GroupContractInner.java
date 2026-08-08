@@ -163,7 +163,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Get the externalId property: For external groups, this property contains the id of the group from the external
-     * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
+     * identity provider, e.g. for Microsoft Entra ID `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
      * 
      * @return the externalId value.
@@ -174,7 +174,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Set the externalId property: For external groups, this property contains the id of the group from the external
-     * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
+     * identity provider, e.g. for Microsoft Entra ID `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
      * 
      * @param externalId the externalId value to set.

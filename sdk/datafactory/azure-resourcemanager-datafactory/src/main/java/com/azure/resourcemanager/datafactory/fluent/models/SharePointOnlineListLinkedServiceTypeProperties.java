@@ -31,13 +31,13 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
     private Object tenantId;
 
     /*
-     * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant
+     * The application (client) ID of your application registered in Microsoft Entra ID. Make sure to grant
      * SharePoint site permission to this application. Type: string (or Expression with resultType string).
      */
     private Object servicePrincipalId;
 
     /*
-     * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * The client secret of your application registered in Microsoft Entra ID. Type: string (or Expression with
      * resultType string).
      */
     private SecretBase servicePrincipalKey;
@@ -49,7 +49,7 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
     private Object servicePrincipalCredentialType;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Specify the base64 encoded certificate of your application registered in Microsoft Entra ID. Type: string (or
      * Expression with resultType string).
      */
     private SecretBase servicePrincipalEmbeddedCert;
@@ -141,7 +141,7 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
     }
 
     /**
-     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Get the servicePrincipalKey property: The client secret of your application registered in Microsoft Entra ID.
      * Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalKey value.
@@ -151,7 +151,7 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
     }
 
     /**
-     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Set the servicePrincipalKey property: The client secret of your application registered in Microsoft Entra ID.
      * Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
@@ -189,7 +189,7 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
 
     /**
      * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
@@ -199,7 +199,7 @@ public final class SharePointOnlineListLinkedServiceTypeProperties
 
     /**
      * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the SharePointOnlineListLinkedServiceTypeProperties object itself.

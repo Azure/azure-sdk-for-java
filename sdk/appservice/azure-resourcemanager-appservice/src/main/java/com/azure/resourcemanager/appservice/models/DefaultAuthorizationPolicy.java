@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The configuration settings of the Azure Active Directory default authorization policy.
+ * The configuration settings of the Microsoft Entra ID default authorization policy.
  */
 @Fluent
 public final class DefaultAuthorizationPolicy implements JsonSerializable<DefaultAuthorizationPolicy> {
     /*
-     * The configuration settings of the Azure Active Directory allowed principals.
+     * The configuration settings of the Microsoft Entra ID allowed principals.
      */
     private AllowedPrincipals allowedPrincipals;
 
     /*
-     * The configuration settings of the Azure Active Directory allowed applications.
+     * The configuration settings of the Microsoft Entra ID allowed applications.
      */
     private List<String> allowedApplications;
 
@@ -34,7 +34,7 @@ public final class DefaultAuthorizationPolicy implements JsonSerializable<Defaul
     }
 
     /**
-     * Get the allowedPrincipals property: The configuration settings of the Azure Active Directory allowed principals.
+     * Get the allowedPrincipals property: The configuration settings of the Microsoft Entra ID allowed principals.
      * 
      * @return the allowedPrincipals value.
      */
@@ -43,7 +43,7 @@ public final class DefaultAuthorizationPolicy implements JsonSerializable<Defaul
     }
 
     /**
-     * Set the allowedPrincipals property: The configuration settings of the Azure Active Directory allowed principals.
+     * Set the allowedPrincipals property: The configuration settings of the Microsoft Entra ID allowed principals.
      * 
      * @param allowedPrincipals the allowedPrincipals value to set.
      * @return the DefaultAuthorizationPolicy object itself.
@@ -54,7 +54,7 @@ public final class DefaultAuthorizationPolicy implements JsonSerializable<Defaul
     }
 
     /**
-     * Get the allowedApplications property: The configuration settings of the Azure Active Directory allowed
+     * Get the allowedApplications property: The configuration settings of the Microsoft Entra ID allowed
      * applications.
      * 
      * @return the allowedApplications value.
@@ -64,7 +64,7 @@ public final class DefaultAuthorizationPolicy implements JsonSerializable<Defaul
     }
 
     /**
-     * Set the allowedApplications property: The configuration settings of the Azure Active Directory allowed
+     * Set the allowedApplications property: The configuration settings of the Microsoft Entra ID allowed
      * applications.
      * 
      * @param allowedApplications the allowedApplications value to set.
