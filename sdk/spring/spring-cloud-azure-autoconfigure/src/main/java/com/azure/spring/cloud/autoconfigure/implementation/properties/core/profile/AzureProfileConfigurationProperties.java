@@ -100,11 +100,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
          */
         private String activeDirectoryResourceId;
         /**
-         * The Azure Active Directory Graph endpoint.
+         * The Microsoft Entra ID Graph endpoint.
          */
         private String activeDirectoryGraphEndpoint;
         /**
-         * The Azure Active Directory Graph API version.
+         * The Microsoft Entra ID Graph API version.
          */
         private String activeDirectoryGraphApiVersion;
         /**

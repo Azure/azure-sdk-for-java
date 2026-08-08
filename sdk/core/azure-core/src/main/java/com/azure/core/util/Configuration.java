@@ -48,12 +48,12 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
-     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     * Endpoint to connect to when using Microsoft Entra ID managed service identity (MSI).
      */
     public static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
 
     /**
-     * Header when connecting to Azure Active Directory using managed service identity (MSI).
+     * Header when connecting to Microsoft Entra ID using managed service identity (MSI).
      */
     public static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
 
@@ -63,12 +63,12 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_NO_PROXY = "NO_PROXY";
 
     /**
-     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     * Endpoint to connect to when using Microsoft Entra ID managed service identity (MSI).
      */
     public static final String PROPERTY_MSI_ENDPOINT = "MSI_ENDPOINT";
 
     /**
-     * Secret when connecting to Azure Active Directory using managed service identity (MSI).
+     * Secret when connecting to Microsoft Entra ID using managed service identity (MSI).
      */
     public static final String PROPERTY_MSI_SECRET = "MSI_SECRET";
 
@@ -143,7 +143,7 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
 
     /**
-     * The Azure Active Directory endpoint to connect to.
+     * The Microsoft Entra ID endpoint to connect to.
      */
     public static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
 

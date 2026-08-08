@@ -240,7 +240,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the clientId property: The client ID of the application registered in Azure Active Directory for
+     * Get the clientId property: The client ID of the application registered in Microsoft Entra ID for
      * AADServicePrincipal authentication.
      * 
      * @return the clientId value.
@@ -250,7 +250,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the clientId property: The client ID of the application registered in Azure Active Directory for
+     * Set the clientId property: The client ID of the application registered in Microsoft Entra ID for
      * AADServicePrincipal authentication.
      * 
      * @param clientId the clientId value to set.
@@ -290,7 +290,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of the application registered in Azure Active Directory for
+     * Get the tenantId property: The tenant ID of the application registered in Microsoft Entra ID for
      * AADServicePrincipal authentication.
      * 
      * @return the tenantId value.
@@ -300,7 +300,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the tenantId property: The tenant ID of the application registered in Azure Active Directory for
+     * Set the tenantId property: The tenant ID of the application registered in Microsoft Entra ID for
      * AADServicePrincipal authentication.
      * 
      * @param tenantId the tenantId value to set.
@@ -315,7 +315,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * Get the scope property: The scope of the application registered in Microsoft Entra ID for AADServicePrincipal
      * authentication.
      * 
      * @return the scope value.
@@ -325,7 +325,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
+     * Set the scope property: The scope of the application registered in Microsoft Entra ID for AADServicePrincipal
      * authentication.
      * 
      * @param scope the scope value to set.

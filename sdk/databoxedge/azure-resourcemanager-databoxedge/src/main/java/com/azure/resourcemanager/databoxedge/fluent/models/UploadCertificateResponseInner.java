@@ -28,22 +28,22 @@ public final class UploadCertificateResponseInner implements JsonSerializable<Up
     private String resourceId;
 
     /*
-     * Azure Active Directory tenant authority.
+     * Microsoft Entra ID tenant authority.
      */
     private String aadAuthority;
 
     /*
-     * Azure Active Directory tenant ID.
+     * Microsoft Entra ID tenant ID.
      */
     private String aadTenantId;
 
     /*
-     * Azure Active Directory service principal client ID.
+     * Microsoft Entra ID service principal client ID.
      */
     private String servicePrincipalClientId;
 
     /*
-     * Azure Active Directory service principal object ID.
+     * Microsoft Entra ID service principal object ID.
      */
     private String servicePrincipalObjectId;
 
@@ -93,7 +93,7 @@ public final class UploadCertificateResponseInner implements JsonSerializable<Up
     }
 
     /**
-     * Get the aadAuthority property: Azure Active Directory tenant authority.
+     * Get the aadAuthority property: Microsoft Entra ID tenant authority.
      * 
      * @return the aadAuthority value.
      */
@@ -102,7 +102,7 @@ public final class UploadCertificateResponseInner implements JsonSerializable<Up
     }
 
     /**
-     * Get the aadTenantId property: Azure Active Directory tenant ID.
+     * Get the aadTenantId property: Microsoft Entra ID tenant ID.
      * 
      * @return the aadTenantId value.
      */
@@ -111,7 +111,7 @@ public final class UploadCertificateResponseInner implements JsonSerializable<Up
     }
 
     /**
-     * Get the servicePrincipalClientId property: Azure Active Directory service principal client ID.
+     * Get the servicePrincipalClientId property: Microsoft Entra ID service principal client ID.
      * 
      * @return the servicePrincipalClientId value.
      */
@@ -120,7 +120,7 @@ public final class UploadCertificateResponseInner implements JsonSerializable<Up
     }
 
     /**
-     * Get the servicePrincipalObjectId property: Azure Active Directory service principal object ID.
+     * Get the servicePrincipalObjectId property: Microsoft Entra ID service principal object ID.
      * 
      * @return the servicePrincipalObjectId value.
      */

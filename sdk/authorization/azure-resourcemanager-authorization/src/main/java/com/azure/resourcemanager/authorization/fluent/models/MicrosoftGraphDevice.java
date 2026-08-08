@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents a device.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -126,7 +126,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /*
      * Type of trust for the joined device. Read-only. Possible values: Workplace - indicates bring your own personal
      * devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined devices joined to Azure AD. For
-     * more details, see Introduction to device management in Azure Active Directory
+     * more details, see Introduction to device management in Microsoft Entra ID
      */
     private String trustType;
 
@@ -158,7 +158,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -561,7 +561,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Get the trustType property: Type of trust for the joined device. Read-only. Possible values: Workplace -
      * indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined
-     * devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory.
+     * devices joined to Azure AD. For more details, see Introduction to device management in Microsoft Entra ID.
      * 
      * @return the trustType value.
      */
@@ -572,7 +572,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     /**
      * Set the trustType property: Type of trust for the joined device. Read-only. Possible values: Workplace -
      * indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined
-     * devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory.
+     * devices joined to Azure AD. For more details, see Introduction to device management in Microsoft Entra ID.
      * 
      * @param trustType the trustType value to set.
      * @return the MicrosoftGraphDevice object itself.
@@ -691,7 +691,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -701,7 +701,7 @@ public final class MicrosoftGraphDevice extends MicrosoftGraphDirectoryObjectInn
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

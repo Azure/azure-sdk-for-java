@@ -55,7 +55,7 @@ ChatCompletionsAsyncClient client = new ChatCompletionsClientBuilder()
     .buildAsyncClient();
 ```
 
-#### Create a client with Azure Active Directory credential
+#### Create a client with Microsoft Entra ID credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform.
 
@@ -73,7 +73,7 @@ Authentication with AAD requires some initial setup:
 [//]: # ({x-version-update-end})
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with OpenAI service, please
+running environment. For more information about using Microsoft Entra ID authorization with OpenAI service, please
 refer to [the associated documentation][aad_authorization].
 
 ```java readme-sample-createChatCompletionsClientWithAAD

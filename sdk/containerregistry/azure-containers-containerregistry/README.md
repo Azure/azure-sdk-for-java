@@ -63,7 +63,7 @@ and then include the direct dependency in the dependencies section without the v
 
 ### Authenticate clients
 
-The [Azure Identity library][identity] provides easy Azure Active Directory support for authentication.
+The [Azure Identity library][identity] provides easy Microsoft Entra ID support for authentication.
 Note all the below samples assume you have an endpoint, which is the URL including the name of the login server and the `https://` prefix.
 More information at [Azure Container Registry portal][container_registry_create_portal]
 

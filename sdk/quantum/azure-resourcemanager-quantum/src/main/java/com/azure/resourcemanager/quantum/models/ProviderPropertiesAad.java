@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure Active Directory info.
+ * Microsoft Entra ID info.
  */
 @Immutable
 public final class ProviderPropertiesAad implements JsonSerializable<ProviderPropertiesAad> {

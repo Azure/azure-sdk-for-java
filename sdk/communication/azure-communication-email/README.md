@@ -95,7 +95,7 @@ EmailClient emailClient = new EmailClientBuilder()
     .buildClient();
 ```
 
-### Azure Active Directory Token Authentication
+### Microsoft Entra ID Token Authentication
 
 A `DefaultAzureCredential` object must be passed to the `EmailClientBuilder` via the `credential()` method. An endpoint must also be set via the `endpoint()` method.
 

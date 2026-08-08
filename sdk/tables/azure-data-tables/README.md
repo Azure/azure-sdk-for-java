@@ -143,7 +143,7 @@ az storage table generate-sas \
 ```
 
 ## TokenCredential
-Azure Tables provides integration with Azure Active Directory (AAD) for identity-based authentication of requests to the Table service when targeting a Storage endpoint. With AAD, you can use role-based access control (RBAC) to grant access to your Azure Table resources to users, groups, or applications.
+Azure Tables provides integration with Microsoft Entra ID (AAD) for identity-based authentication of requests to the Table service when targeting a Storage endpoint. With AAD, you can use role-based access control (RBAC) to grant access to your Azure Table resources to users, groups, or applications.
 
 To access a table resource with a `TokenCredential`, the authenticated identity should have either the "Storage Table Data Contributor" or "Storage Table Data Reader" role.
 

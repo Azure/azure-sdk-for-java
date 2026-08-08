@@ -69,14 +69,14 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /*
      * The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
     private String clientId;
 
     /*
-     * The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the
+     * The Client Secret of this relying party application (in Microsoft Entra ID, this is also referred to as the
      * Key).
      * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to
      * authenticate end users.
@@ -100,7 +100,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /*
      * The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * `https://sts.windows.net/{tenant-guid}/`.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
@@ -114,7 +114,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /*
      * Allowed audience values to consider when validating JSON Web Tokens issued by
-     * Azure Active Directory. Note that the <code>ClientID</code> value is always considered an
+     * Microsoft Entra ID. Note that the <code>ClientID</code> value is always considered an
      * allowed audience, regardless of this setting.
      */
     private List<String> allowedAudiences;
@@ -460,7 +460,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /**
      * Get the clientId property: The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      * 
@@ -472,7 +472,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /**
      * Set the clientId property: The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      * 
@@ -485,7 +485,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
     }
 
     /**
-     * Get the clientSecret property: The Client Secret of this relying party application (in Azure Active Directory,
+     * Get the clientSecret property: The Client Secret of this relying party application (in Microsoft Entra ID,
      * this is also referred to as the Key).
      * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to
      * authenticate end users.
@@ -499,7 +499,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
     }
 
     /**
-     * Set the clientSecret property: The Client Secret of this relying party application (in Azure Active Directory,
+     * Set the clientSecret property: The Client Secret of this relying party application (in Microsoft Entra ID,
      * this is also referred to as the Key).
      * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to
      * authenticate end users.
@@ -565,7 +565,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
     /**
      * Get the issuer property: The OpenID Connect Issuer URI that represents the entity which issues access tokens for
      * this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * `https://sts.windows.net/{tenant-guid}/`.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
@@ -579,7 +579,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
     /**
      * Set the issuer property: The OpenID Connect Issuer URI that represents the entity which issues access tokens for
      * this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * `https://sts.windows.net/{tenant-guid}/`.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
@@ -616,7 +616,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /**
      * Get the allowedAudiences property: Allowed audience values to consider when validating JSON Web Tokens issued by
-     * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
+     * Microsoft Entra ID. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
      * allowed audience, regardless of this setting.
      * 
      * @return the allowedAudiences value.
@@ -627,7 +627,7 @@ public final class SiteAuthSettingsProperties implements JsonSerializable<SiteAu
 
     /**
      * Set the allowedAudiences property: Allowed audience values to consider when validating JSON Web Tokens issued by
-     * Azure Active Directory. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
+     * Microsoft Entra ID. Note that the &lt;code&gt;ClientID&lt;/code&gt; value is always considered an
      * allowed audience, regardless of this setting.
      * 
      * @param allowedAudiences the allowedAudiences value to set.

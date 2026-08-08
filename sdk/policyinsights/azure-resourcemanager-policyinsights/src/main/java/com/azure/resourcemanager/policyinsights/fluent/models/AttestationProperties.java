@@ -46,7 +46,7 @@ public final class AttestationProperties implements JsonSerializable<Attestation
     private OffsetDateTime expiresOn;
 
     /*
-     * The person responsible for setting the state of the resource. This value is typically an Azure Active Directory
+     * The person responsible for setting the state of the resource. This value is typically an Microsoft Entra ID
      * object ID.
      */
     private String owner;
@@ -177,7 +177,7 @@ public final class AttestationProperties implements JsonSerializable<Attestation
 
     /**
      * Get the owner property: The person responsible for setting the state of the resource. This value is typically an
-     * Azure Active Directory object ID.
+     * Microsoft Entra ID object ID.
      * 
      * @return the owner value.
      */
@@ -187,7 +187,7 @@ public final class AttestationProperties implements JsonSerializable<Attestation
 
     /**
      * Set the owner property: The person responsible for setting the state of the resource. This value is typically an
-     * Azure Active Directory object ID.
+     * Microsoft Entra ID object ID.
      * 
      * @param owner the owner value to set.
      * @return the AttestationProperties object itself.

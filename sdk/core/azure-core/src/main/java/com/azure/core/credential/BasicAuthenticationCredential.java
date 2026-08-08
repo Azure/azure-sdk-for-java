@@ -18,8 +18,8 @@ import java.time.OffsetDateTime;
  *
  * <p>
  * Note that Basic Authentication is generally considered less secure than other authentication methods,
- * such as Azure Active Directory (AAD) authentication. It is recommended to use
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
+ * such as Microsoft Entra ID (AAD) authentication. It is recommended to use
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID (Azure AD)</a>
  * authentication via {@link TokenCredential} whenever possible, especially for production environments.
  * </p>
  *

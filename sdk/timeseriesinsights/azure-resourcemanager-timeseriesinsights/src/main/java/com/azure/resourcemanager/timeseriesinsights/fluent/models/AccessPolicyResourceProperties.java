@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class AccessPolicyResourceProperties implements JsonSerializable<AccessPolicyResourceProperties> {
     /*
-     * The objectId of the principal in Azure Active Directory.
+     * The objectId of the principal in Microsoft Entra ID.
      */
     private String principalObjectId;
 
@@ -40,7 +40,7 @@ public final class AccessPolicyResourceProperties implements JsonSerializable<Ac
     }
 
     /**
-     * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Get the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @return the principalObjectId value.
      */
@@ -49,7 +49,7 @@ public final class AccessPolicyResourceProperties implements JsonSerializable<Ac
     }
 
     /**
-     * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Set the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyResourceProperties object itself.

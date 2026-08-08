@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The configuration settings of the Azure Active Directory login flow.
+ * The configuration settings of the Microsoft Entra ID login flow.
  */
 @Fluent
 public final class AzureActiveDirectoryLogin implements JsonSerializable<AzureActiveDirectoryLogin> {

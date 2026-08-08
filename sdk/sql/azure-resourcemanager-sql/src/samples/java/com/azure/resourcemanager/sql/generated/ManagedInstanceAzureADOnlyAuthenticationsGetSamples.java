@@ -14,7 +14,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationsGetSamples {
      * x-ms-original-file: 2025-01-01/ManagedInstanceAzureADOnlyAuthGet.json
      */
     /**
-     * Sample code: Gets a Azure Active Directory only authentication property.
+     * Sample code: Gets a Microsoft Entra ID only authentication property.
      * 
      * @param manager Entry point to SqlServerManager.
      */

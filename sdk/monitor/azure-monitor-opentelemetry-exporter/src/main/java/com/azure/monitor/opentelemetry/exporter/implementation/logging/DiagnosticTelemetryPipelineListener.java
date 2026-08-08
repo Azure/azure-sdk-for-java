@@ -128,8 +128,8 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         }
 
         String action = responseCode == 401
-            ? ". Please provide Azure Active Directory credentials"
-            : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
+            ? ". Please provide Microsoft Entra ID credentials"
+            : ". Please check your Microsoft Entra ID credentials, they might be incorrect or expired";
         return message + action + " (telemetry will be stored to disk and retried)";
     }
 }

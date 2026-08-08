@@ -33,7 +33,7 @@ public final class Google implements JsonSerializable<Google> {
     private LoginScopes login;
 
     /*
-     * The configuration settings of the Azure Active Directory token validation flow.
+     * The configuration settings of the Microsoft Entra ID token validation flow.
      */
     private AllowedAudiencesValidation validation;
 
@@ -106,7 +106,7 @@ public final class Google implements JsonSerializable<Google> {
     }
 
     /**
-     * Get the validation property: The configuration settings of the Azure Active Directory token validation flow.
+     * Get the validation property: The configuration settings of the Microsoft Entra ID token validation flow.
      * 
      * @return the validation value.
      */
@@ -115,7 +115,7 @@ public final class Google implements JsonSerializable<Google> {
     }
 
     /**
-     * Set the validation property: The configuration settings of the Azure Active Directory token validation flow.
+     * Set the validation property: The configuration settings of the Microsoft Entra ID token validation flow.
      * 
      * @param validation the validation value to set.
      * @return the Google object itself.

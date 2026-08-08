@@ -40,7 +40,7 @@ Interaction with the service using the client library begins with creating an in
 Managed identities for Azure resources are service principals that create a Microsoft Entra identity and specific permissions for Azure managed resources. Managed identities are a safer way to grant access to storage data and replace the requirement for you to include shared access signature tokens (SAS) with your source and target URLs.
 Here is more information on [Managed identities for Document Translation] [managed_identities_for_document_translation].
 
-#### Create DocumentTranslationClient and SingleDocumentTranslationClient using Azure Active Directory credential
+#### Create DocumentTranslationClient and SingleDocumentTranslationClient using Microsoft Entra ID credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform.
 

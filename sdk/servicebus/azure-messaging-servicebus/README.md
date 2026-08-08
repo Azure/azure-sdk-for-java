@@ -80,7 +80,7 @@ add the direct dependency to your project as follows.
 For the Service Bus client library to interact with Service Bus, it will need to understand how to connect and authorize
 with it.
 
-#### Create a Service Bus client using Azure Active Directory (Azure AD)
+#### Create a Service Bus client using Microsoft Entra ID (Azure AD)
 
 Azure SDK for Java supports the Azure Identity client library, making it simple to get credentials from Azure AD. 
 First, add the package:
@@ -100,12 +100,12 @@ First, add the package:
   Check [here][known-issue-binarydata-notfound] for more details.
 
 The implemented ways to request a credential are under the `com.azure.identity.credential` package. The sample below
-shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
+shows how to use an Microsoft Entra ID (AAD) application client secret to authorize with Azure Service Bus.
 
 ##### Authorizing with DefaultAzureCredential
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Service Bus, please
+running environment. For more information about using Microsoft Entra ID authorization with Service Bus, please
 refer to [the associated documentation][aad_authorization].
 
 Use the returned token credential to authenticate the client:

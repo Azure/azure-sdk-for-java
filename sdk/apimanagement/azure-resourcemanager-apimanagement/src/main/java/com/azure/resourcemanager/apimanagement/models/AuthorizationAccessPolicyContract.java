@@ -34,7 +34,7 @@ public interface AuthorizationAccessPolicyContract {
     String type();
 
     /**
-     * Gets the appIds property: The allowed Azure Active Directory Application IDs.
+     * Gets the appIds property: The allowed Microsoft Entra ID Application IDs.
      * 
      * @return the appIds value.
      */
@@ -130,9 +130,9 @@ public interface AuthorizationAccessPolicyContract {
          */
         interface WithAppIds {
             /**
-             * Specifies the appIds property: The allowed Azure Active Directory Application IDs.
+             * Specifies the appIds property: The allowed Microsoft Entra ID Application IDs.
              * 
-             * @param appIds The allowed Azure Active Directory Application IDs.
+             * @param appIds The allowed Microsoft Entra ID Application IDs.
              * @return the next definition stage.
              */
             WithCreate withAppIds(List<String> appIds);
@@ -217,9 +217,9 @@ public interface AuthorizationAccessPolicyContract {
          */
         interface WithAppIds {
             /**
-             * Specifies the appIds property: The allowed Azure Active Directory Application IDs.
+             * Specifies the appIds property: The allowed Microsoft Entra ID Application IDs.
              * 
-             * @param appIds The allowed Azure Active Directory Application IDs.
+             * @param appIds The allowed Microsoft Entra ID Application IDs.
              * @return the next definition stage.
              */
             Update withAppIds(List<String> appIds);

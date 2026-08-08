@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents a sts policy.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -42,7 +42,7 @@ public class MicrosoftGraphStsPolicy extends MicrosoftGraphPolicyBase {
     private List<MicrosoftGraphDirectoryObjectInner> appliesTo;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -118,7 +118,7 @@ public class MicrosoftGraphStsPolicy extends MicrosoftGraphPolicyBase {
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -128,7 +128,7 @@ public class MicrosoftGraphStsPolicy extends MicrosoftGraphPolicyBase {
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

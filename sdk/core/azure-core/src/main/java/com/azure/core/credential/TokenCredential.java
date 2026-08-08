@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 /**
  * <p>
  * Token Credential interface serves as a fundamental component for managing and providing access tokens required for
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID (Azure AD)</a>
  * authentication when making requests to Azure services.
  * </p>
  *
@@ -76,7 +76,7 @@ import reactor.core.publisher.Mono;
  * <p>
  * These credential classes can be used in combination with various Azure client libraries to authenticate requests
  * and access Azure services without the need to manage access tokens manually. The Token Credential interface provides
- * a consistent way to handle Azure Active Directory (AAD) authentication across different Azure services and SDKs in
+ * a consistent way to handle Microsoft Entra ID (AAD) authentication across different Azure services and SDKs in
  * a secure and efficient manner.
  * </p>
  *

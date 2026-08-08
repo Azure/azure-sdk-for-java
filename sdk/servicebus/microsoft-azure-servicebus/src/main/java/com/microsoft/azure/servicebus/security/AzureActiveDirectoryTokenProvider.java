@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This is a token provider that obtains tokens from Azure Active Directory. It supports multiple modes of authentication with active directory
+ * This is a token provider that obtains tokens from Microsoft Entra ID. It supports multiple modes of authentication with active directory
  * to obtain tokens.
  * @since 1.2.0
  *

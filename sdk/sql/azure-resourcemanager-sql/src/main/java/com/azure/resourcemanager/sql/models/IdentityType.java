@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory
+ * The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Microsoft Entra ID
  * principal for the resource.
  */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {

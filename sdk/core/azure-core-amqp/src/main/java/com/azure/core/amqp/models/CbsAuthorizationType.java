@@ -31,7 +31,7 @@ public final class CbsAuthorizationType extends ExpandableStringEnum<CbsAuthoriz
     /**
      * Authorize with CBS using a JSON web token.
      * <p>
-     * This is used in the case where Azure Active Directory is used for authentication and the authenticated user
+     * This is used in the case where Microsoft Entra ID is used for authentication and the authenticated user
      * wants to authorize with Azure Event Hubs.
      */
     public static final CbsAuthorizationType JSON_WEB_TOKEN = fromString("jwt", CbsAuthorizationType.class);

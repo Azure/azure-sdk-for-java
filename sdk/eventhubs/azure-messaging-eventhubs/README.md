@@ -28,7 +28,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubles
     - [Include direct dependency](#include-direct-dependency)
   - [Authenticate the client](#authenticate-the-client)
     - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
-    - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+    - [Create an Event Hub client using Microsoft identity platform](#create-an-event-hub-client-using-microsoft-identity-platform)
     - [Authorizing with DefaultAzureCredential](#authorizing-with-defaultazurecredential)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
@@ -126,7 +126,7 @@ EventHubProducerClient producer = new EventHubClientBuilder()
     .buildProducerClient();
 ```
 
-#### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create an Event Hub client using Microsoft identity platform
 
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. First, add the package:
@@ -142,13 +142,13 @@ platform. First, add the package:
 [//]: # ({x-version-update-end})
 
 All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The
-sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event
+sample below shows how to use an Microsoft Entra ID (AAD) application client secret to authorize with Azure Event
 Hubs.
 
 #### Authorizing with DefaultAzureCredential
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Event Hubs, please refer
+running environment. For more information about using Microsoft Entra ID authorization with Event Hubs, please refer
 to [the associated documentation][aad_authorization].
 
 ```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
@@ -465,5 +465,4 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/TROUBLESHOOTING.md
-
 

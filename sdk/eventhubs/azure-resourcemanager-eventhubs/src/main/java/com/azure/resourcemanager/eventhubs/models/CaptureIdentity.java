@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class CaptureIdentity implements JsonSerializable<CaptureIdentity> {
     /*
-     * Type of Azure Active Directory Managed Identity.
+     * Type of Microsoft Entra ID Managed Identity.
      */
     private CaptureIdentityType type;
 
@@ -34,7 +34,7 @@ public final class CaptureIdentity implements JsonSerializable<CaptureIdentity> 
     }
 
     /**
-     * Get the type property: Type of Azure Active Directory Managed Identity.
+     * Get the type property: Type of Microsoft Entra ID Managed Identity.
      * 
      * @return the type value.
      */
@@ -43,7 +43,7 @@ public final class CaptureIdentity implements JsonSerializable<CaptureIdentity> 
     }
 
     /**
-     * Set the type property: Type of Azure Active Directory Managed Identity.
+     * Set the type property: Type of Microsoft Entra ID Managed Identity.
      * 
      * @param type the type value to set.
      * @return the CaptureIdentity object itself.

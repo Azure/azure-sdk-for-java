@@ -75,7 +75,7 @@ The configuration is managed using the `SipRoutingClient`, which provides method
 
 ### Initializing Client
 
-Clients can be initialized using the Azure Active Directory Authentication.
+Clients can be initialized using the Microsoft Entra ID Authentication.
 
 ```java readme-sample-createPhoneNumberClientWithAAD
 // You can find your endpoint and access key from your resource in the Azure Portal

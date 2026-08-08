@@ -10,7 +10,7 @@ package com.microsoft.azure.servicebus.security;
  */
 public class SecurityConstants {
     /**
-     * Resource URI to be used, for all service bus entities, when requesting authentication token from Azure Active Directory.
+     * Resource URI to be used, for all service bus entities, when requesting authentication token from Microsoft Entra ID.
      */
     public static final String SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL = "https://servicebus.azure.net/";
     /**

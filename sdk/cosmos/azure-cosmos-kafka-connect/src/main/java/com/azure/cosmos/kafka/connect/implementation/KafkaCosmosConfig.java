@@ -69,11 +69,11 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String DEFAULT_AAD_CLIENT_SECRET = Strings.Emtpy;
 
     private static final String AAD_AUTH_ENDPOINT_OVERRIDE = "azure.cosmos.auth.aad.authEndpointOverride";
-    private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DOC = "Overrides the Azure Active Directory (AAD) authentication endpoint. "
+    private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DOC = "Overrides the Microsoft Entra ID (AAD) authentication endpoint. "
         + "This is useful when the Cosmos DB account resides in a non-public Azure cloud environment such as Azure Air-Gapped Environment. "
         + "By default, the SDK uses the standard AAD endpoint for the public Azure cloud. Set this value if your deployment requires a custom authority URI.";
     private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY =
-        "The Azure Active Directory (AAD) authentication endpoint override. Set this if you are using a cloud environment other than public Azure.";
+        "The Microsoft Entra ID (AAD) authentication endpoint override. Set this if you are using a cloud environment other than public Azure.";
     private static final String DEFAULT_AAD_AUTH_ENDPOINT_OVERRIDE = Strings.Emtpy;
 
     private static final String USE_GATEWAY_MODE = "azure.cosmos.mode.gateway";

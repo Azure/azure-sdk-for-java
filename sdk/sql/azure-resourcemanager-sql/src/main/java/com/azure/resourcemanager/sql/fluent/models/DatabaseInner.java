@@ -67,7 +67,7 @@ public final class DatabaseInner extends Resource {
     private String managedBy;
 
     /*
-     * The Azure Active Directory identity of the database.
+     * The Microsoft Entra ID identity of the database.
      */
     private DatabaseIdentity identity;
 
@@ -169,7 +169,7 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the identity property: The Azure Active Directory identity of the database.
+     * Get the identity property: The Microsoft Entra ID identity of the database.
      * 
      * @return the identity value.
      */
@@ -178,7 +178,7 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the identity property: The Azure Active Directory identity of the database.
+     * Set the identity property: The Microsoft Entra ID identity of the database.
      * 
      * @param identity the identity value to set.
      * @return the DatabaseInner object itself.

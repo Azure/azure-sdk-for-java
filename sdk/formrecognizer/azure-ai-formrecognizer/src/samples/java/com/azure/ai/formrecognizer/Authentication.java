@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Samples for two supported methods of authentication in Document Analysis and Document Model Administration clients:
  * 1) Use a Form Recognizer API key with AzureKeyCredential from azure.core.credentials
- * 2) Use a token credential from azure-identity to authenticate with Azure Active Directory
+ * 2) Use a token credential from azure-identity to authenticate with Microsoft Entra ID
  */
 public class Authentication {
     /**
@@ -43,13 +43,13 @@ public class Authentication {
 
         // Document Analysis client: Key credential
         authenticationWithKeyCredentialDocumentAnalysisClient();
-        // Document Analysis client: Azure Active Directory
+        // Document Analysis client: Microsoft Entra ID
         authenticationWithAzureActiveDirectoryDocumentAnalysisClient();
-        // Document Analysis client: Azure Active Directory : China Cloud
+        // Document Analysis client: Microsoft Entra ID : China Cloud
         authenticationWithAzureActiveDirectoryChinaCloud();
         // Document Model Administration client: Key credential
         authenticationWithKeyCredentialDocumentModelAdministrationClient();
-        // Document Model Administration client: Azure Active Directory
+        // Document Model Administration client: Microsoft Entra ID
         authenticationWithAzureActiveDirectoryDocumentModelAdministrationClient();
     }
 

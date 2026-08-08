@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The configuration settings of the Azure Active Directory allowed principals.
+ * The configuration settings of the Microsoft Entra ID allowed principals.
  */
 @Fluent
 public final class AllowedPrincipals implements JsonSerializable<AllowedPrincipals> {

@@ -22,7 +22,7 @@ import java.util.UUID;
 /**
  * Represents an application.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -189,7 +189,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private MicrosoftGraphWebApplication web;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
@@ -221,7 +221,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     private List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -839,7 +839,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Get the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * Get the createdOnBehalfOf property: Represents an Microsoft Entra ID object. The directoryObject type is the
      * base type for many other directory entity types.
      * 
      * @return the createdOnBehalfOf value.
@@ -849,7 +849,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Set the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * Set the createdOnBehalfOf property: Represents an Microsoft Entra ID object. The directoryObject type is the
      * base type for many other directory entity types.
      * 
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
@@ -967,7 +967,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -977,7 +977,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

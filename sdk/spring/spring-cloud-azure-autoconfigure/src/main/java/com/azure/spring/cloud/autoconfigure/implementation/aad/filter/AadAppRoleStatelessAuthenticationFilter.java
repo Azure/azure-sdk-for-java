@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.Constants.DEFAULT_AUTHORITY_SET;
 
 /**
- * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
+ * A stateless authentication filter which uses app roles feature of Microsoft Entra ID. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
  *

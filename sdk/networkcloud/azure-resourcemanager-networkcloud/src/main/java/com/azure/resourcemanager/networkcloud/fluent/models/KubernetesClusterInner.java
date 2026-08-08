@@ -174,7 +174,7 @@ public final class KubernetesClusterInner extends Resource {
     }
 
     /**
-     * Get the aadConfiguration property: The Azure Active Directory Integration properties.
+     * Get the aadConfiguration property: The Microsoft Entra ID Integration properties.
      * 
      * @return the aadConfiguration value.
      */
@@ -183,7 +183,7 @@ public final class KubernetesClusterInner extends Resource {
     }
 
     /**
-     * Set the aadConfiguration property: The Azure Active Directory Integration properties.
+     * Set the aadConfiguration property: The Microsoft Entra ID Integration properties.
      * 
      * @param aadConfiguration the aadConfiguration value to set.
      * @return the KubernetesClusterInner object itself.

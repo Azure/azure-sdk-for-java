@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class AzureADOnlyAuthProperties implements JsonSerializable<AzureADOnlyAuthProperties> {
     /*
-     * Azure Active Directory only Authentication enabled.
+     * Microsoft Entra ID only Authentication enabled.
      */
     private boolean azureADOnlyAuthentication;
 
@@ -28,7 +28,7 @@ public final class AzureADOnlyAuthProperties implements JsonSerializable<AzureAD
     }
 
     /**
-     * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Get the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @return the azureADOnlyAuthentication value.
      */
@@ -37,7 +37,7 @@ public final class AzureADOnlyAuthProperties implements JsonSerializable<AzureAD
     }
 
     /**
-     * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Set the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the AzureADOnlyAuthProperties object itself.

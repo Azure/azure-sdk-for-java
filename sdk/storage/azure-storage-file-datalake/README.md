@@ -388,7 +388,7 @@ PathProperties properties = directoryClient.getProperties();
 
 ### Authenticate with Azure Identity
 
-The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
+The [Azure Identity library][identity] provides Microsoft Entra ID support for authenticating with Azure Storage.
 
 ```java readme-sample-authWithIdentity
 DataLakeServiceClient storageClient = new DataLakeServiceClientBuilder()

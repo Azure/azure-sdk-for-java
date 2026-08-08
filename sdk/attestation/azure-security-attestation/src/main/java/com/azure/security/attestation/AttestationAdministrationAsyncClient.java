@@ -73,9 +73,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     <li>Shared - a shared instance is a regional instance which is available to all customers.
  *     It does NOT support customer specified policy documents - there is only a default policy available
  *     for each attestation type </li>
- *     <li>AAD - An attestation instance where the customer trusts Azure Active Directory (and Azure
+ *     <li>AAD - An attestation instance where the customer trusts Microsoft Entra ID (and Azure
  *     Role Based Access Control) to manage the security of their enclave. </li>
- *     <li>Isolated - an attestation instance where the customer does *not* trust Azure Active Directory
+ *     <li>Isolated - an attestation instance where the customer does *not* trust Microsoft Entra ID
  *     (and RBAC) to manage the security of their enclave </li>
  * </ul>
  *

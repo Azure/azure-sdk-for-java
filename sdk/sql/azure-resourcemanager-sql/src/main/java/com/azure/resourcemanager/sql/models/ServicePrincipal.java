@@ -17,17 +17,17 @@ import java.io.IOException;
 @Fluent
 public final class ServicePrincipal implements JsonSerializable<ServicePrincipal> {
     /*
-     * The Azure Active Directory application object id.
+     * The Microsoft Entra ID application object id.
      */
     private String principalId;
 
     /*
-     * The Azure Active Directory application client id.
+     * The Microsoft Entra ID application client id.
      */
     private String clientId;
 
     /*
-     * The Azure Active Directory tenant id.
+     * The Microsoft Entra ID tenant id.
      */
     private String tenantId;
 
@@ -43,7 +43,7 @@ public final class ServicePrincipal implements JsonSerializable<ServicePrincipal
     }
 
     /**
-     * Get the principalId property: The Azure Active Directory application object id.
+     * Get the principalId property: The Microsoft Entra ID application object id.
      * 
      * @return the principalId value.
      */
@@ -52,7 +52,7 @@ public final class ServicePrincipal implements JsonSerializable<ServicePrincipal
     }
 
     /**
-     * Get the clientId property: The Azure Active Directory application client id.
+     * Get the clientId property: The Microsoft Entra ID application client id.
      * 
      * @return the clientId value.
      */
@@ -61,7 +61,7 @@ public final class ServicePrincipal implements JsonSerializable<ServicePrincipal
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant id.
+     * Get the tenantId property: The Microsoft Entra ID tenant id.
      * 
      * @return the tenantId value.
      */

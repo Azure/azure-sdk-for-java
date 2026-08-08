@@ -69,7 +69,7 @@ az attestation create --resource-group <your-resource-group-name> --name <your-i
 
 ### Authenticate the client
 
-In order to interact with the Azure Attestation service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure Attestation service, your client must present an Microsoft Entra ID bearer token to the service.
 
 The simplest way of providing a bearer token is to use the  `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section, but you can find more ways to authenticate with [azure-identity][azure_identity].
 

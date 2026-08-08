@@ -17,7 +17,7 @@ import java.io.IOException;
 @Immutable
 public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
-     * Azure Active Directory principal ID associated with this Identity.
+     * Microsoft Entra ID principal ID associated with this Identity.
      */
     private String principalId;
 
@@ -33,7 +33,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the principalId property: Azure Active Directory principal ID associated with this Identity.
+     * Get the principalId property: Microsoft Entra ID principal ID associated with this Identity.
      * 
      * @return the principalId value.
      */

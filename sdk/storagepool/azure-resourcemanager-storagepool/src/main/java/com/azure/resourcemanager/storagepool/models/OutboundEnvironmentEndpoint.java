@@ -13,7 +13,7 @@ import java.util.List;
 public interface OutboundEnvironmentEndpoint {
     /**
      * Gets the category property: The type of service accessed by the App Service Environment, e.g., Azure Storage,
-     * Azure SQL Database, and Azure Active Directory.
+     * Azure SQL Database, and Microsoft Entra ID.
      * 
      * @return the category value.
      */

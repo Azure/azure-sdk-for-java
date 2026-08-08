@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Azure Active Directory identity configuration for a resource.
+ * Microsoft Entra ID identity configuration for a resource.
  */
 @Fluent
 public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity> {
@@ -24,7 +24,7 @@ public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity
     private DatabaseIdentityType type;
 
     /*
-     * The Azure Active Directory tenant id.
+     * The Microsoft Entra ID tenant id.
      */
     private UUID tenantId;
 
@@ -60,7 +60,7 @@ public final class DatabaseIdentity implements JsonSerializable<DatabaseIdentity
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant id.
+     * Get the tenantId property: The Microsoft Entra ID tenant id.
      * 
      * @return the tenantId value.
      */

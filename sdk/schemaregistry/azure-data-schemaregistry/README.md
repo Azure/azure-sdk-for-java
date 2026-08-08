@@ -64,9 +64,9 @@ In order to interact with the Azure Schema Registry service, you'll need to crea
 `SchemaRegistryClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an
 **API key** to instantiate a client object.
 
-#### Create SchemaRegistryClient with Azure Active Directory Credential
+#### Create SchemaRegistryClient with Microsoft Entra ID Credential
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to use this type of authentication.
+You can authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity]. Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to use this type of authentication.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.

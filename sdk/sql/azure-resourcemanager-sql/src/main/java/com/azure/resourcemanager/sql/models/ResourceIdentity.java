@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Azure Active Directory identity configuration for a resource.
+ * Microsoft Entra ID identity configuration for a resource.
  */
 @Fluent
 public final class ResourceIdentity implements JsonSerializable<ResourceIdentity> {
@@ -24,7 +24,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * The Azure Active Directory principal id.
+     * The Microsoft Entra ID principal id.
      */
     private UUID principalId;
 
@@ -35,7 +35,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     private IdentityType type;
 
     /*
-     * The Azure Active Directory tenant id.
+     * The Microsoft Entra ID tenant id.
      */
     private UUID tenantId;
 
@@ -66,7 +66,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     }
 
     /**
-     * Get the principalId property: The Azure Active Directory principal id.
+     * Get the principalId property: The Microsoft Entra ID principal id.
      * 
      * @return the principalId value.
      */
@@ -76,7 +76,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
 
     /**
      * Get the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
-     * assign an Azure Active Directory principal for the resource.
+     * assign an Microsoft Entra ID principal for the resource.
      * 
      * @return the type value.
      */
@@ -86,7 +86,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
 
     /**
      * Set the type property: The identity type. Set this to 'SystemAssigned' in order to automatically create and
-     * assign an Azure Active Directory principal for the resource.
+     * assign an Microsoft Entra ID principal for the resource.
      * 
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
@@ -97,7 +97,7 @@ public final class ResourceIdentity implements JsonSerializable<ResourceIdentity
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant id.
+     * Get the tenantId property: The Microsoft Entra ID tenant id.
      * 
      * @return the tenantId value.
      */

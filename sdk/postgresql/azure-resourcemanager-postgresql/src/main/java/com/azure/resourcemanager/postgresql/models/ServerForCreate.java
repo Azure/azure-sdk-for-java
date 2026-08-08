@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public final class ServerForCreate implements JsonSerializable<ServerForCreate> {
     /*
-     * The Azure Active Directory identity of the server.
+     * The Microsoft Entra ID identity of the server.
      */
     private ResourceIdentity identity;
 
@@ -50,7 +50,7 @@ public final class ServerForCreate implements JsonSerializable<ServerForCreate> 
     }
 
     /**
-     * Get the identity property: The Azure Active Directory identity of the server.
+     * Get the identity property: The Microsoft Entra ID identity of the server.
      * 
      * @return the identity value.
      */
@@ -59,7 +59,7 @@ public final class ServerForCreate implements JsonSerializable<ServerForCreate> 
     }
 
     /**
-     * Set the identity property: The Azure Active Directory identity of the server.
+     * Set the identity property: The Microsoft Entra ID identity of the server.
      * 
      * @param identity the identity value to set.
      * @return the ServerForCreate object itself.

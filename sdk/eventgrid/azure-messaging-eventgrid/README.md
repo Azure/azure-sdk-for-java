@@ -90,7 +90,7 @@ add the direct dependency to your project as follows.
 ### Authenticate the Client
 
 In order to send events, we need an endpoint to send to and some authentication for the endpoint. The authentication can be 
-a key credential, a shared access signature, or Azure Active Directory token authentication.
+a key credential, a shared access signature, or Microsoft Entra ID token authentication.
 The endpoint and key can both be obtained through [Azure Portal][portal] or [Azure CLI][cli].
 
 #### Endpoint
@@ -110,8 +110,8 @@ using the following command in [Azure CLI][cli]. Anyone of the keys listed will 
 az eventgrid topic key list --name <your-resource-name> --resource-group <your-resource-group-name>
 ```
 
-#### Azure Active Directory (AAD) Token authentication
-Azure Event Grid provides integration with Azure Active Directory (Azure AD) for identity-based authentication of requests. 
+#### Microsoft Entra ID (AAD) Token authentication
+Azure Event Grid provides integration with Microsoft Entra ID (Azure AD) for identity-based authentication of requests. 
 With Azure AD, you can use role-based access control (RBAC) to grant access to your Azure Event Grid resources to users, groups, or applications.
 To send events to a topic or domain with a `TokenCredential`, the authenticated identity should have the "EventGrid Data Sender" role assigned.
 
@@ -192,7 +192,7 @@ EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridP
     .buildCloudEventPublisherAsyncClient();
 ```
 
-##### Using endpoint and Azure Active Directory (AAD) token credential to create the client
+##### Using endpoint and Microsoft Entra ID (AAD) token credential to create the client
 To use the AAD token credential, include `azure-identity` artifact as a dependency. Refer to
 [azure-identity README](https://learn.microsoft.com/java/api/overview/azure/identity-readme) for details.
 
