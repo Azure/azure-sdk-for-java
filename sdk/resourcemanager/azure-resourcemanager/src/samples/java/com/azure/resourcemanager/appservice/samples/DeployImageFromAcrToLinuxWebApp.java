@@ -12,17 +12,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerregistry.models.Registry;
-import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.samples.SampleUtils;
 
 /**
  * Azure App Service sample for deploying an image from Azure Container Registry to a Linux web app.
- *  - Create an Azure Container Registry
- *  - Create a Linux web app that runs an image from the registry
+ *  - Create an Azure Container Registry with the admin user disabled
+ *  - Create a Linux web app that pulls an image using its system-assigned managed identity
+ *  - Grant the web app's managed identity the {@code AcrPull} role on the registry
  * <p>
  * The image ({@code samples/tomcat:latest}) is expected to be pushed to the registry beforehand with the Docker CLI.
+ * The caller must have permission to create role assignments.
  */
 public final class DeployImageFromAcrToLinuxWebApp {
 
@@ -39,27 +40,37 @@ public final class DeployImageFromAcrToLinuxWebApp {
         final Region region = Region.JAPAN_EAST;
 
         try {
-            // Create an Azure Container Registry with the admin user enabled.
+            // Create an Azure Container Registry without the admin user (admin credentials are discouraged).
             Registry azureRegistry = azureResourceManager.containerRegistries()
                 .define(acrName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
-                .withRegistryNameAsAdminUser()
                 .create();
 
-            RegistryCredentials acrCredentials = azureRegistry.getCredentials();
             String privateImage = azureRegistry.loginServerUrl() + "/samples/tomcat:latest";
 
-            // Create a Linux web app that pulls its image from the private registry.
+            // Create a Linux web app that authenticates to the private registry with its system-assigned identity.
+            // HTTPS-only is enforced; minimum TLS 1.2 and FTPS-only are already the App Service defaults.
             WebApp app = azureResourceManager.webApps()
                 .define(appName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withNewLinuxPlan(PricingTier.STANDARD_S1)
                 .withPrivateRegistryImage(privateImage, "https://" + azureRegistry.loginServerUrl())
-                .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+                .withManagedIdentityCredentials()
+                .withSystemAssignedManagedServiceIdentity()
                 .withAppSetting("PORT", "8080")
+                .withHttpsOnly(true)
+                .create();
+
+            // Grant the web app's identity least-privilege pull access to the registry.
+            azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(SampleUtils.randomUuid(azureResourceManager))
+                .forObjectId(app.systemAssignedManagedServiceIdentityPrincipalId())
+                .withBuiltInRole(BuiltInRole.ACR_PULL)
+                .withResourceScope(azureRegistry)
                 .create();
 
             System.out.println("Deployed image " + privateImage + " to web app " + app.defaultHostname());

@@ -20,6 +20,9 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SecureWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
@@ -35,6 +38,9 @@ import com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameter
 import com.azure.security.keyvault.keys.implementation.models.KeyVerifyResult;
 import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.implementation.models.SecretRequestAttributes;
+import com.azure.security.keyvault.keys.implementation.models.SecureKeyOperationResult;
+import com.azure.security.keyvault.keys.implementation.models.SecureKeyUnWrapOperationParameters;
+import com.azure.security.keyvault.keys.implementation.models.SecureKeyWrapOperationParameters;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
@@ -47,6 +53,7 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeyEncryptionAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapKeySignatureAlgorithm;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapSecureWrapAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapWrapAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.transformSecretKey;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.unpackAndValidateId;
@@ -393,6 +400,76 @@ public final class CryptographyClientImpl {
                 .toObject(KeyOperationResult.class);
 
         return new UnwrapResult(result.getResult(), algorithm, result.getKid());
+    }
+
+    public Mono<SecureWrapResult> secureWrapKeyAsync(SecureKeyWrapAlgorithm algorithm, Context context) {
+        Objects.requireNonNull(algorithm, "Secure key wrap algorithm cannot be null.");
+
+        SecureKeyWrapOperationParameters parameters
+            = new SecureKeyWrapOperationParameters(mapSecureWrapAlgorithm(algorithm));
+
+        return keyClient
+            .secureWrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(parameters),
+                new RequestOptions().setContext(context))
+            .map(response -> {
+                SecureKeyOperationResult result = response.getValue().toObject(SecureKeyOperationResult.class);
+
+                return new SecureWrapResult(result.getValue(), algorithm, result.getKid());
+            });
+    }
+
+    public SecureWrapResult secureWrapKey(SecureKeyWrapAlgorithm algorithm, Context context) {
+        Objects.requireNonNull(algorithm, "Secure key wrap algorithm cannot be null.");
+
+        SecureKeyWrapOperationParameters parameters
+            = new SecureKeyWrapOperationParameters(mapSecureWrapAlgorithm(algorithm));
+
+        SecureKeyOperationResult result
+            = keyClient
+                .secureWrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(parameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(SecureKeyOperationResult.class);
+
+        return new SecureWrapResult(result.getValue(), algorithm, result.getKid());
+    }
+
+    public Mono<SecureUnwrapResult> secureUnwrapKeyAsync(SecureKeyWrapAlgorithm algorithm, byte[] encryptedKey,
+        String targetAttestationToken, Context context) {
+        Objects.requireNonNull(algorithm, "Secure key wrap algorithm cannot be null.");
+        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
+        Objects.requireNonNull(targetAttestationToken, "Target attestation token cannot be null.");
+
+        SecureKeyUnWrapOperationParameters parameters = new SecureKeyUnWrapOperationParameters(
+            mapSecureWrapAlgorithm(algorithm), encryptedKey, targetAttestationToken);
+
+        return keyClient
+            .secureUnwrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(parameters),
+                new RequestOptions().setContext(context))
+            .map(response -> {
+                SecureKeyOperationResult result = response.getValue().toObject(SecureKeyOperationResult.class);
+
+                return new SecureUnwrapResult(result.getValue(), algorithm, result.getKid());
+            });
+    }
+
+    public SecureUnwrapResult secureUnwrapKey(SecureKeyWrapAlgorithm algorithm, byte[] encryptedKey,
+        String targetAttestationToken, Context context) {
+        Objects.requireNonNull(algorithm, "Secure key wrap algorithm cannot be null.");
+        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
+        Objects.requireNonNull(targetAttestationToken, "Target attestation token cannot be null.");
+
+        SecureKeyUnWrapOperationParameters parameters = new SecureKeyUnWrapOperationParameters(
+            mapSecureWrapAlgorithm(algorithm), encryptedKey, targetAttestationToken);
+
+        SecureKeyOperationResult result
+            = keyClient
+                .secureUnwrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(parameters),
+                    new RequestOptions().setContext(context))
+                .getValue()
+                .toObject(SecureKeyOperationResult.class);
+
+        return new SecureUnwrapResult(result.getValue(), algorithm, result.getKid());
     }
 
     public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {

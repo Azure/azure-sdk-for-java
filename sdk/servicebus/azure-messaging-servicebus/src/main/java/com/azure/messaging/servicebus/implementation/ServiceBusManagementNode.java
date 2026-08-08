@@ -155,8 +155,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * <p>Pagination follows the cursor semantics of Track 1's
      * {@code com.microsoft.azure.servicebus.SessionBrowser}: the caller threads {@code skip} from
      * {@link MessageSessionsResult#getNextSkip()} of the previous response and {@code lastSessionId}
-     * (the last entry of the previous page) into the next request, and stops when an empty page is
-     * returned.</p>
+     * (the last entry of the previous page) into the next request, and stops when the broker returns
+     * a page smaller than the requested page size (a short or empty page signals the end).</p>
      *
      * @param lastUpdatedTime Filter timestamp. To get sessions with active messages, pass the
      *     {@link ManagementConstants#ACTIVE_MESSAGES_SENTINEL} sentinel (the implementation also

@@ -17,8 +17,8 @@ public class StacCollectionRenderOptionsGetAll {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-list-render-options.stac-collection-render-options-get-all
-        List<RenderOption> response = stacClient.listRenderOptions("naip-atl");
-        // END:com.azure.analytics.planetarycomputer.generated.stac-list-render-options.stac-collection-render-options-get-all
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-render-options.stac-collection-render-options-get-all
+        List<RenderOption> response = stacClient.getRenderOptions("naip-atl");
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-render-options.stac-collection-render-options-get-all
     }
 }

@@ -52,8 +52,8 @@ public class AppServiceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ConnectWebAppToStorageAccount.runSample(azureResourceManager));
     }
 
-    // Recorded on a personal subscription (Japan East) because the shared test subscription's policy disables
-    // the ACR admin account and its US-region App Service "Total VMs" quota is 0.
+    // Recorded on a personal subscription (Japan East) because the sample's AcrPull grant requires
+    // Microsoft.Authorization/roleAssignments/write and the shared subscription's App Service quota is unavailable.
     @Test
     public void testDeployImageFromAcrToLinuxWebApp() {
         Assertions.assertTrue(DeployImageFromAcrToLinuxWebApp.runSample(azureResourceManager));
