@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class DatabaseColumnsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ColumnsListByDatabaseMax.json
+     * x-ms-original-file: 2025-01-01/ColumnsListByDatabaseMax.json
      */
     /**
      * Sample code: Filter database columns.
@@ -27,7 +27,7 @@ public final class DatabaseColumnsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ColumnsListByDatabaseMin.json
+     * x-ms-original-file: 2025-01-01/ColumnsListByDatabaseMin.json
      */
     /**
      * Sample code: List database columns.

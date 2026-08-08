@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.security.models;
 
 /**
- * Defines values for ResourceIdentityType.
+ * Resource Identity Type.
  */
 public enum ResourceIdentityType {
     /**

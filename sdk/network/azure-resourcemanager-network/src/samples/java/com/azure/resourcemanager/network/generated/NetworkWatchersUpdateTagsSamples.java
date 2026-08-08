@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkWatchersUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherUpdateTags.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherUpdateTags.json
      */
     /**
      * Sample code: Update network watcher tags.

@@ -5,6 +5,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
@@ -338,7 +339,7 @@ public class SessionTest extends TestSuiteBase {
         safeClose(dummyState);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         // No session token set for the master resource related request

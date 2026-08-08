@@ -10,7 +10,7 @@ package com.azure.resourcemanager.quota.generated;
 public final class GroupQuotaSubscriptionAllocationRequestGetSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-01/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
+     * 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocationRequests_Get_Request_ForCompute.

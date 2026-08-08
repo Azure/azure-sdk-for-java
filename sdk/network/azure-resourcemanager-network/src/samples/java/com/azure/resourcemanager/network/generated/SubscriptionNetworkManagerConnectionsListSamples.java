@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubscriptionNetworkManagerConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectionSubscriptionList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerConnectionSubscriptionList.json
      */
     /**
      * Sample code: List Subscription Network Manager Connection.

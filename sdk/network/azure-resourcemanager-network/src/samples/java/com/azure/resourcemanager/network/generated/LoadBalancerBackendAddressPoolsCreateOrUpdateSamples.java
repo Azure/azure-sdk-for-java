@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancerBackendAddressPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LBBackendAddressPoolWithBackendAddressesPut.json
+     * x-ms-original-file: 2025-07-01/LBBackendAddressPoolWithBackendAddressesPut.json
      */
     /**
      * Sample code: Update load balancer backend pool with backend addresses containing virtual network and IP address.

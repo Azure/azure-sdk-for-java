@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportEvaluationRule;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import org.junit.jupiter.api.Assertions;
@@ -14,25 +16,37 @@ public final class HealthReportEvaluationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthReportEvaluationRule model = BinaryData.fromString(
-            "{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":65.04525746311415},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":30.974012264669348}}")
+            "{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":95.67658997616351,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT5M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":59.279467855313925,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT5M\"}}")
             .toObject(HealthReportEvaluationRule.class);
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.degradedRule().operator());
-        Assertions.assertEquals(65.04525746311415, model.degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(95.67658997616351D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.degradedRule().lookBackWindow());
         Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL, model.unhealthyRule().operator());
-        Assertions.assertEquals(30.974012264669348, model.unhealthyRule().threshold());
+        Assertions.assertEquals(59.279467855313925D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.unhealthyRule().lookBackWindow());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HealthReportEvaluationRule model = new HealthReportEvaluationRule()
-            .withDegradedRule(
-                new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(65.04525746311415))
+            .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                .withThreshold(95.67658997616351D)
+                .withSensitivity(DynamicThresholdSensitivity.LOW)
+                .withLookBackWindow(LookBackWindow.PT5M))
             .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                .withThreshold(30.974012264669348));
+                .withThreshold(59.279467855313925D)
+                .withSensitivity(DynamicThresholdSensitivity.HIGH)
+                .withLookBackWindow(LookBackWindow.PT5M));
         model = BinaryData.fromObject(model).toObject(HealthReportEvaluationRule.class);
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.degradedRule().operator());
-        Assertions.assertEquals(65.04525746311415, model.degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(95.67658997616351D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.degradedRule().lookBackWindow());
         Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL, model.unhealthyRule().operator());
-        Assertions.assertEquals(30.974012264669348, model.unhealthyRule().threshold());
+        Assertions.assertEquals(59.279467855313925D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
+        Assertions.assertEquals(LookBackWindow.PT5M, model.unhealthyRule().lookBackWindow());
     }
 }

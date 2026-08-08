@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
  */
 public final class ApplicationGatewaysBackendHealthOnDemandSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayBackendHealthTest.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayBackendHealthTest.json
      */
     /**
      * Sample code: Test Backend Health.

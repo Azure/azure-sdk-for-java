@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class FlowLogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherFlowLogCreate.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherFlowLogCreate.json
      */
     /**
      * Sample code: Create or update flow log.

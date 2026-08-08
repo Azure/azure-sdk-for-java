@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ExpressRoutePortsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortUpdateLink.json
+     * x-ms-original-file: 2025-07-01/ExpressRoutePortUpdateLink.json
      */
     /**
      * Sample code: ExpressRoutePortUpdateLink.
@@ -36,7 +36,7 @@ public final class ExpressRoutePortsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortCreate.json
+     * x-ms-original-file: 2025-07-01/ExpressRoutePortCreate.json
      */
     /**
      * Sample code: ExpressRoutePortCreate.

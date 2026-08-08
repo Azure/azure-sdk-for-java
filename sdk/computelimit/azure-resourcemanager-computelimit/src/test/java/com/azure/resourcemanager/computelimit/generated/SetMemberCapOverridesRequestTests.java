@@ -14,21 +14,21 @@ public final class SetMemberCapOverridesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SetMemberCapOverridesRequest model = BinaryData.fromString(
-            "{\"memberCapOverrides\":[{\"subscriptionId\":\"sqwpgrjb\",\"cap\":1837885218},{\"subscriptionId\":\"orcjxvsnby\",\"cap\":1701008083},{\"subscriptionId\":\"abnmocpcyshu\",\"cap\":818060655},{\"subscriptionId\":\"afbljjgpbtoqcjmk\",\"cap\":897001974}]}")
+            "{\"memberCapOverrides\":[{\"subscriptionId\":\"orcjxvsnby\",\"cap\":1701008083},{\"subscriptionId\":\"abnmocpcyshu\",\"cap\":818060655},{\"subscriptionId\":\"afbljjgpbtoqcjmk\",\"cap\":897001974},{\"subscriptionId\":\"a\",\"cap\":1963237214}]}")
             .toObject(SetMemberCapOverridesRequest.class);
-        Assertions.assertEquals("sqwpgrjb", model.memberCapOverrides().get(0).subscriptionId());
-        Assertions.assertEquals(1837885218, model.memberCapOverrides().get(0).cap());
+        Assertions.assertEquals("orcjxvsnby", model.memberCapOverrides().get(0).subscriptionId());
+        Assertions.assertEquals(1701008083, model.memberCapOverrides().get(0).cap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SetMemberCapOverridesRequest model = new SetMemberCapOverridesRequest()
-            .withMemberCapOverrides(Arrays.asList(new MemberCap().withSubscriptionId("sqwpgrjb").withCap(1837885218),
-                new MemberCap().withSubscriptionId("orcjxvsnby").withCap(1701008083),
+            .withMemberCapOverrides(Arrays.asList(new MemberCap().withSubscriptionId("orcjxvsnby").withCap(1701008083),
                 new MemberCap().withSubscriptionId("abnmocpcyshu").withCap(818060655),
-                new MemberCap().withSubscriptionId("afbljjgpbtoqcjmk").withCap(897001974)));
+                new MemberCap().withSubscriptionId("afbljjgpbtoqcjmk").withCap(897001974),
+                new MemberCap().withSubscriptionId("a").withCap(1963237214)));
         model = BinaryData.fromObject(model).toObject(SetMemberCapOverridesRequest.class);
-        Assertions.assertEquals("sqwpgrjb", model.memberCapOverrides().get(0).subscriptionId());
-        Assertions.assertEquals(1837885218, model.memberCapOverrides().get(0).cap());
+        Assertions.assertEquals("orcjxvsnby", model.memberCapOverrides().get(0).subscriptionId());
+        Assertions.assertEquals(1701008083, model.memberCapOverrides().get(0).cap());
     }
 }

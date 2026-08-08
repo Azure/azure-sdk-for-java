@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RoutingRuleCollectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingRuleCollectionDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingRuleCollectionDelete.json
      */
     /**
      * Sample code: Deletes an routing rule collection.

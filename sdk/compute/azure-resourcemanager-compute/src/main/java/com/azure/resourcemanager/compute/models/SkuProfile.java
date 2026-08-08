@@ -28,6 +28,13 @@ public final class SkuProfile implements JsonSerializable<SkuProfile> {
      */
     private AllocationStrategy allocationStrategy;
 
+    /*
+     * Specifies the policy that controls whether the platform may automatically migrate scale set instances to a
+     * different VM size from the SKU profile depending on platform demands. When omitted, automatic SKU migration is
+     * disabled.
+     */
+    private AutomaticSkuMigrationPolicy automaticSkuMigrationPolicy;
+
     /**
      * Creates an instance of SkuProfile class.
      */
@@ -77,6 +84,30 @@ public final class SkuProfile implements JsonSerializable<SkuProfile> {
     }
 
     /**
+     * Get the automaticSkuMigrationPolicy property: Specifies the policy that controls whether the platform may
+     * automatically migrate scale set instances to a different VM size from the SKU profile depending on platform
+     * demands. When omitted, automatic SKU migration is disabled.
+     * 
+     * @return the automaticSkuMigrationPolicy value.
+     */
+    public AutomaticSkuMigrationPolicy automaticSkuMigrationPolicy() {
+        return this.automaticSkuMigrationPolicy;
+    }
+
+    /**
+     * Set the automaticSkuMigrationPolicy property: Specifies the policy that controls whether the platform may
+     * automatically migrate scale set instances to a different VM size from the SKU profile depending on platform
+     * demands. When omitted, automatic SKU migration is disabled.
+     * 
+     * @param automaticSkuMigrationPolicy the automaticSkuMigrationPolicy value to set.
+     * @return the SkuProfile object itself.
+     */
+    public SkuProfile withAutomaticSkuMigrationPolicy(AutomaticSkuMigrationPolicy automaticSkuMigrationPolicy) {
+        this.automaticSkuMigrationPolicy = automaticSkuMigrationPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,6 +115,9 @@ public final class SkuProfile implements JsonSerializable<SkuProfile> {
     public void validate() {
         if (vmSizes() != null) {
             vmSizes().forEach(e -> e.validate());
+        }
+        if (automaticSkuMigrationPolicy() != null) {
+            automaticSkuMigrationPolicy().validate();
         }
     }
 
@@ -96,6 +130,7 @@ public final class SkuProfile implements JsonSerializable<SkuProfile> {
         jsonWriter.writeArrayField("vmSizes", this.vmSizes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("allocationStrategy",
             this.allocationStrategy == null ? null : this.allocationStrategy.toString());
+        jsonWriter.writeJsonField("automaticSkuMigrationPolicy", this.automaticSkuMigrationPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +154,8 @@ public final class SkuProfile implements JsonSerializable<SkuProfile> {
                     deserializedSkuProfile.vmSizes = vmSizes;
                 } else if ("allocationStrategy".equals(fieldName)) {
                     deserializedSkuProfile.allocationStrategy = AllocationStrategy.fromString(reader.getString());
+                } else if ("automaticSkuMigrationPolicy".equals(fieldName)) {
+                    deserializedSkuProfile.automaticSkuMigrationPolicy = AutomaticSkuMigrationPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

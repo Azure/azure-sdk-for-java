@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.SyncGroupsType;
  */
 public final class SyncGroupsListLogsSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupGetLog.json
+     * x-ms-original-file: 2025-01-01/SyncGroupGetLog.json
      */
     /**
      * Sample code: Get sync group logs.

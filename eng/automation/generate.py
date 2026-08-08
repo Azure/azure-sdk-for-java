@@ -21,86 +21,19 @@ from utils import (
     is_first_release,
 )
 from generate_data import (
-    sdk_automation as sdk_automation_data,
     sdk_automation_typespec_project as sdk_automation_typespec_project_data,
 )
 from generate_utils import (
     compare_with_maven_package,
     compile_arm_package,
-    generate,
-    get_and_update_service_from_api_specs,
-    get_suffix_from_api_specs,
-    update_spec,
     generate_typespec_project,
-    is_mgmt_premium,
 )
 
 os.chdir(pwd)
 
 
-def update_parameters(suffix):
-    # update changeable parameters in parameters.py
-    global SUFFIX, NAMESPACE_SUFFIX, ARTIFACT_SUFFIX, NAMESPACE_FORMAT, ARTIFACT_FORMAT, OUTPUT_FOLDER_FORMAT
-
-    SUFFIX = suffix
-
-    NAMESPACE_SUFFIX = ".{0}".format(SUFFIX) if SUFFIX else ""
-    ARTIFACT_SUFFIX = "-{0}".format(SUFFIX) if SUFFIX else ""
-    NAMESPACE_FORMAT = "com.azure.resourcemanager.{{0}}{0}".format(NAMESPACE_SUFFIX)
-    ARTIFACT_FORMAT = "azure-resourcemanager-{{0}}{0}".format(ARTIFACT_SUFFIX)
-    OUTPUT_FOLDER_FORMAT = "sdk/{{0}}/{0}".format(ARTIFACT_FORMAT)
-
-
 def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--spec-root",
-        default="https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/",
-        help="Spec root folder",
-    )
-    parser.add_argument(
-        "-r",
-        "--readme",
-        help='Readme path, Sample: "storage" or "specification/storage/resource-manager/readme.md"',
-    )
-    parser.add_argument(
-        "-c",
-        "--tsp-config",
-        help="The top level directory where the tspconfig.yaml for the service lives. "
-        "Currently only support remote url with specific commitID "
-        "e.g. https://github.com/Azure/azure-rest-api-specs/blob/042e4045dedff4baaf5ae551bf6c8087fbdacd40/specification/deviceregistry/DeviceRegistry.Management/tspconfig.yaml",
-    )
-    parser.add_argument("-t", "--tag", help="Specific tag")
-    parser.add_argument("-v", "--version", help="Specific sdk version")
-    parser.add_argument(
-        "-s",
-        "--service",
-        help="Service Name if not the same as spec name",
-    )
-    parser.add_argument(
-        "-u",
-        "--use",
-        default=AUTOREST_JAVA,
-        help="Autorest java plugin",
-    )
-    parser.add_argument(
-        "--autorest",
-        default=AUTOREST_CORE_VERSION,
-        help="Autorest version",
-    )
-    parser.add_argument(
-        "--autorest-options",
-        default="",
-        help="Additional autorest options",
-    )
-    parser.add_argument("--suffix", help="Suffix for namespace and artifact")
-    parser.add_argument(
-        "--auto-commit-external-change",
-        action="store_true",
-        help="Automatic commit the generated code",
-    )
-    parser.add_argument("--user-name", help="User Name for commit")
-    parser.add_argument("--user-email", help="User Email for commit")
     parser.add_argument(
         "config",
         nargs="*",
@@ -119,9 +52,6 @@ def sdk_automation(input_file: str, output_file: str):
     try:
         # typespec
         packages = sdk_automation_typespec(config)
-        # autorest
-        if not packages:
-            packages = sdk_automation_autorest(config)
     except ValueError:
         logging.error("[VALIDATION] Parameter validation failed.", exc_info=True)
         sys.exit(1)
@@ -139,109 +69,6 @@ def sdk_automation(input_file: str, output_file: str):
 
     if packages and len(packages) == 1 and packages[0]["result"] == "failed":
         sys.exit(1)
-
-
-def sdk_automation_autorest(config: dict) -> List[dict]:
-    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
-
-    packages = []
-    breaking = False
-    changelog = ""
-    breaking_change_items = []
-    if "relatedReadmeMdFiles" not in config or not config["relatedReadmeMdFiles"]:
-        return packages
-
-    for readme in config["relatedReadmeMdFiles"]:
-        match = re.search(
-            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
-            readme,
-            re.IGNORECASE,
-        )
-        if not match:
-            logging.info("[Skip] readme path does not format as specification/*/resource-manager/*/readme.md")
-        else:
-            spec = match.group(1)
-            spec = update_spec(spec, match.group(2))
-            service = get_and_update_service_from_api_specs(api_specs_file, spec, truncate_service=True)
-
-            pre_suffix = SUFFIX
-            suffix = get_suffix_from_api_specs(api_specs_file, spec)
-            if suffix is None:
-                suffix = SUFFIX
-            update_parameters(suffix)
-
-            # TODO: use specific function to detect tag in "resources" spec/service
-            tag = None
-            if service == "resources" and spec == service:
-                with open(os.path.join(config["specFolder"], readme)) as fin:
-                    tag_match = re.search(r"tag: (package-resources-\S+)", fin.read())
-                    if tag_match:
-                        tag = tag_match.group(1)
-                    else:
-                        tag = "package-resources-2025-04"
-
-            module = ARTIFACT_FORMAT.format(service)
-            output_folder = OUTPUT_FOLDER_FORMAT.format(service)
-            namespace = NAMESPACE_FORMAT.format(service)
-            stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
-            succeeded = generate(
-                sdk_root,
-                service,
-                spec_root=config["specFolder"],
-                readme=readme,
-                autorest=AUTOREST_CORE_VERSION,
-                use=AUTOREST_JAVA,
-                output_folder=output_folder,
-                module=module,
-                namespace=namespace,
-                tag=tag,
-                premium=is_mgmt_premium(module),
-            )
-            if succeeded:
-                succeeded = compile_arm_package(sdk_root, module)
-                if succeeded:
-                    stable_version = get_latest_ga_version(GROUP_ID, module, stable_version)
-                    breaking, changelog, breaking_change_items = compare_with_maven_package(
-                        sdk_root, GROUP_ID, service, stable_version, current_version, module
-                    )
-
-            packages.append(
-                {
-                    "packageName": "{0}".format(ARTIFACT_FORMAT.format(service)),
-                    "path": [
-                        output_folder,
-                        CI_FILE_FORMAT.format(service),
-                        POM_FILE_FORMAT.format(service),
-                        "eng/versioning",
-                        "pom.xml",
-                    ],
-                    "readmeMd": [readme],
-                    "artifacts": (
-                        ["{0}/pom.xml".format(output_folder)]
-                        + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))]
-                        if succeeded
-                        else []
-                    ),
-                    "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
-                    "language": "Java",
-                    "result": "succeeded" if succeeded else "failed",
-                    "changelog": {
-                        "content": changelog,
-                        "hasBreakingChange": breaking,
-                        "breakingChangeItems": breaking_change_items,
-                    },
-                }
-            )
-
-            update_parameters(pre_suffix)
-
-    if not packages:
-        # try data-plane codegen
-        packages = sdk_automation_data(config)
-
-    return packages
 
 
 def sdk_automation_typespec(config: dict) -> List[dict]:
@@ -491,90 +318,14 @@ def main():
     (parser, args) = parse_args()
     args = vars(args)
 
-    if args.get("config"):
-        return sdk_automation(args["config"][0], args["config"][1])
+    config = args.get("config")
+    if config:
+        if len(config) != 2:
+            parser.error("config requires exactly two arguments: generationInput and generationOutput")
+        return sdk_automation(config[0], config[1])
 
-    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
-
-    if args.get("tsp_config"):
-        tsp_config = args["tsp_config"]
-
-        succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-            tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID, **args
-        )
-
-        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
-        args["version"] = current_version
-
-        if require_sdk_integration:
-            update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
-            update_root_pom(sdk_root, service)
-
-        output_folder = sdk_folder
-        update_version(sdk_root, output_folder)
-        update_changelog_version(sdk_root, output_folder, current_version)
-    else:
-        if not args.get("readme"):
-            parser.print_help()
-            sys.exit(0)
-
-        readme = args["readme"]
-        match = re.match(
-            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
-            readme,
-            re.IGNORECASE,
-        )
-        if not match:
-            spec = readme
-            readme = "specification/{0}/resource-manager/readme.md".format(spec)
-        else:
-            spec = match.group(1)
-            spec = update_spec(spec, match.group(2))
-
-        args["readme"] = readme
-        args["spec"] = spec
-
-        suffix = args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec)
-        update_parameters(suffix)
-        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
-        args["service"] = service
-        module = ARTIFACT_FORMAT.format(service)
-        premium = is_mgmt_premium(module)
-        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
-        args["version"] = current_version
-        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
-        namespace = NAMESPACE_FORMAT.format(service)
-        succeeded = generate(
-            sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args
-        )
-
-    if succeeded:
-        succeeded = compile_arm_package(sdk_root, module)
-        if succeeded:
-            latest_release_version = get_latest_release_version(stable_version, current_version)
-            compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
-
-            if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
-                pwd = os.getcwd()
-                try:
-                    os.chdir(sdk_root)
-                    os.system(
-                        "git add eng/versioning eng/automation pom.xml {0} {1}".format(
-                            CI_FILE_FORMAT.format(service), POM_FILE_FORMAT.format(service)
-                        )
-                    )
-                    os.system(
-                        'git -c user.name={0} -c user.email={1} commit -m "[Automation] External Change"'.format(
-                            args["user_name"], args["user_email"]
-                        )
-                    )
-                finally:
-                    os.chdir(pwd)
-
-    if not succeeded:
-        raise RuntimeError("Failed to generate code or compile the package")
+    parser.print_help()
+    sys.exit(0)
 
 
 if __name__ == "__main__":

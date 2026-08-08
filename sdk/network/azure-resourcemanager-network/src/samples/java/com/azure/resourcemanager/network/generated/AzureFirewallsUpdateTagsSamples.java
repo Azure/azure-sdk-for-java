@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AzureFirewallsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AzureFirewallUpdateTags.json
+     * x-ms-original-file: 2025-07-01/AzureFirewallUpdateTags.json
      */
     /**
      * Sample code: Update Azure Firewall Tags.

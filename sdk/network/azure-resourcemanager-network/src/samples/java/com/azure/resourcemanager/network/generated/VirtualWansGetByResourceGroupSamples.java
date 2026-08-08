@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualWansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualWANGet.json
+     * x-ms-original-file: 2025-07-01/VirtualWANGet.json
      */
     /**
      * Sample code: VirtualWANGet.

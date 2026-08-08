@@ -10,9 +10,14 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CostManagementSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
+import com.azure.resourcemanager.recoveryservices.models.GranularityLevel;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.IdentityType;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityConfiguration;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityType;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
@@ -33,7 +38,7 @@ import java.util.Map;
  */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
@@ -59,7 +64,48 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithImmutabilityConfig.json
+     */
+    /**
+     * Sample code: Update Vault With Immutability Config.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void
+        updateVaultWithImmutabilityConfig(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
+            .withProperties(new VaultProperties().withSecuritySettings(
+                new SecuritySettings().withImmutabilitySettings(new ImmutabilitySettings().withConfiguration(
+                    new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED).withDurationInDays(30)))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithCostManagementSettings.json
+     */
+    /**
+     * Sample code: Update Vault With Cost Management Settings.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void updateVaultWithCostManagementSettings(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
+            .withProperties(new VaultProperties().withCostManagementSettings(
+                new CostManagementSettings().withGranularityLevel(GranularityLevel.PROTECTED_ITEM_LEVEL)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -86,7 +132,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PatchVault_WithCMK2.json
+     * x-ms-original-file: 2026-05-01/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -107,7 +153,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithCMK3.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -131,7 +177,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault.json
+     * x-ms-original-file: 2026-05-01/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -146,7 +192,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithSourceScanConfiguration.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithSourceScanConfiguration.json
      */
     /**
      * Sample code: Update Vault With Source scan configuration.
@@ -174,7 +220,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithRedundancySettings.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithRedundancySettings.json
      */
     /**
      * Sample code: Update Vault With Redundancy Setting.
@@ -194,7 +240,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-05-01/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.

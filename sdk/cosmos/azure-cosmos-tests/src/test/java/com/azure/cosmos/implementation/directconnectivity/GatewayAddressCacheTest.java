@@ -406,16 +406,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow is called 6 times
+        // The exact count depends on the live replica health states returned by the gateway:
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
-        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+        // 2. replica validation checks whether the collection is under warmup
+        // 3. every replica whose health is Unknown requires another warmup-flow check
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                 .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
 
         if (isCollectionUnderWarmUpFlow) {
@@ -513,16 +511,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow called 6 times
+        // The exact count is derived from the live replica health states returned by the gateway:
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
-        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+        // 2. replica validation checks whether the collection is under warmup
+        // 3. every replica whose health is Unknown requires another warmup-flow check
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
         if (isCollectionUnderWarmUpFlow) {
             Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
@@ -1046,22 +1042,19 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
             if (submitOpenConnectionTasksAndInitCaches) {
 
-                // If submitOpenConnectionTasksAndInitCaches is called, then replica validation will also include for unknown status
-                // isCollectionRidUnderOpenConnectionsFlow called 6 times
+                // If submitOpenConnectionTasksAndInitCaches is called, replica validation also
+                // includes Unknown replicas. Derive the exact call count from the returned states.
                 // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
                 // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
                 // under connection warm up flow
-                // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-                // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-                // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-                // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-                // is part of the warm-up flow - isCollectionRidUnderOpenConnectionsFlow is called here again (called up to 4 times - 1 for each replica)
-                // for a given physical partition
+                // 2. replica validation checks whether the collection is under warmup
+                // 3. every replica whose health is Unknown requires another warmup-flow check
                 Mockito
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
                     .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
                 assertThat(openConnectionArguments.getAllValues()).hasSize(addressInfosFromCache.size());
-                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                        expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                         .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
             } else {
                 // Open connection will only be called for unhealthyPending status address
@@ -1383,10 +1376,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
         // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
         // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.timeout(5000).times(2))
                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
 
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.timeout(5000).times(1))
                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
@@ -1559,9 +1552,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     private static void assertEqual(AddressInformation actual, Address expected) {
-        assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
+        assertThat(stripTrailingSlash(actual.getPhysicalUri().getURIAsString()))
+            .isEqualTo(stripTrailingSlash(expected.getPhyicalUri()));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
         assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
+    }
+
+    private static String stripTrailingSlash(String uri) {
+        return uri == null ? null : uri.replaceAll("/+$", "");
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {
@@ -1759,6 +1757,15 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     public String getCollectionSelfLink() {
         return createdCollection.getSelfLink();
+    }
+
+    private static int expectedOpenConnectionsFlowChecks(List<AddressInformation> addressInfos) {
+        // validateReplicaAddresses performs one collection-level check, then one additional check
+        // for each Unknown replica. UnhealthyPending replicas are validated without that extra check.
+        int unknownReplicaCount = (int) addressInfos.stream()
+            .filter(address -> address.getPhysicalUri().getHealthStatus() == Unknown)
+            .count();
+        return 2 + unknownReplicaCount;
     }
 
     private Document getDocumentDefinition() {

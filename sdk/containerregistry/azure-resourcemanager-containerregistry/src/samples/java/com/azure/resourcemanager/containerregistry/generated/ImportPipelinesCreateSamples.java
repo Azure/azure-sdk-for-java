@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ImportPipelinesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ImportPipelineCreate.json
+     * x-ms-original-file: 2026-03-01-preview/ImportPipelineCreate.json
      */
     /**
      * Sample code: ImportPipelineCreate.

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyCreate.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyCreate.json
      */
     /**
      * Sample code: Create service endpoint policy.
@@ -28,7 +28,7 @@ public final class ServiceEndpointPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyCreateWithDefinition.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyCreateWithDefinition.json
      */
     /**
      * Sample code: Create service endpoint policy with definition.
