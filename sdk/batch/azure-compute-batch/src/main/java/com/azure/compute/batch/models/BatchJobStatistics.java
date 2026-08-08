@@ -43,12 +43,14 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
 
     /*
      * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+     * The time duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration userCpuTime;
 
     /*
      * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+     * The time duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration kernelCpuTime;
@@ -57,6 +59,7 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
      * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
      * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
+     * The time duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration wallClockTime;
@@ -65,7 +68,7 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the
      * creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is
      * the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it
-     * is not included in the Job statistics.
+     * is not included in the Job statistics. The time duration is specified in ISO 8601 format.
      */
     @Generated
     private final Duration waitTime;
@@ -142,7 +145,7 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
 
     /**
      * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in the Job.
+     * consumed by all Tasks in the Job. The time duration is specified in ISO 8601 format.
      *
      * @return the userCpuTime value.
      */
@@ -153,7 +156,7 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
 
     /**
      * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in the Job.
+     * consumed by all Tasks in the Job. The time duration is specified in ISO 8601 format.
      *
      * @return the kernelCpuTime value.
      */
@@ -166,7 +169,7 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * Get the wallClockTime property: The total wall clock time of all Tasks in the Job. The wall clock time is the
      * elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the
      * statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall
-     * clock time of all the Task retries.
+     * clock time of all the Task retries. The time duration is specified in ISO 8601 format.
      *
      * @return the wallClockTime value.
      */
@@ -179,7 +182,8 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * Get the waitTime property: The total wait time of all Tasks in the Job. The wait time for a Task is defined as
      * the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to
      * failures, the wait time is the time to the most recent Task execution.) This value is only reported in the
-     * Account lifetime statistics; it is not included in the Job statistics.
+     * Account lifetime statistics; it is not included in the Job statistics. The time duration is specified in ISO 8601
+     * format.
      *
      * @return the waitTime value.
      */

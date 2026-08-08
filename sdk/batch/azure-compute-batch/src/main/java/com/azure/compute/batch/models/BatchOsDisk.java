@@ -28,7 +28,7 @@ public final class BatchOsDisk implements JsonSerializable<BatchOsDisk> {
      * for Standard storage. ReadOnly for Premium storage.
      */
     @Generated
-    private CachingType caching;
+    private BatchCachingType caching;
 
     /*
      * The initial disk size in GB when creating new OS disk.
@@ -86,21 +86,8 @@ public final class BatchOsDisk implements JsonSerializable<BatchOsDisk> {
      * @return the caching value.
      */
     @Generated
-    public CachingType getCaching() {
+    public BatchCachingType getCaching() {
         return this.caching;
-    }
-
-    /**
-     * Set the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The
-     * default values are: None for Standard storage. ReadOnly for Premium storage.
-     *
-     * @param caching the caching value to set.
-     * @return the BatchOsDisk object itself.
-     */
-    @Generated
-    public BatchOsDisk setCaching(CachingType caching) {
-        this.caching = caching;
-        return this;
     }
 
     /**
@@ -204,7 +191,7 @@ public final class BatchOsDisk implements JsonSerializable<BatchOsDisk> {
                 if ("ephemeralOSDiskSettings".equals(fieldName)) {
                     deserializedBatchOsDisk.ephemeralOSDiskSettings = BatchDiffDiskSettings.fromJson(reader);
                 } else if ("caching".equals(fieldName)) {
-                    deserializedBatchOsDisk.caching = CachingType.fromString(reader.getString());
+                    deserializedBatchOsDisk.caching = BatchCachingType.fromString(reader.getString());
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedBatchOsDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
                 } else if ("managedDisk".equals(fieldName)) {
@@ -217,5 +204,18 @@ public final class BatchOsDisk implements JsonSerializable<BatchOsDisk> {
             }
             return deserializedBatchOsDisk;
         });
+    }
+
+    /**
+     * Set the caching property: Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The
+     * default values are: None for Standard storage. ReadOnly for Premium storage.
+     *
+     * @param caching the caching value to set.
+     * @return the BatchOsDisk object itself.
+     */
+    @Generated
+    public BatchOsDisk setCaching(BatchCachingType caching) {
+        this.caching = caching;
+        return this;
     }
 }

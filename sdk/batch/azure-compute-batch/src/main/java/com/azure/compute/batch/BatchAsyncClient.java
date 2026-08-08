@@ -4,6 +4,20 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.pollers.JobDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobDisablePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobEnablePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobScheduleDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobScheduleTerminatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobTerminatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeDeallocatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeRebootPollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeReimagePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeRemovePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeStartPollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolResizePollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolStopResizePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncClientTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -143,7 +157,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -173,7 +186,7 @@ public final class BatchAsyncClient {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
+     * @param taskList A collection of {@link BatchTaskCreateParameters tasks} to add.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -202,7 +215,7 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList,
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchTaskBulkCreateOptions batchTaskBulkCreateOptions) {
         return Mono.create(sink -> {
             TaskSubmitter taskSubmitter = new AsyncClientTaskSubmitter(this);
@@ -236,7 +249,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -278,7 +291,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -340,7 +353,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -379,7 +392,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -705,7 +718,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1128,9 +1141,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.deletePoolWithResponseAsync(poolId, requestOptions);
     }
 
@@ -1168,7 +1180,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
@@ -1224,7 +1236,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1635,7 +1647,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1997,7 +2009,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2036,7 +2048,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2044,9 +2056,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2125,7 +2137,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2143,9 +2155,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.resizePoolWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2196,9 +2208,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.stopPoolResizeWithResponseAsync(poolId, requestOptions);
     }
 
@@ -2218,7 +2229,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2337,7 +2348,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2356,9 +2367,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2380,7 +2391,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2435,7 +2446,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2524,9 +2535,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -2568,7 +2578,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2672,11 +2682,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3062,7 +3067,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3429,7 +3434,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3533,11 +3538,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3929,7 +3929,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3944,9 +3944,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.disableJobWithResponseAsync(jobId, parameters, requestOptions);
     }
 
@@ -3996,9 +3996,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.enableJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -4047,7 +4046,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4061,9 +4060,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -4089,7 +4087,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4185,11 +4183,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4526,7 +4519,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4630,11 +4623,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5003,7 +4991,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5107,11 +5095,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5487,7 +5470,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5565,7 +5548,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5636,7 +5619,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * boolean
@@ -5701,9 +5684,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -5745,7 +5727,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5863,11 +5845,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6245,7 +6222,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6353,11 +6330,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6712,7 +6684,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6830,11 +6802,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7306,9 +7273,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -7324,7 +7290,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7434,11 +7400,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7773,7 +7734,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -7891,11 +7852,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -8247,7 +8203,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8372,11 +8328,6 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -8419,7 +8370,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8599,11 +8550,6 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -8646,7 +8592,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8773,19 +8719,14 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -8923,7 +8864,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9103,11 +9044,6 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -9161,7 +9097,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9341,11 +9277,6 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -9381,7 +9312,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9599,7 +9530,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -9682,7 +9613,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9729,7 +9660,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9775,16 +9706,16 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteNodeUserWithResponseAsync(poolId, nodeId, userName, requestOptions);
+        return this.serviceClient.deleteNodeUserWithResponseAsync(poolId, nodeId, username, requestOptions);
     }
 
     /**
@@ -9804,7 +9735,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -9817,7 +9748,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -9825,9 +9756,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String username,
         BinaryData parameters, RequestOptions requestOptions) {
-        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, userName, parameters,
+        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, username, parameters,
             requestOptions);
     }
 
@@ -9845,7 +9776,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10036,7 +9967,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10051,9 +9982,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.rebootNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10077,9 +10007,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.startNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10107,7 +10036,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10122,9 +10051,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.reimageNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10150,7 +10078,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10165,9 +10093,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10194,7 +10122,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10260,7 +10188,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10307,7 +10235,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10320,9 +10248,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10368,7 +10296,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10549,7 +10477,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10622,7 +10550,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10735,7 +10663,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -10816,7 +10744,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -11022,10 +10950,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId) {
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId) {
         RequestOptions requestOptions = new RequestOptions();
         PoolDeletePollerAsync poller = new PoolDeletePollerAsync(this, poolId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11049,13 +10978,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11278,10 +11207,10 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId) {
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId) {
         RequestOptions requestOptions = new RequestOptions();
         JobDeletePollerAsync poller = new JobDeletePollerAsync(this, jobId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11566,13 +11495,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11645,10 +11574,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId) {
         RequestOptions requestOptions = new RequestOptions();
         JobScheduleDeletePollerAsync poller = new JobScheduleDeletePollerAsync(this, jobScheduleId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -12075,11 +12005,11 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
         BatchTaskFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12155,7 +12085,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12163,10 +12093,10 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName) {
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12565,11 +12495,11 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         BatchNodeFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12656,10 +12586,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchApplication> listApplications(BatchApplicationsListOptions options) {
         // Generated convenience method for listApplications
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12703,9 +12633,9 @@ public final class BatchAsyncClient {
     public Mono<BatchApplication> getApplication(String applicationId, BatchApplicationGetOptions options) {
         // Generated convenience method for getApplicationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getApplicationWithResponse(applicationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
@@ -12733,13 +12663,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
         // Generated convenience method for listPoolUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         OffsetDateTime startTime = options == null ? null : options.getStartTime();
-        OffsetDateTime endtime = options == null ? null : options.getEndtime();
+        OffsetDateTime endTime = options == null ? null : options.getEndTime();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12747,8 +12677,8 @@ public final class BatchAsyncClient {
         if (startTime != null) {
             requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
         }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
+        if (endTime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endTime), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -12783,13 +12713,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPool> listPools(BatchPoolsListOptions options) {
         // Generated convenience method for listPools
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12855,13 +12785,13 @@ public final class BatchAsyncClient {
     Mono<Void> deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12903,19 +12833,20 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12952,15 +12883,15 @@ public final class BatchAsyncClient {
     public Mono<BatchPool> getPool(String poolId, BatchPoolGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13018,13 +12949,13 @@ public final class BatchAsyncClient {
     Mono<Void> stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13067,13 +12998,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginStopPoolResize(String poolId, BatchPoolResizeStopOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13108,11 +13039,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSupportedImage> listSupportedImages(SupportedBatchImagesListOptions options) {
         // Generated convenience method for listSupportedImages
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13152,11 +13083,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolNodeCounts> listPoolNodeCounts(BatchPoolNodeCountsListOptions options) {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13205,14 +13136,14 @@ public final class BatchAsyncClient {
     Mono<Void> deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13253,20 +13184,20 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13306,15 +13237,15 @@ public final class BatchAsyncClient {
     public Mono<BatchJob> getJob(String jobId, BatchJobGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13370,13 +13301,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13418,13 +13349,13 @@ public final class BatchAsyncClient {
     Mono<Void> enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13467,13 +13398,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginEnableJob(String jobId, BatchJobEnableOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13517,15 +13448,15 @@ public final class BatchAsyncClient {
     Mono<Void> terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -13574,15 +13505,15 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -13623,13 +13554,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobs(BatchJobsListOptions options) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13681,13 +13612,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, BatchJobsFromScheduleListOptions options) {
         // Generated convenience method for listJobsFromSchedule
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13749,12 +13680,12 @@ public final class BatchAsyncClient {
         BatchJobPreparationAndReleaseTaskStatusListOptions options) {
         // Generated convenience method for listJobPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13808,9 +13739,9 @@ public final class BatchAsyncClient {
     public Mono<BatchTaskCountsResult> getJobTaskCounts(String jobId, BatchJobTaskCountsGetOptions options) {
         // Generated convenience method for getJobTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getJobTaskCountsWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskCountsResult.class));
@@ -13839,14 +13770,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13884,20 +13815,21 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId,
         BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13938,15 +13870,15 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14004,13 +13936,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleReplaceOptions options, RequestConditions requestConditions) {
         // Generated convenience method for replaceJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14049,13 +13981,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14091,13 +14023,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for enableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14133,14 +14065,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14179,14 +14111,14 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId,
         BatchJobScheduleTerminateOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14225,13 +14157,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJobSchedule> listJobSchedules(BatchJobSchedulesListOptions options) {
         // Generated convenience method for listJobSchedules
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14287,13 +14219,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchTask> listTasks(String jobId, BatchTasksListOptions options) {
         // Generated convenience method for listTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14362,9 +14294,9 @@ public final class BatchAsyncClient {
         BatchTaskCollectionCreateOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -14395,13 +14327,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14445,15 +14377,15 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14506,13 +14438,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14551,10 +14483,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options) {
         // Generated convenience method for listSubTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14600,13 +14532,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14652,13 +14584,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14694,10 +14626,10 @@ public final class BatchAsyncClient {
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, BatchTaskFileDeleteOptions options) {
         // Generated convenience method for deleteTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -14722,12 +14654,12 @@ public final class BatchAsyncClient {
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, BatchTaskFileGetOptions options) {
         // Generated convenience method for getTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14760,12 +14692,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, BatchTaskFilesListOptions options) {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14801,7 +14733,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param options Optional parameters for Delete Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -14810,15 +14742,15 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserDeleteOptions options) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14837,10 +14769,10 @@ public final class BatchAsyncClient {
     public Mono<BatchNode> getNode(String poolId, String nodeId, BatchNodeGetOptions options) {
         // Generated convenience method for getNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14871,10 +14803,10 @@ public final class BatchAsyncClient {
     Mono<Void> rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14901,10 +14833,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId,
         BatchNodeRebootOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14932,9 +14864,9 @@ public final class BatchAsyncClient {
     Mono<Void> startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return startNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -14957,9 +14889,9 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId,
         BatchNodeStartOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         NodeStartPollerAsync poller = new NodeStartPollerAsync(this, poolId, nodeId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -14986,10 +14918,10 @@ public final class BatchAsyncClient {
     Mono<Void> reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15019,10 +14951,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId,
         BatchNodeReimageOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15050,10 +14982,10 @@ public final class BatchAsyncClient {
     Mono<Void> deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15080,10 +15012,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId,
         BatchNodeDeallocateOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15112,10 +15044,10 @@ public final class BatchAsyncClient {
     public Mono<Void> disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options) {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15142,9 +15074,9 @@ public final class BatchAsyncClient {
     public Mono<Void> enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options) {
         // Generated convenience method for enableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15173,9 +15105,9 @@ public final class BatchAsyncClient {
         BatchNodeRemoteLoginSettingsGetOptions options) {
         // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettings.class));
@@ -15196,12 +15128,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNode> listNodes(String poolId, BatchNodesListOptions options) {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15249,10 +15181,10 @@ public final class BatchAsyncClient {
         BatchNodeExtensionGetOptions options) {
         // Generated convenience method for getNodeExtensionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15282,11 +15214,11 @@ public final class BatchAsyncClient {
         BatchNodeExtensionsListOptions options) {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15332,10 +15264,10 @@ public final class BatchAsyncClient {
         BatchNodeFileDeleteOptions options) {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -15361,12 +15293,12 @@ public final class BatchAsyncClient {
         BatchNodeFileGetOptions options) {
         // Generated convenience method for getNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15399,12 +15331,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, BatchNodeFilesListOptions options) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15449,9 +15381,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createPool(BatchPoolCreateParameters pool, BatchPoolCreateOptions options) {
         // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15499,13 +15431,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updatePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15572,13 +15504,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15623,13 +15555,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters,
         BatchPoolResizeOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15725,9 +15657,9 @@ public final class BatchAsyncClient {
         BatchPoolPropertiesReplaceOptions options) {
         // Generated convenience method for replacePoolPropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -15778,13 +15710,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15827,13 +15759,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters,
         BatchNodesRemoveOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15924,13 +15856,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15998,13 +15930,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16051,13 +15983,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters,
         BatchJobDisableOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16160,9 +16092,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createJob(BatchJobCreateParameters job, BatchJobCreateOptions options) {
         // Generated convenience method for createJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -16218,13 +16150,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for updateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16285,9 +16217,9 @@ public final class BatchAsyncClient {
         BatchJobScheduleCreateOptions options) {
         // Generated convenience method for createJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -16331,9 +16263,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createTask(String jobId, BatchTaskCreateParameters task, BatchTaskCreateOptions options) {
         // Generated convenience method for createTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -16382,9 +16314,9 @@ public final class BatchAsyncClient {
         BatchNodeUserCreateOptions options) {
         // Generated convenience method for createNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -16424,7 +16356,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param options Optional parameters for Replace Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -16434,15 +16366,15 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        return replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16456,7 +16388,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16465,11 +16397,11 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserUpdateParameters parameters) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        return replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16499,9 +16431,9 @@ public final class BatchAsyncClient {
         UploadBatchServiceLogsParameters parameters, BatchNodeLogsUploadOptions options) {
         // Generated convenience method for uploadNodeLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -16616,13 +16548,13 @@ public final class BatchAsyncClient {
         BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16666,9 +16598,9 @@ public final class BatchAsyncClient {
         BatchPoolEvaluateAutoScaleOptions options) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -16690,9 +16622,9 @@ public final class BatchAsyncClient {
     public Mono<Void> disablePoolAutoScale(String poolId, BatchPoolDisableAutoScaleOptions options) {
         // Generated convenience method for disablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }

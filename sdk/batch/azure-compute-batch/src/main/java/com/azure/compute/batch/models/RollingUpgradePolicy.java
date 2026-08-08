@@ -58,7 +58,7 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /*
      * The wait time between completing the update for all virtual machines in one batch and starting the next batch.
-     * The time duration should be specified in ISO 8601 format..
+     * The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration pauseTimeBetweenBatches;
@@ -202,7 +202,7 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /**
      * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
-     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format..
+     * one batch and starting the next batch. The time duration is specified in ISO 8601 format.
      *
      * @return the pauseTimeBetweenBatches value.
      */
@@ -213,7 +213,7 @@ public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgra
 
     /**
      * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
-     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format..
+     * one batch and starting the next batch. The time duration is specified in ISO 8601 format.
      *
      * @param pauseTimeBetweenBatches the pauseTimeBetweenBatches value to set.
      * @return the RollingUpgradePolicy object itself.

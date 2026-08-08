@@ -93,8 +93,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
      * @param isAdmin the isAdmin value to set.
      * @return the BatchNodeUserCreateParameters object itself.
      */
-    @Generated
-    public BatchNodeUserCreateParameters setIsAdmin(Boolean isAdmin) {
+    public BatchNodeUserCreateParameters setAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
     }
@@ -234,5 +233,18 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
             deserializedBatchNodeUserCreateParameters.sshPublicKey = sshPublicKey;
             return deserializedBatchNodeUserCreateParameters;
         });
+    }
+
+    /**
+     * Set the isAdmin property: Whether the Account should be an administrator on the Compute Node. The default value
+     * is false.
+     *
+     * @param isAdmin the isAdmin value to set.
+     * @return the BatchNodeUserCreateParameters object itself.
+     */
+    @Generated
+    public BatchNodeUserCreateParameters setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+        return this;
     }
 }

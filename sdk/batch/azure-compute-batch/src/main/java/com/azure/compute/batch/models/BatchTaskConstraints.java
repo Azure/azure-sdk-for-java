@@ -22,7 +22,7 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
     /*
      * The maximum elapsed time that the Task may run, measured from the time the Task starts. If the Task does not
      * complete within the time limit, the Batch service terminates it. If this is not specified, there is no time limit
-     * on how long the Task may run.
+     * on how long the Task may run. The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration maxWallClockTime;
@@ -31,7 +31,7 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
      * The minimum time to retain the Task directory on the Compute Node where it ran, from the time it completes
      * execution. After this time, the Batch service may delete the Task directory and all its contents. The default is
      * 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is
-     * deleted.
+     * deleted. The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration retentionTime;
@@ -58,7 +58,8 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
     /**
      * Get the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
      * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
-     * specified, there is no time limit on how long the Task may run.
+     * specified, there is no time limit on how long the Task may run. The time duration is specified in ISO 8601
+     * format.
      *
      * @return the maxWallClockTime value.
      */
@@ -70,7 +71,8 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
     /**
      * Set the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
      * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
-     * specified, there is no time limit on how long the Task may run.
+     * specified, there is no time limit on how long the Task may run. The time duration is specified in ISO 8601
+     * format.
      *
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the BatchTaskConstraints object itself.
@@ -85,7 +87,7 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
      * Get the retentionTime property: The minimum time to retain the Task directory on the Compute Node where it ran,
      * from the time it completes execution. After this time, the Batch service may delete the Task directory and all
      * its contents. The default is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node
-     * is removed or the Job is deleted.
+     * is removed or the Job is deleted. The time duration is specified in ISO 8601 format.
      *
      * @return the retentionTime value.
      */
@@ -98,7 +100,7 @@ public final class BatchTaskConstraints implements JsonSerializable<BatchTaskCon
      * Set the retentionTime property: The minimum time to retain the Task directory on the Compute Node where it ran,
      * from the time it completes execution. After this time, the Batch service may delete the Task directory and all
      * its contents. The default is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node
-     * is removed or the Job is deleted.
+     * is removed or the Job is deleted. The time duration is specified in ISO 8601 format.
      *
      * @param retentionTime the retentionTime value to set.
      * @return the BatchTaskConstraints object itself.

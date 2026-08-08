@@ -23,7 +23,7 @@ public final class BatchJobConstraints implements JsonSerializable<BatchJobConst
      * The maximum elapsed time that the Job may run, measured from the time the Job is created. If the Job does not
      * complete within the time limit, the Batch service terminates it and any Tasks that are still running. In this
      * case, the termination reason will be MaxWallClockTimeExpiry. If this property is not specified, there is no time
-     * limit on how long the Job may run.
+     * limit on how long the Job may run. The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration maxWallClockTime;
@@ -50,7 +50,8 @@ public final class BatchJobConstraints implements JsonSerializable<BatchJobConst
      * Get the maxWallClockTime property: The maximum elapsed time that the Job may run, measured from the time the Job
      * is created. If the Job does not complete within the time limit, the Batch service terminates it and any Tasks
      * that are still running. In this case, the termination reason will be MaxWallClockTimeExpiry. If this property is
-     * not specified, there is no time limit on how long the Job may run.
+     * not specified, there is no time limit on how long the Job may run. The time duration is specified in ISO 8601
+     * format.
      *
      * @return the maxWallClockTime value.
      */
@@ -63,7 +64,8 @@ public final class BatchJobConstraints implements JsonSerializable<BatchJobConst
      * Set the maxWallClockTime property: The maximum elapsed time that the Job may run, measured from the time the Job
      * is created. If the Job does not complete within the time limit, the Batch service terminates it and any Tasks
      * that are still running. In this case, the termination reason will be MaxWallClockTimeExpiry. If this property is
-     * not specified, there is no time limit on how long the Job may run.
+     * not specified, there is no time limit on how long the Job may run. The time duration is specified in ISO 8601
+     * format.
      *
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the BatchJobConstraints object itself.

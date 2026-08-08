@@ -14,13 +14,6 @@ import java.time.Duration;
 public final class BatchJobTerminateOptions {
 
     /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Long timeOutInSeconds;
-
-    /*
      * The options to use for terminating the Job.
      */
     @Generated
@@ -38,20 +31,6 @@ public final class BatchJobTerminateOptions {
      */
     @Generated
     public BatchJobTerminateOptions() {
-    }
-
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
-     */
-    @Generated
-    public Duration getTimeOutInSeconds() {
-        if (this.timeOutInSeconds == null) {
-            return null;
-        }
-        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -89,23 +68,6 @@ public final class BatchJobTerminateOptions {
     }
 
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchJobTerminateOptions object itself.
-     */
-    @Generated
-    public BatchJobTerminateOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
-        if (timeOutInSeconds == null) {
-            this.timeOutInSeconds = null;
-        } else {
-            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
-        }
-        return this;
-    }
-
-    /**
      * Set the parameters property: The options to use for terminating the Job.
      *
      * @param parameters the parameters value to set.
@@ -114,6 +76,44 @@ public final class BatchJobTerminateOptions {
     @Generated
     public BatchJobTerminateOptions setParameters(BatchJobTerminateParameters parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
+     */
+    @Generated
+    private Long timeout;
+
+    /**
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeout);
+    }
+
+    /**
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeout the timeout value to set.
+     * @return the BatchJobTerminateOptions object itself.
+     */
+    @Generated
+    public BatchJobTerminateOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
+        } else {
+            this.timeout = timeout.getSeconds();
+        }
         return this;
     }
 }

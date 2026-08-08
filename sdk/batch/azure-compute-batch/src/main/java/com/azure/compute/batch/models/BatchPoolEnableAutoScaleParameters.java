@@ -36,7 +36,8 @@ public final class BatchPoolEnableAutoScaleParameters implements JsonSerializabl
      * value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid
      * property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If you
      * specify a new interval, then the existing autoscale evaluation schedule will be stopped and a new autoscale
-     * evaluation schedule will be started, with its starting time being the time when this request was issued.
+     * evaluation schedule will be started, with its starting time being the time when this request was issued. The time
+     * duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
@@ -87,7 +88,7 @@ public final class BatchPoolEnableAutoScaleParameters implements JsonSerializabl
      * service rejects the request with an invalid property value error; if you are calling the REST API directly, the
      * HTTP status code is 400 (Bad Request). If you specify a new interval, then the existing autoscale evaluation
      * schedule will be stopped and a new autoscale evaluation schedule will be started, with its starting time being
-     * the time when this request was issued.
+     * the time when this request was issued. The time duration is specified in ISO 8601 format.
      *
      * @return the autoScaleEvaluationInterval value.
      */
@@ -103,7 +104,7 @@ public final class BatchPoolEnableAutoScaleParameters implements JsonSerializabl
      * service rejects the request with an invalid property value error; if you are calling the REST API directly, the
      * HTTP status code is 400 (Bad Request). If you specify a new interval, then the existing autoscale evaluation
      * schedule will be stopped and a new autoscale evaluation schedule will be started, with its starting time being
-     * the time when this request was issued.
+     * the time when this request was issued. The time duration is specified in ISO 8601 format.
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
      * @return the BatchPoolEnableAutoScaleParameters object itself.
