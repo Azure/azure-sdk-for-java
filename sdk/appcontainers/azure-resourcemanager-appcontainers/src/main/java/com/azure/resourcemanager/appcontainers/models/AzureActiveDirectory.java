@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The configuration settings of the Azure Active directory provider.
+ * The configuration settings of the Microsoft Entra ID provider.
  */
 @Fluent
 public final class AzureActiveDirectory implements JsonSerializable<AzureActiveDirectory> {

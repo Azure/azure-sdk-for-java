@@ -263,7 +263,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator along with {@link Response} on successful completion of
+     * @return Microsoft Entra ID administrator along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -313,7 +313,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator along with {@link Response} on successful completion of
+     * @return Microsoft Entra ID administrator along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -362,7 +362,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure Active Directory administrator.
+     * @return the {@link PollerFlux} for polling of Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
@@ -386,7 +386,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of azure Active Directory administrator.
+     * @return the {@link PollerFlux} for polling of Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
@@ -410,7 +410,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
@@ -431,7 +431,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
@@ -451,7 +451,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator on successful completion of {@link Mono}.
+     * @return Microsoft Entra ID administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
@@ -471,7 +471,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator on successful completion of {@link Mono}.
+     * @return Microsoft Entra ID administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
@@ -490,7 +490,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerAzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
@@ -509,7 +509,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return Microsoft Entra ID administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerAzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
