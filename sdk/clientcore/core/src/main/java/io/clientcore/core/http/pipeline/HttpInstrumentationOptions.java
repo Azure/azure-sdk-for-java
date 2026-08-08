@@ -92,7 +92,7 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
             HttpHeaderName.ETAG, HttpHeaderName.EXPIRES, HttpHeaderName.IF_MATCH, HttpHeaderName.IF_MODIFIED_SINCE,
             HttpHeaderName.IF_NONE_MATCH, HttpHeaderName.IF_UNMODIFIED_SINCE, HttpHeaderName.LAST_MODIFIED,
             HttpHeaderName.PRAGMA, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER, HttpHeaderName.TRANSFER_ENCODING,
-            HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE, HttpHeaderName.AZURE_DEPRECATING);
+            HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);
 
     static final HttpLogLevel ENVIRONMENT_HTTP_LOG_LEVEL
         = HttpLogLevel.fromConfiguration(Configuration.getGlobalConfiguration());

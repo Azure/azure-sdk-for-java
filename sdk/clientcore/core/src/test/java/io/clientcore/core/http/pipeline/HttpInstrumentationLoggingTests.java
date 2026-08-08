@@ -65,12 +65,6 @@ public class HttpInstrumentationLoggingTests {
         this.logCaptureStream = new AccessibleByteArrayOutputStream();
     }
 
-    @Test
-    public void defaultAllowlistContainsAzureDeprecating() {
-        assertTrue(new HttpInstrumentationOptions().getAllowedHeaderNames().contains(HttpHeaderName.AZURE_DEPRECATING),
-            "azure-deprecating should be in the default headers allowlist");
-    }
-
     @ParameterizedTest
     @MethodSource("disabledHttpLoggingSource")
     public void testDisabledHttpLogging(LogLevel logLevel, HttpInstrumentationOptions.HttpLogLevel detailLevel)

@@ -174,11 +174,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName AUTHORIZATION = fromString("Authorization");
 
     /**
-     * {@code azure-deprecating}
-     */
-    public static final HttpHeaderName AZURE_DEPRECATING = fromString("azure-deprecating");
-
-    /**
      * {@code Cache-Control}/{@code cache-control}
      */
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");

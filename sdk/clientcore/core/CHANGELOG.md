@@ -4,8 +4,6 @@
 
 ### Features Added
 
-- Added `azure-deprecating` to the default allowed (unsanitized) HTTP response header list so it is logged without redaction.
-
 ### Breaking Changes
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
   `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
