@@ -15,6 +15,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Header;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -39,6 +40,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -266,6 +268,45 @@ public class WebSocketsConnectionHandlerTest {
                 final WebSocketImpl webSocketImpl = constructed.get(0);
                 verify(webSocketImpl).configure(eq(customEndpointHostname), eq("/$servicebus/websocket"), eq(""), eq(0),
                     eq("AMQPWSB10"), eq(null), eq(null));
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void websocketConfigurePassesClientOptionsHeaders() {
+        // Arrange
+        final ClientOptions clientOptionsWithHeaders = new ClientOptions()
+            .setHeaders(Arrays.asList(
+                new Header("X-Custom-Header", "custom-value"),
+                new Header("X-Another-Header", "another-value")));
+
+        final ConnectionOptions connectionOptionsWithHeaders
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+                ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptionsWithHeaders, VERIFY_MODE, PRODUCT,
+                CLIENT_VERSION);
+
+        try (WebSocketsConnectionHandler handlerWithHeaders = new WebSocketsConnectionHandler(CONNECTION_ID,
+            connectionOptionsWithHeaders, peerDetails, AmqpMetricsProvider.noop())) {
+            try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
+                // Act
+                handlerWithHeaders.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
+                    mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+
+                // Assert
+                final List<WebSocketImpl> constructed = mockConstruction.constructed();
+                assertEquals(1, constructed.size());
+
+                final WebSocketImpl webSocketImpl = constructed.get(0);
+                ArgumentCaptor<Map<String, String>> headersCaptor = ArgumentCaptor.forClass(Map.class);
+                verify(webSocketImpl).configure(eq(HOSTNAME), eq("/$servicebus/websocket"), eq(""), eq(0),
+                    eq("AMQPWSB10"), headersCaptor.capture(), eq(null));
+
+                final Map<String, String> capturedHeaders = headersCaptor.getValue();
+                Assertions.assertNotNull(capturedHeaders, "Headers map should not be null.");
+                assertEquals("custom-value", capturedHeaders.get("X-Custom-Header"));
+                assertEquals("another-value", capturedHeaders.get("X-Another-Header"));
             }
         }
     }
