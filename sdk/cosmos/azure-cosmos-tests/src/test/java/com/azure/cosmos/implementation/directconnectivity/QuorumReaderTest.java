@@ -3,15 +3,19 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContextValidator;
 import com.azure.cosmos.implementation.DocumentServiceRequestValidator;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -27,16 +31,38 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuorumReaderTest {
+    private static final String BARRIER_EARLY_YIELD_ON_429_PROPERTY = "COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429";
     private final Duration timeResolution = Duration.ofMillis(10);
     private final Configs configs;
 
     public QuorumReaderTest() {
         configs = new Configs();
+    }
+
+    // The barrier early-yield-on-429 behavior is gated behind the Configs feature flag
+    // (COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429), which is read at QuorumReader construction time and defaults
+    // to true. This helper constructs a QuorumReader with the flag toggled so tests can exercise both the
+    // flag-enabled and flag-disabled behavior deterministically.
+    private static QuorumReader createQuorumReaderWithBarrierEarlyYieldOn429(
+        boolean enableBarrierEarlyYieldOn429,
+        Supplier<QuorumReader> quorumReaderSupplier) {
+        String previous = System.getProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+        System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, String.valueOf(enableBarrierEarlyYieldOn429));
+        try {
+            return quorumReaderSupplier.get();
+        } finally {
+            if (previous == null) {
+                System.clearProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+            } else {
+                System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, previous);
+            }
+        }
     }
 
     @DataProvider(name = "simpleReadStrongArgProvider")
@@ -648,5 +674,369 @@ public class QuorumReaderTest {
             .assertNext(validator::validate)
             .expectComplete()
             .verify(Duration.ofMillis(timeout));
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_AllReplicasThrottled_Returns429() {
+        // When all replicas return 429 during initial quorum read,
+        // the reader should propagate the 429 exception via the early yield path
+        // to let ResourceThrottleRetryPolicy handle it, without attempting a primary read.
+        int replicaCountToRead = 2;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        // Set LSN on the exception so StoreReader marks isValid=true (statusCode != GONE && lsn >= 0),
+        // allowing the result to pass through StoreReader's filter and reach the early yield check.
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        BridgeInternal.setLSN(throttleException, 50);
+        BridgeInternal.setPartitionKeyRangeId(throttleException, "1");
+
+        TransportClientWrapper transportClientWrapper = TransportClientWrapper.Builder.uriToResultBuilder()
+            .exceptionOn(primaryReplicaURI, OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, throttleException, true)
+            .exceptionOn(secondaryReplicaURIs.get(2), OperationType.Read, ResourceType.Document, throttleException, true)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient,
+            addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider));
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
+
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
+
+        // Verify early yield: only the initial quorum read was attempted (replicaCountToRead replicas),
+        // and no primary read was attempted (which would add extra invocations).
+        transportClientWrapper.validate()
+            .verifyNumberOfInvocations(replicaCountToRead);
+        addressSelectorWrapper.validate()
+            .verifyVesolvePrimaryUriAsyncCount(0)
+            .verifyNumberOfForceCachRefresh(0)
+            .verifyTotalInvocations(1);
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_GoneReplicasExcluded_ThrottledReplicaYieldsEarly() {
+        // Validates that when replicas return a mix of 410 (Gone) and 429 (TooManyRequests),
+        // the Gone replicas are excluded from the result set by StoreReader, and
+        // the remaining 429 replica triggers early yield to ResourceThrottleRetryPolicy.
+        // This mirrors the .NET test ValidatesReadMultipleReplicaAsyncExcludesGoneReplicas.
+        int replicaCountToRead = 2;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(
+            Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        // 3 replicas return 410 (Gone) - these will be excluded from results by StoreReader
+        GoneException goneException = new GoneException();
+
+        // 1 replica returns 429 with valid LSN - isValid=true, kept in resultCollector
+        // Because statusCode != GONE && lsn >= 0, StoreReader marks this as valid
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        BridgeInternal.setLSN(throttleException, 50);
+        BridgeInternal.setPartitionKeyRangeId(throttleException, "1");
+
+        TransportClientWrapper transportClientWrapper = TransportClientWrapper.Builder.uriToResultBuilder()
+            .exceptionOn(primaryReplicaURI, OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, goneException, true)
+            .exceptionOn(secondaryReplicaURIs.get(2), OperationType.Read, ResourceType.Document, throttleException, true)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+        request.requestContext.performLocalRefreshOnGoneException = true;
+
+        StoreReader storeReader = new StoreReader(
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs,
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
+            storeReader, serviceConfigurator, authTokenProvider));
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
+            mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
+
+        // The Gone (410) replicas are excluded by StoreReader, leaving only the throttled (429) replica.
+        // Since all remaining replicas are throttled, the early yield kicks in and propagates the 429.
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_BarrierRequestsThrottled_Returns429() {
+        // Validates that when quorum selection succeeds but subsequent barrier HEAD
+        // requests return 429, the early yield fires in waitForReadBarrierAsync.
+        // This exercises the barrier path specifically (not ensureQuorumSelectedStoreResponse).
+        int replicaCountToRead = 2;
+        ReadMode readMode = ReadMode.Strong;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(
+            Uri.create("secondary1"), Uri.create("secondary2"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        BigDecimal requestChargePerRead = new BigDecimal(1.1);
+
+        long expectedQuorumLsn = 53;
+        long expectedQuorumLocalLSN = 20;
+
+        TransportClientWrapper.Builder.UriToResultBuilder builder = TransportClientWrapper.Builder.uriToResultBuilder();
+
+        // Secondary1 returns LSN 52 (below quorum LSN) - triggers barrier
+        StoreResponse readResponse1 = StoreResponseBuilder.create()
+            .withLSN(expectedQuorumLsn - 1)
+            .withLocalLSN(expectedQuorumLocalLSN - 1)
+            .withRequestCharge(requestChargePerRead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, readResponse1, false);
+
+        // Secondary2 returns LSN 53 (at quorum LSN) - quorum selected with LSN 53
+        StoreResponse readResponse2 = StoreResponseBuilder.create()
+            .withLSN(expectedQuorumLsn)
+            .withLocalLSN(expectedQuorumLocalLSN)
+            .withRequestCharge(requestChargePerRead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, readResponse2, false);
+
+        // All barrier HEAD requests return 429 with valid LSN
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        BridgeInternal.setLSN(throttleException, expectedQuorumLsn - 1);
+        BridgeInternal.setPartitionKeyRangeId(throttleException, "1");
+
+        builder.exceptionOn(secondaryReplicaURIs.get(0), OperationType.Head, ResourceType.DocumentCollection, throttleException, true);
+        builder.exceptionOn(secondaryReplicaURIs.get(1), OperationType.Head, ResourceType.DocumentCollection, throttleException, true);
+        builder.exceptionOn(primaryReplicaURI, OperationType.Head, ResourceType.DocumentCollection, throttleException, true);
+
+        TransportClientWrapper transportClientWrapper = builder.build();
+
+        StoreReader storeReader = new StoreReader(
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs,
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
+            storeReader, serviceConfigurator, authTokenProvider));
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
+            mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
+
+        // Barrier request returns 429 on all contacted replicas → early yield
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
+
+        // Verify: 2 initial reads + 1 barrier attempt (early yield, no exhaustive retries)
+        // The exact count depends on how many replicas the barrier reads, but it should be
+        // significantly fewer than maxNumberOfReadBarrierReadRetries * replicaCount.
+        int totalInvocations = transportClientWrapper.getNumberOfInvocations();
+        // 2 reads + at most readQuorum barrier HEADs (early yield after first barrier attempt)
+        assertThat(totalInvocations).isLessThanOrEqualTo(2 + replicaCountToRead);
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_QuorumNotSelected_PrimaryThrottled_Returns429() {
+        // scenario: only one secondary available → QuorumNotSelected → falls to readPrimaryAsync
+        // Primary returns 429 → 429 propagated (not converted to GoneException)
+        ReadMode readMode = ReadMode.Strong;
+        int replicaCountToRead = 2;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        BigDecimal requestChargePerRead = new BigDecimal(1.1);
+
+        TransportClientWrapper.Builder.UriToResultBuilder builder = TransportClientWrapper.Builder.uriToResultBuilder();
+
+        // Secondary returns a normal read response (only 1, so quorum can't be selected)
+        StoreResponse readResponse = StoreResponseBuilder.create()
+            .withLSN(52)
+            .withLocalLSN(19)
+            .withRequestCharge(requestChargePerRead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, readResponse, false);
+
+        // Primary returns 429 when readPrimaryAsync is called
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        builder.exceptionOn(primaryReplicaURI, OperationType.Read, ResourceType.Document, throttleException, true);
+
+        TransportClientWrapper transportClientWrapper = builder.build();
+
+        StoreReader storeReader = new StoreReader(
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs,
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
+            storeReader, serviceConfigurator, authTokenProvider));
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
+            mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
+
+        // The 429 from primary should propagate (not be converted to GoneException/ReadQuorumNotMet)
+        StepVerifier.create(storeResponseSingle)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestRateTooLargeException.class);
+                RequestRateTooLargeException rte = (RequestRateTooLargeException) error;
+                assertThat(rte.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+            })
+            .verify(Duration.ofMillis(10000));
+    }
+
+    @Test(groups = "unit")
+    public void readStrong_BarrierPartialThrottle_StillSucceeds() {
+        // scenario: quorum selection succeeds (two secondaries with different LSNs),
+        // barrier needed. One replica returns 429, other meets LSN → read succeeds.
+        int replicaCountToRead = 2;
+        ReadMode readMode = ReadMode.Strong;
+
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        Uri primaryReplicaURI = Uri.create("primary");
+        ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(
+            Uri.create("secondary1"), Uri.create("secondary2"));
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryReplicaURI)
+            .withSecondary(secondaryReplicaURIs)
+            .build();
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = Mockito.mock(PartitionKeyRange.class);
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        BigDecimal requestChargePerRead = new BigDecimal(1.1);
+        BigDecimal requestChargePerHead = BigDecimal.ZERO;
+
+        long expectedQuorumLsn = 53;
+        long expectedQuorumLocalLSN = 20;
+
+        TransportClientWrapper.Builder.UriToResultBuilder builder = TransportClientWrapper.Builder.uriToResultBuilder();
+
+        // Secondary1 returns LSN 52 (below quorum LSN) → triggers barrier
+        StoreResponse readResponse1 = StoreResponseBuilder.create()
+            .withLSN(expectedQuorumLsn - 1)
+            .withLocalLSN(expectedQuorumLocalLSN - 1)
+            .withRequestCharge(requestChargePerRead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(0), OperationType.Read, ResourceType.Document, readResponse1, false);
+
+        // Secondary2 returns LSN 53 (at quorum LSN) → quorum selected at LSN 53
+        StoreResponse readResponse2 = StoreResponseBuilder.create()
+            .withLSN(expectedQuorumLsn)
+            .withLocalLSN(expectedQuorumLocalLSN)
+            .withRequestCharge(requestChargePerRead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(1), OperationType.Read, ResourceType.Document, readResponse2, false);
+
+        // Barrier: secondary1 returns 429 but with LSN that meets the barrier.
+        // Even though it's throttled, its LSN still counts for barrier convergence.
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        BridgeInternal.setLSN(throttleException, expectedQuorumLsn);
+        BridgeInternal.setPartitionKeyRangeId(throttleException, "1");
+        builder.exceptionOn(secondaryReplicaURIs.get(0), OperationType.Head, ResourceType.DocumentCollection, throttleException, true);
+
+        StoreResponse headResponse2 = StoreResponseBuilder.create()
+            .withLSN(expectedQuorumLsn)
+            .withLocalLSN(expectedQuorumLocalLSN)
+            .withRequestCharge(requestChargePerHead)
+            .build();
+        builder.storeResponseOn(secondaryReplicaURIs.get(1), OperationType.Head, ResourceType.DocumentCollection, headResponse2, false);
+
+        TransportClientWrapper transportClientWrapper = builder.build();
+
+        StoreReader storeReader = new StoreReader(
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
+        GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
+        IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs,
+            transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
+            storeReader, serviceConfigurator, authTokenProvider));
+
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
+            mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
+
+        // Despite partial throttling on one replica, the barrier is met by the other.
+        // Read should succeed with the quorum LSN.
+        StoreResponseValidator validator = StoreResponseValidator.create()
+            .withBELSN(expectedQuorumLsn)
+            .build();
+
+        validateSuccess(storeResponseSingle, validator);
     }
 }
