@@ -7,10 +7,13 @@ package com.azure.resourcemanager.loganalytics.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeLakeDataBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
 
 /**
@@ -92,4 +95,83 @@ public interface WorkspacePurgesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkspacePurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId);
+
+    /**
+     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+     * 
+     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
+     * specified table within the given time range. The operation is long-running; poll the URL returned in the
+     * Azure-AsyncOperation response header to track its status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
+     * Workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPurgeLakeData(String resourceGroupName, String workspaceName,
+        WorkspacePurgeLakeDataBody body);
+
+    /**
+     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+     * 
+     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
+     * specified table within the given time range. The operation is long-running; poll the URL returned in the
+     * Azure-AsyncOperation response header to track its status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
+     * Workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPurgeLakeData(String resourceGroupName, String workspaceName,
+        WorkspacePurgeLakeDataBody body, Context context);
+
+    /**
+     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+     * 
+     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
+     * specified table within the given time range. The operation is long-running; poll the URL returned in the
+     * Azure-AsyncOperation response header to track its status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
+     * Workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body);
+
+    /**
+     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
+     * 
+     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
+     * specified table within the given time range. The operation is long-running; poll the URL returned in the
+     * Azure-AsyncOperation response header to track its status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
+     * Workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body,
+        Context context);
 }

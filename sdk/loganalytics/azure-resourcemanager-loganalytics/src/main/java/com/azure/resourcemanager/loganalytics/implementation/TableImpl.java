@@ -15,6 +15,7 @@ import com.azure.resourcemanager.loganalytics.models.Schema;
 import com.azure.resourcemanager.loganalytics.models.SearchResults;
 import com.azure.resourcemanager.loganalytics.models.Table;
 import com.azure.resourcemanager.loganalytics.models.TablePlanEnum;
+import com.azure.resourcemanager.loganalytics.models.TableProtectionLevelEnum;
 
 public final class TableImpl implements Table, Table.Definition, Table.Update {
     private TableInner innerObject;
@@ -63,6 +64,10 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
 
     public TablePlanEnum plan() {
         return this.innerModel().plan();
+    }
+
+    public TableProtectionLevelEnum protectionLevel() {
+        return this.innerModel().protectionLevel();
     }
 
     public String lastPlanModifiedDate() {
@@ -209,6 +214,11 @@ public final class TableImpl implements Table, Table.Definition, Table.Update {
 
     public TableImpl withPlan(TablePlanEnum plan) {
         this.innerModel().withPlan(plan);
+        return this;
+    }
+
+    public TableImpl withProtectionLevel(TableProtectionLevelEnum protectionLevel) {
+        this.innerModel().withProtectionLevel(protectionLevel);
         return this;
     }
 

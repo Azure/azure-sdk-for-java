@@ -27,7 +27,8 @@ public final class IntelligencePacksDisableWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.intelligencePacks().disableWithResponse("rxtd", "sn", "evhdlmydid", com.azure.core.util.Context.NONE);
+        manager.intelligencePacks()
+            .disableWithResponse("vidbztjhqtfb", "vnynkb", "etnjuhpsprkz", com.azure.core.util.Context.NONE);
 
     }
 }

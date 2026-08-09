@@ -35,6 +35,14 @@ public interface SummaryLogs {
     String type();
 
     /**
+     * Gets the identity property: The managed identity of the summary logs resource. Only user-assigned identity is
+     * supported.
+     * 
+     * @return the identity value.
+     */
+    SummaryLogsIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -141,8 +149,8 @@ public interface SummaryLogs {
          * The stage of the SummaryLogs definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithRuleType, DefinitionStages.WithDisplayName,
-            DefinitionStages.WithDescription, DefinitionStages.WithRuleDefinition {
+        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithRuleType,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithDescription, DefinitionStages.WithRuleDefinition {
             /**
              * Executes the create request.
              * 
@@ -157,6 +165,21 @@ public interface SummaryLogs {
              * @return the created resource.
              */
             SummaryLogs create(Context context);
+        }
+
+        /**
+         * The stage of the SummaryLogs definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed identity of the summary logs resource. Only user-assigned
+             * identity is supported..
+             * 
+             * @param identity The managed identity of the summary logs resource. Only user-assigned identity is
+             * supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(SummaryLogsIdentity identity);
         }
 
         /**
@@ -222,8 +245,8 @@ public interface SummaryLogs {
     /**
      * The template for SummaryLogs update.
      */
-    interface Update extends UpdateStages.WithRuleType, UpdateStages.WithDisplayName, UpdateStages.WithDescription,
-        UpdateStages.WithRuleDefinition {
+    interface Update extends UpdateStages.WithIdentity, UpdateStages.WithRuleType, UpdateStages.WithDisplayName,
+        UpdateStages.WithDescription, UpdateStages.WithRuleDefinition {
         /**
          * Executes the update request.
          * 
@@ -244,6 +267,21 @@ public interface SummaryLogs {
      * The SummaryLogs update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the SummaryLogs update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed identity of the summary logs resource. Only user-assigned
+             * identity is supported..
+             * 
+             * @param identity The managed identity of the summary logs resource. Only user-assigned identity is
+             * supported.
+             * @return the next definition stage.
+             */
+            Update withIdentity(SummaryLogsIdentity identity);
+        }
+
         /**
          * The stage of the SummaryLogs update allowing to specify ruleType.
          */

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class SummaryLogsOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsDelete.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsDelete.json
      */
     /**
      * Sample code: SummaryLogsDelete.

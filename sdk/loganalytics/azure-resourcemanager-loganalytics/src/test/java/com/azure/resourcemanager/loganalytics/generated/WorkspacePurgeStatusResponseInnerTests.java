@@ -13,7 +13,7 @@ public final class WorkspacePurgeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspacePurgeStatusResponseInner model
-            = BinaryData.fromString("{\"status\":\"pending\"}").toObject(WorkspacePurgeStatusResponseInner.class);
-        Assertions.assertEquals(PurgeState.PENDING, model.status());
+            = BinaryData.fromString("{\"status\":\"completed\"}").toObject(WorkspacePurgeStatusResponseInner.class);
+        Assertions.assertEquals(PurgeState.COMPLETED, model.status());
     }
 }

@@ -21,7 +21,7 @@ public final class SavedSearchesListByWorkspaceWithResponseMockTests {
     @Test
     public void testListByWorkspaceWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"category\":\"mb\",\"displayName\":\"gtywatmqaqkue\",\"query\":\"tgroesh\",\"functionAlias\":\"gzcbyf\",\"functionParameters\":\"kfaoytehq\",\"version\":6597653080705813074,\"tags\":[{\"name\":\"qm\",\"value\":\"dwckygroe\"},{\"name\":\"n\",\"value\":\"dljdjuskb\"},{\"name\":\"req\",\"value\":\"n\"},{\"name\":\"ceysfaqeg\",\"value\":\"lwryshwddkvbxgkq\"}]},\"etag\":\"ybwptda\",\"id\":\"rvv\",\"name\":\"f\",\"type\":\"tymtpoiwenazer\"},{\"properties\":{\"category\":\"hzr\",\"displayName\":\"qalsxkd\",\"query\":\"wqapfgsdp\",\"functionAlias\":\"essmzhhku\",\"functionParameters\":\"pldqqct\",\"version\":1663891086263023910,\"tags\":[{\"name\":\"l\",\"value\":\"tjqvqyvweht\"},{\"name\":\"emxhzzy\",\"value\":\"ev\"}]},\"etag\":\"xivzrrry\",\"id\":\"imipskdyzatvfuz\",\"name\":\"aftjvvruxwigsy\",\"type\":\"ip\"},{\"properties\":{\"category\":\"dsmjtgr\",\"displayName\":\"gdgkki\",\"query\":\"eplkcsm\",\"functionAlias\":\"hwtbbaedorvvm\",\"functionParameters\":\"loyg\",\"version\":4180963914269164805,\"tags\":[{\"name\":\"gxdgdhpab\",\"value\":\"dexjddvjs\"},{\"name\":\"qwotmmwllcol\",\"value\":\"rsxaptefh\"},{\"name\":\"xcgjokjljnhvlq\",\"value\":\"bekpeeksnbksdqhj\"}]},\"etag\":\"klxesl\",\"id\":\"hustcpoqmavnwqjw\",\"name\":\"o\",\"type\":\"nlejjjkxybwf\"},{\"properties\":{\"category\":\"bkjbz\",\"displayName\":\"ensvkzykjtj\",\"query\":\"nsxfwu\",\"functionAlias\":\"cdp\",\"functionParameters\":\"pn\",\"version\":6778968687143087952,\"tags\":[{\"name\":\"bpkuwxeoio\",\"value\":\"fiz\"},{\"name\":\"av\",\"value\":\"jzwfb\"}]},\"etag\":\"aykmmf\",\"id\":\"bfw\",\"name\":\"rzx\",\"type\":\"dew\"}]}";
+            = "{\"value\":[{\"properties\":{\"category\":\"ohec\",\"displayName\":\"vopwndyqleallk\",\"query\":\"mtkhlowkxxpvbr\",\"functionAlias\":\"jmzsyzfh\",\"functionParameters\":\"lhikcyychunsj\",\"version\":6478817283379006699,\"tags\":[{\"name\":\"szhv\",\"value\":\"uic\"},{\"name\":\"hvtrrmhwrbfdpyf\",\"value\":\"ubhvj\"},{\"name\":\"lrocuyzlwh\",\"value\":\"memhooclutnpq\"},{\"name\":\"emc\",\"value\":\"jk\"}]},\"etag\":\"ykyujxsg\",\"id\":\"srrryejylmbkzu\",\"name\":\"nigrfihotjewl\",\"type\":\"xuzzjgnrefq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,17 @@ public final class SavedSearchesListByWorkspaceWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SavedSearchesListResult response = manager.savedSearches()
-            .listByWorkspaceWithResponse("vwisp", "xkdtxfkndlqvtwkn", com.azure.core.util.Context.NONE)
+            .listByWorkspaceWithResponse("gwe", "ydsx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ybwptda", response.value().get(0).etag());
-        Assertions.assertEquals("mb", response.value().get(0).category());
-        Assertions.assertEquals("gtywatmqaqkue", response.value().get(0).displayName());
-        Assertions.assertEquals("tgroesh", response.value().get(0).query());
-        Assertions.assertEquals("gzcbyf", response.value().get(0).functionAlias());
-        Assertions.assertEquals("kfaoytehq", response.value().get(0).functionParameters());
-        Assertions.assertEquals(6597653080705813074L, response.value().get(0).version());
-        Assertions.assertEquals("qm", response.value().get(0).tags().get(0).name());
-        Assertions.assertEquals("dwckygroe", response.value().get(0).tags().get(0).value());
+        Assertions.assertEquals("ykyujxsg", response.value().get(0).etag());
+        Assertions.assertEquals("ohec", response.value().get(0).category());
+        Assertions.assertEquals("vopwndyqleallk", response.value().get(0).displayName());
+        Assertions.assertEquals("mtkhlowkxxpvbr", response.value().get(0).query());
+        Assertions.assertEquals("jmzsyzfh", response.value().get(0).functionAlias());
+        Assertions.assertEquals("lhikcyychunsj", response.value().get(0).functionParameters());
+        Assertions.assertEquals(6478817283379006699L, response.value().get(0).version());
+        Assertions.assertEquals("szhv", response.value().get(0).tags().get(0).name());
+        Assertions.assertEquals("uic", response.value().get(0).tags().get(0).value());
     }
 }

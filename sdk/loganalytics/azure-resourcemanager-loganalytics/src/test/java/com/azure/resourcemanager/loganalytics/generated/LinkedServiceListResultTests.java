@@ -13,12 +13,12 @@ public final class LinkedServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceId\":\"rxfrddhc\",\"writeAccessResourceId\":\"tizzronasxif\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"tw\":\"zh\",\"lgnyhmo\":\"sgogczhonnxk\",\"h\":\"sxkkg\",\"hqxvcxgfrpdsofbs\":\"rghxjb\"},\"id\":\"nsvbuswdv\",\"name\":\"yybyc\",\"type\":\"unvjsrtkfawnopq\"},{\"properties\":{\"resourceId\":\"kyzirtxdyux\",\"writeAccessResourceId\":\"jntpsewgioilqu\",\"provisioningState\":\"Deleting\"},\"tags\":{\"rgguf\":\"tqmieox\",\"hhavgrvkffovjz\":\"yaomtb\",\"gjmfxumvfcl\":\"pjbi\"},\"id\":\"ovwxnbkfezzxsc\",\"name\":\"hwzdgirujbz\",\"type\":\"omvzzbtd\"},{\"properties\":{\"resourceId\":\"vp\",\"writeAccessResourceId\":\"yujviylwdshfssn\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"tmr\":\"frymsgaojfmwnc\"},\"id\":\"irctymoxoftpipiw\",\"name\":\"czuhxacpqjlihh\",\"type\":\"usps\"}],\"nextLink\":\"sdvlmfwdgzxulucv\"}")
+            "{\"value\":[{\"properties\":{\"resourceId\":\"nuj\",\"writeAccessResourceId\":\"mmsbvdkcrodtjin\",\"provisioningState\":\"Updating\"},\"tags\":{\"acjvefkd\":\"lt\",\"fpagaowpulp\":\"foakgg\"},\"id\":\"lyls\",\"name\":\"xkqjnsjervt\",\"type\":\"agxsdszuemps\"}],\"nextLink\":\"kfzbeyvpnqicvi\"}")
             .toObject(LinkedServiceListResult.class);
-        Assertions.assertEquals("zh", model.value().get(0).tags().get("tw"));
-        Assertions.assertEquals("rxfrddhc", model.value().get(0).resourceId());
-        Assertions.assertEquals("tizzronasxif", model.value().get(0).writeAccessResourceId());
-        Assertions.assertEquals(LinkedServiceEntityStatus.SUCCEEDED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("sdvlmfwdgzxulucv", model.nextLink());
+        Assertions.assertEquals("lt", model.value().get(0).tags().get("acjvefkd"));
+        Assertions.assertEquals("nuj", model.value().get(0).resourceId());
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.value().get(0).writeAccessResourceId());
+        Assertions.assertEquals(LinkedServiceEntityStatus.UPDATING, model.value().get(0).provisioningState());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.nextLink());
     }
 }

@@ -13,11 +13,11 @@ public final class DataSourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataSourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":\"\\\"dataazej\\\"\",\"etag\":\"qkagfhsxt\",\"kind\":\"LinuxChangeTrackingPath\",\"tags\":{\"xdtnkdmkqjjlw\":\"zxnfaaz\",\"aysjkixqtnqttez\":\"envrkpyouaibrebq\",\"akpjpqqmtedlt\":\"wfff\",\"auyqncygupkv\":\"mjihyeozphv\"},\"id\":\"mdscwxqupev\",\"name\":\"hfstotxhojujbyp\",\"type\":\"lmcuvhixb\"}],\"nextLink\":\"yfwnylr\"}")
+            "{\"value\":[{\"properties\":\"\\\"datauvarmywdmjsjq\\\"\",\"etag\":\"hhyxxrw\",\"kind\":\"WindowsEvent\",\"tags\":{\"kgymareqnajxqug\":\"duhpk\",\"ubeddg\":\"hky\"},\"id\":\"ofwq\",\"name\":\"zqalkrmnjijpx\",\"type\":\"cqqudf\"}],\"nextLink\":\"yxbaaabjyvayf\"}")
             .toObject(DataSourceListResult.class);
-        Assertions.assertEquals("qkagfhsxt", model.value().get(0).etag());
-        Assertions.assertEquals(DataSourceKind.LINUX_CHANGE_TRACKING_PATH, model.value().get(0).kind());
-        Assertions.assertEquals("zxnfaaz", model.value().get(0).tags().get("xdtnkdmkqjjlw"));
-        Assertions.assertEquals("yfwnylr", model.nextLink());
+        Assertions.assertEquals("hhyxxrw", model.value().get(0).etag());
+        Assertions.assertEquals(DataSourceKind.WINDOWS_EVENT, model.value().get(0).kind());
+        Assertions.assertEquals("duhpk", model.value().get(0).tags().get("kgymareqnajxqug"));
+        Assertions.assertEquals("yxbaaabjyvayf", model.nextLink());
     }
 }

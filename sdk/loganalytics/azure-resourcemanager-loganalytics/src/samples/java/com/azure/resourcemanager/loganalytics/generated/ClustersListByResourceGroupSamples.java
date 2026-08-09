@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ClustersListByResourceGroup.json
+     * x-ms-original-file: 2026-03-01/ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.

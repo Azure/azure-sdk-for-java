@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class QueriesPutSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackQueriesPut.json
+     * x-ms-original-file: 2026-03-01/QueryPackQueriesPut.json
      */
     /**
      * Sample code: QueryPut.
