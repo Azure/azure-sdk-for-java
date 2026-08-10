@@ -8,8 +8,10 @@ parameters:
   proxyUrl: 'http://localhost:5000'
 
 steps:
-  - pwsh: |
-        ${{ parameters.templateRoot }}/eng/common/scripts/trust-proxy-certificate.ps1
+  - task: PowerShell@2
+    inputs:
+      pwsh: true
+      filePath: ${{ parameters.templateRoot }}/eng/common/scripts/trust-proxy-certificate.ps1
     displayName: 'Language Specific Certificate Trust'
     condition: and(succeeded(), ${{ parameters.condition }})
 
@@ -17,7 +19,6 @@ steps:
     displayName: 'Override proxy version if necessary'
     condition: and(succeeded(), ${{ parameters.condition }}, ne('${{ parameters.targetVersion }}', ''))
     inputs:
-      targetType: filePath
       filePath: '${{ parameters.templateRoot }}/eng/common/testproxy/scripts/override-proxy-version.ps1'
       arguments: '-TargetVersion "${{ parameters.targetVersion }}"'
       pwsh: true

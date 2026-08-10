@@ -40,7 +40,7 @@ steps:
   - task: PowerShell@2
     inputs:
       pwsh: true
-      filePath: eng/common/scripts/Copy-TestsResultsToLlmStaging.ps1
+      filePath: eng/common/scripts/Copy-TestResultsToLlmStaging.ps1
       arguments: >
         -ArtifactsDirectory $(Build.ArtifactStagingDirectory)
         -SearchFolder ${{ parameters.SearchFolder }}
