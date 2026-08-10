@@ -62,6 +62,7 @@ public class BatchTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        // AzurePipelinesCredential performs a synchronous OIDC token request on first use, so initialize it before asynchronous resource creation.
         resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         batchManager = BatchManager.configure()
