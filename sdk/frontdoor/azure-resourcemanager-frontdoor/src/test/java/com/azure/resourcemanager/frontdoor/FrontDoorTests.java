@@ -51,6 +51,7 @@ public class FrontDoorTests extends TestProxyTestBase {
         final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         StorageManager storageManager
             = StorageManager.authenticate(credential, new AzureProfile(AzureEnvironment.AZURE));
+        storageManager.resourceManager().serviceClient().getResourceGroups().list().stream().findFirst();
 
         FrontDoorManager manager = FrontDoorManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

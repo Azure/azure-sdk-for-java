@@ -60,6 +60,7 @@ public class DataFactoryTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         StorageManager storageManager = StorageManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))

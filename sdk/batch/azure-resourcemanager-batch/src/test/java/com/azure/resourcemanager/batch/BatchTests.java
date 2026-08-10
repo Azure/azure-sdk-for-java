@@ -62,6 +62,7 @@ public class BatchTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+        resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
 
         batchManager = BatchManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
@@ -276,9 +277,9 @@ public class BatchTests extends TestProxyTestBase {
                 .withDisplayName(poolDisplayName)
                 .withDeploymentConfiguration(new DeploymentConfiguration().withVirtualMachineConfiguration(
                     new VirtualMachineConfiguration().withImageReference(new ImageReference().withPublisher("Canonical")
-                        .withOffer("UbuntuServer")
-                        .withSku("18.04-LTS")
-                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+                        .withOffer("0001-com-ubuntu-server-jammy")
+                        .withSku("22_04-lts")
+                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 22.04")))
                 .withScaleSettings(new ScaleSettings()
                     .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
                         .withTargetDedicatedNodes(1)
