@@ -4,7 +4,6 @@
 package com.azure.storage.queue.implementation.util;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -12,13 +11,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueItem;
@@ -43,10 +43,6 @@ public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final String X_MS_META_PREFIX = "x-ms-meta-";
-    private static final HttpHeaderName X_MS_APPROXIMATE_MESSAGES_COUNT
-        = HttpHeaderName.fromString("x-ms-approximate-messages-count");
-    private static final HttpHeaderName X_MS_POPRECEIPT = HttpHeaderName.fromString("x-ms-popreceipt");
-    private static final HttpHeaderName X_MS_TIME_NEXT_VISIBLE = HttpHeaderName.fromString("x-ms-time-next-visible");
 
     private static BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
@@ -120,14 +116,15 @@ public class ModelHelper {
                 metadata.put(name.substring(X_MS_META_PREFIX.length()), header.getValue());
             }
         }
-        String count = headers.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
-        return new QueueProperties(metadata, count == null ? 0L : Long.parseLong(count));
+        // The generated header model provides the typed approximate-messages-count; the metadata map is a dynamic
+        // x-ms-meta-* collection the single-valued header model cannot represent, so it is still read manually.
+        Long count = new QueuesGetPropertiesHeaders(headers).getApproximateMessagesCount();
+        return new QueueProperties(metadata, count == null ? 0L : count);
     }
 
     public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
-        String timeNextVisible = headers.getValue(X_MS_TIME_NEXT_VISIBLE);
-        return new UpdateMessageResult(headers.getValue(X_MS_POPRECEIPT),
-            timeNextVisible == null ? null : new DateTimeRfc1123(timeNextVisible).getDateTime());
+        MessageIdsUpdateHeaders updateHeaders = new MessageIdsUpdateHeaders(headers);
+        return new UpdateMessageResult(updateHeaders.getPopReceipt(), updateHeaders.getTimeNextVisible());
     }
 
     /**
