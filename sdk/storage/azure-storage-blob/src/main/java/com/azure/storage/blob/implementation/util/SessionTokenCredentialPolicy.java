@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.SessionCredential;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.models.SessionRequestContext;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
@@ -42,7 +44,9 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
+    private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_EXPIRING = "session_expiring";
+    private static final String SESSION_PREFIX = "Session ";
     private static final Duration SESSION_ACQUISITION_COOLDOWN = Duration.ofMinutes(5);
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
@@ -202,7 +206,30 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     private void signRequest(HttpPipelineCallContext context, SessionCredential credential) {
-        SessionRequestSigner.signRequest(context.getHttpRequest(), credential);
+        if (context.getHttpRequest().getHeaders().getValue(X_MS_DATE) == null) {
+            context.getHttpRequest().setHeader(X_MS_DATE, DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
+        }
+
+        StorageSharedKeyCredential sharedKey
+            = new StorageSharedKeyCredential(credential.getAccountName(), credential.getSessionKey());
+        boolean contentLengthMissing
+            = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH) == null;
+        if (contentLengthMissing) {
+            context.getHttpRequest().setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+        }
+
+        String sharedKeyAuthorization;
+        try {
+            sharedKeyAuthorization = sharedKey.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders(), false);
+        } finally {
+            if (contentLengthMissing) {
+                context.getHttpRequest().getHeaders().remove(HttpHeaderName.CONTENT_LENGTH);
+            }
+        }
+        String signature = sharedKeyAuthorization.substring(sharedKeyAuthorization.indexOf(':') + 1);
+        context.getHttpRequest()
+            .setHeader(HttpHeaderName.AUTHORIZATION, SESSION_PREFIX + credential.getSessionToken() + ":" + signature);
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {

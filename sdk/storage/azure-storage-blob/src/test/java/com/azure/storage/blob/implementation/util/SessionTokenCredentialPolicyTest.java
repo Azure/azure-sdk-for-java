@@ -554,9 +554,7 @@ public class SessionTokenCredentialPolicyTest {
 
         policy.process(context, next).block().close();
 
-        // The policy must delegate signing to SessionRequestSigner, producing a Session-scheme
-        // Authorization header of the form `Session <token>:<base64-signature>`. End-to-end signature
-        // correctness against the live service is covered by ContainerApiTests.downloadBlobOverSessionAuth.
+        // The policy adapts Shared Key signing to the Session authorization scheme.
         String actual = request.getHeaders().getValue(authHeaderName);
         assertNotNull(actual, "Authorization header should be set by the policy");
         assertTrue(actual.startsWith("Session " + FIRST_TOKEN + ":"),
@@ -589,7 +587,7 @@ public class SessionTokenCredentialPolicyTest {
             .set(HttpHeaderName.RANGE, "bytes=0-1023")
             .set(HttpHeaderName.CONTENT_LENGTH, "0")
             .set(HttpHeaderName.fromString("x-ms-date"), pinnedDate);
-        SessionRequestSigner.signRequest(withCl0, credentialWithToken(FIRST_TOKEN));
+        signRequestWithPolicy(withCl0);
         String sigWithCl0 = extractSignature(withCl0.getHeaders().getValue(authHeaderName));
 
         HttpRequest withoutCl
@@ -599,7 +597,7 @@ public class SessionTokenCredentialPolicyTest {
             .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
             .set(HttpHeaderName.RANGE, "bytes=0-1023")
             .set(HttpHeaderName.fromString("x-ms-date"), pinnedDate);
-        SessionRequestSigner.signRequest(withoutCl, credentialWithToken(FIRST_TOKEN));
+        signRequestWithPolicy(withoutCl);
         String sigWithoutCl = extractSignature(withoutCl.getHeaders().getValue(authHeaderName));
 
         assertEquals(sigWithoutCl, sigWithCl0,
@@ -609,6 +607,16 @@ public class SessionTokenCredentialPolicyTest {
     private static String extractSignature(String authHeader) {
         assertNotNull(authHeader, "Authorization header should be set");
         return authHeader.substring(authHeader.indexOf(':') + 1);
+    }
+
+    private void signRequestWithPolicy(HttpRequest request) {
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+        policy.process(createContextForRequest(request), next).block().close();
     }
 
     private static final class MutableClock extends Clock {

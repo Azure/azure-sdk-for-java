@@ -606,7 +606,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * <p>
      * Sessions amortize authentication and authorization cost across many requests by signing them
      * with a lightweight HMAC key instead of a full bearer token. This setting is passed to container
-     * clients created via {@link BlobServiceClient#getBlobContainerClient(String)}.
+     * clients created via {@link BlobServiceClient#getBlobContainerClient(String)}. If the options do not
+     * specify a {@link com.azure.storage.blob.models.SessionProvider}, the SDK creates a built-in provider
+     * scoped to this service client's pipeline.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated BlobServiceClientBuilder object.

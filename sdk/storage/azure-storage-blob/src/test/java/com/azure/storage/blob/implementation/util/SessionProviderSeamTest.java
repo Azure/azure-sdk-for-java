@@ -25,16 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Small, focused tests for the public {@link SessionProvider} contract implemented by {@link BlobSessionClient}.
+ * Small, focused tests for the public {@link SessionProvider} contract implemented by {@link BlobSessionProvider}.
  * <p>
- * These verify that {@link BlobSessionClient#getSessionAsync(SessionRequestContext)} and
- * {@link BlobSessionClient#getSession(SessionRequestContext)} route the CreateSession REST call to the
+ * These verify that {@link BlobSessionProvider#getSessionAsync(SessionRequestContext)} and
+ * {@link BlobSessionProvider#getSession(SessionRequestContext)} route the CreateSession REST call to the
  * container named on the {@link SessionRequestContext}, proving out the "per-request container" seam that
  * backs the BYO {@link SessionProvider} extension point, and that a context missing a container
  * name is rejected rather than silently falling back to some default. This complements (and does not
  * duplicate) {@code BlobSessionClientTests}, which exercises these same paths against the live service, and
- * {@code BlobSessionClientCacheTest}, which fakes the transport wholesale to test per-container cache timing
- * behavior. Here {@link BlobSessionClient} is real and only the transport is faked, so the container name
+ * {@code BlobSessionProviderCacheTest}, which fakes the transport wholesale to test per-container cache timing
+ * behavior. Here {@link BlobSessionProvider} is real and only the transport is faked, so the container name
  * actually placed on the wire is what's being verified.
  */
 public class SessionProviderSeamTest {
@@ -45,12 +45,12 @@ public class SessionProviderSeamTest {
     @Test
     public void getSessionAsyncUsesContainerFromContext() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionClient sessionClient = createSessionClient(requestedContainer);
+        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context
             = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
 
-        StepVerifier.create(sessionClient.getSessionAsync(context)).assertNext(credential -> {
+        StepVerifier.create(sessionProvider.getSessionAsync(context)).assertNext(credential -> {
             assertNotNull(credential);
             assertNotNull(credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
@@ -62,12 +62,12 @@ public class SessionProviderSeamTest {
     @Test
     public void getSessionSyncUsesContainerFromContext() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionClient sessionClient = createSessionClient(requestedContainer);
+        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context
             = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
 
-        SessionCredential credential = sessionClient.getSession(context);
+        SessionCredential credential = sessionProvider.getSession(context);
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -78,29 +78,29 @@ public class SessionProviderSeamTest {
     @Test
     public void missingContextContainerThrowsSync() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionClient sessionClient = createSessionClient(requestedContainer);
+        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         // There is no constructor-supplied fallback container: a context with no container name must be
         // rejected rather than silently degrading to some default.
         SessionRequestContext context = new SessionRequestContext();
 
-        assertThrows(IllegalArgumentException.class, () -> sessionClient.getSession(context));
+        assertThrows(IllegalArgumentException.class, () -> sessionProvider.getSession(context));
     }
 
     @Test
     public void missingContextContainerThrowsAsync() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionClient sessionClient = createSessionClient(requestedContainer);
+        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context = new SessionRequestContext();
 
-        StepVerifier.create(sessionClient.getSessionAsync(context)).verifyError(IllegalArgumentException.class);
+        StepVerifier.create(sessionProvider.getSessionAsync(context)).verifyError(IllegalArgumentException.class);
     }
 
-    private static BlobSessionClient createSessionClient(AtomicReference<String> requestedContainer) {
+    private static BlobSessionProvider createSessionProvider(AtomicReference<String> requestedContainer) {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(new CreateSessionMockClient(requestedContainer)).build();
-        return new BlobSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        return new BlobSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME);
     }
 
