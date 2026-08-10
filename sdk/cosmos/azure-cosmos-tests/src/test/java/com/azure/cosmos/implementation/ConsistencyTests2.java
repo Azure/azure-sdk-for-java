@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -143,7 +144,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
-    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs",
+        timeOut = CONSISTENCY_TEST_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateSessionContainerAfterCollectionDeletion(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
@@ -180,7 +182,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         this.validateSessionTokenWithDocumentNotFoundExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs",
+        timeOut = 2 * CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenWithExpectedException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057

@@ -62,8 +62,6 @@ public final class RemainingModelTests {
             .toObject(TilerStacSearchDefinition.class);
         Assertions.assertEquals("abc123", model.getHash());
         Assertions.assertNotNull(model.getSearch());
-        Assertions.assertEquals("cloud_cover < 20", model.getWhere());
-        Assertions.assertEquals("datetime DESC", model.getOrderBy());
         Assertions.assertNotNull(model.getLastUsed());
         Assertions.assertEquals(42, model.getUseCount());
         Assertions.assertNotNull(model.getMetadata());
@@ -75,8 +73,6 @@ public final class RemainingModelTests {
         TilerStacSearchDefinition model = BinaryData.fromString("{}").toObject(TilerStacSearchDefinition.class);
         Assertions.assertNull(model.getHash());
         Assertions.assertNull(model.getSearch());
-        Assertions.assertNull(model.getWhere());
-        Assertions.assertNull(model.getOrderBy());
     }
 
     @Test

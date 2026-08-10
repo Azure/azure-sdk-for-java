@@ -47,7 +47,7 @@ public final class DeploymentsAsyncClient {
     /**
      * Get a deployment
      *
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -67,7 +67,7 @@ public final class DeploymentsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a deployment
      *
-     * Gets a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * Retrieves a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -118,7 +118,7 @@ public final class DeploymentsAsyncClient {
     /**
      * Get a deployment
      *
-     * Gets a deployed model.
+     * Retrieves a deployed model.
      *
      * @param name Name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +129,7 @@ public final class DeploymentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment
      *
-     * Gets a deployed model on successful completion of {@link Mono}.
+     * Retrieves a deployed model on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
