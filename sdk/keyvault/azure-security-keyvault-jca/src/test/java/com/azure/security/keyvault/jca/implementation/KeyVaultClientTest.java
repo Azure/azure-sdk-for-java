@@ -165,11 +165,11 @@ public class KeyVaultClientTest {
     public void testGetAliasFiltersDisabledCertificateFromRawResponse() {
         // A response that mirrors the shape returned by the Azure Key Vault "list certificates" REST API, with one
         // enabled and one disabled certificate.
-        String rawResponse = "{\"value\":["
-            + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-active\","
-            + "\"attributes\":{\"enabled\":true,\"nbf\":1783324860,\"exp\":1814861460}},"
-            + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-unused\","
-            + "\"attributes\":{\"enabled\":false,\"nbf\":1783324860,\"exp\":1814861460}}]," + "\"nextLink\":null}";
+        String rawResponse
+            = "{\"value\":[" + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-active\","
+                + "\"attributes\":{\"enabled\":true,\"nbf\":1783324860,\"exp\":1814861460}},"
+                + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-unused\","
+                + "\"attributes\":{\"enabled\":false,\"nbf\":1783324860,\"exp\":1814861460}}]," + "\"nextLink\":null}";
 
         KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null) {
             @Override
