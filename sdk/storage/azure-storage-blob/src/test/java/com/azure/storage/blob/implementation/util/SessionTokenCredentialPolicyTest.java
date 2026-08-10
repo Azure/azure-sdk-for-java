@@ -21,7 +21,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,14 +51,12 @@ public class SessionTokenCredentialPolicyTest {
     HttpHeaderName authHeaderName = HttpHeaderName.AUTHORIZATION;
 
     private SessionProvider sessionProvider;
-    private SessionAcquisitionCooldown cooldown;
     private StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private SessionTokenCredentialPolicy policy;
 
     @BeforeEach
     public void beforeEach() {
         sessionProvider = mock(SessionProvider.class);
-        cooldown = new SessionAcquisitionCooldown();
         bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
         // Default mock behavior: bearer policy delegates to next policy in the pipeline.
@@ -88,6 +91,31 @@ public class SessionTokenCredentialPolicyTest {
         verify(sessionProvider, times(1)).getSessionAsync(any());
         verify(firstNext, times(1)).process();
         verify(secondNext, times(1)).process();
+    }
+
+    @Test
+    public void sessionAcquisitionCooldownExpiresAfterFiveMinutes() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        policy = createPolicy(SessionMode.ENABLED, clock);
+        HttpPipelineNextPolicy firstNext = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy cooldownNext = mock(HttpPipelineNextPolicy.class);
+        HttpPipelineNextPolicy expiredNext = mock(HttpPipelineNextPolicy.class);
+        BlobStorageException serverFailure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
+
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure))
+            .thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(firstNext.process()).thenReturn(Mono.just(mock(HttpResponse.class)));
+        when(cooldownNext.process()).thenReturn(Mono.just(mock(HttpResponse.class)));
+        when(expiredNext.clone()).thenReturn(expiredNext);
+        when(expiredNext.process()).thenReturn(Mono.just(mock(HttpResponse.class)));
+
+        policy.process(createContext(), firstNext).block();
+        policy.process(createContext(), cooldownNext).block();
+        clock.advance(Duration.ofMinutes(5));
+        policy.process(createContext(), expiredNext).block();
+
+        verify(sessionProvider, times(2)).getSessionAsync(any());
     }
 
     @Test
@@ -447,8 +475,12 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
+        return createPolicy(mode, Clock.systemUTC());
+    }
+
+    private SessionTokenCredentialPolicy createPolicy(SessionMode mode, Clock clock) {
         SessionOptions options = new SessionOptions().setSessionMode(mode).setContainerName("mycontainer");
-        return new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, cooldown, options);
+        return new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, options, clock);
     }
 
     private static SessionCredential credentialWithToken(String token) {
@@ -577,5 +609,38 @@ public class SessionTokenCredentialPolicyTest {
     private static String extractSignature(String authHeader) {
         assertNotNull(authHeader, "Authorization header should be set");
         return authHeader.substring(authHeader.indexOf(':') + 1);
+    }
+
+    private static final class MutableClock extends Clock {
+        private final ZoneId zone;
+        private Instant instant;
+
+        private MutableClock(Instant instant) {
+            this(instant, ZoneOffset.UTC);
+        }
+
+        private MutableClock(Instant instant, ZoneId zone) {
+            this.instant = instant;
+            this.zone = zone;
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return zone;
+        }
+
+        @Override
+        public Clock withZone(ZoneId newZone) {
+            return new MutableClock(instant, newZone);
+        }
+
+        @Override
+        public Instant instant() {
+            return instant;
+        }
+
+        private void advance(Duration duration) {
+            instant = instant.plus(duration);
+        }
     }
 }

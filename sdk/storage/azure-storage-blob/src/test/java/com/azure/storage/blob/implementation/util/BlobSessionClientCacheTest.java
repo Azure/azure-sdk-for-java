@@ -47,8 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
  * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
  * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
- * covered separately by {@code SessionAcquisitionCooldownTest}, since that concern now lives in
- * {@link SessionAcquisitionCooldown} rather than in {@link BlobSessionClient}.
+ * covered separately by {@code SessionTokenCredentialPolicyTest}.
  */
 public class BlobSessionClientCacheTest {
 
