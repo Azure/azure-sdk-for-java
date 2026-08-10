@@ -1,8 +1,13 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-07-30)
+## 1.1.0-beta.1 (2026-08-10)
 
 ### Features Added
+
+* Added support for the `2024-09-01` and `2026-07-01-preview` API versions. Previous releases were pinned to `2023-10-01`, so this release also picks up the `2024-09-01` GA surface.
+* Added `ContentProvenanceClient` and `ContentProvenanceAsyncClient`, which detect whether media was generated or modified by an AI system using C2PA manifests and watermarks. Detection is a long-running operation started with `beginDetect`.
+* Added `shieldPrompt` to `ContentSafetyClient` for shielding prompts from direct and indirect injection attacks.
+* Added `detectTextProtectedMaterial` to `ContentSafetyClient` for detecting protected material in text.
 
 * `models.ProvenanceDetectOperation` was added
 
