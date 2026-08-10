@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class FirewallsListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListBySubscription_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class FirewallsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_ListBySubscription_MaximumSet_Gen.

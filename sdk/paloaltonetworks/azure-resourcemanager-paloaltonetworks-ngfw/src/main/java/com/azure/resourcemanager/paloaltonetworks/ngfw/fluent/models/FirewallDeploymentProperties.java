@@ -33,6 +33,11 @@ public final class FirewallDeploymentProperties implements JsonSerializable<Fire
     private String panEtag;
 
     /*
+     * Firewall SKU type, Default will be STANDARD.
+     */
+    private String firewallSku;
+
+    /*
      * Network settings
      */
     private NetworkProfile networkProfile;
@@ -110,6 +115,26 @@ public final class FirewallDeploymentProperties implements JsonSerializable<Fire
      */
     public FirewallDeploymentProperties withPanEtag(String panEtag) {
         this.panEtag = panEtag;
+        return this;
+    }
+
+    /**
+     * Get the firewallSku property: Firewall SKU type, Default will be STANDARD.
+     * 
+     * @return the firewallSku value.
+     */
+    public String firewallSku() {
+        return this.firewallSku;
+    }
+
+    /**
+     * Set the firewallSku property: Firewall SKU type, Default will be STANDARD.
+     * 
+     * @param firewallSku the firewallSku value to set.
+     * @return the FirewallDeploymentProperties object itself.
+     */
+    public FirewallDeploymentProperties withFirewallSku(String firewallSku) {
+        this.firewallSku = firewallSku;
         return this;
     }
 
@@ -336,6 +361,7 @@ public final class FirewallDeploymentProperties implements JsonSerializable<Fire
         jsonWriter.writeJsonField("planData", this.planData);
         jsonWriter.writeJsonField("marketplaceDetails", this.marketplaceDetails);
         jsonWriter.writeStringField("panEtag", this.panEtag);
+        jsonWriter.writeStringField("firewallSku", this.firewallSku);
         jsonWriter.writeStringField("isPanoramaManaged",
             this.isPanoramaManaged == null ? null : this.isPanoramaManaged.toString());
         jsonWriter.writeStringField("isStrataCloudManaged",
@@ -374,6 +400,8 @@ public final class FirewallDeploymentProperties implements JsonSerializable<Fire
                     deserializedFirewallDeploymentProperties.marketplaceDetails = MarketplaceDetails.fromJson(reader);
                 } else if ("panEtag".equals(fieldName)) {
                     deserializedFirewallDeploymentProperties.panEtag = reader.getString();
+                } else if ("firewallSku".equals(fieldName)) {
+                    deserializedFirewallDeploymentProperties.firewallSku = reader.getString();
                 } else if ("isPanoramaManaged".equals(fieldName)) {
                     deserializedFirewallDeploymentProperties.isPanoramaManaged
                         = BooleanEnum.fromString(reader.getString());

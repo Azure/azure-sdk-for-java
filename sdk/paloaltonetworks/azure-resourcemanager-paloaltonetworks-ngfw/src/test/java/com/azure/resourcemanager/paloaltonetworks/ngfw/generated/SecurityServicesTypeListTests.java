@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityServicesTypeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityServicesTypeList model = BinaryData.fromString(
-            "{\"type\":\"qxj\",\"entry\":[{\"name\":\"ujqgidok\",\"description\":\"ljyoxgvcltb\"},{\"name\":\"sncghkjeszz\",\"description\":\"ijhtxf\"},{\"name\":\"gx\",\"description\":\"smx\"},{\"name\":\"eh\",\"description\":\"vecxgodebfqkk\"}]}")
+        SecurityServicesTypeList model = BinaryData
+            .fromString("{\"type\":\"fpl\",\"entry\":[{\"name\":\"gsxnkjzkdeslpv\",\"description\":\"pwiyig\"}]}")
             .toObject(SecurityServicesTypeList.class);
-        Assertions.assertEquals("qxj", model.type());
-        Assertions.assertEquals("ujqgidok", model.entry().get(0).name());
-        Assertions.assertEquals("ljyoxgvcltb", model.entry().get(0).description());
+        Assertions.assertEquals("fpl", model.type());
+        Assertions.assertEquals("gsxnkjzkdeslpv", model.entry().get(0).name());
+        Assertions.assertEquals("pwiyig", model.entry().get(0).description());
     }
 }

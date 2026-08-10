@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class LocalRulestacksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Update_MaximumSet_Gen.
@@ -59,7 +59,7 @@ public final class LocalRulestacksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_Update_MinimumSet_Gen.

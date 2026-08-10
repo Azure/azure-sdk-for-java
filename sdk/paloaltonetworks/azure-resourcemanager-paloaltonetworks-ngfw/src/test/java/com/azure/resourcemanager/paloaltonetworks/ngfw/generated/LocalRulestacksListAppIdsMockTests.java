@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class LocalRulestacksListAppIdsMockTests {
     @Test
     public void testListAppIds() throws Exception {
-        String responseStr = "{\"value\":[\"qg\"]}";
+        String responseStr = "{\"value\":[\"glwkzpgajsqj\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class LocalRulestacksListAppIdsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<String> response = manager.localRulestacks()
-            .listAppIds("dqacfrgnawbabgf", "ktyjmf", "zlfsyqkfrbzgowo", "qmje", "jcx", 2009268691,
+            .listAppIds("mmdqgmihzpimc", "rh", "xtminklogxsvtzar", "zvqnsqktcmbjwzzo", "lpky", 1357655862,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qg", response.iterator().next());
+        Assertions.assertEquals("glwkzpgajsqj", response.iterator().next());
     }
 }

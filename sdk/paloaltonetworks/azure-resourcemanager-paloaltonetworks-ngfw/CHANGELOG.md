@@ -1,14 +1,47 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2026-08-10)
+
+- Azure Resource Manager PaloAltoNetworks Ngfw client library for Java. This package contains Microsoft Azure SDK for PaloAltoNetworks Ngfw Management SDK.  Package api-version 2026-07-29-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.LogIngestionSettingsResources` was added
 
-### Bugs Fixed
+* `models.CustomCaptureConfigurationsFilter` was added
 
-### Other Changes
+* `models.LogIngestionSettingsProperties` was added
+
+* `models.CustomCaptureConfigurationsStatus` was added
+
+* `models.CustomCaptureConfigurationsProtocol` was added
+
+* `models.CustomCaptureConfigurationsStage` was added
+
+* `models.LogDestinationV2` was added
+
+* `models.MonitorLogV2` was added
+
+* `models.LogIngestionSettingsResource` was added
+
+* `models.CustomCaptureConfigurationsFirewallResource` was added
+
+* `models.CustomCaptureConfigurationsFirewallResources` was added
+
+* `models.CustomCaptureConfigurationsProperties` was added
+
+#### `models.FirewallResource$Definition` was modified
+
+* `withFirewallSku(java.lang.String)` was added
+
+#### `PaloAltoNetworksNgfwManager` was modified
+
+* `logIngestionSettingsResources()` was added
+* `customCaptureConfigurationsFirewallResources()` was added
+
+#### `models.FirewallResource` was modified
+
+* `firewallSku()` was added
 
 ## 1.3.0 (2025-10-30)
 

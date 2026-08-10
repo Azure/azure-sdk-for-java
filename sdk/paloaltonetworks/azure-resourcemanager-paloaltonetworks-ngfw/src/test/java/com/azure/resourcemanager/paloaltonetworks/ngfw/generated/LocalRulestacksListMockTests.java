@@ -25,7 +25,7 @@ public final class LocalRulestacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"panEtag\":\"agdrcls\",\"panLocation\":\"ljomevt\",\"scope\":\"LOCAL\",\"associatedSubscriptions\":[\"bvgjcodkkgj\",\"iytssikizbc\"],\"description\":\"q\",\"defaultMode\":\"IPS\",\"minAppIdVersion\":\"nrgmqsorhce\",\"provisioningState\":\"Updating\",\"securityServices\":{\"vulnerabilityProfile\":\"ykmxcpwzvm\",\"antiSpywareProfile\":\"ksqd\",\"antiVirusProfile\":\"wlwxlboncqbazqic\",\"urlFilteringProfile\":\"hygtv\",\"fileBlockingProfile\":\"yjanepubdp\",\"dnsSubscription\":\"yqvgxia\",\"outboundUnTrustCertificate\":\"etvohkxdxuwsaifm\",\"outboundTrustCertificate\":\"nosbz\"}},\"identity\":{\"tenantId\":\"gcv\",\"principalId\":\"cknjolgj\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vxoqe\":{\"clientId\":\"els\",\"principalId\":\"rqz\"},\"yqbhd\":{\"clientId\":\"txwaljglzo\",\"principalId\":\"qwaafrqulhm\"},\"bnrzorpdltbqctq\":{\"clientId\":\"fjrqpjiyr\",\"principalId\":\"crgaxwmzwdf\"}}},\"location\":\"gxx\",\"tags\":{\"yig\":\"tgzdgv\",\"ngucaifpaurww\":\"aqqilzdcduwjoed\",\"wxdcvjwcyz\":\"ilfjqqacdmk\"},\"id\":\"akeciqchx\",\"name\":\"tuicds\",\"type\":\"wdfmmpzhzzwvywr\"}]}";
+            = "{\"value\":[{\"properties\":{\"panEtag\":\"zpphepif\",\"panLocation\":\"leqirccjclykcgxv\",\"scope\":\"LOCAL\",\"associatedSubscriptions\":[\"czuod\",\"cpunettepdjx\",\"eskoy\"],\"description\":\"iylpck\",\"defaultMode\":\"NONE\",\"minAppIdVersion\":\"edveskwxegqp\",\"provisioningState\":\"Canceled\",\"securityServices\":{\"vulnerabilityProfile\":\"zhctm\",\"antiSpywareProfile\":\"sghpbcbcpzarpze\",\"antiVirusProfile\":\"cdl\",\"urlFilteringProfile\":\"zmpypefcpczshnu\",\"fileBlockingProfile\":\"daizupf\",\"dnsSubscription\":\"uytuszxhmtvtv\",\"outboundUnTrustCertificate\":\"w\",\"outboundTrustCertificate\":\"ukvzwydwttha\"}},\"identity\":{\"tenantId\":\"ksk\",\"principalId\":\"vb\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dexyionofninbdb\":{\"clientId\":\"qfukpeexpgeumi\",\"principalId\":\"wuit\"}}},\"location\":\"xcwqqrsmpc\",\"tags\":{\"vm\":\"rtugavbzbcyks\",\"tbfcm\":\"ogd\"},\"id\":\"rftsjcwjjxs\",\"name\":\"mb\",\"type\":\"wvif\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,29 +37,28 @@ public final class LocalRulestacksListMockTests {
         PagedIterable<LocalRulestackResource> response
             = manager.localRulestacks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gxx", response.iterator().next().location());
-        Assertions.assertEquals("tgzdgv", response.iterator().next().tags().get("yig"));
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_AND_USER_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("els",
-            response.iterator().next().identity().userAssignedIdentities().get("vxoqe").clientId());
-        Assertions.assertEquals("rqz",
-            response.iterator().next().identity().userAssignedIdentities().get("vxoqe").principalId());
-        Assertions.assertEquals("agdrcls", response.iterator().next().panEtag());
-        Assertions.assertEquals("ljomevt", response.iterator().next().panLocation());
+        Assertions.assertEquals("xcwqqrsmpc", response.iterator().next().location());
+        Assertions.assertEquals("rtugavbzbcyks", response.iterator().next().tags().get("vm"));
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("qfukpeexpgeumi",
+            response.iterator().next().identity().userAssignedIdentities().get("dexyionofninbdb").clientId());
+        Assertions.assertEquals("wuit",
+            response.iterator().next().identity().userAssignedIdentities().get("dexyionofninbdb").principalId());
+        Assertions.assertEquals("zpphepif", response.iterator().next().panEtag());
+        Assertions.assertEquals("leqirccjclykcgxv", response.iterator().next().panLocation());
         Assertions.assertEquals(ScopeType.LOCAL, response.iterator().next().scope());
-        Assertions.assertEquals("bvgjcodkkgj", response.iterator().next().associatedSubscriptions().get(0));
-        Assertions.assertEquals("q", response.iterator().next().description());
-        Assertions.assertEquals(DefaultMode.IPS, response.iterator().next().defaultMode());
-        Assertions.assertEquals("nrgmqsorhce", response.iterator().next().minAppIdVersion());
-        Assertions.assertEquals("ykmxcpwzvm", response.iterator().next().securityServices().vulnerabilityProfile());
-        Assertions.assertEquals("ksqd", response.iterator().next().securityServices().antiSpywareProfile());
-        Assertions.assertEquals("wlwxlboncqbazqic", response.iterator().next().securityServices().antiVirusProfile());
-        Assertions.assertEquals("hygtv", response.iterator().next().securityServices().urlFilteringProfile());
-        Assertions.assertEquals("yjanepubdp", response.iterator().next().securityServices().fileBlockingProfile());
-        Assertions.assertEquals("yqvgxia", response.iterator().next().securityServices().dnsSubscription());
-        Assertions.assertEquals("etvohkxdxuwsaifm",
-            response.iterator().next().securityServices().outboundUnTrustCertificate());
-        Assertions.assertEquals("nosbz", response.iterator().next().securityServices().outboundTrustCertificate());
+        Assertions.assertEquals("czuod", response.iterator().next().associatedSubscriptions().get(0));
+        Assertions.assertEquals("iylpck", response.iterator().next().description());
+        Assertions.assertEquals(DefaultMode.NONE, response.iterator().next().defaultMode());
+        Assertions.assertEquals("edveskwxegqp", response.iterator().next().minAppIdVersion());
+        Assertions.assertEquals("zhctm", response.iterator().next().securityServices().vulnerabilityProfile());
+        Assertions.assertEquals("sghpbcbcpzarpze", response.iterator().next().securityServices().antiSpywareProfile());
+        Assertions.assertEquals("cdl", response.iterator().next().securityServices().antiVirusProfile());
+        Assertions.assertEquals("zmpypefcpczshnu", response.iterator().next().securityServices().urlFilteringProfile());
+        Assertions.assertEquals("daizupf", response.iterator().next().securityServices().fileBlockingProfile());
+        Assertions.assertEquals("uytuszxhmtvtv", response.iterator().next().securityServices().dnsSubscription());
+        Assertions.assertEquals("w", response.iterator().next().securityServices().outboundUnTrustCertificate());
+        Assertions.assertEquals("ukvzwydwttha",
+            response.iterator().next().securityServices().outboundTrustCertificate());
     }
 }

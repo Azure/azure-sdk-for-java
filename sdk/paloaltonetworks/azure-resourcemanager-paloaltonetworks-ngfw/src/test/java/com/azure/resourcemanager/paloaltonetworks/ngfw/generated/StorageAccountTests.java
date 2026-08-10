@@ -12,20 +12,20 @@ public final class StorageAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageAccount model
-            = BinaryData.fromString("{\"id\":\"tpzdmovzvfvaawzq\",\"subscriptionId\":\"f\",\"accountName\":\"z\"}")
+            = BinaryData.fromString("{\"id\":\"wrlyxwjkcprb\",\"subscriptionId\":\"b\",\"accountName\":\"jvtbvpyss\"}")
                 .toObject(StorageAccount.class);
-        Assertions.assertEquals("tpzdmovzvfvaawzq", model.id());
-        Assertions.assertEquals("f", model.subscriptionId());
-        Assertions.assertEquals("z", model.accountName());
+        Assertions.assertEquals("wrlyxwjkcprb", model.id());
+        Assertions.assertEquals("b", model.subscriptionId());
+        Assertions.assertEquals("jvtbvpyss", model.accountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageAccount model
-            = new StorageAccount().withId("tpzdmovzvfvaawzq").withSubscriptionId("f").withAccountName("z");
+            = new StorageAccount().withId("wrlyxwjkcprb").withSubscriptionId("b").withAccountName("jvtbvpyss");
         model = BinaryData.fromObject(model).toObject(StorageAccount.class);
-        Assertions.assertEquals("tpzdmovzvfvaawzq", model.id());
-        Assertions.assertEquals("f", model.subscriptionId());
-        Assertions.assertEquals("z", model.accountName());
+        Assertions.assertEquals("wrlyxwjkcprb", model.id());
+        Assertions.assertEquals("b", model.subscriptionId());
+        Assertions.assertEquals("jvtbvpyss", model.accountName());
     }
 }

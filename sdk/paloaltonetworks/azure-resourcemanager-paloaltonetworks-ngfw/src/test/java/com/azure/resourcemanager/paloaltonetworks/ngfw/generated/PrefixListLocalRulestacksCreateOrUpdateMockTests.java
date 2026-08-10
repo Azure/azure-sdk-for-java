@@ -22,7 +22,7 @@ public final class PrefixListLocalRulestacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ol\",\"prefixList\":[\"rghsrleinkfsc\",\"fncjwvua\",\"fqwtltngvm\"],\"etag\":\"uptrklz\",\"auditComment\":\"jajwolxfsvag\",\"provisioningState\":\"Succeeded\"},\"id\":\"nwlslrcigtzjcvbx\",\"name\":\"lapsnsso\",\"type\":\"yxpavidnie\"}";
+            = "{\"properties\":{\"description\":\"aboohxbmsgyc\",\"prefixList\":[\"xrmdvewuyqaeohpj\"],\"etag\":\"ejkbvhhdaurgho\",\"auditComment\":\"aexbkhxjxjo\",\"provisioningState\":\"Succeeded\"},\"id\":\"xrkdknkobektm\",\"name\":\"o\",\"type\":\"omtzamicb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class PrefixListLocalRulestacksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrefixListResource response = manager.prefixListLocalRulestacks()
-            .define("fbngfcocef")
-            .withExistingLocalRulestack("cgxefnohaitraniz", "rwgudasmxub")
-            .withPrefixList(Arrays.asList("svhl"))
-            .withDescription("riylfmpztra")
-            .withEtag("culregpqt")
-            .withAuditComment("jhvrztnvgyshqrdg")
+            .define("twd")
+            .withExistingLocalRulestack("ykyalugek", "fqnh")
+            .withPrefixList(Arrays.asList("mhmnulwemp", "cifrhjulrsulwzpf", "usnaw", "hhgzotf"))
+            .withDescription("rczfjjnnuxxr")
+            .withEtag("yrgkoekv")
+            .withAuditComment("xxyxhighctxbxm")
             .create();
 
-        Assertions.assertEquals("ol", response.description());
-        Assertions.assertEquals("rghsrleinkfsc", response.prefixList().get(0));
-        Assertions.assertEquals("uptrklz", response.etag());
-        Assertions.assertEquals("jajwolxfsvag", response.auditComment());
+        Assertions.assertEquals("aboohxbmsgyc", response.description());
+        Assertions.assertEquals("xrmdvewuyqaeohpj", response.prefixList().get(0));
+        Assertions.assertEquals("ejkbvhhdaurgho", response.etag());
+        Assertions.assertEquals("aexbkhxjxjo", response.auditComment());
     }
 }

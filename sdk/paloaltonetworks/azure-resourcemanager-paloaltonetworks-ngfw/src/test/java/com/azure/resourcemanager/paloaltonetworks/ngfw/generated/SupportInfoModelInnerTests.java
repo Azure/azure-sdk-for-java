@@ -14,22 +14,22 @@ public final class SupportInfoModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportInfoModelInner model = BinaryData.fromString(
-            "{\"productSku\":\"jdmspofapvuhryln\",\"productSerial\":\"frzgbzjed\",\"accountRegistrationStatus\":\"Not Registered\",\"accountId\":\"vnlvxbcuiiznktwf\",\"freeTrial\":\"Disabled\",\"freeTrialDaysLeft\":206149919,\"freeTrialCreditLeft\":2089270983,\"helpURL\":\"bmikost\",\"supportURL\":\"bkiw\",\"registerURL\":\"qnyophzfyls\",\"hubUrl\":\"rpfbcunezz\",\"credits\":12099501,\"monthlyCreditLeft\":1368017233,\"startDateForCredits\":\"w\",\"endDateForCredits\":\"wl\"}")
+            "{\"productSku\":\"smfcttuxuuyilfl\",\"productSerial\":\"iquvrehm\",\"accountRegistrationStatus\":\"Not Registered\",\"accountId\":\"vsujztczytqjtwh\",\"freeTrial\":\"Disabled\",\"freeTrialDaysLeft\":1346405243,\"freeTrialCreditLeft\":1524568479,\"helpURL\":\"jletlxsmrpddo\",\"supportURL\":\"fa\",\"registerURL\":\"waziy\",\"hubUrl\":\"nlqwzdvpiwhx\",\"credits\":1993334161,\"monthlyCreditLeft\":1338439395,\"startDateForCredits\":\"aajquhuxylrj\",\"endDateForCredits\":\"ty\"}")
             .toObject(SupportInfoModelInner.class);
-        Assertions.assertEquals("jdmspofapvuhryln", model.productSku());
-        Assertions.assertEquals("frzgbzjed", model.productSerial());
+        Assertions.assertEquals("smfcttuxuuyilfl", model.productSku());
+        Assertions.assertEquals("iquvrehm", model.productSerial());
         Assertions.assertEquals(RegistrationStatus.NOT_REGISTERED, model.accountRegistrationStatus());
-        Assertions.assertEquals("vnlvxbcuiiznktwf", model.accountId());
+        Assertions.assertEquals("vsujztczytqjtwh", model.accountId());
         Assertions.assertEquals(EnableStatus.DISABLED, model.freeTrial());
-        Assertions.assertEquals(206149919, model.freeTrialDaysLeft());
-        Assertions.assertEquals(2089270983, model.freeTrialCreditLeft());
-        Assertions.assertEquals("bmikost", model.helpUrl());
-        Assertions.assertEquals("bkiw", model.supportUrl());
-        Assertions.assertEquals("qnyophzfyls", model.registerUrl());
-        Assertions.assertEquals("rpfbcunezz", model.hubUrl());
-        Assertions.assertEquals(12099501, model.credits());
-        Assertions.assertEquals(1368017233, model.monthlyCreditLeft());
-        Assertions.assertEquals("w", model.startDateForCredits());
-        Assertions.assertEquals("wl", model.endDateForCredits());
+        Assertions.assertEquals(1346405243, model.freeTrialDaysLeft());
+        Assertions.assertEquals(1524568479, model.freeTrialCreditLeft());
+        Assertions.assertEquals("jletlxsmrpddo", model.helpUrl());
+        Assertions.assertEquals("fa", model.supportUrl());
+        Assertions.assertEquals("waziy", model.registerUrl());
+        Assertions.assertEquals("nlqwzdvpiwhx", model.hubUrl());
+        Assertions.assertEquals(1993334161, model.credits());
+        Assertions.assertEquals(1338439395, model.monthlyCreditLeft());
+        Assertions.assertEquals("aajquhuxylrj", model.startDateForCredits());
+        Assertions.assertEquals("ty", model.endDateForCredits());
     }
 }

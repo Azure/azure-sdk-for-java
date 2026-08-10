@@ -23,7 +23,7 @@ public final class CertificateObjectGlobalRulestacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"certificateSignerResourceId\":\"crymodizrxklobd\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"zpmkmlmvev\",\"description\":\"zopjhbzxliohr\",\"etag\":\"dtfgxqbawpcbb\",\"provisioningState\":\"Succeeded\"},\"id\":\"yknapqofyuicdh\",\"name\":\"bd\",\"type\":\"bwwg\"}";
+            = "{\"properties\":{\"certificateSignerResourceId\":\"zgaufcshhvn\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"nxkympqanxrjk\",\"description\":\"tw\",\"etag\":\"aoypny\",\"provisioningState\":\"Succeeded\"},\"id\":\"xcy\",\"name\":\"hkgmnsg\",\"type\":\"pxycphdr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class CertificateObjectGlobalRulestacksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateObjectGlobalRulestackResource response = manager.certificateObjectGlobalRulestacks()
-            .createOrUpdate("ewuninvud", "chaqdtvqec",
-                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("ct")
-                    .withCertificateSelfSigned(BooleanEnum.FALSE)
-                    .withAuditComment("dtddmflh")
-                    .withDescription("tx")
-                    .withEtag("tznapxbannovv"),
+            .createOrUpdate("ui", "eeyaswl",
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("ugmrmf")
+                    .withCertificateSelfSigned(BooleanEnum.TRUE)
+                    .withAuditComment("xwtoaukhfkvc")
+                    .withDescription("izmoaeds")
+                    .withEtag("wuived"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("crymodizrxklobd", response.certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());
-        Assertions.assertEquals("zpmkmlmvev", response.auditComment());
-        Assertions.assertEquals("zopjhbzxliohr", response.description());
-        Assertions.assertEquals("dtfgxqbawpcbb", response.etag());
+        Assertions.assertEquals("zgaufcshhvn", response.certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.FALSE, response.certificateSelfSigned());
+        Assertions.assertEquals("nxkympqanxrjk", response.auditComment());
+        Assertions.assertEquals("tw", response.description());
+        Assertions.assertEquals("aoypny", response.etag());
     }
 }

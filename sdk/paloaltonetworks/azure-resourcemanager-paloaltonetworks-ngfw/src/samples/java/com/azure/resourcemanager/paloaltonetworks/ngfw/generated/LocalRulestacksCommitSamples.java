@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class LocalRulestacksCommitSamples {
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_commit_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_commit_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_commit_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class LocalRulestacksCommitSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/LocalRulestacks_commit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/LocalRulestacks_commit_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_commit_MaximumSet_Gen.

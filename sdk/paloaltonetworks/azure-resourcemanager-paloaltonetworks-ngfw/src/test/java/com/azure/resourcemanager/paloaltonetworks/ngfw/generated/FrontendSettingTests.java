@@ -15,34 +15,34 @@ public final class FrontendSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendSetting model = BinaryData.fromString(
-            "{\"name\":\"hbejdznxcvdsrhnj\",\"protocol\":\"TCP\",\"frontendConfiguration\":{\"port\":\"olvtnovqfzge\",\"address\":{\"resourceId\":\"dftuljltduce\",\"address\":\"tmczuomejwcwwqi\"}},\"backendConfiguration\":{\"port\":\"knssxmojm\",\"address\":{\"resourceId\":\"p\",\"address\":\"prvkwcfzqljyxgtc\"}}}")
+            "{\"name\":\"jbdhqxvc\",\"protocol\":\"TCP\",\"frontendConfiguration\":{\"port\":\"frpdsofbshrns\",\"address\":{\"resourceId\":\"uswdv\",\"address\":\"ybycnunvj\"}},\"backendConfiguration\":{\"port\":\"rtkfawnopq\",\"address\":{\"resourceId\":\"kyzirtxdyux\",\"address\":\"jntpsewgioilqu\"}}}")
             .toObject(FrontendSetting.class);
-        Assertions.assertEquals("hbejdznxcvdsrhnj", model.name());
+        Assertions.assertEquals("jbdhqxvc", model.name());
         Assertions.assertEquals(ProtocolType.TCP, model.protocol());
-        Assertions.assertEquals("olvtnovqfzge", model.frontendConfiguration().port());
-        Assertions.assertEquals("dftuljltduce", model.frontendConfiguration().address().resourceId());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.frontendConfiguration().address().address());
-        Assertions.assertEquals("knssxmojm", model.backendConfiguration().port());
-        Assertions.assertEquals("p", model.backendConfiguration().address().resourceId());
-        Assertions.assertEquals("prvkwcfzqljyxgtc", model.backendConfiguration().address().address());
+        Assertions.assertEquals("frpdsofbshrns", model.frontendConfiguration().port());
+        Assertions.assertEquals("uswdv", model.frontendConfiguration().address().resourceId());
+        Assertions.assertEquals("ybycnunvj", model.frontendConfiguration().address().address());
+        Assertions.assertEquals("rtkfawnopq", model.backendConfiguration().port());
+        Assertions.assertEquals("kyzirtxdyux", model.backendConfiguration().address().resourceId());
+        Assertions.assertEquals("jntpsewgioilqu", model.backendConfiguration().address().address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendSetting model = new FrontendSetting().withName("hbejdznxcvdsrhnj")
+        FrontendSetting model = new FrontendSetting().withName("jbdhqxvc")
             .withProtocol(ProtocolType.TCP)
-            .withFrontendConfiguration(new EndpointConfiguration().withPort("olvtnovqfzge")
-                .withAddress(new IpAddress().withResourceId("dftuljltduce").withAddress("tmczuomejwcwwqi")))
-            .withBackendConfiguration(new EndpointConfiguration().withPort("knssxmojm")
-                .withAddress(new IpAddress().withResourceId("p").withAddress("prvkwcfzqljyxgtc")));
+            .withFrontendConfiguration(new EndpointConfiguration().withPort("frpdsofbshrns")
+                .withAddress(new IpAddress().withResourceId("uswdv").withAddress("ybycnunvj")))
+            .withBackendConfiguration(new EndpointConfiguration().withPort("rtkfawnopq")
+                .withAddress(new IpAddress().withResourceId("kyzirtxdyux").withAddress("jntpsewgioilqu")));
         model = BinaryData.fromObject(model).toObject(FrontendSetting.class);
-        Assertions.assertEquals("hbejdznxcvdsrhnj", model.name());
+        Assertions.assertEquals("jbdhqxvc", model.name());
         Assertions.assertEquals(ProtocolType.TCP, model.protocol());
-        Assertions.assertEquals("olvtnovqfzge", model.frontendConfiguration().port());
-        Assertions.assertEquals("dftuljltduce", model.frontendConfiguration().address().resourceId());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.frontendConfiguration().address().address());
-        Assertions.assertEquals("knssxmojm", model.backendConfiguration().port());
-        Assertions.assertEquals("p", model.backendConfiguration().address().resourceId());
-        Assertions.assertEquals("prvkwcfzqljyxgtc", model.backendConfiguration().address().address());
+        Assertions.assertEquals("frpdsofbshrns", model.frontendConfiguration().port());
+        Assertions.assertEquals("uswdv", model.frontendConfiguration().address().resourceId());
+        Assertions.assertEquals("ybycnunvj", model.frontendConfiguration().address().address());
+        Assertions.assertEquals("rtkfawnopq", model.backendConfiguration().port());
+        Assertions.assertEquals("kyzirtxdyux", model.backendConfiguration().address().resourceId());
+        Assertions.assertEquals("jntpsewgioilqu", model.backendConfiguration().address().address());
     }
 }

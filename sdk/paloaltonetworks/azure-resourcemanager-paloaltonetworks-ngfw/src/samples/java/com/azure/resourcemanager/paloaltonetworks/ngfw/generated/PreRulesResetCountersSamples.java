@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class PreRulesResetCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_resetCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_resetCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_resetCounters_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class PreRulesResetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PreRules_resetCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PreRules_resetCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_resetCounters_MaximumSet_Gen.

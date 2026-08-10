@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class PaloAltoNetworksCloudngfwOperationsListCloudManagerTenantsWithResponseMockTests {
     @Test
     public void testListCloudManagerTenantsWithResponse() throws Exception {
-        String responseStr = "{\"value\":[\"lpuxgcbdsvalpnpt\",\"trkxgpazwu\",\"x\"]}";
+        String responseStr = "{\"value\":[\"sez\",\"uxk\",\"uairaabmdlqjb\",\"dp\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class PaloAltoNetworksCloudngfwOperationsListCloudManagerTenantsWit
             .listCloudManagerTenantsWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lpuxgcbdsvalpnpt", response.value().get(0));
+        Assertions.assertEquals("sez", response.value().get(0));
     }
 }

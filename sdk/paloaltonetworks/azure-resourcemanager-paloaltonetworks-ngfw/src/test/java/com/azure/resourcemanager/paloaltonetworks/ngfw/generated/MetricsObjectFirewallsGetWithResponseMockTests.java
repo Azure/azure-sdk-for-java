@@ -21,7 +21,7 @@ public final class MetricsObjectFirewallsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"applicationInsightsResourceId\":\"slojfkqidnqt\",\"applicationInsightsConnectionString\":\"qxjhqxcsqhtkbtnq\",\"panEtag\":\"ngldmbiipsn\",\"provisioningState\":\"Accepted\"},\"id\":\"qkzn\",\"name\":\"hhl\",\"type\":\"xricctkwmuqq\"}";
+            = "{\"properties\":{\"applicationInsightsResourceId\":\"vnmdyfoeboj\",\"applicationInsightsConnectionString\":\"jpp\",\"panEtag\":\"aohoqkpjtnq\",\"provisioningState\":\"Updating\"},\"id\":\"ywkdcwmqsy\",\"name\":\"ilm\",\"type\":\"xdqaolfylnkkb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class MetricsObjectFirewallsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricsObjectFirewallResource response = manager.metricsObjectFirewalls()
-            .getWithResponse("a", "krmukmyjmkxett", com.azure.core.util.Context.NONE)
+            .getWithResponse("fzuvrzmz", "mzjqrbr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("slojfkqidnqt", response.applicationInsightsResourceId());
-        Assertions.assertEquals("qxjhqxcsqhtkbtnq", response.applicationInsightsConnectionString());
-        Assertions.assertEquals("ngldmbiipsn", response.panEtag());
+        Assertions.assertEquals("vnmdyfoeboj", response.applicationInsightsResourceId());
+        Assertions.assertEquals("jpp", response.applicationInsightsConnectionString());
+        Assertions.assertEquals("aohoqkpjtnq", response.panEtag());
     }
 }

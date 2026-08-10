@@ -18,7 +18,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SupportInfo
  */
 public interface PaloAltoNetworksCloudngfwOperationsClient {
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +30,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     Response<ProductSerialNumberRequestStatusInner> createProductSerialNumberWithResponse(Context context);
 
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -40,7 +40,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     ProductSerialNumberRequestStatusInner createProductSerialNumber();
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +52,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     Response<CloudManagerTenantListInner> listCloudManagerTenantsWithResponse(Context context);
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -62,7 +62,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     CloudManagerTenantListInner listCloudManagerTenants();
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,7 +74,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     Response<ProductSerialNumberStatusInner> listProductSerialNumberStatusWithResponse(Context context);
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,7 +84,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     ProductSerialNumberStatusInner listProductSerialNumberStatus();
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +96,7 @@ public interface PaloAltoNetworksCloudngfwOperationsClient {
     Response<SupportInfoModelInner> listSupportInfoWithResponse(Context context);
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

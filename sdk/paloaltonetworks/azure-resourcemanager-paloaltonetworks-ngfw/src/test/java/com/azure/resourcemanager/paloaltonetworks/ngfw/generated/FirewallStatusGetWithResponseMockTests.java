@@ -21,7 +21,7 @@ public final class FirewallStatusGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"RED\",\"healthReason\":\"okgkskjivbs\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"DOWN\"},\"provisioningState\":\"Failed\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"pgeumilh\",\"hubUrl\":\"itrdexy\"}},\"id\":\"nofnin\",\"name\":\"dbzsx\",\"type\":\"wqqrsmpcbbprtuga\"}";
+            = "{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"INITIALIZING\",\"healthReason\":\"ivmakx\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Deleted\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"ect\",\"hubUrl\":\"fjmskdchmaiu\"}},\"id\":\"vlzw\",\"name\":\"vgmfalkzazmgok\",\"type\":\"dgjqafkmkro\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FirewallStatusGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FirewallStatusResource response = manager.firewallStatus()
-            .getWithResponse("xhmt", "tvegwqiukvzwy", com.azure.core.util.Context.NONE)
+            .getWithResponse("ztjctibpvbkae", "xsmzygdf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pgeumilh", response.strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("itrdexy", response.strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("ect", response.strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("fjmskdchmaiu", response.strataCloudManagerInfo().hubUrl());
     }
 }
