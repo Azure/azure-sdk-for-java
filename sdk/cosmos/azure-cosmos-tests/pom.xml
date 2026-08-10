@@ -256,6 +256,18 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
+      <!-- Runs CosmosTestAccountJanitor, the standalone cleanup entry point used by the always-run
+           pipeline post steps. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+        <configuration>
+          <mainClass>com.azure.cosmos.CosmosTestAccountJanitor</mainClass>
+          <classpathScope>test</classpathScope>
+        </configuration>
+      </plugin>
+
       <!-- CosmosSkip - Needed temporary false values to not fail. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

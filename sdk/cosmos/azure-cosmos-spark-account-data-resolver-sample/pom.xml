@@ -375,6 +375,9 @@
               <source>1.8</source>
               <target>1.8</target>
               <scalaVersion>2.12.19</scalaVersion>
+              <!-- Per-module bridge cache. The default (~/.sbt/1.0/zinc/org.scala-sbt) is shared, and the
+                   plugin installs the bridge with no lock, so parallel builds (-T) can read a half-written jar. -->
+              <secondaryCacheDir>${project.build.directory}/scala-compiler-bridge</secondaryCacheDir>
             </configuration>
             <executions>
               <execution>
