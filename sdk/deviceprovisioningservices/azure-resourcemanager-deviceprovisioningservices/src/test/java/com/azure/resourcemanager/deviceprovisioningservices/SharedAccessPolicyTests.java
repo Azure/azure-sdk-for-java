@@ -12,7 +12,6 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropert
 import com.azure.resourcemanager.deviceprovisioningservices.models.SharedAccessSignatureAuthorizationRule;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -23,7 +22,6 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.OWN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Disabled("Not enough quota")
 public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
     @Test
     @LiveOnly

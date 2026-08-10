@@ -13,7 +13,6 @@ import com.azure.resourcemanager.iothub.models.IotHubSku;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.DEF
 import static com.azure.resourcemanager.deviceprovisioningservices.Constants.IOTHUB_OWNER_ACCESS_KEY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled("Not enough quota")
 public class LinkedHubTests extends DeviceProvisioningTestBase {
     @Test
     @LiveOnly

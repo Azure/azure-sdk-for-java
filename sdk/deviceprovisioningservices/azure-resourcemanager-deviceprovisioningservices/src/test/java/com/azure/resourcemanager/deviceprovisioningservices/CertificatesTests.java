@@ -11,7 +11,6 @@ import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.Verifi
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Disabled("Not enough quota")
 public class CertificatesTests extends DeviceProvisioningTestBase {
     @Test
     @LiveOnly
