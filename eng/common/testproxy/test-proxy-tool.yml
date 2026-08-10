@@ -24,7 +24,7 @@ steps:
 
   - task: PowerShell@2
     inputs:
-      filePath: '${{ parameters.templateRoot }}/eng/common/pipelines/scripts/Install-TestProxy.ps1'
+      filePath: '${{ parameters.templateRoot }}/eng/common/scripts/Install-TestProxy.ps1'
       arguments: >
         -TemplateRoot "${{ parameters.templateRoot }}"
         -BinariesDirectory $(Build.BinariesDirectory)
@@ -73,7 +73,7 @@ steps:
 
     - task: PowerShell@2
       inputs:
-        filePath: '${{ parameters.templateRoot }}/eng/common/pipelines/scripts/Test-TestProxyIsAlive.ps1'
+        filePath: '${{ parameters.templateRoot }}/eng/common/scripts/Test-TestProxyIsAlive.ps1'
         arguments: >
           -ProxyUrl ${{ parameters.proxyUrl }}
         pwsh: true
