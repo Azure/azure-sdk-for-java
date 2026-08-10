@@ -7,12 +7,19 @@
 - Added per-container session credential caching for identity-authenticated blob downloads.
 - Added `SessionProvider`, `SessionCredential`, and `SessionRequestContext` APIs so applications can supply
   custom session credentials through `SessionOptions` on `BlobServiceClientBuilder`.
+- Added `SessionProvider#invalidateSession` and `SessionProvider#refreshSession` default methods, so custom
+  `SessionProvider` implementations can opt into compare-and-invalidate eviction on HTTP `401` and proactive
+  background refresh on the service's `x-ms-auth-info: session_expiring` hint. Both default to safe no-ops,
+  so existing custom providers that only implement `getSession`/`getSessionAsync` continue to work unchanged.
 
 ### Breaking Changes
 
 - Session authentication is now enabled by default for eligible identity-authenticated blob downloads.
 - Replaced the `SessionMode` values `NONE`, `AUTO`, and `SINGLE_SPECIFIED_CONTAINER` with `ENABLED` and
   `DISABLED`.
+- Removed `SessionOptions.orDefault(SessionOptions)`. This was an internal helper that should not have been
+  public; callers do not need a replacement since `BlobServiceClientBuilder#sessionOptions` already treats a
+  `null` argument as equivalent to a default-constructed `SessionOptions`.
 
 ### Bugs Fixed
 
