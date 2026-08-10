@@ -6,13 +6,11 @@ package com.azure.storage.file.share.implementation.util;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -89,6 +87,7 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.xml.XmlReader;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -103,6 +102,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.xml.stream.XMLStreamException;
 
 import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
@@ -528,8 +529,23 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareProperties);
     }
 
-    public static Response<ShareStatistics> mapGetStatisticsResponse(Response<ShareStats> response) {
-        return new SimpleResponse<>(response, new ShareStatistics(response.getValue().getShareUsageBytes()));
+    public static Response<ShareStatistics> mapGetStatisticsResponse(Response<BinaryData> response) {
+        ShareStats shareStats = deserializeXml(response.getValue(), ShareStats::fromXml);
+        return new SimpleResponse<>(response, new ShareStatistics(shareStats.getShareUsageBytes()));
+    }
+
+    /** Deserializes an XML response body via the model's {@code fromXml}. */
+    private static <T> T deserializeXml(BinaryData body, XmlDeserializer<T> deserializer) {
+        try (XmlReader reader = XmlReader.fromStream(body.toStream())) {
+            return deserializer.read(reader);
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+        }
+    }
+
+    @FunctionalInterface
+    private interface XmlDeserializer<T> {
+        T read(XmlReader reader) throws XMLStreamException;
     }
 
     public static Response<ShareFileUploadInfo>
@@ -561,65 +577,6 @@ public class ModelHelper {
     }
 
     private static final HttpHeaderName X_MS_SNAPSHOT = HttpHeaderName.fromString("x-ms-snapshot");
-
-    /**
-     * Builds the {@link RequestOptions} for a share-scoped operation whose only inputs are optional metadata: sets the
-     * x-ms-meta-* headers and re-scopes the account-scoped request URL to the share resource.
-     */
-    public static RequestOptions createSnapshotRequestOptions(String shareName, Map<String, String> metadata,
-        Context context) {
-        RequestOptions requestOptions = new RequestOptions().setContext(context);
-        addMetadata(requestOptions, metadata);
-        scopeRequestToResourcePath(requestOptions, shareName);
-        return requestOptions;
-    }
-
-    /**
-     * The generated protocol methods target the account-scoped service URL; this appends the resource path (e.g.
-     * "{shareName}" or "{shareName}/{filePath}") to the request URL while preserving the route's query parameters.
-     */
-    public static void scopeRequestToResourcePath(RequestOptions requestOptions, String resourcePath) {
-        requestOptions.addRequestCallback(request -> {
-            UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
-            urlBuilder.setPath(resourcePath);
-            try {
-                request.setUrl(urlBuilder.toUrl());
-            } catch (java.net.MalformedURLException e) {
-                throw new IllegalStateException(e);
-            }
-        });
-    }
-
-    /** Adds the {@code x-ms-lease-id} header when a lease id is present. */
-    public static void addLeaseId(RequestOptions requestOptions, String leaseId) {
-        if (leaseId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
-        }
-    }
-
-    /** Adds the {@code sharesnapshot} query parameter when a snapshot is present. */
-    public static void addSnapshot(RequestOptions requestOptions, String snapshot) {
-        if (snapshot != null) {
-            requestOptions.addQueryParam("sharesnapshot", snapshot);
-        }
-    }
-
-    /** Adds the {@code x-ms-meta-*} headers for each metadata entry. */
-    public static void addMetadata(RequestOptions requestOptions, Map<String, String> metadata) {
-        if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
-        }
-    }
-
-    /** Adds the {@code x-ms-delete-snapshots} header when a delete-snapshots option is present. */
-    public static void addDeleteSnapshotsHeader(RequestOptions requestOptions, ShareSnapshotsDeleteOptionType option) {
-        DeleteSnapshotsOptionType deleteSnapshots = toDeleteSnapshotsOptionType(option);
-        if (deleteSnapshots != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-delete-snapshots"), deleteSnapshots.toString());
-        }
-    }
 
     public static Response<ShareSnapshotInfo> mapCreateSnapshotResponse(Response<Void> response) {
         HttpHeaders headers = response.getHeaders();

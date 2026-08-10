@@ -17,6 +17,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -31,6 +32,7 @@ import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesGetPermissionHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -364,12 +366,8 @@ public class ShareClient {
         String finalEnabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
 
         Callable<Response<Void>> operation = () -> azureFileStorageClient.getShares()
-            .createNoCustomHeadersWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
-                finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
-                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
-                finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(),
-                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), null,
-                finalContext);
+            .createWithResponse(RequestOptionsHelper.createShareRequestOptions(shareName, finalOptions,
+                finalEnabledProtocol, finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -505,7 +503,9 @@ public class ShareClient {
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        RequestOptions requestOptions = ModelHelper.createSnapshotRequestOptions(shareName, metadata, finalContext);
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        RequestOptionsHelper.addMetadata(requestOptions, metadata);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         Callable<Response<Void>> operation
             = () -> azureFileStorageClient.getShares().createSnapshotWithResponse(requestOptions);
 
@@ -601,10 +601,10 @@ public class ShareClient {
             : finalOptions.getRequestConditions();
 
         RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
-        ModelHelper.addSnapshot(requestOptions, snapshot);
-        ModelHelper.addDeleteSnapshotsHeader(requestOptions, finalOptions.getDeleteSnapshotsOptions());
-        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
-        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        RequestOptionsHelper.addSnapshot(requestOptions, snapshot);
+        RequestOptionsHelper.addDeleteSnapshotsHeader(requestOptions, finalOptions.getDeleteSnapshotsOptions());
+        RequestOptionsHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         Callable<Response<Void>> operation
             = () -> this.azureFileStorageClient.getShares().deleteWithResponse(requestOptions);
 
@@ -773,9 +773,9 @@ public class ShareClient {
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
-        ModelHelper.addSnapshot(requestOptions, snapshot);
-        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
-        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        RequestOptionsHelper.addSnapshot(requestOptions, snapshot);
+        RequestOptionsHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         Callable<Response<Void>> operation
             = () -> azureFileStorageClient.getShares().getPropertiesWithResponse(requestOptions);
 
@@ -903,11 +903,8 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .setPropertiesNoCustomHeadersWithResponse(shareName, null, options.getQuotaInGb(), options.getAccessTier(),
-                requestConditions.getLeaseId(), options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, finalContext);
+            .setPropertiesWithResponse(RequestOptionsHelper.setSharePropertiesRequestOptions(shareName, options,
+                requestConditions.getLeaseId(), finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1024,9 +1021,9 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
-        ModelHelper.addMetadata(requestOptions, options.getMetadata());
-        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
-        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        RequestOptionsHelper.addMetadata(requestOptions, options.getMetadata());
+        RequestOptionsHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         Callable<Response<Void>> operation
             = () -> this.azureFileStorageClient.getShares().setMetadataWithResponse(requestOptions);
 
@@ -1318,8 +1315,11 @@ public class ShareClient {
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<ShareStats>> operation = () -> this.azureFileStorageClient.getShares()
-            .getStatisticsNoCustomHeadersWithResponse(shareName, null, requestConditions.getLeaseId(), finalContext);
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        RequestOptionsHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        Callable<Response<BinaryData>> operation
+            = () -> this.azureFileStorageClient.getShares().getStatisticsWithResponse(requestOptions);
 
         return ModelHelper.mapGetStatisticsResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
