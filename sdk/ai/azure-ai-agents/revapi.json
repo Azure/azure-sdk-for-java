@@ -64,6 +64,18 @@
           "code": "java.field.removed",
           "old": "field com.azure.ai.agents.models.ToolType.FABRIC_DATAAGENT_PREVIEW",
           "justification": "Breaking change in beta operation: ToolType.FABRIC_DATAAGENT_PREVIEW was renamed to FABRIC_DATA_AGENT_PREVIEW for consistent naming."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.BetaAgents(Async)?Client::createOptimizationJob(WithResponse)?\\(.*\\)",
+          "justification": "Breaking change in beta operation: createOptimizationJob was replaced by the long-running-operation beginCreateOptimizationJob to align with the current AgentsOptimization preview contract."
+        },
+        {
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com.azure.ai.agents.models.ToolboxToolType.TOOLBOX_SEARCH_PREVIEW",
+          "new": "field com.azure.ai.agents.models.ToolboxToolType.TOOLBOX_SEARCH_PREVIEW",
+          "justification": "Breaking change in preview enum: a new preview constant was inserted earlier in ToolboxToolType, shifting the ordinal of TOOLBOX_SEARCH_PREVIEW. Ordinal-based code is not supported for preview enum constants."
         }
       ]
     }

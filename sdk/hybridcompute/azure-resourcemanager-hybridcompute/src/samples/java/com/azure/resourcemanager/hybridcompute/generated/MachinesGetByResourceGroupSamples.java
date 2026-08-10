@@ -11,7 +11,7 @@ import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
  */
 public final class MachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
      */
     /**
      * Sample code: Get Machine with License Profile Instance View.
@@ -26,7 +26,7 @@ public final class MachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-16-preview/machine/Machines_Get.json
+     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Get.json
      */
     /**
      * Sample code: Get Machine.

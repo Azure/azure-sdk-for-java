@@ -72,7 +72,8 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to HybridComputeManager.
- * Azure Arc( Servers and K8s Clusters) API reference for Private Link's Scopes management.
+ * Azure Arc API reference for managing connected machines, machine extensions, run commands, gateways, licenses,
+ * license profiles, private link scopes, and related HybridCompute resources.
  */
 public final class HybridComputeManager {
     private ResourceProviders resourceProviders;

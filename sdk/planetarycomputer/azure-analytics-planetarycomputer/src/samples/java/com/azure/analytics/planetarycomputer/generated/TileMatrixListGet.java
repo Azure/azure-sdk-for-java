@@ -16,8 +16,8 @@ public class TileMatrixListGet {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-list-tile-matrices.tile-matrix-list-get
-        List<String> response = dataClient.listTileMatrices();
-        // END:com.azure.analytics.planetarycomputer.generated.data-list-tile-matrices.tile-matrix-list-get
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile-matrices.tile-matrix-list-get
+        List<String> response = dataClient.getTileMatrices();
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile-matrices.tile-matrix-list-get
     }
 }

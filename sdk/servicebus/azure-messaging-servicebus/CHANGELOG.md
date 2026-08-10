@@ -10,6 +10,17 @@
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusSessionReceiverClient.acceptNextSession()`/`acceptSession()` blocking for the full
+  operation timeout (~245s with default retry options) and throwing
+  `IllegalStateException: Timeout on blocking read ... (client-timeout)` when the broker accepts the
+  session-acquire link but never responds (a hung acquire). The session acquirer now bounds a single
+  acquire attempt on the synchronous (non-retry) path with a client-side guard of twice the
+  `tryTimeout`, disposing the half-open receive link when the guard fires so the broker-side session
+  lock is released instead of orphaned. On the retry-enabled path (session `ServiceBusProcessorClient`
+  and `ServiceBusSessionReceiverAsyncClient`), retries are now spaced by a bounded backoff instead of
+  retrying with no delay, preventing a tight CPU-burning loop when acquire attempts fail fast.
+  ([#49093](https://github.com/Azure/azure-sdk-for-java/issues/49093))
+
 ### Other Changes
 
 ## 7.17.19 (2026-07-01)

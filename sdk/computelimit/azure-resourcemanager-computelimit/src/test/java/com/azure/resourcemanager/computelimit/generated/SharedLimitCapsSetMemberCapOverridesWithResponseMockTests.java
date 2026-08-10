@@ -24,7 +24,7 @@ public final class SharedLimitCapsSetMemberCapOverridesWithResponseMockTests {
     @Test
     public void testSetMemberCapOverridesWithResponse() throws Exception {
         String responseStr
-            = "{\"memberCapOverrides\":[{\"subscriptionId\":\"yyazttbt\",\"cap\":1396816712},{\"subscriptionId\":\"rq\",\"cap\":1226388571},{\"subscriptionId\":\"edckzywbiexzfey\",\"cap\":1207160281},{\"subscriptionId\":\"axibxujw\",\"cap\":954772002}]}";
+            = "{\"memberCapOverrides\":[{\"subscriptionId\":\"vce\",\"cap\":722438368},{\"subscriptionId\":\"eil\",\"cap\":645994444},{\"subscriptionId\":\"notyfjfcnjbkcn\",\"cap\":949474495},{\"subscriptionId\":\"hbttkphyw\",\"cap\":492744230}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class SharedLimitCapsSetMemberCapOverridesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SetMemberCapOverridesResult response = manager.sharedLimitCaps()
-            .setMemberCapOverridesWithResponse("nlqidybyxczf", "lhaaxdbabp",
+            .setMemberCapOverridesWithResponse("kyzxuutk", "cwscwsvlx",
                 new SetMemberCapOverridesRequest().withMemberCapOverrides(
-                    Arrays.asList(new MemberCap().withSubscriptionId("wrqlfktsthsuco").withCap(1792209333))),
+                    Arrays.asList(new MemberCap().withSubscriptionId("ogtwrupqsxvnmi").withCap(335871101))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yyazttbt", response.memberCapOverrides().get(0).subscriptionId());
-        Assertions.assertEquals(1396816712, response.memberCapOverrides().get(0).cap());
+        Assertions.assertEquals("vce", response.memberCapOverrides().get(0).subscriptionId());
+        Assertions.assertEquals(722438368, response.memberCapOverrides().get(0).cap());
     }
 }

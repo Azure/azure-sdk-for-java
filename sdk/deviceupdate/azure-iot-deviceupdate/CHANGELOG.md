@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2026-08-05)
+
+### Features Added
+
+#### `DeviceUpdateServiceVersion` was modified
+
+* `V2026_06_01` was added
 
 ## 1.0.34 (2026-07-01)
 

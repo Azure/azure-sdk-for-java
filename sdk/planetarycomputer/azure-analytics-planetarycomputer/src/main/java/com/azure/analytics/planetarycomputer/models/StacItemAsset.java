@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -109,7 +110,7 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
      * Represents a STAC item asset, which describes the assets available under any item in the collection.
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Creates an instance of StacItemAsset class.
@@ -393,7 +394,7 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -406,7 +407,7 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
      * @return the StacItemAsset object itself.
      */
     @Generated
-    public StacItemAsset setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public StacItemAsset setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -434,8 +435,13 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
         jsonWriter.writeStringField("href", this.href);
         jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -466,7 +472,7 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
             String description = null;
             String href = null;
             List<String> roles = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -504,7 +510,8 @@ public final class StacItemAsset implements JsonSerializable<StacItemAsset> {
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             StacItemAsset deserializedStacItemAsset = new StacItemAsset(title, type);

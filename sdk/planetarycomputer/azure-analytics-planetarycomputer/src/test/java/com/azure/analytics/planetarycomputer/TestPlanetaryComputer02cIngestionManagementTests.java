@@ -44,7 +44,8 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
 
         // Create a source first
         SharedAccessSignatureTokenIngestionSource sourceDefinition = new SharedAccessSignatureTokenIngestionSource(
-            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri));
+            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri)
+                .setSharedAccessSignatureToken(testEnvironment.getIngestionSasToken()));
 
         IngestionSource createdSource = ingestionClient.createSource(sourceDefinition);
         String sourceId = createdSource.getId();
@@ -145,7 +146,8 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
 
         // Create a source
         SharedAccessSignatureTokenIngestionSource sourceDefinition = new SharedAccessSignatureTokenIngestionSource(
-            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri));
+            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri)
+                .setSharedAccessSignatureToken(testEnvironment.getIngestionSasToken()));
 
         IngestionSource createdSource = ingestionClient.createSource(sourceDefinition);
         String sourceId = createdSource.getId();
@@ -186,15 +188,17 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
 
         // Create initial source
         SharedAccessSignatureTokenIngestionSource sourceDefinition = new SharedAccessSignatureTokenIngestionSource(
-            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri));
+            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri)
+                .setSharedAccessSignatureToken(testEnvironment.getIngestionSasToken()));
 
         IngestionSource createdSource = ingestionClient.createSource(sourceDefinition);
         String sourceId = createdSource.getId();
         System.out.println("Created initial source with ID: " + sourceId);
 
-        // First replacement - with same SAS token (testing update mechanism)
+        // First replacement - use actual sourceId in body
         SharedAccessSignatureTokenIngestionSource replacementSource1 = new SharedAccessSignatureTokenIngestionSource(
-            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(uniqueContainerUri));
+            sourceId, new SharedAccessSignatureTokenConnection(uniqueContainerUri)
+                .setSharedAccessSignatureToken(testEnvironment.getIngestionSasToken()));
 
         // Act - First replacement
         IngestionSource replaced1 = ingestionClient.replaceSource(sourceId, replacementSource1);
@@ -206,10 +210,11 @@ public class TestPlanetaryComputer02cIngestionManagementTests extends PlanetaryC
         System.out.println("First replacement successful:");
         System.out.println("  - ID: " + replaced1.getId());
 
-        // Second replacement - with updated SAS token (simulating token refresh)
+        // Second replacement - use actual sourceId in body
         String updatedContainerUri = containerUri + "/" + UUID.randomUUID().toString();
         SharedAccessSignatureTokenIngestionSource replacementSource2 = new SharedAccessSignatureTokenIngestionSource(
-            "00000000-0000-0000-0000-000000000000", new SharedAccessSignatureTokenConnection(updatedContainerUri));
+            sourceId, new SharedAccessSignatureTokenConnection(updatedContainerUri)
+                .setSharedAccessSignatureToken(testEnvironment.getIngestionSasToken()));
 
         // Act - Second replacement
         IngestionSource replaced2 = ingestionClient.replaceSource(sourceId, replacementSource2);
