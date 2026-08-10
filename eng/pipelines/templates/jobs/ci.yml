@@ -108,17 +108,10 @@ jobs:
             exit 1
           displayName: 'Validate: at least one package is selected for release'
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/ci*.yml' # necessary for save-package-properties.yml
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+      - checkout: self
+        clean: false
+        fetchDepth: 1
+        fetchTags: false
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -144,14 +137,6 @@ jobs:
           arguments: >
             -SourcesDirectory $(Build.SourcesDirectory)
             -ProjectList $(ProjectList)
-
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
-          parameters:
-            Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -318,18 +303,10 @@ jobs:
         inputs:
           versionSpec: $(PythonVersion)
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/*.yml'
-              - '.vscode/cspell.json'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+      - checkout: self
+        clean: false
+        fetchDepth: 1
+        fetchTags: false
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'

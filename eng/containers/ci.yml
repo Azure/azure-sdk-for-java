@@ -45,7 +45,10 @@ extends:
             - $(containerRegistry).azurecr.io/$(imageRepository):$(stableTag)
 
         steps:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        - checkout: self
+          clean: false
+          fetchDepth: 1
+          fetchTags: false
 
         - task: AzureCLI@2
           displayName: Login to $(containerRegistry)
