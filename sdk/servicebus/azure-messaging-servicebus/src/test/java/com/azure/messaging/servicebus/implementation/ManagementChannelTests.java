@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -51,6 +52,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +66,7 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
@@ -1057,5 +1060,429 @@ class ManagementChannelTests {
         // Got a warning about this being confusing because it was passed to varargs. So we cast to Object.
         final Object contents = new byte[] { 10, 11, 8, 88 };
         return Stream.of(Arguments.of(contents), Arguments.of((Object) null));
+    }
+
+    // --- getMessageSessions tests ---
+
+    /**
+     * Verifies getMessageSessions in updated-after mode sends the correct timestamp and parses the response.
+     */
+    @Test
+    void getMessageSessionsSessionStateUpdatedAfterMode() {
+        // Arrange
+        final OffsetDateTime lastUpdated = OffsetDateTime.of(2026, 1, 15, 10, 30, 0, 0, ZoneOffset.UTC);
+        final int skip = 0;
+        final int top = 100;
+        final String[] sessionIds = new String[] { "session-1", "session-2", "session-3" };
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
+        responseBody.put(ManagementConstants.SKIP, 3);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(lastUpdated, skip, top, null)).assertNext(result -> {
+            assertEquals(3, result.getSessionIds().size());
+            assertEquals("session-1", result.getSessionIds().get(0));
+            assertEquals("session-2", result.getSessionIds().get(1));
+            assertEquals("session-3", result.getSessionIds().get(2));
+            // Cursor for the next page must be the server-returned skip (Track 1 SessionBrowser semantics),
+            // not currentSkip + page.size().
+            assertEquals(3, result.getNextSkip());
+        }).expectComplete().verify(TIMEOUT);
+
+        // Verify the sent AMQP message
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+
+        final Message sentMessage = messageCaptor.getValue();
+        assertTrue(sentMessage.getBody() instanceof AmqpValue);
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body = (Map<String, Object>) ((AmqpValue) sentMessage.getBody()).getValue();
+        assertTrue(body.get(ManagementConstants.LAST_UPDATED_TIME) instanceof Date);
+        // Assert exact wire timestamp matches the input - catches any regression in the
+        // OffsetDateTime -> Date conversion / rounding path.
+        assertEquals(Date.from(lastUpdated.toInstant()), body.get(ManagementConstants.LAST_UPDATED_TIME));
+        assertEquals(skip, body.get(ManagementConstants.SKIP));
+        assertEquals(top, body.get(ManagementConstants.TOP));
+        assertFalse(body.containsKey(ManagementConstants.LAST_SESSION_ID));
+
+        // Assert operation name
+        final Map<String, Object> appProps = sentMessage.getApplicationProperties().getValue();
+        assertEquals(OPERATION_GET_MESSAGE_SESSIONS, appProps.get(MANAGEMENT_OPERATION_KEY));
+
+        // Assert no associated link name (entity-level operation)
+        assertFalse(appProps.containsKey(ASSOCIATED_LINK_NAME_KEY));
+    }
+
+    /**
+     * Verifies getMessageSessions in active-messages mode uses the Track 1 active-messages sentinel.
+     * Track 1's {@code SessionBrowser.MAXDATE} is {@code new Date(253402300800000L)}
+     * (10000-01-01T00:00:00Z UTC, 1 ms past 9999-12-31T23:59:59.999Z), which the broker recognizes
+     * as the "list sessions with active messages" mode.
+     */
+    @Test
+    void getMessageSessionsActiveMessagesMode() {
+        // Arrange - Track 1 active-messages sentinel (10000-01-01T00:00:00Z UTC).
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final String[] sessionIds = new String[] { "active-1", "active-2" };
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null)).assertNext(result -> {
+            assertEquals(2, result.getSessionIds().size());
+            assertEquals("active-1", result.getSessionIds().get(0));
+            assertEquals("active-2", result.getSessionIds().get(1));
+        }).expectComplete().verify(TIMEOUT);
+
+        // Verify the sent timestamp matches Track 1's MAXDATE wire value.
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
+        assertEquals(253402300800000L, sentDate.getTime());
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list on 204 No Content.
+     */
+    @Test
+    void getMessageSessionsNoContent() {
+        // Arrange - set response to 204. Use a local copy of applicationProperties to keep this
+        // test's response setup self-contained (matches the getMessageSessionsNotFound pattern).
+        final Map<String, Object> noContentApplicationProperties = new HashMap<>(applicationProperties);
+        noContentApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NO_CONTENT.getValue());
+        responseMessage.setApplicationProperties(new ApplicationProperties(noContentApplicationProperties));
+        responseMessage.setBody(null);
+
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list on 404 Not Found (SessionNotFound).
+     * The service may return 404 + SessionNotFound when zero sessions exist.
+     */
+    @Test
+    void getMessageSessionsNotFound() {
+        // Arrange - set response to 404 with the legacy SessionNotFound error-condition so
+        // sendWithVerify treats it as a non-error (only 404 + MESSAGE_NOT_FOUND or SESSION_NOT_FOUND
+        // is passed through; bare 404 would surface as an error). Use a local copy of
+        // applicationProperties to keep this test's response setup self-contained.
+        final Map<String, Object> responseApplicationProperties = new HashMap<>(applicationProperties);
+        responseApplicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        responseApplicationProperties.put("error-condition", AmqpErrorCondition.SESSION_NOT_FOUND.getErrorCondition());
+        responseMessage.setApplicationProperties(new ApplicationProperties(responseApplicationProperties));
+        responseMessage.setBody(null);
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions returns empty list when response has no sessions-ids key.
+     */
+    @Test
+    void getMessageSessionsEmptyResponse() {
+        // Arrange - 200 OK but empty map (no sessions-ids key)
+        responseMessage.setBody(new AmqpValue(new HashMap<>()));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> assertTrue(result.getSessionIds().isEmpty()))
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions fails the operation when the broker payload contains a
+     * null session-id entry, rather than surfacing the literal string "null" as a session ID.
+     */
+    @Test
+    void getMessageSessionsRejectsNullSessionIdEntry() {
+        // Arrange - 200 OK with a sessions-ids array containing a null entry.
+        final Object[] sessionIds = new Object[] { "session-1", null, "session-3" };
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, sessionIds);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions fails the operation when the broker returns a 200 OK
+     * response whose AmqpValue payload is not a Map (e.g., the broker shape changed). Without
+     * this protocol check we'd silently terminate pagination and drop any remaining results.
+     */
+    @Test
+    void getMessageSessionsRejectsUnexpectedBodyType() {
+        // Arrange - 200 OK with an AmqpValue whose value is a String, not a Map.
+        responseMessage.setBody(new AmqpValue("unexpected-string-payload"));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions fails the operation when the {@code sessions-ids} value
+     * is neither {@code Object[]} nor {@code Iterable}, e.g., a String. Without this protocol
+     * check we'd silently terminate pagination on an empty list.
+     */
+    @Test
+    void getMessageSessionsRejectsUnexpectedSessionIdsPayloadType() {
+        // Arrange - 200 OK with sessions-ids set to a String (neither Object[] nor Iterable).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, "not-an-array-or-iterable");
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .expectError(IllegalStateException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that getMessageSessions clamps inputs at or beyond the Track 1 sentinel down to
+     * the sentinel itself, both to avoid {@link java.util.Date} overflow for {@link OffsetDateTime#MAX}
+     * and to keep the broker's active-messages comparison stable.
+     */
+    @Test
+    void getMessageSessionsCapsYear() {
+        // Arrange - use OffsetDateTime.MAX so this test would actually fail (with
+        // ArithmeticException from Date.from) if the clamp were moved after the conversion or
+        // removed; a smaller far-future value like year 99999 would not exercise the overflow.
+        final OffsetDateTime farFuture = OffsetDateTime.MAX;
+
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "s1" });
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act - should NOT throw ArithmeticException because the input is clamped before
+        // Date.from() is called.
+        StepVerifier.create(managementChannel.getMessageSessions(farFuture, 0, 100, null))
+            .assertNext(result -> assertEquals(1, result.getSessionIds().size()))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Verify the sent timestamp is capped to the Track 1 active-messages sentinel.
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        final Date sentDate = (Date) body.get(ManagementConstants.LAST_UPDATED_TIME);
+        // 253402300800000 ms == 10000-01-01T00:00:00Z UTC == Track 1's SessionBrowser.MAXDATE.
+        assertEquals(253402300800000L, sentDate.getTime());
+    }
+
+    /**
+     * Verifies that getMessageSessions includes last-session-id when provided.
+     */
+    @Test
+    void getMessageSessionsWithLastSessionId() {
+        // Arrange
+        final String lastSessionId = "cursor-session-42";
+        responseMessage.setBody(
+            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSION_IDS, new String[] { "next-1" })));
+
+        // Act
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100,
+                100, lastSessionId))
+            .assertNext(result -> assertEquals("next-1", result.getSessionIds().get(0)))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Assert last-session-id is in the body
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        assertEquals(lastSessionId, body.get(ManagementConstants.LAST_SESSION_ID));
+    }
+
+    /**
+     * Verifies that when the service returns a {@code skip} that differs from
+     * {@code requestSkip + page.size()} (the broker may filter out expired sessions and report a
+     * larger {@code skip} than the page length), the result preserves the server-returned value as
+     * the cursor. This is the Track 1 SessionBrowser contract; using a locally computed skip would
+     * silently skip or duplicate sessions on the next request.
+     */
+    @Test
+    void getMessageSessionsHonorsServerReturnedSkip() {
+        // Arrange - response page has 2 sessions but the server reports skip=10 (e.g. 8 entries
+        // were filtered before the page boundary).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, 10);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(10, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that {@code getMessageSessions} rejects negative {@code skip} and non-positive
+     * {@code top} arguments with a logged {@link IllegalArgumentException}, so an invalid call
+     * fails fast instead of producing a confusing broker error.
+     */
+    @Test
+    void getMessageSessionsRejectsInvalidPagingArgs() {
+        final OffsetDateTime sentinel = OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, -1, 100, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, 0, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+
+        StepVerifier.create(managementChannel.getMessageSessions(sentinel, 0, -10, null))
+            .expectError(IllegalArgumentException.class)
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that when the broker returns a negative {@code skip} (or omits the field entirely),
+     * {@code readResponseSkip} falls back to {@code requestSkip + pageSize} rather than letting a
+     * negative cursor reach the next request. Saturation guards against overflow as well.
+     */
+    @Test
+    void getMessageSessionsFallsBackOnInvalidServerSkip() {
+        // Arrange - response page returns 2 sessions but reports skip = -1 (invalid).
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, -1);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert - cursor should advance by requestSkip + page.size() = 5 + 2 = 7.
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 5,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(7, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that when the broker returns a {@code skip} that is not strictly greater than
+     * {@code requestSkip} (equal would re-fetch the same page; smaller would cursor backwards),
+     * {@code readResponseSkip} falls back to {@code requestSkip + page.size()} rather than letting
+     * a stalled or backwards cursor reach the next request and risk infinite loops or duplicates.
+     */
+    @Test
+    void getMessageSessionsFallsBackWhenServerSkipIsNotMonotonic() {
+        // Arrange - requestSkip = 10, broker reports responseSkip = 10 (stall) and 2 sessions.
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, new String[] { "a", "b" });
+        responseBody.put(ManagementConstants.SKIP, 10);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert - cursor should advance by requestSkip + page.size() = 10 + 2 = 12 instead
+        // of stalling at 10.
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 10,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals(12, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
+    }
+
+    /**
+     * Verifies that {@code getMessageSessions} includes {@code last-session-id} when the cursor is
+     * the empty string, since Service Bus permits an empty session ID. Collapsing {@code ""} into
+     * "no cursor" would silently restart pagination from the first page when the previous page
+     * ended on an empty-ID session.
+     */
+    @Test
+    void getMessageSessionsForwardsEmptyLastSessionIdAsCursor() {
+        // Arrange
+        responseMessage.setBody(
+            new AmqpValue(Collections.singletonMap(ManagementConstants.SESSION_IDS, new String[] { "next-1" })));
+
+        // Act - pass empty-string cursor
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 100,
+                100, ""))
+            .assertNext(result -> assertEquals("next-1", result.getSessionIds().get(0)))
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        // Assert the empty cursor was sent (not collapsed away)
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> body
+            = (Map<String, Object>) ((AmqpValue) messageCaptor.getValue().getBody()).getValue();
+        assertTrue(body.containsKey(ManagementConstants.LAST_SESSION_ID));
+        assertEquals("", body.get(ManagementConstants.LAST_SESSION_ID));
+    }
+
+    /**
+     * Verifies that {@code getMessageSessions} parses the {@code sessions-ids} payload when the
+     * AMQP layer surfaces it as an {@link Iterable} (e.g., {@link java.util.List}) instead of an
+     * {@code Object[]}. Treating only arrays would silently produce an empty page and prematurely
+     * terminate pagination if a future broker or codec change altered the payload shape.
+     */
+    @Test
+    void getMessageSessionsParsesIterableSessionIds() {
+        // Arrange - response body uses a List for sessions-ids instead of an Object[].
+        final Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put(ManagementConstants.SESSION_IDS, java.util.Arrays.asList("listed-1", "listed-2"));
+        responseBody.put(ManagementConstants.SKIP, 2);
+        responseMessage.setBody(new AmqpValue(responseBody));
+
+        // Act & Assert
+        StepVerifier
+            .create(managementChannel.getMessageSessions(OffsetDateTime.of(10000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), 0,
+                100, null))
+            .assertNext(result -> {
+                assertEquals(2, result.getSessionIds().size());
+                assertEquals("listed-1", result.getSessionIds().get(0));
+                assertEquals("listed-2", result.getSessionIds().get(1));
+                assertEquals(2, result.getNextSkip());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

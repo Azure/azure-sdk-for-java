@@ -14,7 +14,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.AccessTokenCache;
+import com.azure.core.credential.AccessTokenCache;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -169,7 +169,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context, boolean checkToForceFetchToken) {
+    private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context, boolean refreshOnContextChange) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
@@ -181,7 +181,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                 .setRequestUrl(context.getHttpRequest().getUrl()));
 
         if (!CoreUtils.isNullOrEmpty(popNonce)) {
-            return this.cache.getToken(popTokenRequestContext, checkToForceFetchToken).flatMap((token) -> {
+            return this.cache.getToken(popTokenRequestContext, refreshOnContextChange).flatMap((token) -> {
                 setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
                 return Mono.empty();
             });
@@ -189,7 +189,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
         return Mono.empty();
     }
 
-    private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context, boolean checkToForceFetchToken) {
+    private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context, boolean refreshOnContextChange) {
         if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
@@ -199,7 +199,7 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                 .setRequestMethod(context.getHttpRequest().getHttpMethod())
                 .setRequestUrl(context.getHttpRequest().getUrl()));
 
-        AccessToken token = this.cache.getTokenSync(popTokenRequestContext, checkToForceFetchToken);
+        AccessToken token = this.cache.getTokenSync(popTokenRequestContext, refreshOnContextChange);
         setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
     }
 

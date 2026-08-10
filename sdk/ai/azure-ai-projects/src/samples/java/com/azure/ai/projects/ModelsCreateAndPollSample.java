@@ -38,10 +38,10 @@ public class ModelsCreateAndPollSample {
         String modelVersion = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_ASSET_VERSION", "1");
         Path sourceDirectory = getSourceDirectory();
 
-        ModelsClient modelsClient = new AIProjectClientBuilder()
+        BetaModelsClient modelsClient = new AIProjectClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildModelsClient();
+            .beta().buildBetaModelsClient();
 
         System.out.printf("Step 1/3: start pending upload for %s/%s%n", modelName, modelVersion);
         BlobUploadLocation uploadLocation = startPendingUpload(modelsClient, modelName, modelVersion);
@@ -77,7 +77,7 @@ public class ModelsCreateAndPollSample {
         return sourceDirectory;
     }
 
-    private static BlobUploadLocation startPendingUpload(ModelsClient modelsClient, String modelName,
+    private static BlobUploadLocation startPendingUpload(BetaModelsClient modelsClient, String modelName,
         String modelVersion) {
         Response<BinaryData> pendingUploadResponse = modelsClient.startModelPendingUploadWithResponse(modelName,
             modelVersion, BinaryData.fromObject(new ModelPendingUploadInput()), new RequestOptions());
@@ -131,7 +131,7 @@ public class ModelsCreateAndPollSample {
         }
     }
 
-    private static Map<?, ?> pollUntilModelVersionExists(ModelsClient modelsClient, String modelName,
+    private static Map<?, ?> pollUntilModelVersionExists(BetaModelsClient modelsClient, String modelName,
         String modelVersion) throws InterruptedException {
         long deadline = System.currentTimeMillis() + 300_000;
         while (true) {

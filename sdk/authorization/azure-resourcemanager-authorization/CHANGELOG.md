@@ -10,6 +10,21 @@
 
 ### Other Changes
 
+## 2.53.11 (2026-08-10)
+
+### Bugs Fixed
+
+- Fixed certificate credential serialization to use standard Base64 encoding required by Microsoft Graph.
+
+## 2.53.10 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+
+
 ## 2.53.9 (2026-05-05)
 
 ### Other Changes

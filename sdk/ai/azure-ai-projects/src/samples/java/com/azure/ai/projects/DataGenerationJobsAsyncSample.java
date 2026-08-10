@@ -7,7 +7,6 @@ import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DataGenerationJobInputs;
 import com.azure.ai.projects.models.DataGenerationJobScenario;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
 import com.azure.core.util.Configuration;
@@ -20,7 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Sample demonstrating data generation job operations using the asynchronous DataGenerationJobsAsyncClient.
+ * Sample demonstrating data generation job operations using the asynchronous BetaDatasetsAsyncClient.
  *
  * <p>Data generation jobs are a preview feature. Before running, set the following environment variables:</p>
  * <ul>
@@ -29,13 +28,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </ul>
  */
 public class DataGenerationJobsAsyncSample {
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
-    private static final DataGenerationJobsAsyncClient DATA_GENERATION_JOBS_ASYNC_CLIENT = new AIProjectClientBuilder()
+    private static final BetaDatasetsAsyncClient DATA_GENERATION_JOBS_ASYNC_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildDataGenerationJobsAsyncClient();
+        .beta().buildBetaDatasetsAsyncClient();
 
     public static void main(String[] args) {
         listGenerationJobs()
@@ -51,7 +48,7 @@ public class DataGenerationJobsAsyncSample {
 
         AtomicBoolean found = new AtomicBoolean(false);
         return DATA_GENERATION_JOBS_ASYNC_CLIENT.listGenerationJobs(
-            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
+            5, PageOrder.DESC, null, null)
             .take(5)
             .doOnNext(job -> {
                 found.set(true);
@@ -75,11 +72,10 @@ public class DataGenerationJobsAsyncSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsAsyncSample.createGenerationJob
 
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-        return DATA_GENERATION_JOBS_ASYNC_CLIENT.createGenerationJob(
+        return DATA_GENERATION_JOBS_ASYNC_CLIENT.beginCreateGenerationJob(
             createSampleDataGenerationJob(model),
-            DATA_GENERATION_PREVIEW,
             UUID.randomUUID().toString()
-        ).doOnNext(job -> {
+        ).next().map(response -> response.getValue()).doOnNext(job -> {
             System.out.printf("Created data generation job: %s%n", job.getId());
             System.out.printf("Status: %s%n", job.getStatus());
         })
@@ -88,19 +84,17 @@ public class DataGenerationJobsAsyncSample {
 
         // BEGIN:com.azure.ai.projects.DataGenerationJobsAsyncSample.getCancelDeleteGenerationJob
 
-        .flatMap(job -> DATA_GENERATION_JOBS_ASYNC_CLIENT.getGenerationJob(job.getId(), DATA_GENERATION_PREVIEW))
+        .flatMap(job -> DATA_GENERATION_JOBS_ASYNC_CLIENT.getGenerationJob(job.getId()))
         .doOnNext(fetched -> {
             System.out.printf("Fetched data generation job: %s%n", fetched.getId());
             System.out.printf("Status: %s%n", fetched.getStatus());
         })
-        .flatMap(fetched -> DATA_GENERATION_JOBS_ASYNC_CLIENT.cancelGenerationJob(fetched.getId(),
-            DATA_GENERATION_PREVIEW))
+        .flatMap(fetched -> DATA_GENERATION_JOBS_ASYNC_CLIENT.cancelGenerationJob(fetched.getId()))
         .doOnNext(cancelled -> {
             System.out.printf("Cancelled data generation job: %s%n", cancelled.getId());
             System.out.printf("Status: %s%n", cancelled.getStatus());
         })
-        .flatMap(cancelled -> DATA_GENERATION_JOBS_ASYNC_CLIENT.deleteGenerationJob(cancelled.getId(),
-            DATA_GENERATION_PREVIEW)
+        .flatMap(cancelled -> DATA_GENERATION_JOBS_ASYNC_CLIENT.deleteGenerationJob(cancelled.getId())
             .doOnSuccess(unused -> System.out.printf("Deleted data generation job: %s%n", cancelled.getId())));
 
         // END:com.azure.ai.projects.DataGenerationJobsAsyncSample.getCancelDeleteGenerationJob
@@ -112,7 +106,7 @@ public class DataGenerationJobsAsyncSample {
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
             .setDescription("Contoso TrailGear support policy and product guidance.");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(1)
+        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
         DataGenerationJobInputs inputs = new DataGenerationJobInputs(

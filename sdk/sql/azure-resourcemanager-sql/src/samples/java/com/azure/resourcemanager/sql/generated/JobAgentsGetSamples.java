@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobAgentsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetJobAgent.json
+     * x-ms-original-file: 2025-01-01/GetJobAgent.json
      */
     /**
      * Sample code: Get a job agent.

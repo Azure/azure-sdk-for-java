@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
  */
 public final class GalleryApplicationVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get.json
      */
     /**
      * Sample code: Get a gallery Application Version.
@@ -26,7 +26,7 @@ public final class GalleryApplicationVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery Application Version with replication status.

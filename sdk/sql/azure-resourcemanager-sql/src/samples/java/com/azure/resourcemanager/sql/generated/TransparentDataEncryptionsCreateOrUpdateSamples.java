@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
  */
 public final class TransparentDataEncryptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/TransparentDataEncryptionUpdate.json
+     * x-ms-original-file: 2025-01-01/TransparentDataEncryptionUpdate.json
      */
     /**
      * Sample code: Update a database's Transparent Data Encryption state with minimal parameters.

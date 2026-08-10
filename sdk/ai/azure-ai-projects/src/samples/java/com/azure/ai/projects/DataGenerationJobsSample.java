@@ -7,7 +7,6 @@ import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DataGenerationJobInputs;
 import com.azure.ai.projects.models.DataGenerationJobScenario;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
 import com.azure.core.util.Configuration;
@@ -17,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * Sample demonstrating data generation job operations using the synchronous DataGenerationJobsClient.
+ * Sample demonstrating data generation job operations using the synchronous BetaDatasetsClient.
  *
  * <p>Data generation jobs are a preview feature. Before running, set the following environment variables:</p>
  * <ul>
@@ -26,13 +25,12 @@ import java.util.UUID;
  * </ul>
  */
 public class DataGenerationJobsSample {
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
-    private static final DataGenerationJobsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
+    private static final BetaDatasetsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildDataGenerationJobsClient();
+        .beta()
+        .buildBetaDatasetsClient();
 
     public static void main(String[] args) {
         listGenerationJobs();
@@ -45,7 +43,7 @@ public class DataGenerationJobsSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsSample.listGenerationJobs
 
         Iterable<DataGenerationJob> jobs = DATA_GENERATION_JOBS_CLIENT.listGenerationJobs(
-            DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
+            5, PageOrder.DESC, null, null);
 
         int count = 0;
         for (DataGenerationJob job : jobs) {
@@ -68,11 +66,10 @@ public class DataGenerationJobsSample {
         // BEGIN:com.azure.ai.projects.DataGenerationJobsSample.createGenerationJob
 
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
-        DataGenerationJob job = DATA_GENERATION_JOBS_CLIENT.createGenerationJob(
+        DataGenerationJob job = DATA_GENERATION_JOBS_CLIENT.beginCreateGenerationJob(
             createSampleDataGenerationJob(model),
-            DATA_GENERATION_PREVIEW,
             UUID.randomUUID().toString()
-        );
+        ).poll().getValue();
 
         System.out.printf("Created data generation job: %s%n", job.getId());
         System.out.printf("Status: %s%n", job.getStatus());
@@ -81,15 +78,15 @@ public class DataGenerationJobsSample {
 
         // BEGIN:com.azure.ai.projects.DataGenerationJobsSample.getCancelDeleteGenerationJob
 
-        DataGenerationJob fetched = DATA_GENERATION_JOBS_CLIENT.getGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
+        DataGenerationJob fetched = DATA_GENERATION_JOBS_CLIENT.getGenerationJob(job.getId());
         System.out.printf("Fetched data generation job: %s%n", fetched.getId());
         System.out.printf("Status: %s%n", fetched.getStatus());
 
-        DataGenerationJob cancelled = DATA_GENERATION_JOBS_CLIENT.cancelGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
+        DataGenerationJob cancelled = DATA_GENERATION_JOBS_CLIENT.cancelGenerationJob(job.getId());
         System.out.printf("Cancelled data generation job: %s%n", cancelled.getId());
         System.out.printf("Status: %s%n", cancelled.getStatus());
 
-        DATA_GENERATION_JOBS_CLIENT.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
+        DATA_GENERATION_JOBS_CLIENT.deleteGenerationJob(job.getId());
         System.out.printf("Deleted data generation job: %s%n", job.getId());
 
         // END:com.azure.ai.projects.DataGenerationJobsSample.getCancelDeleteGenerationJob
@@ -101,7 +98,7 @@ public class DataGenerationJobsSample {
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
             .setDescription("Contoso TrailGear support policy and product guidance.");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(1)
+        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
         DataGenerationJobInputs inputs = new DataGenerationJobInputs(

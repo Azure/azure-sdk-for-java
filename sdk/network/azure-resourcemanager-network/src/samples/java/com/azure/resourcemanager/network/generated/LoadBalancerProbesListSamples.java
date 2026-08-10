@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerProbesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerProbeList.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerProbeList.json
      */
     /**
      * Sample code: LoadBalancerProbeList.

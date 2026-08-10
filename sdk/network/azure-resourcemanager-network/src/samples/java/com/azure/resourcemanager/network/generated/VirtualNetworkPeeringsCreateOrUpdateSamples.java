@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkSubnetPeeringSync.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkSubnetPeeringSync.json
      */
     /**
      * Sample code: Sync subnet Peering.
@@ -36,7 +36,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkV6SubnetPeeringCreate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkV6SubnetPeeringCreate.json
      */
     /**
      * Sample code: Create V6 Subnet peering.
@@ -60,7 +60,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringSync.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringSync.json
      */
     /**
      * Sample code: Sync Peering.
@@ -81,7 +81,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringCreate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringCreate.json
      */
     /**
      * Sample code: Create peering.
@@ -102,7 +102,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Create peering with remote virtual network encryption.
@@ -124,7 +124,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkSubnetPeeringCreate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkSubnetPeeringCreate.json
      */
     /**
      * Sample code: Create subnet peering.
@@ -148,7 +148,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkV6SubnetPeeringSync.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkV6SubnetPeeringSync.json
      */
     /**
      * Sample code: Sync V6 Subnet Peering.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskAccessesDeleteAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Delete.json
+     * x-ms-original-file: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: delete a private endpoint connection under a disk access resource.

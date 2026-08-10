@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class PartitionKeyRangeIdListMetricsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBPKeyRangeIdGetMetrics.json
+     * x-ms-original-file: 2026-03-15/CosmosDBPKeyRangeIdGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.
@@ -20,7 +20,7 @@ public final class PartitionKeyRangeIdListMetricsSamples {
         manager.serviceClient()
             .getPartitionKeyRangeIds()
             .listMetrics("rg1", "ddb1", "databaseRid", "collectionRid", "0",
-                "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
+                "(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
                 com.azure.core.util.Context.NONE);
     }
 }

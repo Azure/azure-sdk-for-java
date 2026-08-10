@@ -82,7 +82,7 @@ public class LlmInputHelperTest {
         assertTrue(output.contains("Amount: 165"));
         assertTrue(output.contains("CurrencyCode: USD"));
         assertTrue(output.contains("Hello world"));
-        assertTrue(output.contains("<!-- page 1 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 1 -->"));
     }
 
     @Test
@@ -183,9 +183,109 @@ public class LlmInputHelperTest {
         assertTrue(output.contains("message: 'latency: 2s'"));
     }
 
+    @Test
+    public void llmStatsWarningFilteredFromRaiWarnings() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\"," + "\"warnings\":["
+            + "{\"code\":\"Telemetry\",\"message\":\"LLMStats: completion calls: 2; embedding calls: 1\"},"
+            + "{\"code\":\"ContentWarning\",\"message\":\"Potentially sensitive content.\"}" + "],"
+            + "\"contents\":[{\"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "\"startPageNumber\":1,\"endPageNumber\":1,\"markdown\":\"text\"}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertTrue(output.contains("rai_warnings:"));
+        assertFalse(output.contains("LLMStats:"));
+        assertTrue(output.contains("Potentially sensitive content."));
+    }
+
+    @Test
+    public void llmStatsWarningOnlyOmitsRaiWarningsBlock() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\","
+            + "\"warnings\":[{\"code\":\"Telemetry\",\"message\":\"LLMStats: completion latency: 7.71s\"}],"
+            + "\"contents\":[{\"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "\"startPageNumber\":1,\"endPageNumber\":1,\"markdown\":\"text\"}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertFalse(output.contains("rai_warnings:"));
+        assertFalse(output.contains("LLMStats:"));
+    }
+
+    @Test
+    public void llmStatsFilterIsCaseSensitive() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\","
+            + "\"warnings\":[{\"code\":\"ContentWarning\",\"message\":\"llmstats: keep as a real warning\"}],"
+            + "\"contents\":[{\"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "\"startPageNumber\":1,\"endPageNumber\":1,\"markdown\":\"text\"}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertTrue(output.contains("rai_warnings:"));
+        assertTrue(output.contains("llmstats: keep as a real warning"));
+    }
+
+    @Test
+    public void llmStatsTextInMarkdownBodyIsPreserved() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\","
+            + "\"warnings\":[{\"code\":\"Telemetry\",\"message\":\"LLMStats: remove this warning text\"}],"
+            + "\"contents\":[{\"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "\"startPageNumber\":1,\"endPageNumber\":1,"
+            + "\"markdown\":\"A log excerpt:\\n- LLMStats: keep this body text\"}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertFalse(output.contains("rai_warnings:"));
+        assertTrue(output.contains("LLMStats: keep this body text"));
+        assertFalse(output.contains("LLMStats: remove this warning text"));
+    }
+
+    @Test
+    public void llmStatsWarningFilteredWithLeadingWhitespace() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\","
+            + "\"warnings\":[{\"code\":\"Telemetry\",\"message\":\"  LLMStats: completion calls: 2\"}],"
+            + "\"contents\":[{\"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "\"startPageNumber\":1,\"endPageNumber\":1,\"markdown\":\"text\"}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertFalse(output.contains("rai_warnings:"));
+        assertFalse(output.contains("LLMStats:"));
+    }
+
     // -----------------------------------------------------------------------
     // Page markers
     // -----------------------------------------------------------------------
+
+    @Test
+    public void pageMarkersNotDuplicatedWhenServiceProvidesMarkers() {
+        String json = "{" + "\"analyzerId\":\"a\",\"apiVersion\":\"v\","
+            + "\"createdAt\":\"2026-01-01T00:00:00Z\",\"stringEncoding\":\"utf16\"," + "\"contents\":[{"
+            + "  \"kind\":\"document\",\"mimeType\":\"application/pdf\","
+            + "  \"startPageNumber\":1,\"endPageNumber\":2,"
+            + "  \"markdown\":\"<!-- InputPageNumber: 1 -->\\n\\nFirst page text.\\n\\n<!-- InputPageNumber: 2 -->\\n\\nSecond page text.\","
+            + "  \"pages\":[" + "    {\"pageNumber\":1,\"spans\":[{\"offset\":0,\"length\":47}]},"
+            + "    {\"pageNumber\":2,\"spans\":[{\"offset\":49,\"length\":48}]}" + "  ]" + "}]" + "}";
+        AnalysisResult result = parseResult(json);
+        String output = LlmInputHelper.toLlmInput(result);
+
+        assertEquals(1, countOccurrences(output, "<!-- InputPageNumber: 1 -->"));
+        assertEquals(1, countOccurrences(output, "<!-- InputPageNumber: 2 -->"));
+    }
+
+    private static int countOccurrences(String text, String needle) {
+        int count = 0;
+        int idx = 0;
+        while ((idx = text.indexOf(needle, idx)) != -1) {
+            count++;
+            idx += needle.length();
+        }
+        return count;
+    }
 
     @Test
     public void toLlmInputMultiPageWithSpans() {
@@ -201,9 +301,9 @@ public class LlmInputHelperTest {
         String output = LlmInputHelper.toLlmInput(result);
 
         assertTrue(output.contains("pages: 2-4"));
-        assertTrue(output.contains("<!-- page 2 -->"));
-        assertTrue(output.contains("<!-- page 3 -->"));
-        assertTrue(output.contains("<!-- page 4 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 2 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 3 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 4 -->"));
     }
 
     @Test
@@ -216,9 +316,9 @@ public class LlmInputHelperTest {
         AnalysisResult result = parseResult(json);
         String output = LlmInputHelper.toLlmInput(result);
 
-        assertTrue(output.contains("<!-- page 3 -->"));
-        assertTrue(output.contains("<!-- page 4 -->"));
-        assertTrue(output.contains("<!-- page 5 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 3 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 4 -->"));
+        assertTrue(output.contains("<!-- InputPageNumber: 5 -->"));
         assertFalse(output.contains("<!-- PageBreak -->"));
     }
 

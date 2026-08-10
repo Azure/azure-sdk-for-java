@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SoftDeletedResourceListByArtifactNameSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GallerySoftDeletedResource_ListByArtifactName.json
      */
     /**
      * Sample code: List soft-deleted resources of an artifact in the gallery.

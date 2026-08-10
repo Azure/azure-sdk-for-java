@@ -18,7 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class CallParticipantInternal implements JsonSerializable<CallParticipantInternal> {
     /*
-     * Communication identifier of the participant
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel identifier;
@@ -43,7 +45,9 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
     }
 
     /**
-     * Get the identifier property: Communication identifier of the participant.
+     * Get the identifier property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @return the identifier value.
      */
@@ -53,7 +57,9 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
     }
 
     /**
-     * Set the identifier property: Communication identifier of the participant.
+     * Set the identifier property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @param identifier the identifier value to set.
      * @return the CallParticipantInternal object itself.

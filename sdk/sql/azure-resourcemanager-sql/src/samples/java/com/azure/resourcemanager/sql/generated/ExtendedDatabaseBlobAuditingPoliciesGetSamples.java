@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.BlobAuditingPolicyName;
  */
 public final class ExtendedDatabaseBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExtendedDatabaseBlobAuditingGet.json
+     * x-ms-original-file: 2025-01-01/ExtendedDatabaseBlobAuditingGet.json
      */
     /**
      * Sample code: Get an extended database's blob auditing policy.

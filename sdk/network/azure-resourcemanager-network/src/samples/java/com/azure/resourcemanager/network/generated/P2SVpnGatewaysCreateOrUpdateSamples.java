@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/P2SVpnGatewayPut.json
+     * x-ms-original-file: 2025-07-01/P2SVpnGatewayPut.json
      */
     /**
      * Sample code: P2SVpnGatewayPut.

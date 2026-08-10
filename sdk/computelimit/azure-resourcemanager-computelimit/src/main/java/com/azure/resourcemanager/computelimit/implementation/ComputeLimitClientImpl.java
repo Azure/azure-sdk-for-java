@@ -29,8 +29,11 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.computelimit.fluent.ComputeLimitClient;
 import com.azure.resourcemanager.computelimit.fluent.FeaturesClient;
 import com.azure.resourcemanager.computelimit.fluent.GuestSubscriptionsClient;
+import com.azure.resourcemanager.computelimit.fluent.MemberCapOverridesClient;
 import com.azure.resourcemanager.computelimit.fluent.OperationsClient;
+import com.azure.resourcemanager.computelimit.fluent.SharedLimitCapsClient;
 import com.azure.resourcemanager.computelimit.fluent.SharedLimitsClient;
+import com.azure.resourcemanager.computelimit.fluent.TrustedHostSubscriptionsClient;
 import com.azure.resourcemanager.computelimit.fluent.VmFamiliesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -159,6 +162,20 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
     }
 
     /**
+     * The TrustedHostSubscriptionsClient object to access its operations.
+     */
+    private final TrustedHostSubscriptionsClient trustedHostSubscriptions;
+
+    /**
+     * Gets the TrustedHostSubscriptionsClient object to access its operations.
+     * 
+     * @return the TrustedHostSubscriptionsClient object.
+     */
+    public TrustedHostSubscriptionsClient getTrustedHostSubscriptions() {
+        return this.trustedHostSubscriptions;
+    }
+
+    /**
      * The SharedLimitsClient object to access its operations.
      */
     private final SharedLimitsClient sharedLimits;
@@ -201,6 +218,34 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
     }
 
     /**
+     * The SharedLimitCapsClient object to access its operations.
+     */
+    private final SharedLimitCapsClient sharedLimitCaps;
+
+    /**
+     * Gets the SharedLimitCapsClient object to access its operations.
+     * 
+     * @return the SharedLimitCapsClient object.
+     */
+    public SharedLimitCapsClient getSharedLimitCaps() {
+        return this.sharedLimitCaps;
+    }
+
+    /**
+     * The MemberCapOverridesClient object to access its operations.
+     */
+    private final MemberCapOverridesClient memberCapOverrides;
+
+    /**
+     * Gets the MemberCapOverridesClient object to access its operations.
+     * 
+     * @return the MemberCapOverridesClient object.
+     */
+    public MemberCapOverridesClient getMemberCapOverrides() {
+        return this.memberCapOverrides;
+    }
+
+    /**
      * Initializes an instance of ComputeLimitClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -217,12 +262,15 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01";
+        this.apiVersion = "2026-07-31";
         this.operations = new OperationsClientImpl(this);
         this.guestSubscriptions = new GuestSubscriptionsClientImpl(this);
+        this.trustedHostSubscriptions = new TrustedHostSubscriptionsClientImpl(this);
         this.sharedLimits = new SharedLimitsClientImpl(this);
         this.features = new FeaturesClientImpl(this);
         this.vmFamilies = new VmFamiliesClientImpl(this);
+        this.sharedLimitCaps = new SharedLimitCapsClientImpl(this);
+        this.memberCapOverrides = new MemberCapOverridesClientImpl(this);
     }
 
     /**
@@ -336,7 +384,7 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

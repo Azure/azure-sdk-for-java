@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class LocalNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LocalNetworkGatewayCreate.json
+     * x-ms-original-file: 2025-07-01/LocalNetworkGatewayCreate.json
      */
     /**
      * Sample code: CreateLocalNetworkGateway.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateLinkServicesListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PrivateLinkServiceListPrivateEndpointConnection.json
+     * x-ms-original-file: 2025-07-01/PrivateLinkServiceListPrivateEndpointConnection.json
      */
     /**
      * Sample code: List private link service in resource group.

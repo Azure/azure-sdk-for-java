@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.3.0 (2026-08-06)
+
+### Features Added
+
+- Added task-generation support to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`: new `DataGenerationJobType.TASK_GENERATION` value and new `TaskGenerationDataGenerationJobOptions` subtype for the `task_generation` data generation scenario, intended for multi-turn evaluation with prompt, file, or agent sources.
+- Added rubric-generation input-quality warnings on `BetaEvaluatorsClient` / `BetaEvaluatorsAsyncClient`:
+  - `EvaluatorGenerationJob.getInputQualityWarnings()` returns any non-fatal input-quality advisories produced by the rubric generation pipeline.
+  - `EvaluatorVersion.getGenerationJobId()` and `EvaluatorVersion.getWarnings()` provide the read-only link back to the `EvaluatorGenerationJob` that produced the version and the categories of warnings surfaced on it.
+  - New models `GenerationWarningType`, `RubricGenerationInputQualityWarning`, `RubricGenerationInputQualityWarningCode`, `RubricGenerationInputQualityWarningSeverity`, and `RubricGenerationInputQualityWarningSource`.
+- Marked `HumanEvaluationPreviewRuleAction` with `@Beta` so preview surface area is explicit in generated API docs.
+
+### Breaking Changes
+
+- `BetaDatasetsClient` / `BetaDatasetsAsyncClient` data generation job creation is now a long-running operation. `createGenerationJob(DataGenerationJob, String)`, `createGenerationJob(DataGenerationJob)`, and `createGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateGenerationJob` overloads returning `SyncPoller<DataGenerationJob, DataGenerationJobResult>` / `PollerFlux<DataGenerationJob, DataGenerationJobResult>`. Call `.poll().getValue()` (or the async equivalent) to obtain the created `DataGenerationJob`.
+- `BetaEvaluatorsClient` / `BetaEvaluatorsAsyncClient` evaluator generation job creation is now a long-running operation. `createEvaluatorGenerationJob(EvaluatorGenerationJob, String)`, `createEvaluatorGenerationJob(EvaluatorGenerationJob)`, and `createEvaluatorGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateEvaluatorGenerationJob` overloads returning `SyncPoller<EvaluatorGenerationJob, EvaluatorVersion>` / `PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>`.
+
+### Other Changes
+
+- Updated version of `openai` client library to `4.45.0`.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.2.0 (2026-07-01)
+
+### Features Added
+
+- Added `EndpointBasedEvaluatorDefinition` for custom evaluator definitions backed by customer-hosted endpoints and Project Connections.
+
+### Breaking Changes
+
+- Preview operation group clients now use beta-prefixed names and are built through `AIProjectClientBuilder.beta()`. `DataGenerationJobsClient` / `DataGenerationJobsAsyncClient` renamed to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`; `EvaluationTaxonomies`, `Evaluators`, `Insights`, `Models`, `RedTeams`, `Routines`, `Schedules`, and `Skills` clients were renamed to their corresponding `Beta*Client` / `Beta*AsyncClient` names.
+- `Skill` renamed to `SkillDetails`. `SkillsClient` and `SkillsAsyncClient` methods such as `getSkill`, `listSkills`, and `updateSkill` now return `SkillDetails` / `PagedIterable<SkillDetails>` / `PagedFlux<SkillDetails>` instead of `Skill`.
+- `RoutineRun.getStatus()` now returns `BinaryData` instead of `String` to align with the current Routines preview contract.
+- `SystemDataV3` and `ModelVersion.getSystemData()` were removed because model versions no longer expose system data in the current service contract.
+
+### Bugs Fixed
+
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
+
+### Other Changes
+
+- Added routines samples covering CRUD (`RoutinesSample` / `RoutinesAsyncSample`), schedule trigger, timer trigger, and manual dispatch, with a shared `RoutinesSampleUtils` helper.
+- Marked preview clients, models, and methods with `@Beta` annotations so preview surface area is explicit in generated API docs.
 
 ## 2.1.0 (2026-06-01)
 

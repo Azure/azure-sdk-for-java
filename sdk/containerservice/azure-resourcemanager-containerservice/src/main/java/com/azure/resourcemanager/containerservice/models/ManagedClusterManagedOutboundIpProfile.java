@@ -23,6 +23,12 @@ public final class ManagedClusterManagedOutboundIpProfile
      */
     private Integer count;
 
+    /*
+     * The desired number of IPv6 outbound IPs created/managed by Azure. Allowed values must be in the range of 1 to 16
+     * (inclusive).
+     */
+    private Integer countIPv6;
+
     /**
      * Creates an instance of ManagedClusterManagedOutboundIpProfile class.
      */
@@ -52,6 +58,28 @@ public final class ManagedClusterManagedOutboundIpProfile
     }
 
     /**
+     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure. Allowed values must
+     * be in the range of 1 to 16 (inclusive).
+     * 
+     * @return the countIPv6 value.
+     */
+    public Integer countIPv6() {
+        return this.countIPv6;
+    }
+
+    /**
+     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure. Allowed values must
+     * be in the range of 1 to 16 (inclusive).
+     * 
+     * @param countIPv6 the countIPv6 value to set.
+     * @return the ManagedClusterManagedOutboundIpProfile object itself.
+     */
+    public ManagedClusterManagedOutboundIpProfile withCountIPv6(Integer countIPv6) {
+        this.countIPv6 = countIPv6;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -66,6 +94,7 @@ public final class ManagedClusterManagedOutboundIpProfile
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("countIPv6", this.countIPv6);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +116,9 @@ public final class ManagedClusterManagedOutboundIpProfile
 
                 if ("count".equals(fieldName)) {
                     deserializedManagedClusterManagedOutboundIpProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("countIPv6".equals(fieldName)) {
+                    deserializedManagedClusterManagedOutboundIpProfile.countIPv6
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

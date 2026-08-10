@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/iothub_certificatesdelete.json
+     * x-ms-original-file: 2026-03-01-preview/iothub_certificatesdelete.json
      */
     /**
      * Sample code: Certificates_Delete.

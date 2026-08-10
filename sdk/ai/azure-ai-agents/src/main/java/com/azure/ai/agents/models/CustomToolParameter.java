@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Custom tool
@@ -129,6 +130,9 @@ public final class CustomToolParameter extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +152,8 @@ public final class CustomToolParameter extends Tool {
             ToolType type = ToolType.CUSTOM;
             String description = null;
             CustomToolParamFormat format = null;
+            Boolean deferLoading = null;
+            List<CallableToolAllowedCaller> allowedCallers = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,6 +165,11 @@ public final class CustomToolParameter extends Tool {
                     description = reader.getString();
                 } else if ("format".equals(fieldName)) {
                     format = CustomToolParamFormat.fromJson(reader);
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowed_callers".equals(fieldName)) {
+                    allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
                 } else {
                     reader.skipChildren();
                 }
@@ -167,7 +178,65 @@ public final class CustomToolParameter extends Tool {
             deserializedCustomToolParameter.type = type;
             deserializedCustomToolParameter.description = description;
             deserializedCustomToolParameter.format = format;
+            deserializedCustomToolParameter.deferLoading = deferLoading;
+            deserializedCustomToolParameter.allowedCallers = allowedCallers;
             return deserializedCustomToolParameter;
         });
+    }
+
+    /*
+     * Whether this tool should be deferred and discovered via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 }
