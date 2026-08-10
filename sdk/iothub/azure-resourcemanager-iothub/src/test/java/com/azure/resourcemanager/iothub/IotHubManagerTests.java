@@ -86,7 +86,7 @@ public class IotHubManagerTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void testListIotHubs() {
-        iotHubManager.iotHubResources().list().stream().count();
+        iotHubManager.iotHubResources().list().stream().findFirst();
     }
 
     @Test
