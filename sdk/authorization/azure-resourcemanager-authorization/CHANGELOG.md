@@ -1,5 +1,11 @@
 # Release History
 
+## 2.53.11 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed certificate credential serialization to use standard Base64 encoding required by Microsoft Graph.
+
 ## 2.53.10 (2026-07-01)
 
 ### Other Changes
