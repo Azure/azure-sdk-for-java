@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * behavior. Here {@link BlobSessionProvider} is real and only the transport is faked, so the container name
  * actually placed on the wire is what's being verified.
  */
-public class SessionProviderSeamTest {
+public class SessionProviderTests {
 
     private static final String ACCOUNT_NAME = "myaccount";
     private static final String CONTEXT_CONTAINER = "context-container";
