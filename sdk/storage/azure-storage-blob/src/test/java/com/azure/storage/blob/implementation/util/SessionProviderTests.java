@@ -25,16 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Small, focused tests for the public {@link SessionProvider} contract implemented by {@link BlobSessionProvider}.
+ * Small, focused tests for the public {@link SessionProvider} contract implemented by
+ * {@link TokenCredentialSessionProvider}.
  * <p>
- * These verify that {@link BlobSessionProvider#getSessionAsync(SessionRequestContext)} and
- * {@link BlobSessionProvider#getSession(SessionRequestContext)} route the CreateSession REST call to the
+ * These verify that {@link TokenCredentialSessionProvider#getSessionAsync(SessionRequestContext)} and
+ * {@link TokenCredentialSessionProvider#getSession(SessionRequestContext)} route the CreateSession REST call to the
  * container named on the {@link SessionRequestContext}, proving out the "per-request container" seam that
  * backs the BYO {@link SessionProvider} extension point, and that a context missing a container
  * name is rejected rather than silently falling back to some default. This complements (and does not
  * duplicate) {@code BlobSessionClientTests}, which exercises these same paths against the live service, and
- * {@code BlobSessionProviderCacheTest}, which fakes the transport wholesale to test per-container cache timing
- * behavior. Here {@link BlobSessionProvider} is real and only the transport is faked, so the container name
+ * {@code TokenCredentialSessionProviderCacheTest}, which fakes the transport wholesale to test per-container cache
+ * timing behavior. Here {@link TokenCredentialSessionProvider} is real and only the transport is faked, so the
+ * container name
  * actually placed on the wire is what's being verified.
  */
 public class SessionProviderTests {
@@ -45,7 +47,7 @@ public class SessionProviderTests {
     @Test
     public void getSessionAsyncUsesContainerFromContext() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context
             = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
@@ -62,7 +64,7 @@ public class SessionProviderTests {
     @Test
     public void getSessionSyncUsesContainerFromContext() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context
             = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
@@ -78,7 +80,7 @@ public class SessionProviderTests {
     @Test
     public void missingContextContainerThrowsSync() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         // There is no constructor-supplied fallback container: a context with no container name must be
         // rejected rather than silently degrading to some default.
@@ -90,17 +92,17 @@ public class SessionProviderTests {
     @Test
     public void missingContextContainerThrowsAsync() {
         AtomicReference<String> requestedContainer = new AtomicReference<>();
-        BlobSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
 
         SessionRequestContext context = new SessionRequestContext();
 
         StepVerifier.create(sessionProvider.getSessionAsync(context)).verifyError(IllegalArgumentException.class);
     }
 
-    private static BlobSessionProvider createSessionProvider(AtomicReference<String> requestedContainer) {
+    private static TokenCredentialSessionProvider createSessionProvider(AtomicReference<String> requestedContainer) {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(new CreateSessionMockClient(requestedContainer)).build();
-        return new BlobSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        return new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME);
     }
 

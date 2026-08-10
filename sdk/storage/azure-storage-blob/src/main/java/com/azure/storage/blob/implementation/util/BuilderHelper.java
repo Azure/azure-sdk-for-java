@@ -209,7 +209,7 @@ public final class BuilderHelper {
         HttpPipeline bearerPipeline = buildBearerPipeline(preAuthPolicies, bearerPolicy, httpClient, clientOptions);
         BlobServiceVersion effectiveServiceVersion
             = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-        return new BlobSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion, accountName);
+        return new TokenCredentialSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion, accountName);
     }
 
     private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
