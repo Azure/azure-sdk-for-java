@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <h2>Caching model</h2>
  * <p>
  * One {@link AutoRefreshingCache} of {@link SessionCredential} per container (keyed by a
- * lowercase-normalized name) is maintained, allowing a single {@link BlobSessionProvider} to serve
+ * lowercase-normalized name) is maintained, allowing a single {@link TokenCredentialSessionProvider} to serve
  * many containers without creating a new session for every request.  Entries are opportunistically
  * evicted once they have not been accessed for {@value #IDLE_EVICTION_THRESHOLD_MINUTES} minutes.
  *
@@ -58,11 +58,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * takes an {@link HttpPipeline} (bearer-only, no session policy) and builds an
  * {@link AzureBlobStorageImpl} internally.
  */
-final class BlobSessionProvider implements SessionProvider {
+final class TokenCredentialSessionProvider implements SessionProvider {
 
     static final int IDLE_EVICTION_THRESHOLD_MINUTES = 5;
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlobSessionProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TokenCredentialSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
     // Defensive fallback expiration for a malformed/absent service response.
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
@@ -72,14 +72,14 @@ final class BlobSessionProvider implements SessionProvider {
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
 
-    BlobSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+    TokenCredentialSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
         String accountName) {
         this(bearerPipeline, url, serviceVersion, accountName, Clock.systemUTC());
     }
 
     /** Package-private constructor that accepts an injectable clock for deterministic testing. */
-    BlobSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        Clock clock) {
+    TokenCredentialSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, Clock clock) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(bearerPipeline)
             .url(url)
             .version(serviceVersion.getVersion())
@@ -218,14 +218,14 @@ final class BlobSessionProvider implements SessionProvider {
         volatile OffsetDateTime lastAccess;
         private SessionCredential currentSessionCredential;
 
-        private ContainerSessionCache(BlobSessionProvider provider, Clock clock, String containerName,
+        private ContainerSessionCache(TokenCredentialSessionProvider provider, Clock clock, String containerName,
             String resolvedAccountName, OffsetDateTime lastAccess) {
             this.cache = createCache(provider, clock, containerName, resolvedAccountName);
             this.lastAccess = lastAccess;
         }
 
-        private static AutoRefreshingCache<SessionCredential> createCache(BlobSessionProvider provider, Clock clock,
-            String containerName, String resolvedAccountName) {
+        private static AutoRefreshingCache<SessionCredential> createCache(TokenCredentialSessionProvider provider,
+            Clock clock, String containerName, String resolvedAccountName) {
             AutoRefreshingCache.ValueProvider<SessionCredential> valueProvider
                 = new AutoRefreshingCache.ValueProvider<SessionCredential>() {
                     @Override

@@ -40,17 +40,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Deterministic, network-free tests for {@link BlobSessionProvider}'s time-based, per-container caching
+ * Deterministic, network-free tests for {@link TokenCredentialSessionProvider}'s time-based, per-container caching
  * behavior.
  * <p>
- * These tests drive {@link BlobSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
+ * These tests drive {@link TokenCredentialSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link ControllableHttpClient}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
  * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
  * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
  * covered separately by {@code SessionTokenCredentialPolicyTest}.
  */
-public class BlobSessionProviderCacheTest {
+public class TokenCredentialSessionProviderCacheTest {
 
     private static final String ACCOUNT_NAME = "myaccount";
     private static final String CONTAINER_A = "container-a";
@@ -72,7 +72,7 @@ public class BlobSessionProviderCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         // First request: cold cache mints a good token and uses it.
         SessionCredential firstRequest = provider.getSession(contextFor(CONTAINER_A));
@@ -99,7 +99,7 @@ public class BlobSessionProviderCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         // First request: cold cache mints the initial token.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -134,7 +134,7 @@ public class BlobSessionProviderCacheTest {
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, "refreshed-a", now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
         httpClient.enqueue(CONTAINER_B, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         // Mint an initial session for each container.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -166,7 +166,7 @@ public class BlobSessionProviderCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         // First request mints the token.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -191,7 +191,7 @@ public class BlobSessionProviderCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
@@ -209,7 +209,7 @@ public class BlobSessionProviderCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
@@ -235,7 +235,7 @@ public class BlobSessionProviderCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueueFailure(CONTAINER_A);
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
 
@@ -256,7 +256,7 @@ public class BlobSessionProviderCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(FIRST_TOKEN,
@@ -272,7 +272,7 @@ public class BlobSessionProviderCacheTest {
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, "third-session-token", now(clock).plus(SESSION_LIFETIME));
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
         SessionRequestContext context = contextFor(CONTAINER_A);
 
         SessionCredential first = provider.getSession(context);
@@ -295,7 +295,7 @@ public class BlobSessionProviderCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         // A pending response models a CreateSession call that is still outstanding.
         Sinks.One<HttpResponse> pendingResponse = httpClient.preparePendingResponse(CONTAINER_A);
-        BlobSessionProvider provider = createProvider(httpClient, clock);
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
         Mono<SessionCredential> first = provider.getSessionAsync(contextFor(CONTAINER_A));
         Mono<SessionCredential> second = provider.getSessionAsync(contextFor(CONTAINER_A));
@@ -371,9 +371,9 @@ public class BlobSessionProviderCacheTest {
         }
     }
 
-    private static BlobSessionProvider createProvider(HttpClient httpClient, Clock clock) {
+    private static TokenCredentialSessionProvider createProvider(HttpClient httpClient, Clock clock) {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        return new BlobSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        return new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
     }
 
