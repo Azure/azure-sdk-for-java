@@ -31,7 +31,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.share.ShareServiceVersion;
+import com.azure.storage.file.share.FileServiceVersion;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -70,7 +70,7 @@ public final class FilesImpl {
      *
      * @return the serviceVersion value.
      */
-    public ShareServiceVersion getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
         } catch (ShareStorageExceptionInternal internalException) {
@@ -398,6 +398,30 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Get("?comp=rangelist")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listAllRanges(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("?comp=rangelist")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listAllRangesSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
         @Put("/")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -661,7 +685,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -764,7 +788,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -822,7 +846,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -869,7 +893,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1567,7 +1591,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1631,7 +1655,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1801,7 +1825,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1864,7 +1888,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1901,6 +1925,241 @@ public final class FilesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    /**
+     * Returns a paginated list of valid page ranges for a file or snapshot of a file.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>prevsharesnapshot</td><td>String</td><td>No</td><td>The previous snapshot parameter is an opaque DateTime
+     * value that specifies a previous file snapshot to compare against.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * <tr><td>marker</td><td>String</td><td>No</td><td>A string value that identifies the portion of the list to be
+     * returned with the next listing operation.</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Specifies the maximum number of items to return.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Range</td><td>String</td><td>No</td><td>Return file data only from the specified byte range.</td></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * <tr><td>x-ms-file-support-rename</td><td>Boolean</td><td>No</td><td>This header is allowed only when
+     * PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a file that has been renamed
+     * or moved should be listed.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     Start: long (Required)
+     *     End: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated list of file ranges along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listAllRangesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.listAllRanges(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(
+                            com.azure.storage.file.share.models.FileRange.fromXml(reader, "Range"), XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Range", "Range"), null, null));
+    }
+
+    /**
+     * Returns a paginated list of valid page ranges for a file or snapshot of a file.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>prevsharesnapshot</td><td>String</td><td>No</td><td>The previous snapshot parameter is an opaque DateTime
+     * value that specifies a previous file snapshot to compare against.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * <tr><td>marker</td><td>String</td><td>No</td><td>A string value that identifies the portion of the list to be
+     * returned with the next listing operation.</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Specifies the maximum number of items to return.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Range</td><td>String</td><td>No</td><td>Return file data only from the specified byte range.</td></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * <tr><td>x-ms-file-support-rename</td><td>Boolean</td><td>No</td><td>This header is allowed only when
+     * PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a file that has been renamed
+     * or moved should be listed.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     Start: long (Required)
+     *     End: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated list of file ranges as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAllRangesAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listAllRangesSinglePageAsync(requestOptions));
+    }
+
+    /**
+     * Returns a paginated list of valid page ranges for a file or snapshot of a file.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>prevsharesnapshot</td><td>String</td><td>No</td><td>The previous snapshot parameter is an opaque DateTime
+     * value that specifies a previous file snapshot to compare against.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * <tr><td>marker</td><td>String</td><td>No</td><td>A string value that identifies the portion of the list to be
+     * returned with the next listing operation.</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Specifies the maximum number of items to return.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Range</td><td>String</td><td>No</td><td>Return file data only from the specified byte range.</td></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * <tr><td>x-ms-file-support-rename</td><td>Boolean</td><td>No</td><td>This header is allowed only when
+     * PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a file that has been renamed
+     * or moved should be listed.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     Start: long (Required)
+     *     End: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated list of file ranges along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listAllRangesSinglePage(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            Response<BinaryData> res = service.listAllRangesSync(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
+            return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(
+                            com.azure.storage.file.share.models.FileRange.fromXml(reader, "Range"), XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Range", "Range"), null, null);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns a paginated list of valid page ranges for a file or snapshot of a file.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sharesnapshot</td><td>String</td><td>No</td><td>The snapshot parameter is an opaque DateTime value that
+     * specifies a share snapshot.</td></tr>
+     * <tr><td>prevsharesnapshot</td><td>String</td><td>No</td><td>The previous snapshot parameter is an opaque DateTime
+     * value that specifies a previous file snapshot to compare against.</td></tr>
+     * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds.</td></tr>
+     * <tr><td>marker</td><td>String</td><td>No</td><td>A string value that identifies the portion of the list to be
+     * returned with the next listing operation.</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Specifies the maximum number of items to return.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Range</td><td>String</td><td>No</td><td>Return file data only from the specified byte range.</td></tr>
+     * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the lease ID must match the lease ID of the
+     * file.</td></tr>
+     * <tr><td>x-ms-file-support-rename</td><td>Boolean</td><td>No</td><td>This header is allowed only when
+     * PrevShareSnapshot query parameter is set. Determines whether the changed ranges for a file that has been renamed
+     * or moved should be listed.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     Start: long (Required)
+     *     End: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated list of file ranges as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAllRanges(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listAllRangesSinglePage(requestOptions));
     }
 
     /**
@@ -2120,7 +2379,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2159,7 +2418,15 @@ public final class FilesImpl {
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Entries"), null, null));
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(
+                            com.azure.storage.file.share.implementation.models.HandleItem.fromXml(reader, "Handle"),
+                            XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Entries", "Handle"), null, null));
     }
 
     /**
@@ -2177,7 +2444,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2227,7 +2494,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2265,7 +2532,15 @@ public final class FilesImpl {
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Entries"), null, null);
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData.fromObject(
+                            com.azure.storage.file.share.implementation.models.HandleItem.fromXml(reader, "Handle"),
+                            XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Entries", "Handle"), null, null);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -2286,7 +2561,7 @@ public final class FilesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2714,11 +2989,14 @@ public final class FilesImpl {
         }
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                List<?> values = (List<?>) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                List<?> values = (List<?>) value;
                 return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
             } catch (RuntimeException e) {
                 return null;
@@ -2728,14 +3006,85 @@ public final class FilesImpl {
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                return (String) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                return (String) value;
             } catch (RuntimeException e) {
                 return null;
             }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private static final com.azure.core.util.serializer.ObjectSerializer XML_SERIALIZER
+        = XmlSerializerProviders.createInstance();
+
+    private List<BinaryData> getXmlValues(BinaryData binaryData,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlValues(reader, valueReader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private List<BinaryData> getXmlValues(com.azure.xml.XmlReader reader,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            List<BinaryData> values = new java.util.ArrayList<>();
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    values.add(valueReader.apply(reader));
+                } else {
+                    values.addAll(getXmlValues(reader, valueReader, path, pathIndex + 1));
+                }
+            }
+            return values;
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(BinaryData binaryData, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlNextLink(reader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(com.azure.xml.XmlReader reader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    return reader.getStringElement();
+                } else {
+                    return getXmlNextLink(reader, path, pathIndex + 1);
+                }
+            }
+            return null;
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

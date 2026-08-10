@@ -29,7 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.share.ShareServiceVersion;
+import com.azure.storage.file.share.FileServiceVersion;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -68,7 +68,7 @@ public final class ServicesImpl {
      *
      * @return the serviceVersion value.
      */
-    public ShareServiceVersion getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
         } catch (ShareStorageExceptionInternal internalException) {
@@ -542,7 +542,15 @@ public final class ServicesImpl {
                     this.client.getFileRequestIntent(), accept, requestOptions, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Shares"), null, null));
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData
+                            .fromObject(com.azure.storage.file.share.implementation.models.ShareItemInternal
+                                .fromXml(reader, "Share"), XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Shares", "Share"), null, null));
     }
 
     /**
@@ -694,7 +702,15 @@ public final class ServicesImpl {
                 = service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "Shares"), null, null);
+                getXmlValues(res.getValue(), reader -> {
+                    try {
+                        return BinaryData
+                            .fromObject(com.azure.storage.file.share.implementation.models.ShareItemInternal
+                                .fromXml(reader, "Share"), XML_SERIALIZER);
+                    } catch (javax.xml.stream.XMLStreamException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }, "Shares", "Share"), null, null);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -888,11 +904,14 @@ public final class ServicesImpl {
         }
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                List<?> values = (List<?>) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                List<?> values = (List<?>) value;
                 return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
             } catch (RuntimeException e) {
                 return null;
@@ -902,14 +921,85 @@ public final class ServicesImpl {
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
             try {
-                Map<?, ?> obj = binaryData.toObject(Map.class);
-                return (String) obj.get(path);
+                Object value = binaryData.toObject(Map.class);
+                for (String segment : path) {
+                    value = ((Map<?, ?>) value).get(segment);
+                }
+                return (String) value;
             } catch (RuntimeException e) {
                 return null;
             }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private static final com.azure.core.util.serializer.ObjectSerializer XML_SERIALIZER
+        = XmlSerializerProviders.createInstance();
+
+    private List<BinaryData> getXmlValues(BinaryData binaryData,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlValues(reader, valueReader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private List<BinaryData> getXmlValues(com.azure.xml.XmlReader reader,
+        java.util.function.Function<com.azure.xml.XmlReader, BinaryData> valueReader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            List<BinaryData> values = new java.util.ArrayList<>();
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    values.add(valueReader.apply(reader));
+                } else {
+                    values.addAll(getXmlValues(reader, valueReader, path, pathIndex + 1));
+                }
+            }
+            return values;
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(BinaryData binaryData, String... path) {
+        try {
+            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
+                reader.nextElement();
+                return getXmlNextLink(reader, path, 0);
+            } catch (javax.xml.stream.XMLStreamException e) {
+                throw new IllegalStateException("Failed to read XML pageable response.", e);
+            }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    private String getXmlNextLink(com.azure.xml.XmlReader reader, String[] path, int pathIndex)
+        throws javax.xml.stream.XMLStreamException {
+        try {
+            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
+                if (!reader.elementNameMatches(path[pathIndex])) {
+                    reader.skipElement();
+                } else if (pathIndex == path.length - 1) {
+                    return reader.getStringElement();
+                } else {
+                    return getXmlNextLink(reader, path, pathIndex + 1);
+                }
+            }
+            return null;
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

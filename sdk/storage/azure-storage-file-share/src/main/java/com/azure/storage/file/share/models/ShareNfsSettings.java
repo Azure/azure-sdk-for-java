@@ -14,7 +14,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Settings for SMB protocol.
+ * Settings for NFS protocol.
  */
 @Fluent
 public final class ShareNfsSettings implements XmlSerializable<ShareNfsSettings> {

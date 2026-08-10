@@ -56,16 +56,12 @@ public class ShareStorageCustomization extends Customization {
         // removeFile is a no-op when absent.
         "FileClientBuilder",
         "AzureFileStorageClient", "AzureFileStorageAsyncClient", "AzureFileStorageClientBuilder",
-        "AzureFileStorageBuilder");
-    // NOTE: FileServiceVersion is NOT in this list. It is generated (via @clientApiVersions with the full historical
-    // version set), then RENAMED to ShareServiceVersion with the *Impl references retyped, in
-    // renameServiceVersionToShareServiceVersion (which also deletes the generated FileServiceVersion.java).
+        "AzureFileStorageBuilder",
+        // The hand-written ShareServiceVersion is authoritative; the generated enum is discarded and new service
+        // versions are added by hand. To instead generate it, remove this entry and restore the @clientApiVersions
+        // block in client.tsp + the FileServiceVersion->ShareServiceVersion rename customization.
+        "FileServiceVersion");
 
-    // module-info.java and package-info.java are hand-authored: the module descriptor carries the
-    // full requires/exports/opens (incl. transitive com.azure.storage.common and the sas/options/
-    // specialized exports), and the package-info files carry the public API Javadoc. typespec-java
-    // regenerates minimal versions that overwrite them (dropping com.azure.storage.common visibility);
-    // removeFile drops the generated copies during postprocessing so the hand-written files survive.
     private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
         "src/main/java/module-info.java",
         "src/main/java/com/azure/storage/file/share/package-info.java",
@@ -75,8 +71,6 @@ public class ShareStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         removeGeneratedConvenienceClients(customization, logger);
-
-        renameServiceVersionToShareServiceVersion(customization, logger);
 
         restoreFluentModels(customization, logger);
 
@@ -111,47 +105,6 @@ public class ShareStorageCustomization extends Customization {
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             customization.getRawEditor().removeFile(path);
             logger.info("Removed generated descriptor file (hand-written version preserved): {}", path);
-        }
-    }
-
-    /**
-     * Renames the generated {@code FileServiceVersion} enum to {@code ShareServiceVersion} and retypes the
-     * {@code *Impl} references accordingly. typespec-java names the service-version enum {@code FileServiceVersion};
-     * the {@code @clientApiVersions} augment in client.tsp populates it with the full historical version set. Its
-     * public shape ({@code implements ServiceVersion}, {@code getVersion()}, {@code getLatest()}, and the version
-     * constants) is identical to the shipped hand-written {@code ShareServiceVersion}, so overwriting
-     * {@code ShareServiceVersion.java} with the renamed generated content is not a breaking change and keeps the
-     * enum generated (single source of truth = client.tsp).
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void renameServiceVersionToShareServiceVersion(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-
-        // Rename the generated enum: write its (renamed) content over ShareServiceVersion.java, delete the original.
-        String generatedEnumPath = PKG_ROOT + "FileServiceVersion.java";
-        String shareEnumPath = PKG_ROOT + "ShareServiceVersion.java";
-        String enumContent = editor.getFileContent(generatedEnumPath);
-        if (enumContent != null) {
-            editor.replaceFile(shareEnumPath, enumContent.replace("FileServiceVersion", "ShareServiceVersion"));
-            editor.removeFile(generatedEnumPath);
-            logger.info("Renamed generated FileServiceVersion enum to ShareServiceVersion");
-        }
-
-        // Retype the FileServiceVersion references in the *Impl classes to the renamed ShareServiceVersion.
-        for (String impl : Arrays.asList("AzureFileStorageImpl", "DirectoriesImpl", "FilesImpl", "ServicesImpl",
-            "SharesImpl")) {
-            String path = PKG_ROOT + "implementation/" + impl + ".java";
-            String content = editor.getFileContent(path);
-            if (content == null) {
-                continue;
-            }
-            String updated = content.replace("FileServiceVersion", "ShareServiceVersion");
-            if (!updated.equals(content)) {
-                editor.replaceFile(path, updated);
-                logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
-            }
         }
     }
 

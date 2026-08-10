@@ -186,7 +186,7 @@ public enum ShareServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * 
+     *
      * @return The latest {@link ShareServiceVersion}.
      */
     public static ShareServiceVersion getLatest() {
