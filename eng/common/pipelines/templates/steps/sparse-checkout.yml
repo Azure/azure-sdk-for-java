@@ -29,6 +29,15 @@ steps:
         git config set --global "http.extraheader" "AUTHORIZATION: basic $base64Token"
       displayName: Setup git config auth header
 
+  # Tiny inline sparse checkout for eng/common/pipelines/scripts/Invoke-SparseCheckout.ps1 to avoid needing that entire
+  # script being inlined PowerShell.
+  - checkout: self
+    clean: false
+    fetchDepth: 1
+    fetchTags: false
+    sparseCheckoutDirectories: eng/common/pipelines/scripts
+    displayName: "Sparse checkout eng/common/pipelines/scripts"
+
   - task: PowerShell@2
     ${{ if eq(length(parameters.Repositories), 1) }}:
       displayName: 'Sparse checkout ${{ parameters.Repositories[0].Name }}'
