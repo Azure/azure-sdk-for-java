@@ -22,49 +22,17 @@ steps:
       arguments: '-TargetVersion "${{ parameters.targetVersion }}"'
       pwsh: true
 
-  - pwsh: |
-      $standardVersion = "${{ parameters.templateRoot }}/eng/common/testproxy/target_version.txt"
-      $overrideVersion = "${{ parameters.templateRoot }}/eng/target_proxy_version.txt"
-
-      $version = $(Get-Content $standardVersion -Raw).Trim()
-
-      if (Test-Path $overrideVersion) {
-        $version = $(Get-Content $overrideVersion -Raw).Trim()
-      }
-
-      Write-Host "Installing test-proxy version $version"
-
-      $invocation = @"
-      dotnet tool install azure.sdk.tools.testproxy `
-        --tool-path $(Build.BinariesDirectory)/test-proxy `
-        --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json `
-        --version $version
-      "@
-      Write-Host $invocation
-
-      dotnet tool install azure.sdk.tools.testproxy `
-        --tool-path $(Build.BinariesDirectory)/test-proxy `
-        --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json `
-        --version $version
-    displayName: "Install test-proxy"
-    condition: and(succeeded(), ${{ parameters.condition }})
-
-  - pwsh: |
-      Write-Host "Prepending path with the test proxy tool install location: '$(Build.BinariesDirectory)/test-proxy'"
-      Write-Host "##vso[task.prependpath]$(Build.BinariesDirectory)/test-proxy"
-    displayName: "Prepend path with test-proxy tool install location"
+  - task: PowerShell@2
+    inputs:
+      filePath: '${{ parameters.templateRoot }}/eng/common/pipelines/scripts/Install-TestProxy.ps1'
+      arguments: >
+        -TemplateRoot "${{ parameters.templateRoot }}"
+        -BinariesDirectory $(Build.BinariesDirectory)
+        -RunProxy ${{ parameters.runProxy }}
+      pwsh: true
+    displayName: "Install and configure test-proxy"
 
   - ${{ if eq(parameters.runProxy, 'true') }}:
-    - pwsh: |
-        Write-Host "Setting ASPNETCORE_Kestrel__Certificates__Default__Path to '${{ parameters.templateRoot }}/eng/common/testproxy/dotnet-devcert.pfx'"
-        Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Path]${{ parameters.templateRoot }}/eng/common/testproxy/dotnet-devcert.pfx"
-        Write-Host "Setting ASPNETCORE_Kestrel__Certificates__Default__Password to 'password'"
-        Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Password]password"
-        Write-Host "Setting PROXY_MANUAL_START to 'true'"
-        Write-Host "##vso[task.setvariable variable=PROXY_MANUAL_START]true"
-      displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
-      condition: and(succeeded(), ${{ parameters.condition }})
-
     - pwsh: |
         $invocation = @"
         Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe
@@ -103,19 +71,11 @@ steps:
       env:
         DOTNET_ROLL_FORWARD: 'Major'
 
-    - pwsh: |
-        for ($i = 0; $i -lt 10; $i++) {
-            try {
-                Write-Host "Invoke-WebRequest -Uri `"${{ parameters.proxyUrl }}/Admin/IsAlive`" | Out-Null"
-                Invoke-WebRequest -Uri "${{ parameters.proxyUrl }}/Admin/IsAlive" | Out-Null
-                Write-Host "Successfully connected to the test proxy on port 5000."
-                exit 0
-            } catch {
-                Write-Warning "Failed to successfully connect to test proxy. Retrying..."
-                Start-Sleep 6
-            }
-        }
-        Write-Error "Could not connect to test proxy."
-        exit 1
-      displayName: Test Proxy IsAlive
+    - task: PowerShell@2
+      inputs:
+        filePath: '${{ parameters.templateRoot }}/eng/common/pipelines/scripts/Test-TestProxyIsAlive.ps1'
+        arguments: >
+          -ProxyUrl ${{ parameters.proxyUrl }}
+        pwsh: true
+      displayName: "Test Proxy IsAlive"
       condition: and(succeeded(), ${{ parameters.condition }})
