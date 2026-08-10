@@ -14,10 +14,12 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInpu
 import com.azure.resourcemanager.deviceprovisioningservices.models.ProvisioningServiceDescription;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled("Not enough quota")
 public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase {
     @Test
     @LiveOnly

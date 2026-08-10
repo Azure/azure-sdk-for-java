@@ -85,6 +85,12 @@ public class IotHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    public void testListIotHubs() {
+        iotHubManager.iotHubResources().list().stream().count();
+    }
+
+    @Test
+    @LiveOnly
     @Disabled("Not enough quota")
     public void testIotHubDescription() {
         IotHubDescription iotHubDescription = null;

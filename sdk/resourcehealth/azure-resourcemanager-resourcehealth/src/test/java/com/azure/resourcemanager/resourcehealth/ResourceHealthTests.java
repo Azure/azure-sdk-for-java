@@ -32,7 +32,7 @@ import java.util.Random;
 public class ResourceHealthTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
-    private static final Region REGION = Region.US_EAST2;
+    private static final Region REGION = Region.US_WEST3;
     private static final String VM_NAME = "vm" + randomPadding();
 
     private String resourceGroup = "rg" + randomPadding();
@@ -83,7 +83,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("azuser")
                 .withRootPassword("Pa5$123456")
-                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
                 .create();
 
             // get current availability status
