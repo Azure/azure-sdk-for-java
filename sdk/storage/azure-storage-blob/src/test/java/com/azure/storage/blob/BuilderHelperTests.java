@@ -49,6 +49,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -766,21 +767,43 @@ public class BuilderHelperTests {
     }
 
     @Test
-    public void customSessionProviderReceivesResolvedRequestContext() {
+    public void serviceBuilderUsesBuiltInSessionProviderByDefault() {
+        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .buildClient();
+
+        assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+    }
+
+    @Test
+    public void customSessionProviderReceivesResolvedRequestContextWithoutSdkCaching() {
         AtomicReference<SessionRequestContext> receivedContext = new AtomicReference<>();
+        AtomicInteger retrievalCount = new AtomicInteger();
         SessionCredential credential = new SessionCredential("session-token",
             "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
         SessionProvider provider = new SessionProvider() {
             @Override
             public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
                 receivedContext.set(context);
+                retrievalCount.incrementAndGet();
                 return Mono.just(credential);
             }
 
             @Override
             public SessionCredential getSession(SessionRequestContext context) {
                 receivedContext.set(context);
+                retrievalCount.incrementAndGet();
                 return credential;
+            }
+
+            @Override
+            public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
+                return false;
+            }
+
+            @Override
+            public void refreshSession(SessionRequestContext context) {
             }
         };
         SessionOptions options = new SessionOptions().setSessionProvider(provider);
@@ -793,15 +816,17 @@ public class BuilderHelperTests {
             = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
                 null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), testHttpClient, new ArrayList<>(),
                 new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options, null);
-        HttpRequest request = new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob");
-
-        StepVerifier.create(pipeline.send(request))
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
         assertTrue(receivedAuthorization.get().startsWith("Session session-token:"));
         assertEquals("container", receivedContext.get().getContainerName());
         assertEquals("account", receivedContext.get().getAccountName());
+        assertEquals(2, retrievalCount.get());
     }
 
     // endregion

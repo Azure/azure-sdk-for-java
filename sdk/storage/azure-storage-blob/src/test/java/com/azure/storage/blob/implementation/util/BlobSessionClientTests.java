@@ -30,12 +30,12 @@ public class BlobSessionClientTests extends BlobTestBase {
     @Test
     public void createSessionReturnsTokenAndKey() {
         BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+        BlobSessionProvider sessionProvider
+            = new BlobSessionProvider(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         SessionCredential credential
-            = sessionClient.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
+            = sessionProvider.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -47,12 +47,12 @@ public class BlobSessionClientTests extends BlobTestBase {
     public void createSessionAsyncReturnsTokenAndKey() {
         BlobContainerAsyncClient oauthCc
             = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+        BlobSessionProvider sessionProvider
+            = new BlobSessionProvider(oauthCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         StepVerifier
-            .create(sessionClient
+            .create(sessionProvider
                 .getSessionAsync(new SessionRequestContext().setContainerName(ccAsync.getBlobContainerName())))
             .assertNext(credential -> {
                 assertNotNull(credential);
@@ -66,12 +66,12 @@ public class BlobSessionClientTests extends BlobTestBase {
     @Test
     public void createSessionSyncUsesProvidedHttpPipeline() {
         AtomicInteger policyInvocationCount = new AtomicInteger();
-        BlobSessionClient sessionClient = new BlobSessionClient(createOAuthPipeline(policyInvocationCount),
+        BlobSessionProvider sessionProvider = new BlobSessionProvider(createOAuthPipeline(policyInvocationCount),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName());
 
         SessionCredential credential
-            = sessionClient.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
+            = sessionProvider.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -83,12 +83,12 @@ public class BlobSessionClientTests extends BlobTestBase {
     @Test
     public void createSessionAsyncUsesProvidedHttpPipeline() {
         AtomicInteger policyInvocationCount = new AtomicInteger();
-        BlobSessionClient sessionClient = new BlobSessionClient(createOAuthPipeline(policyInvocationCount),
+        BlobSessionProvider sessionProvider = new BlobSessionProvider(createOAuthPipeline(policyInvocationCount),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
             ENVIRONMENT.getPrimaryAccount().getName());
 
         StepVerifier
-            .create(sessionClient
+            .create(sessionProvider
                 .getSessionAsync(new SessionRequestContext().setContainerName(ccAsync.getBlobContainerName())))
             .assertNext(credential -> {
                 assertNotNull(credential);
@@ -113,12 +113,12 @@ public class BlobSessionClientTests extends BlobTestBase {
 
         BlobContainerClient sasCc = instrument(builder.sasToken(sas)).buildClient();
 
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+        BlobSessionProvider sessionProvider
+            = new BlobSessionProvider(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         SessionCredential credential
-            = sessionClient.getSession(new SessionRequestContext().setContainerName(sasCc.getBlobContainerName()));
+            = sessionProvider.getSession(new SessionRequestContext().setContainerName(sasCc.getBlobContainerName()));
 
         assertNotNull(credential);
         assertNotNull(credential.getSessionToken());
@@ -138,12 +138,12 @@ public class BlobSessionClientTests extends BlobTestBase {
             = instrument(new BlobContainerClientBuilder().endpoint(oauthCc.getBlobContainerUrl()).sasToken(sas))
                 .buildClient();
 
-        BlobSessionClient sessionClient
-            = new BlobSessionClient(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+        BlobSessionProvider sessionProvider
+            = new BlobSessionProvider(sasCc.getHttpPipeline(), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
                 BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         StepVerifier
-            .create(sessionClient
+            .create(sessionProvider
                 .getSessionAsync(new SessionRequestContext().setContainerName(ccAsync.getBlobContainerName())))
             .assertNext(credential -> {
                 assertNotNull(credential);

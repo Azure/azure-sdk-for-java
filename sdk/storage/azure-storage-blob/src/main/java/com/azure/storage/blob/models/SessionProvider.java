@@ -6,12 +6,11 @@ package com.azure.storage.blob.models;
 import reactor.core.publisher.Mono;
 
 /**
- * An extension point for supplying custom {@link SessionCredential session credentials}, scoped to a
- * particular request as described by a {@link SessionRequestContext} (e.g. the target container).
+ * Provides and manages cached {@link SessionCredential session credentials} for storage containers.
  * <p>
- * Implement this interface to bring your own session-issuing logic - for example, proxying CreateSession
- * calls through another service, or layering a custom caching/rotation policy - while still benefiting from
- * this SDK's request signing and account-level cooldown handling. Set an instance via
+ * Implement this interface to bring your own session creation and caching logic - for example, proxying
+ * CreateSession calls through another service or sharing a credential cache across clients - while still
+ * benefiting from this SDK's request signing and account-level cooldown handling. Set an instance via
  * {@link SessionOptions#setSessionProvider(SessionProvider)}, then pass those options to
  * {@link com.azure.storage.blob.BlobServiceClientBuilder#sessionOptions(SessionOptions)}, to have it used in
  * place of the default, built-in provider (which calls the storage service's CreateSession REST API directly
@@ -30,7 +29,7 @@ import reactor.core.publisher.Mono;
  * <ol>
  * <li><strong>Retrieve</strong> - {@link #getSessionAsync} / {@link #getSession} return a usable
  * {@link SessionCredential} for the container described by the request context, minting or refreshing one
- * as needed. This is the only part of the contract every implementation must provide.</li>
+ * as needed.</li>
  * <li><strong>Invalidate</strong> - {@link #invalidateSession} is called when the service rejects a
  * previously-issued credential with HTTP 401, giving the implementation the opportunity to evict it so the
  * next retrieval mints a fresh one.</li>
@@ -38,12 +37,6 @@ import reactor.core.publisher.Mono;
  * {@code x-ms-auth-info: session_expiring} response header) that the current session is about to stop being
  * honored, giving the implementation the opportunity to proactively refresh it in the background.</li>
  * </ol>
- * <p>
- * The invalidate and refresh steps are supplied as {@code default} no-op methods precisely so that BYO
- * providers are not required to implement them: a minimal implementation that only overrides
- * {@link #getSessionAsync} and {@link #getSession} remains correct (if slightly less efficient, since a
- * 401 or an expiring-session hint will simply result in a fresh {@link #getSessionAsync} / {@link #getSession}
- * call on the next eligible request rather than a proactively refreshed one).
  * <p>
  * Regardless of the provider used, the SDK always retains ownership of HMAC request signing, bearer-token
  * fallback for ineligible requests, and account-level acquisition cooldown (suppressing further session
@@ -62,7 +55,8 @@ import reactor.core.publisher.Mono;
  * <p>
  * A single {@link SessionProvider} instance may be asked to serve many different containers (and, in
  * principle, multiple accounts) over its lifetime; the {@link SessionRequestContext} passed to each method
- * call identifies which container (and account) the call applies to.
+ * call identifies which container (and account) the call applies to. Applications may reuse one provider
+ * instance across service clients when they intentionally want those clients to share the provider's cache.
  *
  * @see SessionCredential
  * @see SessionRequestContext
@@ -71,8 +65,8 @@ import reactor.core.publisher.Mono;
 public interface SessionProvider {
 
     /**
-     * Asynchronously obtains a {@link SessionCredential} for the request described by the given
-     * {@link SessionRequestContext}.
+     * Asynchronously returns a valid cached {@link SessionCredential} for the container described by
+     * {@code context}, creating or refreshing the credential when needed.
      *
      * @param context the request-scoped parameters (e.g. container name) the session should be created for.
      * @return a {@link Mono} that emits the resulting {@link SessionCredential}.
@@ -80,8 +74,8 @@ public interface SessionProvider {
     Mono<SessionCredential> getSessionAsync(SessionRequestContext context);
 
     /**
-     * Synchronously obtains a {@link SessionCredential} for the request described by the given
-     * {@link SessionRequestContext}.
+     * Synchronously returns a valid cached {@link SessionCredential} for the container described by
+     * {@code context}, creating or refreshing the credential when needed.
      *
      * @param context the request-scoped parameters (e.g. container name) the session should be created for.
      * @return the resulting {@link SessionCredential}.
@@ -99,17 +93,14 @@ public interface SessionProvider {
      * <p>
      * <strong>Warning semantics:</strong> The SDK logs a one-time warning when this returns {@code true}
      * (the first invalidation for a given rejected credential) and a verbose message when it returns
-     * {@code false} (already replaced). Custom implementations are encouraged but not required to track
-     * per-credential state; the default returns {@code false} (no invalidation performed).
+     * {@code false} (already replaced).
      *
      * @param context the request-scoped parameters (container, account) identifying the session scope.
      * @param rejectedCredential the credential the service rejected with HTTP 401.
      * @return {@code true} if this call invalidated the credential (first invalidator wins);
-     *         {@code false} if the credential was already replaced or this provider does not track it.
+     *         {@code false} if the credential was already replaced.
      */
-    default boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
-        return false;
-    }
+    boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential);
 
     /**
      * Non-blocking hint that the service has indicated the current session for the container described by
@@ -120,13 +111,8 @@ public interface SessionProvider {
      * <strong>Non-blocking contract:</strong> This method is called from both synchronous and
      * asynchronous response-processing paths and <em>must return immediately</em> without waiting for the
      * refresh to complete. It must not throw.
-     * <p>
-     * The default implementation is a no-op. Custom implementations are encouraged but not required to
-     * perform a background refresh.
      *
      * @param context the request-scoped parameters (container, account) identifying the session scope.
      */
-    default void refreshSession(SessionRequestContext context) {
-        // no-op by default
-    }
+    void refreshSession(SessionRequestContext context);
 }

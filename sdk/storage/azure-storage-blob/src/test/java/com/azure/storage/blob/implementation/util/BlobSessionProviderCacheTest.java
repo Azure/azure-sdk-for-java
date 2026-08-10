@@ -36,20 +36,21 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Deterministic, network-free tests for {@link BlobSessionClient}'s time-based, per-container caching
+ * Deterministic, network-free tests for {@link BlobSessionProvider}'s time-based, per-container caching
  * behavior.
  * <p>
- * These tests drive {@link BlobSessionClient} with an injectable {@link Clock} and a fake HTTP transport
+ * These tests drive {@link BlobSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link ControllableHttpClient}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
  * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
  * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
  * covered separately by {@code SessionTokenCredentialPolicyTest}.
  */
-public class BlobSessionClientCacheTest {
+public class BlobSessionProviderCacheTest {
 
     private static final String ACCOUNT_NAME = "myaccount";
     private static final String CONTAINER_A = "container-a";
@@ -71,10 +72,10 @@ public class BlobSessionClientCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
         // First request: cold cache mints a good token and uses it.
-        SessionCredential firstRequest = client.getSession(contextFor(CONTAINER_A));
+        SessionCredential firstRequest = provider.getSession(contextFor(CONTAINER_A));
         assertEquals(FIRST_TOKEN, firstRequest.getSessionToken());
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
 
@@ -82,7 +83,7 @@ public class BlobSessionClientCacheTest {
         clock.advance(SESSION_LIFETIME.plusSeconds(1));
 
         // Second request: the cached token is expired by time, so a new session is created instead of reused.
-        SessionCredential secondRequest = client.getSession(contextFor(CONTAINER_A));
+        SessionCredential secondRequest = provider.getSession(contextFor(CONTAINER_A));
         assertEquals(SECOND_TOKEN, secondRequest.getSessionToken());
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
     }
@@ -98,10 +99,10 @@ public class BlobSessionClientCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
         // First request: cold cache mints the initial token.
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
 
         // Advance to a point guaranteed to be past the jittered refresh time (80-100% of lifetime minus the
@@ -110,13 +111,13 @@ public class BlobSessionClientCacheTest {
 
         // Second request: token still usable, refresh timer elapsed, no service hint => automatic background
         // refresh. The current token is served while the refresh happens.
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
 
         // Third request: the background refresh has swapped in the new token, which is now served. The
         // refresh runs on a background subscription, so poll briefly rather than asserting immediately.
         assertEquals(SECOND_TOKEN,
-            waitForToken(() -> client.getSession(contextFor(CONTAINER_A)), SECOND_TOKEN).getSessionToken());
+            waitForToken(() -> provider.getSession(contextFor(CONTAINER_A)), SECOND_TOKEN).getSessionToken());
         // Still only one inline creation and one background refresh overall (no over-eager churn).
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
     }
@@ -133,11 +134,11 @@ public class BlobSessionClientCacheTest {
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         httpClient.enqueue(CONTAINER_A, "refreshed-a", now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
         httpClient.enqueue(CONTAINER_B, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
         // Mint an initial session for each container.
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        assertEquals(SECOND_TOKEN, client.getSession(contextFor(CONTAINER_B)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(SECOND_TOKEN, provider.getSession(contextFor(CONTAINER_B)).getSessionToken());
 
         // Advance past container A's jittered refresh window (both containers were minted at the same time,
         // so this is also past B's refresh window by clock time - but B must only refresh once *it* is
@@ -146,7 +147,7 @@ public class BlobSessionClientCacheTest {
 
         // Touching container A triggers its background refresh. The refresh runs on a background
         // subscription, so poll briefly rather than asserting the call count immediately.
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         waitForCallCount(httpClient, CONTAINER_A, 2);
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
 
@@ -165,17 +166,17 @@ public class BlobSessionClientCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
         // First request mints the token.
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
 
         // Advance only slightly - well before the earliest jittered refresh point (80% of lifetime).
         clock.advance(Duration.ofSeconds(30));
 
         // Several more requests reuse the same token; no refresh is triggered.
         for (int i = 0; i < 3; i++) {
-            assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+            assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         }
 
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
@@ -190,9 +191,9 @@ public class BlobSessionClientCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
-        StepVerifier.create(client.getSessionAsync(contextFor(CONTAINER_A)))
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
             .verifyComplete();
 
@@ -208,16 +209,16 @@ public class BlobSessionClientCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
-        StepVerifier.create(client.getSessionAsync(contextFor(CONTAINER_A)))
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
             .verifyComplete();
 
         // Advance well short of the earliest jittered refresh point (80% of lifetime).
         clock.advance(Duration.ofSeconds(30));
 
-        StepVerifier.create(client.getSessionAsync(contextFor(CONTAINER_A)))
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
             .verifyComplete();
 
@@ -234,12 +235,12 @@ public class BlobSessionClientCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueueFailure(CONTAINER_A);
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
-        StepVerifier.create(client.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
 
         // The failure left no cached value behind, so the retry mints a fresh one.
-        StepVerifier.create(client.getSessionAsync(contextFor(CONTAINER_A)))
+        StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
             .verifyComplete();
 
@@ -255,13 +256,33 @@ public class BlobSessionClientCacheTest {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
-        assertEquals(FIRST_TOKEN, client.getSession(contextFor(CONTAINER_A)).getSessionToken());
+        assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(FIRST_TOKEN,
-            client.getSession(contextFor(CONTAINER_A.toUpperCase(Locale.ROOT))).getSessionToken());
+            provider.getSession(contextFor(CONTAINER_A.toUpperCase(Locale.ROOT))).getSessionToken());
 
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
+    }
+
+    @Test
+    public void refreshAndInvalidationAreOwnedByProvider() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        ControllableHttpClient httpClient = new ControllableHttpClient();
+        httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
+        httpClient.enqueue(CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
+        httpClient.enqueue(CONTAINER_A, "third-session-token", now(clock).plus(SESSION_LIFETIME));
+        BlobSessionProvider provider = createProvider(httpClient, clock);
+        SessionRequestContext context = contextFor(CONTAINER_A);
+
+        SessionCredential first = provider.getSession(context);
+        provider.refreshSession(context);
+        SessionCredential second = waitForToken(() -> provider.getSession(context), SECOND_TOKEN);
+
+        assertFalse(provider.invalidateSession(context, first));
+        assertTrue(provider.invalidateSession(context, second));
+        assertFalse(provider.invalidateSession(context, second));
+        assertEquals("third-session-token", provider.getSession(context).getSessionToken());
     }
 
     /**
@@ -274,10 +295,10 @@ public class BlobSessionClientCacheTest {
         ControllableHttpClient httpClient = new ControllableHttpClient();
         // A pending response models a CreateSession call that is still outstanding.
         Sinks.One<HttpResponse> pendingResponse = httpClient.preparePendingResponse(CONTAINER_A);
-        BlobSessionClient client = createClient(httpClient, clock);
+        BlobSessionProvider provider = createProvider(httpClient, clock);
 
-        Mono<SessionCredential> first = client.getSessionAsync(contextFor(CONTAINER_A));
-        Mono<SessionCredential> second = client.getSessionAsync(contextFor(CONTAINER_A));
+        Mono<SessionCredential> first = provider.getSessionAsync(contextFor(CONTAINER_A));
+        Mono<SessionCredential> second = provider.getSessionAsync(contextFor(CONTAINER_A));
 
         AtomicReference<SessionCredential> firstResult = new AtomicReference<>();
         AtomicReference<SessionCredential> secondResult = new AtomicReference<>();
@@ -350,9 +371,9 @@ public class BlobSessionClientCacheTest {
         }
     }
 
-    private static BlobSessionClient createClient(HttpClient httpClient, Clock clock) {
+    private static BlobSessionProvider createProvider(HttpClient httpClient, Clock clock) {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        return new BlobSessionClient(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        return new BlobSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
     }
 

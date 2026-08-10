@@ -159,7 +159,7 @@ public final class BuilderHelper {
                 if (sessionProvider == null) {
                     HttpPipeline bearerPipeline
                         = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
-                    sessionProvider = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
+                    sessionProvider = new BlobSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion,
                         sessionOptions.getAccountName());
                 }
                 policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, sessionOptions));

@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <h2>Caching model</h2>
  * <p>
  * One {@link AutoRefreshingCache} of {@link SessionCredential} per container (keyed by a
- * lowercase-normalized name) is maintained, allowing a single {@link BlobSessionClient} to serve
+ * lowercase-normalized name) is maintained, allowing a single {@link BlobSessionProvider} to serve
  * many containers without creating a new session for every request.  Entries are opportunistically
  * evicted once they have not been accessed for {@value #IDLE_EVICTION_THRESHOLD_MINUTES} minutes.
  *
@@ -58,11 +58,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * takes an {@link HttpPipeline} (bearer-only, no session policy) and builds an
  * {@link AzureBlobStorageImpl} internally.
  */
-final class BlobSessionClient implements SessionProvider {
+final class BlobSessionProvider implements SessionProvider {
 
     static final int IDLE_EVICTION_THRESHOLD_MINUTES = 5;
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlobSessionClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
     // Defensive fallback expiration for a malformed/absent service response.
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
@@ -72,12 +72,13 @@ final class BlobSessionClient implements SessionProvider {
     private final Clock clock;
     private final ConcurrentHashMap<String, ContainerSessionCache> containerSessionCaches = new ConcurrentHashMap<>();
 
-    BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName) {
+    BlobSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName) {
         this(bearerPipeline, url, serviceVersion, accountName, Clock.systemUTC());
     }
 
     /** Package-private constructor that accepts an injectable clock for deterministic testing. */
-    BlobSessionClient(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+    BlobSessionProvider(HttpPipeline bearerPipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         Clock clock) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(bearerPipeline)
             .url(url)
@@ -217,24 +218,24 @@ final class BlobSessionClient implements SessionProvider {
         volatile OffsetDateTime lastAccess;
         private SessionCredential currentSessionCredential;
 
-        private ContainerSessionCache(BlobSessionClient client, Clock clock, String containerName,
+        private ContainerSessionCache(BlobSessionProvider provider, Clock clock, String containerName,
             String resolvedAccountName, OffsetDateTime lastAccess) {
-            this.cache = createCache(client, clock, containerName, resolvedAccountName);
+            this.cache = createCache(provider, clock, containerName, resolvedAccountName);
             this.lastAccess = lastAccess;
         }
 
-        private static AutoRefreshingCache<SessionCredential> createCache(BlobSessionClient client, Clock clock,
+        private static AutoRefreshingCache<SessionCredential> createCache(BlobSessionProvider provider, Clock clock,
             String containerName, String resolvedAccountName) {
             AutoRefreshingCache.ValueProvider<SessionCredential> valueProvider
                 = new AutoRefreshingCache.ValueProvider<SessionCredential>() {
                     @Override
                     public Mono<SessionCredential> createAsync() {
-                        return client.createSessionAsync(containerName, resolvedAccountName);
+                        return provider.createSessionAsync(containerName, resolvedAccountName);
                     }
 
                     @Override
                     public SessionCredential createSync() {
-                        return client.createSessionSync(containerName, resolvedAccountName);
+                        return provider.createSessionSync(containerName, resolvedAccountName);
                     }
                 };
             return new AutoRefreshingCache<>(valueProvider, SessionCredential::getExpiresAt, clock);
