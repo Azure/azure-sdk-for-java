@@ -33,6 +33,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -84,6 +85,7 @@ public class IotHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("Not enough quota")
     public void testIotHubDescription() {
         IotHubDescription iotHubDescription = null;
         try {
