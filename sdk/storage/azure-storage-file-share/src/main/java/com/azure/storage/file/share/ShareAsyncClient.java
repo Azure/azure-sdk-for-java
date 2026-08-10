@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -519,9 +520,10 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
-        context = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = ModelHelper.createSnapshotRequestOptions(shareName, metadata, finalContext);
         return azureFileStorageClient.getShares()
-            .createSnapshotWithResponseAsync(shareName, null, metadata, context)
+            .createSnapshotWithResponseAsync(requestOptions)
             .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
@@ -620,11 +622,13 @@ public class ShareAsyncClient {
         options = options == null ? new ShareDeleteOptions() : options;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
-                ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), context);
+        Context finalContext = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        ModelHelper.addSnapshot(requestOptions, snapshot);
+        ModelHelper.addDeleteSnapshotsHeader(requestOptions, options.getDeleteSnapshotsOptions());
+        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        return azureFileStorageClient.getShares().deleteWithResponseAsync(requestOptions);
     }
 
     /**
@@ -802,9 +806,13 @@ public class ShareAsyncClient {
         options = options == null ? new ShareGetPropertiesOptions() : options;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        ModelHelper.addSnapshot(requestOptions, snapshot);
+        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
         return azureFileStorageClient.getShares()
-            .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
+            .getPropertiesWithResponseAsync(requestOptions)
             .map(ModelHelper::mapGetPropertiesResponse);
     }
 
@@ -1062,10 +1070,13 @@ public class ShareAsyncClient {
         options = options == null ? new ShareSetMetadataOptions() : options;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        ModelHelper.addMetadata(requestOptions, options.getMetadata());
+        ModelHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+        ModelHelper.scopeRequestToResourcePath(requestOptions, shareName);
         return azureFileStorageClient.getShares()
-            .setMetadataNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(),
-                requestConditions.getLeaseId(), context)
+            .setMetadataWithResponseAsync(requestOptions)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 

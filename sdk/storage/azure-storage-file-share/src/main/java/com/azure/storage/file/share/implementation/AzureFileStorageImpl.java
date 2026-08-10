@@ -10,7 +10,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.storage.file.share.FileServiceVersion;
+import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 
 /**
@@ -76,14 +76,14 @@ public final class AzureFileStorageImpl {
     /**
      * Service version.
      */
-    private final FileServiceVersion serviceVersion;
+    private final ShareServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public FileServiceVersion getServiceVersion() {
+    public ShareServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -181,7 +181,7 @@ public final class AzureFileStorageImpl {
      * @param serviceVersion Service version.
      */
     public AzureFileStorageImpl(String url, ShareTokenIntent fileRequestIntent, boolean allowTrailingDot,
-        boolean allowSourceTrailingDot, FileServiceVersion serviceVersion) {
+        boolean allowSourceTrailingDot, ShareServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), url, fileRequestIntent, allowTrailingDot,
             allowSourceTrailingDot, serviceVersion);
@@ -198,7 +198,7 @@ public final class AzureFileStorageImpl {
      * @param serviceVersion Service version.
      */
     public AzureFileStorageImpl(HttpPipeline httpPipeline, String url, ShareTokenIntent fileRequestIntent,
-        boolean allowTrailingDot, boolean allowSourceTrailingDot, FileServiceVersion serviceVersion) {
+        boolean allowTrailingDot, boolean allowSourceTrailingDot, ShareServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, fileRequestIntent, allowTrailingDot,
             allowSourceTrailingDot, serviceVersion);
     }
@@ -216,7 +216,7 @@ public final class AzureFileStorageImpl {
      */
     public AzureFileStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url,
         ShareTokenIntent fileRequestIntent, boolean allowTrailingDot, boolean allowSourceTrailingDot,
-        FileServiceVersion serviceVersion) {
+        ShareServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;

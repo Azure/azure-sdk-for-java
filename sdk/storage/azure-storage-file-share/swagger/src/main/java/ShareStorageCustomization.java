@@ -68,9 +68,16 @@ public class ShareStorageCustomization extends Customization {
         "src/main/java/com/azure/storage/file/share/models/package-info.java",
         "src/main/java/com/azure/storage/file/share/implementation/package-info.java");
 
+    // Generated implementation classes typed to the generated FileServiceVersion enum, which is deleted (above) in
+    // favor of the hand-written public ShareServiceVersion. These are retyped to ShareServiceVersion after generation.
+    private static final List<String> IMPLS_USING_SERVICE_VERSION
+        = Arrays.asList("AzureFileStorageImpl", "DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
+
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         removeGeneratedConvenienceClients(customization, logger);
+
+        retypeServiceVersionToShareServiceVersion(customization, logger);
 
         restoreFluentModels(customization, logger);
 
@@ -81,10 +88,6 @@ public class ShareStorageCustomization extends Customization {
                     + "required RBAC permission.")));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
-
-        // Must run AFTER updateImplToMapInternalException so the typed wrappers added here are not walked
-        // (and double-wrapped) by that pass. Wrappers embed their own error mapping.
-        addTypedImplWrappers(customization, logger);
     }
 
     /**
@@ -105,6 +108,29 @@ public class ShareStorageCustomization extends Customization {
         for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
             customization.getRawEditor().removeFile(path);
             logger.info("Removed generated descriptor file (hand-written version preserved): {}", path);
+        }
+    }
+
+    /**
+     * Retypes the generated {@code implementation/*Impl} classes from the generated {@code FileServiceVersion} enum
+     * (deleted by {@link #removeGeneratedConvenienceClients}) to the hand-written public
+     * {@code com.azure.storage.file.share.ShareServiceVersion}. Both enums live in {@code com.azure.storage.file.share}
+     * and share the same shape ({@code implements ServiceVersion}, {@code getVersion()}, {@code getLatest()}), so
+     * replacing the type token is safe; it also aligns the impl constructors with the {@code ShareServiceVersion} the
+     * hand-written builders pass.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void retypeServiceVersionToShareServiceVersion(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        for (String implName : IMPLS_USING_SERVICE_VERSION) {
+            String path = PKG_ROOT + "implementation/" + implName + ".java";
+            String content = editor.getFileContent(path);
+            if (content.contains("FileServiceVersion")) {
+                editor.replaceFile(path, content.replace("FileServiceVersion", "ShareServiceVersion"));
+                logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
+            }
         }
     }
 
@@ -227,102 +253,6 @@ public class ShareStorageCustomization extends Customization {
             }
         }
         return -1;
-    }
-
-    /**
-     * Adds typed convenience overloads on the generated {@code *Impl} classes that mirror the shape emitted by the
-     * pre-migration swagger {@code generate-client-as-impl} code (typed parameters + {@code ResponseBase<XxxHeaders,T>}
-     * return type). typespec-java only emits protocol methods
-     * ({@code xxxWithResponse[Async](RequestOptions)&nbsp;-&gt;&nbsp;Response<Void>/BinaryData}) which discard typed
-     * response headers and drop the typed request parameters. The shipped hand-written {@code Share*} clients rely on
-     * the swagger-shaped signatures, so this method reinstates them per the TypeSpec team's interim guidance:
-     * "a manual mapping can be added from the implementation layer {@code Response<Void>} to
-     * {@code ResponseBase<SharesCreateSnapshotHeaders, Void>}." Each wrapper builds a {@link RequestOptions} from its
-     * typed parameters, calls the generated {@code service} proxy directly with a share-scoped URL, maps the raw
-     * response into a typed {@code ResponseBase} using the {@code *Headers} constructor that consumes the raw
-     * {@link com.azure.core.http.HttpHeaders}, and applies {@code ShareStorageExceptionInternal} error mapping.
-     * <p>
-     * The {@code *Headers} classes in {@code implementation/models} are the pre-migration AutoRest-generated files
-     * that typespec-java does not yet emit; they are kept as-is (treated as hand-written) until the emitter grows an
-     * equivalent of the TypeScript emitter's {@code include-headers-in-response} option.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void addTypedImplWrappers(LibraryCustomization customization, Logger logger) {
-        // createSnapshot (SharesImpl) -- template implementation, extend to the remaining operations.
-        customization.getClass("com.azure.storage.file.share.implementation", "SharesImpl").customizeAst(ast -> {
-            // ResponseBase / SharesCreateSnapshotHeaders / Map are not present in the emitted file; the rest
-            // (RequestOptions, Response, HttpHeaderName, Context, Mono, ShareStorageExceptionInternal, ModelHelper)
-            // are already imported by typespec-java's emit + updateImplToMapInternalException.
-            ast.addImport("com.azure.core.http.rest.ResponseBase");
-            ast.addImport("com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders");
-            ast.addImport("java.util.Map");
-
-            ast.getClassByName("SharesImpl").ifPresent(clazz -> {
-                addBodyDeclaration(clazz,
-                    "public Mono<ResponseBase<SharesCreateSnapshotHeaders, Void>>"
-                        + " createSnapshotWithResponseAsync(String shareName, Integer timeout,"
-                        + " Map<String, String> metadata, Context context) {\n"
-                        + "    RequestOptions requestOptions = buildCreateSnapshotRequestOptions(timeout, metadata);\n"
-                        + "    String url = this.client.getUrl() + \"/\" + shareName;\n"
-                        + "    return service.createSnapshot(url, this.client.getServiceVersion().getVersion(),\n"
-                        + "            this.client.getFileRequestIntent(), requestOptions, context)\n"
-                        + "        .onErrorMap(ShareStorageExceptionInternal.class,"
-                        + " ModelHelper::mapToShareStorageException)\n"
-                        + "        .map(response -> new ResponseBase<>(response.getRequest(),"
-                        + " response.getStatusCode(),\n"
-                        + "            response.getHeaders(), response.getValue(),\n"
-                        + "            new SharesCreateSnapshotHeaders(response.getHeaders())));\n"
-                        + "}\n");
-
-                addBodyDeclaration(clazz,
-                    "public ResponseBase<SharesCreateSnapshotHeaders, Void>"
-                        + " createSnapshotWithResponse(String shareName, Integer timeout,"
-                        + " Map<String, String> metadata, Context context) {\n"
-                        + "    RequestOptions requestOptions = buildCreateSnapshotRequestOptions(timeout, metadata);\n"
-                        + "    String url = this.client.getUrl() + \"/\" + shareName;\n"
-                        + "    try {\n"
-                        + "        Response<Void> response = service.createSnapshotSync(url,"
-                        + " this.client.getServiceVersion().getVersion(),\n"
-                        + "            this.client.getFileRequestIntent(), requestOptions, context);\n"
-                        + "        return new ResponseBase<>(response.getRequest(), response.getStatusCode(),\n"
-                        + "            response.getHeaders(), response.getValue(),\n"
-                        + "            new SharesCreateSnapshotHeaders(response.getHeaders()));\n"
-                        + "    } catch (ShareStorageExceptionInternal internalException) {\n"
-                        + "        throw ModelHelper.mapToShareStorageException(internalException);\n"
-                        + "    }\n"
-                        + "}\n");
-
-                // Shared RequestOptions builder for both overloads. Kept private + static so it does not extend the
-                // impl's public surface. timeout -> ?timeout=N query param; metadata -> x-ms-meta-<key> headers.
-                addBodyDeclaration(clazz,
-                    "private static RequestOptions buildCreateSnapshotRequestOptions("
-                        + "Integer timeout, Map<String, String> metadata) {\n"
-                        + "    RequestOptions requestOptions = new RequestOptions();\n"
-                        + "    if (timeout != null) {\n"
-                        + "        requestOptions.addQueryParam(\"timeout\", String.valueOf(timeout));\n"
-                        + "    }\n"
-                        + "    if (metadata != null) {\n"
-                        + "        for (Map.Entry<String, String> entry : metadata.entrySet()) {\n"
-                        + "            requestOptions.setHeader("
-                        + "HttpHeaderName.fromString(\"x-ms-meta-\" + entry.getKey()),\n"
-                        + "                entry.getValue());\n"
-                        + "        }\n"
-                        + "    }\n"
-                        + "    return requestOptions;\n"
-                        + "}\n");
-            });
-            logger.info("Added typed createSnapshot wrappers to SharesImpl");
-        });
-    }
-
-    /**
-     * Parses {@code source} as a body declaration (method/constructor/field) and appends it to {@code clazz}.
-     */
-    private static void addBodyDeclaration(com.github.javaparser.ast.body.ClassOrInterfaceDeclaration clazz,
-        String source) {
-        clazz.addMember(StaticJavaParser.parseBodyDeclaration(source));
     }
 
     /**

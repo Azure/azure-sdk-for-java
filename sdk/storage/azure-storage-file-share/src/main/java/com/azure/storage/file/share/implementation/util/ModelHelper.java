@@ -6,10 +6,13 @@ package com.azure.storage.file.share.implementation.util;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -48,7 +51,6 @@ import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
-import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.ClearRange;
@@ -494,9 +496,8 @@ public class ModelHelper {
             new ShareInfo(eTag, lastModified));
     }
 
-    public static Response<ShareProperties>
-        mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
-        SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+    public static Response<ShareProperties> mapGetPropertiesResponse(Response<Void> response) {
+        SharesGetPropertiesHeaders headers = new SharesGetPropertiesHeaders(response.getHeaders());
         ShareProperties shareProperties = new ShareProperties().setETag(headers.getETag())
             .setLastModified(headers.getLastModified())
             .setMetadata(headers.getXMsMeta())
@@ -559,11 +560,74 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
     }
 
-    public static Response<ShareSnapshotInfo>
-        mapCreateSnapshotResponse(ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
-        SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
-        ShareSnapshotInfo snapshotInfo
-            = new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
+    private static final HttpHeaderName X_MS_SNAPSHOT = HttpHeaderName.fromString("x-ms-snapshot");
+
+    /**
+     * Builds the {@link RequestOptions} for a share-scoped operation whose only inputs are optional metadata: sets the
+     * x-ms-meta-* headers and re-scopes the account-scoped request URL to the share resource.
+     */
+    public static RequestOptions createSnapshotRequestOptions(String shareName, Map<String, String> metadata,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addMetadata(requestOptions, metadata);
+        scopeRequestToResourcePath(requestOptions, shareName);
+        return requestOptions;
+    }
+
+    /**
+     * The generated protocol methods target the account-scoped service URL; this appends the resource path (e.g.
+     * "{shareName}" or "{shareName}/{filePath}") to the request URL while preserving the route's query parameters.
+     */
+    public static void scopeRequestToResourcePath(RequestOptions requestOptions, String resourcePath) {
+        requestOptions.addRequestCallback(request -> {
+            UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
+            urlBuilder.setPath(resourcePath);
+            try {
+                request.setUrl(urlBuilder.toUrl());
+            } catch (java.net.MalformedURLException e) {
+                throw new IllegalStateException(e);
+            }
+        });
+    }
+
+    /** Adds the {@code x-ms-lease-id} header when a lease id is present. */
+    public static void addLeaseId(RequestOptions requestOptions, String leaseId) {
+        if (leaseId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
+        }
+    }
+
+    /** Adds the {@code sharesnapshot} query parameter when a snapshot is present. */
+    public static void addSnapshot(RequestOptions requestOptions, String snapshot) {
+        if (snapshot != null) {
+            requestOptions.addQueryParam("sharesnapshot", snapshot);
+        }
+    }
+
+    /** Adds the {@code x-ms-meta-*} headers for each metadata entry. */
+    public static void addMetadata(RequestOptions requestOptions, Map<String, String> metadata) {
+        if (metadata != null) {
+            for (Map.Entry<String, String> entry : metadata.entrySet()) {
+                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
+            }
+        }
+    }
+
+    /** Adds the {@code x-ms-delete-snapshots} header when a delete-snapshots option is present. */
+    public static void addDeleteSnapshotsHeader(RequestOptions requestOptions, ShareSnapshotsDeleteOptionType option) {
+        DeleteSnapshotsOptionType deleteSnapshots = toDeleteSnapshotsOptionType(option);
+        if (deleteSnapshots != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-delete-snapshots"), deleteSnapshots.toString());
+        }
+    }
+
+    public static Response<ShareSnapshotInfo> mapCreateSnapshotResponse(Response<Void> response) {
+        HttpHeaders headers = response.getHeaders();
+        String lastModifiedString = headers.getValue(HttpHeaderName.LAST_MODIFIED);
+        OffsetDateTime lastModified
+            = lastModifiedString == null ? null : new DateTimeRfc1123(lastModifiedString).getDateTime();
+        ShareSnapshotInfo snapshotInfo = new ShareSnapshotInfo(headers.getValue(X_MS_SNAPSHOT),
+            headers.getValue(HttpHeaderName.ETAG), lastModified);
 
         return new SimpleResponse<>(response, snapshotInfo);
     }

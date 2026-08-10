@@ -22,17 +22,14 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.file.share.FileServiceVersion;
+import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
-import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareTokenIntent;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /**
@@ -65,7 +62,7 @@ public final class SharesImpl {
      *
      * @return the serviceVersion value.
      */
-    public FileServiceVersion getServiceVersion() {
+    public ShareServiceVersion getServiceVersion() {
         try {
             return client.getServiceVersion();
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1909,44 +1906,5 @@ public final class SharesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
-    }
-
-    public Mono<ResponseBase<SharesCreateSnapshotHeaders, Void>> createSnapshotWithResponseAsync(String shareName,
-        Integer timeout, Map<String, String> metadata, Context context) {
-        RequestOptions requestOptions = buildCreateSnapshotRequestOptions(timeout, metadata);
-        String url = this.client.getUrl() + "/" + shareName;
-        return service
-            .createSnapshot(url, this.client.getServiceVersion().getVersion(), this.client.getFileRequestIntent(),
-                requestOptions, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .map(response -> new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue(), new SharesCreateSnapshotHeaders(response.getHeaders())));
-    }
-
-    public ResponseBase<SharesCreateSnapshotHeaders, Void> createSnapshotWithResponse(String shareName, Integer timeout,
-        Map<String, String> metadata, Context context) {
-        RequestOptions requestOptions = buildCreateSnapshotRequestOptions(timeout, metadata);
-        String url = this.client.getUrl() + "/" + shareName;
-        try {
-            Response<Void> response = service.createSnapshotSync(url, this.client.getServiceVersion().getVersion(),
-                this.client.getFileRequestIntent(), requestOptions, context);
-            return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue(), new SharesCreateSnapshotHeaders(response.getHeaders()));
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
-    }
-
-    private static RequestOptions buildCreateSnapshotRequestOptions(Integer timeout, Map<String, String> metadata) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeout", String.valueOf(timeout));
-        }
-        if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                requestOptions.setHeader(HttpHeaderName.fromString("x-ms-meta-" + entry.getKey()), entry.getValue());
-            }
-        }
-        return requestOptions;
     }
 }
