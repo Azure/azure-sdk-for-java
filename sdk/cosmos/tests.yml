@@ -9,6 +9,15 @@ extends:
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
+          # Cosmos live tests run against fixed, self-owned accounts (RG sdk-ci) rather than
+          # provisioning an account per run. The resolve pre-step reads the single JSON
+          # secret (sub-config-cosmos-azure-cloud-test-resources) and selects the account
+          # for each matrix leg via $(AccountSelector), exporting ACCOUNT_HOST/ACCOUNT_KEY.
+          DisableAzureResourceCreation: true
+          PreTestRunSteps:
+            - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
+              parameters:
+                AccountSelector: $(AccountSelector)
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -41,6 +50,12 @@ extends:
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
+          # Fixed self-owned account (RG sdk-ci); no per-run provisioning.
+          DisableAzureResourceCreation: true
+          PreTestRunSteps:
+            - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
+              parameters:
+                AccountSelector: multimaster-session-http2
           MatrixConfigs:
             - Name: Cosmos_live_test_http2
               Path: sdk/cosmos/live-http2-platform-matrix.json
@@ -65,7 +80,7 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.THINCLIENT_ENABLED=false'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -171,7 +186,7 @@ extends:
             # with fallback to Gateway V1, rather than a hard opt-in. HTTP2_ENABLED stays true because
             # thin-client routing requires HTTP/2 to be effectively enabled.
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.HTTP2_ENABLED=true'
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.COLLECTION_READINESS_MAX_WAIT_SECONDS=300'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -383,4 +398,3 @@ extends:
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true'
-

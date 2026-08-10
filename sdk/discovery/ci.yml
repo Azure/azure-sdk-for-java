@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/discovery/ci.yml
       - sdk/discovery/azure-ai-discovery/
+      - sdk/discovery/azure-resourcemanager-discovery/
     exclude:
       - sdk/discovery/pom.xml
       - sdk/discovery/azure-ai-discovery/pom.xml
+      - sdk/discovery/azure-resourcemanager-discovery/pom.xml
 
 pr:
   branches:
@@ -25,13 +27,19 @@ pr:
     include:
       - sdk/discovery/ci.yml
       - sdk/discovery/azure-ai-discovery/
+      - sdk/discovery/azure-resourcemanager-discovery/
     exclude:
       - sdk/discovery/pom.xml
       - sdk/discovery/azure-ai-discovery/pom.xml
+      - sdk/discovery/azure-resourcemanager-discovery/pom.xml
 
 parameters:
   - name: release_azureaidiscovery
     displayName: azure-ai-discovery
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagerdiscovery
+    displayName: azure-resourcemanager-discovery
     type: boolean
     default: true
 
@@ -44,3 +52,7 @@ extends:
         groupId: com.azure
         safeName: azureaidiscovery
         releaseInBatch: ${{ parameters.release_azureaidiscovery }}
+      - name: azure-resourcemanager-discovery
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdiscovery
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdiscovery }}

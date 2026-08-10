@@ -215,12 +215,6 @@
 # ServiceLabel: %Cognitive - Metrics Advisor
 # ServiceOwners:                                                   @bowgong
 
-# PRLabel: %Cognitive - Personalizer
-/sdk/personalizer/                                                 @sharathmalladi @Azure/azure-java-sdk
-
-# ServiceLabel: %Cognitive - Personalizer
-# ServiceOwners:                                                   @Azure/azure-java-sdk
-
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                                @Azure/azure-java-sdk @quentinRobinson @samvaity
 
@@ -288,6 +282,9 @@
 # AzureSdkOwners:                                                  @Azure/azure-java-sdk
 # ServiceLabel: %Container Registry
 # ServiceOwners:                                                   @northtyphoon @toddysm
+
+# PRLabel: %Container Service
+/sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
@@ -439,10 +436,10 @@
 # ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
 
 # PRLabel: %Planetary Computer
-/sdk/planetarycomputer/                                            @chahibi @mandarinamdar @karthick-rn @Azure/azure-java-sdk
+/sdk/planetarycomputer/                                            @chahibi @gmoralessanchez @mandarinamdar @karthick-rn @Azure/azure-java-sdk
 
 # ServiceLabel: %Planetary Computer
-# ServiceOwners:                                                   @chahibi @mandarinamdar @karthick-rn
+# ServiceOwners:                                                   @chahibi @gmoralessanchez @mandarinamdar @karthick-rn
 
 # PRLabel: %Purview
 /sdk/purview/                                                      @yifan-zhou922 @Azure/azure-java-sdk
@@ -464,15 +461,15 @@
 # ServiceOwners:                                                   @kuanlu95 @mattgotteiner
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @Azure/azure-java-sdk
+/sdk/servicebus/                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @Azure/azure-java-sdk
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @vinaysurya @Azure/azure-java-sdk
+/sdk/servicebus/microsoft-azure-servicebus/                        @EldertGrootenboer @skarri-microsoft @j7nw4r @vinaysurya @Azure/azure-java-sdk
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r
 
-# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft
+# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft @j7nw4r
 # ServiceLabel: %Service Bus %Track 1
 
 # PRLabel: %Speech Transcription
@@ -644,7 +641,7 @@
 # ServiceOwners:                                                   @macolso
 
 # ServiceLabel: %Container Service
-# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+# ServiceOwners:                                                   @elvazhu521 @FumingZhang
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                                   @ccmbpxpcrew

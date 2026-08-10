@@ -11,5 +11,6 @@
 
   <modules>
     <module>azure-ai-discovery</module>
+    <module>azure-resourcemanager-discovery</module>
   </modules>
 </project>
