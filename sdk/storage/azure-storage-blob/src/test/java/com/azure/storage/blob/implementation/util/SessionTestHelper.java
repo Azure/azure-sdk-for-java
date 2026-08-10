@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.storage.blob.models.SessionCredential;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -16,19 +18,19 @@ final class SessionTestHelper {
     static final String TEST_ACCOUNT_NAME = "myaccount";
     static final String TEST_CONTAINER_NAME = "testcontainer";
 
-    static StorageSessionCredential createCredential(OffsetDateTime expiration) {
-        return new StorageSessionCredential(TEST_SESSION_TOKEN, TEST_SESSION_KEY, expiration, TEST_ACCOUNT_NAME);
+    static SessionCredential createCredential(OffsetDateTime expiration) {
+        return new SessionCredential(TEST_SESSION_TOKEN, TEST_SESSION_KEY, expiration, TEST_ACCOUNT_NAME);
     }
 
-    static StorageSessionCredential createCredential(OffsetDateTime expiration, String accountName) {
-        return new StorageSessionCredential(TEST_SESSION_TOKEN, TEST_SESSION_KEY, expiration, accountName);
+    static SessionCredential createCredential(OffsetDateTime expiration, String accountName) {
+        return new SessionCredential(TEST_SESSION_TOKEN, TEST_SESSION_KEY, expiration, accountName);
     }
 
-    static StorageSessionCredential createValidCredential() {
+    static SessionCredential createValidCredential() {
         return createCredential(OffsetDateTime.now().plusHours(1));
     }
 
-    static StorageSessionCredential createExpiredCredential() {
+    static SessionCredential createExpiredCredential() {
         return createCredential(OffsetDateTime.now().minusMinutes(5));
     }
 

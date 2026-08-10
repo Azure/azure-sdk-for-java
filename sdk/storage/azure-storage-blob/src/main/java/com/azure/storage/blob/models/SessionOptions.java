@@ -4,7 +4,8 @@
 package com.azure.storage.blob.models;
 
 /**
- * Options bag that configures session-based authentication on blob storage builders.
+ * Options bag that configures session-based authentication for a
+ * {@link com.azure.storage.blob.BlobServiceClientBuilder}.
  * <p>
  * Sessions amortize authentication and authorization cost across many requests by signing them
  * with a lightweight HMAC key instead of a full bearer token.
@@ -13,51 +14,42 @@ package com.azure.storage.blob.models;
  */
 public final class SessionOptions {
 
-    private SessionMode sessionMode = SessionMode.AUTO;
+    private SessionMode sessionMode = SessionMode.ENABLED;
     private String containerName;
     private String accountName;
+    private SessionProvider sessionProvider;
 
     /**
      * Creates a new {@link SessionOptions} instance with default values.
-     * Note: This currently only applies when using TokenCredential for GET Blob operations.
+     * This only applies to clients created from a {@link com.azure.storage.blob.BlobServiceClientBuilder}
+     * configured with a TokenCredential, and to eligible GET Blob operations made by clients derived from
+     * that service client.
      */
     public SessionOptions() {
     }
 
     /**
-     * Returns {@code options} if non-null, otherwise a freshly constructed {@link SessionOptions}
-     * with default values. Use this helper instead of inlining {@code opts != null ? opts : new SessionOptions()}
-     * so default construction stays in one place.
-     *
-     * @param options the options instance to validate; may be {@code null}.
-     * @return {@code options} if non-null; a new default {@link SessionOptions} otherwise.
-     */
-    public static SessionOptions orDefault(SessionOptions options) {
-        return options != null ? options : new SessionOptions();
-    }
-
-    /**
      * Gets the session mode.
      *
-     * @return the {@link SessionMode}; defaults to {@link SessionMode#AUTO}.
+     * @return the {@link SessionMode}; defaults to {@link SessionMode#ENABLED}.
      */
     public SessionMode getSessionMode() {
         return sessionMode;
     }
 
     /**
-     * Sets the session mode. Passing {@code null} resets the mode to {@link SessionMode#AUTO}.
+     * Sets the session mode. Passing {@code null} resets the mode to {@link SessionMode#ENABLED}.
      *
      * @param sessionMode the {@link SessionMode} to set.
      * @return the updated {@link SessionOptions} object.
      */
     public SessionOptions setSessionMode(SessionMode sessionMode) {
-        this.sessionMode = sessionMode == null ? SessionMode.AUTO : sessionMode;
+        this.sessionMode = sessionMode == null ? SessionMode.ENABLED : sessionMode;
         return this;
     }
 
     /**
-     * Gets the container name that the session is scoped to.
+     * Gets the container name override used when it cannot be resolved from the request URL.
      *
      * @return the container name, or {@code null} if not set.
      */
@@ -66,8 +58,7 @@ public final class SessionOptions {
     }
 
     /**
-     * Sets the container name that the session is scoped to. This is required when the session mode
-     * is not {@link SessionMode#NONE}.
+     * Sets the container name override used when it cannot be resolved from the request URL.
      *
      * @param containerName the container name.
      * @return the updated {@link SessionOptions} object.
@@ -96,6 +87,27 @@ public final class SessionOptions {
      */
     public SessionOptions setAccountName(String accountName) {
         this.accountName = accountName;
+        return this;
+    }
+
+    /**
+     * Gets the custom provider used to obtain session credentials.
+     *
+     * @return the custom {@link SessionProvider}, or {@code null} to use the built-in provider.
+     */
+    public SessionProvider getSessionProvider() {
+        return sessionProvider;
+    }
+
+    /**
+     * Sets the custom provider used to obtain session credentials. The SDK continues to cache the returned
+     * credentials independently per container and performs request signing internally.
+     *
+     * @param sessionProvider the custom {@link SessionProvider}, or {@code null} to use the built-in provider.
+     * @return the updated {@link SessionOptions} object.
+     */
+    public SessionOptions setSessionProvider(SessionProvider sessionProvider) {
+        this.sessionProvider = sessionProvider;
         return this;
     }
 }

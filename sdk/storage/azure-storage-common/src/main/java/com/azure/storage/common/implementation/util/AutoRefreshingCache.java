@@ -11,27 +11,29 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache.ExpiringValue;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 /**
  * Cache for container-scoped storage session credentials.
+ * <p>
+ * {@code T} is not required to implement any particular interface; the caller supplies a
+ * {@link Function} that extracts the expiration instant from a value, decoupling this cache from any
+ * specific credential shape.
  */
-public final class AutoRefreshingCache<T extends ExpiringValue> {
-    public interface ValueProvider<T extends ExpiringValue> {
+public final class AutoRefreshingCache<T> {
+    public interface ValueProvider<T> {
         Mono<T> createAsync();
 
         T createSync();
-    }
-
-    public interface ExpiringValue {
-        OffsetDateTime getExpiration();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
     private static final Duration SAFETY_BUFFER = Duration.ofSeconds(5);
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
-    private ValueProvider<T> valueProvider;
+    private final ValueProvider<T> valueProvider;
+    private final Function<T, OffsetDateTime> expirationExtractor;
     private final Clock clock;
     private final Object creationLock = new Object();
     private volatile T value;
@@ -39,12 +41,14 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
     private volatile boolean refreshing;
     private volatile Mono<T> inflightCreation;
 
-    public AutoRefreshingCache(ValueProvider<T> valueProvider) {
-        this(valueProvider, Clock.systemUTC());
+    public AutoRefreshingCache(ValueProvider<T> valueProvider, Function<T, OffsetDateTime> expirationExtractor) {
+        this(valueProvider, expirationExtractor, Clock.systemUTC());
     }
 
-    public AutoRefreshingCache(ValueProvider<T> valueProvider, Clock clock) {
+    public AutoRefreshingCache(ValueProvider<T> valueProvider, Function<T, OffsetDateTime> expirationExtractor,
+        Clock clock) {
         this.valueProvider = Objects.requireNonNull(valueProvider, "'valueProvider' cannot be null.");
+        this.expirationExtractor = Objects.requireNonNull(expirationExtractor, "'expirationExtractor' cannot be null.");
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
@@ -144,16 +148,21 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
 
             refreshing = true;
 
-            inflightCreation = valueProvider.createAsync().doOnNext(cred -> {
+            AtomicReference<Mono<T>> creationReference = new AtomicReference<>();
+            Mono<T> creation = valueProvider.createAsync().doOnNext(cred -> {
                 synchronized (creationLock) {
                     setActiveValue(cred);
                 }
             }).doFinally(ignored -> {
                 synchronized (creationLock) {
-                    inflightCreation = null;
-                    refreshing = false;
+                    if (inflightCreation == creationReference.get()) {
+                        inflightCreation = null;
+                        refreshing = false;
+                    }
                 }
             }).cache();
+            creationReference.set(creation);
+            inflightCreation = creation;
 
             return inflightCreation;
         }
@@ -161,12 +170,19 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
 
     private void setActiveValue(T newValue) {
         value = newValue;
-        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), newValue.getExpiration());
+        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), expirationExtractor.apply(newValue));
         refreshing = false;
+        // Clear the in-flight marker here (not just in doFinally). doFinally only runs once the Mono
+        // reaches its terminal signal, but a downstream subscriber's onNext handler (e.g. inspecting the
+        // HTTP response for a "session expiring" hint) can run synchronously before that terminal signal
+        // is emitted. If a forced background refresh is triggered from within that onNext handler, it
+        // must see this creation as no-longer-in-flight so it starts a fresh one instead of returning the
+        // same (already-delivering) cached Mono.
+        inflightCreation = null;
     }
 
     private boolean isUsable(T value, OffsetDateTime now) {
-        return value != null && !now.isAfter(value.getExpiration());
+        return value != null && !now.isAfter(expirationExtractor.apply(value));
     }
 
     private boolean isRefreshDue(OffsetDateTime now) {

@@ -612,7 +612,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * @return the updated BlobServiceClientBuilder object.
      */
     public BlobServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
+        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
         return this;
     }
 }

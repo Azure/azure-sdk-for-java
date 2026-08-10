@@ -4,7 +4,15 @@
 
 ### Features Added
 
+- Added per-container session credential caching for identity-authenticated blob downloads.
+- Added `SessionProvider`, `SessionCredential`, and `SessionRequestContext` APIs so applications can supply
+  custom session credentials through `SessionOptions` on `BlobServiceClientBuilder`.
+
 ### Breaking Changes
+
+- Session authentication is now enabled by default for eligible identity-authenticated blob downloads.
+- Replaced the `SessionMode` values `NONE`, `AUTO`, and `SINGLE_SPECIFIED_CONTAINER` with `ENABLED` and
+  `DISABLED`.
 
 ### Bugs Fixed
 
@@ -12,6 +20,10 @@
   client's own session-refresh timer had not yet elapsed, allowing a container session to be used past the
   point the service rotated its network-context binding and surfacing as a `401 InvalidAuthenticationInfo`
   (`session_token_invalid` / network context mismatch). The hint now forces a proactive background refresh.
+- Session acquisition failures now fall back to bearer authentication. HTTP `400`, `403`, and `5xx`
+  acquisition failures suppress additional session acquisition attempts for the account for five minutes.
+- A session-authenticated request rejected with HTTP `401` now invalidates the cached session and falls back
+  directly to bearer authentication without retrying with another session.
 
 ### Other Changes
 
