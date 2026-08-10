@@ -2832,7 +2832,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private BlobContainerClient sessionEnabledContainerClient(HttpPipelinePolicy... policies) {
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED)
             .setContainerName(cc.getBlobContainerName())
             .setAccountName(cc.getAccountName());
         return getOAuthServiceClient(sessionOptions, policies).getBlobContainerClient(cc.getBlobContainerName());

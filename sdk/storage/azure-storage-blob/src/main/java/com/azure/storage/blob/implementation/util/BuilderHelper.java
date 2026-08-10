@@ -34,8 +34,8 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
@@ -138,7 +138,7 @@ public final class BuilderHelper {
         HttpClient effectiveHttpClient
             = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
 
-        // When sessionOptions is non-null and the resolved session mode is not SessionMode.NONE, and a tokenCredential is
+        // When the resolved session mode is enabled and a tokenCredential is
         // present, a single SessionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
         // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
         // the bearer token policy is added directly.
@@ -150,21 +150,20 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            SessionOptions effectiveSessionOptions = SessionOptions.orDefault(sessionOptions);
-
-            BlobServiceVersion effectiveServiceVersion
-                = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-
-            HttpPipeline bearerPipeline
-                = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
-            BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
-                effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
-
-            if (effectiveSessionOptions.getSessionMode() == SessionMode.NONE) {
+            if (sessionOptions == null || sessionOptions.getSessionMode() == SessionMode.DISABLED) {
                 policies.add(bearerPolicy);
             } else {
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, new AutoRefreshingCache<>(sessionClient),
-                    effectiveSessionOptions));
+                BlobServiceVersion effectiveServiceVersion
+                    = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
+                SessionProvider sessionProvider = sessionOptions.getSessionProvider();
+                if (sessionProvider == null) {
+                    HttpPipeline bearerPipeline
+                        = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
+                    sessionProvider = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
+                        sessionOptions.getAccountName());
+                }
+                SessionAcquisitionCooldown cooldown = new SessionAcquisitionCooldown();
+                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, cooldown, sessionOptions));
             }
         }
 
@@ -298,13 +297,6 @@ public final class BuilderHelper {
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
-    }
-
-    public static void validateSessionMode(SessionOptions sessionOptions, String containerName, ClientLogger logger) {
-        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
-        }
     }
 
 }

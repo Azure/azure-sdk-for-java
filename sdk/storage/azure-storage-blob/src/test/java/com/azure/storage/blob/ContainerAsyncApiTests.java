@@ -2663,7 +2663,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     private BlobContainerAsyncClient sessionEnabledContainerAsyncClient(HttpPipelinePolicy... policies) {
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED)
             .setContainerName(ccAsync.getBlobContainerName())
             .setAccountName(ccAsync.getAccountName());
         return getOAuthServiceAsyncClient(sessionOptions, policies)

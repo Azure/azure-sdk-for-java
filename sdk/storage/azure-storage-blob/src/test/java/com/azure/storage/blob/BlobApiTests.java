@@ -3231,9 +3231,10 @@ public class BlobApiTests extends BlobTestBase {
             }
         });
 
-        BlobClient sessionBlob = getBlobClientBuilderWithTokenCredential(blobClient.getBlobUrl(), inspect)
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER))
-            .buildClient();
+        BlobClient sessionBlob
+            = getOAuthServiceClient(new SessionOptions().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
 
         File outFile = new File(prefix + "-session-download.tmp");
         createdFiles.add(outFile);

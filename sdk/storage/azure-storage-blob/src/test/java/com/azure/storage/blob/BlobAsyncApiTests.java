@@ -2994,9 +2994,10 @@ public class BlobAsyncApiTests extends BlobTestBase {
             }
         });
 
-        BlobAsyncClient sessionBlob = getBlobClientBuilderWithTokenCredential(blobClient.getBlobUrl(), inspect)
-            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER))
-            .buildAsyncClient();
+        BlobAsyncClient sessionBlob
+            = getOAuthServiceAsyncClient(new SessionOptions().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerAsyncClient(ccAsync.getBlobContainerName())
+                .getBlobAsyncClient(blobName);
 
         File outFile = new File(prefix + "-session-download.tmp");
         createdFiles.add(outFile);

@@ -8,28 +8,29 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StorageSessionCredentialTest {
+public class SessionRequestSignerTest {
 
     @Test
     public void signRequestUsesSessionScheme() throws MalformedURLException {
-        StorageSessionCredential credential = SessionTestHelper.createValidCredential();
+        SessionCredential credential = SessionTestHelper.createValidCredential();
         HttpRequest request
             = new HttpRequest(HttpMethod.GET, new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob"));
 
-        credential.signRequest(request);
+        SessionRequestSigner.signRequest(request, credential);
 
         String authHeader = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         assertNotNull(authHeader);
@@ -41,19 +42,19 @@ public class StorageSessionCredentialTest {
 
     @Test
     public void signRequestSetsXmsDateHeader() throws MalformedURLException {
-        StorageSessionCredential credential = SessionTestHelper.createValidCredential();
+        SessionCredential credential = SessionTestHelper.createValidCredential();
         HttpRequest request
             = new HttpRequest(HttpMethod.GET, new URL("https://myaccount.blob.core.windows.net/mycontainer/myblob"));
 
         assertNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")));
 
-        credential.signRequest(request);
+        SessionRequestSigner.signRequest(request, credential);
 
         assertNotNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")),
             "signRequest must set x-ms-date so the signed value matches what is sent on the wire");
     }
 
-    // Regression guard for the URL-decode fix in StorageSessionCredential.canonicalizedResource:
+    // Regression guard for the URL-decode fix in SessionRequestSigner.canonicalizedResource:
     // verifies Session and SharedKey produce the same HMAC for a well-formed GET with an
     // encoded query string (e.g. snapshot=...%3A...).
     //
@@ -63,7 +64,7 @@ public class StorageSessionCredentialTest {
     // Content-Length: 0 (which the server normalizes to "") is covered separately.
     @Test
     public void canonicalizationMatchesSharedKeyForEncodedQuery() throws MalformedURLException {
-        StorageSessionCredential sessionCred = SessionTestHelper.createValidCredential();
+        SessionCredential sessionCred = SessionTestHelper.createValidCredential();
         StorageSharedKeyCredential sharedKeyCred
             = new StorageSharedKeyCredential(SessionTestHelper.TEST_ACCOUNT_NAME, SessionTestHelper.TEST_SESSION_KEY);
 
@@ -76,7 +77,7 @@ public class StorageSessionCredentialTest {
             .set(HttpHeaderName.RANGE, "bytes=0-1023")
             .set(HttpHeaderName.CONTENT_LENGTH, "1024");
 
-        sessionCred.signRequest(request);
+        SessionRequestSigner.signRequest(request, sessionCred);
 
         String sessionAuth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         String sessionSignature = sessionAuth.substring(sessionAuth.indexOf(':') + 1);
@@ -104,17 +105,8 @@ public class StorageSessionCredentialTest {
     }
 
     @Test
-    public void getExpirationDefaultsWhenConstructedWithNull() {
-        OffsetDateTime before = OffsetDateTime.now();
-        StorageSessionCredential credential = new StorageSessionCredential(SessionTestHelper.TEST_SESSION_TOKEN,
-            SessionTestHelper.TEST_SESSION_KEY, null, SessionTestHelper.TEST_ACCOUNT_NAME);
-        OffsetDateTime after = OffsetDateTime.now();
-
-        OffsetDateTime expiration = credential.getExpiration();
-        assertNotNull(expiration);
-        assertTrue(
-            !expiration.isBefore(before.plusMinutes(5L).minusSeconds(1))
-                && !expiration.isAfter(after.plusMinutes(5L).plusSeconds(1)),
-            "Default expiration should be ~5 minutes from construction time, but was " + expiration);
+    public void constructorRejectsNullExpiration() {
+        assertThrows(NullPointerException.class, () -> new SessionCredential(SessionTestHelper.TEST_SESSION_TOKEN,
+            SessionTestHelper.TEST_SESSION_KEY, null, SessionTestHelper.TEST_ACCOUNT_NAME));
     }
 }

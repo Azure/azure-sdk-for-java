@@ -9,52 +9,50 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache.ExpiringValue;
 
 import java.net.URL;
 import java.text.Collator;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Holds session credentials and signs requests using the Shared Key string-to-sign with the
- * Session scheme prefix.
+ * Signs requests using a {@link SessionCredential}, following the Shared Key string-to-sign algorithm with
+ * the Session scheme prefix.
+ * <p>
+ * This is deliberately internal: {@link SessionCredential} is public API so that a customer-supplied
+ * {@link com.azure.storage.blob.models.SessionProvider} can produce one, but the signing scheme itself is
+ * fixed by the storage service and is not something a {@code SessionProvider} implementation should (or
+ * needs to) reimplement.
  */
-final class StorageSessionCredential implements ExpiringValue {
+final class SessionRequestSigner {
 
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_PREFIX = "Session ";
 
-    private final String sessionToken;
-    private final String sessionKey;
-    private final OffsetDateTime expiration;
-    private final String accountName;
-    private final StorageSharedKeyCredential sharedKey;
-
-    StorageSessionCredential(String sessionToken, String sessionKey, OffsetDateTime expiration, String accountName) {
-        this.sessionToken = Objects.requireNonNull(sessionToken, "'sessionToken' cannot be null.");
-        this.sessionKey = Objects.requireNonNull(sessionKey, "'sessionKey' cannot be null.");
-        this.expiration = expiration != null ? expiration : OffsetDateTime.now().plusMinutes(5L);
-        this.accountName = Objects.requireNonNull(accountName, "'accountName' cannot be null.");
-        this.sharedKey = new StorageSharedKeyCredential(accountName, sessionKey);
+    private SessionRequestSigner() {
     }
 
-    void signRequest(HttpRequest request) {
+    static void signRequest(HttpRequest request, SessionCredential credential) {
         // Pin x-ms-date so the value we sign matches what is on the wire (AddDatePolicy only sets Date).
         // Honor any pre-set x-ms-date so callers (e.g., tests, retries) can pin a deterministic value.
         if (request.getHeaders().getValue(X_MS_DATE) == null) {
             request.setHeader(X_MS_DATE, DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
         }
 
-        String stringToSign = buildStringToSign(request);
+        String stringToSign = buildStringToSign(request, credential.getAccountName());
+        StorageSharedKeyCredential sharedKey
+            = new StorageSharedKeyCredential(credential.getAccountName(), credential.getSessionKey());
         String signature = sharedKey.computeHmac256(stringToSign);
-        request.setHeader(HttpHeaderName.AUTHORIZATION, SESSION_PREFIX + sessionToken + ":" + signature);
+        request.setHeader(HttpHeaderName.AUTHORIZATION,
+            SESSION_PREFIX + credential.getSessionToken() + ":" + signature);
     }
 
     // Mirrors StorageSharedKeyCredential.buildStringToSign. The server canonicalizes
@@ -71,8 +69,7 @@ final class StorageSessionCredential implements ExpiringValue {
     //   normalization in this method should remain in place even if azure-core is fixed: it
     //   reflects the documented Shared Key canonicalization rule, not a workaround for
     //   azure-core behavior. Track the azure-core fix separately if pursued.
-
-    private String buildStringToSign(HttpRequest request) {
+    private static String buildStringToSign(HttpRequest request, String accountName) {
         HttpHeaders headers = request.getHeaders();
         Collator collator = Collator.getInstance(Locale.ROOT);
 
@@ -94,7 +91,7 @@ final class StorageSessionCredential implements ExpiringValue {
             getHeaderOrEmpty(headers, HttpHeaderName.IF_MATCH), getHeaderOrEmpty(headers, HttpHeaderName.IF_NONE_MATCH),
             getHeaderOrEmpty(headers, HttpHeaderName.IF_UNMODIFIED_SINCE),
             getHeaderOrEmpty(headers, HttpHeaderName.RANGE), canonicalizedXmsHeaders(headers, collator),
-            canonicalizedResource(request.getUrl(), collator));
+            canonicalizedResource(request.getUrl(), collator, accountName));
     }
 
     private static String getHeaderOrEmpty(HttpHeaders headers, HttpHeaderName name) {
@@ -123,7 +120,7 @@ final class StorageSessionCredential implements ExpiringValue {
         return sb.toString();
     }
 
-    private String canonicalizedResource(URL url, Collator collator) {
+    private static String canonicalizedResource(URL url, Collator collator, String accountName) {
         String path = url.getPath();
         if (CoreUtils.isNullOrEmpty(path)) {
             path = "/";
@@ -149,32 +146,11 @@ final class StorageSessionCredential implements ExpiringValue {
         }
 
         StringBuilder sb = new StringBuilder("/").append(accountName).append(path);
-        for (java.util.Map.Entry<String, List<String>> entry : params.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
             List<String> values = entry.getValue();
-            java.util.Collections.sort(values);
+            Collections.sort(values);
             sb.append('\n').append(entry.getKey()).append(':').append(String.join(",", values));
         }
         return sb.toString();
-    }
-
-    String getSessionToken() {
-        return sessionToken;
-    }
-
-    String getSessionKey() {
-        return sessionKey;
-    }
-
-    @Override
-    public OffsetDateTime getExpiration() {
-        return expiration;
-    }
-
-    String getAccountName() {
-        return accountName;
-    }
-
-    boolean isExpired() {
-        return OffsetDateTime.now().isAfter(expiration);
     }
 }
