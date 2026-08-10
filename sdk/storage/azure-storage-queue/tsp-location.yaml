@@ -1,5 +1,5 @@
 directory: specification/storage/data-plane/QueueStorage
-commit: 7f4ef5a27a0d350c7162ef3bcdd86b328f7f062f
+commit: 21116d8bddf1bda117c09517d629d3ab2f0c2681
 repo: gunjansingh-msft/azure-rest-api-specs
 additionalDirectories: []
 
