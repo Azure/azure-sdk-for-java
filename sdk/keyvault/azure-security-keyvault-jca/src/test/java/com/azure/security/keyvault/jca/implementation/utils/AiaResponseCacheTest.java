@@ -218,13 +218,16 @@ public class AiaResponseCacheTest {
                 return new AiaResponseCache.Entry(secondRefreshCertificates, 3_000L);
             }));
 
+        AiaResponseCache.LookupResult secondRefreshResult;
         try {
             assertTrue(secondRefreshStarted.await(5, TimeUnit.SECONDS));
+            // Publish the newer generation before releasing the older refresh. Otherwise both refreshes race to
+            // complete, and the test observes scheduler order instead of the generation isolation being tested.
+            secondRefreshResult = secondRefresh.get(5, TimeUnit.SECONDS);
         } finally {
             releaseFirstRefresh.countDown();
         }
 
-        AiaResponseCache.LookupResult secondRefreshResult = secondRefresh.get(5, TimeUnit.SECONDS);
         AiaResponseCache.LookupResult firstRefreshResult = firstRefresh.get(5, TimeUnit.SECONDS);
         AiaResponseCache.LookupResult cached
             = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(Collections.emptyList(), 3_000L), () -> {
