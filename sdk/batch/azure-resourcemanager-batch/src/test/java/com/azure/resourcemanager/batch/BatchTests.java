@@ -277,9 +277,9 @@ public class BatchTests extends TestProxyTestBase {
                 .withDisplayName(poolDisplayName)
                 .withDeploymentConfiguration(new DeploymentConfiguration().withVirtualMachineConfiguration(
                     new VirtualMachineConfiguration().withImageReference(new ImageReference().withPublisher("Canonical")
-                        .withOffer("0001-com-ubuntu-server-jammy")
-                        .withSku("22_04-lts")
-                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 22.04")))
+                        .withOffer("ubuntu-24_04-lts")
+                        .withSku("server")
+                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 24.04")))
                 .withScaleSettings(new ScaleSettings()
                     .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
                         .withTargetDedicatedNodes(1)
