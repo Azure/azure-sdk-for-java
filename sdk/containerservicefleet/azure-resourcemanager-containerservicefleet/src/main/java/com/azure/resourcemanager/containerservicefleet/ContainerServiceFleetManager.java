@@ -27,7 +27,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfileOperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfilesImpl;
-import com.azure.resourcemanager.containerservicefleet.implementation.ClusterMeshProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetManagedNamespacesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
@@ -38,7 +37,6 @@ import com.azure.resourcemanager.containerservicefleet.implementation.Operations
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfiles;
-import com.azure.resourcemanager.containerservicefleet.models.ClusterMeshProfiles;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaces;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
@@ -60,8 +58,6 @@ import java.util.stream.Collectors;
  */
 public final class ContainerServiceFleetManager {
     private Operations operations;
-
-    private ClusterMeshProfiles clusterMeshProfiles;
 
     private Fleets fleets;
 
@@ -305,18 +301,6 @@ public final class ContainerServiceFleetManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
-    }
-
-    /**
-     * Gets the resource collection API of ClusterMeshProfiles. It manages ClusterMeshProfile.
-     * 
-     * @return Resource collection API of ClusterMeshProfiles.
-     */
-    public ClusterMeshProfiles clusterMeshProfiles() {
-        if (this.clusterMeshProfiles == null) {
-            this.clusterMeshProfiles = new ClusterMeshProfilesImpl(clientObject.getClusterMeshProfiles(), this);
-        }
-        return clusterMeshProfiles;
     }
 
     /**
