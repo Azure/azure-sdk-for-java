@@ -4,21 +4,14 @@ package com.azure.security.keyvault.jca.mtls;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultKeyStore;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.ssl.SSLContexts;
+import com.azure.security.keyvault.jca.SampleUtils;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import java.io.IOException;
+import java.net.URI;
 import java.security.KeyStore;
 import java.security.Security;
 
@@ -44,35 +37,36 @@ public class ClientMTLSSample {
         System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
         KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-        SSLContext sslContext = SSLContexts
-            .custom()
-            .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(keyStore, "".toCharArray())
-            .build();
-
-        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (hostname, session) -> true);
-
-        PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-            RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("https", sslConnectionSocketFactory)
-                .build());
+        // This section initializing SSLContext can be replaced with implementation specific consumption of 'KeyStore',
+        // if the library being used has convenience methods for that.
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        TrustManager[] trustManagers = SampleUtils.loadTrustMaterial(keyStore);
+        KeyManager[] keyManagers = SampleUtils.loadKeyMaterial(keyStore, "".toCharArray());
+        sslContext.init(keyManagers, trustManagers, null);
 
         String result = null;
+        HttpsURLConnection connection = null;
+        try {
+            // openConnection will return HttpsURLConnection when the protocol is 'https'.
+            connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-        try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8765");
-            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-                int status = response.getCode();
-                String result1 = "Not success";
-                if (status == 200) {
-                    result1 = EntityUtils.toString(response.getEntity());
-                }
-                return result1;
-            };
-            result = client.execute(httpGet, responseHandler);
+            // Have the HttpsURLConnection use the SSLSocketFactory returned by SSLContext.
+            connection.setSSLSocketFactory(sslContext.getSocketFactory());
+
+            connection.setRequestMethod("GET");
+            int status = connection.getResponseCode();
+            if (status == 200) {
+                result = SampleUtils.readResponse(connection);
+            } else {
+                result = "Not success";
+            }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+            result = "Not success";
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         System.out.println(result);
         // END: readme-sample-clientMTLS
