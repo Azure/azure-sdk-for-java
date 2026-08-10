@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A pipeline policy that selects between session token and bearer token authentication.
@@ -319,20 +320,16 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         String key = normalize(accountName);
         OffsetDateTime now = OffsetDateTime.now(clock);
         OffsetDateTime cooldownUntil = now.plus(SESSION_ACQUISITION_COOLDOWN);
-
-        while (true) {
-            OffsetDateTime existing = accountCooldowns.get(key);
-            if (existing != null && now.isBefore(existing)) {
-                return false;
+        AtomicBoolean cooldownStarted = new AtomicBoolean();
+        accountCooldowns.compute(key, (ignored, currentExpirationTime) -> {
+            if (currentExpirationTime != null && now.isBefore(currentExpirationTime)) {
+                return currentExpirationTime;
             }
 
-            boolean updated = existing == null
-                ? accountCooldowns.putIfAbsent(key, cooldownUntil) == null
-                : accountCooldowns.replace(key, existing, cooldownUntil);
-            if (updated) {
-                return true;
-            }
-        }
+            cooldownStarted.set(true);
+            return cooldownUntil;
+        });
+        return cooldownStarted.get();
     }
 
     private static String normalize(String accountName) {
