@@ -6,6 +6,8 @@ package com.azure.storage.file.share.implementation.util;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -47,8 +49,11 @@ import com.azure.storage.file.share.implementation.models.ListFilesAndDirectorie
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
+import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.ClearRange;
@@ -532,6 +537,24 @@ public class ModelHelper {
     public static Response<ShareStatistics> mapGetStatisticsResponse(Response<BinaryData> response) {
         ShareStats shareStats = deserializeXml(response.getValue(), ShareStats::fromXml);
         return new SimpleResponse<>(response, new ShareStatistics(shareStats.getShareUsageBytes()));
+    }
+
+    public static PagedResponse<ShareSignedIdentifier> mapGetAccessPolicyResponse(Response<BinaryData> response) {
+        ShareSignedIdentifierWrapper wrapper
+            = deserializeXml(response.getValue(), ShareSignedIdentifierWrapper::fromXml);
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            wrapper.getItems(), null, new SharesGetAccessPolicyHeaders(response.getHeaders()));
+    }
+
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
+        = HttpHeaderName.fromString("x-ms-file-permission-key");
+
+    public static Response<String> mapCreatePermissionResponse(Response<Void> response) {
+        return new SimpleResponse<>(response, response.getHeaders().getValue(X_MS_FILE_PERMISSION_KEY));
+    }
+
+    public static Response<String> mapGetPermissionResponse(Response<BinaryData> response) {
+        return new SimpleResponse<>(response, response.getValue().toObject(SharePermission.class).getPermission());
     }
 
     /** Deserializes an XML response body via the model's {@code fromXml}. */

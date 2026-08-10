@@ -1136,11 +1136,13 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions()
             : finalOptions.getRequestConditions();
         try {
+            RequestOptions requestOptions = new RequestOptions().setContext(Context.NONE);
+            RequestOptionsHelper.addLeaseId(requestOptions, requestConditions.getLeaseId());
+            RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
             Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever
                 = marker -> this.azureFileStorageClient.getShares()
-                    .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), Context.NONE)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), response.getValue().items(), null, response.getDeserializedHeaders()));
+                    .getAccessPolicyWithResponseAsync(requestOptions)
+                    .map(ModelHelper::mapGetAccessPolicyResponse);
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1263,9 +1265,10 @@ public class ShareAsyncClient {
 
         context = context == null ? Context.NONE : context;
 
+        RequestOptions requestOptions = RequestOptionsHelper.setAccessPolicyRequestOptions(shareName, permissions,
+            requestConditions.getLeaseId(), context);
         return azureFileStorageClient.getShares()
-            .setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
-                permissions, context)
+            .setAccessPolicyWithResponseAsync(requestOptions)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -2147,12 +2150,12 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission,
         FilePermissionFormat filePermissionFormat, Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission
-            = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
+        SharePermission sharePermission = new SharePermission(filePermission).setFormat(filePermissionFormat);
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         return azureFileStorageClient.getShares()
-            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-            .map(response -> new SimpleResponse<>(response,
-                response.getDeserializedHeaders().getXMsFilePermissionKey()));
+            .createPermissionWithResponseAsync(BinaryData.fromObject(sharePermission), requestOptions)
+            .map(ModelHelper::mapCreatePermissionResponse);
     }
 
     /**
@@ -2256,9 +2259,12 @@ public class ShareAsyncClient {
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
         FilePermissionFormat filePermissionFormat, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        RequestOptionsHelper.addFilePermissionFormat(requestOptions, filePermissionFormat);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
         return azureFileStorageClient.getShares()
-            .getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
+            .getPermissionWithResponseAsync(filePermissionKey, requestOptions)
+            .map(ModelHelper::mapGetPermissionResponse);
     }
 
     /**

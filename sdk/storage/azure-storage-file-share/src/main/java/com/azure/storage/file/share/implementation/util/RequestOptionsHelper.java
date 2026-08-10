@@ -5,14 +5,21 @@ package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.share.implementation.XmlSerializer;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +34,8 @@ public final class RequestOptionsHelper {
 
     private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
     private static final HttpHeaderName X_MS_DELETE_SNAPSHOTS = HttpHeaderName.fromString("x-ms-delete-snapshots");
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_FORMAT
+        = HttpHeaderName.fromString("x-ms-file-permission-format");
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
     private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
     private static final HttpHeaderName X_MS_ENABLED_PROTOCOLS = HttpHeaderName.fromString("x-ms-enabled-protocols");
@@ -43,6 +52,8 @@ public final class RequestOptionsHelper {
         = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
     private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
         = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
+
+    private static final ObjectSerializer XML_SERIALIZER = new XmlSerializer();
 
     /**
      * The generated protocol methods target the account-scoped service URL; this appends the resource path (e.g.
@@ -65,6 +76,13 @@ public final class RequestOptionsHelper {
     public static void addLeaseId(RequestOptions requestOptions, String leaseId) {
         if (leaseId != null) {
             requestOptions.setHeader(X_MS_LEASE_ID, leaseId);
+        }
+    }
+
+    /** Adds the {@code x-ms-file-permission-format} header when a format is present. */
+    public static void addFilePermissionFormat(RequestOptions requestOptions, FilePermissionFormat format) {
+        if (format != null) {
+            requestOptions.setHeader(X_MS_FILE_PERMISSION_FORMAT, format.toString());
         }
     }
 
@@ -137,6 +155,19 @@ public final class RequestOptionsHelper {
         addHeader(requestOptions, X_MS_SHARE_PAID_BURSTING_MAX_IOPS, options.getPaidBurstingMaxIops());
         addHeader(requestOptions, X_MS_SHARE_PROVISIONED_IOPS, options.getProvisionedMaxIops());
         addHeader(requestOptions, X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS, options.getProvisionedMaxBandwidthMibps());
+        scopeRequestToResourcePath(requestOptions, shareName);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Share.setAccessPolicy}: the lease id plus the signed identifiers
+     * serialized as the XML request body, scoped to the share resource.
+     */
+    public static RequestOptions setAccessPolicyRequestOptions(String shareName,
+        List<ShareSignedIdentifier> permissions, String leaseId, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addLeaseId(requestOptions, leaseId);
+        requestOptions.setBody(BinaryData.fromObject(new ShareSignedIdentifierWrapper(permissions), XML_SERIALIZER));
         scopeRequestToResourcePath(requestOptions, shareName);
         return requestOptions;
     }
