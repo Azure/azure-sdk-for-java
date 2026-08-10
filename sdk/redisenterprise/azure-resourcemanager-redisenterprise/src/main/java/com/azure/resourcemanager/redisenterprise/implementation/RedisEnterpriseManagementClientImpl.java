@@ -262,7 +262,7 @@ public final class RedisEnterpriseManagementClientImpl implements RedisEnterpris
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01-preview";
+        this.apiVersion = "2026-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

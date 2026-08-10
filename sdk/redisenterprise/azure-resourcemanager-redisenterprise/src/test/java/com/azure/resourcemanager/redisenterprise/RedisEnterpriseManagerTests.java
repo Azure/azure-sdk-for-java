@@ -17,6 +17,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -80,6 +81,7 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new Sku().withName(SkuName.ENTERPRISE_E10).withCapacity(2))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withMinimumTlsVersion(TlsVersion.ONE_TWO)
                 .create();
             // @embedmeEnd
