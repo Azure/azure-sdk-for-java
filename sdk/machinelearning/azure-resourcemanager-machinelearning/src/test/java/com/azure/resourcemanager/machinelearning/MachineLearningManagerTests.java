@@ -75,6 +75,8 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
+        resourceManager.serviceClient().getResourceGroups().list().stream().findFirst();
+
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
