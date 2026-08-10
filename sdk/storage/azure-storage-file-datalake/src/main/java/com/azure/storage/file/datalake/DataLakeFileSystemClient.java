@@ -170,8 +170,8 @@ public class DataLakeFileSystemClient {
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
-     * @param directoryName A {@code String} representing the name of the directory. Pass the name unencoded; the client
-     * percent-encodes it when building the request URL.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      *
      * <p><strong>Code Samples</strong></p>
      *

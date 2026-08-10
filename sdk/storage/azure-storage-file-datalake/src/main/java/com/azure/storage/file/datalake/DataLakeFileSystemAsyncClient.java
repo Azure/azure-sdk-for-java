@@ -197,8 +197,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String -->
      *
-     * @param directoryName A {@code String} representing the name of the directory. Pass the name unencoded; the client
-     * percent-encodes it when building the request URL.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
      * in this file system.
      */
