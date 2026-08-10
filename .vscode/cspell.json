@@ -476,6 +476,12 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/contentsafety/**",
+      "words": [
+        "Trucy"
+      ]
+    },
+    {
       "filename": "sdk/planetarycomputer/**",
       "words": [
         "afmhot",
