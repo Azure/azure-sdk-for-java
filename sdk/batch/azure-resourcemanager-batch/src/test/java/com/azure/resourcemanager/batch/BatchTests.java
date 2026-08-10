@@ -98,7 +98,7 @@ public class BatchTests extends TestProxyTestBase {
         BatchAccount account = null;
         try {
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
 
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
@@ -158,7 +158,7 @@ public class BatchTests extends TestProxyTestBase {
             Assertions.assertNotNull(regeneratedKeys.secondary());
 
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
                 .withRegion(REGION)
@@ -197,7 +197,7 @@ public class BatchTests extends TestProxyTestBase {
         String packageVersion;
         try {
             // storage account
-            final String storageAccountName = "sa" + randomPadding();
+            final String storageAccountName = testResourceNamer.randomName("sa", 22);
             storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
                 .withRegion(REGION)
