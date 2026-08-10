@@ -42,7 +42,7 @@ steps:
       pwsh: true
       filePath: eng/common/scripts/Copy-TestResultsToLlmStaging.ps1
       arguments: >
-        -ArtifactsDirectory $(Build.ArtifactStagingDirectory)
+        -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
         -SearchFolder ${{ parameters.SearchFolder }}
         -TestResultsGlob ${{ parameters.TestResultsGlob }}
         -SourcesDirectory $(Build.SourcesDirectory)
