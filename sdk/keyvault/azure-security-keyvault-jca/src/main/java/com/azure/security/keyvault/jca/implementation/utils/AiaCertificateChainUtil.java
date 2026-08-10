@@ -55,7 +55,8 @@ final class AiaCertificateChainUtil {
     private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
     private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
     private static final AiaResponseCache AIA_CACHE
-        = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis);
+        = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
+            AiaResponseCache.class.getName(), "diagnostic", message, parameters));
 
     /**
      * Determines whether a certificate chain should be completed with issuer certificates resolved via AIA.
@@ -111,6 +112,7 @@ final class AiaCertificateChainUtil {
         }
 
         List<Certificate> chain = new ArrayList<>(Arrays.asList(orderedCertificates));
+        LOGGER.log(FINE, "Starting AIA chain completion with {0} certificate(s).", chain.size());
         int maxDownloads = 10; // Safety limit to prevent infinite loops
         // Defence in depth. Repositioning below takes `continue` without decrementing maxDownloads, so it is the one
         // path whose termination rests on findValidChainEnd() advancing. It does advance today, because a reposition
@@ -320,6 +322,8 @@ final class AiaCertificateChainUtil {
         try {
             byte[] aiaValue = cert.getExtensionValue(Extension.authorityInfoAccess.getId());
             if (aiaValue == null) {
+                LOGGER.log(FINE, "Certificate [{0}] has no AIA extension; issuer download is unavailable.",
+                    cert.getSubjectX500Principal().getName());
                 return null;
             }
 
@@ -348,6 +352,8 @@ final class AiaCertificateChainUtil {
                 }
 
                 if (initial.isNegative()) {
+                    LOGGER.log(FINE, "AIA response for URL [{0}] is empty; no issuer candidate is available for [{1}].",
+                        new Object[] { url, cert.getIssuerX500Principal().getName() });
                     continue;
                 }
 
@@ -355,14 +361,26 @@ final class AiaCertificateChainUtil {
                     = new TargetIdentity(cert.getIssuerX500Principal(), cert.getSerialNumber());
                 // A normal load already performed HTTP, so do not download twice in one resolution attempt.
                 if (initial.getSource() != AiaResponseCache.Source.CACHE) {
+                    LOGGER.log(FINE,
+                        "Loaded AIA response for URL [{0}] did not contain a valid issuer for [{1}]; "
+                            + "skipping a second download in the same resolution attempt.",
+                        new Object[] { url, cert.getIssuerX500Principal().getName() });
                     AIA_CACHE.suppressRefresh(url, targetIdentity, initial.getGeneration(), NEGATIVE_TTL_IN_MILLIS);
                     continue;
                 }
                 if (AIA_CACHE.isRefreshSuppressed(url, targetIdentity, initial.getGeneration())) {
+                    LOGGER.log(FINE,
+                        "Skipping forced AIA refresh for URL [{0}], issuer [{1}], generation [{2}] "
+                            + "because a recent miss is suppressed.",
+                        new Object[] { url, cert.getIssuerX500Principal().getName(), initial.getGeneration() });
                     continue;
                 }
 
                 // Refresh only the generation observed above; concurrent callers share the same refresh.
+                LOGGER.log(FINE,
+                    "Cached AIA response for URL [{0}] did not contain a valid issuer for [{1}]; "
+                        + "forcing refresh of generation [{2}].",
+                    new Object[] { url, cert.getIssuerX500Principal().getName(), initial.getGeneration() });
                 AiaResponseCache.LookupResult refreshed
                     = AIA_CACHE.refreshIfUnchanged(url, initial.getGeneration(), () -> loadAiaResponse(url));
                 issuer = findValidIssuer(cert, refreshed.getCertificates());
@@ -370,6 +388,10 @@ final class AiaCertificateChainUtil {
                     AIA_CACHE.clearRefreshSuppression(url, targetIdentity);
                     return issuer;
                 }
+                LOGGER.log(FINE,
+                    "Forced AIA refresh for URL [{0}] did not contain a valid issuer for [{1}]; "
+                        + "suppressing another refresh for generation [{2}].",
+                    new Object[] { url, cert.getIssuerX500Principal().getName(), refreshed.getGeneration() });
                 AIA_CACHE.suppressRefresh(url, targetIdentity, refreshed.getGeneration(), NEGATIVE_TTL_IN_MILLIS);
             }
         } catch (Exception e) {
@@ -395,8 +417,8 @@ final class AiaCertificateChainUtil {
      * @return the cached or loaded response
      */
     private static AiaResponseCache.LookupResult getAiaResponse(String url) {
-        return AIA_CACHE.getOrLoadResult(url, () -> loadAiaResponse(url),
-            () -> LOGGER.log(FINE, "Reusing the cached AIA response for URL: {0}", url));
+        return AIA_CACHE.getOrLoadResult(url, () -> loadAiaResponse(url), () -> {
+        });
     }
 
     /**
@@ -438,9 +460,11 @@ final class AiaCertificateChainUtil {
 
         List<X509Certificate> certificates = parseCertificates(certBytes);
         if (certificates.isEmpty()) {
+            LOGGER.log(FINE, "AIA response from URL [{0}] did not contain a parsable certificate.", url);
             return new AiaResponseCache.Entry(certificates, calculateNegativeExpiration(response, now));
         }
 
+        LOGGER.log(FINE, "Loaded {0} certificate(s) from AIA URL: {1}", new Object[] { certificates.size(), url });
         return new AiaResponseCache.Entry(certificates, calculateResponseExpiration(response, now));
     }
 

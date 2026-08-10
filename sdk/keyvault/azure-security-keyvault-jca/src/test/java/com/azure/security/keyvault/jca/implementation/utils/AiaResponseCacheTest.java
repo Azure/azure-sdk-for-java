@@ -148,6 +148,96 @@ public class AiaResponseCacheTest {
     }
 
     @Test
+    void lateRefreshDoesNotOverwriteNewerNormalLoad() throws Exception {
+        List<String> messages = Collections.synchronizedList(new ArrayList<>());
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get, (message, parameters) -> messages.add(message));
+        List<X509Certificate> initialCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> refreshedCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> loadedCertificates = Collections.singletonList(mock(X509Certificate.class));
+        AiaResponseCache.LookupResult initial
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(initialCertificates, 1_500L), () -> {
+            });
+        CountDownLatch refreshStarted = new CountDownLatch(1);
+        CountDownLatch releaseRefresh = new CountDownLatch(1);
+
+        Future<AiaResponseCache.LookupResult> refresh
+            = executor.submit(() -> cache.refreshIfUnchanged("url", initial.getGeneration(), () -> {
+                refreshStarted.countDown();
+                await(releaseRefresh);
+                return new AiaResponseCache.Entry(refreshedCertificates, 3_000L);
+            }));
+
+        assertTrue(refreshStarted.await(5, TimeUnit.SECONDS));
+        clock.set(1_501L);
+        AiaResponseCache.LookupResult loaded
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(loadedCertificates, 3_000L), () -> {
+            });
+        releaseRefresh.countDown();
+
+        AiaResponseCache.LookupResult refreshResult = refresh.get(5, TimeUnit.SECONDS);
+        AiaResponseCache.LookupResult cached
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(Collections.emptyList(), 3_000L), () -> {
+            });
+
+        assertSame(loadedCertificates, refreshResult.getCertificates());
+        assertEquals(loaded.getGeneration(), refreshResult.getGeneration());
+        assertSame(loadedCertificates, cached.getCertificates());
+        assertEquals(loaded.getGeneration(), cached.getGeneration());
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Discarding completed AIA refresh")));
+    }
+
+    @Test
+    void differentGenerationsDoNotShareForcedRefresh() throws Exception {
+        AiaResponseCache cache = new AiaResponseCache(128, clock::get);
+        List<X509Certificate> initialCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> firstRefreshCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> loadedCertificates = Collections.singletonList(mock(X509Certificate.class));
+        List<X509Certificate> secondRefreshCertificates = Collections.singletonList(mock(X509Certificate.class));
+        AiaResponseCache.LookupResult initial
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(initialCertificates, 1_500L), () -> {
+            });
+        CountDownLatch firstRefreshStarted = new CountDownLatch(1);
+        CountDownLatch releaseFirstRefresh = new CountDownLatch(1);
+
+        Future<AiaResponseCache.LookupResult> firstRefresh
+            = executor.submit(() -> cache.refreshIfUnchanged("url", initial.getGeneration(), () -> {
+                firstRefreshStarted.countDown();
+                await(releaseFirstRefresh);
+                return new AiaResponseCache.Entry(firstRefreshCertificates, 3_000L);
+            }));
+
+        assertTrue(firstRefreshStarted.await(5, TimeUnit.SECONDS));
+        clock.set(1_501L);
+        AiaResponseCache.LookupResult loaded
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(loadedCertificates, 3_000L), () -> {
+            });
+        CountDownLatch secondRefreshStarted = new CountDownLatch(1);
+        Future<AiaResponseCache.LookupResult> secondRefresh
+            = executor.submit(() -> cache.refreshIfUnchanged("url", loaded.getGeneration(), () -> {
+                secondRefreshStarted.countDown();
+                return new AiaResponseCache.Entry(secondRefreshCertificates, 3_000L);
+            }));
+
+        try {
+            assertTrue(secondRefreshStarted.await(5, TimeUnit.SECONDS));
+        } finally {
+            releaseFirstRefresh.countDown();
+        }
+
+        AiaResponseCache.LookupResult secondRefreshResult = secondRefresh.get(5, TimeUnit.SECONDS);
+        AiaResponseCache.LookupResult firstRefreshResult = firstRefresh.get(5, TimeUnit.SECONDS);
+        AiaResponseCache.LookupResult cached
+            = cache.getOrLoadResult("url", () -> new AiaResponseCache.Entry(Collections.emptyList(), 3_000L), () -> {
+            });
+
+        assertSame(secondRefreshCertificates, secondRefreshResult.getCertificates());
+        assertSame(secondRefreshCertificates, firstRefreshResult.getCertificates());
+        assertSame(secondRefreshCertificates, cached.getCertificates());
+        assertEquals(secondRefreshResult.getGeneration(), firstRefreshResult.getGeneration());
+        assertEquals(secondRefreshResult.getGeneration(), cached.getGeneration());
+    }
+
+    @Test
     void negativeForcedRefreshKeepsPositiveEntry() {
         AiaResponseCache cache = new AiaResponseCache(128, clock::get);
         List<X509Certificate> positiveCertificates = Collections.singletonList(mock(X509Certificate.class));
@@ -194,6 +284,38 @@ public class AiaResponseCacheTest {
         clock.set(2_001L);
 
         assertFalse(cache.isRefreshSuppressed("url", "target", 1L));
+    }
+
+    @Test
+    void reportsCacheAndSuppressionLifecycle() {
+        List<String> messages = new ArrayList<>();
+        AiaResponseCache cache = new AiaResponseCache(1, clock::get, (message, parameters) -> messages.add(message));
+        List<X509Certificate> certificates = Collections.singletonList(mock(X509Certificate.class));
+
+        AiaResponseCache.LookupResult first
+            = cache.getOrLoadResult("url-1", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
+            });
+        cache.getOrLoadResult("url-1", () -> new AiaResponseCache.Entry(Collections.emptyList(), 2_000L), () -> {
+        });
+        AiaResponseCache.LookupResult second
+            = cache.getOrLoadResult("url-2", () -> new AiaResponseCache.Entry(certificates, 2_000L), () -> {
+            });
+        cache.suppressRefresh("url-2", "target", second.getGeneration(), 500L);
+
+        assertTrue(cache.isRefreshSuppressed("url-2", "target", second.getGeneration()));
+        clock.set(1_501L);
+        assertFalse(cache.isRefreshSuppressed("url-2", "target", second.getGeneration()));
+        clock.set(2_001L);
+        cache.getOrLoad("url-2", () -> new AiaResponseCache.Entry(certificates, 3_000L));
+
+        assertTrue(first.getGeneration() > 0);
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("AIA response cache miss for URL")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Cached AIA response for URL")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Reusing the cached AIA response")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Evicted least-recently-used AIA")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Suppressed forced AIA refresh")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Expired forced AIA refresh")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Removed expired AIA response")));
     }
 
     @Test
@@ -376,4 +498,5 @@ public class AiaResponseCacheTest {
             throw new IllegalStateException("Interrupted while waiting for test latch", e);
         }
     }
+
 }

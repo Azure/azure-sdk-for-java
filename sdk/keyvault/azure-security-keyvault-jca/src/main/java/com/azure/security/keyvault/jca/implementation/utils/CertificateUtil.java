@@ -57,7 +57,13 @@ public final class CertificateUtil {
         // A contiguous chain may still be missing issuers above its terminal certificate. Resolution remains
         // cache-first, and a chain ending in a self-signed root does not enter the AIA completion path.
         if (AiaCertificateChainUtil.shouldCompleteChainViaAia(certificates)) {
+            LOGGER.log(FINE, "Certificate chain requires AIA completion; ordered chain contains {0} certificate(s).",
+                certificates.length);
             certificates = AiaCertificateChainUtil.completeChainViaAia(certificates);
+        } else {
+            LOGGER.log(FINE,
+                "Certificate chain does not require AIA completion; ordered chain contains {0} " + "certificate(s).",
+                certificates.length);
         }
 
         return certificates;

@@ -632,17 +632,49 @@ public class AiaCertificateChainTest {
     @Test
     void suppressesRepeatedMissForSameTarget() throws Exception {
         X509Certificate rotatedLeaf = buildRotatedLeafWithoutMatchingIssuer("CN=Suppressed Leaf");
+        List<String> messages = new ArrayList<>();
+        Handler collector = new Handler() {
+            @Override
+            public void publish(LogRecord logRecord) {
+                messages.add(logRecord.getMessage());
+            }
 
-        try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
-            httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
-                .thenReturn(binaryResponse(intermediateCert.getEncoded()));
+            @Override
+            public void flush() {
+            }
 
-            assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
-            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
-            assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+            @Override
+            public void close() {
+            }
+        };
+        Logger logger = Logger.getLogger(AiaCertificateChainUtil.class.getName());
+        Level originalLevel = logger.getLevel();
+        boolean originalUseParentHandlers = logger.getUseParentHandlers();
+        logger.addHandler(collector);
+        logger.setLevel(Level.FINE);
+        logger.setUseParentHandlers(false);
 
-            httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+        try {
+            try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
+                httpMock.when(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL))
+                    .thenReturn(binaryResponse(intermediateCert.getEncoded()));
+
+                assertEquals(intermediateCert, AiaCertificateChainUtil.downloadIssuerCertificateFromAia(leafCert));
+                assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+                assertNull(AiaCertificateChainUtil.downloadIssuerCertificateFromAia(rotatedLeaf));
+
+                httpMock.verify(() -> HttpUtil.getBytesWithMetadata(AIA_INTERMEDIATE_URL), Mockito.times(2));
+            }
+        } finally {
+            logger.removeHandler(collector);
+            logger.setLevel(originalLevel);
+            logger.setUseParentHandlers(originalUseParentHandlers);
         }
+
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Cached AIA response for URL")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Starting forced AIA refresh for URL")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Forced AIA refresh for URL")));
+        assertTrue(messages.stream().anyMatch(message -> message.startsWith("Skipping forced AIA refresh for URL")));
     }
 
     @Test

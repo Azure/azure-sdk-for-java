@@ -18,15 +18,17 @@ import java.util.function.LongSupplier;
  * A bounded, access-ordered cache for AIA resolution results.
  *
  * <p>Completed entries and refresh suppressions use short synchronized sections. Loaders run outside that lock.
- * Concurrent loads or refreshes for the same URL share one in-flight result without blocking other URLs.
+ * Concurrent normal loads for the same URL share one in-flight result. Forced refreshes share a result only when
+ * they observed the same URL generation, so an older refresh cannot absorb work for a newer entry.
  */
 final class AiaResponseCache {
     private final int maximumSize;
     private final LongSupplier clock;
+    private final DiagnosticLogger diagnosticLogger;
     private final Map<String, Entry> entries = new LinkedHashMap<>(16, 0.75f, true);
     private final Map<SuppressionKey, Suppression> refreshSuppressions = new LinkedHashMap<>(16, 0.75f, true);
     private final ConcurrentHashMap<String, CompletableFuture<Entry>> inFlight = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, CompletableFuture<Entry>> refreshes = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<RefreshKey, CompletableFuture<Entry>> refreshes = new ConcurrentHashMap<>();
     // Monotonic entry version; intentionally not reset by clear() so observed generations cannot collide.
     private final AtomicLong generations = new AtomicLong();
     // Cache-wide invalidation version that prevents requests started before clear() from repopulating the cache.
@@ -39,11 +41,24 @@ final class AiaResponseCache {
      * @param clock the clock used to evaluate expiration times
      */
     AiaResponseCache(int maximumSize, LongSupplier clock) {
+        this(maximumSize, clock, (message, parameters) -> {
+        });
+    }
+
+    /**
+     * Creates a cache that reports non-sensitive state transitions to the supplied diagnostic logger.
+     *
+     * @param maximumSize the maximum number of completed entries and refresh suppressions
+     * @param clock the clock used to evaluate expiration times
+     * @param diagnosticLogger the receiver for cache diagnostic messages
+     */
+    AiaResponseCache(int maximumSize, LongSupplier clock, DiagnosticLogger diagnosticLogger) {
         if (maximumSize <= 0) {
             throw new IllegalArgumentException("maximumSize must be greater than zero");
         }
         this.maximumSize = maximumSize;
         this.clock = Objects.requireNonNull(clock, "clock cannot be null");
+        this.diagnosticLogger = Objects.requireNonNull(diagnosticLogger, "diagnosticLogger cannot be null");
     }
 
     /**
@@ -86,6 +101,7 @@ final class AiaResponseCache {
         Objects.requireNonNull(cacheHitAction, "cacheHitAction cannot be null");
         Entry cached = getIfFresh(url);
         if (cached != null) {
+            logCacheHit(url, cached);
             cacheHitAction.run();
             return new LookupResult(cached, Source.CACHE);
         }
@@ -93,22 +109,28 @@ final class AiaResponseCache {
         CompletableFuture<Entry> created = new CompletableFuture<>();
         CompletableFuture<Entry> existing = inFlight.putIfAbsent(url, created);
         if (existing != null) {
+            diagnosticLogger.log("Waiting for in-flight AIA response load for URL [{0}].", url);
             return new LookupResult(await(existing), Source.LOAD);
         }
 
         long loadEpoch = getEpoch(); // Captured before loading so clear() can invalidate the pending publication.
         try {
             Entry rechecked = getIfFresh(url);
-            Entry result = rechecked != null ? rechecked : Objects.requireNonNull(loader.load(), "loader result");
             if (rechecked != null) {
+                logCacheHit(url, rechecked);
                 cacheHitAction.run();
                 created.complete(rechecked);
                 return new LookupResult(rechecked, Source.CACHE);
             }
+            diagnosticLogger.log("AIA response cache miss for URL [{0}]; starting normal load at epoch [{1}].",
+                new Object[] { url, loadEpoch });
+            Entry result = Objects.requireNonNull(loader.load(), "loader result");
             Entry published = putIfFresh(url, result, loadEpoch);
             created.complete(published);
             return new LookupResult(published, Source.LOAD);
         } catch (RuntimeException e) {
+            diagnosticLogger.log("AIA response load for URL [{0}] failed with [{1}].",
+                new Object[] { url, e.getClass().getName() });
             created.completeExceptionally(e);
             return new LookupResult(created.join(), Source.LOAD);
         } finally {
@@ -121,10 +143,7 @@ final class AiaResponseCache {
     }
 
     /**
-     * Refreshes an entry only if it has not changed since the caller observed it.
-     *
-     * <p>Concurrent refreshes for the same URL share one loader call. A failed refresh does not replace an existing
-     * positive entry.
+     * Refreshes an unchanged entry without overwriting a concurrently published generation.
      *
      * @param url the AIA URL used as the cache key
      * @param observedGeneration the generation observed by the caller
@@ -137,12 +156,18 @@ final class AiaResponseCache {
         Entry current = getIfFresh(url);
         // A different generation means another caller has already published a newer response for this URL.
         if (current != null && current.generation != observedGeneration) {
+            diagnosticLogger.log(
+                "Skipping forced AIA refresh for URL [{0}]: observed generation [{1}], current " + "generation [{2}].",
+                new Object[] { url, observedGeneration, current.generation });
             return new LookupResult(current, Source.CACHE);
         }
 
+        RefreshKey refreshKey = new RefreshKey(url, observedGeneration);
         CompletableFuture<Entry> created = new CompletableFuture<>();
-        CompletableFuture<Entry> existing = refreshes.putIfAbsent(url, created);
+        CompletableFuture<Entry> existing = refreshes.putIfAbsent(refreshKey, created);
         if (existing != null) {
+            diagnosticLogger.log("Waiting for in-flight forced AIA refresh for URL [{0}] at generation [{1}].",
+                new Object[] { url, observedGeneration });
             return new LookupResult(await(existing), Source.REFRESH);
         }
 
@@ -151,17 +176,23 @@ final class AiaResponseCache {
             Entry rechecked = getIfFresh(url);
             // Close the race between the first generation check and winning the refresh single-flight registration.
             if (rechecked != null && rechecked.generation != observedGeneration) {
+                diagnosticLogger.log(
+                    "Skipping forced AIA refresh for URL [{0}] after registration: observed "
+                        + "generation [{1}], current generation [{2}].",
+                    new Object[] { url, observedGeneration, rechecked.generation });
                 created.complete(rechecked);
                 return new LookupResult(rechecked, Source.CACHE);
             }
 
+            diagnosticLogger.log("Starting forced AIA refresh for URL [{0}] at generation [{1}] and epoch [{2}].",
+                new Object[] { url, observedGeneration, refreshEpoch });
             Entry loaded = Objects.requireNonNull(loader.load(), "loader result");
-            Entry result = shouldReplaceOnRefresh(loaded)
-                ? putIfFresh(url, loaded, refreshEpoch)
-                : loaded.withGeneration(rechecked == null ? observedGeneration : rechecked.generation);
+            Entry result = completeRefresh(url, loaded, observedGeneration, refreshEpoch);
             created.complete(result);
             return new LookupResult(result, Source.REFRESH);
         } catch (RuntimeException e) {
+            diagnosticLogger.log("Forced AIA refresh for URL [{0}] at generation [{1}] failed with [{2}].",
+                new Object[] { url, observedGeneration, e.getClass().getName() });
             created.completeExceptionally(e);
             return new LookupResult(created.join(), Source.REFRESH);
         } finally {
@@ -169,17 +200,25 @@ final class AiaResponseCache {
                 created.completeExceptionally(
                     new IllegalStateException("AIA refresh terminated before producing a result"));
             }
-            refreshes.remove(url, created);
+            refreshes.remove(refreshKey, created);
         }
     }
 
     /** Clears cached and coordination state, advancing the epoch so pending requests cannot repopulate the cache. */
     synchronized void clear() {
+        int entryCount = entries.size();
+        int suppressionCount = refreshSuppressions.size();
+        int normalLoadCount = inFlight.size();
+        int refreshCount = refreshes.size();
         epoch++;
         entries.clear();
         refreshSuppressions.clear();
         inFlight.clear();
         refreshes.clear();
+        diagnosticLogger.log(
+            "Cleared AIA response cache: [{0}] entries, [{1}] suppressions, [{2}] normal loads, "
+                + "[{3}] forced refreshes; advanced epoch to [{4}].",
+            new Object[] { entryCount, suppressionCount, normalLoadCount, refreshCount, epoch });
     }
 
     /**
@@ -206,7 +245,15 @@ final class AiaResponseCache {
         if (suppression == null) {
             return false;
         }
-        if (suppression.isExpired(clock.getAsLong()) || suppression.generation != generation) {
+        if (suppression.isExpired(clock.getAsLong())) {
+            diagnosticLogger.log("Expired forced AIA refresh suppression for URL [{0}] at generation [{1}].",
+                new Object[] { url, suppression.generation });
+            refreshSuppressions.remove(key);
+            return false;
+        }
+        if (suppression.generation != generation) {
+            diagnosticLogger.log("Removed forced AIA refresh suppression for URL [{0}]: suppression generation "
+                + "[{1}], current generation [{2}].", new Object[] { url, suppression.generation, generation });
             refreshSuppressions.remove(key);
             return false;
         }
@@ -226,10 +273,14 @@ final class AiaResponseCache {
         removeExpiredSuppressions(now);
         refreshSuppressions.put(new SuppressionKey(url, targetIdentity),
             new Suppression(generation, safeAdd(now, ttlInMillis)));
+        diagnosticLogger.log("Suppressed forced AIA refresh for URL [{0}] at generation [{1}] for [{2}] ms.",
+            new Object[] { url, generation, ttlInMillis });
         while (refreshSuppressions.size() > maximumSize) {
-            Iterator<SuppressionKey> iterator = refreshSuppressions.keySet().iterator();
-            iterator.next();
+            Iterator<Map.Entry<SuppressionKey, Suppression>> iterator = refreshSuppressions.entrySet().iterator();
+            Map.Entry<SuppressionKey, Suppression> eldest = iterator.next();
             iterator.remove();
+            diagnosticLogger.log("Evicted forced AIA refresh suppression for URL [{0}] at generation [{1}].",
+                new Object[] { eldest.getKey().url, eldest.getValue().generation });
         }
     }
 
@@ -240,7 +291,11 @@ final class AiaResponseCache {
      * @param targetIdentity the identity of the certificate that needs an issuer
      */
     synchronized void clearRefreshSuppression(String url, Object targetIdentity) {
-        refreshSuppressions.remove(new SuppressionKey(url, targetIdentity));
+        Suppression removed = refreshSuppressions.remove(new SuppressionKey(url, targetIdentity));
+        if (removed != null) {
+            diagnosticLogger.log("Cleared forced AIA refresh suppression for URL [{0}] at generation [{1}].",
+                new Object[] { url, removed.generation });
+        }
     }
 
     private synchronized Entry getIfFresh(String url) {
@@ -250,6 +305,8 @@ final class AiaResponseCache {
         }
         if (entry.isExpired(clock.getAsLong())) {
             entries.remove(url);
+            diagnosticLogger.log("Removed expired AIA response for URL [{0}] at generation [{1}].",
+                new Object[] { url, entry.generation });
             return null;
         }
         return entry;
@@ -266,17 +323,21 @@ final class AiaResponseCache {
     private synchronized Entry putIfFresh(String url, Entry entry, long expectedEpoch) {
         long now = clock.getAsLong();
         removeExpiredEntries(now);
-        if (entry.isExpired(now) || epoch != expectedEpoch) {
+        if (entry.isExpired(now)) {
+            diagnosticLogger.log("Not caching AIA response for URL [{0}] because it expired before publication.", url);
+            return entry;
+        }
+        if (epoch != expectedEpoch) {
+            diagnosticLogger.log("Not caching AIA response for URL [{0}] because cache epoch advanced from [{1}] to "
+                + "[{2}] while loading.", new Object[] { url, expectedEpoch, epoch });
             return entry;
         }
 
         Entry versioned = entry.withGeneration(generations.incrementAndGet());
         entries.put(url, versioned);
-        while (entries.size() > maximumSize) {
-            Iterator<String> iterator = entries.keySet().iterator();
-            iterator.next();
-            iterator.remove();
-        }
+        evictOversizedEntries();
+        diagnosticLogger.log("Cached AIA response for URL [{0}] as generation [{1}] with [{2}] certificate(s).",
+            new Object[] { url, versioned.generation, versioned.certificates.size() });
         return versioned;
     }
 
@@ -285,21 +346,83 @@ final class AiaResponseCache {
     }
 
     /**
-     * Checks whether a refresh result can replace the current positive entry.
+     * Completes a forced refresh without overwriting an entry published after the caller observed the cache.
      *
-     * @param entry the refresh result
-     * @return true when the result is positive and fresh
+     * @param url the AIA URL used as the cache key
+     * @param loaded the refresh result
+     * @param observedGeneration the generation observed before the refresh started
+     * @param expectedEpoch the epoch captured before loading started
+     * @return the current entry when it changed, otherwise the published or unpublished refresh result
      */
-    private boolean shouldReplaceOnRefresh(Entry entry) {
-        return !entry.certificates.isEmpty() && !entry.isExpired(clock.getAsLong());
+    private synchronized Entry completeRefresh(String url, Entry loaded, long observedGeneration, long expectedEpoch) {
+        long now = clock.getAsLong();
+        removeExpiredEntries(now);
+        Entry current = entries.get(url);
+        // This comparison and the publication below share the same lock.
+        if (current != null && current.generation != observedGeneration) {
+            diagnosticLogger.log("Discarding completed AIA refresh for URL [{0}]: observed generation [{1}], current "
+                + "generation [{2}].", new Object[] { url, observedGeneration, current.generation });
+            return current;
+        }
+        if (epoch != expectedEpoch) {
+            diagnosticLogger.log("Not caching completed AIA refresh for URL [{0}] because cache epoch advanced from "
+                + "[{1}] to [{2}] while loading.", new Object[] { url, expectedEpoch, epoch });
+            return current == null ? loaded : current;
+        }
+        if (loaded.certificates.isEmpty() || loaded.isExpired(now)) {
+            long returnedGeneration = current == null ? observedGeneration : current.generation;
+            diagnosticLogger.log("Completed AIA refresh for URL [{0}] returned no cacheable response; returning "
+                + "generation [{1}] without replacing the cache.", new Object[] { url, returnedGeneration });
+            return loaded.withGeneration(returnedGeneration);
+        }
+
+        Entry versioned = loaded.withGeneration(generations.incrementAndGet());
+        entries.put(url, versioned);
+        evictOversizedEntries();
+        diagnosticLogger.log(
+            "Cached refreshed AIA response for URL [{0}] as generation [{1}] with [{2}] certificate(s).",
+            new Object[] { url, versioned.generation, versioned.certificates.size() });
+        return versioned;
+    }
+
+    private void evictOversizedEntries() {
+        while (entries.size() > maximumSize) {
+            Iterator<Map.Entry<String, Entry>> iterator = entries.entrySet().iterator();
+            Map.Entry<String, Entry> eldest = iterator.next();
+            iterator.remove();
+            diagnosticLogger.log("Evicted least-recently-used AIA response for URL [{0}] at generation [{1}].",
+                new Object[] { eldest.getKey(), eldest.getValue().generation });
+        }
     }
 
     private void removeExpiredEntries(long now) {
-        entries.entrySet().removeIf(entry -> entry.getValue().isExpired(now));
+        Iterator<Map.Entry<String, Entry>> iterator = entries.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Entry> entry = iterator.next();
+            if (entry.getValue().isExpired(now)) {
+                iterator.remove();
+                diagnosticLogger.log("Removed expired AIA response for URL [{0}] at generation [{1}].",
+                    new Object[] { entry.getKey(), entry.getValue().generation });
+            }
+        }
     }
 
     private void removeExpiredSuppressions(long now) {
-        refreshSuppressions.entrySet().removeIf(entry -> entry.getValue().isExpired(now));
+        Iterator<Map.Entry<SuppressionKey, Suppression>> iterator = refreshSuppressions.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<SuppressionKey, Suppression> entry = iterator.next();
+            if (entry.getValue().isExpired(now)) {
+                iterator.remove();
+                diagnosticLogger.log("Expired forced AIA refresh suppression for URL [{0}] at generation [{1}].",
+                    new Object[] { entry.getKey().url, entry.getValue().generation });
+            }
+        }
+    }
+
+    private void logCacheHit(String url, Entry entry) {
+        diagnosticLogger.log(
+            "Reusing the cached AIA response for URL: {0}; generation [{1}], certificate count " + "[{2}].",
+            new Object[] { url, entry.generation, entry.certificates.size() });
     }
 
     private static long safeAdd(long value, long increment) {
@@ -330,6 +453,11 @@ final class AiaResponseCache {
          * @return the loaded cache entry
          */
         Entry load();
+    }
+
+    /** Receives FINE-level cache diagnostics without coupling the cache to a logging framework. */
+    interface DiagnosticLogger {
+        void log(String message, Object... parameters);
     }
 
     /** Identifies how a lookup result was obtained. */
@@ -454,6 +582,33 @@ final class AiaResponseCache {
         @Override
         public int hashCode() {
             return Objects.hash(url, targetIdentity);
+        }
+    }
+
+    private static final class RefreshKey {
+        private final String url;
+        private final long generation;
+
+        private RefreshKey(String url, long generation) {
+            this.url = url;
+            this.generation = generation;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof RefreshKey)) {
+                return false;
+            }
+            RefreshKey other = (RefreshKey) obj;
+            return generation == other.generation && url.equals(other.url);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(url, generation);
         }
     }
 
