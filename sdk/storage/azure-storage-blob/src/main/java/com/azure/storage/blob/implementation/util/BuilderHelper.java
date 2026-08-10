@@ -162,8 +162,7 @@ public final class BuilderHelper {
                     sessionProvider = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
                         sessionOptions.getAccountName());
                 }
-                SessionAcquisitionCooldown cooldown = new SessionAcquisitionCooldown();
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, cooldown, sessionOptions));
+                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
         }
 

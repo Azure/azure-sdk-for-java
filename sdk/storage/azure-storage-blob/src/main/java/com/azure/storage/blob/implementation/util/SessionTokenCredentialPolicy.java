@@ -22,9 +22,13 @@ import com.azure.storage.blob.models.SessionRequestContext;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A pipeline policy that selects between session token and bearer token authentication.
@@ -33,45 +37,31 @@ import java.util.Optional;
  * {@link StorageBearerTokenChallengeAuthorizationPolicy}. For eligible blob GET requests,
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
- * <p>
- * Request analysis is performed by {@link #analyzeRequest(HttpPipelineCallContext)} which returns
- * an {@link AuthStrategy} indicating the authentication approach to use.
  */
 public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final String SESSION_EXPIRING = "session_expiring";
+    private static final Duration SESSION_ACQUISITION_COOLDOWN = Duration.ofMinutes(5);
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
-    private final SessionAcquisitionCooldown cooldown;
     private final SessionOptions sessionOptions;
+    private final Clock clock;
+    private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
 
-    /**
-     * Authentication strategy determined by {@link #analyzeRequest(HttpPipelineCallContext)}.
-     */
-    enum AuthStrategy {
-        /** Delegate to the wrapped bearer token policy. */
-        USE_BEARER_TOKEN,
-        /** Acquire a session token and sign the request. */
-        USE_SESSION_TOKEN
+    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        SessionProvider sessionProvider, SessionOptions sessionOptions) {
+        this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
     }
 
     SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionAcquisitionCooldown cooldown, SessionOptions sessionOptions) {
+        SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
-        this.cooldown = Objects.requireNonNull(cooldown, "'cooldown' cannot be null.");
         this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
-    }
-
-    /**
-     * Returns the wrapped bearer token policy. Used when constructing per-container pipelines from a service
-     * pipeline so that the bearer policy can be reused without scanning the pipeline.
-     */
-    StorageBearerTokenChallengeAuthorizationPolicy getBearerPolicy() {
-        return bearerPolicy;
+        this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
     @Override
@@ -80,7 +70,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         if (requestContext == null) {
             return bearerPolicy.process(context, next);
         }
-        if (cooldown.isAccountInCooldown(requestContext.getAccountName())) {
+        if (isAccountInCooldown(requestContext.getAccountName())) {
             return bearerPolicy.process(context, next);
         }
 
@@ -114,7 +104,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         if (requestContext == null) {
             return bearerPolicy.processSync(context, next);
         }
-        if (cooldown.isAccountInCooldown(requestContext.getAccountName())) {
+        if (isAccountInCooldown(requestContext.getAccountName())) {
             return bearerPolicy.processSync(context, next);
         }
 
@@ -133,27 +123,9 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         return handleSessionResponseSync(context, response, session, requestContext, retryNext);
     }
 
-    /**
-     * Analyzes the request to determine whether a session token or bearer token should be used.
-     * Session tokens are only used for blob GET operations in
-     * {@link SessionMode#ENABLED} mode targeting the configured container.
-     *
-     * @param context the pipeline call context for the request being analyzed.
-     * @return {@link AuthStrategy#USE_SESSION_TOKEN} if the request is eligible for session-token
-     * authentication (a GET against a blob in the configured container, with no {@code comp} query
-     * parameter, while in {@link SessionMode#ENABLED} mode);
-     * {@link AuthStrategy#USE_BEARER_TOKEN} otherwise.
-     */
-    AuthStrategy analyzeRequest(HttpPipelineCallContext context) {
-        return resolveSessionRequest(context) == null ? AuthStrategy.USE_BEARER_TOKEN : AuthStrategy.USE_SESSION_TOKEN;
-    }
-
     private SessionRequestContext resolveSessionRequest(HttpPipelineCallContext context) {
-        if (sessionOptions.getSessionMode() == SessionMode.DISABLED) {
-            return null;
-        }
-
-        if (context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+        if (sessionOptions.getSessionMode() == SessionMode.DISABLED
+            || context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
             return null;
         }
 
@@ -166,24 +138,21 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        String containerName = CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())
-            ? parts.getBlobContainerName()
-            : sessionOptions.getContainerName();
-        String accountName = CoreUtils.isNullOrEmpty(sessionOptions.getAccountName())
-            ? parts.getAccountName()
-            : sessionOptions.getAccountName();
-
-        if (CoreUtils.isNullOrEmpty(containerName) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
-            return null;
-        }
+        String containerName = getOverrideOrDefault(sessionOptions.getContainerName(), parts.getBlobContainerName());
+        String accountName = getOverrideOrDefault(sessionOptions.getAccountName(), parts.getAccountName());
 
         // comp indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
-        Map<String, String[]> queryParams = parts.getUnparsedParameters();
-        if (queryParams.containsKey("comp")) {
+        if (CoreUtils.isNullOrEmpty(containerName)
+            || CoreUtils.isNullOrEmpty(parts.getBlobName())
+            || parts.getUnparsedParameters().containsKey("comp")) {
             return null;
         }
 
         return new SessionRequestContext().setContainerName(containerName).setAccountName(accountName);
+    }
+
+    private static String getOverrideOrDefault(String override, String defaultValue) {
+        return CoreUtils.isNullOrEmpty(override) ? defaultValue : override;
     }
 
     /**
@@ -290,7 +259,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         if (current != null && ((HttpResponseException) current).getResponse() != null) {
             int statusCode = ((HttpResponseException) current).getResponse().getStatusCode();
             if (statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
-                if (cooldown.beginAccountCooldown(requestContext.getAccountName())) {
+                if (beginAccountCooldown(requestContext.getAccountName())) {
                     LOGGER.warning(
                         "Session acquisition failed with HTTP {}. Suppressing session acquisition for this account "
                             + "for five minutes and using bearer token.",
@@ -301,5 +270,45 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         LOGGER.warning("Unable to obtain a session credential. Using bearer token.", error);
+    }
+
+    private boolean isAccountInCooldown(String accountName) {
+        String key = normalize(accountName);
+        OffsetDateTime cooldownUntil = accountCooldowns.get(key);
+        if (cooldownUntil == null) {
+            return false;
+        }
+
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (now.isBefore(cooldownUntil)) {
+            return true;
+        }
+
+        accountCooldowns.remove(key, cooldownUntil);
+        return false;
+    }
+
+    private boolean beginAccountCooldown(String accountName) {
+        String key = normalize(accountName);
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        OffsetDateTime cooldownUntil = now.plus(SESSION_ACQUISITION_COOLDOWN);
+
+        while (true) {
+            OffsetDateTime existing = accountCooldowns.get(key);
+            if (existing != null && now.isBefore(existing)) {
+                return false;
+            }
+
+            boolean updated = existing == null
+                ? accountCooldowns.putIfAbsent(key, cooldownUntil) == null
+                : accountCooldowns.replace(key, existing, cooldownUntil);
+            if (updated) {
+                return true;
+            }
+        }
+    }
+
+    private static String normalize(String accountName) {
+        return CoreUtils.isNullOrEmpty(accountName) ? "" : accountName.trim().toLowerCase(Locale.ROOT);
     }
 }
