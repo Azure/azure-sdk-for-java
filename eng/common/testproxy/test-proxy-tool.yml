@@ -28,33 +28,25 @@ steps:
       arguments: >
         -TemplateRoot "${{ parameters.templateRoot }}"
         -BinariesDirectory $(Build.BinariesDirectory)
-        -RunProxy ${{ parameters.runProxy }}
+        -RunProxy $${{ parameters.runProxy }}
       pwsh: true
     displayName: "Install and configure test-proxy"
 
   - ${{ if eq(parameters.runProxy, 'true') }}:
-    - pwsh: |
-        $invocation = @"
-        Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe
-          -ArgumentList `"start -u --storage-location ${{ parameters.rootFolder }} -- --urls ${{ parameters.proxyUrl }}`"
-          -NoNewWindow -PassThru -RedirectStandardOutput ${{ parameters.rootFolder }}/test-proxy.log
-          -RedirectStandardError ${{ parameters.rootFolder }}/test-proxy-error.log
-        "@
-        Write-Host $invocation
-
-        $Process = Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe `
-          -ArgumentList "start -u --storage-location ${{ parameters.rootFolder }} -- --urls ${{ parameters.proxyUrl }}" `
-          -NoNewWindow -PassThru -RedirectStandardOutput ${{ parameters.rootFolder }}/test-proxy.log `
-          -RedirectStandardError ${{ parameters.rootFolder }}/test-proxy-error.log
-
-        Write-Host "Setting PROXY_PID to $($Process.Id)"
-        Write-Host "##vso[task.setvariable variable=PROXY_PID]$($Process.Id)"
-      displayName: 'Run the testproxy - windows'
+    - task: PowerShell@2
+      inputs:
+        filePath: '${{ parameters.templateRoot }}/eng/common/scripts/Start-TestProxy.ps1'
+        arguments: >
+          -RootFolder ${{ parameters.rootFolder }}
+          -ProxyUrl ${{ parameters.proxyUrl }}
+          -BinariesDirectory $(Build.BinariesDirectory)
+        pwsh: true
+      displayName: 'Run test-proxy - Windows'
       condition: and(succeeded(), eq(variables['Agent.OS'],'Windows_NT'), ${{ parameters.condition }})
       env:
         DOTNET_ROLL_FORWARD: 'Major'
 
-    # nohup does NOT continue beyond the current session if you use it within powershell
+    # nohup does NOT continue beyond the current session if you use it within PowerShell
     - bash: |
         if [[ "$(uname)" == "Darwin" ]]; then
           export DOTNET_ROOT="$HOME/.dotnet"
@@ -65,7 +57,7 @@ steps:
 
         echo "Setting PROXY_PID to $(cat $(Build.SourcesDirectory)/test-proxy.pid)"
         echo "##vso[task.setvariable variable=PROXY_PID]$(cat $(Build.SourcesDirectory)/test-proxy.pid)"
-      displayName: "Run the testproxy - linux/mac"
+      displayName: "Run test-proxy - Linux/Mac"
       condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'), ${{ parameters.condition }})
       workingDirectory: "${{ parameters.rootFolder }}"
       env:
