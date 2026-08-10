@@ -157,10 +157,8 @@ public final class BuilderHelper {
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
                 SessionProvider sessionProvider = sessionOptions.getSessionProvider();
                 if (sessionProvider == null) {
-                    HttpPipeline bearerPipeline
-                        = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
-                    sessionProvider = new BlobSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion,
-                        sessionOptions.getAccountName());
+                    sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, effectiveHttpClient,
+                        clientOptions, endpoint, effectiveServiceVersion, sessionOptions.getAccountName());
                 }
                 policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -203,6 +201,15 @@ public final class BuilderHelper {
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
             .build();
+    }
+
+    private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient, ClientOptions clientOptions,
+        String endpoint, BlobServiceVersion serviceVersion, String accountName) {
+        HttpPipeline bearerPipeline = buildBearerPipeline(preAuthPolicies, bearerPolicy, httpClient, clientOptions);
+        BlobServiceVersion effectiveServiceVersion
+            = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
+        return new BlobSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion, accountName);
     }
 
     private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
