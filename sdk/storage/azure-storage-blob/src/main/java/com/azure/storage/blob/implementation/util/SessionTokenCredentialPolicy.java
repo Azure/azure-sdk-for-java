@@ -29,7 +29,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -88,19 +87,14 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             return bearerPolicy.process(context, next);
         }
 
-        return sessionMono.map(Optional::of).onErrorResume(error -> {
+        return sessionMono.onErrorResume(error -> {
             handleSessionAcquisitionFailure(requestContext, error);
-            return Mono.just(Optional.empty());
-        }).defaultIfEmpty(Optional.empty()).flatMap(sessionResult -> {
-            if (!sessionResult.isPresent()) {
-                context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-                return bearerPolicy.process(context, next);
-            }
-            SessionCredential session = sessionResult.get();
+            return Mono.empty();
+        }).flatMap(session -> {
             signRequest(context, session);
             return next.process()
                 .flatMap(response -> handleSessionResponse(context, response, session, requestContext, retryNext));
-        });
+        }).switchIfEmpty(Mono.defer(() -> bearerPolicy.process(context, next)));
     }
 
     @Override
@@ -119,7 +113,6 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             session = sessionProvider.getSession(requestContext);
         } catch (RuntimeException ex) {
             handleSessionAcquisitionFailure(requestContext, ex);
-            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             return bearerPolicy.processSync(context, next);
         }
         signRequest(context, session);
@@ -169,7 +162,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
         handleSessionExpiringHeader(response, requestContext);
 
-        if (isUnauthorizedResponse(response)) {
+        if (response.getStatusCode() == 401) {
             logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
         }
 
@@ -192,7 +185,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
 
         handleSessionExpiringHeader(response, requestContext);
 
-        if (isUnauthorizedResponse(response)) {
+        if (response.getStatusCode() == 401) {
             logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
         }
 
@@ -255,14 +248,6 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Returns true when the session-authenticated request was rejected as unauthorized.
-     * Used to decide whether to invalidate the cached session.
-     */
-    private static boolean isUnauthorizedResponse(HttpResponse response) {
-        return response.getStatusCode() == 401;
-    }
-
-    /**
      * Returns true for responses where retrying with bearer authentication can preserve
      * request compatibility when session authentication is unavailable or rejected.
      */
@@ -271,11 +256,8 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             return false;
         }
 
-        return isUnauthorizedResponse(response) || isBadRequest(response);
-    }
-
-    private static boolean isBadRequest(HttpResponse response) {
-        return response.getStatusCode() == 400;
+        int statusCode = response.getStatusCode();
+        return statusCode == 400 || statusCode == 401;
     }
 
     private void handleSessionAcquisitionFailure(SessionRequestContext requestContext, Throwable error) {
@@ -285,7 +267,8 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         if (current != null && ((HttpResponseException) current).getResponse() != null) {
-            int statusCode = ((HttpResponseException) current).getResponse().getStatusCode();
+            HttpResponse response = ((HttpResponseException) current).getResponse();
+            int statusCode = response.getStatusCode();
             if (statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
                 if (beginAccountCooldown(requestContext.getAccountName())) {
                     LOGGER.warning(
