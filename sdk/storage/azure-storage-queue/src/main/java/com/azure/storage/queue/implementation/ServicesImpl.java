@@ -936,37 +936,6 @@ public final class ServicesImpl {
         }
     }
 
-    private String getXmlNextLink(BinaryData binaryData, String... path) {
-        try {
-            try (com.azure.xml.XmlReader reader = com.azure.xml.XmlReader.fromStream(binaryData.toStream())) {
-                reader.nextElement();
-                return getXmlNextLink(reader, path, 0);
-            } catch (javax.xml.stream.XMLStreamException e) {
-                throw new IllegalStateException("Failed to read XML pageable response.", e);
-            }
-        } catch (QueueStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToQueueStorageException(internalException);
-        }
-    }
-
-    private String getXmlNextLink(com.azure.xml.XmlReader reader, String[] path, int pathIndex)
-        throws javax.xml.stream.XMLStreamException {
-        try {
-            while (reader.nextElement() != com.azure.xml.XmlToken.END_ELEMENT) {
-                if (!reader.elementNameMatches(path[pathIndex])) {
-                    reader.skipElement();
-                } else if (pathIndex == path.length - 1) {
-                    return reader.getStringElement();
-                } else {
-                    return getXmlNextLink(reader, path, pathIndex + 1);
-                }
-            }
-            return null;
-        } catch (QueueStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToQueueStorageException(internalException);
-        }
-    }
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getQueuesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";

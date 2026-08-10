@@ -83,6 +83,7 @@ public class QueueStorageCustomizations extends Customization {
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         exposeRawListQueuesResponse(customization.getPackage(IMPL_PACKAGE), logger);
+        removeUnusedXmlNextLinkHelpers(customization.getPackage(IMPL_PACKAGE), logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
     }
 
@@ -277,6 +278,24 @@ public class QueueStorageCustomizations extends Customization {
                     + "        this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);\n"
                     + "}"));
             logger.info("Injected raw getQueuesWithResponse[Async] accessors into ServicesImpl.");
+        }));
+    }
+
+    // exposeRawListQueuesResponse replaces the emitter's paginated path, leaving the generated getXmlNextLink
+    // helpers uncalled and tripping SpotBugs UPM_UNCALLED_PRIVATE_METHOD.
+    private static void removeUnusedXmlNextLinkHelpers(PackageCustomization implPackage, Logger logger) {
+        if (implPackage.getClass("ServicesImpl") == null) {
+            logger.info("ServicesImpl not present; skipping getXmlNextLink removal.");
+            return;
+        }
+        implPackage.getClass("ServicesImpl").customizeAst(ast -> ast.getClassByName("ServicesImpl").ifPresent(clazz -> {
+            List<MethodDeclaration> unused = clazz.getMethodsByName("getXmlNextLink");
+            if (unused.isEmpty()) {
+                logger.info("No getXmlNextLink methods found in ServicesImpl; skipping removal.");
+                return;
+            }
+            new ArrayList<>(unused).forEach(MethodDeclaration::remove);
+            logger.info("Removed {} unused getXmlNextLink method(s) from ServicesImpl.", unused.size());
         }));
     }
 
