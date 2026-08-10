@@ -121,7 +121,7 @@ public class ModelHelper {
             }
         }
         String count = headers.getValue(X_MS_APPROXIMATE_MESSAGES_COUNT);
-        return new QueueProperties(metadata, count == null ? null : Long.parseLong(count));
+        return new QueueProperties(metadata, count == null ? 0L : Long.parseLong(count));
     }
 
     public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
